@@ -13,13 +13,13 @@ return array (
   array (
     'datasources' => 
     array (
-      'anmaga' => 
+      'anmaga' =>
       array (
         'adapter' => 'mysql',
         'connection' => 
         array (
           'phptype' => 'mysql',
-          'hostspec' => 'localhost',
+          'hostspec' => 'localhost:3316',
           'database' => 'anmaga',
           'username' => 'root',
           'password' => 'dxukal',
@@ -31,7 +31,7 @@ return array (
         'connection' => 
         array (
           'phptype' => 'mysql',
-          'hostspec' => 'localhost',
+          'hostspec' => 'localhost:3316',
           'database' => 'anmaga',
           'username' => 'root',
           'password' => 'dxukal',
