@@ -26,19 +26,14 @@ class ModulePaths {
 		$appDirs[]	= 'WEB-INF/configRules';
 		$appDirs[]	= 'WEB-INF/tpl';
 		$appDirs[]	= 'WEB-INF/scripts';
+		$appDirs[]	= 'WEB-INF/classes/includes';
 
 		// Users module
 		$appDirs[]	= 'WEB-INF/classes/modules/users';
 		$appDirs[]	= 'WEB-INF/classes/modules/users/actions';
 		$appDirs[]	= 'WEB-INF/classes/modules/users/forms';
 		$appDirs[]	= 'WEB-INF/classes/modules/users/classes';
-		
-		// Mer module
-		$appDirs[]	= 'WEB-INF/classes/modules/mer';
-		$appDirs[]	= 'WEB-INF/classes/modules/mer/actions';
-		$appDirs[]	= 'WEB-INF/classes/modules/mer/forms';
-		$appDirs[]	= 'WEB-INF/classes/modules/mer/classes';
-		
+
 		// Htmls module
 		$appDirs[]	= 'WEB-INF/classes/modules/htmls';
 		$appDirs[]	= 'WEB-INF/classes/modules/htmls/actions';
@@ -56,24 +51,6 @@ class ModulePaths {
 		$appDirs[]	= 'WEB-INF/classes/modules/security/actions';
 		$appDirs[]	= 'WEB-INF/classes/modules/security/forms';
 		$appDirs[]	= 'WEB-INF/classes/modules/security/classes';
-
-		// Documents module
-		$appDirs[]	= 'WEB-INF/classes/modules/documents';
-		$appDirs[]	= 'WEB-INF/classes/modules/documents/actions';
-		$appDirs[]	= 'WEB-INF/classes/modules/documents/forms';
-		$appDirs[]	= 'WEB-INF/classes/modules/documents/classes';
-
-		// Movements module
-		$appDirs[]	= 'WEB-INF/classes/modules/movements';
-		$appDirs[]	= 'WEB-INF/classes/modules/movements/actions';
-		$appDirs[]	= 'WEB-INF/classes/modules/movements/forms';
-		$appDirs[]	= 'WEB-INF/classes/modules/movements/classes';
-
-		// Forms module
-		$appDirs[]	= 'WEB-INF/classes/modules/forms';
-		$appDirs[]	= 'WEB-INF/classes/modules/forms/actions';
-		$appDirs[]	= 'WEB-INF/classes/modules/forms/forms';
-		$appDirs[]	= 'WEB-INF/classes/modules/forms/classes';
 
 		// Affiliates module
 		$appDirs[]	= 'WEB-INF/classes/modules/affiliates';
