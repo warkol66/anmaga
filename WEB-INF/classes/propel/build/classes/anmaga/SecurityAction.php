@@ -1,6 +1,6 @@
 <?php
 
-require_once 'mer/om/BaseSecurityAction.php';
+require_once 'om/BaseSecurityAction.php';
 
 
 /**

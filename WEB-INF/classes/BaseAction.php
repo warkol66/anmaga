@@ -8,10 +8,10 @@
 */
 
 include_once 'Action.php';
-include_once("includes/common.inc.php");
-include_once("includes/Paginado.class.php");
-require_once("mer/SecurityActionPeer.php");
-require_once("mer/GroupPeer.php");
+include_once("common.inc.php");
+include_once("Paginado.class.php");
+require_once("SecurityActionPeer.php");
+require_once("GroupPeer.php");
 
 /**
 * Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
