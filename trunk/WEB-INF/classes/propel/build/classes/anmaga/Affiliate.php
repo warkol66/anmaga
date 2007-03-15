@@ -1,6 +1,6 @@
 <?php
 
-require_once 'mer/om/BaseAffiliate.php';
+require_once 'om/BaseAffiliate.php';
 
 
 /**

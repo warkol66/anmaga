@@ -1,6 +1,6 @@
 <?php
 
-require_once 'mer/om/BaseUserByAffiliate.php';
+require_once 'om/BaseUserByAffiliate.php';
 
 
 /**

@@ -1,10 +1,10 @@
 <?php
 
   // include base peer class
-  require_once 'mer/om/BaseAffiliatePeer.php';
+  require_once 'om/BaseAffiliatePeer.php';
   
   // include object class
-  include_once 'mer/Affiliate.php';
+  include_once 'Affiliate.php';
 
 
 /**

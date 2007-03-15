@@ -4,18 +4,29 @@
  <log>
   <type>file</type>
   <name>e:\temp\propel.log</name>
-  <ident>mer</ident>
+  <ident>anmaga</ident>
   <level>7</level>
  </log>
  <propel>
-  <datasources default="mer">
-   <datasource id="mer">
+  <datasources default="anmaga">
+   <datasource id="anmaga">
     <!-- the Propel adapter (usually same as phptype of connection DSN) -->
     <adapter>mysql</adapter>
     <connection>
      <phptype>mysql</phptype>
      <hostspec>localhost</hostspec>
-     <database>mer</database>
+     <database>anmaga</database>
+     <username>root</username>
+     <password>dxukal</password>
+    </connection>
+   </datasource>
+   <datasource id="mluse">
+    <!-- the Propel adapter (usually same as phptype of connection DSN) -->
+    <adapter>mysql</adapter>
+    <connection>
+     <phptype>mysql</phptype>
+     <hostspec>localhost</hostspec>
+     <database>anmaga</database>
      <username>root</username>
      <password>dxukal</password>
     </connection>
