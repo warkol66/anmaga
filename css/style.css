@@ -1,0 +1,420 @@
+@import url("cabezal.css"); /* Importar el estilo para definir el Cabezal de la página */
+@import url("custom.css");  /* Importar los estilos que cambien de color  */
+@import url("custom2.css");  /* Importar los estilos que cambien de color  */
+@import url("custom3.css");  /* Importar los estilos que vienen de mer  */
+/* traido del Template */
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+td,input,textarea,.TXTnormal {
+	font-size: .95em;
+}
+form {
+	display: inline;
+}
+.style1 {
+}
+.style2 {
+}
+.style3 {
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 1.20em;
+}
+.style4 {
+}
+.style5 {
+}
+.style6 {
+	font-weight: bold;
+	font-size: .95em;
+}
+.style7 {
+	font-weight: bold;
+	font-size: 1.00em;
+}
+.size1 {
+	font-size: 0.75em;
+}
+.size2 {
+	font-size: 0.90em;
+}
+.size3 {
+	font-size: 1.10em;
+}
+.size4 {
+	font-size: 0.80em;
+}
+.size5 {
+	font-size: 0.70em;
+}
+.size6 {
+	font-size: 0.60em;
+}
+.botonalto {
+	background: #DCDCDC;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 5px;
+	font-size: .95em;
+	font-weight: bold;
+}
+.menuCell {
+	padding-bottom: 3px;
+}
+.menuCell2 {
+	padding-bottom: 0px;
+}
+.nopaddingCell {
+	padding: 0px;
+}
+.titulos {
+	padding: 3px;
+}
+.resultado {
+	padding: 4px;
+	border: 1px solid #CC0000;
+}
+.botones {
+	padding: 6px 2px 6px 22px;
+	display: block;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.95em;
+	font-weight: bold;
+	text-decoration: none;
+	line-height: 1.30em;
+	vertical-align: middle;
+	margin: 0px;
+}
+a.botones:link {
+	text-decoration: none;
+}
+a.botones:visited {
+	text-decoration: none;
+}
+a.botones:hover {
+	text-decoration: none;
+}
+a.botones:active {
+	text-decoration: none;
+}
+.botones2 {
+	padding: 6px 2px 6px 6px;
+	display: block;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.75em;
+	font-weight: bold;
+	text-decoration: none;
+	line-height: 1.0em;
+	vertical-align: middle;
+	margin-left: 8px;
+	margin-top: 1px;
+	margin-bottom: 1px;
+}
+a.botones2:link {
+	text-decoration: none;
+}
+a.botones2:visited {
+	text-decoration: none;
+}
+a.botones2:hover {
+	text-decoration: none;
+}
+a.botones2:active {
+	text-decoration: none;
+}
+.botones3 {
+	padding: 4px;
+	display: inline;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.95em;
+	font-weight: bold;
+	text-decoration: none;
+	vertical-align: middle;
+}
+a.botones3:link {
+	text-decoration: none;
+}
+a.botones3:visited {
+	text-decoration: none;
+}
+a.botones3:hover {
+	text-decoration: none;
+}
+a.botones3:active {
+	text-decoration: none;
+}
+.botones3_desact {
+	padding: 4px;
+	display: inline;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.95em;
+	font-weight: bold;
+	text-decoration: none;
+	vertical-align: middle;
+}
+a.botones3_desact:link {
+	text-decoration: none;
+}
+a.botones3_desact:visited {
+	text-decoration: none;
+}
+a.botones3_desact:hover {
+	text-decoration: none;
+}
+a.botones3_desact:active {
+	text-decoration: none;
+}
+.botones_desac {
+	padding: 6px 2px 6px 22px;
+	display: block;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.95em;
+	font-weight: bold;
+	text-decoration: none;
+	line-height: 1.30em;
+	vertical-align: middle;
+	margin: 0px;
+}
+a.botones_desac:link {
+	text-decoration: none;
+}
+a.botones_desac:visited {
+	text-decoration: none;
+}
+a.botones_desac:hover {
+	text-decoration: none;
+}
+a.botones_desac:active {
+	text-decoration: none;
+}
+.thresultado {
+	font-weight: bold;
+	text-decoration: none;
+	padding: 2px;
+	text-align: center;
+}
+.boton {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.90em;
+	background: #DCDCDC;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin: 5px;
+}
+a.boton:active {
+	background-color: #ffffff;
+	color: #B22222;
+}
+.botonchico {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.80em;
+	background: #DCDCDC;
+}
+a.botonchico:active {
+	background-color: #ffffff;
+	color: #B22222;
+}
+.botonchico2 {
+	background: #DCDCDC;
+	font-size: 0.80em;
+	width: 3.5em;
+	height: 1.60em;
+	line-height: 0.90em;
+	vertical-align: middle;
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+}
+.botonchico3 {
+	background: #DCDCDC;
+	font-size: 0.75em;
+	width: 5.5em;
+	height: 1.60em;
+	line-height: 0.85em;
+	vertical-align: middle;
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+}
+.style4slink {
+	font-size: 0.8em;
+	text-decoration: none;
+	color: #000000;
+}
+a.style4slink {
+	text-decoration: none;
+	color: #000000;
+}
+.edit {
+	color: #007D62;
+	font-size: 0.60em;
+	text-decoration: underline;
+}
+a.edit:link{
+	color: #007D62;
+	text-decoration: underline;
+}
+a.edit:visited{
+	color: #007D62;
+	text-decoration: underline;
+}
+a.edit:hover{
+	color: #FFFFFF;
+	background-color: #44A08C;
+	text-decoration: underline;
+}
+.elim {
+	color: #CF2600;
+	font-size: 0.60em;
+	text-decoration: underline;
+}
+a.elim:link{
+	color: #CF2600;
+	text-decoration: underline;
+}
+a.elim:visited{
+	color: #CF2600;
+	text-decoration: underline;
+}
+a.elim:hover{
+	color: #FFFFFF;
+	background-color: #D54322;
+	text-decoration: underline;
+}
+.dato {
+	color: #000000;
+	font-size: .80em;
+}
+a.dato:link{
+	color: #0000CD;
+	text-decoration: underline;
+}
+a.dato:visited{	
+	color: #0000CD;
+	text-decoration: underline;
+}
+a.dato:hover{
+	color: #FFFFFF;
+	background-color: #0000CD;
+	text-decoration: underline;
+}
+.deta {
+	color: #000066;
+	font-size: 10px;
+	text-decoration: underline;
+}
+a.deta:link{
+	color: #000066;
+	text-decoration: underline;
+}
+a.deta:visited{
+	color: #000066;
+	text-decoration: underline;
+}
+a.deta:hover{
+	color: #FFFFFF;
+	background-color: #000066;
+	text-decoration: underline;
+}
+.desac {
+	color: #999999;
+	font-size: 10px;
+	text-decoration: none;
+}
+.deta2 {
+	color: #000066;
+	font-size: 1.00em;
+	text-decoration: underline;
+}
+a.deta2:link{
+	color: #000066;
+	text-decoration: underline;
+}
+a.deta2:visited{
+	color: #000066;
+	text-decoration: underline;
+}
+a.deta2:hover{
+	color: #FFFFFF;
+	background-color: #000066;
+	text-decoration: underline;
+}
+.desac2 {
+	color: #999999;
+	font-size: 1.00em;
+	text-decoration: none;
+}
+.titulocampo {
+	font-size: .95em;
+	font-weight: bold;
+	vertical-align: bottom;
+}
+.titulocampotop {
+	font-size: .95em;
+	font-weight: bold;
+	vertical-align: top;
+}
+.titulocampocenter {
+	font-size: .95em;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: bottom;
+}
+.datocenter {
+	font-size: .90em;
+	text-align: center;
+}
+.campo {
+	font-size: .90em;
+	line-height: 1.10em;
+	font-family: Arial, Helvetica, sans-serif;
+}
+textarea.campo {
+	font-family: Arial, Helvetica, sans-serif;
+/*	font-size: 1.05em;
+	line-height: 1.10em; */
+}
+.thsubform {
+	font-size: 1em;
+	font-weight: bold;
+	text-decoration: none;
+	padding: 3px;
+}
+.resultadocampo {
+	font-size: .95em;
+	font-weight: bold;
+	vertical-align: bottom;
+}
+.resultadocampocentro {
+	font-size: .95em;
+	font-weight: bold;
+	vertical-align: bottom;
+	text-align: center;
+}
+.pietabla {
+	height: 3px;
+	font-size: xx-small;
+	line-height: 3px;
+}
+.td_botones {
+	height: 25px;
+	text-align: center;
+	vertical-align: middle;
+}
+.smallButton{
+	font-size: .90em;
+	line-height: 1.20em;
+	height: 1.50em;
+}
+.tinyButton{
+	font-size: .80em;
+	line-height: 1.00em;
+	height: 1.20em;
+}
+.negative{
+	color: Red;
+}

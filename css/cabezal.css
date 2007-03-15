@@ -1,0 +1,6 @@
+/* Estilo Cabezal VAS*/
+.cabezal {
+	background-image: url(../images/cabezal.jpg);
+	background-repeat: no-repeat;
+	height: 78px;
+}
