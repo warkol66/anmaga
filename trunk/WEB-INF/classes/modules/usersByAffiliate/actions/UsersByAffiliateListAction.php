@@ -1,8 +1,8 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("mer/UserByAffiliatePeer.php");
-require_once("mer/AffiliatePeer.php");
+require_once("UserByAffiliatePeer.php");
+require_once("AffiliatePeer.php");
 
 class UsersByAffiliateListAction extends BaseAction {
 
@@ -45,30 +45,30 @@ class UsersByAffiliateListAction extends BaseAction {
 
 		$module = "UsersByAffiliate";
 		$section = "";
-		
+
     $smarty->assign("module",$module);
     $smarty->assign("section",$section);
 
-	$usersPeer= new userByAffiliatePeer();
+		$usersPeer = new userByAffiliatePeer();
 
+		//Si esta logueado un usuario comun
+		if (!empty($_SESSION["login_user"])) {
+			$affiliateId = $_GET["affiliateId"];
+			if(!empty($affiliateId))
+				$users = $usersPeer->getUsersByAffiliate($affiliateId);
+    	else
+				$users = $usersPeer->getAll();
+			$affiliates = AffiliatePeer::getAll();
+			$smarty->assign("affiliates",$affiliates);
+		}
+		else {
+		  $affiliateId = $_SESSION["login_user_affiliate"]->getAffiliateId();
+			$users = $usersPeer->getUsersByAffiliate($affiliateId);
+		}
 
-	if(isset($_POST["affiliateFilter"])){
-		$affiliateId=$_POST["affiliateFilter"];
-		$users=$usersPeer->getUsersByAffiliate($affiliateId);
-	}
-    elseif($_POST["affiliateFilter"] == -1){
-		$users=$usersPeer->getAll();
-	}
-	else{
-		$users=$usersPeer->getUsersByAffiliate($_SESSION["login_user_affiliate"]->getAffiliateId());
-	}
-
-	$smarty->assign("users",$users);
-	$smarty->assign("affId",$_SESSION["login_user_affiliate"]->getAffiliateId() );
-	
-	//traigo los afiliados para cuando sea el supervisor
-	$affiliates = AffiliatePeer::getAll();
-	$smarty->assign("affiliates",$affiliates);
+		$smarty->assign("users",$users);
+		$smarty->assign("affId",$affiliateId);
+		$smarty->assign("message",$_GET["message"]);
 
 		return $mapping->findForwardConfig('success');
 	}

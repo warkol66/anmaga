@@ -86,7 +86,7 @@ CREATE TABLE `affiliate`(
     `name` VARCHAR(255) NOT NULL  COMMENT 'nombre afiliado',
     PRIMARY KEY(`id`),
     CONSTRAINT `affiliate_ibfk_1` FOREIGN KEY (`id`) REFERENCES `affiliateInfo` (`affiliateId`))
-Type=MyISAM COMMENT='Usuarios afiliados';
+Type=MyISAM COMMENT='Afiliados';
 # -----------------------------------------------------------------------
 # affiliateInfo# -----------------------------------------------------------------------
 DROP TABLE IF EXISTS `affiliateInfo`;
@@ -102,10 +102,10 @@ CREATE TABLE `affiliateInfo`(
     CONSTRAINT `affiliateInfo_ibfk_1` FOREIGN KEY (`affiliateId`) REFERENCES `affiliate` (`id`))
 Type=MyISAM COMMENT='Informacion del afiliado';
 # -----------------------------------------------------------------------
-# users_userByAffiliate# -----------------------------------------------------------------------
-DROP TABLE IF EXISTS `users_userByAffiliate`;
+# usersByAffiliate_user# -----------------------------------------------------------------------
+DROP TABLE IF EXISTS `usersByAffiliate_user`;
 
-CREATE TABLE `users_userByAffiliate`(
+CREATE TABLE `usersByAffiliate_user`(
     `id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'User Id',
     `affiliateId` INTEGER NOT NULL  COMMENT 'Id afiliado',
     `username` VARCHAR(255) NOT NULL  COMMENT 'username',
@@ -115,11 +115,61 @@ CREATE TABLE `users_userByAffiliate`(
     `updated` DATETIME NOT NULL  COMMENT 'Last update date',
     `levelId` INTEGER  COMMENT 'User Level',
     PRIMARY KEY(`id`),
-    CONSTRAINT `users_userByAffiliate_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users_userInfo` (`userId`),
-    CONSTRAINT `users_userByAffiliate_ibfk_2` FOREIGN KEY (`levelId`) REFERENCES `users_level` (`id`),
-    CONSTRAINT `users_userByAffiliate_ibfk_3` FOREIGN KEY (`affiliateId`) REFERENCES `affiliate` (`id`),
-    UNIQUE KEY `users_userByAffiliate_U_1` (`username`))
+    CONSTRAINT `usersByAffiliate_user_ibfk_1` FOREIGN KEY (`id`) REFERENCES `usersByAffiliate_userInfo` (`userId`),
+    CONSTRAINT `usersByAffiliate_user_ibfk_2` FOREIGN KEY (`levelId`) REFERENCES `usersByAffiliate_level` (`id`),
+    CONSTRAINT `usersByAffiliate_user_ibfk_3` FOREIGN KEY (`affiliateId`) REFERENCES `affiliate` (`id`),
+    UNIQUE KEY `usersByAffiliate_user_U_1` (`username`))
 Type=MyISAM COMMENT='Usuarios de afiliado';
+# -----------------------------------------------------------------------
+# usersByAffiliate_userInfo# -----------------------------------------------------------------------
+DROP TABLE IF EXISTS `usersByAffiliate_userInfo`;
+
+CREATE TABLE `usersByAffiliate_userInfo`(
+    `userId` INTEGER NOT NULL  COMMENT 'User Id',
+    `name` VARCHAR(255)  COMMENT 'name',
+    `surname` VARCHAR(255)  COMMENT 'surname',
+    PRIMARY KEY(`userId`),
+    CONSTRAINT `usersByAffiliate_userInfo_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `usersByAffiliate_user` (`id`))
+Type=MyISAM COMMENT='Information about users by affiliates';
+# -----------------------------------------------------------------------
+# usersByAffiliate_level# -----------------------------------------------------------------------
+DROP TABLE IF EXISTS `usersByAffiliate_level`;
+
+CREATE TABLE `usersByAffiliate_level`(
+    `id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Level ID',
+    `name` VARCHAR(255) NOT NULL  COMMENT 'Level Name',
+    `bitLevel` INTEGER  COMMENT 'Bit del nivel',
+    PRIMARY KEY(`id`),
+    UNIQUE KEY `usersByAffiliate_level_U_1` (`name`))
+Type=MyISAM COMMENT='Levels';
+# -----------------------------------------------------------------------
+# usersByAffiliate_userGroup# -----------------------------------------------------------------------
+DROP TABLE IF EXISTS `usersByAffiliate_userGroup`;
+
+CREATE TABLE `usersByAffiliate_userGroup`(
+    `userId` INTEGER NOT NULL  COMMENT 'Group ID',
+    `groupId` INTEGER NOT NULL  COMMENT 'Group ID',
+    PRIMARY KEY(`userId`,`groupId`),
+    CONSTRAINT `usersByAffiliate_userGroup_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `usersByAffiliate_user` (`id`),
+    CONSTRAINT `usersByAffiliate_userGroup_ibfk_2` FOREIGN KEY (`groupId`) REFERENCES `usersByAffiliate_group` (`id`))
+Type=MyISAM COMMENT='Users / Groups';
+# -----------------------------------------------------------------------
+# usersByAffiliate_group# -----------------------------------------------------------------------
+DROP TABLE IF EXISTS `usersByAffiliate_group`;
+
+CREATE TABLE `usersByAffiliate_group`(
+    `id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Group ID',
+    `name` VARCHAR(255) NOT NULL  COMMENT 'Group Name',
+    `created` DATETIME NOT NULL  COMMENT 'Creation date for',
+    `updated` DATETIME NOT NULL  COMMENT 'Last update date',
+    `bitLevel` INTEGER  COMMENT 'Nivel',
+    PRIMARY KEY(`id`),
+    UNIQUE KEY `usersByAffiliate_group_U_1` (`name`))
+Type=MyISAM COMMENT='Groups';
+  
+  
+  
+  
   
   
   

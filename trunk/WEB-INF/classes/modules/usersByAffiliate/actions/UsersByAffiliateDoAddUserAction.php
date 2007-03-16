@@ -11,7 +11,7 @@
 */
 
 require_once 'BaseAction.php';
-require_once("mer/UserByAffiliatePeer.php");
+require_once("UserByAffiliatePeer.php");
 
 
 /**
@@ -76,17 +76,25 @@ class UsersByAffiliateDoAddUserAction extends BaseAction {
 
 		$usersPeer= new UserByAffiliatePeer();
 
+		if ( !empty($_SESSION["login_user"]) )
+			$affiliateId = $_POST["affiliateId"];
+		else
+			$affiliateId = $_SESSION["login_user_affiliate"]->getAffiliateId();
 
 		if($_POST["password"]!=$_POST["passwordCompare"]){
-			header("Location: Main.php?do=usersByAffiliateAddUser&errormessage=wrongPasswordComparison&id=".$_POST["affiliateId"]);
+			header("Location: Main.php?do=usersByAffiliateAddUser&errormessage=wrongPasswordComparison&id=".$affiliateId);
 			exit;
 		}
 
-		$user=$usersPeer->insert($_POST["affiliateId"],$_POST["username"],$_POST["password"],$_POST["levelId"]);
+		$user = $usersPeer->insert($affiliateId,$_POST["username"],$_POST["password"],$_POST["levelId"]);
 
-
-		return $mapping->findForwardConfig('success');
-
+		$myRedirectConfig = $mapping->findForwardConfig('success');
+		$myRedirectPath = $myRedirectConfig->getpath();
+    $myReqQueryString = "&affiliateId=".$affiliateId;
+    $myReqQueryString = htmlentities(urlencode($myReqQueryString));
+    $myRedirectPath .= $myReqQueryString;
+		$fc = new ForwardConfig($myRedirectPath, True);
+		return $fc;
 	}
 
 }
