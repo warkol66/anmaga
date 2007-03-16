@@ -3,7 +3,7 @@ require_once 'propel/map/MapBuilder.php';
 include_once 'creole/CreoleTypes.php';
 
 /**
- * This class adds structure of 'users_userInfo' table to 'anmaga' DatabaseMap object.
+ * This class adds structure of 'usersByAffiliate_group' table to 'anmaga' DatabaseMap object.
  *
  * These statically-built map classes are used by Propel to do runtime db structure discovery.
  * For example, the createSelectSql() method checks the type of a given column used in an 
@@ -18,12 +18,12 @@ include_once 'creole/CreoleTypes.php';
  * @see DatabaseMap
  * @package anmaga.map
  */
-class UserInfoMapBuilder implements MapBuilder {
+class UsersByAffiliateGroupMapBuilder implements MapBuilder {
 
     /**
      * The name of this class
      */
-    const CLASS_NAME = "anmaga.map.UserInfoMapBuilder";
+    const CLASS_NAME = "anmaga.map.UsersByAffiliateGroupMapBuilder";
 	
     /**
      * The database map.
@@ -61,19 +61,21 @@ class UserInfoMapBuilder implements MapBuilder {
     {
 		$this->dbMap = Propel::getDatabaseMap("anmaga");
 		
-		$tMap = $this->dbMap->addTable("users_userInfo");
-		$tMap->setPhpName("UserInfo");
+		$tMap = $this->dbMap->addTable("usersByAffiliate_group");
+		$tMap->setPhpName("UsersByAffiliateGroup");
 		
          
-		$tMap->setUseIdGenerator(false);
+		$tMap->setUseIdGenerator(true);
 		 
 						
 		 
 		
 		// Add columns to map
-		$tMap->addForeignPrimaryKey("USERID", "Userid", "int" , CreoleTypes::INTEGER, "users_user", "ID", true);
-		$tMap->addColumn("NAME", "Name", "string", CreoleTypes::VARCHAR, false, 255);
-		$tMap->addColumn("SURNAME", "Surname", "string", CreoleTypes::VARCHAR, false, 255);
+		$tMap->addPrimaryKey("ID", "Id", "int", CreoleTypes::INTEGER, true);
+		$tMap->addColumn("NAME", "Name", "string", CreoleTypes::VARCHAR, true, 255);
+		$tMap->addColumn("CREATED", "Created", "int", CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn("UPDATED", "Updated", "int", CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn("BITLEVEL", "Bitlevel", "int", CreoleTypes::INTEGER, false, null);
 				
     }
 }

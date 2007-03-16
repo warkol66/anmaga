@@ -9,10 +9,10 @@ require_once 'propel/om/Persistent.php';
 
 include_once 'propel/util/Criteria.php';
 
-include_once 'anmaga/LevelPeer.php';
+include_once 'anmaga/UsersByAffiliateLevelPeer.php';
 
 /**
- * Base class that represents a row from the 'users_level' table.
+ * Base class that represents a row from the 'usersByAffiliate_level' table.
  *
  * Levels 
  *
@@ -21,17 +21,17 @@ include_once 'anmaga/LevelPeer.php';
  * [03/16/07 16:42:35]
  *
  * You should not use this class directly.  It should not even be
- * extended; all references should be to Level class. 
+ * extended; all references should be to UsersByAffiliateLevel class. 
  * 
  * @package anmaga 
  */
-abstract class BaseLevel extends BaseObject implements Persistent {
+abstract class BaseUsersByAffiliateLevel extends BaseObject implements Persistent {
 	
 	/** 
 	 * The Peer class.
 	 * Instance provides a convenient way of calling static methods on a class
 	 * that calling code may not be able to identify.
-	 * @var LevelPeer
+	 * @var UsersByAffiliateLevelPeer
 	 */
 	protected static $peer;
 
@@ -75,13 +75,13 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 	{
 		if ($this->id !== $v) {
 			$this->id = $v;
-			$this->modifiedColumns[] = LevelPeer::ID;
+			$this->modifiedColumns[] = UsersByAffiliateLevelPeer::ID;
 		}
 			
-		  // update associated User		  
-		  if ($this->collUsers !== null) {
-			  for ($i=0,$size=count($this->collUsers); $i < $size; $i++) {
-				  $this->collUsers[$i]->setLevelid($v);
+		  // update associated UserByAffiliate		  
+		  if ($this->collUserByAffiliates !== null) {
+			  for ($i=0,$size=count($this->collUserByAffiliates); $i < $size; $i++) {
+				  $this->collUserByAffiliates[$i]->setLevelid($v);
 			  }
 		  }
 			  		
@@ -110,7 +110,7 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 	{
 		if ($this->name !== $v) {
 			$this->name = $v;
-			$this->modifiedColumns[] = LevelPeer::NAME;
+			$this->modifiedColumns[] = UsersByAffiliateLevelPeer::NAME;
 		}
 				
 	}
@@ -138,7 +138,7 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 	{
 		if ($this->bitlevel !== $v) {
 			$this->bitlevel = $v;
-			$this->modifiedColumns[] = LevelPeer::BITLEVEL;
+			$this->modifiedColumns[] = UsersByAffiliateLevelPeer::BITLEVEL;
 		}
 				
 	}
@@ -169,7 +169,7 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 			$this->setNew(false);
 		
 		} catch (Exception $e) {
-			throw new PropelException("Error populating Level object", $e);
+			throw new PropelException("Error populating UsersByAffiliateLevel object", $e);
 		}		
 	
 	}
@@ -184,8 +184,8 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 	 */
 	public function buildPkeyCriteria()
 	{		
-		$criteria = new Criteria(LevelPeer::DATABASE_NAME);
-		$criteria->add(LevelPeer::ID, $this->id);
+		$criteria = new Criteria(UsersByAffiliateLevelPeer::DATABASE_NAME);
+		$criteria->add(UsersByAffiliateLevelPeer::ID, $this->id);
 		return $criteria;			
 	}
 	
@@ -196,60 +196,60 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 	 */
 	public function buildCriteria()
 	{		
-		$criteria = new Criteria(LevelPeer::DATABASE_NAME);
-		if ($this->isColumnModified(LevelPeer::ID)) $criteria->add(LevelPeer::ID, $this->id);
-		if ($this->isColumnModified(LevelPeer::NAME)) $criteria->add(LevelPeer::NAME, $this->name);
-		if ($this->isColumnModified(LevelPeer::BITLEVEL)) $criteria->add(LevelPeer::BITLEVEL, $this->bitlevel);
+		$criteria = new Criteria(UsersByAffiliateLevelPeer::DATABASE_NAME);
+		if ($this->isColumnModified(UsersByAffiliateLevelPeer::ID)) $criteria->add(UsersByAffiliateLevelPeer::ID, $this->id);
+		if ($this->isColumnModified(UsersByAffiliateLevelPeer::NAME)) $criteria->add(UsersByAffiliateLevelPeer::NAME, $this->name);
+		if ($this->isColumnModified(UsersByAffiliateLevelPeer::BITLEVEL)) $criteria->add(UsersByAffiliateLevelPeer::BITLEVEL, $this->bitlevel);
 		return $criteria;			
 	}
 	
 	
 
 	/**
-	 * Collection to store aggregation of collUsers	  
+	 * Collection to store aggregation of collUserByAffiliates	  
 	 * @var array
 	 */
-	protected $collUsers; 
+	protected $collUserByAffiliates; 
 
 	/**
-	 * Temporary storage of collUsers to save a possible db hit in
+	 * Temporary storage of collUserByAffiliates to save a possible db hit in
 	 * the event objects are add to the collection, but the
 	 * complete collection is never requested.
 	 * @return void
 	 */
-	public function initUsers()
+	public function initUserByAffiliates()
 	{
-		if ($this->collUsers === null) {
-			$this->collUsers = array();
+		if ($this->collUserByAffiliates === null) {
+			$this->collUserByAffiliates = array();
 		}
 	}
 
 	/**
-	 * Method called to associate a User object to this object
-	 * through the User foreign key attribute
+	 * Method called to associate a UserByAffiliate object to this object
+	 * through the UserByAffiliate foreign key attribute
 	 *
-	 * @param User $l $className
+	 * @param UserByAffiliate $l $className
 	 * @return void
 	 * @throws PropelException
 	 */
-	public function addUser(User $l)
+	public function addUserByAffiliate(UserByAffiliate $l)
 	{
-		$this->collUsers[] = $l;
-		$l->setLevel($this);
+		$this->collUserByAffiliates[] = $l;
+		$l->setUsersByAffiliateLevel($this);
 	}
 
 	/**
-	 * The criteria used to select the current contents of collUsers.
+	 * The criteria used to select the current contents of collUserByAffiliates.
 	 * @var Criteria
 	 */
-	private $lastUsersCriteria = null;
+	private $lastUserByAffiliatesCriteria = null;
 
 	/**
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Level has previously
-	 * been saved, it will retrieve related Users from storage.
-	 * If this Level is new, it will return
+	 * Otherwise if this UsersByAffiliateLevel has previously
+	 * been saved, it will retrieve related UserByAffiliates from storage.
+	 * If this UsersByAffiliateLevel is new, it will return
 	 * an empty collection or the current collection, the criteria
 	 * is ignored on a new object.
 	 *
@@ -257,22 +257,22 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 	 * @param Criteria $criteria
 	 * @throws PropelException
 	 */
-	public function getUsers($criteria = null, $con = null)
+	public function getUserByAffiliates($criteria = null, $con = null)
 	{
 		// include the Peer class
-		include_once 'anmaga/UserPeer.php';
+		include_once 'anmaga/UserByAffiliatePeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
 				
-		if ($this->collUsers === null) {
+		if ($this->collUserByAffiliates === null) {
 			if ($this->isNew()) {
-			   $this->collUsers = array();
+			   $this->collUserByAffiliates = array();
 			} else {
 	
-				$criteria->add(UserPeer::LEVELID, $this->getId() );
+				$criteria->add(UserByAffiliatePeer::LEVELID, $this->getId() );
 
-				$this->collUsers = UserPeer::doSelect($criteria, $con);
+				$this->collUserByAffiliates = UserByAffiliatePeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -281,101 +281,143 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 				// called for.  If the criteria is the same as the last
 				// one, just return the collection.
 
-				$criteria->add(UserPeer::LEVELID, $this->getId());
+				$criteria->add(UserByAffiliatePeer::LEVELID, $this->getId());
 
-				if (!isset($this->lastUsersCriteria) || !$this->lastUsersCriteria->equals($criteria)) {
-					$this->collUsers = UserPeer::doSelect($criteria, $con);
+				if (!isset($this->lastUserByAffiliatesCriteria) || !$this->lastUserByAffiliatesCriteria->equals($criteria)) {
+					$this->collUserByAffiliates = UserByAffiliatePeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastUsersCriteria = $criteria;
+		$this->lastUserByAffiliatesCriteria = $criteria;
 
-		return $this->collUsers;
+		return $this->collUserByAffiliates;
 	}
 	
 
 	/**
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Level is new, it will return
-	 * an empty collection; or if this Level has previously
-	 * been saved, it will retrieve related Users from storage.
+	 * Otherwise if this UsersByAffiliateLevel is new, it will return
+	 * an empty collection; or if this UsersByAffiliateLevel has previously
+	 * been saved, it will retrieve related UserByAffiliates from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Level.
+	 * actually need in UsersByAffiliateLevel.
 	 */
-	public function getUsersJoinUserInfo($criteria = null, $con = null)
+	public function getUserByAffiliatesJoinUsersByAffiliateUserInfo($criteria = null, $con = null)
 	{
 		// include the Peer class
-		include_once 'anmaga/UserPeer.php';
+		include_once 'anmaga/UserByAffiliatePeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
 		
-		if ($this->collUsers === null) {
+		if ($this->collUserByAffiliates === null) {
 			if ($this->isNew()) {
-			   $this->collUsers = array();
+			   $this->collUserByAffiliates = array();
 			} else {
 	   
-				$criteria->add(UserPeer::LEVELID, $this->getId());
-				$this->collUsers = UserPeer::doSelectJoinUserInfo($criteria, $con);
+				$criteria->add(UserByAffiliatePeer::LEVELID, $this->getId());
+				$this->collUserByAffiliates = UserByAffiliatePeer::doSelectJoinUsersByAffiliateUserInfo($criteria, $con);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 	  
-			$criteria->add(UserPeer::LEVELID, $this->getId());
-			if (!isset($this->lastUsersCriteria) || !$this->lastUsersCriteria->equals($criteria)) {
-				$this->collUsers = UserPeer::doSelectJoinUserInfo($criteria, $con);
+			$criteria->add(UserByAffiliatePeer::LEVELID, $this->getId());
+			if (!isset($this->lastUserByAffiliatesCriteria) || !$this->lastUserByAffiliatesCriteria->equals($criteria)) {
+				$this->collUserByAffiliates = UserByAffiliatePeer::doSelectJoinUsersByAffiliateUserInfo($criteria, $con);
 			}
 		}
-		$this->lastUsersCriteria = $criteria;
+		$this->lastUserByAffiliatesCriteria = $criteria;
 
-		return $this->collUsers;
+		return $this->collUserByAffiliates;
 	}
 
 	/**
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Level is new, it will return
-	 * an empty collection; or if this Level has previously
-	 * been saved, it will retrieve related Users from storage.
+	 * Otherwise if this UsersByAffiliateLevel is new, it will return
+	 * an empty collection; or if this UsersByAffiliateLevel has previously
+	 * been saved, it will retrieve related UserByAffiliates from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Level.
+	 * actually need in UsersByAffiliateLevel.
 	 */
-	public function getUsersJoinLevel($criteria = null, $con = null)
+	public function getUserByAffiliatesJoinUsersByAffiliateLevel($criteria = null, $con = null)
 	{
 		// include the Peer class
-		include_once 'anmaga/UserPeer.php';
+		include_once 'anmaga/UserByAffiliatePeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
 		
-		if ($this->collUsers === null) {
+		if ($this->collUserByAffiliates === null) {
 			if ($this->isNew()) {
-			   $this->collUsers = array();
+			   $this->collUserByAffiliates = array();
 			} else {
 	   
-				$criteria->add(UserPeer::LEVELID, $this->getId());
-				$this->collUsers = UserPeer::doSelectJoinLevel($criteria, $con);
+				$criteria->add(UserByAffiliatePeer::LEVELID, $this->getId());
+				$this->collUserByAffiliates = UserByAffiliatePeer::doSelectJoinUsersByAffiliateLevel($criteria, $con);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 	  
-			$criteria->add(UserPeer::LEVELID, $this->getId());
-			if (!isset($this->lastUsersCriteria) || !$this->lastUsersCriteria->equals($criteria)) {
-				$this->collUsers = UserPeer::doSelectJoinLevel($criteria, $con);
+			$criteria->add(UserByAffiliatePeer::LEVELID, $this->getId());
+			if (!isset($this->lastUserByAffiliatesCriteria) || !$this->lastUserByAffiliatesCriteria->equals($criteria)) {
+				$this->collUserByAffiliates = UserByAffiliatePeer::doSelectJoinUsersByAffiliateLevel($criteria, $con);
 			}
 		}
-		$this->lastUsersCriteria = $criteria;
+		$this->lastUserByAffiliatesCriteria = $criteria;
 
-		return $this->collUsers;
+		return $this->collUserByAffiliates;
+	}
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this UsersByAffiliateLevel is new, it will return
+	 * an empty collection; or if this UsersByAffiliateLevel has previously
+	 * been saved, it will retrieve related UserByAffiliates from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in UsersByAffiliateLevel.
+	 */
+	public function getUserByAffiliatesJoinAffiliate($criteria = null, $con = null)
+	{
+		// include the Peer class
+		include_once 'anmaga/UserByAffiliatePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		
+		if ($this->collUserByAffiliates === null) {
+			if ($this->isNew()) {
+			   $this->collUserByAffiliates = array();
+			} else {
+	   
+				$criteria->add(UserByAffiliatePeer::LEVELID, $this->getId());
+				$this->collUserByAffiliates = UserByAffiliatePeer::doSelectJoinAffiliate($criteria, $con);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+	  
+			$criteria->add(UserByAffiliatePeer::LEVELID, $this->getId());
+			if (!isset($this->lastUserByAffiliatesCriteria) || !$this->lastUserByAffiliatesCriteria->equals($criteria)) {
+				$this->collUserByAffiliates = UserByAffiliatePeer::doSelectJoinAffiliate($criteria, $con);
+			}
+		}
+		$this->lastUserByAffiliatesCriteria = $criteria;
+
+		return $this->collUserByAffiliates;
 	}
 
 
@@ -397,11 +439,11 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 		}
 		
 		if ($con === null)
-			$con = Propel::getConnection(LevelPeer::DATABASE_NAME);
+			$con = Propel::getConnection(UsersByAffiliateLevelPeer::DATABASE_NAME);
 
 		try {
 			$con->begin();
-			LevelPeer::doDelete($this, $con);
+			UsersByAffiliateLevelPeer::doDelete($this, $con);
 			$this->setDeleted(true);
 			$con->commit();
 		} catch (PropelException $e) {
@@ -434,7 +476,7 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 		}
 		
 		if ($con === null)
-			$con = Propel::getConnection(LevelPeer::DATABASE_NAME);
+			$con = Propel::getConnection(UsersByAffiliateLevelPeer::DATABASE_NAME);
 
 		try {
 			$con->begin();
@@ -463,17 +505,17 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = LevelPeer::doInsert($this, $con);
+					$pk = UsersByAffiliateLevelPeer::doInsert($this, $con);
 					$this->setId( $pk );  //[IMV] update autoincrement primary key
 					$this->setNew(false);
 				} else {
-					LevelPeer::doUpdate($this, $con);
+					UsersByAffiliateLevelPeer::doUpdate($this, $con);
 				}			
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
-			if ($this->collUsers !== null) {
-				for ($i=0,$size=count($this->collUsers); $i < $size; $i++) {
-					$this->collUsers[$i]->save($con);
+			if ($this->collUserByAffiliates !== null) {
+				for ($i=0,$size=count($this->collUserByAffiliates); $i < $size; $i++) {
+					$this->collUserByAffiliates[$i]->save($con);
 				}
 			  }
 
@@ -497,7 +539,7 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 	{
 	  if ($columns)
 	  {
-		return LevelPeer::doValidate($this, $columns);
+		return UsersByAffiliateLevelPeer::doValidate($this, $columns);
 	  }
 
 		return $this->doValidate();
@@ -527,13 +569,13 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 	  
 			$failureMap = array();	  
 
-			if (($retval = LevelPeer::doValidate($this)) !== true) {
+			if (($retval = UsersByAffiliateLevelPeer::doValidate($this)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 	  
-			if ($this->collUsers !== null) {
-				for ($i=0,$size=count($this->collUsers); $i < $size; $i++) {
-					if (($retval = $this->collUsers[$i]->validate()) !== true) {
+			if ($this->collUserByAffiliates !== null) {
+				for ($i=0,$size=count($this->collUserByAffiliates); $i < $size; $i++) {
+					if (($retval = $this->collUserByAffiliates[$i]->validate()) !== true) {
 						$failureMap = array_merge($failureMap, $retval);
 					}
 				}
@@ -581,12 +623,12 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 	 *
 	 * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
 	 *  
-	 * @return Level Clone of current object.
+	 * @return UsersByAffiliateLevel Clone of current object.
 	 * @throws PropelException
 	 */
 	public function copy($deepCopy = false) 
 	{
-		$copyObj = new Level();
+		$copyObj = new UsersByAffiliateLevel();
 		$copyObj->setName($this->name);
 		$copyObj->setBitlevel($this->bitlevel);
 
@@ -595,8 +637,8 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
-			foreach($this->getUsers() as $relObj) {
-				$copyObj->addUser($relObj->copy());
+			foreach($this->getUserByAffiliates() as $relObj) {
+				$copyObj->addUserByAffiliate($relObj->copy());
 			}
 		} // if ($deepCopy)
 		
@@ -613,12 +655,12 @@ abstract class BaseLevel extends BaseObject implements Persistent {
 	 * are not to have any instance attributes, this method returns the
 	 * same instance for all member of this class. The method could therefore
 	 * be static, but this would prevent one from overriding the behavior.
-	 * @return LevelPeer
+	 * @return UsersByAffiliateLevelPeer
 	 */
 	public function getPeer()
 	{
 		if (self::$peer === null) {
-			self::$peer = new LevelPeer();
+			self::$peer = new UsersByAffiliateLevelPeer();
 		}
 		return self::$peer;
 	}

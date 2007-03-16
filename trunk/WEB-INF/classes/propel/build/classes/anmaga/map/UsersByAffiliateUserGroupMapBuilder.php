@@ -3,7 +3,7 @@ require_once 'propel/map/MapBuilder.php';
 include_once 'creole/CreoleTypes.php';
 
 /**
- * This class adds structure of 'users_userInfo' table to 'anmaga' DatabaseMap object.
+ * This class adds structure of 'usersByAffiliate_userGroup' table to 'anmaga' DatabaseMap object.
  *
  * These statically-built map classes are used by Propel to do runtime db structure discovery.
  * For example, the createSelectSql() method checks the type of a given column used in an 
@@ -18,12 +18,12 @@ include_once 'creole/CreoleTypes.php';
  * @see DatabaseMap
  * @package anmaga.map
  */
-class UserInfoMapBuilder implements MapBuilder {
+class UsersByAffiliateUserGroupMapBuilder implements MapBuilder {
 
     /**
      * The name of this class
      */
-    const CLASS_NAME = "anmaga.map.UserInfoMapBuilder";
+    const CLASS_NAME = "anmaga.map.UsersByAffiliateUserGroupMapBuilder";
 	
     /**
      * The database map.
@@ -61,8 +61,8 @@ class UserInfoMapBuilder implements MapBuilder {
     {
 		$this->dbMap = Propel::getDatabaseMap("anmaga");
 		
-		$tMap = $this->dbMap->addTable("users_userInfo");
-		$tMap->setPhpName("UserInfo");
+		$tMap = $this->dbMap->addTable("usersByAffiliate_userGroup");
+		$tMap->setPhpName("UsersByAffiliateUserGroup");
 		
          
 		$tMap->setUseIdGenerator(false);
@@ -71,9 +71,8 @@ class UserInfoMapBuilder implements MapBuilder {
 		 
 		
 		// Add columns to map
-		$tMap->addForeignPrimaryKey("USERID", "Userid", "int" , CreoleTypes::INTEGER, "users_user", "ID", true);
-		$tMap->addColumn("NAME", "Name", "string", CreoleTypes::VARCHAR, false, 255);
-		$tMap->addColumn("SURNAME", "Surname", "string", CreoleTypes::VARCHAR, false, 255);
+		$tMap->addForeignPrimaryKey("USERID", "Userid", "int" , CreoleTypes::INTEGER, "usersByAffiliate_user", "ID", true);
+		$tMap->addForeignPrimaryKey("GROUPID", "Groupid", "int" , CreoleTypes::INTEGER, "usersByAffiliate_group", "ID", true);
 				
     }
 }

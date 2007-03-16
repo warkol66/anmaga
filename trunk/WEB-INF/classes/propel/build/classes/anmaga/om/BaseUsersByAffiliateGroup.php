@@ -9,10 +9,10 @@ require_once 'propel/om/Persistent.php';
 
 include_once 'propel/util/Criteria.php';
 
-include_once 'anmaga/GroupPeer.php';
+include_once 'anmaga/UsersByAffiliateGroupPeer.php';
 
 /**
- * Base class that represents a row from the 'users_group' table.
+ * Base class that represents a row from the 'usersByAffiliate_group' table.
  *
  * Groups 
  *
@@ -21,17 +21,17 @@ include_once 'anmaga/GroupPeer.php';
  * [03/16/07 16:42:35]
  *
  * You should not use this class directly.  It should not even be
- * extended; all references should be to Group class. 
+ * extended; all references should be to UsersByAffiliateGroup class. 
  * 
  * @package anmaga 
  */
-abstract class BaseGroup extends BaseObject implements Persistent {
+abstract class BaseUsersByAffiliateGroup extends BaseObject implements Persistent {
 	
 	/** 
 	 * The Peer class.
 	 * Instance provides a convenient way of calling static methods on a class
 	 * that calling code may not be able to identify.
-	 * @var GroupPeer
+	 * @var UsersByAffiliateGroupPeer
 	 */
 	protected static $peer;
 
@@ -87,13 +87,13 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 	{
 		if ($this->id !== $v) {
 			$this->id = $v;
-			$this->modifiedColumns[] = GroupPeer::ID;
+			$this->modifiedColumns[] = UsersByAffiliateGroupPeer::ID;
 		}
 			
-		  // update associated UserGroup		  
-		  if ($this->collUserGroups !== null) {
-			  for ($i=0,$size=count($this->collUserGroups); $i < $size; $i++) {
-				  $this->collUserGroups[$i]->setGroupid($v);
+		  // update associated UsersByAffiliateUserGroup		  
+		  if ($this->collUsersByAffiliateUserGroups !== null) {
+			  for ($i=0,$size=count($this->collUsersByAffiliateUserGroups); $i < $size; $i++) {
+				  $this->collUsersByAffiliateUserGroups[$i]->setGroupid($v);
 			  }
 		  }
 			  		
@@ -122,7 +122,7 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 	{
 		if ($this->name !== $v) {
 			$this->name = $v;
-			$this->modifiedColumns[] = GroupPeer::NAME;
+			$this->modifiedColumns[] = UsersByAffiliateGroupPeer::NAME;
 		}
 				
 	}
@@ -178,7 +178,7 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 		}
 		if ($this->created !== $ts) {
 			$this->created = $ts;
-			$this->modifiedColumns[] = GroupPeer::CREATED;
+			$this->modifiedColumns[] = UsersByAffiliateGroupPeer::CREATED;
 		}
 		
 	}
@@ -234,7 +234,7 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 		}
 		if ($this->updated !== $ts) {
 			$this->updated = $ts;
-			$this->modifiedColumns[] = GroupPeer::UPDATED;
+			$this->modifiedColumns[] = UsersByAffiliateGroupPeer::UPDATED;
 		}
 		
 	}
@@ -262,7 +262,7 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 	{
 		if ($this->bitlevel !== $v) {
 			$this->bitlevel = $v;
-			$this->modifiedColumns[] = GroupPeer::BITLEVEL;
+			$this->modifiedColumns[] = UsersByAffiliateGroupPeer::BITLEVEL;
 		}
 				
 	}
@@ -295,7 +295,7 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 			$this->setNew(false);
 		
 		} catch (Exception $e) {
-			throw new PropelException("Error populating Group object", $e);
+			throw new PropelException("Error populating UsersByAffiliateGroup object", $e);
 		}		
 	
 	}
@@ -310,8 +310,8 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 	 */
 	public function buildPkeyCriteria()
 	{		
-		$criteria = new Criteria(GroupPeer::DATABASE_NAME);
-		$criteria->add(GroupPeer::ID, $this->id);
+		$criteria = new Criteria(UsersByAffiliateGroupPeer::DATABASE_NAME);
+		$criteria->add(UsersByAffiliateGroupPeer::ID, $this->id);
 		return $criteria;			
 	}
 	
@@ -322,62 +322,62 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 	 */
 	public function buildCriteria()
 	{		
-		$criteria = new Criteria(GroupPeer::DATABASE_NAME);
-		if ($this->isColumnModified(GroupPeer::ID)) $criteria->add(GroupPeer::ID, $this->id);
-		if ($this->isColumnModified(GroupPeer::NAME)) $criteria->add(GroupPeer::NAME, $this->name);
-		if ($this->isColumnModified(GroupPeer::CREATED)) $criteria->add(GroupPeer::CREATED, $this->created);
-		if ($this->isColumnModified(GroupPeer::UPDATED)) $criteria->add(GroupPeer::UPDATED, $this->updated);
-		if ($this->isColumnModified(GroupPeer::BITLEVEL)) $criteria->add(GroupPeer::BITLEVEL, $this->bitlevel);
+		$criteria = new Criteria(UsersByAffiliateGroupPeer::DATABASE_NAME);
+		if ($this->isColumnModified(UsersByAffiliateGroupPeer::ID)) $criteria->add(UsersByAffiliateGroupPeer::ID, $this->id);
+		if ($this->isColumnModified(UsersByAffiliateGroupPeer::NAME)) $criteria->add(UsersByAffiliateGroupPeer::NAME, $this->name);
+		if ($this->isColumnModified(UsersByAffiliateGroupPeer::CREATED)) $criteria->add(UsersByAffiliateGroupPeer::CREATED, $this->created);
+		if ($this->isColumnModified(UsersByAffiliateGroupPeer::UPDATED)) $criteria->add(UsersByAffiliateGroupPeer::UPDATED, $this->updated);
+		if ($this->isColumnModified(UsersByAffiliateGroupPeer::BITLEVEL)) $criteria->add(UsersByAffiliateGroupPeer::BITLEVEL, $this->bitlevel);
 		return $criteria;			
 	}
 	
 	
 
 	/**
-	 * Collection to store aggregation of collUserGroups	  
+	 * Collection to store aggregation of collUsersByAffiliateUserGroups	  
 	 * @var array
 	 */
-	protected $collUserGroups; 
+	protected $collUsersByAffiliateUserGroups; 
 
 	/**
-	 * Temporary storage of collUserGroups to save a possible db hit in
+	 * Temporary storage of collUsersByAffiliateUserGroups to save a possible db hit in
 	 * the event objects are add to the collection, but the
 	 * complete collection is never requested.
 	 * @return void
 	 */
-	public function initUserGroups()
+	public function initUsersByAffiliateUserGroups()
 	{
-		if ($this->collUserGroups === null) {
-			$this->collUserGroups = array();
+		if ($this->collUsersByAffiliateUserGroups === null) {
+			$this->collUsersByAffiliateUserGroups = array();
 		}
 	}
 
 	/**
-	 * Method called to associate a UserGroup object to this object
-	 * through the UserGroup foreign key attribute
+	 * Method called to associate a UsersByAffiliateUserGroup object to this object
+	 * through the UsersByAffiliateUserGroup foreign key attribute
 	 *
-	 * @param UserGroup $l $className
+	 * @param UsersByAffiliateUserGroup $l $className
 	 * @return void
 	 * @throws PropelException
 	 */
-	public function addUserGroup(UserGroup $l)
+	public function addUsersByAffiliateUserGroup(UsersByAffiliateUserGroup $l)
 	{
-		$this->collUserGroups[] = $l;
-		$l->setGroup($this);
+		$this->collUsersByAffiliateUserGroups[] = $l;
+		$l->setUsersByAffiliateGroup($this);
 	}
 
 	/**
-	 * The criteria used to select the current contents of collUserGroups.
+	 * The criteria used to select the current contents of collUsersByAffiliateUserGroups.
 	 * @var Criteria
 	 */
-	private $lastUserGroupsCriteria = null;
+	private $lastUsersByAffiliateUserGroupsCriteria = null;
 
 	/**
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Group has previously
-	 * been saved, it will retrieve related UserGroups from storage.
-	 * If this Group is new, it will return
+	 * Otherwise if this UsersByAffiliateGroup has previously
+	 * been saved, it will retrieve related UsersByAffiliateUserGroups from storage.
+	 * If this UsersByAffiliateGroup is new, it will return
 	 * an empty collection or the current collection, the criteria
 	 * is ignored on a new object.
 	 *
@@ -385,22 +385,22 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 	 * @param Criteria $criteria
 	 * @throws PropelException
 	 */
-	public function getUserGroups($criteria = null, $con = null)
+	public function getUsersByAffiliateUserGroups($criteria = null, $con = null)
 	{
 		// include the Peer class
-		include_once 'anmaga/UserGroupPeer.php';
+		include_once 'anmaga/UsersByAffiliateUserGroupPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
 				
-		if ($this->collUserGroups === null) {
+		if ($this->collUsersByAffiliateUserGroups === null) {
 			if ($this->isNew()) {
-			   $this->collUserGroups = array();
+			   $this->collUsersByAffiliateUserGroups = array();
 			} else {
 	
-				$criteria->add(UserGroupPeer::GROUPID, $this->getId() );
+				$criteria->add(UsersByAffiliateUserGroupPeer::GROUPID, $this->getId() );
 
-				$this->collUserGroups = UserGroupPeer::doSelect($criteria, $con);
+				$this->collUsersByAffiliateUserGroups = UsersByAffiliateUserGroupPeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -409,101 +409,101 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 				// called for.  If the criteria is the same as the last
 				// one, just return the collection.
 
-				$criteria->add(UserGroupPeer::GROUPID, $this->getId());
+				$criteria->add(UsersByAffiliateUserGroupPeer::GROUPID, $this->getId());
 
-				if (!isset($this->lastUserGroupsCriteria) || !$this->lastUserGroupsCriteria->equals($criteria)) {
-					$this->collUserGroups = UserGroupPeer::doSelect($criteria, $con);
+				if (!isset($this->lastUsersByAffiliateUserGroupsCriteria) || !$this->lastUsersByAffiliateUserGroupsCriteria->equals($criteria)) {
+					$this->collUsersByAffiliateUserGroups = UsersByAffiliateUserGroupPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastUserGroupsCriteria = $criteria;
+		$this->lastUsersByAffiliateUserGroupsCriteria = $criteria;
 
-		return $this->collUserGroups;
+		return $this->collUsersByAffiliateUserGroups;
 	}
 	
 
 	/**
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Group is new, it will return
-	 * an empty collection; or if this Group has previously
-	 * been saved, it will retrieve related UserGroups from storage.
+	 * Otherwise if this UsersByAffiliateGroup is new, it will return
+	 * an empty collection; or if this UsersByAffiliateGroup has previously
+	 * been saved, it will retrieve related UsersByAffiliateUserGroups from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Group.
+	 * actually need in UsersByAffiliateGroup.
 	 */
-	public function getUserGroupsJoinUser($criteria = null, $con = null)
+	public function getUsersByAffiliateUserGroupsJoinUserByAffiliate($criteria = null, $con = null)
 	{
 		// include the Peer class
-		include_once 'anmaga/UserGroupPeer.php';
+		include_once 'anmaga/UsersByAffiliateUserGroupPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
 		
-		if ($this->collUserGroups === null) {
+		if ($this->collUsersByAffiliateUserGroups === null) {
 			if ($this->isNew()) {
-			   $this->collUserGroups = array();
+			   $this->collUsersByAffiliateUserGroups = array();
 			} else {
 	   
-				$criteria->add(UserGroupPeer::GROUPID, $this->getId());
-				$this->collUserGroups = UserGroupPeer::doSelectJoinUser($criteria, $con);
+				$criteria->add(UsersByAffiliateUserGroupPeer::GROUPID, $this->getId());
+				$this->collUsersByAffiliateUserGroups = UsersByAffiliateUserGroupPeer::doSelectJoinUserByAffiliate($criteria, $con);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 	  
-			$criteria->add(UserGroupPeer::GROUPID, $this->getId());
-			if (!isset($this->lastUserGroupsCriteria) || !$this->lastUserGroupsCriteria->equals($criteria)) {
-				$this->collUserGroups = UserGroupPeer::doSelectJoinUser($criteria, $con);
+			$criteria->add(UsersByAffiliateUserGroupPeer::GROUPID, $this->getId());
+			if (!isset($this->lastUsersByAffiliateUserGroupsCriteria) || !$this->lastUsersByAffiliateUserGroupsCriteria->equals($criteria)) {
+				$this->collUsersByAffiliateUserGroups = UsersByAffiliateUserGroupPeer::doSelectJoinUserByAffiliate($criteria, $con);
 			}
 		}
-		$this->lastUserGroupsCriteria = $criteria;
+		$this->lastUsersByAffiliateUserGroupsCriteria = $criteria;
 
-		return $this->collUserGroups;
+		return $this->collUsersByAffiliateUserGroups;
 	}
 
 	/**
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Group is new, it will return
-	 * an empty collection; or if this Group has previously
-	 * been saved, it will retrieve related UserGroups from storage.
+	 * Otherwise if this UsersByAffiliateGroup is new, it will return
+	 * an empty collection; or if this UsersByAffiliateGroup has previously
+	 * been saved, it will retrieve related UsersByAffiliateUserGroups from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Group.
+	 * actually need in UsersByAffiliateGroup.
 	 */
-	public function getUserGroupsJoinGroup($criteria = null, $con = null)
+	public function getUsersByAffiliateUserGroupsJoinUsersByAffiliateGroup($criteria = null, $con = null)
 	{
 		// include the Peer class
-		include_once 'anmaga/UserGroupPeer.php';
+		include_once 'anmaga/UsersByAffiliateUserGroupPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
 		
-		if ($this->collUserGroups === null) {
+		if ($this->collUsersByAffiliateUserGroups === null) {
 			if ($this->isNew()) {
-			   $this->collUserGroups = array();
+			   $this->collUsersByAffiliateUserGroups = array();
 			} else {
 	   
-				$criteria->add(UserGroupPeer::GROUPID, $this->getId());
-				$this->collUserGroups = UserGroupPeer::doSelectJoinGroup($criteria, $con);
+				$criteria->add(UsersByAffiliateUserGroupPeer::GROUPID, $this->getId());
+				$this->collUsersByAffiliateUserGroups = UsersByAffiliateUserGroupPeer::doSelectJoinUsersByAffiliateGroup($criteria, $con);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 	  
-			$criteria->add(UserGroupPeer::GROUPID, $this->getId());
-			if (!isset($this->lastUserGroupsCriteria) || !$this->lastUserGroupsCriteria->equals($criteria)) {
-				$this->collUserGroups = UserGroupPeer::doSelectJoinGroup($criteria, $con);
+			$criteria->add(UsersByAffiliateUserGroupPeer::GROUPID, $this->getId());
+			if (!isset($this->lastUsersByAffiliateUserGroupsCriteria) || !$this->lastUsersByAffiliateUserGroupsCriteria->equals($criteria)) {
+				$this->collUsersByAffiliateUserGroups = UsersByAffiliateUserGroupPeer::doSelectJoinUsersByAffiliateGroup($criteria, $con);
 			}
 		}
-		$this->lastUserGroupsCriteria = $criteria;
+		$this->lastUsersByAffiliateUserGroupsCriteria = $criteria;
 
-		return $this->collUserGroups;
+		return $this->collUsersByAffiliateUserGroups;
 	}
 
 
@@ -525,11 +525,11 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 		}
 		
 		if ($con === null)
-			$con = Propel::getConnection(GroupPeer::DATABASE_NAME);
+			$con = Propel::getConnection(UsersByAffiliateGroupPeer::DATABASE_NAME);
 
 		try {
 			$con->begin();
-			GroupPeer::doDelete($this, $con);
+			UsersByAffiliateGroupPeer::doDelete($this, $con);
 			$this->setDeleted(true);
 			$con->commit();
 		} catch (PropelException $e) {
@@ -562,7 +562,7 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 		}
 		
 		if ($con === null)
-			$con = Propel::getConnection(GroupPeer::DATABASE_NAME);
+			$con = Propel::getConnection(UsersByAffiliateGroupPeer::DATABASE_NAME);
 
 		try {
 			$con->begin();
@@ -591,17 +591,17 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = GroupPeer::doInsert($this, $con);
+					$pk = UsersByAffiliateGroupPeer::doInsert($this, $con);
 					$this->setId( $pk );  //[IMV] update autoincrement primary key
 					$this->setNew(false);
 				} else {
-					GroupPeer::doUpdate($this, $con);
+					UsersByAffiliateGroupPeer::doUpdate($this, $con);
 				}			
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
-			if ($this->collUserGroups !== null) {
-				for ($i=0,$size=count($this->collUserGroups); $i < $size; $i++) {
-					$this->collUserGroups[$i]->save($con);
+			if ($this->collUsersByAffiliateUserGroups !== null) {
+				for ($i=0,$size=count($this->collUsersByAffiliateUserGroups); $i < $size; $i++) {
+					$this->collUsersByAffiliateUserGroups[$i]->save($con);
 				}
 			  }
 
@@ -625,7 +625,7 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 	{
 	  if ($columns)
 	  {
-		return GroupPeer::doValidate($this, $columns);
+		return UsersByAffiliateGroupPeer::doValidate($this, $columns);
 	  }
 
 		return $this->doValidate();
@@ -655,13 +655,13 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 	  
 			$failureMap = array();	  
 
-			if (($retval = GroupPeer::doValidate($this)) !== true) {
+			if (($retval = UsersByAffiliateGroupPeer::doValidate($this)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 	  
-			if ($this->collUserGroups !== null) {
-				for ($i=0,$size=count($this->collUserGroups); $i < $size; $i++) {
-					if (($retval = $this->collUserGroups[$i]->validate()) !== true) {
+			if ($this->collUsersByAffiliateUserGroups !== null) {
+				for ($i=0,$size=count($this->collUsersByAffiliateUserGroups); $i < $size; $i++) {
+					if (($retval = $this->collUsersByAffiliateUserGroups[$i]->validate()) !== true) {
 						$failureMap = array_merge($failureMap, $retval);
 					}
 				}
@@ -709,12 +709,12 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 	 *
 	 * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
 	 *  
-	 * @return Group Clone of current object.
+	 * @return UsersByAffiliateGroup Clone of current object.
 	 * @throws PropelException
 	 */
 	public function copy($deepCopy = false) 
 	{
-		$copyObj = new Group();
+		$copyObj = new UsersByAffiliateGroup();
 		$copyObj->setName($this->name);
 		$copyObj->setCreated($this->created);
 		$copyObj->setUpdated($this->updated);
@@ -725,8 +725,8 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
-			foreach($this->getUserGroups() as $relObj) {
-				$copyObj->addUserGroup($relObj->copy());
+			foreach($this->getUsersByAffiliateUserGroups() as $relObj) {
+				$copyObj->addUsersByAffiliateUserGroup($relObj->copy());
 			}
 		} // if ($deepCopy)
 		
@@ -743,12 +743,12 @@ abstract class BaseGroup extends BaseObject implements Persistent {
 	 * are not to have any instance attributes, this method returns the
 	 * same instance for all member of this class. The method could therefore
 	 * be static, but this would prevent one from overriding the behavior.
-	 * @return GroupPeer
+	 * @return UsersByAffiliateGroupPeer
 	 */
 	public function getPeer()
 	{
 		if (self::$peer === null) {
-			self::$peer = new GroupPeer();
+			self::$peer = new UsersByAffiliateGroupPeer();
 		}
 		return self::$peer;
 	}
