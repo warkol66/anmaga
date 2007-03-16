@@ -12,7 +12,7 @@
 
 
 require_once 'BaseAction.php';
-require_once("mer/AffiliatePeer.php");
+require_once("AffiliatePeer.php");
 
 
 /**

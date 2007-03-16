@@ -93,9 +93,9 @@ class BaseAction extends Action {
 			exit;
 		}
 		//if(isset($_SESSION["login_user"]))
-			$user = $_SESSION["login_user"];
-	//	else 
-			$userByAffiliate = $_SESSION["login_user_affiliate"];
+			$loginUser = $_SESSION["login_user"];
+	//	else
+			$loginUserAffiliate = $_SESSION["login_user_affiliate"];
 
 		//Chequeo de permisos de acceso
 /*		if (!empty($user)) {
@@ -124,9 +124,11 @@ class BaseAction extends Action {
 		}
 
 
+		if (!empty($loginUserAffiliate))
+    	$smarty->assign("affiliateId",$loginUserAffiliate->getAffiliateId());
 
-		$smarty->assign("login_user",$user);
-		$smarty->assign("login_user_affiliate",$userByAffiliate);
+		$smarty->assign("login_user",$loginUser);
+		$smarty->assign("login_user_affiliate",$loginUserAffiliate);
 		$smarty->assign("STATUSLOGIN",$login);
 		$smarty->assign("LOGIN",$_SESSION['usuario']);
 		$smarty->assign("SESION", $_SESSION);

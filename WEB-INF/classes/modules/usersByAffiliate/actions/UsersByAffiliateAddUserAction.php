@@ -11,8 +11,9 @@
 */
 
 require_once 'BaseAction.php';
-require_once("mer/UserByAffiliatePeer.php");
-require_once("mer/LevelPeer.php");
+require_once("UserByAffiliatePeer.php");
+require_once("AffiliatePeer.php");
+require_once("LevelPeer.php");
 
 /**
 * DocumentsEditAction
@@ -76,12 +77,12 @@ class UsersByAffiliateAddUserAction extends BaseAction {
 
 		$usersPeer= new UserByAffiliatePeer();
 
-
-		if(isset($_GET["id"])
-			$id=$_GET["id"];
-		else $id='';
-		$smarty->assign("id",$id);
-
+		if ( !empty($_SESSION["login_user"]) ) {
+			$affiliateId = $_GET["affiliateId"];
+			//cargo todos los afiliados para que los pueda seleccionar
+      $smarty->assign("affiliates",AffiliatePeer::getAll());
+			$smarty->assign("affiliateId",$_GET["affiliateId"]);
+		}
 
 		$levels = LevelPeer::getAll();
 		$smarty->assign("levels",$levels);

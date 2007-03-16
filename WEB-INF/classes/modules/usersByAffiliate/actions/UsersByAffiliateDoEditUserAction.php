@@ -11,8 +11,8 @@
 */
 
 require_once 'BaseAction.php';
-require_once("mer/UserByAffiliatePeer.php");
-require_once("mer/LevelPeer.php");
+require_once("UserByAffiliatePeer.php");
+require_once("LevelPeer.php");
 
 /**
 * DocumentsEditAction

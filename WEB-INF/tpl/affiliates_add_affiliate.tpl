@@ -15,11 +15,7 @@
 				 <input name="affiliate_name" type="text" value="" size="10">
 			  </td>
 		 </tr>
-		 <tr class="row_even"> 
-			 <td class="style6">Nombre:</td>
-			 <td><input name="name" type="text" value="" size="30"></td>
-		 </tr>
-		
+
 		<tr class="row_even">
 			<td nowrap class="style6">ID interno :&nbsp;</td>
 			<td> 

@@ -11,7 +11,7 @@
 */
 
 require_once 'BaseAction.php';
-require_once("mer/UserByAffiliatePeer.php");
+require_once("UserByAffiliatePeer.php");
 
 
 /**

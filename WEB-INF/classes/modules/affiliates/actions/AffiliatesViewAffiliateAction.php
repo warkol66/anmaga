@@ -1,8 +1,8 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("mer/AffiliateInfoPeer.php");
-require_once("mer/AffiliatePeer.php");
+require_once("AffiliateInfoPeer.php");
+require_once("AffiliatePeer.php");
 
 
 class AffiliatesViewAffiliateAction extends BaseAction {
