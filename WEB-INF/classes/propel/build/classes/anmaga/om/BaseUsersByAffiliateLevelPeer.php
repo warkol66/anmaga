@@ -2,11 +2,11 @@
 require_once 'propel/util/BasePeer.php';
 
 // The object class -- needed for instanceof checks in this class.
-// actual class may be a subclass -- as returned by LevelPeer::getOMClass()
-include_once 'anmaga/Level.php';
+// actual class may be a subclass -- as returned by UsersByAffiliateLevelPeer::getOMClass()
+include_once 'anmaga/UsersByAffiliateLevel.php';
 
 /**
- * Base static class for performing query and update operations on the 'users_level' table.
+ * Base static class for performing query and update operations on the 'usersByAffiliate_level' table.
  *
  * Levels 
  *
@@ -16,24 +16,24 @@ include_once 'anmaga/Level.php';
  *
  * @package anmaga 
  */
-abstract class BaseLevelPeer
+abstract class BaseUsersByAffiliateLevelPeer
 {
 
 	/** the default database name for this class */
 	const DATABASE_NAME = "anmaga";
 
 	/** the table name for this class */
-	const TABLE_NAME = "users_level";
+	const TABLE_NAME = "usersByAffiliate_level";
 
  
 	/** the column name for the ID field */
-	const ID = "users_level.ID";
+	const ID = "usersByAffiliate_level.ID";
  
 	/** the column name for the NAME field */
-	const NAME = "users_level.NAME";
+	const NAME = "usersByAffiliate_level.NAME";
  
 	/** the column name for the BITLEVEL field */
-	const BITLEVEL = "users_level.BITLEVEL";
+	const BITLEVEL = "usersByAffiliate_level.BITLEVEL";
 
 	
 
@@ -44,7 +44,7 @@ abstract class BaseLevelPeer
 	public static $numLazyLoadColumns = 0;
 	
 	/** A class that can be returned by this peer. */
-	const CLASS_DEFAULT = "anmaga.Level";
+	const CLASS_DEFAULT = "anmaga.UsersByAffiliateLevel";
 
 	/** The PHP to DB Name Mapping */
 	private static $phpNameMap = null;
@@ -56,8 +56,8 @@ abstract class BaseLevelPeer
 	 */
 	public static function getMapBuilder()		
 	{
-		include_once 'anmaga/map/LevelMapBuilder.php';
-		return BasePeer::getMapBuilder(LevelMapBuilder::CLASS_NAME);
+		include_once 'anmaga/map/UsersByAffiliateLevelMapBuilder.php';
+		return BasePeer::getMapBuilder(UsersByAffiliateLevelMapBuilder::CLASS_NAME);
 	}
 
 	/**
@@ -71,7 +71,7 @@ abstract class BaseLevelPeer
 	public static function getPhpNameMap()
 	{
 		if (self::$phpNameMap === null) {
-			$map = LevelPeer::getTableMap();
+			$map = UsersByAffiliateLevelPeer::getTableMap();
 			$columns = $map->getColumns();
 			$nameMap = array();
 			foreach ($columns as $column) {
@@ -91,7 +91,7 @@ abstract class BaseLevelPeer
 	 *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
 	 * </code>
 	 * @param string $alias The alias for the current table.
-	 * @param string $column The column name for current table. (i.e. LevelPeer::COLUMN_NAME).
+	 * @param string $column The column name for current table. (i.e. UsersByAffiliateLevelPeer::COLUMN_NAME).
 	 * @return string
 	 */
 	public static function alias($alias, $column)
@@ -117,8 +117,8 @@ abstract class BaseLevelPeer
 		$criteria->addSelectColumn(self::BITLEVEL);
 	}
 	
-	const COUNT = "COUNT(users_level.ID)";
-	const COUNT_DISTINCT = "COUNT(DISTINCT users_level.ID)";
+	const COUNT = "COUNT(usersByAffiliate_level.ID)";
+	const COUNT_DISTINCT = "COUNT(DISTINCT usersByAffiliate_level.ID)";
   
 	/**
 	 * Returns the number of rows matching criteria.
@@ -136,12 +136,12 @@ abstract class BaseLevelPeer
 		// clear out anything that might confuse the ORDER BY clause
 		$criteria->clearSelectColumns()->clearOrderByColumns();
 		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->addSelectColumn(LevelPeer::COUNT_DISTINCT);
+			$criteria->addSelectColumn(UsersByAffiliateLevelPeer::COUNT_DISTINCT);
 		} else {
-			$criteria->addSelectColumn(LevelPeer::COUNT);	
+			$criteria->addSelectColumn(UsersByAffiliateLevelPeer::COUNT);	
 		}
 		
-		$rs = LevelPeer::doSelectRS($criteria, $con);		
+		$rs = UsersByAffiliateLevelPeer::doSelectRS($criteria, $con);		
 		if ($rs->next()) {
 			return $rs->getInt(1);
 		} else {
@@ -155,14 +155,14 @@ abstract class BaseLevelPeer
 	 *
 	 * @param Criteria $criteria object used to create the SELECT statement.
 	 * @param Connection $con
-	 * @return Level	 * @throws PropelException Any exceptions caught during processing will be
+	 * @return UsersByAffiliateLevel	 * @throws PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
 	public static function doSelectOne(Criteria $criteria, $con = null)
 	{
 		$critcopy = clone $criteria;
 		$critcopy->setLimit(1);
-		$objects = LevelPeer::doSelect($critcopy, $con);
+		$objects = UsersByAffiliateLevelPeer::doSelect($critcopy, $con);
 		if ($objects) {
 			return $objects[0];
 		}
@@ -180,7 +180,7 @@ abstract class BaseLevelPeer
 	 */
 	public static function doSelect(Criteria $criteria, $con = null)
 	{
-		return LevelPeer::populateObjects(LevelPeer::doSelectRS($criteria, $con));
+		return UsersByAffiliateLevelPeer::populateObjects(UsersByAffiliateLevelPeer::doSelectRS($criteria, $con));
 	}
 	
 	/**
@@ -204,7 +204,7 @@ abstract class BaseLevelPeer
 		}				
 
 		if (!$criteria->getSelectColumns()) {
-			LevelPeer::addSelectColumns($criteria);
+			UsersByAffiliateLevelPeer::addSelectColumns($criteria);
 		}
 	
 		// Set the correct dbName
@@ -227,7 +227,7 @@ abstract class BaseLevelPeer
 		$results = array();
 		
 		// set the class once to avoid overhead in the loop
-		$cls = LevelPeer::getOMClass();
+		$cls = UsersByAffiliateLevelPeer::getOMClass();
 		$cls = Propel::import($cls);
 
 		// populate the object(s)
@@ -258,9 +258,9 @@ abstract class BaseLevelPeer
  
 
 	/**
-	 * Method perform an INSERT on the database, given a Level or Criteria object.
+	 * Method perform an INSERT on the database, given a UsersByAffiliateLevel or Criteria object.
 	 *
-	 * @param mixed $values Criteria or Level object containing data that is used to create the INSERT statement.
+	 * @param mixed $values Criteria or UsersByAffiliateLevel object containing data that is used to create the INSERT statement.
 	 * @param Connection $con the connection to use
 	 * @return mixed The new primary key.
 	 * @throws PropelException Any exceptions caught during processing will be
@@ -299,9 +299,9 @@ abstract class BaseLevelPeer
 	}
 
 	/**
-	 * Method perform an UPDATE on the database, given a Level or Criteria object.
+	 * Method perform an UPDATE on the database, given a UsersByAffiliateLevel or Criteria object.
 	 *
-	 * @param mixed $values Criteria or Level object containing data that is used to create the UPDATE statement.
+	 * @param mixed $values Criteria or UsersByAffiliateLevel object containing data that is used to create the UPDATE statement.
 	 * @param Connection $con The connection to use (specify Connection object to exert more control over transactions).
 	 * @return int The number of affected rows (if supported by underlying database driver).
 	 * @throws PropelException Any exceptions caught during processing will be
@@ -319,7 +319,7 @@ abstract class BaseLevelPeer
 			$criteria = $values;
 			$selectCriteria->put(self::ID, $criteria->remove(self::ID));
  
-		} else { // $values is Level object
+		} else { // $values is UsersByAffiliateLevel object
 			$criteria = $values->buildCriteria(); // gets full criteria
 			$selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)			
 		}	
@@ -331,7 +331,7 @@ abstract class BaseLevelPeer
 	}   
 	
 	/**
-	 * Method to DELETE all rows from the users_level table.
+	 * Method to DELETE all rows from the usersByAffiliate_level table.
 	 *
 	 * @return int The number of affected rows (if supported by underlying database driver).
 	 */
@@ -354,9 +354,9 @@ abstract class BaseLevelPeer
 	}
 	
 	/**
-	 * Method perform a DELETE on the database, given a Level or Criteria object OR a primary key value.
+	 * Method perform a DELETE on the database, given a UsersByAffiliateLevel or Criteria object OR a primary key value.
 	 *
-	 * @param mixed $values Criteria or Level object or primary key which is used to create the DELETE statement 
+	 * @param mixed $values Criteria or UsersByAffiliateLevel object or primary key which is used to create the DELETE statement 
 	 * @param Connection $con the connection to use
 	 * @return int 	The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
 	 *				if supported by native driver or if emulated using Propel.
@@ -370,7 +370,7 @@ abstract class BaseLevelPeer
 
 		if ($values instanceof Criteria) {
 			$criteria = $values;
-		} elseif ($values instanceof Level) {
+		} elseif ($values instanceof UsersByAffiliateLevel) {
 			$criteria = $values->buildPkeyCriteria();
 		} else {
 			// it must be the primary key
@@ -399,18 +399,18 @@ abstract class BaseLevelPeer
 
 	
 	/**
-	 * Validates all modified columns of given Level object.
+	 * Validates all modified columns of given UsersByAffiliateLevel object.
 	 * If parameter $columns is either a single column name or an array of column names
 	 * than only those columns are validated.
 	 *
 	 * NOTICE: This does not apply to primary or foreign keys for now.
 	 *
-	 * @param Level $obj The object to validate.
+	 * @param UsersByAffiliateLevel $obj The object to validate.
 	 * @param mixed $cols Column name or array of column names.
 	 *
 	 * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(Level $obj, $cols = null)
+	public static function doValidate(UsersByAffiliateLevel $obj, $cols = null)
 	{
 		$columns = array();
 
@@ -446,7 +446,7 @@ abstract class BaseLevelPeer
 	 *
 	 * @param mixed $pk the primary key.
 	 * @param Connection $con the connection to use
-         * @return Level
+         * @return UsersByAffiliateLevel
 	 */
 	public static function retrieveByPK($pk, $con = null)
 	{		
@@ -457,7 +457,7 @@ abstract class BaseLevelPeer
 		$criteria = new Criteria(self::DATABASE_NAME);
 		$criteria->add(self::ID, $pk);
 						
-		$v = LevelPeer::doSelect($criteria, $con);
+		$v = UsersByAffiliateLevelPeer::doSelect($criteria, $con);
         return count($v) > 0 ? $v[0] : null;
 	}
 
@@ -482,7 +482,7 @@ abstract class BaseLevelPeer
 			$criteria = new Criteria();
 			$criteria->add(self::ID, $pks, Criteria::IN);
   
-			$objs = LevelPeer::doSelect($criteria, $con);
+			$objs = UsersByAffiliateLevelPeer::doSelect($criteria, $con);
 		}
 		return $objs;
 	}
@@ -508,13 +508,13 @@ if (Propel::isInit()) {
 	// the MapBuilder classes register themselves with Propel during initialization
 	// so we need to load them here.
 	try {		
-		BaseLevelPeer::getMapBuilder();
+		BaseUsersByAffiliateLevelPeer::getMapBuilder();
 	} catch (Exception $e) {
 		Propel::log("Could not initialize Peer: " . $e->getMessage(), Propel::LOG_ERR);
 	}
 } else {
 	// even if Propel is not yet initialized, the map builder class can be registered
 	// now and then it will be loaded when Propel initializes.
-	require_once 'anmaga/map/LevelMapBuilder.php';
-	Propel::registerMapBuilder(LevelMapBuilder::CLASS_NAME);
+	require_once 'anmaga/map/UsersByAffiliateLevelMapBuilder.php';
+	Propel::registerMapBuilder(UsersByAffiliateLevelMapBuilder::CLASS_NAME);
 }
