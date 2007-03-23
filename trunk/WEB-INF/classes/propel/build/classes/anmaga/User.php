@@ -15,7 +15,7 @@ require_once 'om/BaseUser.php';
 class User extends BaseUser {
 
 	function getGroups() {
-		require_once("mer/GroupPeer.php");
+		require_once("GroupPeer.php");
 		$cond = new Criteria();
 		$cond->add(UserGroupPeer::USERID, $this->getId());
 		$todosObj = UserGroupPeer::doSelectJoinGroup($cond);
@@ -41,34 +41,17 @@ class User extends BaseUser {
 		}
 		return false;
 	}
-	
+
    /**
-    * Return an array with all the actors this user can access
+    * Return an array with all the categories this user can access
     *
-    * @return array of Actor
-    */
-  function getActors(){
-  	require_once("mer/UserGroupPeer.php");
-  	require_once("mer/GroupCategoryPeer.php");
-  	require_once("mer/ActorPeer.php");
-  	$sql = "SELECT DISTINCT ".ActorPeer::TABLE_NAME.".* FROM ".UserGroupPeer::TABLE_NAME ." ,".GroupCategoryPeer::TABLE_NAME ." , ".ActorPeer::TABLE_NAME ." where ".UserGroupPeer::USERID ." = '".$this->getId()."' and ".UserGroupPeer::GROUPID ." = ".GroupCategoryPeer::GROUPID ." and ".GroupCategoryPeer::CATEGORYID ." = ".ActorPeer::CATEGORYID ;
-  	
-  	$con = Propel::getConnection(UserPeer::DATABASE_NAME);
-    $stmt = $con->createStatement();
-    $rs = $stmt->executeQuery($sql, ResultSet::FETCHMODE_NUM);    
-    return BaseActorPeer::populateObjects($rs);
-  }
-  
-   /**
-    * Return an array with all the actors this user can access
-    *
-    * @return array of Actor
+    * @return array of Catetegory
     */
   function getCategories(){
   	if ($this->isAdmin() || $this->isSupervisor())
   		return CategoryPeer::getAll();
-		require_once("mer/UserGroupPeer.php");
-  	require_once("mer/GroupCategoryPeer.php");
+		require_once("UserGroupPeer.php");
+  	require_once("GroupCategoryPeer.php");
   	$sql = "SELECT ".CategoryPeer::TABLE_NAME.".* FROM ".UserGroupPeer::TABLE_NAME ." ,".
 						GroupCategoryPeer::TABLE_NAME .", ".CategoryPeer::TABLE_NAME .
 						" where ".UserGroupPeer::USERID ." = '".$this->getId()."' and ".
@@ -81,5 +64,22 @@ class User extends BaseUser {
     $rs = $stmt->executeQuery($sql, ResultSet::FETCHMODE_NUM);    
     return BaseCategoryPeer::populateObjects($rs);
   }
+  
+  /**
+  * Asigna los grupos del usuario a una categoria.
+  *
+  * @param int $categoryId Id de la categoria
+  * @return void
+  */
+  function setGroupsToCategory($categoryId) {
+  	require_once("GroupCategoryPeer.php");                                            	
+		foreach ($this->getGroups() as $group) {
+			$groupCategory = new GroupCategory();
+			$groupCategory->setGroupId($group->getGroupId());
+			$groupCategory->setCategoryId($categoryId);
+			$groupCategory->save();
+		}
+		return;
+	}
 
 }
