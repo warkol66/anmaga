@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("mer/UserPeer.php");
+require_once("UserPeer.php");
 
 class UsersDoDeleteAction extends BaseAction {
 

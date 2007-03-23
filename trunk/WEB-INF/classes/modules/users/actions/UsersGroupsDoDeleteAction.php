@@ -1,15 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("mer/GroupPeer.php");
-require_once("mer/CategoryPeer.php");
+require_once("GroupPeer.php");
 
-class GroupsListAction extends BaseAction {
+class UsersGroupsDoDeleteAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function GroupsListAction() {
+	function UsersGroupsDoDeleteAction() {
 		;
 	}
 
@@ -43,34 +42,16 @@ class GroupsListAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "Groups";
-		$section = "Configure";
-		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+		$module = "Users";
+		$section = "Groups";
 
-		$groups = GroupPeer::getAll();
-		$smarty->assign("groups",$groups);
+    $groupPeer = new GroupPeer();
 
-    $smarty->assign("message",$_GET["message"]);
+    if ( $groupPeer->delete($_GET["group"]) )
+			return $mapping->findForwardConfig('success');
+		else
+			return $mapping->findForwardConfig('failure');
 
-    if ( !empty($_GET["group"]) ) {
-			//voy a editar un grupo
-
-			try {
-				$group = GroupPeer::get($_GET["group"]);
-				$smarty->assign("currentGroup",$group);
-				$groupCategories = $group->getCategories();
-				$smarty->assign("currentGroupCategories",$groupCategories);
-        $notAssignedCategories = $group->getNotAssignedCategories();
-		    $smarty->assign("categories",$notAssignedCategories);
-	    	$smarty->assign("accion","edicion");
-	  	}
-			catch (PropelException $e) {
-			}
-		}
-
-		return $mapping->findForwardConfig('success');
 	}
 
 }
