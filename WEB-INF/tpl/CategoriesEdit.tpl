@@ -31,10 +31,6 @@
 			<td class='celldato'><input name="name" type="text" value='|-$category->getName()-|' size="50" class='textodato' /></td>
 		</tr>
 		<tr>
-			<td nowrap="nowrap" class='titulodato1'>##148,Cantidad Máxima de Actores Clave##:</td>
-			<td class='celldato'><input name="hierarchyActors" type="text" value='|-$category->getHierarchyActors()-|' size="2" maxlength="2" class='textodato' /></td>
-		</tr>
-		<tr>
 			<td colspan="2" class='cellboton'><input type="hidden" name="id" id="id" value="|-$category->getId()-|" />
 				<input type="hidden" name="accion" id="accion" value="edicion" />
 				<input type="hidden" name="do" id="do" value="categoriesDoEdit" />

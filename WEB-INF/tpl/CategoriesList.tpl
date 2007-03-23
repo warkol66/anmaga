@@ -29,7 +29,6 @@
 		<td>&nbsp;</td>
 	</tr>
 </table>
-|-if $categories|@count gt 0-|
 <table class='tablaborde' width='100%' border='0' cellspacing='1' cellpadding='0' id="table_categories_list">
 	<tr>
 		<th>##142,Categorías Disponibles##</th>
@@ -40,7 +39,6 @@
 	</tr>
 	|-/foreach-|
 </table>
-|-/if-|
 <br />
 <table class='tablaborde' width='100%' border='0' cellspacing='1' cellpadding='0'>
 	<tr>

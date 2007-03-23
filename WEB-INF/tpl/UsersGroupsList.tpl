@@ -84,7 +84,7 @@
 	|-assign var="category" value=$groupCategory->getCategory()-|
 	<tr>
 		<td class='celldato'><div class='titulo2'>|-$category->getName()-|</div></td>
-		<td class='cellopciones' nowrap> [ <a href="Main.php?do=usersGroupsDoRemoveCategoryFromGroup&category=|-$category->getId()-|&group=|-$currentGroup->getId()-|" class='elim' onclick="return confirm('##257,Esta opción remueve el acceso del grupo a la categoría. ¿Está seguro que desea eliminarlo?##');">##192,Eliminar acceso##</a> ] </td>
+		<td class='cellopciones' nowrap> [ <a href="Main.php?do=usersGroupsDoRemoveCatFromGroup&category=|-$category->getId()-|&group=|-$currentGroup->getId()-|" class='elim' onclick="return confirm('##257,Esta opción remueve el acceso del grupo a la categoría. ¿Está seguro que desea eliminarlo?##');">##192,Eliminar acceso##</a> ] </td>
 	</tr>
 	|-/foreach-|
 	|-/if-|
