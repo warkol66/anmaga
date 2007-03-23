@@ -28,7 +28,6 @@ class CategoryPeer extends BaseCategoryPeer {
 		$category = new Category();
 		$category->setName($name);
 		$category->setActive(1);
-		$category->setHierarchyActors(8);
 		$category->save();
 		return $category->getId();
 	}
@@ -38,13 +37,11 @@ class CategoryPeer extends BaseCategoryPeer {
   *
   * @param int $id Id de la categoria
   * @param string $name Nombre de la categoria
-  * @param int $hierarchyActors Cantidad maxima de actores clave de la categoria
   * @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
-  function update($id,$name,$hierarchyActors) {
+  function update($id,$name) {
 		$category = CategoryPeer::retrieveByPK($id);
 		$category->setName($name);
-		$category->setHierarchyActors($hierarchyActors);
 		$category->save();
 		return true;
   }
@@ -69,17 +66,10 @@ class CategoryPeer extends BaseCategoryPeer {
 	*	@return boolean true si se elimino correctamente el category, false sino
 	*/
   function delete($id) {
-		require("ActorPeer.php");
-		$actorPeer = new ActorPeer();
-		$actors = $actorPeer->getByCategory($id);
-		if ( empty($actors) ) {
-			$category = CategoryPeer::retrieveByPk($id);
-			$category->setActive(0);
-			$category->save();
-			return true;
-		}
-		else
-    	return false;
+		$category = CategoryPeer::retrieveByPk($id);
+		$category->setActive(0);
+		$category->save();
+		return true;
   }
 
   /**
@@ -114,8 +104,8 @@ class CategoryPeer extends BaseCategoryPeer {
   function getUserCategories($user){
   	if ($user->isAdmin() || $user->isSupervisor())
   		return CategoryPeer::getAll();
-		require_once("mer/UserGroupPeer.php");
-  	require_once("mer/GroupCategoryPeer.php");
+		require_once("UserGroupPeer.php");
+  	require_once("GroupCategoryPeer.php");
   	$sql = "SELECT ".CategoryPeer::TABLE_NAME.".* FROM ".UserGroupPeer::TABLE_NAME ." ,".
 						GroupCategoryPeer::TABLE_NAME .", ".CategoryPeer::TABLE_NAME .
 						" where ".UserGroupPeer::USERID ." = '".$user->getId()."' and ".

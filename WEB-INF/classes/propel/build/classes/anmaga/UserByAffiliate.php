@@ -20,4 +20,50 @@ require_once 'om/BaseUserByAffiliate.php';
  */	
 class UserByAffiliate extends BaseUserByAffiliate {
 
+	function getGroups() {
+		require_once("UsersByAffiliateGroupPeer.php");
+		$cond = new Criteria();
+		$cond->add(UsersByAffiliateUserGroupPeer::USERID, $this->getId());
+		$todosObj = UsersByAffiliateUserGroupPeer::doSelectJoinGroup($cond);
+		return $todosObj;
+	}
+	
+   /**
+    * Return an array with all the categories this user can access
+    *
+    * @return array of Catetegory
+    */
+  function getCategories(){
+		require_once("UsersByAffiliateUserGroupPeer.php");
+  	require_once("UsersByAffiliateGroupCategoryPeer.php");
+  	$sql = "SELECT ".UsersByAffiliateCategoryPeer::TABLE_NAME.".* FROM ".UsersByAffiliateUserGroupPeer::TABLE_NAME ." ,".
+						UsersByAffiliateGroupCategoryPeer::TABLE_NAME .", ".UsersByAffiliateCategoryPeer::TABLE_NAME .
+						" where ".UsersByAffiliateUserGroupPeer::USERID ." = '".$this->getId()."' and ".
+						UsersByAffiliateUserGroupPeer::GROUPID ." = ".UsersByAffiliateGroupCategoryPeer::GROUPID ." and ".
+						UsersByAffiliateGroupCategoryPeer::CATEGORYID ." = ".UsersByAffiliateCategoryPeer::ID ." and ".
+						UsersByAffiliateCategoryPeer::ACTIVE ." = 1";
+  	
+  	$con = Propel::getConnection(UserByAffiliatePeer::DATABASE_NAME);
+    $stmt = $con->createStatement();
+    $rs = $stmt->executeQuery($sql, ResultSet::FETCHMODE_NUM);    
+    return BaseCategoryPeer::populateObjects($rs);
+  }
+  
+  /**
+  * Asigna los grupos del usuario a una categoria.
+  *
+  * @param int $categoryId Id de la categoria
+  * @return void
+  */
+  function setGroupsToCategory($categoryId) {
+		require_once("UsersByAffiliateGroupCategoryPeer.php");                                            	
+		foreach ($this->getGroups() as $group) {
+			$groupCategory = new UsersByAffiliateGroupCategory();
+			$groupCategory->setGroupId($group->getGroupId());
+			$groupCategory->setCategoryId($categoryId);
+			$groupCategory->save();
+		}
+		return;
+	}
+
 } // UserByAffiliate

@@ -92,8 +92,8 @@ class UsersByAffiliateGroupPeer extends BaseUsersByAffiliateGroupPeer {
   */
   function getCategoriesByGroup($id) {
 		$cond = new Criteria();
-		$cond->add(GroupCategoryPeer::GROUPID, $id);
-		$todosObj = GroupCategoryPeer::doSelectJoinCategory($cond);
+		$cond->add(UsersByAffiliateGroupCategoryPeer::GROUPID, $id);
+		$todosObj = UsersByAffiliateGroupCategoryPeer::doSelectJoinCategory($cond);
 		return $todosObj;
   }
   
@@ -106,7 +106,7 @@ class UsersByAffiliateGroupPeer extends BaseUsersByAffiliateGroupPeer {
   */
 	function addCategoryToGroup($category,$group) {
 		try {
-			$groupCategory = new GroupCategory();
+			$groupCategory = new UsersByAffiliateGroupCategory();
 			$groupCategory->setCategoryId($category);
 			$groupCategory->setGroupId($group);
 			$groupCategory->save();
@@ -127,9 +127,9 @@ class UsersByAffiliateGroupPeer extends BaseUsersByAffiliateGroupPeer {
 	function removeCategoryFromGroup($category,$group) {
 		try {
 			$cond = new Criteria();
-			$cond->add(GroupCategoryPeer::CATEGORYID, $category);
-			$cond->add(GroupCategoryPeer::GROUPID, $group);
-			$todosObj = GroupCategoryPeer::doSelect($cond);
+			$cond->add(UsersByAffiliateGroupCategoryPeer::CATEGORYID, $category);
+			$cond->add(UsersByAffiliateGroupCategoryPeer::GROUPID, $group);
+			$todosObj = UsersByAffiliateGroupCategoryPeer::doSelect($cond);
 			$obj = $todosObj[0];
 			$obj->delete();
 			return true;
