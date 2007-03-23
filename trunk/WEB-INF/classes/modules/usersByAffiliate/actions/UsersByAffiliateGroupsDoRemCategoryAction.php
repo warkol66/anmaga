@@ -1,14 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("mer/GroupPeer.php");
+require_once("UsersByAffiliateGroupPeer.php");
 
-class GroupsDoAddCategoryToGroupAction extends BaseAction {
+class UsersByAffiliateGroupsDoRemCategoryAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function GroupsDoAddCategoryToGroupAction() {
+	function UsersByAffiliateGroupsDoRemCategoryAction() {
 		;
 	}
 
@@ -44,16 +44,16 @@ class GroupsDoAddCategoryToGroupAction extends BaseAction {
 
 		$module = "Users";
 
-    $groupPeer = new GroupPeer();
+    $groupPeer = new UsersByAffiliateGroupPeer();
 
-    if ( !empty($_POST["group"]) && !empty($_POST["category"]) ) {
-			if ( $groupPeer->addCategoryToGroup($_POST["category"],$_POST["group"]) ) {
-				header("Location: Main.php?do=groupsList&group=".$_POST["group"]);
+    if ( !empty($_GET["group"]) && !empty($_GET["category"]) ) {
+			if ( $groupPeer->removeCategoryFromGroup($_GET["category"],$_GET["group"]) ) {
+				header("Location: Main.php?do=usersByAffiliateGroupsList&group=".$_GET["group"]);
 				exit;
 		 }
 		}
 
-		header("Location: Main.php?do=groupsList&group=".$_POST["group"]."&message=notAddedToGroup");
+		header("Location: Main.php?do=usersByAffiliateGroupsList&group=".$_GET["group"]."&message=notRemovedFromGroup");
 		exit;
 
 	}
