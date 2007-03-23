@@ -181,6 +181,7 @@
 	</tr>
 </table>
 
+|-if $deletedUsers|@count gt 0-|
 <br />
 <table class='tablaborde' cellpadding='5' cellspacing='1' width='100%'>
 	<tr>
@@ -197,3 +198,4 @@
 	</tr>
 	|-/foreach-|
 </table>
+|-/if-|
