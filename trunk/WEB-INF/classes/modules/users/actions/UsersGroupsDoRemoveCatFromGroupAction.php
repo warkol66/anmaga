@@ -1,14 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("mer/GroupPeer.php");
+require_once("GroupPeer.php");
 
-class GroupsDoRemoveCategoryFromGroupAction extends BaseAction {
+class UsersGroupsDoRemoveCatFromGroupAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function GroupsDoRemoveCategoryFromGroupAction() {
+	function UsersGroupsDoRemoveCatFromGroupAction() {
 		;
 	}
 
@@ -48,12 +48,12 @@ class GroupsDoRemoveCategoryFromGroupAction extends BaseAction {
 
     if ( !empty($_GET["group"]) && !empty($_GET["category"]) ) {
 			if ( $groupPeer->removeCategoryFromGroup($_GET["category"],$_GET["group"]) ) {
-				header("Location: Main.php?do=groupsList&group=".$_GET["group"]);
+				header("Location: Main.php?do=usersGroupsList&group=".$_GET["group"]);
 				exit;
 		 }
 		}
 
-		header("Location: Main.php?do=groupsList&group=".$_GET["group"]."&message=notRemovedFromGroup");
+		header("Location: Main.php?do=usersGroupsList&group=".$_GET["group"]."&message=notRemovedFromGroup");
 		exit;
 
 	}
