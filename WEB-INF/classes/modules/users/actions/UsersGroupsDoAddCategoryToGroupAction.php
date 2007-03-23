@@ -1,14 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("mer/GroupPeer.php");
+require_once("GroupPeer.php");
 
-class GroupsDoAddCategoryToGroupAction extends BaseAction {
+class UsersGroupsDoAddCategoryToGroupAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function GroupsDoAddCategoryToGroupAction() {
+	function UsersGroupsDoAddCategoryToGroupAction() {
 		;
 	}
 
@@ -48,12 +48,12 @@ class GroupsDoAddCategoryToGroupAction extends BaseAction {
 
     if ( !empty($_POST["group"]) && !empty($_POST["category"]) ) {
 			if ( $groupPeer->addCategoryToGroup($_POST["category"],$_POST["group"]) ) {
-				header("Location: Main.php?do=groupsList&group=".$_POST["group"]);
+				header("Location: Main.php?do=usersGroupsList&group=".$_POST["group"]);
 				exit;
 		 }
 		}
 
-		header("Location: Main.php?do=groupsList&group=".$_POST["group"]."&message=notAddedToGroup");
+		header("Location: Main.php?do=usersGroupsList&group=".$_POST["group"]."&message=notAddedToGroup");
 		exit;
 
 	}
