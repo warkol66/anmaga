@@ -84,14 +84,14 @@
 	|-assign var="category" value=$groupCategory->getCategory()-|
 	<tr>
 		<td class='celldato'><div class='titulo2'>|-$category->getName()-|</div></td>
-		<td class='cellopciones' nowrap> [ <a href="Main.php?do=usersByAffiliateGroupsDoRemoveCategoryFromGroup&category=|-$category->getId()-|&group=|-$currentGroup->getId()-|" class='elim' onclick="return confirm('##257,Esta opción remueve el acceso del grupo a la categoría. ¿Está seguro que desea eliminarlo?##');">##192,Eliminar acceso##</a> ] </td>
+		<td class='cellopciones' nowrap> [ <a href="Main.php?do=usersByAffiliateGroupsDoRemCategory&category=|-$category->getId()-|&group=|-$currentGroup->getId()-|" class='elim' onclick="return confirm('##257,Esta opción remueve el acceso del grupo a la categoría. ¿Está seguro que desea eliminarlo?##');">##192,Eliminar acceso##</a> ] </td>
 	</tr>
 	|-/foreach-|
 	|-/if-|
 	<tr>
 		<td class='celldato' colspan='2'><form action='Main.php' method='post'>
 				##193,Agregar categoría##&nbsp;&nbsp;
-				<input type="hidden" name="do" value="usersByAffiliateGroupsDoAddCategoryToGroup" />
+				<input type="hidden" name="do" value="usersByAffiliateGroupsDoAddCategory" />
 				<select name="category">
 					<option value="" selected="selected">##103,Seleccione una categoría##</option>
 						|-foreach from=$categories item=category name=for_categories-|
