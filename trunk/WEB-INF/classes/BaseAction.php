@@ -76,6 +76,9 @@ class BaseAction extends Action {
 			$GLOBALS['_NG_LANGUAGE_']->setCurrentLanguage($system["config"]["mluse"]["language"]);
 		}
 
+		$systemUrl = "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/"))."/Main.php";
+		$smarty->assign("systemUrl",$systemUrl);
+		
 		header("Content-type: text/html; charset=UTF-8");
 
 		$noCheckLogin = array();
