@@ -49,111 +49,39 @@ function deleteConfigAttribute(li) {
 	ul.removeChild(li);
 }
 
-function showOptionsGraph(select) {
-	switch (select.value) {
-		case "plot_bubble":
-			document.getElementById("div_plot_bubble").style.display = "block";
-			document.getElementById("div_plot").style.display = "block";
-      document.getElementById("div_select_questions").style.display = "none";
-			break
-		case "plot":
-			document.getElementById("div_plot").style.display = "block";
-      document.getElementById("div_select_questions").style.display = "none";
-      document.getElementById("div_plot_bubble").style.display = "none";
-      break;
-		case "pie":
-		case "infography":
-			document.getElementById("div_plot").style.display = "none";
-      document.getElementById("div_select_questions").style.display = "block";
-			document.getElementById("div_plot_bubble").style.display = "none";      
-      break;
+
+
+var myGlobalHandlers = {
+	onCreate: function(){
+		Element.show('systemWorking');
+	},
+	onFailure: function(){
+		alert('Sorry. There was an error.');
+	},
+	onComplete: function() {
+		if(Ajax.activeRequestCount == 0){
+			Element.hide('systemWorking');
+		}
 	}
+};
+
+Ajax.Responders.register(myGlobalHandlers);
+
+function categoriesDoEditX() {
+	var pars = 'do=categoriesDoEditX';
+	var fields = Form.serialize('form_category_add');
+
+	var myAjax = new Ajax.Updater(
+				{success: 'table_categories_list'},
+				url,
+				{
+					method: 'post',
+					parameters: pars,
+					postBody: fields,
+					insertion: Insertion.Bottom
+				});
+	$('name').value = "";
 }
 
-function changeNameGraphRelation(form) {
-	var actualName = form.graphName.value;
-	var newName;
-	if (newName == window.prompt("Nombre del grafico:",actualName)) {
-		form.graphName.value = newName;
-		return true;
-	}
-	return false;
-}
 
-function switch_vis(element,display)
-{
-	var e_ref="";
-	var ant="";
-	e_ref=document.getElementById(element);
-	if (display == undefined)
-	{
-		display='block';
-	}
-	ant=e_ref.style.display;
-	if (e_ref.style.display !=  'none' && e_ref.style.display != "")
-	{
-		display='none';
-	}
-	else
-	{
-		display=display;
-	}
-	e_ref.style.display=display;
-}
-function switch_value(element,value)
-{
-	var e_ref="";
-	var ant="";
-	e_ref=document.getElementById(element);
-	if (value == undefined)
-	{
-		value='Mostrar Sección';
-	}
-	ant=e_ref.value;
-	if (e_ref.value !=  'Ocultar Sección' && e_ref.value != "")
-	{
-		value='Ocultar Sección';
-	}
-	else
-	{
-		value=value;
-	}
-	e_ref.value=value;
-}
-function switch_vis_mult(elements)
-{
-	var i=0;
-	for(i=0; i<elements.length; i++)
-	{
-		switch_vis(elements[i],'none');
-	}
-}
-function printFunction()
-{
-	self.print();
-	window.close();
-}
-
-function selectAllQuestions(checked) {
-	var questions = document.formQuestions.elements['applyableQuestions[]'];
-	for (var i = 0; i < questions.length; i++) {
-		questions[i].checked = checked;
-	}
-}
-
-function showGraphNetwork(urlActors) {
-  window.frame_graph.document.getElementById('span_loading').style.display = 'inline';
-	var questions = document.forms.form_questions.elements['questions[]'];
-	var categoryId = document.forms.form_questions.elements['categoryId'].value;
-	var formId = document.forms.form_questions.elements['form'].value;
-	var questionsId = "";
-	for (var i=0; i<questions.length; i++) {
-		var question = questions[i];
-		var questionId = question.value;
-		if (question.checked)
-			questionsId += "&questions[]="+questionId;
- 	}
- 	var url = "Main.php?do=analysisGraphNetworkShow"+urlActors+"&form="+formId+questionsId;
- 	window.frame_graph.location.href = url;
-}
 
