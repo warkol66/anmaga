@@ -162,9 +162,9 @@
     <forward name="success" path="/Main.php?do=usersGroupsList" redirect="true" />
     </action>
 
-    <action    path = "usersGroupsDoRemoveCategoryFromGroup"
-               type = "UsersGroupsDoRemoveCategoryFromGroupAction"
-               name = "usersGroupsDoRemoveCategoryFromGroup"
+    <action    path = "usersGroupsDoRemoveCatFromGroup"
+               type = "UsersGroupsDoRemoveCatFromGroupAction"
+               name = "usersGroupsDoRemoveCatFromGroup"
               scope = "request"
            validate = "true">
     <forward name="success" path="/Main.php?do=usersGroupsList" redirect="true" />
@@ -519,6 +519,22 @@
     <forward name="success" path="/Main.php?do=usersByAffiliateGroupsList&amp;message=deleted" redirect="true" />
     <forward name="failure" path="/Main.php?do=usersByAffiliateGroupsList&amp;message=notdeleted" redirect="true" />
     </action>
+    
+    <action    path = "usersByAffiliateGroupsDoAddCategory"
+               type = "UsersByAffiliateGroupsDoAddCategoryAction"
+               name = "usersByAffiliateGroupsDoAddCategory"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=usersByAffiliateGroupsList" redirect="true" />
+    </action>
+
+    <action    path = "usersByAffiliateGroupsDoRemCategory"
+               type = "UsersByAffiliateGroupsDoRemCategoryAction"
+               name = "usersByAffiliateGroupsDoRemCategory"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=usersByAffiliateGroupsList" redirect="true" />
+    </action>
 	</action-mappings>
 <!-- End Section - Groups -->
 
@@ -530,7 +546,7 @@
                name = "categoriesEdit"
               scope = "request"
            validate = "true">
-    <forward name="success" path="categories_edit.tpl" />
+    <forward name="success" path="CategoriesEdit.tpl" />
     </action>
 
     <action    path = "categoriesDoEdit"
@@ -538,8 +554,8 @@
                name = "categoriesDoEdit"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=categoriesList" redirect="true" />
-    <forward name="failure" path="categories_edit.tpl" />
+    <forward name="success" path="/Main.php?do=categoriesList" redirect="true" />
+    <forward name="failure" path="CategoriesEdit.tpl" />
     </action>
 
     <action    path = "categoriesDoEditX"
@@ -547,8 +563,8 @@
                name = "categoriesDoEditX"
               scope = "request"
            validate = "true">
-    <forward name="success" path="categories_include_row.tpl" />
-    <forward name="failure" path="categories_edit.tpl" />
+    <forward name="success" path="CategoriesIncludeRow.tpl" />
+    <forward name="failure" path="CategoriesEdit.tpl" />
     </action>
 
     <action    path = "categoriesList"
@@ -556,7 +572,7 @@
                name = "categoriesList"
               scope = "request"
            validate = "true">
-    <forward name="success" path="categories_list.tpl" />
+    <forward name="success" path="CategoriesList.tpl" />
     </action>
 
     <action    path = "categoriesDoDelete"
@@ -564,8 +580,8 @@
                name = "categoriesDoDelete"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=categoriesList" redirect="true" />
-    <forward name="failure" path="Main.php?do=categoriesList&amp;message=notdeleted" redirect="true" />
+    <forward name="success" path="/Main.php?do=categoriesList" redirect="true" />
+    <forward name="failure" path="/Main.php?do=categoriesList&amp;message=notdeleted" redirect="true" />
     </action>
   </action-mappings>
 <!-- End Categories -->
