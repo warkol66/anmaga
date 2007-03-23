@@ -1,14 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("mer/GroupPeer.php");
+require_once("LevelPeer.php");
 
-class GroupsDoEditAction extends BaseAction {
+class UsersLevelsDoDeleteAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function GroupsDoEditAction() {
+	function UsersLevelsDoDeleteAction() {
 		;
 	}
 
@@ -43,33 +43,16 @@ class GroupsDoEditAction extends BaseAction {
 		}
 
 		$module = "Users";
+		$section = "Levels";
 
-    $groupPeer = new GroupPeer();
+    $smarty->assign("module",$module);
+    $smarty->assign("section",$section);
 
-		if ( !empty($_POST["id"]) ) {
-			//estoy editando un grupo de usuarios existente
 
-			if ( $groupPeer->update($_POST["id"],$_POST["name"]) )
-  	   	return $mapping->findForwardConfig('success');
-			else {
-				header("Location: Main.php?do=groupsList&group=".$_POST["id"]."&message=errorUpdate");
-				exit;
-			}
-		}
-		else {
-		  //estoy creando un nuevo grupo de usuarios
-
-			if ( !empty($_POST["name"]) ) {
-
-				$groupPeer->create($_POST["name"]);
-				return $mapping->findForwardConfig('success');
-			}
-			else {
-				return $mapping->findForwardConfig('blankName');
-			}
-		}
-
-		return $mapping->findForwardConfig('success');
+    if ( LevelPeer::delete($_GET["level"]) )
+			return $mapping->findForwardConfig('success');
+		else
+			return $mapping->findForwardConfig('failure');
 	}
 
 }

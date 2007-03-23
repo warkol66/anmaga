@@ -1,14 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("mer/LevelPeer.php");
+require_once("LevelPeer.php");
 
-class LevelsDoDeleteAction extends BaseAction {
+class UsersLevelsDoEditAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function LevelsDoDeleteAction() {
+	function UsersLevelsDoEditAction() {
 		;
 	}
 
@@ -42,17 +42,34 @@ class LevelsDoDeleteAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "Levels";
-		$section = "Configure";
-		
+		$module = "Users";
+		$section = "Levels";
+
     $smarty->assign("module",$module);
     $smarty->assign("section",$section);
 
+		if ( !empty($_POST["id"]) ) {
+			//estoy editando un nivel de usuarios existente
 
-    if ( LevelPeer::delete($_GET["level"]) )
-			return $mapping->findForwardConfig('success');
-		else
-			return $mapping->findForwardConfig('failure');
+			if ( LevelPeer::update($_POST["id"],$_POST["name"]) )
+  	   	return $mapping->findForwardConfig('success');
+			else {
+				header("Location: Main.php?do=usersLevelsList&level=".$_POST["id"]."&message=errorUpdate");
+				exit;
+			}
+		}
+		else {
+		  //estoy creando un nuevo nivel de usuarios
+
+			if ( !empty($_POST["name"]) ) {
+
+				LevelPeer::create($_POST["name"]);
+				return $mapping->findForwardConfig('success');
+			}
+			else {
+				return $mapping->findForwardConfig('blankName');
+			}
+		}
 
 		return $mapping->findForwardConfig('success');
 	}

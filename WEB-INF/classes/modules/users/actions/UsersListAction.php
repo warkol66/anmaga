@@ -1,9 +1,9 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("mer/UserPeer.php");
-require_once("mer/GroupPeer.php");
-require_once("mer/LevelPeer.php");
+require_once("UserPeer.php");
+require_once("GroupPeer.php");
+require_once("LevelPeer.php");
 
 class UsersListAction extends BaseAction {
 
@@ -45,7 +45,7 @@ class UsersListAction extends BaseAction {
 		}
 
 		$module = "Users";
-		$section = "Configure";
+		$section = "Users";
 		
     $smarty->assign("module",$module);
     $smarty->assign("section",$section);

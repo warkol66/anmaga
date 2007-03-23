@@ -1,14 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("mer/LevelPeer.php");
+require_once("GroupPeer.php");
 
-class LevelsListAction extends BaseAction {
+class UsersGroupsDoEditAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function LevelsListAction() {
+	function UsersGroupsDoEditAction() {
 		;
 	}
 
@@ -42,31 +42,33 @@ class LevelsListAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "Levels";
-		$section = "Configure";
-		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+		$module = "Users";
+		$section = "Groups";
 
-		$groupPeer = new GroupPeer();
-		$levels = LevelPeer::getAll();
-		$smarty->assign("levels",$levels);
+    $groupPeer = new GroupPeer();
 
-    $smarty->assign("message",$_GET["message"]);
+		if ( !empty($_POST["id"]) ) {
+			//estoy editando un grupo de usuarios existente
 
-    if ( !empty($_GET["level"]) ) {
-			//voy a editar un level
-
-			try {
-				$level = LevelPeer::get($_GET["level"]);
-				$smarty->assign("currentLevel",$level);
-	    	$smarty->assign("accion","edicion");
-	  	}
-			catch (PropelException $e) {
+			if ( $groupPeer->update($_POST["id"],$_POST["name"]) )
+  	   	return $mapping->findForwardConfig('success');
+			else {
+				header("Location: Main.php?do=usersGroupsList&group=".$_POST["id"]."&message=errorUpdate");
+				exit;
 			}
 		}
+		else {
+		  //estoy creando un nuevo grupo de usuarios
 
-		return $mapping->findForwardConfig('success');
+			if ( !empty($_POST["name"]) ) {
+
+				$groupPeer->create($_POST["name"]);
+				return $mapping->findForwardConfig('success');
+			}
+			else {
+				return $mapping->findForwardConfig('blankName');
+			}
+		}
 	}
 
 }
