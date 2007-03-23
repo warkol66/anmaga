@@ -315,5 +315,18 @@
 		global $enMantenimiento;
 		return $enMantenimiento;
 	}
+	
+	/**
+	* Obtiene el usuario logueado, sea general o por afiliado
+	*
+	* @return User o UserByAffiliate Usuario logueado
+	*/
+	function getLoginUser() {
+		if (!empty($_SESSION["login_user"]))
+			return $_SESSION["login_user"];
+		if (!empty($_SESSION["login_user_by_affiliate"]))
+			return $_SESSION["login_user_by_affiliate"];
+		return false;
+	}
 
 ?>
