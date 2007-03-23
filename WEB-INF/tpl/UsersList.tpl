@@ -164,6 +164,8 @@
 	</tr>
 	|-/if-|
 </table>
+
+|-if $deletedUsers|@count gt 0-|
 <br />
 <table class='tablaborde' cellpadding='5' cellspacing='1' width='100%'>
 	<tr>
@@ -189,3 +191,4 @@ class='edit'>##176,Reactivar##</a> ] </td>
 	</tr>
 	|-/foreach-|
 </table>
+|-/if-|
