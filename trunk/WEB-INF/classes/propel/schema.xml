@@ -154,6 +154,34 @@
 		<unique-column name="name" />
 	</unique>
  </table>
+ 
+  <table phpName="Category" name="category" description="Categorias" >
+    <column autoIncrement="true" type="INTEGER" name="id" required="true" description="" primaryKey='true' />
+    <column size="255" type="VARCHAR" name="name" required="true" description="Category name" />
+    <column type="BOOLEAN" name="active" required="true" description="Is category active?" />
+  </table>
+  
+ <table name="users_groupCategory" phpName='GroupCategory' description="Groups / Categories">
+  <column name="groupId" required="true" primaryKey='true' type="INTEGER"  description="Group ID"/>
+  <column name="categoryId" required="true" primaryKey='true' type="INTEGER"  description="Category ID"/>
+  <foreign-key foreignTable="users_group" onDelete="cascade">
+     <reference local="groupId" foreign="id"/>
+  </foreign-key>
+  <foreign-key foreignTable="category">
+     <reference local="categoryId" foreign="id"/>
+  </foreign-key>
+ </table>
+ 
+ <table name="usersByAffiliate_groupCategory" phpName='UsersByAffiliateGroupCategory' description="Groups / Categories">
+  <column name="groupId" required="true" primaryKey='true' type="INTEGER"  description="Group ID"/>
+  <column name="categoryId" required="true" primaryKey='true' type="INTEGER"  description="Category ID"/>
+  <foreign-key foreignTable="usersByAffiliate_group" onDelete="cascade">
+     <reference local="groupId" foreign="id"/>
+  </foreign-key>
+  <foreign-key foreignTable="category">
+     <reference local="categoryId" foreign="id"/>
+  </foreign-key>
+ </table>
 
 
   </database>

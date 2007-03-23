@@ -166,6 +166,41 @@ CREATE TABLE `usersByAffiliate_group`(
     PRIMARY KEY(`id`),
     UNIQUE KEY `usersByAffiliate_group_U_1` (`name`))
 Type=MyISAM COMMENT='Groups';
+# -----------------------------------------------------------------------
+# category# -----------------------------------------------------------------------
+DROP TABLE IF EXISTS `category`;
+
+CREATE TABLE `category`(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL  COMMENT 'Category name',
+    `active` INTEGER NOT NULL  COMMENT 'Is category active?',
+    PRIMARY KEY(`id`))
+Type=MyISAM COMMENT='Categorias';
+# -----------------------------------------------------------------------
+# users_groupCategory# -----------------------------------------------------------------------
+DROP TABLE IF EXISTS `users_groupCategory`;
+
+CREATE TABLE `users_groupCategory`(
+    `groupId` INTEGER NOT NULL  COMMENT 'Group ID',
+    `categoryId` INTEGER NOT NULL  COMMENT 'Category ID',
+    PRIMARY KEY(`groupId`,`categoryId`),
+    CONSTRAINT `users_groupCategory_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `users_group` (`id`),
+    CONSTRAINT `users_groupCategory_ibfk_2` FOREIGN KEY (`categoryId`) REFERENCES `category` (`id`))
+Type=MyISAM COMMENT='Groups / Categories';
+# -----------------------------------------------------------------------
+# usersByAffiliate_groupCategory# -----------------------------------------------------------------------
+DROP TABLE IF EXISTS `usersByAffiliate_groupCategory`;
+
+CREATE TABLE `usersByAffiliate_groupCategory`(
+    `groupId` INTEGER NOT NULL  COMMENT 'Group ID',
+    `categoryId` INTEGER NOT NULL  COMMENT 'Category ID',
+    PRIMARY KEY(`groupId`,`categoryId`),
+    CONSTRAINT `usersByAffiliate_groupCategory_ibfk_1` FOREIGN KEY (`groupId`) REFERENCES `usersByAffiliate_group` (`id`),
+    CONSTRAINT `usersByAffiliate_groupCategory_ibfk_2` FOREIGN KEY (`categoryId`) REFERENCES `category` (`id`))
+Type=MyISAM COMMENT='Groups / Categories';
+  
+  
+  
   
   
   

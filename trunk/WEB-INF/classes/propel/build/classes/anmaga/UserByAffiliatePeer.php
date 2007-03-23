@@ -5,6 +5,8 @@
   
   // include object class
   include_once 'UserByAffiliate.php';
+  
+  include_once 'UsersByAffiliateUserGroupPeer.php';
 
 
 /**
@@ -24,9 +26,13 @@
  */	
 class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 
+		//Setea si se eliminan realmente los usuarios de la base de datos o se marcan como no activos
+		const DELETEUSERS = false;
+
 	  function getUsersByAffiliate($affiliateId) {
 		$cond = new Criteria();
 		$cond->add(UserByAffiliatePeer::AFFILIATEID,$affiliateId);
+		$cond->add(UserByAffiliatePeer::ACTIVE,1);
 		$todosObj = UserByAffiliatePeer ::doSelect($cond);
 		return $todosObj;
   }
@@ -34,11 +40,38 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 
 	function getAll() {
 		$cond = new Criteria();
+		$cond->add(UserByAffiliatePeer::ACTIVE,1);
 		$todosObj = UserByAffiliatePeer::doSelect($cond);
 		return $todosObj;
   }
 
-	function insert($affiliateId,$username,$password,$levelId) {
+  /**
+  * Obtiene todos los usuarios desactivados.
+	*
+	*	@return array Informacion sobre los usuarios
+  */
+	function getDeleteds() {
+		$cond = new Criteria();
+		$cond->add(UserByAffiliatePeer::ACTIVE, 0);
+		$todosObj = UserByAffiliatePeer::doSelect($cond);
+		return $todosObj;
+  }
+
+  /**
+  * Obtiene todos los usuarios desactivados.
+	*
+	* @param int $affiliateId Id del afiliado
+	*	@return array Informacion sobre los usuarios
+  */
+	function getDeletedsByAffiliate($affiliateId) {
+		$cond = new Criteria();
+		$cond->add(UserByAffiliatePeer::AFFILIATEID,$affiliateId);
+		$cond->add(UserByAffiliatePeer::ACTIVE, 0);
+		$todosObj = UserByAffiliatePeer::doSelect($cond);
+		return $todosObj;
+  }
+
+	function create($affiliateId,$username,$password,$levelId) {
 	
 		try{
 		$document = new UserByAffiliate();
@@ -72,15 +105,20 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 
   function delete($id) {
 		$affiliate = UserByAffiliatePeer::retrieveByPk($id);
-		$affiliate->delete();
+		if (UserByAffiliatePeer::DELETEUSERS)
+			$affiliate->delete();
+		else {
+			$affiliate->setActive(0);
+			$affiliate->save();
+		}
 		return true;
   }
 
 
 
 
-	function getUser($id) {
-		   	$obj = UserByAffiliatePeer::retrieveByPK($id);
+	function get($id) {
+		$obj = UserByAffiliatePeer::retrieveByPK($id);
 		return $obj;
 	}
 
@@ -89,8 +127,6 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 		$document = UserByAffiliatePeer::retrieveByPK($id);
 		$document->setUsername($username);
 		$document->setAffiliateId($affiliateId);
-		$document->setActive(1);
-		$document->setCreated(now);
 		$document->setUpdated(now);
 		$document->setLevelId($levelId);
 		if(!empty($password)){
@@ -98,6 +134,74 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 		}
 		$document->save();
 		return;
+  }
+  
+  /**
+  * Obtiene los grupos de usuarios en los cuales es miembro un usuario.
+  *
+  * @param int $id Id del usuario
+  * @return array Grupos de Usuarios
+  */
+  function getGroupsByUser($id) {
+		$cond = new Criteria();
+		$cond->add(UsersByAffiliateUserGroupPeer::USERID, $id);
+		$todosObj = UsersByAffiliateUserGroupPeer::doSelectJoinUsersByAffiliateGroup($cond);
+		return $todosObj;
+  }
+  
+  /**
+  * Agrega un usuario a un grupo de usuarios.
+  *
+  * @param int $user Id del usuario
+  * @param int $group Id del grupo de usuarios
+  * @return boolean true si se agrego correctamente, false sino
+  */
+	function addUserToGroup($user,$group) {
+		try {
+			$userGroup = new UsersByAffiliateUserGroup();
+			$userGroup->setUserId($user);
+			$userGroup->setGroupId($group);
+			$userGroup->save();
+			return true;
+		}
+		catch (PropelException $e) {
+			return false;
+		}
+	}
+	
+  /**
+  * Elimina un usuario de un grupo de usuarios.
+  *
+  * @param int $user Id del usuario
+  * @param int $group Id del grupo de usuarios
+  * @return boolean true si se elimino correctamente, false sino
+  */
+	function removeUserFromGroup($user,$group) {
+		try {
+			$cond = new Criteria();
+			$cond->add(UsersByAffiliateUserGroupPeer::USERID, $user);
+			$cond->add(UsersByAffiliateUserGroupPeer::GROUPID, $group);
+			$todosObj = UsersByAffiliateUserGroupPeer::doSelect($cond);
+			$obj = $todosObj[0];
+			$obj->delete();
+			return true;
+		}
+		catch (PropelException $e) {
+			return false;
+		}
+	}
+	
+	/**
+	* Activa un usuario a partir del id.
+	*
+  * @param int $id Id del usuario
+	*	@return boolean true
+	*/
+  function activate($id) {
+		$user = UserByAffiliatePeer::retrieveByPk($id);
+		$user->setActive(1);
+		$user->save();
+		return true;
   }
 
 } // UserByAffiliatePeer

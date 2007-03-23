@@ -21,6 +21,9 @@ include_once 'UserGroup.php';
  */
 class UserPeer extends BaseUserPeer {
 
+		//Setea si se eliminan realmente los usuarios de la base de datos o se marcan como no activos
+		const DELETEUSERS = false;
+
   /**
   * Obtiene todos los usuarios.
 	*
@@ -175,15 +178,19 @@ class UserPeer extends BaseUserPeer {
 	* Elimina un usuario a partir del id.
 	*
   * @param int $id Id del usuario
-	*	@return boolean true si se elimino correctamente el usuario, false sino
+	*	@return boolean true
 	*/
   function delete($id) {
 		$user = UserPeer::retrieveByPk($id);
-		$user->setActive(0);
-		$user->save();
+		if (UserPeer::DELETEUSERS)
+			$affiliate->delete();
+		else {
+			$user->setActive(0);
+			$user->save();
+		}
 		return true;
   }
-  
+
 	/**
 	* Activa un usuario a partir del id.
 	*
