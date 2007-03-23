@@ -1,14 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("UsersByAffiliateLevelPeer.php");
+require_once("UserByAffiliatePeer.php");
 
-class UsersByAffiliateLevelsDoDeleteAction extends BaseAction {
+class UsersByAffiliateDoAddToGroupAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function UsersByAffiliateLevelsDoDeleteAction() {
+	function UsersByAffiliateDoAddToGroupAction() {
 		;
 	}
 
@@ -43,18 +43,19 @@ class UsersByAffiliateLevelsDoDeleteAction extends BaseAction {
 		}
 
 		$module = "UsersByAffiliate";
-		$section = "Levels";
+
+    $userPeer = new UserByAffiliatePeer();
+
+    if ( !empty($_POST["group"]) && !empty($_POST["user"]) ) {
+			if ( $userPeer->addUserToGroup($_POST["user"],$_POST["group"]) ) {
+				header("Location: Main.php?do=usersByAffiliateList&user=".$_POST["user"]);
+				exit;
+		 }
+		}
 		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+		header("Location: Main.php?do=usersByAffiliateList&user=".$_POST["user"]."&message=notAddedToGroup");
+		exit;
 
-
-    if ( UsersByAffiliateLevelPeer::delete($_GET["level"]) )
-			return $mapping->findForwardConfig('success');
-		else
-			return $mapping->findForwardConfig('failure');
-
-		return $mapping->findForwardConfig('success');
 	}
 
 }

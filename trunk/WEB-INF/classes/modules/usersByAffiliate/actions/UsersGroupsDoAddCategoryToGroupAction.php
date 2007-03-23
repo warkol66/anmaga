@@ -1,14 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("UsersByAffiliateLevelPeer.php");
+require_once("mer/GroupPeer.php");
 
-class UsersByAffiliateLevelsDoDeleteAction extends BaseAction {
+class GroupsDoAddCategoryToGroupAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function UsersByAffiliateLevelsDoDeleteAction() {
+	function GroupsDoAddCategoryToGroupAction() {
 		;
 	}
 
@@ -42,19 +42,20 @@ class UsersByAffiliateLevelsDoDeleteAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "UsersByAffiliate";
-		$section = "Levels";
-		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+		$module = "Users";
 
+    $groupPeer = new GroupPeer();
 
-    if ( UsersByAffiliateLevelPeer::delete($_GET["level"]) )
-			return $mapping->findForwardConfig('success');
-		else
-			return $mapping->findForwardConfig('failure');
+    if ( !empty($_POST["group"]) && !empty($_POST["category"]) ) {
+			if ( $groupPeer->addCategoryToGroup($_POST["category"],$_POST["group"]) ) {
+				header("Location: Main.php?do=groupsList&group=".$_POST["group"]);
+				exit;
+		 }
+		}
 
-		return $mapping->findForwardConfig('success');
+		header("Location: Main.php?do=groupsList&group=".$_POST["group"]."&message=notAddedToGroup");
+		exit;
+
 	}
 
 }

@@ -70,22 +70,47 @@ class UsersByAffiliateDoEditUserAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "Affiliates";
+		$module = "UsersByAffiliate";
 		$smarty->assign("module",$module);
 
+    $userPeer = new UserByAffiliatesPeer();
+    
+		if ( !empty($_SESSION["login_user"]) )
+			$affiliateId = $_POST["affiliateId"];
+		else
+			$affiliateId = $_SESSION["login_user_affiliate"]->getAffiliateId();
 
-		$usersPeer= new UserByAffiliatePeer();
+		if ( $_POST["accion"] == "edicion" ) {
+			//estoy editando un usuario existente
 
+			if ( $_POST["pass"] == $_POST["pass2"] ) {
 
-		if($_POST["password"]!=$_POST["passwordCompare"]){
-			header("Location: Main.php?do=usersByAffiliateAddUser&errormessage=wrongPasswordComparison&id=".$_POST["affiliateId"]);
-			exit;
+				if ( $userPeer->update($_POST["id"],$affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"]) )
+  	    	return $mapping->findForwardConfig('success');
+				else {
+					header("Location: Main.php?do=usersByAffiliateList&user=".$_POST["id"]."&message=errorUpdate");
+					exit;
+				}
+			}
+			else {
+				header("Location: Main.php?do=usersByAffiliateList&user=".$_POST["id"]."&message=wrongPassword");
+				exit;
+			}
+
 		}
+		else {
+		  //estoy creando un nuevo usuario
+		  
+			if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {
 
-		$user=$usersPeer->update($_POST["id"],$_POST["affiliateId"],$_POST["username"],$_POST["password"],$_POST["levelId"]);
-
-
-		return $mapping->findForwardConfig('success');
+				$userPeer->create($affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"]);
+				return $mapping->findForwardConfig('success');
+			}
+			else {
+				header("Location: Main.php?do=usersList&user=&message=wrongPassword");
+				exit;
+			}
+		}
 
 	}
 

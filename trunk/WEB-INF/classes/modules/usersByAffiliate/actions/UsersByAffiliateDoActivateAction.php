@@ -1,14 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("UsersByAffiliateLevelPeer.php");
+require_once("UserByAffiliatePeer.php");
 
-class UsersByAffiliateLevelsDoDeleteAction extends BaseAction {
+class UsersByAffiliateDoActivateAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function UsersByAffiliateLevelsDoDeleteAction() {
+	function UsersByAffiliateDoActivateAction() {
 		;
 	}
 
@@ -43,18 +43,14 @@ class UsersByAffiliateLevelsDoDeleteAction extends BaseAction {
 		}
 
 		$module = "UsersByAffiliate";
-		$section = "Levels";
-		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
 
+    $userPeer = new UserByAffiliatePeer();
 
-    if ( UsersByAffiliateLevelPeer::delete($_GET["level"]) )
+    if ( $userPeer->activate($_GET["user"]) )
 			return $mapping->findForwardConfig('success');
 		else
-			return $mapping->findForwardConfig('failure');
+			return $mapping->findForwardConfig('failure');		
 
-		return $mapping->findForwardConfig('success');
 	}
 
 }

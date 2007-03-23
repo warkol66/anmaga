@@ -1,14 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("UsersByAffiliateLevelPeer.php");
+require_once("mer/GroupPeer.php");
 
-class UsersByAffiliateLevelsDoDeleteAction extends BaseAction {
+class GroupsDoRemoveCategoryFromGroupAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function UsersByAffiliateLevelsDoDeleteAction() {
+	function GroupsDoRemoveCategoryFromGroupAction() {
 		;
 	}
 
@@ -42,19 +42,20 @@ class UsersByAffiliateLevelsDoDeleteAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "UsersByAffiliate";
-		$section = "Levels";
-		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+		$module = "Users";
 
+    $groupPeer = new GroupPeer();
 
-    if ( UsersByAffiliateLevelPeer::delete($_GET["level"]) )
-			return $mapping->findForwardConfig('success');
-		else
-			return $mapping->findForwardConfig('failure');
+    if ( !empty($_GET["group"]) && !empty($_GET["category"]) ) {
+			if ( $groupPeer->removeCategoryFromGroup($_GET["category"],$_GET["group"]) ) {
+				header("Location: Main.php?do=groupsList&group=".$_GET["group"]);
+				exit;
+		 }
+		}
 
-		return $mapping->findForwardConfig('success');
+		header("Location: Main.php?do=groupsList&group=".$_GET["group"]."&message=notRemovedFromGroup");
+		exit;
+
 	}
 
 }
