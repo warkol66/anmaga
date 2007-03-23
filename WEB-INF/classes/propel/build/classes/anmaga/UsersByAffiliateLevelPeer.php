@@ -25,7 +25,7 @@ class UsersByAffiliateLevelPeer extends BaseUsersByAffiliateLevelPeer {
   */
 	function getAll() {
 		$cond = new Criteria();
-		$todosObj = LevelPeer::doSelect($cond);
+		$todosObj = UsersByAffiliateLevelPeer::doSelect($cond);
 		return $todosObj;
   }
   
@@ -36,9 +36,9 @@ class UsersByAffiliateLevelPeer extends BaseUsersByAffiliateLevelPeer {
   * @return boolean true si se creo el nivel de usuarios correctamente, false sino
 	*/
   function create($name) {
-		$level = new Level();
+		$level = new UsersByAffiliateLevel();
 		$level->setName($name);
-		$bitLevel = LevelPeer::getUnusedBitLevel();
+		$bitLevel = UsersByAffiliateLevelPeer::getUnusedBitLevel();
 		if ($bitLevel !== false)
 			$level->setBitLevel($bitLevel);
 		$level->save();
@@ -47,8 +47,8 @@ class UsersByAffiliateLevelPeer extends BaseUsersByAffiliateLevelPeer {
   
   function getUnusedBitLevel() {
 		$cond = new Criteria();
-		$cond->addAscendingOrderByColumn(LevelPeer::BITLEVEL);
-		$levels = LevelPeer::doSelect($cond);
+		$cond->addAscendingOrderByColumn(UsersByAffiliateLevelPeer::BITLEVEL);
+		$levels = UsersByAffiliateLevelPeer::doSelect($cond);
 		if (empty($levels))
 			return 1;
 		$maxLevel = $levels[count($levels)-1]->getBitLevel();
@@ -70,7 +70,7 @@ class UsersByAffiliateLevelPeer extends BaseUsersByAffiliateLevelPeer {
 	*	@return boolean true si se elimino correctamente el nivel de usuarios, false sino
 	*/
   function delete($id) {
-		$level = LevelPeer::retrieveByPk($id);
+		$level = UsersByAffiliateLevelPeer::retrieveByPk($id);
 		$level->delete();
 		return true;
   }
@@ -82,7 +82,7 @@ class UsersByAffiliateLevelPeer extends BaseUsersByAffiliateLevelPeer {
   * @return array Informacion del nivel de usuarios
   */
   function get($id) {
-		$level = LevelPeer::retrieveByPk($id);
+		$level = UsersByAffiliateLevelPeer::retrieveByPk($id);
 		return $level;
   }
 
@@ -94,7 +94,7 @@ class UsersByAffiliateLevelPeer extends BaseUsersByAffiliateLevelPeer {
   * @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
   function update($id,$name) {
-		$level = LevelPeer::retrieveByPK($id);
+		$level = UsersByAffiliateLevelPeer::retrieveByPK($id);
 		$level->setName($name);
 		$level->save();
 		return true;
