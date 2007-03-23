@@ -1,14 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("UsersByAffiliateLevelPeer.php");
+require_once("UsersByAffiliateGroupPeer.php");
 
-class UsersByAffiliateLevelsDoDeleteAction extends BaseAction {
+class UsersByAffiliateGroupsListAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function UsersByAffiliateLevelsDoDeleteAction() {
+	function UsersByAffiliateGroupsListAction() {
 		;
 	}
 
@@ -42,17 +42,32 @@ class UsersByAffiliateLevelsDoDeleteAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "UsersByAffiliate";
-		$section = "Levels";
+		$module = "Groups";
+		$section = "Configure";
 		
     $smarty->assign("module",$module);
     $smarty->assign("section",$section);
 
+		$groups = UsersByAffiliateGroupPeer::getAll();
+		$smarty->assign("groups",$groups);
 
-    if ( UsersByAffiliateLevelPeer::delete($_GET["level"]) )
-			return $mapping->findForwardConfig('success');
-		else
-			return $mapping->findForwardConfig('failure');
+    $smarty->assign("message",$_GET["message"]);
+
+    if ( !empty($_GET["group"]) ) {
+			//voy a editar un grupo
+
+			try {
+				$group = UsersByAffiliateGroupPeer::get($_GET["group"]);
+				$smarty->assign("currentGroup",$group);
+				$groupCategories = $group->getCategories();
+				$smarty->assign("currentGroupCategories",$groupCategories);
+        $notAssignedCategories = $group->getNotAssignedCategories();
+		    $smarty->assign("categories",$notAssignedCategories);
+	    	$smarty->assign("accion","edicion");
+	  	}
+			catch (PropelException $e) {
+			}
+		}
 
 		return $mapping->findForwardConfig('success');
 	}

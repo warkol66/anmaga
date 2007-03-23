@@ -2,6 +2,8 @@
 
 require_once("BaseAction.php");
 require_once("UserByAffiliatePeer.php");
+require_once("UsersByAffiliateGroupPeer.php");
+require_once("UsersByAffiliateLevelPeer.php");
 require_once("AffiliatePeer.php");
 
 class UsersByAffiliateListAction extends BaseAction {
@@ -54,16 +56,52 @@ class UsersByAffiliateListAction extends BaseAction {
 		//Si esta logueado un usuario comun
 		if (!empty($_SESSION["login_user"])) {
 			$affiliateId = $_GET["affiliateId"];
-			if(!empty($affiliateId))
+			if(!empty($affiliateId)) {
 				$users = $usersPeer->getUsersByAffiliate($affiliateId);
-    	else
+				$deletedUsers = $usersPeer->getDeletedsByAffiliate($affiliateId);
+			}
+    	else {
 				$users = $usersPeer->getAll();
+				$deletedUsers = $usersPeer->getDeleteds();
+			}
 			$affiliates = AffiliatePeer::getAll();
 			$smarty->assign("affiliates",$affiliates);
 		}
 		else {
 		  $affiliateId = $_SESSION["login_user_affiliate"]->getAffiliateId();
 			$users = $usersPeer->getUsersByAffiliate($affiliateId);
+			$deletedUsers = $usersPeer->getDeletedsByAffiliate($affiliateId);
+		}
+
+		$smarty->assign("deletedUsers",$deletedUsers);
+		
+		$smarty->assign("affiliateId",$affiliateId);
+
+    if ( !empty($_GET["user"]) ) {
+			//voy a editar un usuario
+
+			try {
+				$user = $usersPeer->get($_GET["user"]);
+				$smarty->assign("currentUser",$user);
+				$groups = $usersPeer->getGroupsByUser($_GET["user"]);
+				$smarty->assign("currentUserGroups",$groups);
+				$groups = UsersByAffiliateGroupPeer::getAll();
+				$smarty->assign("groups",$groups);
+				$levels = UsersByAffiliateLevelPeer::getAll();
+				$smarty->assign("levels",$levels);
+	    	$smarty->assign("accion","edicion");
+	  	}
+			catch (PropelException $e) {
+      	$smarty->assign("accion","creacion");
+			}
+		}
+		else if ( isset($_GET["user"]) ) {
+			//voy a crear un usuario nuevo
+
+			$levels = UsersByAffiliateLevelPeer::getAll();
+			$smarty->assign("levels",$levels);
+
+			$smarty->assign("accion","creacion");
 		}
 
 		$smarty->assign("users",$users);
