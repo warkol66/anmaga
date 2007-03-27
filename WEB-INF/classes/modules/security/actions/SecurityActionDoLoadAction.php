@@ -2,9 +2,9 @@
 
 
 require_once("BaseAction.php");
-require_once("mer/SecurityActionPeer.php");
-require_once("mer/GroupPeer.php");
-require_once("mer/GroupCategoryPeer.php");
+require_once("SecurityActionPeer.php");
+require_once("GroupPeer.php");
+require_once("GroupCategoryPeer.php");
 
 
 /**
@@ -82,7 +82,7 @@ class SecurityActionDoLoadAction extends BaseAction {
 
 				if($pareAction[$action]) {
 					$pare=$pareAction[$action];
-					SecurityActionPeer::addAction($pare,$modulos[$action],$accesses[$action]);
+					SecurityActionPeer::addActionWithPair($action,$modulos[$action],$accesses[$action],$pare);
 				}
 
 				SecurityActionPeer::addAction($action,$modulos[$action],$accesses[$action]);
