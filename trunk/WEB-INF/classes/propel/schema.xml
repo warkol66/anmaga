@@ -64,7 +64,9 @@
 		<column name="module" type="VARCHAR" size="100" description="Modulo" />
 		<column name="section" type="VARCHAR" size="100" description="Seccion"/>
     <column name="access" type="INTEGER" description="El acceso a ese action" />
+    <column name="accessUsersByAffiliate" type="INTEGER" description="El acceso a ese action para los usuarios por afiliados" />
 		<column name="active" type="INTEGER" description="Si el action esta activo o no" />
+    <column name="pair" type="VARCHAR" size="100" description="Par del Action" />
   </table>
 
 

@@ -30,6 +30,18 @@ class LevelPeer extends BaseLevelPeer {
   }
   
   /**
+  * Obtiene todos los niveles de usuarios con bitlevel mayor al pasado como parametro.
+	*
+	*	@return array Informacion sobre los niveles de usuarios
+  */
+	function getAllWithBitLevelGreaterThan($bitLevel) {
+		$cond = new Criteria();
+		$cond->add(LevelPeer::BITLEVEL, $bitLevel,Criteria::GREATER_THAN);
+		$todosObj = LevelPeer::doSelect($cond);
+		return $todosObj;
+  }
+  
+  /**
   * Crea un nivel de usuarios nuevo.
   *
   * @param string $name Nombre del nivel de usuarios
