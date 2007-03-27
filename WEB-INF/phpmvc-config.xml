@@ -263,7 +263,23 @@
                name = "securityActionList"
               scope = "request"
            validate = "true">
-		<forward name="success"  path="security_action_list.tpl" />
+		<forward name="success"  path="SecurityActionList.tpl" />
+    </action>
+    
+    <action    path = "securityActionListUsersByAffiliate"
+               type = "SecurityActionListUsersByAffiliateAction"
+               name = "securityActionListUsersByAffiliate"
+              scope = "request"
+           validate = "true">
+		<forward name="success"  path="SecurityActionListUsersByAffiliate.tpl" />
+    </action>
+    
+    <action    path = "securityActionDoSaveByAffiliate"
+               type = "SecurityActionDoSaveByAffiliateAction"
+               name = "securityActionDoSaveByAffiliateAction"
+              scope = "request"
+           validate = "true">
+		<forward name="success" path="/Main.php?do=securityActionListUsersByAffiliate" redirect='true'/>
     </action>
 
     <action    path = "securityActionLoad"
@@ -271,7 +287,7 @@
                name = "securityActionLoad"
               scope = "request"
            validate = "true">
-		<forward name="success"  path="security_action_load.tpl" />
+		<forward name="success"  path="SecurityActionLoad.tpl" />
     </action>
 	
     <action    path = "securityActionDoLoad"
@@ -279,14 +295,15 @@
                name = "securityActionDoLoad"
               scope = "request"
            validate = "true">
-		<forward name="success" path="Main.php?do=securityActionLoad" redirect='true'/>
+		<forward name="success" path="/Main.php?do=securityActionLoad" redirect='true'/>
     </action>
+
     <action    path = "securityActionDoSave"
                type = "SecurityActionDoSaveAction"
                name = "securityActionDoSave"
               scope = "request"
            validate = "true">
-		<forward name="success" path="Main.php?do=securityActionList" redirect='true'/>
+		<forward name="success" path="/Main.php?do=securityActionList" redirect='true'/>
     </action>
 	</action-mappings>
 <!-- End Module Security -->
