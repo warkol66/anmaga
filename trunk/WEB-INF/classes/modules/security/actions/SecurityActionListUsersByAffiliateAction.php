@@ -4,7 +4,7 @@
 
 require_once("BaseAction.php");
 require_once("SecurityActionPeer.php");
-require_once("LevelPeer.php");
+require_once("UsersByAffiliateLevelPeer.php");
 
 
 /**
@@ -15,12 +15,12 @@ require_once("LevelPeer.php");
 * @version 1.0
 * @public
 */
-class SecurityActionListAction extends BaseAction {
+class SecurityActionListUsersByAffiliateAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function SecurityActionListAction() {
+	function SecurityActionListUsersByAffiliateAction() {
 		;
 	}
 
@@ -71,28 +71,30 @@ class SecurityActionListAction extends BaseAction {
 				$moduleName[$i]=$module;
 			}
 		}
-		
-		$loginUser=$_SESSION['login_user'];
-		$userLevel=$loginUser->getLevelid();
+
+		if (!empty($_SESSION['login_user']))
+			$userLevel = 1;
+		else
+			$userLevel = $_SESSION['login_user_by_affiliate']->getLevelId();
 
 		if(isset($_GET["module"])) {
 			if($_GET["module"]!='todos'){
-				$actions = SecurityActionPeer::getAllByModuleAndBitLevel($_GET["module"],$userLevel);
+				$actions = SecurityActionPeer::getAllByModuleAndBitLevelUsersByAffiliate($_GET["module"],$userLevel);
 				$moduleView=$_POST["module"];
 			}
 			else {
 				//obtengo todos los actions de la base de datos y los envio al smarty
-				$actions = SecurityActionPeer::getAllByBitLevel($userLevel);
+				$actions = SecurityActionPeer::getAllByBitLevelUsersByAffiliate($userLevel);
 				$moduleView=$_GET["module"];
 			}
 		}	else {
 			//obtengo todos los actions de la base de datos y los envio al smarty
-			$actions = SecurityActionPeer::getAllByBitLevel($userLevel);
+			$actions = SecurityActionPeer::getAllByBitLevelUsersByAffiliate($userLevel);
 			$moduleView='todos';
 		}
 
 		//obtengo todos los niveles con bitlevel mayor al del usuario logueado
-    $levels = LevelPeer::getAllWithBitLevelGreaterThan($userLevel);
+    $levels = UsersByAffiliateLevelPeer::getAllWithBitLevelGreaterThan($userLevel);
 
 		//contiene un nivel a comparar, equivalente a 2¨30 -1
 		$levelSave=1073741823;

@@ -2,9 +2,9 @@
 
 
 require_once("BaseAction.php");
-require_once("mer/SecurityActionPeer.php");
-require_once("mer/GroupPeer.php");
-require_once("mer/GroupCategoryPeer.php");
+require_once("SecurityActionPeer.php");
+require_once("GroupPeer.php");
+require_once("GroupCategoryPeer.php");
 
 
 /**
@@ -70,10 +70,10 @@ class SecurityActionLoadAction extends BaseAction {
 		*
 		* @var string $modulos que contendra los actions
 		*/
-		
+
 		$dir = "WEB-INF/classes/modules/";
 				$dh  = opendir($dir);
-				while (false !== ($nombre_modulo = readdir($dh))) 
+				while (false !== ($nombre_modulo = readdir($dh)))
 				{
 					if ($nombre_modulo[0]!='.')
 					{	$modulesName[$i]=$nombre_modulo;
@@ -92,11 +92,11 @@ class SecurityActionLoadAction extends BaseAction {
 
 			//creo un nuevo elemento de la clase Security
 			$securityPeer = new SecurityActionPeer();
-			
+
 			// Obtengo todos los actions existentes
 			$securities = $securityPeer->getAll();
-		
-		
+
+
 			$i=0;
 			$actionArray = array ();
 		/*
@@ -109,33 +109,39 @@ class SecurityActionLoadAction extends BaseAction {
 			foreach ($module as $action){
 				$pareAction= array ();
 
+        $pareAction[0]=$action;
+
 				if(ereg("(.*)([a-z]Do[A-Z])(.*)",$action,$parts)){
 
 					$actionsWithoutDo=$parts[1].$parts[2][0].$parts[2][3].$parts[3];
-					
+
 					//si existe el action sin do
 					if(in_array($actionsWithoutDo,$module)){
 						$pareAction[0]=$actionsWithoutDo;
 						$pareAction[1]=$action;
 					}
-					else 	$pareAction[0]=$action;
+					else	if(ereg("(.*)(X)$",$actionsWithoutDo,$parts2)){
+						if(in_array($parts2[1],$module)){ // Si existe sin Do y sin X
+							$pareAction[0]=$parts2[1];
+							$pareAction[1]=$action;
+						}
+					}
 				}
-				else 	$pareAction[0]=$action;
 
 				$actionArray[$name][] = $pareAction;
 			}
-			
+
 			foreach ($actionArray[$name] as $eachAction){
 
-				if (!empty($eachAction[1])) {	
+				if (!empty($eachAction[1])) {
 					unset($eachAction[1]);
 					$actionSearch=(array_search($eachAction,$actionArray[$name]));
-					
+
 					if(!empty($actionSearch)){
 						unset($actionArray[$name][$actionSearch]);
 					}
 				}
-				
+
 			}
 		}
 
