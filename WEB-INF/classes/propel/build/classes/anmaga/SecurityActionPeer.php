@@ -34,6 +34,46 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		$todosObj = SecurityActionPeer::doSelect($cond);
 		return $todosObj;
   }
+  
+	/**
+	* Obtiene todos los actions cargados en la base de datos por permiso para el bitlevel
+	*
+	* @param int $bitLevel Bit Level
+	* @return array Actions
+	*/
+	function getAllByBitLevel($bitLevel) {
+		$allActions = SecurityActionPeer::getAll();
+		return SecurityActionPeer::getOnlyActionsWithAccess($allActions,$bitLevel);
+  }
+  
+	/**
+	* Obtiene todos los actions cargados en la base de datos por permiso para el bitlevelUsersByAffiliate
+	*
+	* @param int $bitLevel Bit Level
+	* @return array Actions
+	*/
+	function getAllByBitLevelUsersByAffiliate($bitLevel) {
+		$allActions = SecurityActionPeer::getAll();
+		return SecurityActionPeer::getOnlyActionsWithAccess($allActions,$bitLevel);
+  }
+  
+  function getOnlyActionsWithAccess($allActions,$bitLevel) {
+		$actions = array();
+		foreach ($allActions as $action) {
+			if (($action->getAccess() & $bitLevel) > 0)
+				$actions[] = $action;
+		}
+		return $actions;
+  }
+  
+  function getOnlyActionsWithAccessUsersByAffiliate($allActions,$bitLevel) {
+		$actions = array();
+		foreach ($allActions as $action) {
+			if (($action->getAccessUsersByAffiliate() & $bitLevel) > 0)
+				$actions[] = $action;
+		}
+		return $actions;
+  }
 
 
 	function delete($action)
@@ -55,14 +95,26 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	* @param string $action con el nombre del action a limpiar
 	*/
 
-  function clearAccess($action) {
-
+  function clearAccess($action,$baseLevel) {
 		$obj = new securityAction();
 		$obj = SecurityActionPeer::retrieveByPK($action);
-		$obj->setAccess(0);
+		$obj->setAccess($baseLevel);
 		$obj->save();
 		return;
+  }
 
+	/**
+	* Limpia el acceso UsersByAffiliate de un determinado action
+	*
+	* @param string $action con el nombre del action a limpiar
+	*/
+
+  function clearAccessUsersByAffiliate($action,$baseLevel) {
+		$obj = new securityAction();
+		$obj = SecurityActionPeer::retrieveByPK($action);
+		$obj->setAccessUsersByAffiliate($baseLevel);
+		$obj->save();
+		return;
   }
 
 
@@ -80,6 +132,29 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		$security = new securityAction();
 		$security->setAction($action);
 		$security->setModule($modulo);
+		$security->setSection(1);
+		$security->setAccess($access);
+		$security->save();
+		}catch (PropelException $e) {}
+		return;
+	}
+	
+	/**
+	*  Guarda un action con su par en la base de datos
+	*
+	* @param string $action con el nombre del action
+	* @param string $modulo con el nombre del modulo al cual pertenece el action
+	* @param int $access con el numero de acceso que tendrá el action
+	* @param string $pair Nombre del par
+	* @return true si todo está ok
+	*/
+	function addActionWithPair($action,$modulo,$access,$pair=null) {
+		try{
+		$security = new securityAction();
+		$security->setAction($action);
+		$security->setModule($modulo);
+		if ($pair)
+			$security->setPair($pair);
 		$security->setSection(1);
 		$security->setAccess($access);
 		$security->save();
@@ -104,10 +179,22 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		$obj->save();
 		return;
 	}
+	
+	/**
+	* Actualiza el action con el acceso UsersByAffiliate
+	*
+	* @param string $action con el nombre del action
+	* @param int $access con el numero de acceso que tendrá el action
+	* @return true si todo está ok
+	*/
 
-
-
-
+	function setNewAccessUsersByAffiliate($action,$access) {
+		$obj = new securityAction();
+		$obj = SecurityActionPeer::retrieveByPK($action);
+		$obj->setAccessUsersByAffiliate($access);
+		$obj->save();
+		return;
+	}
 
 	function get($action) {
 		   	$obj = SecurityActionPeer::retrieveByPK($action);
@@ -128,6 +215,16 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
     $obj = SecurityActionPeer::doSelect($criteria);
     return $obj;
 	}
+	
+	function getAllByModuleAndBitLevelUsersByAffiliate($module,$bitLevel) {
+		$allActions = SecurityActionPeer::getAllByModule($module);
+		return SecurityActionPeer::getOnlyActionsWithAccessUsersByAffiliate($allActions,$bitLevel);
+	}
+	
+	function getAllByModuleAndBitLevel($module,$bitLevel) {
+		$allActions = SecurityActionPeer::getAllByModule($module);
+		return SecurityActionPeer::getOnlyActionsWithAccess($allActions,$bitLevel);
+	}
 
 	
 	function getAllByAction($action) {
@@ -137,6 +234,17 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 			return true;
 			else    return false;
 	}
+	
+	function getByPair($pair) {
+		$criteria = new Criteria();
+		$criteria->add(SecurityActionPeer::PAIR, $pair);
+    $objs = SecurityActionPeer::doSelect($criteria);
+    if (!empty($objs[0]))
+    	return $objs[0];
+    else
+    	return false;
+	}
+
 
 
 
