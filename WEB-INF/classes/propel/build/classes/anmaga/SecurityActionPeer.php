@@ -134,6 +134,7 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		$security->setModule($modulo);
 		$security->setSection(1);
 		$security->setAccess($access);
+		$security->setAccessUsersByAffiliate($access);
 		$security->save();
 		}catch (PropelException $e) {}
 		return;
@@ -157,6 +158,7 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 			$security->setPair($pair);
 		$security->setSection(1);
 		$security->setAccess($access);
+		$security->setAccessUsersByAffiliate($access);
 		$security->save();
 		}catch (PropelException $e) {}
 		return;
