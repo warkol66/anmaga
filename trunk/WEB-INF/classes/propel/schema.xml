@@ -186,4 +186,22 @@
  </table>
 
 
+<table name="modules_module" phpName='Module' description=" Registro de modulos">
+  <column name="name" required="true" primaryKey='true' size="255" type="VARCHAR"  description="nombre del modulo"/>
+   <column size="255" type="VARCHAR" name="label" description="Etiqueta" />
+    <column size="255" type="VARCHAR" name="description" description="Descripcion del modulo" />
+  <column name="active" required="true" type="BOOLEAN"  default="0" description="Estado del modulo"/>
+  <column name="alwaysActive" required="true" type="BOOLEAN"  default="0" description="Modulo siempre activo"/>
+<foreign-key foreignTable="modules_dependency" onDelete="cascade">
+     <reference local="name" foreign="module"/>
+  </foreign-key> 
+ 
+ </table>
+
+ <table name="modules_dependency" phpName='ModuleDependency' description="Dependencia de modulos ">
+   <column size="255" type="VARCHAR" primaryKey='true' name="module" description="Modulo" />
+    <column size="255" type="VARCHAR" primaryKey='true' name="dependence" description="Dependiente" />
+ </table>
+
+
   </database>
