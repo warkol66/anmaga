@@ -204,4 +204,19 @@
  </table>
 
 
+<table phpName="ActionLog" name="log_actionLog" description="logs del sistema">
+	<column name="id" type="INTEGER"  required="true" description="Id log" primaryKey="true" autoIncrement="true"  />
+	<column name="userId" type="INTEGER"  required="true" description="Id del usuario" />
+	<column name="affiliateId" type="INTEGER"  required="true" description="Id del afiliado" />
+	<column name="datetime" type="TIMESTAMP"  required="true" description="Fecha en que se logueo el dato" />
+	<column name="action" type="VARCHAR" size="100"  required="true" description="action en que se logueo el dato" />
+	<column name="message" type="VARCHAR" size="100"  required="true" description="mensaje del log"/>
+	<foreign-key foreignTable="users_user" >
+		<reference local="userId" foreign="id" />
+	</foreign-key>
+	<foreign-key foreignTable="SecurityAction" >
+		<reference local="action" foreign="action" />
+	</foreign-key>
+</table>
+
   </database>
