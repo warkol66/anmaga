@@ -78,7 +78,7 @@ class BaseAction extends Action {
 
 		$systemUrl = "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/"))."/Main.php";
 		$smarty->assign("systemUrl",$systemUrl);
-		
+
 		header("Content-type: text/html; charset=UTF-8");
 
 		$noCheckLogin = array();
@@ -141,7 +141,7 @@ class BaseAction extends Action {
 		$smarty->register_outputfilter(array($this->template,"smarty_add_template"));
 
 		if (!empty($GLOBALS['_NG_LANGUAGE_']))
-			$smarty->register_outputfilter("smarty_outputfilter_i18n");
+			$smarty->register_outputfilter("smarty_outputfilter_i18n");  
 	}
 }
 ?>

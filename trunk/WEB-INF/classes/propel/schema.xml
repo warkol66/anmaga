@@ -204,7 +204,7 @@
  </table>
 
 
-<table phpName="ActionLog" name="log_actionLog" description="logs del sistema">
+<!--<table phpName="ActionLog" name="log_actionLog" description="logs del sistema">
 	<column name="id" type="INTEGER"  required="true" description="Id log" primaryKey="true" autoIncrement="true"  />
 	<column name="userId" type="INTEGER"  required="true" description="Id del usuario" />
 	<column name="affiliateId" type="INTEGER"  required="true" description="Id del afiliado" />
@@ -217,6 +217,30 @@
 	<foreign-key foreignTable="SecurityAction" >
 		<reference local="action" foreign="action" />
 	</foreign-key>
-</table>
+</table>-->
+
+  <table phpName="Node" name="node" description="Nodo del Arbol" >
+    <column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id del nodo" primaryKey='true' />
+    <column name="name" size="255" type="VARCHAR" required="true" description="Nombre del nodo" />
+    <column name="kind" size="255" type="VARCHAR" required="true" description="Tipo de nodo" />
+    <column name="objectId" type="INTEGER" description="Id del objeto relacionado al nodo" />
+    <column name="parentId" type="INTEGER" description="Id del nodo padre" />
+    <column name="position" type="INTEGER" description="Orden entre los hermanos del nodo" />
+		<foreign-key foreignTable="node" >
+			<reference local="parentId" foreign="id" />
+		</foreign-key>
+  </table>
+  
+  <table phpName="Product" name="product" description="Producto">
+    <column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id del producto" primaryKey='true' />
+    <column name="code" size="255" type="VARCHAR" description="Codigo del producto" />
+    <column name="description" size="255" type="VARCHAR" required="false" description="Descripcion" />
+    <column name="price" type="FLOAT" description="Precio del producto" />
+  </table>
+  
+  <table phpName="ProductCategory" name="productCategory" description="Categorias de Productos">
+    <column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id de la categoria" primaryKey='true' />
+    <column name="description" size="255" type="VARCHAR" required="false" description="Descripcion" />
+  </table>
 
   </database>
