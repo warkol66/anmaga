@@ -1,6 +1,6 @@
 <?php
 
-require_once 'mer/om/BaseActionLog.php';
+require_once 'om/BaseActionLog.php';
 
 
 /**
