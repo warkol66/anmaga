@@ -248,6 +248,18 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	}
 
 
+function getModules() {
+   
+	$criteria = new Criteria();
+	$criteria->clearSelectColumns()->addSelectColumn(SecurityActionPeer::MODULE);
+	$criteria->setDistinct(MODULE);
+   $rs = BasePeer::doSelect($criteria);
+   $result = array();
+   while($rs->next()) {
+     $result[] = $rs->get(1);
+   }
+   return $result;
+ }
 
 
 } // SecurityActionPeer

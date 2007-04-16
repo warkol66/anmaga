@@ -1,10 +1,10 @@
 <?php
 
   // include base peer class
-  require_once 'mer/om/BaseActionLogPeer.php';
+  require_once 'om/BaseActionLogPeer.php';
   
   // include object class
-  include_once 'mer/ActionLog.php';
+  include_once 'ActionLog.php';
 
 
 /**
