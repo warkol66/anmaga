@@ -12,8 +12,7 @@
 
 
 include_once 'BaseAction.php';
-
-require_once("LogsPeer.php");
+require_once("ActionLogPeer.php");
 
 
 /**
@@ -70,7 +69,7 @@ class LogsPurgeAction extends BaseAction {
 	    $smarty->right_delimiter = "-|";
 
 
-		$logs = new LogsPeer();
+		$logs = new ActionLogPeer();
 
 			
 

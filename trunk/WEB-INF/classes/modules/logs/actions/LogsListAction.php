@@ -103,9 +103,10 @@ class LogsListAction extends BaseAction {
 		// obtengo los afiliados para posteriormente listarlos
 		
 		
-		@include_once('mer/AffiliatePeer.php');
+		@include_once('AffiliatePeer.php');
 		if (class_exists('AffiliatePeer')){
-			$affiliates=$logs->getAffiliates();
+			$affiliatePeer= new AffiliatePeer();
+			$affiliates=$affiliatePeer->getAll();
 			$smarty->assign("affiliates",$affiliates); 
 		}
 		
@@ -115,7 +116,14 @@ class LogsListAction extends BaseAction {
 		// corte de control en caso de que se haya presionado en buscar
 		if(isSet($_GET['saveButton'])) {
 
-			$selectUser=$_GET['selectUser'];
+			//////////
+			// Parametros filtro		
+			$selectedUser=$_GET['selectUser'];
+
+
+
+			$module=$_GET["module"];
+
 			$dateFromExplode = explode("-", $_GET["dateFrom"]);
 			$dateFrom = date("Y-m-d",mktime(0,0,0,$dateFromExplode[1],$dateFromExplode[0],$dateFromExplode[2]));
 			
@@ -127,22 +135,25 @@ class LogsListAction extends BaseAction {
 			/////////
 			// si se filtra por afiliado, se muestra
 			if(isset($_GET["affiliate"]) && $_GET["affiliate"] != 'todos' ){
-					$affiliateId=$_GET["affiliate"];
-					$module=$_GET["module"];
-					$selectedLogs=$logs->selectAllByDateAndAffiliatePaginated($dateFrom,$dateTo,$affiliateId,$module,$_GET["page"]);
 
-					if ($selectUser != -1) $selectedLogs=$logs->selectAllByDateUserAndAffiliatePaginated($dateFrom,$dateTo,$module,$_GET["page"]);
+					$affiliateId=$_GET["affiliate"];
+					//$selectedLogs=$logs->selectAllByDateUserAndAffiliatePaginated($dateFrom,$dateTo,$selectedUser,$affiliateId,$module,$_GET["page"]);
 					
+					$selectedLogs=$logs->selectAllByRequirementsAndAffiliatePaginated($dateFrom,$dateTo,$selectedUser,$affiliateId,$module,$_GET["page"]);
+
 					////////////
 					// se obtiene e informa el nombre del afiliado
 					if (class_exists('AffiliatePeer')){
 						$affiliateName=$logs->getAffiliateName($affiliateId);
 						$smarty->assign("affiliateName",$affiliateName['name']); 
 					}
+					$url= 'Main.php?do=logsList&saveButton='.$_GET['saveButton'].'&dateFrom='.$dateFrom.'&dateTo='.$dateTo.'&module='.$_GET["module"].'&affiliate='.$affiliateId.'&selectUser='.$selectedUser;
 			}
 			else 	{
-				if ($selectUser == -1) $selectedLogs=$logs->selectAllByDatePaginated($dateFrom,$dateTo,$_GET["module"],$_GET["page"]);
-				else $selectedLogs=$logs->selectAllByDateAndUserPaginated($dateFrom,$dateTo,$selectUser,$module,$_GET["page"]);
+				$selectedLogs=$logs->selectAllByRequirementsPaginated($dateFrom,$dateTo,$selectedUser,$module,$_GET["page"]);
+			
+				$url= 'Main.php?do=logsList&saveButton='.$_GET['saveButton'].'&dateFrom='.$dateFrom.'&dateTo='.$dateTo.'&module='.$_GET["module"].'&selectUser='.$selectedUser;			
+			
 			}
 	
 
@@ -151,7 +162,7 @@ class LogsListAction extends BaseAction {
 			$smarty->assign("DISPLAY",2); 
 			$smarty->assign("logs",$selectedLogs->getResult());
 			$smarty->assign("pager",$selectedLogs);
-			$url= 'Main.php?do=logsList&saveButton='.$_GET['saveButton'].'&dateFrom='.$dateFrom.'&dateTo='.$dateTo;
+
 
 			$smarty->assign("url",$url);
 

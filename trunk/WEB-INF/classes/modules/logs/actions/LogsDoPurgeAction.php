@@ -13,7 +13,8 @@
 
 include_once 'BaseAction.php';
 
-require_once("LogPeer.php");
+require_once("ActionLogPeer.php");
+
 
 
 /**
@@ -78,7 +79,7 @@ class LogsDoPurgeAction extends BaseAction {
 			$dateTo = date("Y-m-d",mktime(0,0,0,$dateToExplode[1],$dateToExplode[0],$dateToExplode[2]));
 			
 
-			$logs = new LogsPeer();
+			$logs = new ActionLogPeer();
 			
 			$deleteLogs=$logs->deleteLogs($dateFrom,$dateTo);
 				/////////////////////
