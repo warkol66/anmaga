@@ -1,5 +1,5 @@
 </script>
-<script src="/mer/trunk/scripts/datePicker.js">
+<script src="/scripts/datePicker.js">
 </script>
 <table width="100%"  border="0" cellpadding="0" cellspacing="0">
   <tr> 

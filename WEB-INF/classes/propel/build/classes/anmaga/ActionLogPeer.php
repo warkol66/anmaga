@@ -26,60 +26,36 @@ class ActionLogPeer extends BaseActionLogPeer {
 
 
 
+		
 	///////
-	/// selecciona datos sin affiliate, por fecha
-	function selectAllByDatePaginated ($dateFrom,$dateTo,$module,$page=1,$perPage=10) {
-
+	/// selecciona datos por requerimientos
+	function selectAllByRequirementsPaginated ($dateFrom,$dateTo,$selectUser,$module,$page=1,$perPage=10) {
+		echo "1";
 		if (empty($page))
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->addAscendingOrderByColumn(ActionLogPeer::ID);
+
+		echo "datefrom : $dateFrom,,,,, dateto: $dateTo";
 		$cond->add(ActionLogPeer::DATETIME, $dateFrom." 00:00:00", Criteria::GREATER_THAN );
 		$cond->add(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_THAN );
 		////////////
 		// Version con afiliado
-		@include_once('mer/AffiliatePeer.php');
+		@include_once('AffiliatePeer.php');
 		if (class_exists('AffiliatePeer')){
 			$cond->addJoin(ActionLogPeer::AFFILIATEID, AffiliatePeer::ID,Criteria::LEFT_JOIN);
 		}
 
-		if($module != 1)
-		$cond->add(ActionLogPeer::ACTION, $module."%", Criteria::LIKE );
 
-
-		$cond->addJoin(ActionLogPeer::ACTION, SecurityActionPeer::ACTION,Criteria::LEFT_JOIN);		
-		
-
-		$pager = new PropelPager($cond,"ActionLogPeer", "doSelect",$page,$perPage);
-		return $pager;
-	}
-
-	///////
-	/// selecciona datos por fecha y usuario
-	function selectAllByDateAndUserPaginated ($dateFrom,$dateTo,$selectUser,$module,$page=1,$perPage=10) {
-
-		if (empty($page))
-			$page = 1;
-		require_once("propel/util/PropelPager.php");
-		$cond = new Criteria();
-		$cond->addAscendingOrderByColumn(ActionLogPeer::ID);
-		$cond->add(ActionLogPeer::DATETIME, $dateFrom." 00:00:00", Criteria::GREATER_THAN );
-		$cond->add(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_THAN );
+		if ($selectUser != -1)
 		$cond->add(ActionLogPeer::USERID, $selectUser);
 
-		////////////
-		// Version con afiliado
-		@include_once('mer/AffiliatePeer.php');
-		if (class_exists('AffiliatePeer')){
-			$cond->addJoin(ActionLogPeer::AFFILIATEID, AffiliatePeer::ID,Criteria::LEFT_JOIN);
-		}
 
 		if($module != 1)
-		$cond->add(ActionLogPeer::ACTION, $module."%", Criteria::LIKE );
+		$cond->add(SecurityActionPeer::MODULE, $module);
 
 		$cond->addJoin(ActionLogPeer::ACTION, SecurityActionPeer::ACTION,Criteria::LEFT_JOIN);		
-		
 
 		$pager = new PropelPager($cond,"ActionLogPeer", "doSelect",$page,$perPage);
 		return $pager;
@@ -88,9 +64,9 @@ class ActionLogPeer extends BaseActionLogPeer {
 
 
 	///////
-	/// selecciona datos con affiliate, y fecha como filtros
-	function selectAllByDateAndAffiliatePaginated ($dateFrom,$dateTo,$affiliateId,$module,$page=1,$perPage=10) {
-
+	/// selecciona datos con requerimientos y afiliado
+	function selectAllByRequirementsAndAffiliatePaginated  ($dateFrom,$dateTo,$selectUser,$affiliate,$module,$page=1,$perPage=10) {
+		echo "2";
 		if (empty($page))
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
@@ -105,70 +81,13 @@ class ActionLogPeer extends BaseActionLogPeer {
 			$cond->addJoin(ActionLogPeer::AFFILIATEID, AffiliatePeer::ID,Criteria::LEFT_JOIN);
 		}
 
-		if($module != 1)
-		$cond->add(ActionLogPeer::ACTION, $module."%", Criteria::LIKE );
-
-		$cond->addJoin(ActionLogPeer::ACTION, SecurityActionPeer::ACTION,Criteria::LEFT_JOIN);		
-
-		$pager = new PropelPager($cond,"ActionLogPeer", "doSelect",$page,$perPage);
-		return $pager;
-	}
-
-
-	///////
-	/// selecciona datos con affiliate, fecha y usuario como filtros
-	function selectAllByDateUserAndAffiliatePaginated ($dateFrom,$dateTo,$affiliateId,$module,$page=1,$perPage=10) {
-
-		if (empty($page))
-			$page = 1;
-		require_once("propel/util/PropelPager.php");
-		$cond = new Criteria();
-		$cond->addAscendingOrderByColumn(ActionLogPeer::ID);
-		$cond->add(ActionLogPeer::DATETIME, $dateFrom." 00:00:00", Criteria::GREATER_THAN );
-		$cond->add(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_THAN );
+		if ($selectUser != -1)
 		$cond->add(ActionLogPeer::USERID, $selectUser);
 
-		////////////
-		// Version con afiliado
-		@include_once('mer/AffiliatePeer.php');
-		if (class_exists('AffiliatePeer')){
-			$cond->addJoin(ActionLogPeer::AFFILIATEID, AffiliatePeer::ID,Criteria::LEFT_JOIN);
-
-		}
-
 		if($module != 1)
-		$cond->add(ActionLogPeer::ACTION, $module."%", Criteria::LIKE );
-
+		$cond->add(SecurityActionPeer::MODULE, $module);
 
 		$cond->addJoin(ActionLogPeer::ACTION, SecurityActionPeer::ACTION,Criteria::LEFT_JOIN);		
-
-		$pager = new PropelPager($cond,"ActionLogPeer", "doSelect",$page,$perPage);
-		return $pager;
-	}
-
-
-	///////
-	/// selecciona datos con affiliate, y fecha como filtros
-	function selectAllByDateaginated ($dateFrom,$dateTo,$affiliateId,$module, $page=1,$perPage=10) {
-
-		if (empty($page))
-			$page = 1;
-		require_once("propel/util/PropelPager.php");
-		$cond = new Criteria();
-		$cond->addAscendingOrderByColumn(ActionLogPeer::ID);
-		$cond->add(ActionLogPeer::DATETIME, $dateFrom." 00:00:00", Criteria::GREATER_THAN );
-		$cond->add(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_THAN );
-		$cond->add(ActionLogPeer::ACTION, $module."_", Criteria::LIKE );
-		////////////
-		// Version con afiliado
-		@include_once('mer/AffiliatePeer.php');
-		if (class_exists('AffiliatePeer')){
-			$cond->addJoin(ActionLogPeer::AFFILIATEID, AffiliatePeer::ID,Criteria::LEFT_JOIN);
-		}
-		$cond->addJoin(ActionLogPeer::ACTION, SecurityActionPeer::ACTION,Criteria::LEFT_JOIN);	
-		
-		if($module != 1)
-		$cond->add(ActionLogPeer::ACTION, $module."%", Criteria::LIKE );
 
 		$pager = new PropelPager($cond,"ActionLogPeer", "doSelect",$page,$perPage);
 		return $pager;

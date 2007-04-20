@@ -725,6 +725,62 @@
 
 <!-- Fin Module Catalog -->
 
+
+<!-- ========== Action Mapping Módulo Logs  ============================== -->
+
+	<action-mappings        module = "Logs">
+
+		<action    path = "logsList"
+					     type = "LogsListAction"
+					     name = "logsList"
+					    scope = "request"
+					 validate = "true">
+			<forward name="success" path="logs_list.tpl"/>
+			<forward name="failure" path="demoPageError.tpl"/>
+		</action>
+		<action    path = "logsPurge"
+					     type = "LogsPurgeAction"
+					     name = "logsPurge"
+					    scope = "request"
+					 validate = "true">
+			<forward name="success" path="logs_purge.tpl"/>
+		</action>
+		<action    path = "logsDoPurge"
+					     type = "LogsDoPurgeAction"
+					     name = "logsDoPurge"
+					    scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=logsList" redirect="true" />
+		</action>
+
+	</action-mappings>
+
+<!-- ========== End Logs ================================================= -->
+
+<!-- Module Modules -->
+	<action-mappings module="Modules">
+
+
+    <action    path = "modulesLoad"
+               type = "modulesLoadAction"
+               name = "modulesLoad"
+              scope = "request"
+           validate = "true">
+		<forward name="success"  path="modules_load.tpl" />
+    </action>
+	
+    <action    path = "modulesDoLoad"
+               type = "modulesDoLoadAction"
+               name = "modulesDoLoad"
+              scope = "request"
+           validate = "true">
+		<forward name="success" path="Main.php?do=modulesLoad" redirect='true'/>
+    </action>
+
+	</action-mappings>
+
+<!-- ========== End Modules ================================================= -->
+
 <!-- ========== PlugIns ================================================= -->
 
 	<!-- Load our PlugIn class here (case sensetive class name)					     -->
