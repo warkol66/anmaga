@@ -107,6 +107,24 @@ class ProductCategoryPeer extends BaseProductCategoryPeer {
 		$alls = ProductCategoryPeer::doSelect($cond);
 		return $alls;
   }
+  
+  /**
+  * Obtiene una categoria en base a su nombre.
+	*
+	* @param string $name Nombre de la categoria
+	*	@return Node Nodo de la categoria con el nombre pasado como parametro
+  */
+	function getByName($name) {
+   	require_once("NodePeer.php");
+		$cond = new Criteria();
+		$cond->add(NodePeer::NAME, $name);
+		$cond->setIgnoreCase(true);
+		$cond->add(NodePeer::KIND, "ProductCategory");
+		$alls = NodePeer::doSelect($cond);
+		return $alls[0];
+  }
+  
+
 
 }
 ?>

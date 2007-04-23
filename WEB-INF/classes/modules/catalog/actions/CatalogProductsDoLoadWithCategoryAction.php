@@ -60,11 +60,12 @@ class CatalogProductsDoLoadWithCategoryAction extends BaseAction {
 			foreach ($products as $product) {
 				//solo cargo si son 4 o mas elementos
 				if (count($product) > 3) {
-					if (ProductCategoryPeer::exists($product[4]))
-						$parentNodeId = $product[4];
+					$category = ProductCategoryPeer::getByName($product[4]);
+					if (!empty($category))
+						$parentNodeId = $category->getId();
 					else
 						$parentNodeId = 0;
-        	if ( ProductPeer::create($product[0],$product[1],$poduct[2],$product[3],null,$parentNodeId) > 0 )
+        	if ( ProductPeer::create($product[0],$product[1],$product[2],$product[3],null,$parentNodeId) > 0 )
         		$loaded++;
 				}
 			}

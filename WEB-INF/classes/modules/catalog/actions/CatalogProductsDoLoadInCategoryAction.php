@@ -59,7 +59,7 @@ class CatalogProductsDoLoadInCategoryAction extends BaseAction {
 			foreach ($products as $product) {
 				//solo cargo si son 4 elementos
 				if (count($product) == 4) {
-        	if ( ProductPeer::create($product[0],$product[1],$poduct[2],$product[3],null,$_POST["parentNodeId"]) > 0 )
+        	if ( ProductPeer::create($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"]) > 0 )
         		$loaded++;
 				}
 			}
