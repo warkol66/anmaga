@@ -95,7 +95,7 @@ class ProductPeer extends BaseProductPeer {
   }
 
   /**
-  * Obtiene todos los products.
+  * Obtiene todos los productos.
 	*
 	*	@return array Informacion sobre todos los products
   */
@@ -104,6 +104,22 @@ class ProductPeer extends BaseProductPeer {
 		$alls = ProductPeer::doSelect($cond);
 		return $alls;
   }
+  
+  /**
+  * Obtiene todos los productos paginados.
+	*
+	*	@return array Informacion sobre los productos
+  */
+	function getAllPaginated($page=1,$perPage=10) {
+		if (empty($page))
+			$page = 1;
+		require_once("propel/util/PropelPager.php");
+		$cond = new Criteria();
+		$cond->addAscendingOrderByColumn(ProductPeer::CODE);
+
+		$pager = new PropelPager($cond,"ProductPeer", "doSelect",$page,$perPage);
+		return $pager;
+	 }
 
 }
 ?>

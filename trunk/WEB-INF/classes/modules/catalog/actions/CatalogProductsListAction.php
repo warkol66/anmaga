@@ -44,9 +44,11 @@ class CatalogProductsListAction extends BaseAction {
 
 		$modulo = "Products";
 
-    $products = ProductPeer::getAll();
-
-    $smarty->assign("products",$products);
+    $pager = ProductPeer::getAllPaginated($_GET["page"]);
+		
+		$smarty->assign("products",$pager->getResult());
+		$smarty->assign("pager",$pager);
+		$smarty->assign("url","Main.php?do=catalogProductsList");
 
     $smarty->assign("message",$_GET["message"]);
 
