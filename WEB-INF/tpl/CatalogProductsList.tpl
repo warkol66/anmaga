@@ -40,6 +40,11 @@
 								</td>
 							</tr>
 						|-/foreach-|
+						
+							<tr>
+								<td colspan="7">|-include file="include_paginate.tpl"-|</td>
+							</tr>
+
 						</tbody>
 					</table>
 				</div>
