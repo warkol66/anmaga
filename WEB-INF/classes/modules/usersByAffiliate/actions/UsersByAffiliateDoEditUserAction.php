@@ -73,7 +73,7 @@ class UsersByAffiliateDoEditUserAction extends BaseAction {
 		$module = "UsersByAffiliate";
 		$smarty->assign("module",$module);
 
-    $userPeer = new UserByAffiliatesPeer();
+    $userPeer = new UserByAffiliatePeer();
     
 		if ( !empty($_SESSION["login_user"]) )
 			$affiliateId = $_POST["affiliateId"];

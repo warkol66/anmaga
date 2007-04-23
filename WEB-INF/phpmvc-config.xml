@@ -426,9 +426,9 @@
 			<forward name="success" path="usersByAffiliateList.tpl"/>
 	</action>
 
-	<action    path = "usersByAffiliateDoEdit"
-					     type = "UsersByAffiliateDoEditAction"
-					     name = "usersByAffiliateDoEdit"
+	<action    path = "usersByAffiliateDoEditUser"
+					     type = "UsersByAffiliateDoEditUserAction"
+					     name = "usersByAffiliateDoEditUser"
 					    scope = "request"
 					 validate = "true">
     <forward name="success" path="/Main.php?do=usersByAffiliateList&amp;message=saved" redirect="true" />

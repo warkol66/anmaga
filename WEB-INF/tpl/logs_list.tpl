@@ -1,5 +1,5 @@
 </script>
-<script src="/scripts/datePicker.js">
+<script src="scripts/datePicker.js">
 </script>
 <table width="100%"  border="0" cellpadding="0" cellspacing="0">
   <tr> 
@@ -7,7 +7,7 @@
 	  de Operaciones</span>
 	</th>
   </tr>
-  <tr> 
+  <tr> |-debug-|
 	<td>
 		<form name="form1" method="get" action="Main.php">
 		<input type='hidden' name='do' value='logsList' />
@@ -76,7 +76,7 @@
    
   <tr> 
 	<td>&nbsp;</td>
-  </tr>
+  </tr>|-debug-|
   <tr> 
 	<th class="thresultado">Administraci&oacute;n del Archivo Hist&oacute;rico</th>
   </tr>
@@ -95,7 +95,7 @@
 <table width="100%"  border="0" cellpadding="5" cellspacing="0">
   <tr> 
 	<td class="size2">Resultado de 
-		su consulta al hist&oacute;rico de operaciones del Sistema |-if $affiliate ne '' -| del afiliado |-$affiliate-| |-/if-|
+		su consulta al hist&oacute;rico de operaciones del Sistema |-if $affiliate ne '' -| del afiliado |-$affiliate->getName()-| |-/if-|
 	</td>
   </tr>
   <tr> 
