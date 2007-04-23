@@ -2,6 +2,6 @@
 							|-assign var=productCategory value=$node.node-|
 							<option value="|-$productCategory->getId()-|"|-if $productCategory->getId() eq $parentNodeId-| selected="selected"|-/if-|>|-$productCategory->getName()-|</option>
 							|-if $node.childs|@count gt 0-|
-							|-include file="ProductCategoriesIncludeOptions.tpl" productCategories=$node.childs-|
+							|-include file="CatalogProductCategoriesIncludeOptions.tpl" productCategories=$node.childs-|
 							|-/if-|
 						|-/foreach-|

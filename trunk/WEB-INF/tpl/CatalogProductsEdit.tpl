@@ -36,7 +36,7 @@
 								<label for="parentNodeId">Category</label>
 								<select name="parentNodeId" id="parentNodeId">
 									<option value="">Select Category</option>
-									|-include file="ProductCategoriesIncludeOptions.tpl" productCategories=$productCategories-|
+									|-include file="CatalogProductCategoriesIncludeOptions.tpl" productCategories=$productCategories-|
 								</select>
 							</p>
 							<p>
