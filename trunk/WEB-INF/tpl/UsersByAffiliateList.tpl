@@ -53,7 +53,7 @@
 	|-else-|
 			##161,Realice los cambios en el usuario y haga click en Aceptar para guardar las modificaciones.##|-/if-| <br />
 	<br />
-<form method='post' action='Main.php?do=usersByAffiliateDoEdit'>
+<form method='post' action='Main.php?do=usersByAffiliateDoEditUser'>
 	<input type='hidden' name='id' value='|-if $accion eq "edicion"-||-$currentUser->getId()-||-/if-|' />
 	<table class='tablaborde' cellpadding='5' cellspacing='1' width='60%'>
 		<tr>

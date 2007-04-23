@@ -298,24 +298,40 @@
  */
 function doLog($message) {
 
-  include_once 'mer/ActionLog.php';	
 
-	if(empty($_SESSION['id_usuario'])){
-		$userId = $_SESSION['id_usuario'];
+	include_once 'ActionLog.php';	
+
+	if(!empty($_SESSION['login_user'])){
+		$userId = $_SESSION['login_user'];
 		$affiliateId = 0;
 
+
+
 	}
-	elseif(empty($_SESSION['UserByRegistration'])){ 
+	elseif(!empty($_SESSION['UserByRegistration'])){ 
 		$userId=$_SESSION['UserByRegistration'];
 		$affiliateId =999999 ;
+
 	}
 	else{
 		///////////
 		/// si no existe la variable de la sesion usersByAffiliate, la voy a tener que crear de esta manera
 		/// Habrá que normalizar el nombre del modulo usersByAfiliate, $_SESSION["login_user_affiliate"] --> $_SESSION['UserByAffiliate']
-		$userId=$_SESSION["login_user_affiliate"];
+		
+		if(is_object($_SESSION["login_user_affiliate"])){
+			//////////
+			// version con propel toma esta linea
+			$userId=$_SESSION["login_user_affiliate"]->getId();
+			$affiliateId=$_SESSION["login_user_affiliate"]->getAffiliateId();
+		}
 
-		$affiliateId =$_SESSION['affiliateId']; 
+			//////////
+			// version sin propel toma esta linea
+		else $userId=$_SESSION["login_user_affiliate"];
+
+
+
+		//$affiliateId =$_SESSION['affiliateId']; 
 	}
 		try{
 		$logs = new ActionLog();

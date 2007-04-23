@@ -29,7 +29,7 @@ class ActionLogPeer extends BaseActionLogPeer {
 		
 	///////
 	/// selecciona datos por requerimientos
-	function selectAllByRequirementsPaginated ($dateFrom,$dateTo,$selectUser,$module,$page=1,$perPage=10) {
+	function selectAllByRequirementsPaginated ($dateFrom,$dateTo,$selectUser,$module,$page=1,$perPage=25) {
 		echo "1";
 		if (empty($page))
 			$page = 1;
@@ -65,7 +65,7 @@ class ActionLogPeer extends BaseActionLogPeer {
 
 	///////
 	/// selecciona datos con requerimientos y afiliado
-	function selectAllByRequirementsAndAffiliatePaginated  ($dateFrom,$dateTo,$selectUser,$affiliate,$module,$page=1,$perPage=10) {
+	function selectAllByRequirementsAndAffiliatePaginated  ($dateFrom,$dateTo,$selectUser,$affiliate,$module,$page=1,$perPage=25) {
 		echo "2";
 		if (empty($page))
 			$page = 1;
@@ -76,9 +76,10 @@ class ActionLogPeer extends BaseActionLogPeer {
 		$cond->add(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_THAN );
 		////////////
 		// Version con afiliado
-		@include_once('mer/AffiliatePeer.php');
+		@include_once('AffiliatePeer.php');
 		if (class_exists('AffiliatePeer')){
 			$cond->addJoin(ActionLogPeer::AFFILIATEID, AffiliatePeer::ID,Criteria::LEFT_JOIN);
+			$cond->add(ActionLogPeer::AFFILIATEID, $affiliate);
 		}
 
 		if ($selectUser != -1)

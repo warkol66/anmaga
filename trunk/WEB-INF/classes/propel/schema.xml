@@ -204,7 +204,7 @@
  </table>
 
 
-<!--<table phpName="ActionLog" name="log_actionLog" description="logs del sistema">
+<table phpName="ActionLog" name="log_actionLog" description="logs del sistema">
 	<column name="id" type="INTEGER"  required="true" description="Id log" primaryKey="true" autoIncrement="true"  />
 	<column name="userId" type="INTEGER"  required="true" description="Id del usuario" />
 	<column name="affiliateId" type="INTEGER"  required="true" description="Id del afiliado" />
@@ -214,10 +214,10 @@
 	<foreign-key foreignTable="users_user" >
 		<reference local="userId" foreign="id" />
 	</foreign-key>
-	<foreign-key foreignTable="SecurityAction" >
+	<foreign-key foreignTable="security_action" >
 		<reference local="action" foreign="action" />
 	</foreign-key>
-</table>-->
+</table>
 
   <table phpName="Node" name="node" description="Nodo del Arbol" >
     <column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id del nodo" primaryKey='true' />
@@ -242,5 +242,6 @@
     <column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id de la categoria" primaryKey='true' />
     <column name="description" size="255" type="VARCHAR" required="false" description="Descripcion" />
   </table>
+
 
   </database>

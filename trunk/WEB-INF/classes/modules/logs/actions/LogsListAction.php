@@ -64,11 +64,7 @@ class LogsListAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
-		
-		$smarty->left_delimiter  = "|-";
-	    $smarty->right_delimiter = "-|";
 
-		
 
 		///////
 		/// usado para mostrar 2 fechas a listar, que seran hace un mes, y hoy
@@ -144,8 +140,9 @@ class LogsListAction extends BaseAction {
 					////////////
 					// se obtiene e informa el nombre del afiliado
 					if (class_exists('AffiliatePeer')){
-						$affiliateName=$logs->getAffiliateName($affiliateId);
-						$smarty->assign("affiliateName",$affiliateName['name']); 
+						$affiliatePeer= new AffiliatePeer();
+						$affiliate=$affiliatePeer->get($affiliateId);
+						$smarty->assign("affiliate",$affiliate); 
 					}
 					$url= 'Main.php?do=logsList&saveButton='.$_GET['saveButton'].'&dateFrom='.$dateFrom.'&dateTo='.$dateTo.'&module='.$_GET["module"].'&affiliate='.$affiliateId.'&selectUser='.$selectedUser;
 			}

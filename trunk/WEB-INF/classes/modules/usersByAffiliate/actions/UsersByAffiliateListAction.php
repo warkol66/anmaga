@@ -36,6 +36,7 @@ class UsersByAffiliateListAction extends BaseAction {
 
     BaseAction::execute($mapping, $form, $request, $response);
 
+
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
