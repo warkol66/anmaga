@@ -451,6 +451,14 @@
 			<forward name="failure" path="users_login.tpl"/>
 	</action>
 	
+	<action    path = "usersByAffiliateDoLogout"
+					     type = "UsersByAffiliateDoLogoutAction"
+					     name = "usersByAffiliateDoLogout"
+					    scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php" redirect="true" />
+	</action>
+	
     <action    path = "usersByAffiliateDoAddToGroup"
                type = "UsersByAffiliateDoAddToGroupAction"
                name = "usersByAffiliateDoAddToGroup"
