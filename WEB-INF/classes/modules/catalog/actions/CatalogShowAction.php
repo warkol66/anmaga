@@ -54,7 +54,7 @@ class CatalogShowAction extends BaseAction {
       $pager = $categoryNode->getChildsOnlyKindPaginated("Product",$_GET["page"]);
 		}
 		else {
-			$pager = TreePeer::getAllRootsByKindPaginated("Product");
+			$pager = TreePeer::getAllRootsByKindPaginated("Product",$_GET["page"]);
 		}
 		
 		$productNodes = $pager->getResult();
