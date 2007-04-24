@@ -34,7 +34,7 @@ class UsersLoginAction extends BaseAction {
     	/**
      	* Use a different template
      	*/
-		$this->template->template = "template_login.tpl";
+		$this->template->template = "TemplateLogin.tpl";
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"

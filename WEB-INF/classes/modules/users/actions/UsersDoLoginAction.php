@@ -53,7 +53,7 @@ class UsersDoLoginAction extends BaseAction {
 			}
 		}
 
-		$this->template->template = "template_login.tpl";
+		$this->template->template = "TemplateLogin.tpl";
 		
     $smarty->assign("message","wrongUser");
 		return $mapping->findForwardConfig('failure');

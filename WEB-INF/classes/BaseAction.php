@@ -87,6 +87,7 @@ class BaseAction extends Action {
 		$noCheckLogin[] = "usersDoLogin";
 		$noCheckLogin[] = "noPermission";
 		$noCheckLogin[] = "htmlsShow";
+		$noCheckLogin[] = "usersByAffiliateLogin";
 		$noCheckLogin[] = "usersByAffiliateDoLogin";
 
 		$isUnrestrictedAction = array_search($_REQUEST["do"],$noCheckLogin);
