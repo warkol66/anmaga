@@ -2,19 +2,20 @@
 
 require_once("BaseAction.php");
 
-class IndexAction extends BaseAction {
+class UsersByAffiliateLoginAction extends BaseAction {
 
-	function IndexAction() {
+
+	function UsersLoginAction() {
 		;
 	}
 
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
-		global $PHP_SELF;
-		//////////
-		// Call our business logic from here
-
+    	/**
+     	* Use a different template
+     	*/
+		$this->template->template = "template_login.tpl";
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
@@ -23,8 +24,10 @@ class IndexAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
-		return $mapping->findForwardConfig('success');
 
+		$module = "UsersByAffiliate";
+
+		return $mapping->findForwardConfig('success');
 	}
 
 }

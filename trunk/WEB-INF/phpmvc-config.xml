@@ -29,14 +29,14 @@
                name = "index"
               scope = "request"
            validate = "true">
-    	<forward name="success" path="mer_index.tpl" />
+    	<forward name="success" path="Index.tpl" />
     </action>
     <action    path = "welcome"
                type = "WelcomeAction"
                name = "welcome"
               scope = "request"
            validate = "true">
-    <forward name="success" path="mer_welcome.tpl" />
+    <forward name="success" path="Welcome.tpl" />
     </action>
     
 	</action-mappings>
@@ -62,7 +62,7 @@
 					    scope = "request"
 					 validate = "true">
 			<description value="Modulo de ingreso"/>
-			<forward name="success" path="mer_welcome.tpl"/>
+			<forward name="success" path="UsersWelcome.tpl"/>
 			<forward name="failure" path="UsersLogin.tpl"/>
 		</action>
 
@@ -218,7 +218,7 @@
                name = "htmlsUpdate"
               scope = "request"
            validate = "true">
-    <forward name="success" path="htmls_update.tpl"/>
+    <forward name="success" path="HtmlsUpdate.tpl"/>
     </action>
 
     <action    path = "htmlsDoUpdate"
@@ -226,7 +226,7 @@
                name = "htmlsDoUpdate"
               scope = "request"
            validate = "true">
-    <forward name="success" path="htmls_update.tpl"/>
+    <forward name="success" path="HtmlsUpdate.tpl"/>
     </action>
 
     <action    path = "htmlsShow"
@@ -234,7 +234,7 @@
                name = "htmlsShow"
               scope = "request"
            validate = "true">
-    <forward name="success" path="htmls_show.tpl"/>
+    <forward name="success" path="HtmlsShow.tpl"/>
     </action>
     
     <action    path = "htmlsShowPrivate"
@@ -242,7 +242,7 @@
                name = "htmlsShowPrivate"
               scope = "request"
            validate = "true">
-    <forward name="success" path="htmls_show.tpl"/>
+    <forward name="success" path="HtmlsShow.tpl"/>
     </action>
   </action-mappings>
 <!-- End Module Htmls -->
@@ -255,7 +255,7 @@
                name = "noPermission"
               scope = "request"
            validate = "true">
-		<forward name="success"  path="no_permission.tpl" />
+		<forward name="success"  path="NoPermission.tpl" />
     </action>
 
     <action    path = "securityActionList"
@@ -418,15 +418,15 @@
 		<!-- Module Users By Affiliate -->
 	<action-mappings module="UsersByAffiliate">
 
-	<action    path = "usersByAffiliateList"
+	<action			 path = "usersByAffiliateList"
 					     type = "UsersByAffiliateListAction"
 					     name = "usersByAffiliateList"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="usersByAffiliateList.tpl"/>
+			<forward name="success" path="UsersByAffiliateList.tpl"/>
 	</action>
 
-	<action    path = "usersByAffiliateDoEditUser"
+	<action			 path = "usersByAffiliateDoEditUser"
 					     type = "UsersByAffiliateDoEditUserAction"
 					     name = "usersByAffiliateDoEditUser"
 					    scope = "request"
@@ -434,29 +434,37 @@
     <forward name="success" path="/Main.php?do=usersByAffiliateList&amp;message=saved" redirect="true" />
 	</action>
 
-	<action    path = "usersByAffiliateDoDelete"
+	<action    	 path = "usersByAffiliateDoDelete"
 					     type = "UsersByAffiliateDoDeleteAction"
 					     name = "usersByAffiliateDoDelete"
 					    scope = "request"
 					 validate = "true">
     <forward name="success" path="/Main.php?do=usersByAffiliateList&amp;message=deleted" redirect="true" />
 	</action>
-	<action    path = "usersByAffiliateDoLogin"
+	<action    	 path = "usersByAffiliateLogin"
+					     type = "UsersByAffiliateLoginAction"
+					     name = "usersByAffiliateLogin"
+					    scope = "request"
+					 validate = "true">
+			<description value="Modulo de ingreso"/>
+			<forward name="success" path="UsersByAffiliateLogin.tpl"/>
+	</action>
+	<action      path = "usersByAffiliateDoLogin"
 					     type = "UsersByAffiliateDoLoginAction"
 					     name = "usersByAffiliateDoLogin"
 					    scope = "request"
 					 validate = "true">
 			<description value="Modulo de ingreso"/>
-			<forward name="success" path="mer_welcome.tpl"/>
+			<forward name="success" path="UsersByAffiliateWelcome.tpl"/>
 			<forward name="failure" path="users_login.tpl"/>
 	</action>
 	
-	<action    path = "usersByAffiliateDoLogout"
+	<action      path = "usersByAffiliateDoLogout"
 					     type = "UsersByAffiliateDoLogoutAction"
 					     name = "usersByAffiliateDoLogout"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="/Main.php" redirect="true" />
+			<forward name="success" path="/Main.php?do=Index" redirect="true" />
 	</action>
 	
     <action    path = "usersByAffiliateDoAddToGroup"
@@ -743,7 +751,7 @@
 					     name = "logsList"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="logs_list.tpl"/>
+			<forward name="success" path="LogsList.tpl"/>
 			<forward name="failure" path="demoPageError.tpl"/>
 		</action>
 		<action    path = "logsPurge"
@@ -751,7 +759,7 @@
 					     name = "logsPurge"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="logs_purge.tpl"/>
+			<forward name="success" path="LogsPurge.tpl"/>
 		</action>
 		<action    path = "logsDoPurge"
 					     type = "LogsDoPurgeAction"
