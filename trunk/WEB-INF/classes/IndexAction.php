@@ -11,10 +11,10 @@ class IndexAction extends BaseAction {
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
-		global $PHP_SELF;
-		//////////
-		// Call our business logic from here
-
+    	/**
+     	* Use a different template
+     	*/
+		$this->template->template = "TemplateIndex.tpl";
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"

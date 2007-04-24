@@ -464,7 +464,7 @@
 					     name = "usersByAffiliateDoLogout"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="/Main.php?do=Index" redirect="true" />
+			<forward name="success" path="/Main.php?do=index" redirect="true" />
 	</action>
 	
     <action    path = "usersByAffiliateDoAddToGroup"
