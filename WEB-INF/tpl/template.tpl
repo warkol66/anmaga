@@ -17,13 +17,14 @@
 <body leftmargin='2' topmargin='2'>
 <table width="760" border="0" cellspacing="0" cellpadding="0">
 	<tr>
-		<td colspan="2" class="cabezal">&nbsp;</td>
+		<td colspan="3" class="cabezal">&nbsp;</td>
 	</tr>
 	<tr>
-		<td colspan="2">&nbsp;</td>
+		<td colspan="3">&nbsp;</td>
 	</tr>
 	<tr valign="top">
-		<td width="160">|-include file=menu_left.tpl-|</td>
+		<td width="155">|-include file=MenuLeft.tpl-|</td>
+		<td width="5">&nbsp;</td>
 		<td width="600"><!--centerHTML start-->
 						|-$centerHTML-|
 		<!--centerHTML end --></td>
