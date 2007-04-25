@@ -12,6 +12,8 @@
 																<th>description</th>
 																<th>price</th>
 																<th>Categoria</th>
+																<th>Unidad</th>
+																<th>Unidad de Medida</th>
 																<th>&nbsp;</th>
 							</tr>
 						</thead>
@@ -19,6 +21,8 @@
 						|-foreach from=$products item=product name=for_products-|
 							|-assign var=node value=$product->getNode()-|
 							|-assign var=parentNode value=$node->getParentNode()-|
+							|-assign var=unit value=$product->getUnit()-|
+							|-assign var=measureUnit value=$product->getMeasureUnit()-|
 							<tr>
 																<td>|-$node->getid()-|</td>
 																<td>|-$product->getcode()-|</td>
@@ -26,6 +30,8 @@
 																<td>|-$product->getdescription()-|</td>
 																<td>|-$product->getprice()-|</td>
 																<td>|-if $parentNode-||-$parentNode->getName()-||-/if-|</td>
+																<td>|-if $unit-||-$unit->getName()-||-/if-|</td>
+																<td>|-if $measureUnit-||-$measureUnit->getName()-||-/if-|</td>																
 																<td>
 									<form action="Main.php" method="get">
 										<input type="hidden" name="do" value="catalogProductsEdit" />

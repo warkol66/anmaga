@@ -236,8 +236,29 @@
     <column name="code" size="255" type="VARCHAR" description="Codigo del producto" />
     <column name="description" size="255" type="VARCHAR" required="false" description="Descripcion" />
     <column name="price" type="FLOAT" description="Precio del producto" />
+    <column name="unitId" type="INTEGER" description="Unidades" />
+    <column name="measureUnitId" type="INTEGER" description="Unidad de Medida" />
+		<unique>
+			<unique-column name="code" />
+		</unique>
+		<foreign-key foreignTable="unit" >
+			<reference local="unitId" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="measureUnit" >
+			<reference local="measureUnitId" foreign="id" />
+		</foreign-key>
   </table>
-  
+
+  <table phpName="Unit" name="unit" description="Unidades">
+  	<column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id de la unidad" primaryKey='true' />
+  	<column name="name" type="VARCHAR" size="255" required="true" description="Unidad" />
+  </table>
+
+  <table phpName="MeasureUnit" name="measureUnit" description="Unidad de Medida">
+  	<column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id de la unidad de medida" primaryKey='true' />
+  	<column name="name" type="VARCHAR" size="255" required="true" description="Unidad de Medida" />
+  </table>
+
   <table phpName="ProductCategory" name="productCategory" description="Categorias de Productos">
     <column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id de la categoria" primaryKey='true' />
     <column name="description" size="255" type="VARCHAR" required="false" description="Descripcion" />

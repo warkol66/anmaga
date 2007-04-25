@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ProductPeer.php");
+require_once("NodePeer.php");
 
 class CatalogProductsDoDeleteAction extends BaseAction {
 
@@ -44,7 +44,7 @@ class CatalogProductsDoDeleteAction extends BaseAction {
 
 		$modulo = "Products";
 
-    ProductPeer::delete($_POST["id"]);
+    NodePeer::deleteWithSubTree($_POST["id"]);
 
 		return $mapping->findForwardConfig('success');
 
