@@ -24,4 +24,76 @@
  */	
 class ModulePeer extends BaseModulePeer {
 
+
+	function getAll() {
+		$cond = new Criteria();
+		$todosObj = ModulePeer::doSelect($cond);
+		return $todosObj;
+	}
+
+
+
+	
+	
+	function delete($module)
+		{ 	try{
+			$obj = new Module();
+			$obj = ModulePeer::retrieveByPK($module);
+			if(!empty($obj))
+				{
+					$obj->delete();
+				}
+		}catch (PropelException $e) {}
+		return;
+		}
+
+
+	/**
+	* Limpia el acceso activo de un modulo
+	*
+	* @param string $action con el nombre del modulo a limpiar
+	*/
+
+  function clearActive($module) {
+		$obj = new Module();
+		$obj = ModulePeer::retrieveByPK($Module);
+		$obj->setActive(0);
+		$obj->save();
+		return;
+  }
+
+	
+	//////
+	// add module version 1
+	
+	/*function addModule($module,$label,$description) {
+		try{
+		$module = new Module();
+		$module ->setName($module);
+		$module ->setLabel($label);
+		$module ->setDescription($description);
+		$module ->setActive(1);
+		$module ->setAlwaysActive(0);
+		$module ->save();
+		}catch (PropelException $e) {}
+		return;
+	}*/
+
+
+function addModule($module) {
+		echo "module";
+		try{
+		$module = new Module();
+		$module ->setName($module);
+		$module ->setLabel(5);
+		$module ->setDescription(6);
+		$module ->setActive(1);
+		$module ->setAlwaysActive(0);
+		$module ->save();
+		}catch (PropelException $e) {}
+		return;
+	}
+
+
+
 } // ModulePeer
