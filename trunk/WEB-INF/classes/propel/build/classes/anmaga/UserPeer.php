@@ -24,11 +24,11 @@ class UserPeer extends BaseUserPeer {
 		//Setea si se eliminan realmente los usuarios de la base de datos o se marcan como no activos
 		const DELETEUSERS = false;
 
-  /**
-  * Obtiene todos los usuarios.
+	/**
+	* Obtiene todos los usuarios.
 	*
 	*	@return array Informacion sobre todos los usuarios
-  */
+	*/
 	function getAll() {
 		$cond = new Criteria();
 		$cond->add(UserPeer::ACTIVE, 1);
@@ -36,11 +36,11 @@ class UserPeer extends BaseUserPeer {
 		return $todosObj;
   }
   
-  /**
-  * Obtiene todos los usuarios desactivados.
+	 /**
+	* Obtiene todos los usuarios desactivados.
 	*
 	*	@return array Informacion sobre los usuarios
-  */
+	*/
 	function getDeleteds() {
 		$cond = new Criteria();
 		$cond->add(UserPeer::ACTIVE, 0);
@@ -177,8 +177,8 @@ class UserPeer extends BaseUserPeer {
 	/**
 	* Elimina un usuario a partir del id.
 	*
-  * @param int $id Id del usuario
-	*	@return boolean true
+	* @param int $id Id del usuario
+	* @return boolean true
 	*/
   function delete($id) {
 		$user = UserPeer::retrieveByPk($id);

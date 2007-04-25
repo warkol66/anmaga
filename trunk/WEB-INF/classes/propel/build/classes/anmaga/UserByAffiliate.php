@@ -66,4 +66,12 @@ class UserByAffiliate extends BaseUserByAffiliate {
 		return;
 	}
 
+
+
+	function getAll() {
+		$cond = new Criteria();
+		$todosObj = UsersByAffiliatePeer::doSelect($cond);
+		return $todosObj;
+  }
+
 } // UserByAffiliate

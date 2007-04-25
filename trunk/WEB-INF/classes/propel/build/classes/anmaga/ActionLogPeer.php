@@ -20,17 +20,24 @@
  * application requirements.  This class will only be generated as
  * long as it does not already exist in the output directory.
  *
- * @package mer
+ * @package anmaga
  */	
 class ActionLogPeer extends BaseActionLogPeer {
 
 
-
-		
-	///////
-	/// selecciona datos por requerimientos
+	/**
+	*
+	* selectAllByRequirementsPaginated
+	*	Crea un filtro por requerimientos enviados a la funcion, devuelve un listado filtrado
+	* @param datetime $dateFrom fecha filtro de inicio del listado
+	* @param datetime $dateTo fecha filtro del fin de listado
+	* @param int $selectUser usuario filtro seleccionado
+	* @param string $module nombre del modulo seleccionado para el filtro
+	* @param int $page pagina del paginado
+	* @return object $pager listado filtrado y paginado
+	*/
+	
 	function selectAllByRequirementsPaginated ($dateFrom,$dateTo,$selectUser,$module,$page=1,$perPage=25) {
-		echo "1";
 		if (empty($page))
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
@@ -40,13 +47,10 @@ class ActionLogPeer extends BaseActionLogPeer {
 		echo "datefrom : $dateFrom,,,,, dateto: $dateTo";
 		$cond->add(ActionLogPeer::DATETIME, $dateFrom." 00:00:00", Criteria::GREATER_THAN );
 		$cond->add(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_THAN );
-		////////////
-		// Version con afiliado
-		@include_once('AffiliatePeer.php');
-		if (class_exists('AffiliatePeer')){
-			$cond->addJoin(ActionLogPeer::AFFILIATEID, AffiliatePeer::ID,Criteria::LEFT_JOIN);
-		}
 
+		////////
+		// ultima version con afiliado = 0
+		$cond->add(ActionLogPeer::AFFILIATEID, 0);
 
 		if ($selectUser != -1)
 		$cond->add(ActionLogPeer::USERID, $selectUser);
@@ -63,10 +67,19 @@ class ActionLogPeer extends BaseActionLogPeer {
 
 
 
-	///////
-	/// selecciona datos con requerimientos y afiliado
+	/**
+	*
+	* selectAllByRequirementsAndAffiliatePaginated
+	*	Crea un filtro por requerimientos y afiliados enviados a la funcion, devuelve un listado filtrado
+	* @param datetime $dateFrom fecha filtro de inicio del listado
+	* @param datetime $dateTo fecha filtro del fin de listado
+	* @param int $selectUser usuario filtro seleccionado
+	* @param int $affiliate id del afiliado
+	* @param string $module nombre del modulo seleccionado para el filtro
+	* @param int $page pagina del paginado
+	* @return object $pager listado filtrado y paginado
+	*/
 	function selectAllByRequirementsAndAffiliatePaginated  ($dateFrom,$dateTo,$selectUser,$affiliate,$module,$page=1,$perPage=25) {
-		echo "2";
 		if (empty($page))
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
@@ -95,8 +108,12 @@ class ActionLogPeer extends BaseActionLogPeer {
 	}
 
 
-	///////
-	// purga datos del historico
+	/**
+	* deleteLogs
+	*	Purga datos de la lista de logs
+	* @param datetime $dateFrom inicio de fecha de purgacion
+	* @param datetime $dateTo fin de fecha de purgacion
+	*/
 	function deleteLogs($dateFrom,$dateTo)
 		{ 	try{
 			$cond = new Criteria();

@@ -15,7 +15,7 @@ include_once 'BaseAction.php';
 require_once("ActionLogPeer.php");
 require_once("UserPeer.php");
 require_once("SecurityActionPeer.php");
-
+require_once("UserByAffiliatePeer.php");
 /**
 * LogsListAction
 *
@@ -79,6 +79,7 @@ class LogsListAction extends BaseAction {
 		$usersPeer = new UserPeer();
 		
 		$users=$usersPeer->getAll();
+		print_r($users);
 		$smarty->assign("users", $users);
 
 
@@ -105,18 +106,24 @@ class LogsListAction extends BaseAction {
 			$affiliates=$affiliatePeer->getAll();
 			$smarty->assign("affiliates",$affiliates); 
 		}
+
+		//////////
+		// obtengo todos los usuarios por afiliado
+		$usersByAffiliatePeer = new UserByAffiliatePeer();
+		$usersBAff=$usersByAffiliatePeer->getAll();
+		print_r($usersBAff);
+		$smarty->assign($usersByAffiliate,$usersBAff);
 		
-
-
-		/////////
-		// corte de control en caso de que se haya presionado en buscar
+		/**
+		*
+		*	Corte de control para el listado de logs
+		*	@param string $_GET['saveButton'] aviso de listado
+		*/
 		if(isSet($_GET['saveButton'])) {
 
 			//////////
 			// Parametros filtro		
 			$selectedUser=$_GET['selectUser'];
-
-
 
 			$module=$_GET["module"];
 
@@ -127,14 +134,14 @@ class LogsListAction extends BaseAction {
 			$dateTo = date("Y-m-d",mktime(0,0,0,$dateToExplode[1],$dateToExplode[0],$dateToExplode[2]));
 		
 			
-			
-			/////////
-			// si se filtra por afiliado, se muestra
+			/**
+			*
+			*	Corte de control para el listado con afiliado o sin el
+			*	@param string $_GET["affiliate"] bandera de afiliado
+			*/
 			if(isset($_GET["affiliate"]) && $_GET["affiliate"] != 'todos' ){
 
 					$affiliateId=$_GET["affiliate"];
-					//$selectedLogs=$logs->selectAllByDateUserAndAffiliatePaginated($dateFrom,$dateTo,$selectedUser,$affiliateId,$module,$_GET["page"]);
-					
 					$selectedLogs=$logs->selectAllByRequirementsAndAffiliatePaginated($dateFrom,$dateTo,$selectedUser,$affiliateId,$module,$_GET["page"]);
 
 					////////////
@@ -144,6 +151,7 @@ class LogsListAction extends BaseAction {
 						$affiliate=$affiliatePeer->get($affiliateId);
 						$smarty->assign("affiliate",$affiliate); 
 					}
+
 					$url= 'Main.php?do=logsList&saveButton='.$_GET['saveButton'].'&dateFrom='.$dateFrom.'&dateTo='.$dateTo.'&module='.$_GET["module"].'&affiliate='.$affiliateId.'&selectUser='.$selectedUser;
 			}
 			else 	{
@@ -152,8 +160,6 @@ class LogsListAction extends BaseAction {
 				$url= 'Main.php?do=logsList&saveButton='.$_GET['saveButton'].'&dateFrom='.$dateFrom.'&dateTo='.$dateTo.'&module='.$_GET["module"].'&selectUser='.$selectedUser;			
 			
 			}
-	
-
 
 			  doLog('List histrico de datos');
 			$smarty->assign("DISPLAY",2); 
