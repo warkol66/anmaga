@@ -87,6 +87,7 @@ class ModulesLoadAction extends BaseAction {
 			
 		$modulePeer = new ModulePeer();
 		$assignedModules= $modulePeer->getAll();
+		//print_r($assignedModules);
 		$smarty->assign("assignedModules",$assignedModules);
 		
 		return $mapping->findForwardConfig('success');

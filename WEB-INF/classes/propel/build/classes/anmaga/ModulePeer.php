@@ -56,7 +56,7 @@ class ModulePeer extends BaseModulePeer {
 
   function clearActive($module) {
 		$obj = new Module();
-		$obj = ModulePeer::retrieveByPK($Module);
+		$obj = ModulePeer::retrieveByPK($module);
 		$obj->setActive(0);
 		$obj->save();
 		return;
@@ -80,20 +80,30 @@ class ModulePeer extends BaseModulePeer {
 	}*/
 
 
-function addModule($module) {
-		echo "module";
+function addModule($module,$description,$label) {
 		try{
-		$module = new Module();
-		$module ->setName($module);
-		$module ->setLabel(5);
-		$module ->setDescription(6);
-		$module ->setActive(1);
-		$module ->setAlwaysActive(0);
-		$module ->save();
+		$moduleObj = new Module();
+		$moduleObj->setName($module);
+		$moduleObj ->setDescription($description);
+		$moduleObj ->setLabel($label);
+		$moduleObj ->setActive(1);
+		$moduleObj ->setAlwaysActive(0);
+		$moduleObj ->save();
 		}catch (PropelException $e) {}
 		return;
 	}
 
-
+function updateModule($module,$description,$label) {
+		try{
+		$moduleObj = new Module();
+		$moduleObj = ModulePeer::retrieveByPK($module);
+		$moduleObj ->setDescription($description);
+		$moduleObj ->setLabel($label);
+		$moduleObj ->setActive(1);
+		$moduleObj ->setAlwaysActive(0);
+		$moduleObj ->save();
+		}catch (PropelException $e) {}
+		return;
+	}
 
 } // ModulePeer

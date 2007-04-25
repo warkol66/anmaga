@@ -56,9 +56,27 @@ class ModulesDoLoadAction extends BaseAction {
 
 		$smarty->assign("modulo",$modulo);
 
-
+		//print_r($_POST);
 		$modulePeer = new ModulePeer();
-		$assignedModules= $modulePeer->addModule($_POST["module"]);
+		
+		$moduleName=$_POST["module"];
+		$description=$_POST["description"];		
+		$label=$_POST["label"];		
+
+		$savedModules= $modulePeer->getAll();
+		
+		if ($_POST["activeModule"]==1){
+			
+			foreach ($savedModules as $saveModule){
+				if ($saveModule->getName() == $moduleName){
+					$flag=1;
+					$assignedModules= $modulePeer->updateModule($moduleName,$description,$label);
+				}
+				if ($flag !=1) $assignedModules= $modulePeer->addModule($moduleName,$description,$label);
+			}
+
+		}
+		else $modulePeer->clearActive($moduleName);
 
 	/*	// por cada action activo traido de la vista...
 		foreach ($_POST["module"] as $module) {
