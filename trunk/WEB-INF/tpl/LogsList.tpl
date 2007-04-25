@@ -1,4 +1,3 @@
-</script>
 <script src="scripts/datePicker.js">
 </script>
 <table width="100%"  border="0" cellpadding="0" cellspacing="0">
@@ -7,7 +6,7 @@
 	  de Operaciones</span>
 	</th>
   </tr>
-  <tr> |-debug-|
+  <tr>
 	<td>
 		<form name="form1" method="get" action="Main.php">
 		<input type='hidden' name='do' value='logsList' />
@@ -76,7 +75,7 @@
    
   <tr> 
 	<td>&nbsp;</td>
-  </tr>|-debug-|
+  </tr>
   <tr> 
 	<th class="thresultado">Administraci&oacute;n del Archivo Hist&oacute;rico</th>
   </tr>
@@ -119,7 +118,13 @@
 			 	|-assign var="action" value=$log->getSecurityAction()-|
 			<tr class="|-if $smarty.section.record.rownum is even-|row_even|-else-|row_odd|-/if-|"> 
 			  <td nowrap scope="col">|-$log->getDatetime()-|</td>
-			  <td nowrap scope="col">|-$log->getuserId()-|</td>
+			  <td nowrap scope="col">
+				|-foreach from=$usersByAffiliate item=user -|
+					|-if $log->getuserId() eq $user->getId()-|
+						|-$user->getUsername()-|
+					|-/if-|
+				|-/foreach-|
+			  </td>
 			  <td scope="col" >|-$log->getAction()-|</td>
 			  <td scope="col" >|-$log->getMessage()-|</td>
 			  <td scope="col" >|-if $action ne '' -| |-$action->getModule()-| |-/if-|</td>

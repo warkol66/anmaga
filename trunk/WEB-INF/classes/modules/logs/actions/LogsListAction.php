@@ -79,7 +79,7 @@ class LogsListAction extends BaseAction {
 		$usersPeer = new UserPeer();
 		
 		$users=$usersPeer->getAll();
-		print_r($users);
+		
 		$smarty->assign("users", $users);
 
 
@@ -111,7 +111,6 @@ class LogsListAction extends BaseAction {
 		// obtengo todos los usuarios por afiliado
 		$usersByAffiliatePeer = new UserByAffiliatePeer();
 		$usersBAff=$usersByAffiliatePeer->getAll();
-		print_r($usersBAff);
 		$smarty->assign($usersByAffiliate,$usersBAff);
 		
 		/**

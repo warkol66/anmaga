@@ -782,7 +782,7 @@
                name = "modulesLoad"
               scope = "request"
            validate = "true">
-		<forward name="success"  path="modules_load.tpl" />
+		<forward name="success"  path="ModulesLoad.tpl" />
     </action>
 	
     <action    path = "modulesDoLoad"
@@ -790,7 +790,7 @@
                name = "modulesDoLoad"
               scope = "request"
            validate = "true">
-		<forward name="success" path="Main.php?do=modulesLoad" redirect='true'/>
+		<forward name="success" path="/Main.php?do=modulesLoad" redirect='true'/>
     </action>
 
 	</action-mappings>
