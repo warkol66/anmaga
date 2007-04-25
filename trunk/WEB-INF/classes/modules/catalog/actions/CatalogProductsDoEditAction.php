@@ -47,21 +47,14 @@ class CatalogProductsDoEditAction extends BaseAction {
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un producto existente
 
-			ProductPeer::update($_POST["id"],$_POST["code"],$_POST["name"],$_POST["description"],$_POST["price"],$_FILES["image"],$_POST["parentNodeId"]);
+			ProductPeer::update($_POST["id"],$_POST["code"],$_POST["name"],$_POST["description"],$_POST["price"],$_FILES["image"],$_POST["parentNodeId"],$_POST["unitId"],$_POST["measureUnitId"]);
      	return $mapping->findForwardConfig('success');
 
 		}
 		else {
 		  //estoy creando un nuevo producto
 
-      if ( !ProductPeer::create($_POST["code"],$_POST["name"],$_POST["description"],$_POST["price"],$_FILES["image"],$_POST["parentNodeId"]) ) {
-				$smarty->assign("id",$_POST["id"]);
-				$smarty->assign("code",$_POST["code"]);
-				$smarty->assign("name",$_POST["name"]);
-				$smarty->assign("description",$_POST["description"]);
-				$smarty->assign("price",$_POST["price"]);
-				$smarty->assign("action","create");
-				$smarty->assign("message","error");
+      if ( !ProductPeer::create($_POST["code"],$_POST["name"],$_POST["description"],$_POST["price"],$_FILES["image"],$_POST["parentNodeId"],$_POST["unitId"],$_POST["measureUnitId"]) ) {
 				return $mapping->findForwardConfig('failure');
       }
 

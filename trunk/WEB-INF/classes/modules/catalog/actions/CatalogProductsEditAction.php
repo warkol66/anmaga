@@ -3,6 +3,8 @@
 require_once("BaseAction.php");
 require_once("NodePeer.php");
 require_once("TreePeer.php");
+require_once("UnitPeer.php");
+require_once("MeasureUnitPeer.php");
 
 class CatalogProductsEditAction extends BaseAction {
 
@@ -48,8 +50,13 @@ class CatalogProductsEditAction extends BaseAction {
 		$smarty->assign("parentNodeId",$_GET["parentNodeId"]);
 		
 		$productCategories = TreePeer::getAllOnlyKind("ProductCategory");
-
     $smarty->assign("productCategories",$productCategories);
+    
+		$units = UnitPeer::getAll();
+    $smarty->assign("units",$units);
+    
+		$measureUnits = MeasureUnitPeer::getAll();
+    $smarty->assign("measureUnits",$measureUnits);
 
     if ( !empty($_GET["id"]) ) {
 			//voy a editar un producto

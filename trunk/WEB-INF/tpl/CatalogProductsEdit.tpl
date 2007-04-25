@@ -40,6 +40,24 @@
 								</select>
 							</p>
 							<p>
+								<label for="unitId">Unidad</label>
+								<select name="unitId" id="unitId">
+									<option value="">Seleccionar Unidad</option>
+									|-foreach from=$units item=unit-|
+									<option value="|-$unit->getId()-|"|-if $action eq "edit" and $unit->getId() eq $product->getUnitId()-| selected="selected"|-/if-|>|-$unit->getName()-|</option>
+									|-/foreach-|
+								</select>
+							</p>
+							<p>
+								<label for="measureUnitId">Unidad de Medida</label>
+								<select name="measureUnitId" id="measureUnitId">
+									<option value="">Seleccionar Unidad de Medida</option>
+									|-foreach from=$measureUnits item=measureUnit-|
+									<option value="|-$measureUnit->getId()-|"|-if $action eq "edit" and $measureUnit->getId() eq $product->getMeasureUnitId()-| selected="selected"|-/if-|>|-$measureUnit->getName()-|</option>
+									|-/foreach-|
+								</select>
+							</p>
+							<p>
 								|-if $action eq "edit"-|
 								<input type="hidden" name="id" id="id" value="|-if $action eq "edit"-||-$node->getid()-||-/if-|" />
 								|-/if-|

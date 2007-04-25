@@ -2,7 +2,10 @@
 
 require_once("BaseAction.php");
 require_once("ProductPeer.php");
-require_once("ProductCategoryPeer.php");
+require_once("ProductCategoryPeer.php"); 
+require_once("UnitPeer.php");
+require_once("MeasureUnitPeer.php");
+require_once("NodePeer.php");
 
 class CatalogProductsDoLoadWithCategoryAction extends BaseAction {
 
@@ -55,18 +58,53 @@ class CatalogProductsDoLoadWithCategoryAction extends BaseAction {
 			while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
 						$products[] = $data;
 			}
-			fclose($handle);
+			fclose($handle);  
+			
+			switch ($_POST["mode"]) {
+				case "1": //Reemplaza todo el catalogo
+					NodePeer::deleteAllByKind("Product");
+					break;
+				case "2": //Reemplaza codigos existentes
+					break;
+				default: //Solo agrega nuevos
+     			break;
+     	}
 
 			foreach ($products as $product) {
-				//solo cargo si son 4 o mas elementos
-				if (count($product) > 3) {
+				//solo cargo si son 7 o mas elementos
+				if (count($product) > 6) {
+					//Busco la categoria
 					$category = ProductCategoryPeer::getByName($product[4]);
 					if (!empty($category))
 						$parentNodeId = $category->getId();
 					else
 						$parentNodeId = 0;
-        	if ( ProductPeer::create($product[0],$product[1],$product[2],$product[3],null,$parentNodeId) > 0 )
-        		$loaded++;
+					//Busco la unidad
+					$unit = UnitPeer::getByName($product[5]);
+					if (!empty($unit))
+						$unitId = $unit->getId();
+					else
+						$unitId = 0;
+					//Busco la unidad de medida
+					$measureUnit = MeasureUnitPeer::getByName($product[6]);
+					if (!empty($measureUnit))
+						$measureUnitId = $measureUnit->getId();
+					else
+						$measureUnitId = 0;
+					switch ($_POST["mode"]) {
+						case "1": //Reemplaza todo el catalogo
+        			if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$parentNodeId,$unitId,$measureUnitId) > 0 )
+        				$loaded++;
+							break;
+						case "2": //Reemplaza codigos existentes
+        			if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$parentNodeId,$unitId,$measureUnitId) > 0 )
+        				$loaded++;
+							break;
+						default: //Solo agrega nuevos
+        			if ( ProductPeer::create($product[0],$product[1],$product[2],$product[3],null,$parentNodeId,$unitId,$measureUnitId) > 0 )
+        				$loaded++;
+        			break;
+     			}
 				}
 			}
 

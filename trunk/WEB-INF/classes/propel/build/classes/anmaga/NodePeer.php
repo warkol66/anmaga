@@ -99,6 +99,61 @@ class NodePeer extends BaseNodePeer {
 		$alls = NodePeer::doSelect($cond);
     return $alls[0];
   }
+  
+  /**
+  * Obtiene todos los nodes de un tipo dado.
+  *
+  * @param string $kind Tipo de nodo
+  * @return Node Nodo
+  */
+  function getAllByKind($kind) {
+		$cond = new Criteria();
+		$cond->add(NodePeer::KIND, $kind);
+		$alls = NodePeer::doSelect($cond);
+    return $alls;
+  }
+  
+  /**
+  * Obtiene todos los nodes de un tipo dado y con un parentId dado.
+  *
+  * @param string $kind Tipo de nodo
+  * @param int $parentId Id del nodo padre
+  * @return Node Nodo
+  */
+  function getAllByKindAndParentId($kind,$parentId) {
+		$cond = new Criteria();
+		$cond->add(NodePeer::KIND, $kind);
+		$cond->add(NodePeer::PARENTID, $parentId);
+		$alls = NodePeer::doSelect($cond);
+    return $alls;
+  }
+  
+	/**
+	* Elimina todos los nodos de un tipo, junto a sus subarboles, como asi tambien toda la informacion asociada a los nodos.
+	*
+  * @param string $kind Tipo de nodo
+	*	@return boolean true
+	*/
+  function deleteAllByKind($kind) {
+		$nodes = NodePeer::getAllByKind($kind);
+		foreach ($nodes as $node)
+	    $node->deleteWithSubTree();
+		return true;
+  }
+
+	/**
+	* Elimina todos los nodos de un tipo, junto a sus subarboles, como asi tambien toda la informacion asociada a los nodos.
+	*
+  * @param string $kind Tipo de nodo
+  * @param int $parentId Id del nodo padre
+	*	@return boolean true
+	*/
+  function deleteAllByKindAndParentId($kind,$parentId) {
+		$nodes = NodePeer::getAllByKindAndParentId($kind,$parentId);
+		foreach ($nodes as $node)
+	    $node->deleteWithSubTree();
+		return true;
+  }
 
   /**
   * Cambia el nombre del nodo para un objeto y tipo dado.

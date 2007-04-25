@@ -657,7 +657,7 @@
               scope = "request"
            validate = "true">
     <forward name="success" path="Main.php?do=catalogProductsList&amp;message=ok" redirect="true" />
-    <forward name="failure" path="CatalogProductsEdit.tpl" />
+    <forward name="failure" path="Main.php?do=catalogProductsEdit&amp;message=error" redirect="true" />
     </action>
     
     <action    path = "catalogProductsDoLoadInCategory"
@@ -738,6 +738,80 @@
     </action>
   </action-mappings>
 <!-- Fin Section ProductCategories -->
+
+<!-- Modulo Catalog - Section Units -->
+  <action-mappings>
+    <action    path = "catalogUnitsEdit"
+               type = "CatalogUnitsEditAction"
+               name = "catalogUnitsEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="CatalogUnitsEdit.tpl" />
+    </action>
+
+    <action    path = "catalogUnitsDoEdit"
+               type = "CatalogUnitsDoEditAction"
+               name = "catalogUnitsDoEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=catalogUnitsList&amp;message=ok" redirect="true" />
+    <forward name="failure" path="CatalogUnitsEdit.tpl" />
+    </action>
+
+    <action    path = "catalogUnitsList"
+               type = "CatalogUnitsListAction"
+               name = "catalogUnitsList"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="CatalogUnitsList.tpl" />
+    </action>
+
+    <action    path = "catalogUnitsDoDelete"
+               type = "CatalogUnitsDoDeleteAction"
+               name = "catalogUnitsDoDelete"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=catalogUnitsList&amp;message=deleted_ok" redirect="true" />
+    </action>
+  </action-mappings>
+<!-- Fin Section Units -->
+
+<!-- Modulo Catalog - Section MeasureUnits -->
+  <action-mappings>
+    <action    path = "catalogMeasureUnitsEdit"
+               type = "CatalogMeasureUnitsEditAction"
+               name = "catalogMeasureUnitsEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="CatalogMeasureUnitsEdit.tpl" />
+    </action>
+
+    <action    path = "catalogMeasureUnitsDoEdit"
+               type = "CatalogMeasureUnitsDoEditAction"
+               name = "catalogMeasureUnitsDoEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=catalogMeasureUnitsList&amp;message=ok" redirect="true" />
+    <forward name="failure" path="CatalogMeasureUnitsEdit.tpl" />
+    </action>
+
+    <action    path = "catalogMeasureUnitsList"
+               type = "CatalogMeasureUnitsListAction"
+               name = "catalogMeasureUnitsList"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="CatalogMeasureUnitsList.tpl" />
+    </action>
+
+    <action    path = "catalogMeasureUnitsDoDelete"
+               type = "CatalogMeasureUnitsDoDeleteAction"
+               name = "catalogMeasureUnitsDoDelete"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=catalogMeasureUnitsList&amp;message=deleted_ok" redirect="true" />
+    </action>
+  </action-mappings>
+<!-- Fin Section MeasureUnits -->
 
 <!-- Fin Module Catalog -->
 

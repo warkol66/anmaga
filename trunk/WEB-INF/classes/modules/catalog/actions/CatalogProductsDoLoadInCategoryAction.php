@@ -2,6 +2,7 @@
 
 require_once("BaseAction.php");
 require_once("ProductPeer.php");
+require_once("NodePeer.php");
 
 class CatalogProductsDoLoadInCategoryAction extends BaseAction {
 
@@ -56,11 +57,45 @@ class CatalogProductsDoLoadInCategoryAction extends BaseAction {
 			}
 			fclose($handle);
 
+			switch ($_POST["mode"]) {
+				case "1": //Reemplaza todo el catalogo de esa categoria
+					NodePeer::deleteAllByKindAndParentId("Product",$_POST["parentNodeId"]);
+					break;
+				case "2": //Reemplaza codigos existentes
+					break;
+				default: //Solo agrega nuevos
+     			break;
+     	}
+
 			foreach ($products as $product) {
-				//solo cargo si son 4 elementos
-				if (count($product) == 4) {
-        	if ( ProductPeer::create($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"]) > 0 )
-        		$loaded++;
+				//solo cargo si son 7 o mas elementos
+				if (count($product) > 6) {
+					//Busco la unidad
+					$unit = UnitPeer::getByName($product[5]);
+					if (!empty($unit))
+						$unitId = $unit->getId();
+					else
+						$unitId = 0;
+					//Busco la unidad de medida
+					$measureUnit = MeasureUnitPeer::getByName($product[6]);
+					if (!empty($measureUnit))
+						$measureUnitId = $measureUnit->getId();
+					else
+						$measureUnitId = 0;
+					switch ($_POST["mode"]) {
+						case "1": //Reemplaza todo el catalogo de esa categoria
+        			if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"],$unitId,$measureUnitId) > 0 )
+        				$loaded++;
+							break;
+						case "2": //Reemplaza codigos existentes
+        			if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"],$unitId,$measureUnitId) > 0 )
+        				$loaded++;
+							break;
+						default: //Solo agrega nuevos
+        			if ( ProductPeer::create($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"],$unitId,$measureUnitId) > 0 )
+        				$loaded++;
+        			break;
+     			}
 				}
 			}
 
