@@ -315,7 +315,7 @@
                name = "configView"
               scope = "request"
            validate = "true">
-    <forward name="success" path="config_view.tpl"/>
+    <forward name="success" path="ConfigView.tpl"/>
     </action>
 
     <action    path = "configEdit"
@@ -323,7 +323,7 @@
                name = "configEdit"
               scope = "request"
            validate = "true">
-    <forward name="success" path="config_edit.tpl"/>
+    <forward name="success" path="ConfigEdit.tpl"/>
     </action>
 
     <action    path = "configDoEdit"
@@ -345,7 +345,7 @@
 					     name = "affiliatesList"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="affiliates_list.tpl"/>
+			<forward name="success" path="AffiliatesList.tpl"/>
 	</action>
 
 	<action    path = "affiliatesSearchAffiliate"
@@ -353,7 +353,7 @@
 					     name = "affiliatesSearchAffiliate"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="affiliates_list.tpl"/>
+			<forward name="success" path="AffiliatesList.tpl"/>
 	</action>
 
 	<action    path = "affiliatesEdit"
@@ -361,7 +361,7 @@
 					     name = "affiliatesEdit"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="affiliates_edit.tpl"/>
+			<forward name="success" path="AffiliatesEdit.tpl"/>
 	</action>
 
 	<action    path = "affiliatesAddAffiliate"
@@ -369,7 +369,7 @@
 					     name = "affiliatesAddAffiliate"
 					    scope = "request"
 					 validate = "true">
-		<forward name="success" path="affiliates_add_affiliate.tpl"/>
+		<forward name="success" path="AffiliatesAdd.tpl"/>
 	</action>
 				
 	<action    path = "affiliatesViewAffiliate"
@@ -377,7 +377,7 @@
 					     name = "affiliatesViewAffiliate"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="affiliates_view_affiliate.tpl"/>
+			<forward name="success" path="AffiliatesView.tpl"/>
 	</action>
 
     <action    path = "affiliatesDoEdit"
@@ -456,7 +456,7 @@
 					 validate = "true">
 			<description value="Modulo de ingreso"/>
 			<forward name="success" path="UsersByAffiliateWelcome.tpl"/>
-			<forward name="failure" path="users_login.tpl"/>
+			<forward name="failure" path="UsersByAffiliateLogin.tpl"/>
 	</action>
 	
 	<action      path = "usersByAffiliateDoLogout"

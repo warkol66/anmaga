@@ -48,7 +48,7 @@
 						|-/foreach-|
 						
 							<tr>
-								<td colspan="7">|-include file="include_paginate.tpl"-|</td>
+								<td colspan="7">|-include file="IncludePaginate.tpl"-|</td>
 							</tr>
 
 						</tbody>
