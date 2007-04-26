@@ -23,7 +23,7 @@
 		<td colspan="3">&nbsp;</td>
 	</tr>
 	<tr valign="top">
-		<td width="155">|-include file=MenuLeft.tpl-|</td>
+		<td width="155">|-include file="MenuLeft.tpl"-|</td>
 		<td width="5">&nbsp;</td>
 		<td width="600"><!--centerHTML start-->
 						|-$centerHTML-|

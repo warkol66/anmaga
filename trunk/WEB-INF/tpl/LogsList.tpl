@@ -135,7 +135,7 @@
 	</td>
   </tr>
   <tr>
-	<td colspan="3">|-include file="include_paginate.tpl"-|</td>
+	<td colspan="3">|-include file="IncludePaginate.tpl"-|</td>
   </tr>
   <tr> 
 	<td align="center"><input name="btnRegresar" type="button" class="boton" id="regresar" value="Regresar" onClick="location.href='Main.php?do=logsList'" /></td>

@@ -32,7 +32,7 @@
 	|-foreach from=$config item=module name=for_modules key=name-|
 	<li><span class='titulo2'>|-$name-|</span></li>
 	<ul>
-		|-include file=config_view_include.tpl elements=$module-|
+		|-include file="ConfigViewInclude.tpl" elements=$module-|
 	</ul>
 	</li>
 	|-/foreach-|
