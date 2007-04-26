@@ -21,7 +21,7 @@ class ModulesLoadAction extends BaseAction {
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ModulesActionLoadAction() {
+	function ModulesLoadAction() {
 		;
 	}
 
