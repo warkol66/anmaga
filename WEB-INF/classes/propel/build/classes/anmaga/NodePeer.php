@@ -114,6 +114,25 @@ class NodePeer extends BaseNodePeer {
   }
   
   /**
+  * Obtiene todos los nodes de un tipo dado paginados.
+  *
+  * @param string $kind Tipo de nodo
+	* @param int $page [optional] Numero de pagina actual
+	* @param int $perPage [optional] Cantidad de elementos por pagina
+  * @return Node Nodo
+  */
+  function getAllByKindPaginated($kind,$page=1,$perPage=10) {
+		if (empty($page))
+			$page = 1;
+		require_once("propel/util/PropelPager.php");
+		$cond = new Criteria();
+		$cond->add(NodePeer::KIND, $kind);
+
+		$pager = new PropelPager($cond,"NodePeer", "doSelect",$page,$perPage);
+		return $pager;
+  }
+  
+  /**
   * Obtiene todos los nodes de un tipo dado y con un parentId dado.
   *
   * @param string $kind Tipo de nodo
@@ -126,6 +145,27 @@ class NodePeer extends BaseNodePeer {
 		$cond->add(NodePeer::PARENTID, $parentId);
 		$alls = NodePeer::doSelect($cond);
     return $alls;
+  }
+  
+  /**
+  * Obtiene todos los nodes de un tipo dado y con un parentId dado paginados.
+  *
+  * @param string $kind Tipo de nodo
+  * @param int $parentId Id del nodo padre
+	* @param int $page [optional] Numero de pagina actual
+	* @param int $perPage [optional] Cantidad de elementos por pagina
+  * @return Node Nodo
+  */
+  function getAllByKindAndParentIdPaginated($kind,$parentId,$page=1,$perPage=10) {
+		if (empty($page))
+			$page = 1;
+		require_once("propel/util/PropelPager.php");
+		$cond = new Criteria();
+		$cond->add(NodePeer::KIND, $kind);
+		$cond->add(NodePeer::PARENTID, $parentId);
+
+		$pager = new PropelPager($cond,"NodePeer", "doSelect",$page,$perPage);
+		return $pager;
   }
   
 	/**
