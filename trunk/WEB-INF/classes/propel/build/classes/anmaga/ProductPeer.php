@@ -13,6 +13,10 @@ include_once 'Product.php';
  */
 class ProductPeer extends BaseProductPeer {
 
+	private $searchParentNodeId;
+	private $searchPriceFrom;
+	private $searchPriceTo;
+
   /**
   * Crea un product nuevo.
   *
@@ -22,7 +26,7 @@ class ProductPeer extends BaseProductPeer {
   * @param float $price price del product
   * @param array $image image del product
   * @param integer $parentNodeId Id del nodo padre
-  * @param integer $unitId Id de la unidad  
+  * @param integer $unitId Id de la unidad
   * @param integer $measureUnitId Id de la unidad de medida
   * @return int Id del nodo creado
 	*/
@@ -196,6 +200,50 @@ class ProductPeer extends BaseProductPeer {
 		$alls = ProductPeer::doSelect($cond);
 		return $alls[0];
   }
+  
+  function setSearchParentNodeId($parentNodeId) {
+  	$this->searchParentNodeId = $parentNodeId;
+  }
+  
+  function setSearchPriceFrom($priceFrom) {
+  	$this->searchPriceFrom = $priceFrom;
+  }
+
+  function setSearchPriceTo($priceTo) {
+  	$this->searchPriceTo = $priceTo;
+  }
+
+  /**
+  * Obtiene todos los productos paginados.
+	*
+	*	@return array Informacion sobre los productos
+  */
+	function getAllNodesPaginated($page=1,$perPage=2) {
+		if (empty($page))
+			$page = 1;
+		require_once("propel/util/PropelPager.php");
+		$cond = new Criteria();
+		$cond->add(NodePeer::KIND, "Product");
+    if (!empty($this->searchParentNodeId))
+			$cond->add(NodePeer::PARENTID, $this->searchParentNodeId);
+
+    if ( !empty($this->searchPriceFrom) || !empty($this->searchPriceTo) ) {
+    	$cond->addJoin(NodePeer::OBJECTID, ProductPeer::ID);
+    	if ( !empty($this->searchPriceFrom) ) {
+				$criterion = $cond->getNewCriterion(ProductPeer::PRICE, $this->searchPriceFrom, Criteria::GREATER_THAN);
+			}
+    	if ( !empty($this->searchPriceTo) ) {
+      	if (!empty($criterion))
+      		$criterion->addAnd($cond->getNewCriterion(ProductPeer::PRICE, $this->searchPriceTo, Criteria::LESS_THAN));
+        else
+        	$criterion = $cond->getNewCriterion(ProductPeer::PRICE, $this->searchPriceTo, Criteria::LESS_THAN);
+     	}
+      $cond->add($criterion);
+    }
+
+		$pager = new PropelPager($cond,"NodePeer", "doSelect",$page,$perPage);
+		return $pager;
+	 }
 
 }
 ?>

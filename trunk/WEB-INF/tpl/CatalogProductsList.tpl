@@ -2,6 +2,31 @@
 				<div id="div_products">
 					|-if $message eq "ok"-|<span class="message_ok">Producto guardado correctamente</span>|-/if-|
 					|-if $message eq "deleted_ok"-|<span class="message_ok">Producto eliminado correctamente</span>|-/if-|
+					
+					<div>
+						<form action="Main.php" method="get">
+							<p>
+								<label for="parentNodeId">Category</label>
+								<select name="parentNodeId" id="parentNodeId">
+									<option value="">Select Category</option>
+									|-include file="CatalogProductCategoriesIncludeOptions.tpl" productCategories=$productCategories-|
+								</select>
+							</p>
+							<p>
+								<label>Price From:</label>
+								<input type="text" name="priceFrom" value="|-$priceFrom-|" />
+								<label>To:</label>
+								<input type="text" name="priceTo" value="|-$priceTo-|" />
+							</p>
+							<p>
+								<input type="hidden" name="do" value="catalogProductsList" />
+								<input type="submit" class="boton" value="Buscar" />
+							</p>
+						</form>
+						<a href="Main.php?do=catalogProductsList">Sin Filtros</a>
+
+					</div>
+
 					<h3><a href="Main.php?do=catalogProductsEdit">Agregar Product</a></h3>
 					<table id="tabla-products">
 						<thead>
@@ -18,8 +43,8 @@
 							</tr>
 						</thead>
 						<tbody>
-						|-foreach from=$products item=product name=for_products-|
-							|-assign var=node value=$product->getNode()-|
+						|-foreach from=$products item=node name=for_products-|
+							|-assign var=product value=$node->getInfo()-|
 							|-assign var=parentNode value=$node->getParentNode()-|
 							|-assign var=unit value=$product->getUnit()-|
 							|-assign var=measureUnit value=$product->getMeasureUnit()-|
@@ -31,7 +56,7 @@
 																<td>|-$product->getprice()-|</td>
 																<td>|-if $parentNode-||-$parentNode->getName()-||-/if-|</td>
 																<td>|-if $unit-||-$unit->getName()-||-/if-|</td>
-																<td>|-if $measureUnit-||-$measureUnit->getName()-||-/if-|</td>																
+																<td>|-if $measureUnit-||-$measureUnit->getName()-||-/if-|</td>
 																<td>
 									<form action="Main.php" method="get">
 										<input type="hidden" name="do" value="catalogProductsEdit" />
