@@ -44,9 +44,10 @@ class ActionLogPeer extends BaseActionLogPeer {
 		$cond = new Criteria();
 		$cond->addAscendingOrderByColumn(ActionLogPeer::ID);
 
-		echo "datefrom : $dateFrom,,,,, dateto: $dateTo";
-		$cond->add(ActionLogPeer::DATETIME, $dateFrom." 00:00:00", Criteria::GREATER_THAN );
-		$cond->add(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_THAN );
+
+		$criterion = $cond->getNewCriterion(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_EQUAL);
+		$criterion->addAnd($cond->getNewCriterion(ActionLogPeer::DATETIME, $dateFrom." 00:00:00", Criteria::GREATER_EQUAL ));
+    $cond->add($criterion);
 
 		////////
 		// ultima version con afiliado = 0
@@ -83,10 +84,13 @@ class ActionLogPeer extends BaseActionLogPeer {
 		if (empty($page))
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
-		$cond = new Criteria();
+		$cond = new Criterion();
 		$cond->addAscendingOrderByColumn(ActionLogPeer::ID);
-		$cond->add(ActionLogPeer::DATETIME, $dateFrom." 00:00:00", Criteria::GREATER_THAN );
-		$cond->add(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_THAN );
+
+		$criterion = $cond->getNewCriterion(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_EQUAL);
+		$criterion->addAnd($cond->getNewCriterion(ActionLogPeer::DATETIME, $dateFrom." 00:00:00", Criteria::GREATER_EQUAL ));
+    $cond->add($criterion);
+
 		////////////
 		// Version con afiliado
 		@include_once('AffiliatePeer.php');
