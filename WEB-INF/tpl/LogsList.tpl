@@ -119,11 +119,7 @@
 			<tr class="|-if $smarty.section.record.rownum is even-|row_even|-else-|row_odd|-/if-|"> 
 			  <td nowrap scope="col">|-$log->getDatetime()-|</td>
 			  <td nowrap scope="col">
-				|-foreach from=$usersByAffiliate item=user -|
-					|-if $log->getuserId() eq $user->getId()-|
-						|-$user->getUsername()-|
-					|-/if-|
-				|-/foreach-|
+					|-$usersName[$smarty.foreach.ctacte.iteration]-|
 			  </td>
 			  <td scope="col" >|-$log->getAction()-|</td>
 			  <td scope="col" >|-$log->getMessage()-|</td>
