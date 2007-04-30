@@ -84,7 +84,7 @@ class ActionLogPeer extends BaseActionLogPeer {
 		if (empty($page))
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
-		$cond = new Criterion();
+		$cond = new Criteria();
 		$cond->addAscendingOrderByColumn(ActionLogPeer::ID);
 
 		$criterion = $cond->getNewCriterion(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_EQUAL);

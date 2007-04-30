@@ -161,7 +161,40 @@ class LogsListAction extends BaseAction {
 			}
 
 			  doLog('List histrico de datos');
+
+			$savedLogs=$selectedLogs->getResult();
+
+			//print_r($uuu);
+
+			$i=1;
+			foreach ($savedLogs as $eachLog){
+				if ($eachLog->getAffiliateId() == 0){
+					$userLog=$usersPeer->get($eachLog->getUserId());
+					$userName[$i]=$userLog->getUsername();
+				}
+
+				//////////
+				// en version anmaga esto no se usa
+				elseif ($eachLog->getAffiliateId() == 999999){
+					require_once("UserByAffiliatePeer.php");
+					$usersByRegistrationPeer = new UserPeer();
+					$userLog=$usersByRegistrationPeer->get($eachLog->getUserId());
+					$userName[$i]=$userLog->getUsername();
+				}
+
+				else{
+					$userLog=$affiliatePeer->get($eachLog->getUserId());
+
+					$userName[$i]=$userLog->getName();
+				}
+					$i++;
+			}
+
+		//	print_r($userName);
+
+
 			$smarty->assign("DISPLAY",2); 
+			$smarty->assign("usersName",$userName); 
 			$smarty->assign("logs",$selectedLogs->getResult());
 			$smarty->assign("pager",$selectedLogs);
 
