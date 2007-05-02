@@ -22,7 +22,11 @@
  *
  * @package anmaga
  */	
+	//global $modulesPath;
+
+
 class ModulePeer extends BaseModulePeer {
+
 
 
 	function getAll() {
@@ -32,7 +36,10 @@ class ModulePeer extends BaseModulePeer {
 	}
 
 
-
+	function get($moduleName) {
+		   	$obj = ModulePeer::retrieveByPK($moduleName);
+		return $obj;
+	}
 	
 	
 	function delete($module)
@@ -62,6 +69,23 @@ class ModulePeer extends BaseModulePeer {
 		return;
   }
 
+
+
+/**
+*
+*	Actualiza estado de un modulo
+*	@param string $moduleName nombre del modulo
+*	@param string $active nuevo estado del modulo
+*	@return true si se actualizó correctamente
+*/
+	function setActive ($moduleName,$active){
+		$obj = new Module();
+		$obj = ModulePeer::retrieveByPK($moduleName);
+		$obj->setActive($active);
+		$obj->save();
+		return;
+  }
+
 	
 	//////
 	// add module version 1
@@ -80,7 +104,7 @@ class ModulePeer extends BaseModulePeer {
 	}*/
 
 
-function addModule($module,$description,$label) {
+/*function addModule($module,$description,$label) {
 		try{
 		$moduleObj = new Module();
 		$moduleObj->setName($module);
@@ -91,6 +115,66 @@ function addModule($module,$description,$label) {
 		$moduleObj ->save();
 		}catch (PropelException $e) {}
 		return;
+	}*/
+
+/*function addModule($moduleName,$label,$description) {
+		try{
+			$path="WEB-INF/classes/modules/$moduleName/$moduleName.xml";
+		
+		require_once('includes/assoc_array2xml.php');
+		$converter= new assoc_array2xml;
+		$a=$converter->xml2array($path);
+		print_r($a);
+		die();
+
+$xml=simplexml_load_file($path);
+		//if($xml=simplexml_load_file($path))
+	//	{
+			//echo "ok";
+			//print_r($xml);
+			//die();
+			$akk=$xml->label;
+
+			$moduleObj = new Module();
+			$moduleObj->setName($moduleName);
+			$moduleObj ->setDescription($description);
+			$moduleObj ->setLabel($label);
+			$moduleObj ->setActive(0);
+			$moduleObj ->setAlwaysActive(1);
+			$moduleObj ->save();
+	//	}
+		}catch (PropelException $e) {}
+		return true;
+	}*/
+
+	function addModule($moduleName) {
+		try{
+			$path="WEB-INF/classes/modules/$moduleName/$moduleName.xml";
+		
+		/*require_once('includes/assoc_array2xml.php');
+		$converter= new assoc_array2xml;
+		$a=$converter->xml2array($path);
+		print_r($a);
+		die();*/
+
+$xml=simplexml_load_file($path);
+		//if($xml=simplexml_load_file($path))
+	//	{
+			//echo "ok";
+			//print_r($xml);
+			//die();
+			$akk=$xml->label;
+
+			$moduleObj = new Module();
+			$moduleObj->setName($moduleName);
+			$moduleObj ->setDescription("descripcion aca");
+			$moduleObj ->setLabel();
+			$moduleObj ->setActive(0);
+			$moduleObj ->setAlwaysActive(1);
+			$moduleObj ->save();
+	//	}
+		}catch (PropelException $e) {}
+		return true;
 	}
 
 function updateModule($module,$description,$label) {
