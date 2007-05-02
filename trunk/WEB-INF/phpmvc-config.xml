@@ -851,20 +851,20 @@
 	<action-mappings module="Modules">
 
 
-    <action    path = "modulesLoad"
-               type = "ModulesLoadAction"
-               name = "modulesLoad"
+    <action    path = "modulesList"
+               type = "ModulesListAction"
+               name = "modulesList"
               scope = "request"
            validate = "true">
-		<forward name="success"  path="ModulesLoad.tpl" />
+		<forward name="success"  path="ModulesList.tpl" />
     </action>
 	
-    <action    path = "modulesDoLoad"
-               type = "ModulesDoLoadAction"
-               name = "modulesDoLoad"
+    <action    path = "modulesDoActivateX"
+               type = "ModulesDoActivateXAction"
+               name = "modulesDoActivateX"
               scope = "request"
            validate = "true">
-		<forward name="success" path="/Main.php?do=modulesLoad" redirect='true'/>
+		<forward name="success" path="/Main.php?do=modulesList" redirect='true'/>
     </action>
 
 	</action-mappings>
