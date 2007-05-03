@@ -364,14 +364,6 @@
 			<forward name="success" path="AffiliatesList.tpl"/>
 	</action>
 
-	<action    path = "affiliatesSearchAffiliate"
-					     type = "AffiliatesSearchAffiliateAction"
-					     name = "affiliatesSearchAffiliate"
-					    scope = "request"
-					 validate = "true">
-			<forward name="success" path="AffiliatesList.tpl"/>
-	</action>
-
 	<action    path = "affiliatesEdit"
 					     type = "AffiliatesEditAction"
 					     name = "affiliatesEdit"
