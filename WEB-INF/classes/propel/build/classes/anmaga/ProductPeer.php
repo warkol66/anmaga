@@ -17,6 +17,16 @@ class ProductPeer extends BaseProductPeer {
 	private $searchPriceFrom;
 	private $searchPriceTo;
 
+	/**
+	* Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
+	*
+	* @return int Cantidad de filas por pagina
+	*/
+	function getRowsPerPage() {
+		global $system;
+		return $system["config"]["system"]["rowsPerPage"];
+	}
+
   /**
   * Crea un product nuevo.
   *
@@ -177,7 +187,9 @@ class ProductPeer extends BaseProductPeer {
 	*
 	*	@return array Informacion sobre los productos
   */
-	function getAllPaginated($page=1,$perPage=10) {
+	function getAllPaginated($page=1,$perPage=-1) {
+		if ($perPage == -1)
+			$perPage = 	ProductPeer::getRowsPerPage();
 		if (empty($page))
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
@@ -218,7 +230,9 @@ class ProductPeer extends BaseProductPeer {
 	*
 	*	@return array Informacion sobre los productos
   */
-	function getAllNodesPaginated($page=1,$perPage=2) {
+	function getAllNodesPaginated($page=1,$perPage=-1) {
+		if ($perPage == -1)
+			$perPage = 	ProductPeer::getRowsPerPage();
 		if (empty($page))
 			$page = 1;
 		require_once("propel/util/PropelPager.php");

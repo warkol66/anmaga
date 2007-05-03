@@ -315,7 +315,7 @@
                name = "configView"
               scope = "request"
            validate = "true">
-    <forward name="success" path="ConfigView.tpl"/>
+    <forward name="success" path="configView.tpl"/>
     </action>
 
     <action    path = "configEdit"
@@ -323,7 +323,23 @@
                name = "configEdit"
               scope = "request"
            validate = "true">
-    <forward name="success" path="ConfigEdit.tpl"/>
+    <forward name="success" path="configEdit.tpl"/>
+    </action>
+    
+    <action    path = "configSet"
+               type = "ConfigSetAction"
+               name = "configSet"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="configSet.tpl"/>
+    </action>
+    
+    <action    path = "configDoSet"
+               type = "ConfigDoSetAction"
+               name = "configDoSet"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=configSet&amp;message=ok" redirect="true" />
     </action>
 
     <action    path = "configDoEdit"
@@ -331,7 +347,7 @@
                name = "configDoEdit"
               scope = "request"
            validate = "true">
-    <forward name="success" path="/Main.php?do=configView&amp;message=ok" redirect="true" />
+    <forward name="success" path="Main.php?do=configView&amp;message=ok" redirect="true" />
     </action>
   </action-mappings>
 <!-- End Module Config -->

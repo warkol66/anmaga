@@ -15,6 +15,17 @@ require_once 'NodePeer.php';
  */
 class TreePeer {
 
+
+	/**
+	* Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
+	*
+	* @return int Cantidad de filas por pagina
+	*/
+	function getRowsPerPage() {
+		global $system;
+		return $system["config"]["system"]["rowsPerPage"];
+	}
+
 	/**
 	* Obtiene todas las raices.
 	*
@@ -89,7 +100,9 @@ class TreePeer {
 	* @param int $perPage [optional] Cantidad de elementos por pagina
 	* @return array Arboles
 	*/
-	function getAllRootsByKindPaginated($kind,$page=1,$perPage=10) {
+	function getAllRootsByKindPaginated($kind,$page=1,$perPage=-1) {
+		if ($perPage == -1)
+			$perPage = 	ProductPeer::getRowsPerPage();
 		if (empty($page))
 			$page = 1;
 		require_once("propel/util/PropelPager.php");

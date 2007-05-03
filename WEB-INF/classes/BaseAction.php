@@ -70,9 +70,11 @@ class BaseAction extends Action {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
+		
+		global $system;
+
 		$GLOBALS['_NG_LANGUAGE_'] =& $smarty->language;
 		if (!empty($GLOBALS['_NG_LANGUAGE_'])) {
-			global $system;
 			$GLOBALS['_NG_LANGUAGE_']->setCurrentLanguage($system["config"]["mluse"]["language"]);
 		}
 
@@ -82,13 +84,9 @@ class BaseAction extends Action {
 		header("Content-type: text/html; charset=UTF-8");
 
 		$noCheckLogin = array();
-		$noCheckLogin[] = "index";
-		$noCheckLogin[] = "usersLogin";
-		$noCheckLogin[] = "usersDoLogin";
-		$noCheckLogin[] = "noPermission";
-		$noCheckLogin[] = "htmlsShow";
-		$noCheckLogin[] = "usersByAffiliateLogin";
-		$noCheckLogin[] = "usersByAffiliateDoLogin";
+		
+		foreach ($system["config"]["system"]["noCheckLoginActions"] as $action => $empty)
+			$noCheckLogin[] = $action;
 
 		$isUnrestrictedAction = array_search($_REQUEST["do"],$noCheckLogin);
 
@@ -140,6 +138,9 @@ class BaseAction extends Action {
 
 		$this->template = new SmartyOutputFilter();
 		$smarty->register_outputfilter(array($this->template,"smarty_add_template"));
+		
+		//Asignacion a smarty de los parametros del sistema
+		$smarty->assign("parameters",$system["config"]["system"]["parameters"]);
 
 		if (!empty($GLOBALS['_NG_LANGUAGE_']))
 			$smarty->register_outputfilter("smarty_outputfilter_i18n");  
