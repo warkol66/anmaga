@@ -85,12 +85,8 @@ class UsersByAffiliateDoEditUserAction extends BaseAction {
 
 			if ( $_POST["pass"] == $_POST["pass2"] ) {
 
-				if ( $userPeer->update($_POST["id"],$affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"]) )
-  	    	return $mapping->findForwardConfig('success');
-				else {
-					header("Location: Main.php?do=usersByAffiliateList&user=".$_POST["id"]."&message=errorUpdate");
-					exit;
-				}
+				$userPeer->update($_POST["id"],$affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"]);
+ 	    	return $mapping->findForwardConfig('success');
 			}
 			else {
 				header("Location: Main.php?do=usersByAffiliateList&user=".$_POST["id"]."&message=wrongPassword");

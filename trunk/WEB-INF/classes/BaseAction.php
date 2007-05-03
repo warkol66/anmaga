@@ -98,6 +98,11 @@ class BaseAction extends Action {
 			$loginUser = $_SESSION["login_user"];
 	//	else
 			$loginUserAffiliate = $_SESSION["login_user_affiliate"];
+			
+		$noCheckPermission = array();
+
+		foreach ($system["config"]["system"]["noCheckPermissionActions"] as $action => $empty)
+			$noCheckLogin[] = $action;
 
 		//Chequeo de permisos de acceso
 /*		if (!empty($user)) {

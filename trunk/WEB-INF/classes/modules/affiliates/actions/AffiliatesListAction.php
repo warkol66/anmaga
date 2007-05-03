@@ -50,25 +50,20 @@ class AffiliatesListAction extends BaseAction {
     $smarty->assign("module",$module);
     $smarty->assign("section",$section);
 
-		$pager = AffiliatePeer::getAllPaginated($_GET["page"]);
-
-
     $smarty->assign("message",$_GET["message"]);
 
-  /*  if ( !empty($_GET["form"]) ) {
-			//voy a editar un grupo
+		$name = $_GET["name"];
 
-			try {
-				$smarty->assign("currentForm",$form);
-	    	$smarty->assign("accion","edicion");
-	  	}
-			catch (PropelException $e) {
-			}
-		}*/
+		if (!empty($name)) {
+			$pager = AffiliatePeer::getByNamePaginated($name,$_GET["page"]);
+			$smarty->assign("allFlag",1);
+		}
+		else
+    	$pager = AffiliatePeer::getAllPaginated($_GET["page"]);
 
 		$smarty->assign("affiliates",$pager->getResult());
 		$smarty->assign("pager",$pager);
-		$smarty->assign("url","Main.php?do=affiliatesList");
+		$smarty->assign("url","Main.php?do=affiliatesList&name=$name");
 
 		return $mapping->findForwardConfig('success');
 	}
