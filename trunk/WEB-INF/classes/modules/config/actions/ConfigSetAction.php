@@ -2,12 +2,12 @@
 
 require_once("BaseAction.php");
 
-class ConfigDoEditAction extends BaseAction {
+class ConfigSetAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ConfigDoEditAction() {
+	function ConfigSetAction() {
 		;
 	}
 
@@ -45,11 +45,15 @@ class ConfigDoEditAction extends BaseAction {
 
     $smarty->assign("module",$module);
 		global $system;
-		$system["config"] = $_POST["config"];
-		require_once('includes/assoc_array2xml.php');
-		$converter= new assoc_array2xml;
-		$xml = $converter->array2xml($system["config"]);
-		file_put_contents("config/config.xml",$xml);
+		$smarty->assign("selectedModule",$_GET["module"]);
+		if (!empty($_GET["module"])) {
+			$config = array();
+			$config[$_GET["module"]] = $system["config"][$_GET["module"]];
+			$smarty->assign("config",$config);
+		}
+
+		$smarty->assign("modules",$system["config"]);
+		$smarty->assign("message",$_GET["message"]);		
 
 		return $mapping->findForwardConfig('success');
 	}

@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf8"?>
 <config>
+	<system>
+		<parameters>
+			<debugMode></debugMode>
+			<developmentMode></developmentMode>
+			<underMaintenance></underMaintenance>
+			<siteName>Anmaga</siteName>
+			<siteDescription>Sistema Anmaga</siteDescription>
+			<webmasterMail>gflamerich@gmail.com</webmasterMail>
+			<debugMail>gflamerich@gmail.com</debugMail>
+		</parameters>
+		<noCheckPermissionActions></noCheckPermissionActions>
+		<noCheckLoginActions>
+			<index></index>
+			<usersLogin></usersLogin>
+			<usersDoLogin></usersDoLogin>
+			<noPermission></noPermission>
+			<htmlsShow></htmlsShow>
+			<usersByAffiliateLogin></usersByAffiliateLogin>
+			<usersByAffiliateDoLogin></usersByAffiliateDoLogin>
+		</noCheckLoginActions>
+		<rowsPerPage>10</rowsPerPage>
+	</system>
 	<mluse>
 		<language>esp</language>
 	</mluse>
