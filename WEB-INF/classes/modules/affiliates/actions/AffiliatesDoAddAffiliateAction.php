@@ -75,7 +75,7 @@ class AffiliatesDoAddAffiliateAction extends BaseAction {
 		$smarty->assign("module",$module);
 	
 		
-		$name=$_POST["affiliate_name"];
+		$name=$_POST["name"];
 
 		$id=AffiliatePeer::add($name);
 

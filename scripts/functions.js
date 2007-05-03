@@ -25,6 +25,56 @@ return "Seleccionar Todos"; }
 //  End -->
 
 
+function switch_vis(element,display)
+{
+	var e_ref="";
+	var ant="";
+	e_ref=document.getElementById(element);
+	if (display == undefined)
+	{
+		display='block';
+	}
+	ant=e_ref.style.display;
+	if (e_ref.style.display !=  'none' && e_ref.style.display != "")
+	{
+		display='none';
+	}
+	else
+	{
+		display=display;
+	}
+	e_ref.style.display=display;
+}
+function switch_value(element,value)
+{
+	var e_ref="";
+	var ant="";
+	e_ref=document.getElementById(element);
+	if (value == undefined)
+	{
+		value='Mostrar Sección';
+	}
+	ant=e_ref.value;
+	if (e_ref.value !=  'Ocultar Sección' && e_ref.value != "")
+	{
+		value='Ocultar Sección';
+	}
+	else
+	{
+		value=value;
+	}
+	e_ref.value=value;
+}
+function switch_vis_mult(elements)
+{
+	var i=0;
+	for(i=0; i<elements.length; i++)
+	{
+		switch_vis(elements[i],'none');
+	}
+}
+
+
 function addConfigAttribute(li) {
 	ul = document.getElementById(li.id+"_ul");
 	newName=window.prompt("Nombre del nuevo atributo:",'');

@@ -12,7 +12,7 @@
 		 <tr class="row_even"> 
 			 <td nowrap class="style6">NOMBRE AFILIADO :&nbsp;</td>
 			 <td> 
-				 <input name="affiliate_name" type="text" value="" size="10">
+				 <input name="name" type="text" value="" size="10">
 			  </td>
 		 </tr>
 

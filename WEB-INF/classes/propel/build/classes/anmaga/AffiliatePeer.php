@@ -47,7 +47,7 @@ class AffiliatePeer extends BaseAffiliatePeer {
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
-		$cond->add(AffiliatePeer::NAME,$name);
+		$cond->add(AffiliatePeer::NAME,"%".$name."%",Criteria::LIKE);
 		$cond->addAscendingOrderByColumn(AffiliatePeer::ID);
 
 		$pager = new PropelPager($cond,"AffiliatePeer", "doSelect",$page,$perPage);

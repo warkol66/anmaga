@@ -50,18 +50,18 @@ class AffiliatesSearchAffiliateAction extends BaseAction {
     $smarty->assign("module",$module);
     $smarty->assign("section",$section);
 
-		$name=$_POST["name"];
+		$name = $_GET["name"];
 
 		$pager = AffiliatePeer::getByNamePaginated($name,$_GET["page"]);
 
 		/////////////
 		// allFlag es un metodo que permite habilitar un link para volver atras y seleccionar todos los afiliados nuevamente
-		$allFlag=$_POST["allFlag"];
-		$smarty->assign("allFlag",$allFlag);
+		$allFlag=$_GET["allFlag"];
+		$smarty->assign("allFlag",$allFlag);        echo $_GET["name"]; print_r($pager->getResult());die;
 
 		$smarty->assign("affiliates",$pager->getResult());
 		$smarty->assign("pager",$pager);
-		$smarty->assign("url","Main.php?do=affiliatesList&allFlag=$allFlag");
+		$smarty->assign("url","Main.php?do=affiliatesList&allFlag=$allFlag&name=$name");
 
 		return $mapping->findForwardConfig('success');
 	}

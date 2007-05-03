@@ -38,6 +38,9 @@
 |-if $message eq "saved"-|
 <div align='center' class='textoerror'>##183,Grupo de Usuarios guardado##</div>
 |-/if-|
+|-if $message eq "edited"-|
+<div align='center' class='textoerror'>##183,Afiliado guardado##</div>
+|-/if-|
 |-if $message eq "blankName"-|
 <div align='center' class='textoerror'>##184,El Grupo de Usuarios debe tener un Nombre##</div>
 |-/if-|
@@ -49,9 +52,8 @@
 |-/if-|
 <table class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 	<tr>
-		<td colspan='3'><h3><a href="javascript:void(null);" onClick='switch_vis("divSearch");'>Busqueda por nombre</a></h3><div id="divSearch" style="display:none;"><form action='Main.php' method='post'>
-				<input type="hidden" name="do" value="affiliatesSearchAffiliate" />
-				<input type="hidden" name="allFlag" value="1" />
+		<td colspan='3'><h3><a href="javascript:void(null);" onClick='switch_vis("divSearch");'>Busqueda por nombre</a></h3><div id="divSearch" style="display:none;"><form action='Main.php' method='get'>
+				<input type="hidden" name="do" value="affiliatesList" />
 				Nombre: <input name="name" type="text" value="" size="30" />
 				&nbsp;&nbsp;<input type='submit' value='Buscar' class='boton' />
 			</form></div></td>
