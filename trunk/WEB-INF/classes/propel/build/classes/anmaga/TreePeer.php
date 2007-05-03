@@ -102,7 +102,7 @@ class TreePeer {
 	*/
 	function getAllRootsByKindPaginated($kind,$page=1,$perPage=-1) {
 		if ($perPage == -1)
-			$perPage = 	ProductPeer::getRowsPerPage();
+			$perPage = 	TreePeer::getRowsPerPage();
 		if (empty($page))
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
