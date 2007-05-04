@@ -1,9 +1,0 @@
-<config>
-		<label>Modules</label>
-		<description>Administrador de Modulos del Sistema</description>
-		<alwaysActive>1</alwaysActive>
-		<moduleDependencies>
-			<module1>Users</module1>
-			<module2>SecurityAction</module2>
-		</moduleDependencies>
-</config>
