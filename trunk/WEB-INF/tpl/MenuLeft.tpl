@@ -22,6 +22,12 @@
     <td class="menuCell"><a class="botones" href="Main.php?do=usersByAffiliateList">Usuarios de Distribuidores/Mayoristas</a></td>
   </tr>
 	<tr> 
+    <td class="menuCell"><a class="botones" href="Main.php?do=configView">Ver Configuracion</a></td>
+  </tr>
+	<tr> 
+    <td class="menuCell"><a class="botones" href="Main.php?do=configEdit">Editar Configuracion</a></td>
+  </tr>
+	<tr> 
     <td class="menuCell"><a class="botones" href="Main.php?do=modulesLoad">Administrar módulos</a></td>
   </tr>
 	<tr> 
