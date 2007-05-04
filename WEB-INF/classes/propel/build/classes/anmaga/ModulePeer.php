@@ -177,17 +177,28 @@ $xml=simplexml_load_file($path);
 		return true;
 	}
 
+
+
+
+/**
+*
+*	Actualiza en la base de datos módulos
+*	@param string $moduleName nombre del modulo
+*	@param string $description descripcion del modulo
+*	@param string $label etiqueta del módulo
+*	@return true si se agrego correctamente
+*/
+
 function updateModule($module,$description,$label) {
 		try{
 		$moduleObj = new Module();
 		$moduleObj = ModulePeer::retrieveByPK($module);
 		$moduleObj ->setDescription($description);
 		$moduleObj ->setLabel($label);
-		$moduleObj ->setActive(1);
-		$moduleObj ->setAlwaysActive(0);
+
 		$moduleObj ->save();
 		}catch (PropelException $e) {}
-		return;
+		return true;
 	}
 
 } // ModulePeer

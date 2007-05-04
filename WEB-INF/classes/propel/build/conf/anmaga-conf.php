@@ -6,14 +6,14 @@ return array (
   array (
     'type' => 'file',
     'name' => 'e:\\temp\\propel.log',
-    'ident' => 'anmaga',
+    'ident' => 'mer',
     'level' => '7',
   ),
   'propel' => 
   array (
     'datasources' => 
     array (
-      'anmaga' => 
+      'mer' => 
       array (
         'adapter' => 'mysql',
         'connection' => 
@@ -22,7 +22,7 @@ return array (
           'hostspec' => 'localhost',
           'database' => 'anmaga',
           'username' => 'root',
-          'password' => 'dxukal',
+          'password' => 'vertrigo',
         ),
       ),
       'mluse' => 
@@ -34,10 +34,10 @@ return array (
           'hostspec' => 'localhost',
           'database' => 'anmaga',
           'username' => 'root',
-          'password' => 'dxukal',
+          'password' => 'vertrigo',
         ),
       ),
-      'default' => 'anmaga',
+      'default' => 'mer',
     ),
   ),
 );
