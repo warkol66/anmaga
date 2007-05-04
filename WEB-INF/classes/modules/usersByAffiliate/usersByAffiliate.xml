@@ -1,0 +1,8 @@
+<config>
+		<label>Usuarios por Afiliado</label>
+		<description>Modulo dedicado a los usuarios de un afiliado</description>
+		<alwaysActive>0</alwaysActive>
+		<moduleDependencies>
+			<module1>Users</module1>
+		</moduleDependencies>
+</config>

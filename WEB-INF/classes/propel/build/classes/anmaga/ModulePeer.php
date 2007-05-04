@@ -5,6 +5,9 @@
   
   // include object class
   include_once 'anmaga/Module.php';
+  
+  // include object class
+  include_once 'anmaga/ModuleDependency.php';
 
 
 /**
@@ -87,92 +90,46 @@ class ModulePeer extends BaseModulePeer {
   }
 
 	
-	//////
-	// add module version 1
-	
-	/*function addModule($module,$label,$description) {
-		try{
-		$module = new Module();
-		$module ->setName($module);
-		$module ->setLabel($label);
-		$module ->setDescription($description);
-		$module ->setActive(1);
-		$module ->setAlwaysActive(0);
-		$module ->save();
-		}catch (PropelException $e) {}
-		return;
-	}*/
-
-
-/*function addModule($module,$description,$label) {
-		try{
-		$moduleObj = new Module();
-		$moduleObj->setName($module);
-		$moduleObj ->setDescription($description);
-		$moduleObj ->setLabel($label);
-		$moduleObj ->setActive(1);
-		$moduleObj ->setAlwaysActive(0);
-		$moduleObj ->save();
-		}catch (PropelException $e) {}
-		return;
-	}*/
-
-/*function addModule($moduleName,$label,$description) {
-		try{
-			$path="WEB-INF/classes/modules/$moduleName/$moduleName.xml";
-		
-		require_once('includes/assoc_array2xml.php');
-		$converter= new assoc_array2xml;
-		$a=$converter->xml2array($path);
-		print_r($a);
-		die();
-
-$xml=simplexml_load_file($path);
-		//if($xml=simplexml_load_file($path))
-	//	{
-			//echo "ok";
-			//print_r($xml);
-			//die();
-			$akk=$xml->label;
-
-			$moduleObj = new Module();
-			$moduleObj->setName($moduleName);
-			$moduleObj ->setDescription($description);
-			$moduleObj ->setLabel($label);
-			$moduleObj ->setActive(0);
-			$moduleObj ->setAlwaysActive(1);
-			$moduleObj ->save();
-	//	}
-		}catch (PropelException $e) {}
-		return true;
-	}*/
 
 	function addModule($moduleName) {
 		try{
 			$path="WEB-INF/classes/modules/$moduleName/$moduleName.xml";
 		
-		/*require_once('includes/assoc_array2xml.php');
-		$converter= new assoc_array2xml;
-		$a=$converter->xml2array($path);
-		print_r($a);
-		die();*/
+			/////////
+			// parte de carga de xml
+			require_once('includes/assoc_array2xml.php');
+			$converter= new assoc_array2xml;
+			$xml = file_get_contents($path);
+			$arrayXml = $converter->xml2array($xml);
 
-$xml=simplexml_load_file($path);
-		//if($xml=simplexml_load_file($path))
-	//	{
-			//echo "ok";
-			//print_r($xml);
-			//die();
-			$akk=$xml->label;
+			
+			//////////
+			// seccion de comprobaciones
+			
+			if (empty($arrayXml))return false;
+			
+			if (empty ($arrayXml["config"]["description"]) ) return false;
+			if (empty ($arrayXml["config"]["label"]) ) return false;
+			
+			if (empty($arrayXml["config"]["alwaysActive"] ) )
+				$arrayXml["config"]["alwaysActive"]=0;
 
+			if (!empty($arrayXml["config"]["moduleDependencies"] ) ){
+				foreach ($arrayXml["config"]["moduleDependencies"] as $moduleDependency){
+					$moduleDep = new ModuleDependencyPeer();
+					$moduleDep->setDependency($moduleName, $moduleDependency);
+				}
+			}
+
+			//////////
+			// parte de carga a la base de datos
 			$moduleObj = new Module();
 			$moduleObj->setName($moduleName);
-			$moduleObj ->setDescription("descripcion aca");
-			$moduleObj ->setLabel();
+			$moduleObj ->setDescription($arrayXml["config"]["description"]);
+			$moduleObj ->setLabel($arrayXml["config"]["label"]);
 			$moduleObj ->setActive(0);
-			$moduleObj ->setAlwaysActive(1);
+			$moduleObj ->setAlwaysActive($arrayXml["config"]["alwaysActive"]);
 			$moduleObj ->save();
-	//	}
 		}catch (PropelException $e) {}
 		return true;
 	}

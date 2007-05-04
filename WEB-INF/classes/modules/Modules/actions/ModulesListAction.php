@@ -1,7 +1,12 @@
 <?php
 
+
 require_once("BaseAction.php");
+require_once("SecurityActionPeer.php");
+require_once("GroupPeer.php");
 require_once("ModulePeer.php");
+
+require_once("ActionLogPeer.php");
 
 /**
 * Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
@@ -11,12 +16,12 @@ require_once("ModulePeer.php");
 * @version 1.0
 * @public
 */
-class ModulesDoLoadAction extends BaseAction {
+class ModulesListAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ModulesDoLoadAction() {
+	function ModulesListAction() {
 		;
 	}
 
@@ -40,6 +45,9 @@ class ModulesDoLoadAction extends BaseAction {
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
+		global $PHP_SELF;
+		//////////
+		// Call our business logic from here
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -49,56 +57,64 @@ class ModulesDoLoadAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
-
-		//asigno modulo y seccion
+		
+		//asigno modulo
 		$modulo = "Modules";
 
-
 		$smarty->assign("modulo",$modulo);
-
-		//print_r($_POST);
+ 
 		$modulePeer = new ModulePeer();
-		
-		$moduleName=$_POST["module"];
-		$description=$_POST["description"];		
-		$label=$_POST["label"];		
 
-		$savedModules= $modulePeer->getAll();
+
+
+		/*
+		* Busco todos los actions existentes en mis directorios para agregarlos luego en una lista
+		*
+		* @var string $modulos que contendra los actions
+		*/
+
+
 		
-		if ($_POST["activeModule"]==1){
-			
-			foreach ($savedModules as $saveModule){
-				if ($saveModule->getName() == $moduleName){
-					$flag=1;
-					$assignedModules= $modulePeer->updateModule($moduleName,$description,$label);
+		
+		$i=$k=0;
+		$dir = "WEB-INF/classes/modules/";
+		$dh  = opendir($dir);
+		while (false !== ($moduleName = readdir($dh))){
+			if ($moduleName[0]!='.'){	
+				if(!$modulePeer->get($moduleName) ){
+				//		echo "a new item: $moduleName!\n";
+						
+						$newModule=$modulePeer->addModule($moduleName);
+						if (!$newModule){
+							$modulesError[$k]=$moduleName;
+							$k++;
+						}
+						else{
+						$moduleStatus=$modulePeer->get($moduleName);
+						//print_r($moduleStatus);
+						if( ( $status[$i]=$moduleStatus->getAlwaysActive() ) == NULL ) $status[$i]=0;
+					//	echo "module name : $moduleName";
+						$modulesNames[$i]=$moduleName;
+						//print_r($modulesName);
+						$p[$moduleName][$moduleName]=$moduleName;
+						$p[$moduleName][$status]= $status;
+						//$p[$moduleName[$status]]= $status;
+						$i++;
+						}
+
 				}
-				if ($flag !=1) $assignedModules= $modulePeer->addModule($moduleName,$description,$label);
 			}
-
 		}
-		else $modulePeer->clearActive($moduleName);
+		//print_r($p);
+		//print_r($status);
+		$smarty->assign("modules",$modulesNames);
+		$smarty->assign("modulesError",$modulesError);
 
-	/*	// por cada action activo traido de la vista...
-		foreach ($_POST["module"] as $module) {
-			$flag=0;
-			foreach ($_POST["activeModule"] as $activeModule) {
-				if ($activeModule == $module){
-					//ModulePeer::add($module);
-					$flag=1;
-				}
-			}
-			if ($flag==0){	
-				//ModulePeer::delete($module);
-			} 
+		$assignedModules= $modulePeer->getAll();
 
-		}*/
-
-		//////////
-		// Forward control to the specified success URI
+		$smarty->assign("assignedModules",$assignedModules);
+		
 		return $mapping->findForwardConfig('success');
-
-
-
 	}
 
 }

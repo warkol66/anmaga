@@ -11,13 +11,16 @@ function checkscript() {
 			<th scope="col">Descripcion</th>
 			<th scope="col">Etiqueta</th>
 			<th scope="col">Activar</th> 
-		</tr> 
+		</tr>
+		<tr>
+		<td>		|-foreach from=$modules item=module name=modu-| |-$module-| |-/foreach-|
+		</tr>
 		|-foreach from=$assignedModules item=asModule name=modulef-|
 			
 			<form name="security" action="Main.php?do=modulesDoActivateX" method="POST">
 		<tr> 
 			<td class="celldato"><a href="Main.php?do=modulesEdit&moduleName=|-$asModule->getName()-|">|-$asModule->getName()-|</a href>
-				<input type=hidden name="module" value="|-$module-|" />
+				<input type=hidden name="module" value="|-$asModule->getName()-|" />
 			</td>
 			<td class="celldato">
 				|-$asModule->getDescription()-|
