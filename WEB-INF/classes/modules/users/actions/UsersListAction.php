@@ -87,8 +87,10 @@ class UsersListAction extends BaseAction {
 		}
 		
 		$activeUsersCount = count($users);
-		global $licenses;
-		$licensesLeft = $licenses - $activeUsersCount;
+
+		global $system;
+
+		$licensesLeft = $system["config"]["users"]["licenses"] - $activeUsersCount;
 		$smarty->assign("licensesLeft",$licensesLeft);
 
 		return $mapping->findForwardConfig('success');

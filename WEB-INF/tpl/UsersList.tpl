@@ -146,8 +146,14 @@
 		<td class='celldato'><div class='titulo2'>|-$user->getUsername()-|</div></td>
 		<td class='celldato'>|-$userInfo->getName()-|</td>
 		<td class='celldato'>|-$userInfo->getSurname()-|</td>
-		<td class='cellopciones' nowrap> [ <a href='Main.php?do=usersList&user=|-$user->getId()-|']' class='edit'>##114,Editar##</a> ]
-			[ <a href='Main.php?do=usersDoDelete&user=|-$user->getId()-|']' class='elim'>##115,Eliminar##</a> ] </td>
+		<td class='cellopciones' nowrap> [ <a href='Main.php?do=usersList&user=|-$user->getId()-|' class='edit'>##114,Editar##</a> ]
+
+|-if $login_user->getUsername() eq $user->getUsername()-|
+			[ <a href='Main.php?do=usersDoDelete&user=|-$user->getId()-|' class='elim'>##115,Eliminar##</a> ]
+|-else-|
+			[ <span class='desac'>##115,Eliminar##</span> ] 
+|-/if-|
+			</td>
 	</tr>
 	|-/foreach-|
 	|-if $licensesLeft gt 0-|

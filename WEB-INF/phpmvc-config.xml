@@ -51,9 +51,8 @@
 					    scope = "request"
 					 validate = "true">
 			<description value="Modulo de ingreso"/>
-			<forward name="success" template='template_login.tpl' path="UsersLogin.tpl"/>
-			<forward name="loginok" template='template_login.tpl' path="welcome.tpl"/>
-			<forward name="maintenance" template='template_login.tpl' path="mer_maintenance.tpl"/>
+			<forward name="success" path="UsersLogin.tpl"/>
+			<forward name="maintenance" path="Maintenance.tpl"/>
 		</action>
 		
 		<action    path = "usersDoLogin"
@@ -65,22 +64,31 @@
 			<forward name="success" path="UsersWelcome.tpl"/>
 			<forward name="failure" path="UsersLogin.tpl"/>
 		</action>
+		
+		<action    path = "usersWelcome"
+					     type = "UsersWelcomeAction"
+					     name = "usersWelcome"
+					    scope = "request"
+					 validate = "true">
+			<description value="Página de bienvenida"/>
+			<forward name="success" path="UsersWelcome.tpl"/>
+		</action>
 
-		<action    path = "loginAdmin"
-					     type = "LoginAdminAction"
-					     name = "loginAdmin"
+		<action    path = "usersLoginMaintenance"
+					     type = "UsersLoginMaintenanceAction"
+					     name = "usersLoginMaintenance"
 					    scope = "request"
 					 validate = "true">
 			<description value="Modulo de ingreso con el sistema en Mantenimiento"/>
-			<forward name="success" path="login.tpl"/>
-			<forward name="loginok" path="welcome.tpl"/>
+			<forward name="success" path="UsersLogin.tpl"/>
 		</action>
+
 		<action    path = "usersDoLogout"
 					     type = "UsersDoLogoutAction"
 					     name = "usersDoLogout"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersLogin" redirect="true"/>
+			<forward name="success" path="/Main.php?do=index" redirect="true"/>
 		</action>
 		
 		<action    path = "usersList"
@@ -449,6 +457,7 @@
 					 validate = "true">
     <forward name="success" path="/Main.php?do=usersByAffiliateList&amp;message=deleted" redirect="true" />
 	</action>
+
 	<action    	 path = "usersByAffiliateLogin"
 					     type = "UsersByAffiliateLoginAction"
 					     name = "usersByAffiliateLogin"
@@ -457,6 +466,7 @@
 			<description value="Modulo de ingreso"/>
 			<forward name="success" path="UsersByAffiliateLogin.tpl"/>
 	</action>
+
 	<action      path = "usersByAffiliateDoLogin"
 					     type = "UsersByAffiliateDoLoginAction"
 					     name = "usersByAffiliateDoLogin"
@@ -465,6 +475,15 @@
 			<description value="Modulo de ingreso"/>
 			<forward name="success" path="UsersByAffiliateWelcome.tpl"/>
 			<forward name="failure" path="UsersByAffiliateLogin.tpl"/>
+	</action>
+
+	<action    	 path = "usersByAffiliateWelcome"
+					     type = "UsersByAffiliateWelcomeAction"
+					     name = "usersByAffiliateWelcome"
+					    scope = "request"
+					 validate = "true">
+			<description value="Página de bienvenida"/>
+			<forward name="success" path="UsersByAffiliateWelcome.tpl"/>
 	</action>
 	
 	<action      path = "usersByAffiliateDoLogout"

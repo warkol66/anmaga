@@ -9,7 +9,7 @@
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
-								<td class='fondotitulo'>Bienvenido al Sistema HomeBanking de Renal</td>
+								<td class='fondotitulo'>Bienvenido al Sistema |-$parameters.siteName-|</td>
 							</tr>
 							<tr>
 								<td>&nbsp;</td>
