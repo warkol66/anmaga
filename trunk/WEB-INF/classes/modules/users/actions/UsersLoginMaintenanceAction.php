@@ -1,14 +1,13 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("UserByAffiliatePeer.php");
 
-class UsersByAffiliateDoLoginAction extends BaseAction {
+class UsersLoginMaintenanceAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function UsersByAffiliateDoLoginAction() {
+	function UsersLoginMaintenanceAction() {
 		;
 	}
 
@@ -32,7 +31,10 @@ class UsersByAffiliateDoLoginAction extends BaseAction {
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
-
+    	/**
+     	* Use a different template
+     	*/
+		$this->template->template = "TemplateLogin.tpl";
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
@@ -42,24 +44,9 @@ class UsersByAffiliateDoLoginAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "UsersByAffiliate";
+		$module = "Users";
 
-
-		if ( !empty($_POST["usernameAff"]) && !empty($_POST["passwordAff"]) ) {;
-			$user = UserByAffiliatePeer::auth($_POST["usernameAff"],$_POST["passwordAff"]);
-			if ( !empty($user) ) {
-
-				$_SESSION["login_user_affiliate"] = $user;
-
-				$smarty->assign("login_user_affiliate",$user);
-				return $mapping->findForwardConfig('success');
-			}
-		}
-
-		$this->template->template = "TemplateLogin.tpl";
-		
-    $smarty->assign("message","wrongUser");
-		return $mapping->findForwardConfig('failure');
+		return $mapping->findForwardConfig('success');
 	}
 
 }
