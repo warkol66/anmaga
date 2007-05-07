@@ -1,13 +1,6 @@
-<script>
-
-function checkscript() {
-		alert('No puede desactivar este modulo. Desactive manualmente la casilla alwaysActive en sql si en verdad desea desactivarlo');
-		return false;
-	}
-</script><!--<script src="scripts/datePicker.js">-->
 	<table width="75%" border="0" align="center" cellpadding="0" cellspacing="1" class="tablaborde"> 
 		<tr> 
-			<th scope="col">Modulos</th>
+			<th scope="col">Modulo</th>
 			<th scope="col">Descripcion</th>
 			<th scope="col">Etiqueta</th>
 			<th scope="col">Guardar</th> 

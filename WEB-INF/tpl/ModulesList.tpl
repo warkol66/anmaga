@@ -6,14 +6,27 @@ function checkscript() {
 	}
 </script><!--<script src="scripts/datePicker.js">-->
 	<table width="90%" border="1" align="center" cellpadding="0" cellspacing="1" class="tablaborde"> 
+		|-if $modulesNumber > 1-|
+		<tr>
+			<td> Se han cargado |- $modulesNumber-| nuevos modulos:</td>
+		</tr>
+		|-elseif $modulesNumber eq 1-|
+		<tr>
+			<td>Se ha cargado |- $modulesNumber-| nuevo modulo:</td>
+		</tr>
+		|-/if-|
+		|-foreach from=$modules item=module name=modu-|
+		<tr>
+			<td>|-$module.module-|</td>
+			<td>|-$module.active-|</td>
+		</tr>
+		|-/foreach-|
+
 		<tr> 
 			<th scope="col">Modulos</th>
 			<th scope="col">Descripcion</th>
 			<th scope="col">Etiqueta</th>
 			<th scope="col">Activar</th> 
-		</tr>
-		<tr>
-		<td>		|-foreach from=$modules item=module name=modu-| |-$module-| |-/foreach-|
 		</tr>
 		|-foreach from=$assignedModules item=asModule name=modulef-|
 			
@@ -29,22 +42,14 @@ function checkscript() {
 				|-$asModule->getLabel()-|
 			</td>
 			<td class="celldato">
-				<input type="checkbox" name="activeModule" value="1"
-					|-if $asModule->getActive() eq 1-|			
-				checked 
-					|-/if-|
-					|-if $asModule->getAlwaysActive() eq 1-|
-						checked disabled
-					|-/if-|
-				/>
-
-					|-if $asModule->getAlwaysActive() eq 1-|
-						<img border="0"
-src="images/help.png" name="b1" height=20 width=20 onmouseover="return checkscript()"/>
-					|-/if-|
-				
-
-				<input type="submit" name="Activar" value ="Guardar"/> 
+			|-if $asModule->getAlwaysActive() eq 1-|
+				<input type="checkbox" name="activeModule" value="1" checked disabled />
+				<img border="0"
+src="images/help.png" name="b1" height=20 width=20 onClick="return checkscript()"/>	
+			|-else-| 		
+				<input type="checkbox" name="activeModule" value="1" |-if $asModule->getActive() eq 1-|checked|-/if-| />	
+			<input type="submit" name="activar" value ="Guardar"/>
+			|-/if-|
 				<!-- esta linea iria en la linea 37 en reemplazo de disabled onClick="return checkscript()"   onmouseover="return checkscript()"-->
 			</td> 
 		</tr>

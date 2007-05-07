@@ -37,6 +37,18 @@ class ModuleDependencyPeer extends BaseModuleDependencyPeer {
 
 
 
+/**
+*
+*	Toma un modulo
+*	@param string $moduleName nombre del modulo
+*	@return object $module nombre del modulo seleccionado
+*/
+	function get($moduleName) {
+		$cond = new Criteria();
+		$cond->add(ModuleDependencyPeer::MODULE, $moduleName);
+		$todosObj = ModuleDependencyPeer::doSelect($cond);
+		return $todosObj;
+	}
 
 
 

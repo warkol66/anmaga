@@ -31,7 +31,11 @@
 class ModulePeer extends BaseModulePeer {
 
 
-
+/**
+*
+*	Obtiene todos los módulos almacenados en la base de datos
+*	@return object $modules Modulos almacenados en la base de datos
+*/
 	function getAll() {
 		$cond = new Criteria();
 		$todosObj = ModulePeer::doSelect($cond);
@@ -39,6 +43,12 @@ class ModulePeer extends BaseModulePeer {
 	}
 
 
+/**
+*
+*	Toma un modulo
+*	@param string $moduleName nombre del modulo
+*	@return object $module nombre del modulo seleccionado
+*/
 	function get($moduleName) {
 		   	$obj = ModulePeer::retrieveByPK($moduleName);
 		return $obj;
@@ -90,7 +100,12 @@ class ModulePeer extends BaseModulePeer {
   }
 
 	
-
+/**
+*
+*	Carga un xml con datos del módulo y lo Guarda en la base de datos
+*	@param string $moduleName nombre del modulo
+*	@return true si se agrego correctamente
+*/
 	function addModule($moduleName) {
 		try{
 			$path="WEB-INF/classes/modules/$moduleName/$moduleName.xml";
@@ -157,5 +172,50 @@ function updateModule($module,$description,$label) {
 		}catch (PropelException $e) {}
 		return true;
 	}
+
+
+
+/**
+*
+*	Checkea las dependencias de un modulo
+*	@param string $moduleName nombre del modulo
+*	@return object $dependencies dependencias del modulo
+*/
+//useless
+/*function hasDependencies ($moduleName){
+		$obj = new Module();
+		$obj = ModulePeer::retrieveByPK($moduleName);
+}
+*/
+
+
+/**
+*
+*	Checkea el estado de una dependencia
+*	@param string $dependencyName nombre de la dependencia
+*	@return true si esta activada, false si está desactivada
+*/
+function dependencyStatus ($dependencyName){
+		$obj = new Module();
+		$obj = ModulePeer::retrieveByPK($dependencyName);
+		if($obj){
+		//	echo "a";
+			if (!$obj->getAlwaysActive() ){
+				//echo "b";
+				if(!$obj->getActive() ) {
+					return 0;
+				}
+			}	
+		}
+		else return 0;
+	//	echo "c";
+		return 1;
+}
+
+
+
+
+
+
 
 } // ModulePeer

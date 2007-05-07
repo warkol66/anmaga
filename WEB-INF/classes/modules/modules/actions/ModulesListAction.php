@@ -83,31 +83,33 @@ class ModulesListAction extends BaseAction {
 			if ($moduleName[0]!='.'){	
 				if(!$modulePeer->get($moduleName) ){
 				//		echo "a new item: $moduleName!\n";
-						
+					//	echo "mod name: $moduleName";
 						$newModule=$modulePeer->addModule($moduleName);
 						if (!$newModule){
 							$modulesError[$k]=$moduleName;
+						//	echo "eeeeeeeeeeeeeeeee";
 							$k++;
 						}
 						else{
 						$moduleStatus=$modulePeer->get($moduleName);
-						//print_r($moduleStatus);
-						if( ( $status[$i]=$moduleStatus->getAlwaysActive() ) == NULL ) $status[$i]=0;
-					//	echo "module name : $moduleName";
-						$modulesNames[$i]=$moduleName;
-						//print_r($modulesName);
-						$p[$moduleName][$moduleName]=$moduleName;
-						$p[$moduleName][$status]= $status;
-						//$p[$moduleName[$status]]= $status;
+
+						if( ( $status[$i]=$moduleStatus->getAlwaysActive() ) == NULL ) $status[$i]=" No Activo";
+						else $status[$i]="Activo";
+						
+						$module = array();
+						$module["module"] = $moduleName;
+						$module["active"] = $status[$i];
+						$modules[] = $module;
 						$i++;
 						}
 
 				}
 			}
 		}
-		//print_r($p);
-		//print_r($status);
-		$smarty->assign("modules",$modulesNames);
+		$newModulesNumber=count($modules);
+		$smarty->assign("modulesNumber",$newModulesNumber);
+
+		$smarty->assign("modules",$modules);
 		$smarty->assign("modulesError",$modulesError);
 
 		$assignedModules= $modulePeer->getAll();
