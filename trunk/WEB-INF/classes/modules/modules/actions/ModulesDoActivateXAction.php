@@ -2,7 +2,7 @@
 
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
-
+require_once("ModuleDependencyPeer.php");
 /**
 * Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
 * compiling PHP template engine within php.MVC.
@@ -56,27 +56,48 @@ class ModulesDoActivateXAction extends BaseAction {
 
 		$smarty->assign("modulo",$modulo);
 
-		//print_r($_POST);
 		$modulePeer = new ModulePeer();
+		$moduleDependencyPeer = new ModuleDependencyPeer();
 		
 		$moduleName=$_POST["module"];
-		$activeModule=$_POST["activeModule"];		
+		if(!$activeModule=$_POST["activeModule"]) $activeModule=0;
+
 
 		
 		$savedModules= $modulePeer->getAll();
 		
-		if (isset($_POST["activeModule"]) ){
+		if (isset($_POST["activar"]) ){
+					//////////
+					// si el modulo no posee dependencias, se actualiza directamente			
+				$dependencies=$moduleDependencyPeer->get($moduleName);
 
-			foreach ($savedModules as $saveModule){
-				if ($saveModule->getName() == $moduleName){
+			if( empty($dependencies) )
+				$assignedModules= $modulePeer->setActive($moduleName,$activeModule);
+			
+			else {
 
-					$assignedModules= $modulePeer->setActive($moduleName,$activeModule);
-				}
+				foreach ($dependencies as $dependency) {
+					$dependencyName=$dependency->getDependence();
+					//echo "dep: $dependencyName";
+					$status=$modulePeer->dependencyStatus($dependencyName);
+					//echo "status: $status";
+					if ($activeModule == 1){
+						if ($status == 0 ){
+							$message="error";
+							return $mapping->findForwardConfig('errorDependencyOff');
+						}
+					}
+					else {
+						if ($status == 1 ){
+							$message="error";
+							return $mapping->findForwardConfig('errorDependencyOn');
+						}
+					}
+					$assignedModules= $modulePeer->setActive($moduleName,$activeModule);			
+				}// foreach
+			} //else dependencies
+		} //isset
 
-			}
-
-		}
-		else $modulePeer->setActive($moduleName,0);
 
 		//////////
 		// Forward control to the specified success URI
