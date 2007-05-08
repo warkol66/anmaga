@@ -1,52 +1,50 @@
 <table border='0' cellpadding='0' cellspacing='0' width='100%'>
 	<tr>
-  	<td class='titulo'>Configuraci&oacute;n del Sistema</td>
+  	<td class='title'>Configuración del Sistema</td>
 	</tr>
 	<tr>
-  	<td class='subrayatitulo'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-  	<td>&nbsp;</td>
-	</tr>
-	<tr>
-  	<td class='fondotitulo'>Administraci&oacute;n de Usuarios por Afiliados</td>
+  	<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
 	</tr>
 	<tr>
   	<td>&nbsp;</td>
 	</tr>
 	<tr>
-  	<td class='texto'>A continuaci&oacute;n podr&aacute; editar la lista de Usuarios por Afiliados del sistema.</td>
+  	<td class='backgroundTitle'>Administraci&oacute;n de Usuarios por Afiliados</td>
 	</tr>
 	<tr>
-		<td class='texto'>&nbsp;</td>
+  	<td>&nbsp;</td>
+	</tr>
+	<tr>
+  	<td>A continuaci&oacute;n podr&aacute; editar la lista de Usuarios por Afiliados del sistema.</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
 	</tr>
 </table>
 |-if $message eq "deleted"-|
-<div align='center' class='textoerror'>##153,Usuario eliminado##</div>
+<div align='center' class='errorMessage'>##153,Usuario eliminado##</div>
 |-/if-|
 |-if $message eq "activated"-|
-<div align='center' class='textoerror'>##154,Usuario reactivado##</div>
+<div align='center' class='errorMessage'>##154,Usuario reactivado##</div>
 |-/if-|
 |-if $message eq "wrongPassword"-|
-<div align='center' class='textoerror'>##155,Las contraseñas deben coincidir##</div>
+<div align='center' class='errorMessage'>##155,Las contraseñas deben coincidir##</div>
 |-/if-|
 |-if $message eq "emptyAffiliate"-|
-<div align='center' class='textoerror'>##155,Debe selecccionar un afiliado##</div>
+<div align='center' class='errorMessage'>##155,Debe selecccionar un afiliado##</div>
 |-/if-|
 |-if $message eq "errorUpdate"-|
-<div align='center' class='textoerror'>##156,Ha ocurrido un error al intentar guardar la información del usuario##</div>
+<div align='center' class='errorMessage'>##156,Ha ocurrido un error al intentar guardar la información del usuario##</div>
 |-/if-|
 |-if $message eq "saved"-|
-<div align='center' class='textoerror'>##157,Usuario guardado##</div>
+<div align='center' class='errorMessage'>##157,Usuario guardado##</div>
 |-/if-|
 |-if $message eq "notAddedToGroup"-|
-<div align='center' class='textoerror'>##158,Ha ocurrido un error al intentar agregar el usuario al grupo##</div>
+<div align='center' class='errorMessage'>##158,Ha ocurrido un error al intentar agregar el usuario al grupo##</div>
 |-/if-|
 |-if $message eq "notRemovedFromGroup"-|
-<div align='center' class='textoerror'>##159,Ha ocurrido un error al intentar eliminar el usuario al grupo##</div>
+<div align='center' class='errorMessage'>##159,Ha ocurrido un error al intentar eliminar el usuario al grupo##</div>
 |-/if-|
-
-
 |-if $accion eq "creacion" or $accion eq "edicion"-|
 	|-if $accion eq "creacion"-|
 			##160,Ingrese  la Identificación del usuario y la contraseña para el nuevo usuario,  luego haga click en Guardar para generar el nuevo usuario.##
@@ -55,34 +53,34 @@
 	<br />
 <form method='post' action='Main.php?do=usersByAffiliateDoEditUser'>
 	<input type='hidden' name='id' value='|-if $accion eq "edicion"-||-$currentUser->getId()-||-/if-|' />
-	<table class='tablaborde' cellpadding='5' cellspacing='1' width='60%'>
+	<table width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 		<tr>
-			<td nowrap="nowrap" class='titulodato1'>##162,Identificación de Usuario##</td>
-			<td class='celldato'><input name='username' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUser->getUsername()-||-/if-|' size="70" /></td>
+			<td nowrap="nowrap" class='tdTitle'>##162,Identificación de Usuario##</td>
+			<td><input name='username' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUser->getUsername()-||-/if-|' size="40" /></td>
 		</tr>
 		<tr>
-			<td class='titulodato1'>##165,Contraseña##</td>
-			<td class='celldato'><input name='pass' type='password' class='textodato' value='' size="50" /></td>
+			<td class='tdTitle'>##165,Contraseña##</td>
+			<td><input name='pass' type='password' class='textodato' value='' size="20" /></td>
 		</tr>
 		<tr>
-			<td class='titulodato1'>##166,Repetir Contraseña##</td>
-			<td class='celldato'><input name='pass2' type='password' class='textodato' value='' size="50" /></td>
+			<td class='tdTitle'>##166,Repetir Contraseña##</td>
+			<td><input name='pass2' type='password' class='textodato' value='' size="20" /></td>
 		</tr>
 		<tr>
-			<td class='titulodato1'>Nivel de Usuario</td>
-			<td class='celldato'>
-				<select name='levelId'>
-					<option value="">Seleccionar nivel</option>
+			<td class='tdTitle'>Nivel de Usuario</td>
+			<td>
+        <select name='levelId'>
+        	<option value="">Seleccionar nivel</option>
 					|-foreach from=$levels item=level name=for_levels-|
-					<option value="|-$level->getId()-|"|-if $accion eq "edicion" and $level->getId() eq $currentUser->getLevelId()-| selected="selected"|-/if-|>|-$level->getName()-|</option>
+        	<option value="|-$level->getId()-|"|-if $accion eq "edicion" and $level->getId() eq $currentUser->getLevelId()-| selected="selected"|-/if-|>|-$level->getName()-|</option>
 					|-/foreach-|
-				</select>
+       	</select>
 			</td>
 		</tr>
 		|-if $affiliates|@count > 0-|
 		<tr>
-			<td class='titulodato1'>Afiliado</td>
-			<td class='celldato'>
+			<td class='tdTitle'>Afiliado</td>
+			<td>
 				<select name='affiliateId'>
 					<option value="">Seleccionar afiliado</option>
 					|-foreach from=$affiliates item=affiliate name=for_affiliates-|
@@ -96,21 +94,21 @@
 			<td class='cellboton' colspan='2'> |-if $accion eq "edicion"-|
 				<input type="hidden" name="accion" value="edicion" />
 				|-/if-|
-				<input type='submit' name='guardar' value='##97,Guardar##'  class='boton' />
+				<input type='submit' name='guardar' value='##97,Guardar##' class='button' />
 				&nbsp;&nbsp;
-				<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##' class='boton'  />
+				<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##' class='button'  />
 			</td>
 		</tr>
 	</table>
 </form>
 |-if $accion eq "edicion"-|
-<table class='tablaborde' cellpadding='5' cellspacing='1' width='100%'>
+<table width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 	<caption>
 	##167,El usuario ## |-$currentUser->getUsername()-| ##168,es miembro de los grupos:##
 	</caption>
 	|-if $currentUserGroups|@count eq 0-|
 	<tr>
-		<th>##169,El usuario todavía no es miembro de ningún grupo##.</th>
+		<th colspan="2">##169,El usuario todavía no es miembro de ningún grupo##.</th>
 	</tr>
 	|-else-|
 	<tr>
@@ -120,8 +118,8 @@
 	|-foreach from=$currentUserGroups item=userGroup name=for_user_group-|
 	|-assign var="group" value=$userGroup->getUsersByAffiliateGroup()-|
 	<tr>
-		<td class='celldato'><div class='titulo2'>|-$group->getName()-|</div></td>
-		<td class='cellopciones' nowrap> [ <a href='Main.php?do=usersByAffiliateDoRemoveFromGroup&user=|-$currentUser->getId()-|&group=|-$group->getId()-|' class='elim'>##115,Eliminar##</a> ] </td>
+		<td><div class='titulo2'>|-$group->getName()-|</div></td>
+		<td class='cellopciones' nowrap> [ <a href='Main.php?do=usersByAffiliateDoRemoveFromGroup&user=|-$currentUser->getId()-|&group=|-$group->getId()-|' class='delete'>##115,Eliminar##</a> ] </td>
 	</tr>
 	|-/foreach-|
 	|-/if-|
@@ -136,7 +134,7 @@
 								|-/foreach-|
 				</select>
 				<input type="hidden" name="user" value="|-$currentUser->getId()-|" />
-				<input type='submit' value='##123,Agregar##' class='boton' />
+				<input type='submit' value='##123,Agregar##' class='button' />
 			</form></td>
 	</tr>
 </table>
@@ -155,20 +153,20 @@
 				|-/foreach-|
 			</select> 
 			<input type="hidden" name="do" value="usersByAffiliateList" />
-			<input name="submit" type="submit" value="Consultar">
+			<input name="submit" type="submit" value="Consultar" class="button" />
 		</form>
 |-/if-|
 
-<table class='tablaborde' cellpadding='5' cellspacing='1' width='100%'>
+<table cellpadding='5' cellspacing='1' width='100%' class='tableTdBorders'>
 	<tr>
 		<th>##162,Identificación de Usuario##</th>
 		<th>&nbsp;</th>
 	</tr>
 	|-foreach from=$users item=user name=for_users-|
 	<tr>
-		<td class='celldato'><div class='titulo2'>|-$user->getUsername()-|</div></td>
-		<td class='cellopciones' nowrap> [ <a href='Main.php?do=usersByAffiliateList&user=|-$user->getId()-|']' class='edit'>##114,Editar##</a> ]
-			[ <a href='Main.php?do=usersByAffiliateDoDelete&id=|-$user->getId()-|']' class='elim'>##115,Eliminar##</a> ] </td>
+		<td width="90%"><div class='titulo2'>|-$user->getUsername()-|</div></td>
+		<td width="10%" class='cellTextOptions' nowrap> [ <a href='Main.php?do=usersByAffiliateList&user=|-$user->getId()-|']' class='edit'>##114,Editar##</a> ]
+			[ <a href='Main.php?do=usersByAffiliateDoDelete&id=|-$user->getId()-|']' class='delete'>##115,Eliminar##</a> ] </td>
 	</tr>
 	|-/foreach-|
 	<tr>
@@ -176,14 +174,14 @@
 				<input type="hidden" name="do" value="usersByAffiliateList" />
 				<input type="hidden" name="user" value="" />
 				<input type="hidden" name="affiliateId" value="|-$affiliateId-|" />
-				<input type='submit' value='##173,Nuevo Usuario##' class='boton' />
+				<input type='submit' value='##173,Nuevo Usuario##' class='button' />
 			</form></td>
 	</tr>
 </table>
 
 |-if $deletedUsers|@count gt 0-|
 <br />
-<table class='tablaborde' cellpadding='5' cellspacing='1' width='100%'>
+<table width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 	<tr>
 		<td colspan='4' class='celltitulo2'>##175,Usuarios Eliminados##&nbsp;<a href="javascript:void(null)" class='deta' onClick="alert('##174,Si quiere dar de alta a un usuario que estuvo registrado alguna vez, debe reactivarlo desde esta opción. Si lo intenta desde un usuario nuevo el sistema le informará que ese usuario ya está en uso.##')">##38,Ayuda##</a> </td>
 	</tr>
@@ -193,8 +191,8 @@
 	</tr>
 	|-foreach from=$deletedUsers item=user name=for_deleted_users-|
 	<tr>
-		<td class='celldato'><div class='titulo2'> |-$user->getUsername()-| </div></td>
-		<td class='cellopcionescen' nowrap> [ <a href='Main.php?do=usersByAffiliateDoActivate&user=|-$user->getId()-|' class='edit'>##176,Reactivar##</a> ] </td>
+		<td width="90%"><div class='titulo2'>|-$user->getUsername()-|</div></td>
+		<td width="10%" nowrap class='cellTextOptions'> [ <a href='Main.php?do=usersByAffiliateDoActivate&user=|-$user->getId()-|' class='edit'>##176,Reactivar##</a> ] </td>
 	</tr>
 	|-/foreach-|
 </table>

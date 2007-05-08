@@ -1,53 +1,4 @@
 /* Estilo AZUL CLARO, reemplazo 438e89 con 438e89 E5EDFF*/ 
-.botones {
-	color: #800000;
-	background-image: url(../images/boton12_vino.gif);
-	background-repeat: no-repeat;
-	background-position: left center;
-	background-color: #F5F5F5;
-	border: 1px solid #800000;
-}
-a.botones:link {
-	color: #800000;
-	background-image: url(../images/boton12_vino.gif);
-	background-color: #F5F5F5;
-}
-a.botones:visited {
-	color: #800000;
-	background-image: url(../images/boton12_vino.gif);
-	background-color: #F5F5F5;
-}
-a.botones:hover {
-	color: #598632;
-	background-image: url(../images/boton12_vino_ov.gif);
-	background-color: #E3E3E3;
-}
-a.botones:active {
-	color: #598632;
-	background-image: url(../images/boton12_vino.gif);
-	background-color: #F5F5F5;
-}
-.botones2 {
-	color: #043700;
-	background-color: #F5F5F5;
-	border: 1px solid #006464;
-}
-a.botones2:link {
-	color: #004d4d;
-	background-color: #F5F5F5;
-}
-a.botones2:visited {
-	color: #004d4d;
-	background-color: #F5F5F5;
-}
-a.botones2:hover {
-	color: #598632;
-	background-color: #E3E3E3;
-}
-a.botones2:active {
-	color: #598632;
-	background-color: #F5F5F5;
-}
 .botones_desac {
 	color: #999999;
 	background-image: url(../images/ButtonDarkGreen.png);
@@ -94,18 +45,18 @@ a.botones_desac:active {
 	border-collapse: collapse;
 }
 table.tableTdBorders th {
-	border: 1px solid #800000;
+	border: 1px solid #00008B;
 	padding: 5px;
 }
 table.tableTdBorders td {
-	border: 1px solid #800000;
+	border: 1px solid #00008B;
 	padding: 4px;
 }
 /*table.tableTdBorders td:first-child { */
 /*	font-weight: bolder;	
 }*/
 .tdBorders {
-	border: 1px solid #438e89;
+	border: 1px solid #00008B;
 }
 .mandatory {
 	display: inline;
@@ -139,7 +90,7 @@ a.menuButton:hover {
 }
 a.menuButton:active {
 	color: #0000CD;
-	background-image: url(../images/menuBullet10_Blue.gif);
+	background-image: url(../images/menuBullet10_Blue_over.gif);
 	background-color: #F5F5F5;
 }
 .menuSubButton {
@@ -166,9 +117,108 @@ a.menuSubButton:hover {
 }
 a.menuSubButton:active {
 	color: #0000CD;
-	background-image: url(../images/menuBullet10_Blue.gif);
+	background-image: url(../images/menuBullet10_Blue_over.gif);
 	background-color: #F5F5F5;
 }
 .menuSection {
 	border: 1px solid #00008B;
+}
+.title {
+	color: #00008B;
+}
+.backgroundTitle {
+	background: url(mer/tablafondo1.gif);
+	border: 1px solid #999999;
+	color: #00008B;
+}
+.underlineTitle {
+	background: url(mer/back_gris_tit.gif);
+	border: #999999 1px solid;
+}
+.buttonCell {
+	background-color: #FFFFFF;
+}
+.dataTitle {
+	background-color: #EFEFEF;
+	color: #00008B;
+	border: 3px solid #ffffff;
+}
+.button {
+	background: #DCDCDC;
+}
+a.button:active {
+	background-color: #FFFFFF;
+	color: #B22222;
+}
+.tdTitle {
+	background-color: #EFEFEF;
+	color: #00008B;
+	border: 3px solid #ffffff;
+}
+.thFillTitle {
+	background-color: #00008B;
+	color: #FFFFFF;
+}
+.deactivated {
+	color: #999999;
+}
+.tableNoTdBorders {
+	border-collapse: collapse;
+	border: none;
+}
+
+
+
+
+.edit {
+	color: #007D62;
+}
+a.edit:link{
+	color: #007D62;
+}
+a.edit:visited{
+	color: #007D62;
+}
+a.edit:hover{
+	color: #FFFFFF;
+	background-color: #44A08C;
+}
+.delete {
+	color: #CF2600;
+}
+a.delete:link{
+	color: #CF2600;
+}
+a.delete:visited{
+	color: #CF2600;
+}
+a.delete:hover{
+	color: #FFFFFF;
+	background-color: #D54322;
+}
+.data {
+	color: #000000;
+}
+a.data:link{
+	color: #0000CD;
+}
+a.data:visited{	
+	color: #0000CD;
+}
+a.data:hover{
+	color: #FFFFFF;
+	background-color: #0000CD;
+}
+.detail {
+	color: #000066;
+}
+a.detail:link{
+	color: #000066;
+}
+a.detail:visited{
+	color: #000066;
+}
+a.detail:hover{
+	color: #FFFFFF;
+	background-color: #000066;
 }

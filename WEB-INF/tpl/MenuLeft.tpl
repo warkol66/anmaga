@@ -16,10 +16,10 @@ Menu Users
   </tr>
 |-/if-|
 	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesList">Distribuidores/Mayoristas</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesList">Distribuidores / Mayoristas</a></td>
   </tr>
 	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateList">Usuarios de Distribuidores/Mayoristas</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateList">Usuarios de Distribuidores / Mayoristas</a></td>
   </tr>
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=configView">Ver Configuracion</a></td>
@@ -46,7 +46,7 @@ Menu UsersByAffiliate
     <td class="menuCell"><a class="menuButton" href="Main.php?do=catalogShow">Catálogo</a></td>
   </tr>
 	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateList">Usuarios de Distribuidores/Mayoristas</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateList">Usuarios de Distribuidores / Mayoristas</a></td>
   </tr>
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
