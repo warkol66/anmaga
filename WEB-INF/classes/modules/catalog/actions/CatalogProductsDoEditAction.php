@@ -42,7 +42,12 @@ class CatalogProductsDoEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Products";
+		$module = "Catalog";
+    $smarty->assign("module",$module);
+
+		$moduleSection = "Products";
+    $smarty->assign("moduleSection",$section);
+
 
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un producto existente

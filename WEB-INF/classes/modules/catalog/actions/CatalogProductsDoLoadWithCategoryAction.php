@@ -46,8 +46,11 @@ class CatalogProductsDoLoadWithCategoryAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-    $modulo = "Catalog";
-		$section = "Products";
+		$module = "Catalog";
+    $smarty->assign("module",$module);
+
+		$moduleSection = "Products";
+    $smarty->assign("moduleSection",$section);
 
 		$loaded = 0;
 

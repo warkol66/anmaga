@@ -42,7 +42,12 @@ class CatalogProductsDoDeleteAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Products";
+		$module = "Catalog";
+    $smarty->assign("module",$module);
+
+		$moduleSection = "Products";
+    $smarty->assign("moduleSection",$section);
+
 
     NodePeer::deleteWithSubTree($_POST["id"]);
 

@@ -42,8 +42,12 @@ class CatalogMeasureUnitsListAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Catalog";
-		$section = "MeasureUnits";
+		$module = "Catalog";
+    $smarty->assign("module",$module);
+
+		$moduleSection = "MeasureUnits";
+    $smarty->assign("moduleSection",$section);
+
 
     $measureunits = MeasureUnitPeer::getAll();
 

@@ -42,7 +42,12 @@ class CatalogProductCategoriesEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "ProductCategories";
+		$module = "Catalog";
+    $smarty->assign("module",$module);
+
+		$moduleSection = "ProductCategories";
+    $smarty->assign("moduleSection",$section);
+
 
 		$smarty->assign("parentNodeId",$_GET["parentNodeId"]);
 

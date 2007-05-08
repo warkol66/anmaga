@@ -42,8 +42,11 @@ class CatalogMeasureUnitsEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Catalog";
-		$section = "MeasureUnits";
+		$module = "Catalog";
+    $smarty->assign("module",$module);
+
+		$moduleSection = "MeasureUnits";
+    $smarty->assign("moduleSection",$section);
 
     if ( !empty($_GET["id"]) ) {
 			//voy a editar un measureunit
@@ -51,7 +54,6 @@ class CatalogMeasureUnitsEditAction extends BaseAction {
 			$measureunit = MeasureUnitPeer::get($_GET["id"]);
 
 			$smarty->assign("measureunit",$measureunit);
-
 						
 	    $smarty->assign("action","edit");
 		}
