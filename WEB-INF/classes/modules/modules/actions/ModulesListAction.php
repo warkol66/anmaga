@@ -65,7 +65,8 @@ class ModulesListAction extends BaseAction {
  
 		$modulePeer = new ModulePeer();
 
-
+		$message=$_GET["message"];
+		$smarty->assign("message",$message);
 
 		/*
 		* Busco todos los actions existentes en mis directorios para agregarlos luego en una lista

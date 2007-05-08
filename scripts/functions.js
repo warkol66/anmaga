@@ -134,4 +134,19 @@ function categoriesDoEditX() {
 }
 
 
+function modulesDoActivateX() {
+	var pars = 'do=modulesDoActivateX';
+	var fields = Form.serialize('form_modulesActivate');
+
+	var myAjax = new Ajax.Updater(
+				{success: 'testId'},
+				url,
+				{
+					method: 'post',
+					parameters: pars,
+					postBody: fields,
+					insertion: Insertion.Bottom
+				});
+	$('active').value = "";
+}
 
