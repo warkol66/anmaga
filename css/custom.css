@@ -112,3 +112,63 @@ table.tableTdBorders td {
 	vertical-align: top;
 	color: #FF0000;
 }
+
+/* New Styles*/
+.menuButton {
+	color: #00008B;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-repeat: no-repeat;
+	background-position: left center;
+	background-color: #F5F5F5;
+	border: 1px solid #00008B;
+}
+a.menuButton:link {
+	color: #00008B;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-color: #F5F5F5;
+}
+a.menuButton:visited {
+	color: #00008B;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-color: #F5F5F5;
+}
+a.menuButton:hover {
+	color: #0000CD;
+	background-image: url(../images/menuBullet10_Blue_over.gif);
+	background-color: #FFFFFF;
+}
+a.menuButton:active {
+	color: #0000CD;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-color: #F5F5F5;
+}
+.menuSubButton {
+	color: #00008B;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-repeat: no-repeat;
+	background-position: left center;
+	background-color: #F5F5F5;
+}
+a.menuSubButton:link {
+	color: #00008B;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-color: #F5F5F5;
+}
+a.menuSubButton:visited {
+	color: #00008B;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-color: #F5F5F5;
+}
+a.menuSubButton:hover {
+	color: #0000CD;
+	background-image: url(../images/menuBullet10_Blue_over.gif);
+	background-color: #FFFFFF;
+}
+a.menuSubButton:active {
+	color: #0000CD;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-color: #F5F5F5;
+}
+.menuSection {
+	border: 1px solid #00008B;
+}

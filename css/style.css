@@ -62,12 +62,6 @@ form {
 	font-size: .95em;
 	font-weight: bold;
 }
-.menuCell {
-	padding-bottom: 3px;
-}
-.menuCell2 {
-	padding-bottom: 0px;
-}
 .nopaddingCell {
 	padding: 0px;
 }
@@ -417,4 +411,62 @@ textarea.campo {
 }
 .negative{
 	color: Red;
+}
+/* New Styles*/
+.menuButton {
+	padding: 6px 2px 6px 22px;
+	display: block;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.95em;
+	font-weight: bold;
+	text-decoration: none;
+	line-height: 1.30em;
+	vertical-align: middle;
+	margin: 0px;
+}
+a.menuButton:link {
+	text-decoration: none;
+}
+a.menuButton:visited {
+	text-decoration: none;
+}
+a.menuButton:hover {
+	text-decoration: none;
+}
+a.menuButton:active {
+	text-decoration: none;
+}
+.menuCell {
+	padding-bottom: 3px;
+}
+.menuCell2 {
+	padding-bottom: 0px;
+}
+.menuSubButton {
+	padding: 6px 2px 6px 22px;
+	display: block;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.95em;
+	font-weight: bold;
+	text-decoration: none;
+	line-height: 1.30em;
+	vertical-align: middle;
+	margin: 0px;
+}
+a.menuSubButton:link {
+	text-decoration: none;
+}
+a.menuSubButton:visited {
+	text-decoration: none;
+}
+a.menuSubButton:hover {
+	text-decoration: none;
+}
+a.menuSubButton:active {
+	text-decoration: none;
+}
+.menuSection {
+	display: block;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0px;
 }
