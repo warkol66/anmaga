@@ -42,8 +42,12 @@ class CatalogUnitsDoEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Catalog";
-		$section = "Units";
+		$module = "Catalog";
+    $smarty->assign("module",$module);
+
+		$moduleSection = "Units";
+    $smarty->assign("moduleSection",$section);
+
 
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un unit existente

@@ -42,8 +42,9 @@ class CatalogShowAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Catalog";
-		
+		$module = "Catalog";
+    $smarty->assign("module",$module);
+
 		$productCategories = TreePeer::getAllOnlyKind("ProductCategory");
 
     $smarty->assign("productCategories",$productCategories);

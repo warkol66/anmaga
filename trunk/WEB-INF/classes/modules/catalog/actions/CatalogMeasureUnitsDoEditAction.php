@@ -42,8 +42,11 @@ class CatalogMeasureUnitsDoEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Catalog";
-		$section = "MeasureUnits";
+		$module = "Catalog";
+    $smarty->assign("module",$module);
+
+		$moduleSection = "MeasureUnits";
+    $smarty->assign("moduleSection",$section);
 
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un measureunit existente
