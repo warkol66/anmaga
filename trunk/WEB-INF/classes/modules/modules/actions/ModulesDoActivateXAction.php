@@ -41,6 +41,8 @@ class ModulesDoActivateXAction extends BaseAction {
 
     BaseAction::execute($mapping, $form, $request, $response);
 
+			$this->template->template = "template_ajax.tpl";
+		
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
