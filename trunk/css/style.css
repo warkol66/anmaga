@@ -1,7 +1,5 @@
 @import url("cabezal.css"); /* Importar el estilo para definir el Cabezal de la página */
 @import url("custom.css");  /* Importar los estilos que cambien de color  */
-@import url("custom2.css");  /* Importar los estilos que cambien de color  */
-@import url("custom3.css");  /* Importar los estilos que vienen de mer  */
 /* traido del Template */
 body {
 	font-family: Arial, Helvetica, sans-serif;
@@ -9,8 +7,8 @@ body {
 	margin-left: 0px;
 	margin-right: 0px;
 }
-td,input,textarea,.TXTnormal {
-	font-size: .95em;
+body,td,input,textarea,.TXTnormal {
+	font-size: .75em;
 }
 form {
 	display: inline;
@@ -243,24 +241,6 @@ a.style4slink {
 	text-decoration: none;
 	color: #000000;
 }
-.edit {
-	color: #007D62;
-	font-size: 0.60em;
-	text-decoration: underline;
-}
-a.edit:link{
-	color: #007D62;
-	text-decoration: underline;
-}
-a.edit:visited{
-	color: #007D62;
-	text-decoration: underline;
-}
-a.edit:hover{
-	color: #FFFFFF;
-	background-color: #44A08C;
-	text-decoration: underline;
-}
 .elim {
 	color: #CF2600;
 	font-size: 0.60em;
@@ -469,4 +449,129 @@ a.menuSubButton:active {
 	display: block;
 	font-family: Arial, Helvetica, sans-serif;
 	margin: 0px;
+}
+
+
+.title {
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+.backgroundTitle {
+	padding: 3px 3px 3px 7px;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+.underlineTitle {
+}
+.buttonCell {
+	height: 40px;
+	text-align: center;
+	padding: 5px;
+}
+.dataTitle {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	vertical-align: top;
+	padding: 5pt 3pt 3pt;
+}
+.errorMessage {
+	color: #B22222;
+	font-weight: bold;
+	padding: 5px;
+	border: 1px solid #B22222;
+}
+.button {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.90em;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin: 5px;
+}
+a.button:active {
+}
+.tdTitle {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	vertical-align: middle;
+	margin: 7px 3px 5px 3px;
+}
+.tdData {
+	
+}
+.thFillTitle {
+
+}
+.tdSize1 {
+	font-size: 0.70em;
+}
+.tdSize2 {
+	font-size: 0.80em;
+}
+.deactivated {
+	text-decoration: none;
+}
+.paginateText {
+	display: inline;
+	padding: 3px;
+	font-size: 0.80em;
+}
+
+
+
+
+
+
+.edit {
+	text-decoration: underline;
+}
+a.edit:link{
+	text-decoration: underline;
+}
+a.edit:visited{
+	text-decoration: underline;
+}
+a.edit:hover{
+	text-decoration: underline;
+}
+.delete {
+	text-decoration: underline;
+}
+a.delete:link{
+	text-decoration: underline;
+}
+a.delete:visited{
+	text-decoration: underline;
+}
+a.delete:hover{
+	text-decoration: underline;
+}
+.data {
+}
+a.data:link{
+	text-decoration: underline;
+}
+a.data:visited{	
+	text-decoration: underline;
+}
+a.data:hover{
+	text-decoration: underline;
+}
+.detail {
+	text-decoration: underline;
+}
+a.detail:link{
+	text-decoration: underline;
+}
+a.detail:visited{
+	text-decoration: underline;
+}
+a.detail:hover{
+	text-decoration: underline;
+}
+.cellTextOptions {
+	font-size: 0.8em;
 }
