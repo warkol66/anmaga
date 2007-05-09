@@ -18,15 +18,21 @@ function checkscript() {
 <table width="60%" border="0" align="center" cellpadding="0" cellspacing="0" class="tablaborde"> 
 	|-if $message eq "errorDependencyOff"-|
 	<tr>
-		<td>Error: Ha intentado activar un m&oacute;dulo que necesita la activaci&oacute;n de otro(s) m&oacute;dulo(s)
-		</td>
+		<div>Error: Ha intentado activar un m&oacute;dulo que necesita la activaci&oacute;n de otro(s) m&oacute;dulo(s)
+		</div>
 	</tr>
 	|-elseif $message eq "errorDependencyOn"-|
 	<tr>
-		<td>Error: Ha intentado activar un m&oacute;dulo que necesita la desactivaci&oacute;n de otro(s) m&oacute;dulo(s)
-		</td>
+		<div>Error: Ha intentado activar un m&oacute;dulo que necesita la desactivaci&oacute;n de otro(s) m&oacute;dulo(s)
+		</div>
 	</tr>
 	|-/if-|
+	<tr>
+		<td id="message">
+
+		</td>
+
+	</tr>
 	|-if $modulesNumber > 1-|
 	<tr>
 		<td> Se han cargado |- $modulesNumber-| nuevos m&oacute;dulos:</td>
@@ -44,7 +50,7 @@ function checkscript() {
 	|-/foreach-|
 </table>
 	<br><br>
-<table width="90%" border="1" align="center" cellpadding="0" cellspacing="1" class="tablaborde" id="table_modulesaaaa_list"> 
+<table width="90%" border="1" align="center" cellpadding="0" cellspacing="1" class="tablaborde"> 
 		<tr> 
 			<th scope="col">Modulos</th>
 			<th scope="col">Descripcion</th>
@@ -53,11 +59,12 @@ function checkscript() {
 		</tr>
 		|-foreach from=$assignedModules item=asModule name=modulef-|
 			
-	<form name="modules" action="Main.php" method="POST" id="form_modulesActivate">
-		<tr id="testId">
-			<input type="hidden" name="do" value="modulesDoActivateX" />
-			<td class="celldato"><a href="Main.php?do=modulesEdit&moduleName=|-$asModule->getName()-|">|-$asModule->getName()-|</a href>
-				<input type=hidden name="module" value="|-$asModule->getName()-|" />
+	
+		<tr>
+			
+			<td class="celldato">
+				<a href="Main.php?do=modulesEdit&moduleName=|-$asModule->getName()-|">|-$asModule->getName()-|</a>
+				
 			</td>
 			<td class="celldato">
 				|-$asModule->getDescription()-|
@@ -66,17 +73,20 @@ function checkscript() {
 				|-$asModule->getLabel()-|
 			</td>
 			<td class="celldato">
+				<form id="form_|-$asModule->getName()-|">
+					<input type="hidden" name="module" value="|-$asModule->getName()-|" />
+					<input type="hidden" name="do" value="modulesDoActivateX" />
 			|-if $asModule->getAlwaysActive() eq 1-|
-				<input type="checkbox" name="activeModule" value="1" checked disabled />
-				<img border="0" src="images/help.png" name="b1" height=20 width=20 onClick="return checkscript()"/>	
+				<input type="checkbox" name="activeModule" value="1" checked="checked" disabled="disabled" />
+				<img border="0" src="images/help.png" height="20" width="20" onClick="return checkscript()"/>	
 			|-else-| 		
-				<input type="checkbox" id="active" name="activeModule" value="1" |-if $asModule->getActive() eq 1-|checked|-/if-| onclick="modulesDoActivateX()"/>	
-			<input type="submit" name="activar" value ="Guardar"/><span id="systemWorking" style="display:none;">Actualizando sistema...</span>
+				<input type="checkbox" name="activeModule" value="1" |-if $asModule->getActive() eq 1-|checked="checked"|-/if-| onclick="modulesDoActivateX(this.form)" />	
+			<input type="submit" name="activar" value ="Guardar" /><span id="systemWorking" style="display:none;">Actualizando sistema...</span>
 			|-/if-|
+					</form>
 			</td> 
 		</tr>
-		
-	</form>
+
 			
 		|-/foreach-| 
 </table> 

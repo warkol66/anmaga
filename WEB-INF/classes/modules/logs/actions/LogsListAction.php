@@ -151,12 +151,12 @@ class LogsListAction extends BaseAction {
 						$smarty->assign("affiliate",$affiliate); 
 					}
 
-					$url= 'Main.php?do=logsList&saveButton='.$_GET['saveButton'].'&dateFrom='.$dateFrom.'&dateTo='.$dateTo.'&module='.$_GET["module"].'&affiliate='.$affiliateId.'&selectUser='.$selectedUser;
+					$url= 'Main.php?do=logsList&saveButton='.$_GET['saveButton'].'&dateFrom='.$_GET["dateFrom"].'&dateTo='.$_GET["dateTo"].'&module='.$_GET["module"].'&affiliate='.$affiliateId.'&selectUser='.$selectedUser;
 			}
 			else 	{
 				$selectedLogs=$logs->selectAllByRequirementsPaginated($dateFrom,$dateTo,$selectedUser,$module,$_GET["page"]);
 			
-				$url= 'Main.php?do=logsList&saveButton='.$_GET['saveButton'].'&dateFrom='.$dateFrom.'&dateTo='.$dateTo.'&module='.$_GET["module"].'&selectUser='.$selectedUser;			
+				$url= 'Main.php?do=logsList&saveButton='.$_GET['saveButton'].'&dateFrom='.$_GET["dateFrom"].'&dateTo='.$_GET["dateTo"].'&module='.$_GET["module"].'&selectUser='.$selectedUser;			
 			
 			}
 
@@ -185,7 +185,9 @@ class LogsListAction extends BaseAction {
 				else{
 					$userLog=$affiliatePeer->get($eachLog->getUserId());
 
-					$userName[$i]=$userLog->getName();
+					$info=$usersByAffiliatePeer->get($userLog->getId());
+
+					$userName[$i]=$info->getUsername();
 				}
 					$i++;
 			}

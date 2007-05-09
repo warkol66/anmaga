@@ -116,6 +116,8 @@ class ModulesListAction extends BaseAction {
 		$assignedModules= $modulePeer->getAll();
 
 		$smarty->assign("assignedModules",$assignedModules);
+
+		doLog("Entrar en ModulesList");
 		
 		return $mapping->findForwardConfig('success');
 	}
