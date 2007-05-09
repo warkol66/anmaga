@@ -1,15 +1,15 @@
 <table border='0' cellpadding='0' cellspacing='0' width='100%'>
 	<tr>
-		<td class='titulo'>Configuración del Sistema</td>
+		<td class='title'>Configuración del Sistema</td>
 	</tr>
 	<tr>
-		<td class='subrayatitulo'><img src="images/clear.gif" height='3' width='1'></td>
+		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<td class='fondotitulo'>Variables de Configuración del Sistema</td>
+		<td class='backgroundTitle'>Variables de Configuración del Sistema</td>
 	</tr>
 |-if $message eq "ok"-|	<tr>
 		<td>&nbsp;</td>
@@ -22,7 +22,7 @@
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<td class='texto'>A continuación podrá ver las variables de configuración del sistema.</td>
+		<td>A continuación podrá ver las variables de configuración del sistema.</td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>

@@ -1,22 +1,27 @@
-|-include file="header.tpl"-|
 <table border='0' cellpadding='0' cellspacing='0' width='100%'>
 	<tr>
-		<td class='titulo'>Configuración del Sistema</td>
+		<td class='title'>Configuración del Sistema</td>
 	</tr>
 	<tr>
-		<td class='subrayatitulo'><img src="images/clear.gif" height='3' width='1'></td>
+		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<td class='fondotitulo'>Variables de Configuración del Sistema</td>
+		<td class='backgroundTitle'>Variables de Configuración del Sistema</td>
 	</tr>
 	<tr>
-		<td>|-if $message eq "ok"-|Configuración Guardada!&nbsp;|-/if-|</td>
+		<td>&nbsp;</td>
 	</tr>
-	<tr>
-		<td class='texto'>A continuaci&oacute;n podr&aacute; editar las variables de configuración del sistema.</td>
+|-if $message eq "ok"-|	<tr>
+		<td class="errorMessage">Configuración Guardada!</td>
+	</tr>
+<tr>
+	<td>&nbsp;</td>
+</tr>
+|-/if-|	<tr>
+		<td>A continuación podrá editar las variables de configuración del sistema.</td>
 	</tr>
 	<tr>
 		<td>
@@ -48,6 +53,6 @@
 			</ul>
 	<input type="hidden" name="do" value="configDoSet" />
 	<input type="hidden" name="module" value="|-$selectedModule-|" />
-	<input type="submit" value="Guardar" class="boton" />
+	<input type="submit" value="Guardar" class="button" />
 </form>
 |-/if-|
