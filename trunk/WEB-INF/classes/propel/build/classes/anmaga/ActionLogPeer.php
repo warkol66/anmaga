@@ -51,10 +51,10 @@ class ActionLogPeer extends BaseActionLogPeer {
 
 		////////
 		// ultima version con afiliado = 0
-		$cond->add(ActionLogPeer::AFFILIATEID, 0);
-
-		if ($selectUser != -1)
-		$cond->add(ActionLogPeer::USERID, $selectUser);
+		if ($selectUser != -1){
+			$cond->add(ActionLogPeer::USERID, $selectUser);
+			$cond->add(ActionLogPeer::AFFILIATEID, 0);
+		}
 
 
 		if($module != 1)

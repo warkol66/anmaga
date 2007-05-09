@@ -907,9 +907,9 @@
                name = "modulesDoActivateX"
               scope = "request"
            validate = "true">
-		<forward name="success" path="/Main.php?do=modulesList" redirect='true'/>
-		<forward name="errorDependencyOff" path="/Main.php?do=modulesList&amp;message=errorDependencyOff" redirect='true'/>
-		<forward name="errorDependencyOn" path="/Main.php?do=modulesList&amp;message=errorDependencyOn" redirect='true'/>
+		<forward name="success" path="ModulesDoActivateXModuleSuccess.tpl"/>
+		<forward name="errorDependencyOff" path="ModulesDoActivateXModuleOff.tpl"/>
+		<forward name="errorDependencyOn" path="ModulesDoActivateXModuleOn.tpl"/>
     </action>
 
 	</action-mappings>

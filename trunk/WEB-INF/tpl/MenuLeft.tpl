@@ -31,7 +31,7 @@ Menu Users
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersList">Editar Usuarios</a></td>
   </tr>
 	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=modulesLoad">Administrar módulos</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=modulesList">Administrar módulos</a></td>
   </tr>
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
