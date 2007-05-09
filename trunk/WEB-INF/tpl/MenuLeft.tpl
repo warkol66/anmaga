@@ -22,10 +22,11 @@ Menu Users
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateList">Usuarios de Distribuidores / Mayoristas</a></td>
   </tr>
 	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=configView">Ver Configuracion</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=configView">Configuración</a></td>
   </tr>
 	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=configEdit">Editar Configuración</a></td>
+    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=configSet">Cambiar Configuración</a>
+		<a class="menuSubButton" href="Main.php?do=configEdit">Editar Configuración</a></div></td>
   </tr>
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersList">Editar Usuarios</a></td>

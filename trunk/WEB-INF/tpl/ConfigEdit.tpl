@@ -1,21 +1,21 @@
 <table border='0' cellpadding='0' cellspacing='0' width='100%'>
 	<tr>
-		<td class='titulo'>Configuración del Sistema</td>
+		<td class='title'>Configuración del Sistema</td>
 	</tr>
 	<tr>
-		<td class='subrayatitulo'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='fondotitulo'>Variables de Configuración del Sistema</td>
+		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<td class='texto'>A continuaci&oacute;n podr&aacute; editar las variables de configuración del sistema.</td>
+		<td class='backgroundTitle'>Variables de Configuración del Sistema</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>A continuación podrá editar las variables de configuración del sistema.</td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
