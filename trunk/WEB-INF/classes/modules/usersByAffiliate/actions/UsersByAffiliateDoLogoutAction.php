@@ -43,7 +43,7 @@ class UsersByAffiliateDoLogoutAction extends BaseAction {
 
 		$module = "UsersByAffiliate";
 
-		unset($_SESSION["login_user_affiliate"]);
+		unset($_SESSION["loginUserByAffiliate"]);
 
 		return $mapping->findForwardConfig('success');
 

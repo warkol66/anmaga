@@ -78,7 +78,7 @@ class UsersByAffiliateDoEditUserAction extends BaseAction {
 		if ( !empty($_SESSION["login_user"]) )
 			$affiliateId = $_POST["affiliateId"];
 		else
-			$affiliateId = $_SESSION["login_user_affiliate"]->getAffiliateId();
+			$affiliateId = $_SESSION["loginUserByAffiliate"]->getAffiliateId();
 
 		if ( $_POST["accion"] == "edicion" ) {
 			//estoy editando un usuario existente
