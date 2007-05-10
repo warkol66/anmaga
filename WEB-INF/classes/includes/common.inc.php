@@ -308,8 +308,8 @@ function doLog($message) {
 
 
 	}
-	elseif(!empty($_SESSION['login_userByRegistration'])){ 
-		$userId=$_SESSION['login_userByRegistration'];
+	elseif(!empty($_SESSION['loginUserByRegistration'])){ 
+		$userId=$_SESSION['loginUserByRegistration'];
 		$affiliateId =999999 ;
 
 	}
@@ -318,16 +318,16 @@ function doLog($message) {
 		/// si no existe la variable de la sesion usersByAffiliate, la voy a tener que crear de esta manera
 		/// Habrá que normalizar el nombre del modulo usersByAfiliate, $_SESSION["login_user_affiliate"] --> $_SESSION['UserByAffiliate']
 		
-		if(is_object($_SESSION["login_userByAffiliate"])){
+		if(is_object($_SESSION["loginUserByAffiliate"])){
 			//////////
 			// version con propel toma esta linea
-			$userId=$_SESSION["login_userByAffiliate"]->getId();
-			$affiliateId=$_SESSION["login_userByAffiliate"]->getAffiliateId();
+			$userId=$_SESSION["loginUserByAffiliate"]->getId();
+			$affiliateId=$_SESSION["loginUserByAffiliate"]->getAffiliateId();
 		}
 
 			//////////
 			// version sin propel toma esta linea
-		else $userId=$_SESSION["login_userByAffiliate"];
+		else $userId=$_SESSION["loginUserByAffiliate"];
 
 
 

@@ -49,9 +49,9 @@ class UsersByAffiliateDoLoginAction extends BaseAction {
 			$user = UserByAffiliatePeer::auth($_POST["usernameAff"],$_POST["passwordAff"]);
 			if ( !empty($user) ) {
 
-				$_SESSION["login_user_affiliate"] = $user;
+				$_SESSION["loginUserByAffiliate"] = $user;
 
-				$smarty->assign("login_user_affiliate",$user);
+				$smarty->assign("loginUserByAffiliate",$user);
 				return $mapping->findForwardConfig('success');
 			}
 		}

@@ -69,7 +69,7 @@ class UsersByAffiliateListAction extends BaseAction {
 			$smarty->assign("affiliates",$affiliates);
 		}
 		else {
-		  $affiliateId = $_SESSION["login_user_affiliate"]->getAffiliateId();
+		  $affiliateId = $_SESSION["loginUserByAffiliate"]->getAffiliateId();
 			$users = $usersPeer->getUsersByAffiliate($affiliateId);
 			$deletedUsers = $usersPeer->getDeletedsByAffiliate($affiliateId);
 		}
