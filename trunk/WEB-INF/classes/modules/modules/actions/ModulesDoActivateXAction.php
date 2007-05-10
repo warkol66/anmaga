@@ -77,7 +77,7 @@ class ModulesDoActivateXAction extends BaseAction {
 				$assignedModules= $modulePeer->setActive($moduleName,$activeModule);
 			
 			else {
-
+				$i=0;
 				foreach ($dependencies as $dependency) {
 					$dependencyName=$dependency->getDependence();
 					//echo "dep: $dependencyName";
@@ -85,16 +85,27 @@ class ModulesDoActivateXAction extends BaseAction {
 					//echo "status: $status";
 					if ($activeModule == 1){
 						if ($status == 0 ){
-							$message="error";
-							return $mapping->findForwardConfig('errorDependencyOff');
+							$dependenciesNames[$i]=$dependencyName;
+							$i++;
+							$flag=1;
 						}
 					}
 					else {
 						if ($status == 1 ){
-							$message="error";
-							return $mapping->findForwardConfig('errorDependencyOn');
+							$dependenciesNames[$i]=$dependencyName;
+							$i++;
+							$flag=2;
 						}
 					}
+					if($flag==1){
+						$smarty->assign("dependenciesName",$dependenciesNames);
+						return $mapping->findForwardConfig('errorDependencyOff');
+					}
+					if ($flag==2){
+						$smarty->assign("dependenciesName",$dependenciesNames);
+						return $mapping->findForwardConfig('errorDependencyOn');
+					}
+
 					$assignedModules= $modulePeer->setActive($moduleName,$activeModule);			
 				}// foreach
 			} //else dependencies
