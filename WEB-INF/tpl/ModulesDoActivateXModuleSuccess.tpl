@@ -1,1 +1,1 @@
-Éxito! Ha actualizado el m&oacute;dulo!
+&Eacute;xito! Ha actualizado el m&oacute;dulo!
