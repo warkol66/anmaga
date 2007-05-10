@@ -58,8 +58,14 @@ class UsersByAffiliateListAction extends BaseAction {
 		if (!empty($_SESSION["login_user"])) {
 			$affiliateId = $_GET["affiliateId"];
 			if(!empty($affiliateId)) {
-				$users = $usersPeer->getUsersByAffiliate($affiliateId);
-				$deletedUsers = $usersPeer->getDeletedsByAffiliate($affiliateId);
+				if ($affiliateId == -1){
+					$users = $usersPeer->getAll();
+					$deletedUsers = $usersPeer->getDeleteds();
+				}
+				else{
+					$users = $usersPeer->getUsersByAffiliate($affiliateId);
+					$deletedUsers = $usersPeer->getDeletedsByAffiliate($affiliateId);
+				}
 			}
     	else {
 				$users = $usersPeer->getAll();
