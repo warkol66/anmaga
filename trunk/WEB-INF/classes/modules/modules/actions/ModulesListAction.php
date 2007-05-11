@@ -2,11 +2,8 @@
 
 
 require_once("BaseAction.php");
-require_once("SecurityActionPeer.php");
-require_once("GroupPeer.php");
 require_once("ModulePeer.php");
 
-require_once("ActionLogPeer.php");
 
 /**
 * Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
