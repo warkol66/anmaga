@@ -145,8 +145,7 @@ function modulesDoActivateX(form) {
 				{
 					method: 'post',
 					parameters: pars,
-					postBody: fields,
-					insertion: Insertion.Bottom
+					postBody: fields
 				});
 }
 

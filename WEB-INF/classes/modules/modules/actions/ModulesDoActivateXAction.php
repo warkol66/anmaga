@@ -92,22 +92,22 @@ class ModulesDoActivateXAction extends BaseAction {
 					}
 					else {
 						if ($status == 1 ){
+							
 							$dependenciesNames[$i]=$dependencyName;
 							$i++;
 							$flag=2;
 						}
-					}
-					if($flag==1){
-						$smarty->assign("dependenciesName",$dependenciesNames);
-						return $mapping->findForwardConfig('errorDependencyOff');
-					}
-					if ($flag==2){
+					}			
+				}// foreach
+				if($flag==1){
 						$smarty->assign("dependenciesName",$dependenciesNames);
 						return $mapping->findForwardConfig('errorDependencyOn');
-					}
-
-					$assignedModules= $modulePeer->setActive($moduleName,$activeModule);			
-				}// foreach
+				}
+				if ($flag==2){
+						$smarty->assign("dependenciesName",$dependenciesNames);
+						return $mapping->findForwardConfig('errorDependencyOff');		
+				}
+				$assignedModules= $modulePeer->setActive($moduleName,$activeModule);
 			} //else dependencies
 		} //isset
 

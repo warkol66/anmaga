@@ -16,20 +16,9 @@ function checkscript() {
 </table>
 
 <table width="60%" border="0" align="center" cellpadding="0" cellspacing="0" class="tablaborde"> 
-	|-if $message eq "errorDependencyOff"-|
-	<tr>
-		<div>Error: Ha intentado activar un m&oacute;dulo que necesita la activaci&oacute;n de otro(s) m&oacute;dulo(s)
-		</div>
-	</tr>
-	|-elseif $message eq "errorDependencyOn"-|
-	<tr>
-		<div>Error: Ha intentado activar un m&oacute;dulo que necesita la desactivaci&oacute;n de otro(s) m&oacute;dulo(s)
-		</div>
-	</tr>
-	|-/if-|
 	<tr>
 		<td id="message">
-
+		<span id="systemWorking" style="display:none;">Actualizando sistema...</span>
 		</td>
 
 	</tr>
@@ -81,7 +70,7 @@ function checkscript() {
 				<img border="0" src="images/help.png" height="20" width="20" onClick="return checkscript()"/>	
 			|-else-| 		
 				<input type="checkbox" name="activeModule" value="1" |-if $asModule->getActive() eq 1-|checked="checked"|-/if-| onclick="modulesDoActivateX(this.form)" />	
-			<input type="submit" name="activar" value ="Guardar" /><span id="systemWorking" style="display:none;">Actualizando sistema...</span>
+			<input type="submit" name="activar" value ="Guardar" />
 			|-/if-|
 					</form>
 			</td> 
