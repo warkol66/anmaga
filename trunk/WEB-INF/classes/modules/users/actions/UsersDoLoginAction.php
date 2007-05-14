@@ -48,7 +48,8 @@ class UsersDoLoginAction extends BaseAction {
 			$user = UserPeer::auth($_POST["username"],$_POST["password"]);
 			if ( !empty($user) ) {
 				$_SESSION["login_user"] = $user;
-				$smarty->assign("login_user",$user);
+				$_SESSION["loginUser"] = $user;
+				$smarty->assign("loginUser",$user);
 				return $mapping->findForwardConfig('success');
 			}
 		}

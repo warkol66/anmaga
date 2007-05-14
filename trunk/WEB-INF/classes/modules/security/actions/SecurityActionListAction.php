@@ -72,7 +72,7 @@ class SecurityActionListAction extends BaseAction {
 			}
 		}
 		
-		$loginUser=$_SESSION['login_user'];
+		$loginUser=$_SESSION['loginUser'];
 		$userLevel=$loginUser->getLevelid();
 
 		if(isset($_GET["module"])) {

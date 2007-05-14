@@ -119,7 +119,7 @@ class DocumentsDoEditAction extends BaseAction {
 
 									$categoryPeer = new CategoryPeer();
 
-									$categories = $categoryPeer->getUserCategories($_SESSION["login_user"]);
+									$categories = $categoryPeer->getUserCategories($_SESSION["loginUser"]);
 									$smarty->assign("categories",$categories);
 
 									return $mapping->findForwardConfig('failure');
@@ -148,7 +148,7 @@ class DocumentsDoEditAction extends BaseAction {
 
 				$categoryPeer = new CategoryPeer();
 
-				$categories = $categoryPeer->getUserCategories($_SESSION["login_user"]);
+				$categories = $categoryPeer->getUserCategories($_SESSION["loginUser"]);
 				$smarty->assign("categories",$categories);
 
 						return $mapping->findForwardConfig('failure');

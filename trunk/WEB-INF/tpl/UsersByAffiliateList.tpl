@@ -142,7 +142,7 @@
 |-/if-|
 
 
-|-if $login_user ne ''-|
+|-if $loginUser ne ''-|
 <h3>Ver Usuarios por Afiliado</h3>
 			<form name="affiliateFilter" action="Main.php" method="get">
 			<select name="affiliateId">

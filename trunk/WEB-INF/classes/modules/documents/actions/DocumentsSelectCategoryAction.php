@@ -78,7 +78,7 @@ class DocumentsSelectCategoryAction extends BaseAction {
 		$categoryPeer = new CategoryPeer();
     
 		// se comprueba las categorías que puede ver el usuario logueado y se las asigna
-		$categories = $categoryPeer->getUserCategories($_SESSION["login_user"]);
+		$categories = $categoryPeer->getUserCategories($_SESSION["loginUser"]);
 		$smarty->assign("categories",$categories);
 
 

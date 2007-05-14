@@ -45,6 +45,10 @@ class UsersDoLogoutAction extends BaseAction {
 
 		unset($_SESSION["login_user"]);
 
+		if($_SESSION["loginUser"]){
+			unset($_SESSION["loginUser"]);
+		}
+
 		return $mapping->findForwardConfig('success');
 
 	}

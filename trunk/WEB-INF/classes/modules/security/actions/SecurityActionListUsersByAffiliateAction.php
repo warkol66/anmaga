@@ -72,10 +72,10 @@ class SecurityActionListUsersByAffiliateAction extends BaseAction {
 			}
 		}
 
-		if (!empty($_SESSION['login_user']))
+		if (!empty($_SESSION['loginUser']))
 			$userLevel = 1;
 		else
-			$userLevel = $_SESSION['login_user_by_affiliate']->getLevelId();
+			$userLevel = $_SESSION['loginUserByAffiliate']->getLevelId();
 
 		if(isset($_GET["module"])) {
 			if($_GET["module"]!='todos'){

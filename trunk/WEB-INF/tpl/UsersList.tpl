@@ -147,7 +147,7 @@
 		<td>|-$userInfo->getName()-|</td>
 		<td>|-$userInfo->getSurname()-|</td>
 		<td class='cellTextOptions' nowrap>[ <a href='Main.php?do=usersList&user=|-$user->getId()-|' class='edit'>##114,Editar##</a> ]
-|-if $login_user->getUsername() eq $user->getUsername()-|
+|-if $loginUser->getUsername() eq $user->getUsername()-|
 			[ <a href='Main.php?do=usersDoDelete&user=|-$user->getId()-|' class='elim'>##115,Eliminar##</a> ]
 |-else-|
 			[ <span class='deactivated'>##115,Eliminar##</span> ] 

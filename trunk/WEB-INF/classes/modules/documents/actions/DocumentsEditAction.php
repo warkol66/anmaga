@@ -87,7 +87,7 @@ class DocumentsEditAction extends BaseAction {
 
 		////////////			
 		//obtengo las categorias que el usuario puede acceder	
-		$categories = $categoryPeer->getUserCategories($_SESSION["login_user"]);
+		$categories = $categoryPeer->getUserCategories($_SESSION["loginUser"]);
 		$smarty->assign("categories",$categories);
 
 

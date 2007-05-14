@@ -85,7 +85,6 @@ class ModulesListAction extends BaseAction {
 						$newModule=$modulePeer->addModule($moduleName);
 						if (!$newModule){
 							$modulesError[$k]=$moduleName;
-						//	echo "eeeeeeeeeeeeeeeee";
 							$k++;
 						}
 						else{

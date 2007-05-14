@@ -20,7 +20,6 @@ function checkscript() {
 		<td id="message">
 		<span id="systemWorking" style="display:none;">Actualizando sistema...</span>
 		</td>
-
 	</tr>
 	|-if $modulesNumber > 1-|
 	<tr>
@@ -47,13 +46,9 @@ function checkscript() {
 			<th scope="col">Activar</th> 
 		</tr>
 		|-foreach from=$assignedModules item=asModule name=modulef-|
-			
-	
 		<tr>
-			
 			<td class="celldato">
 				<a href="Main.php?do=modulesEdit&moduleName=|-$asModule->getName()-|">|-$asModule->getName()-|</a>
-				
 			</td>
 			<td class="celldato">
 				|-$asModule->getDescription()-|

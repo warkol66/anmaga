@@ -75,7 +75,7 @@ class UsersByAffiliateDoEditUserAction extends BaseAction {
 
     $userPeer = new UserByAffiliatePeer();
     
-		if ( !empty($_SESSION["login_user"]) )
+		if ( !empty($_SESSION["loginUser"]) )
 			$affiliateId = $_POST["affiliateId"];
 		else
 			$affiliateId = $_SESSION["loginUserByAffiliate"]->getAffiliateId();
