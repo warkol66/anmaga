@@ -57,7 +57,7 @@ class	SecurityActionDoSaveAction extends BaseAction {
 		$actions=$_POST["actions"];
 
 		//Obtengo el nivel base del action que debe tener en base al nivel del usuario logueado
-		$loginUser=$_SESSION['login_user'];
+		$loginUser=$_SESSION['loginUser'];
 		$userLevel=$loginUser->getLevelid();
 		$baseLevel = 1;
 		while ($userLevel > 1) {

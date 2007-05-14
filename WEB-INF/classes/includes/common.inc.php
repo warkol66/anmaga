@@ -301,8 +301,8 @@ function doLog($message) {
 
 	include_once 'ActionLog.php';	
 
-	if(!empty($_SESSION['login_user'])){
-		$userId = $_SESSION['login_user'];
+	if(!empty($_SESSION['loginUser'])){
+		$userId = $_SESSION['loginUser'];
 		$affiliateId = 0;
 
 

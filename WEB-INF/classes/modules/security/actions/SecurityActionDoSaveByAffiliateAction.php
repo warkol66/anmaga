@@ -57,10 +57,10 @@ class	SecurityActionDoSaveByAffiliateAction extends BaseAction {
 		$actions=$_POST["actions"];
 
 		//Obtengo el nivel base del action que debe tener en base al nivel del usuario logueado
-		if (!empty($_SESSION['login_user']))
+		if (!empty($_SESSION['loginUser']))
 			$userLevel = 1;
 		else
-			$userLevel = $_SESSION['login_user_by_affiliate']->getLevelId();
+			$userLevel = $_SESSION['loginUserByAffiliate']->getLevelId();
 		$baseLevel = 1;
 		while ($userLevel > 1) {
 			$baseLevel += $userLevel;

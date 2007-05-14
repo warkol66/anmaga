@@ -100,6 +100,7 @@ class ModulesDoActivateXAction extends BaseAction {
 					}			
 				}// foreach
 				if($flag==1){
+						$smarty->assign("flag",$flag);
 						$smarty->assign("dependenciesName",$dependenciesNames);
 						return $mapping->findForwardConfig('errorDependencyOn');
 				}

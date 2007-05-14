@@ -48,7 +48,7 @@ class CategoriesListAction extends BaseAction {
     $smarty->assign("module",$module);
     $smarty->assign("section",$section);
 
-    $user = $_SESSION["login_user"];
+    $user = $_SESSION["loginUser"];
     $categories = $user->getCategories();
 
     $smarty->assign("categories",$categories);

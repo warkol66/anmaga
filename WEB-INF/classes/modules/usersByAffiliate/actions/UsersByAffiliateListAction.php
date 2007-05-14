@@ -55,7 +55,7 @@ class UsersByAffiliateListAction extends BaseAction {
 		$usersPeer = new userByAffiliatePeer();
 
 		//Si esta logueado un usuario comun
-		if (!empty($_SESSION["login_user"])) {
+		if (!empty($_SESSION["loginUser"])) {
 			$affiliateId = $_GET["affiliateId"];
 			if(!empty($affiliateId)) {
 				if ($affiliateId == -1){
