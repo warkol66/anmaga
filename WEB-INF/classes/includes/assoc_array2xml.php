@@ -73,7 +73,7 @@ function characterData($parser,$data)
  {
    if (trim($data)) {
 	   $key=end($this->keys);
-	   $this->arrays[$this->depth][$key]=$data;
+	   $this->arrays[$this->depth][$key].=$data;
 	   $this->node_flag=0; //So that we don't add as an array, but as an element
    }
  }
