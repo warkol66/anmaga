@@ -2,23 +2,58 @@
 <config>
 	<system>
 		<parameters>
-			<debugMode></debugMode>
-			<developmentMode></developmentMode>
-			<underMaintenance></underMaintenance>
+			<debugMode>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</debugMode>
+			<developmentMode>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</developmentMode>
+			<underMaintenance>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</underMaintenance>
 			<siteName>Anmaga</siteName>
 			<siteDescription>Sistema Anmaga</siteDescription>
 			<webmasterMail>gflamerich@gmail.com</webmasterMail>
 			<debugMail>gflamerich@gmail.com</debugMail>
 		</parameters>
-		<noCheckPermissionActions></noCheckPermissionActions>
+		<noCheckPermissionActions>
+			<index>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</index>
+		</noCheckPermissionActions>
 		<noCheckLoginActions>
-			<index></index>
-			<usersLogin></usersLogin>
-			<usersDoLogin></usersDoLogin>
-			<noPermission></noPermission>
-			<htmlsShow></htmlsShow>
-			<usersByAffiliateLogin></usersByAffiliateLogin>
-			<usersByAffiliateDoLogin></usersByAffiliateDoLogin>
+			<index>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</index>
+			<usersLogin>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</usersLogin>
+			<usersDoLogin>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</usersDoLogin>
+			<noPermission>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</noPermission>
+			<htmlsShow>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</htmlsShow>
+			<usersByAffiliateLogin>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</usersByAffiliateLogin>
+			<usersByAffiliateDoLogin>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</usersByAffiliateDoLogin>
 		</noCheckLoginActions>
 		<rowsPerPage>10</rowsPerPage>
 	</system>

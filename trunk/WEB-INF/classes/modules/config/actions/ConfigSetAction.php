@@ -48,7 +48,7 @@ class ConfigSetAction extends BaseAction {
 		$smarty->assign("selectedModule",$_GET["module"]);
 		if (!empty($_GET["module"])) {
 			$config = array();
-			$config[$_GET["module"]] = $system["config"][$_GET["module"]];
+			$config = $system["config"][$_GET["module"]];
 			$smarty->assign("config",$config);
 		}
 

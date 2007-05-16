@@ -43,13 +43,11 @@
 |-if $selectedModule ne ""-|
 <form method="post" action="Main.php">
 			<ul id="config_ul">
-				|-foreach from=$config item=module name=for_modules key=module_name-|
-				<li id="config[|-$module_name-|]"><span class='titulo2'>|-$module_name-|</span>
-					<ul id="config[|-$module_name-|]_ul">
-						|-include file=ConfigSetInclude.tpl elements=$module name=[$module_name]-|
+				<li id="config[|-$selectedModule-|]"><span class='titulo2'>|-$selectedModule-|</span>
+					<ul id="config[|-$selectedModule-|]_ul">
+						|-include file=ConfigSetInclude.tpl elements=$config name=[$selectedModule]-|
 					</ul>
 				</li>
-				|-/foreach-|
 			</ul>
 	<input type="hidden" name="do" value="configDoSet" />
 	<input type="hidden" name="module" value="|-$selectedModule-|" />

@@ -85,8 +85,10 @@ class BaseAction extends Action {
 
 		$noCheckLogin = array();
 		
-		foreach ($system["config"]["system"]["noCheckLoginActions"] as $action => $empty)
-			$noCheckLogin[] = $action;
+		foreach ($system["config"]["system"]["noCheckLoginActions"] as $action => $status) {
+			if ($status["value"] == "YES")
+				$noCheckLogin[] = $action;
+		}
 
 		$isUnrestrictedAction = array_search($_REQUEST["do"],$noCheckLogin);
 
@@ -101,30 +103,39 @@ class BaseAction extends Action {
 			
 		$noCheckPermission = array();
 
-		foreach ($system["config"]["system"]["noCheckPermissionActions"] as $action => $empty)
-			$noCheckLogin[] = $action;
-
-		//Chequeo de permisos de acceso
-/*		if (!empty($user)) {
-
-			$action = SecurityActionPeer::get($_REQUEST["do"]);
-
-			if (empty($action)) {
-				header("Location:Main.php?do=noPermission");
-				exit();
-			}
-
-			$accessAction = $action->getAccess();
-			$level = $user->getLevel();
-
-			if ( empty($level) || ($level->getBitLevel() & $accessAction) == 0 ) {
-				header("Location:Main.php?do=noPermission");
-				exit();
-			}
+		foreach ($system["config"]["system"]["noCheckPermissionActions"] as $action => $status) {
+			if ($status["value"] == "YES")
+				$noCheckPermission[] = $action;
 		}
-*/
+                    
+		$isNoCheckPermissionAction = array_search($_REQUEST["do"],$noCheckPermission);
+
+		//Solo chequeo permisos si es un action que no esta en la lista de noCheckPermissionActions
+		if (!$isNoCheckPermissionAction) {
 
 //////////// Verificación de permisos desabilitada
+			//Chequeo de permisos de acceso
+/*			if (!empty($user)) {
+
+				$action = SecurityActionPeer::get($_REQUEST["do"]);
+
+				if (empty($action)) {
+					header("Location:Main.php?do=noPermission");
+					exit();
+				}
+
+				$accessAction = $action->getAccess();
+				$level = $user->getLevel();
+
+				if ( empty($level) || ($level->getBitLevel() & $accessAction) == 0 ) {
+					header("Location:Main.php?do=noPermission");
+					exit();
+				}
+			}
+*/
+
+	 }
+
 
 		if (!empty($user)) {
 			$level = $user->getLevel();

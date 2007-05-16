@@ -48,11 +48,11 @@ class ConfigDoSetAction extends BaseAction {
 		if (empty($_POST["module"]))
 			$system["config"] = $_POST["config"];
 		else
-			$system["config"][$_POST["module"]] = $_POST["config"];
+			$system["config"][$_POST["module"]] = $_POST["config"][$_POST["module"]];
 		require_once('includes/assoc_array2xml.php');
 		$converter= new assoc_array2xml;
 		$xml = $converter->array2xml($system["config"]);
-		file_put_contents("WEB-INF/config.xml",$xml);
+		file_put_contents("config/config.xml",$xml);
 
 		return $mapping->findForwardConfig('success');
 	}
