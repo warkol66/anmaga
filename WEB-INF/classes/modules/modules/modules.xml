@@ -1,9 +1,38 @@
-<config>
+<?xml version="1.0" encoding="utf-8" ?>
+<moduleInstalation>
+	<config>
 		<label>Modules</label>
-		<description>Administrador de Modulos del Sistema</description>
-		<alwaysActive>1</alwaysActive>
+		<description>Administrador de Módulos del Sistema</description>
+		<esp>
+			<label>Modulos</label>
+			<description>Administrador de Módulos del Sistema</description>
+		</esp>
+		<eng>
+			<label>Modules</label>
+			<description>Modules manager</description>
+		</eng>
+		<allwaysActive>1</allwaysActive>
 		<moduleDependencies>
 			<module1>Users</module1>
 			<module2>SecurityAction</module2>
 		</moduleDependencies>
-</config>
+	</config>
+	<actions>
+		<moduleList>
+			<actionLog>
+				<actionLabel>Ingreso a modules list</actionLabel>
+				<esp>
+					<actionLabel>Ingreso a modules list</actionLabel>
+				</esp>
+				<eng>
+					<actionLabel>Enter to Module list</actionLabel>
+				</eng>
+			</actionLog>
+			<securityAction>
+				<access>1</access>
+				<accessUsersByAffiliate>0</accessUsersByAffiliate>
+				<pair></pair>
+			</securityAction>
+		</moduleList>
+	</actions>
+</moduleInstalation>
