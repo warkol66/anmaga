@@ -47,6 +47,15 @@ Menu UsersByAffiliate
     <td class="menuCell"><a class="menuButton" href="Main.php?do=catalogShow">Catálogo</a></td>
   </tr>
 	<tr> 
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersViewCart">Pedido en Proceso</a></td>
+  </tr>
+	<tr> 
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersList">Pedidos Procesados</a></td>
+  </tr>
+	<tr>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersTemplatesList">Pedidos Almacenados</a></td>
+  </tr>
+	<tr>
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateList">Usuarios de Distribuidores / Mayoristas</a></td>
   </tr>
 	<tr> 

@@ -87,6 +87,11 @@ class ModulePaths {
 		$appDirs[]	= 'WEB-INF/classes/modules/modules';
 		$appDirs[]	= 'WEB-INF/classes/modules/modules/actions';
 		$appDirs[]	= 'WEB-INF/classes/modules/modules/forms';
+		
+		// Orders module
+		$appDirs[]	= 'WEB-INF/classes/modules/orders';
+		$appDirs[]	= 'WEB-INF/classes/modules/orders/actions';
+		$appDirs[]	= 'WEB-INF/classes/modules/orders/forms';
 
 		return $appDirs;
 

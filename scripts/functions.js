@@ -149,3 +149,32 @@ function modulesDoActivateX(form) {
 				});
 }
 
+
+function ordersAddItemToCartX(form) {
+	var fields = Form.serialize(form);
+
+
+	var myAjax = new Ajax.Updater(
+				{success: 'messageCart'},
+				url,
+				{
+					method: 'post',
+					postBody: fields
+				});
+	$('messageCart').innerHTML = "Adding to cart...";
+}
+
+function ordersChangeItemCartX(form) {
+	var fields = Form.serialize(form);
+
+
+	var myAjax = new Ajax.Updater(
+				{success: 'messageCart'},
+				url,
+				{
+					method: 'post',
+					postBody: fields
+				});
+	$('messageCart').innerHTML = "Modifing cart...";
+}
+

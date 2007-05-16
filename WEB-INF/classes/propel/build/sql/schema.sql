@@ -294,6 +294,86 @@ CREATE TABLE `productCategory`(
     `description` VARCHAR(255)  COMMENT 'Descripcion',
     PRIMARY KEY(`id`))
 Type=MyISAM COMMENT='Categorias de Productos';
+# -----------------------------------------------------------------------
+# orders_order# -----------------------------------------------------------------------
+DROP TABLE IF EXISTS `orders_order`;
+
+CREATE TABLE `orders_order`(
+    `id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Id del pedido',
+    `created` DATETIME NOT NULL  COMMENT 'Fecha en que se creo el pedido',
+    `userId` INTEGER NOT NULL  COMMENT 'Id del usuario',
+    `affiliateId` INTEGER NOT NULL  COMMENT 'Id del afiliado',
+    `branchId` INTEGER  COMMENT 'Id de la sucursal',
+    `processed` DATETIME  COMMENT 'Fecha en que se proceso el pedido',
+    `total` FLOAT  COMMENT 'Precio total del pedido',
+    `state` INTEGER  COMMENT 'Estado del pedido',
+    PRIMARY KEY(`id`),
+    CONSTRAINT `orders_order_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `usersByAffiliate_user` (`id`),
+    CONSTRAINT `orders_order_ibfk_2` FOREIGN KEY (`affiliateId`) REFERENCES `affiliate` (`id`),
+    CONSTRAINT `orders_order_ibfk_3` FOREIGN KEY (`branchId`) REFERENCES `branch` (`id`))
+Type=MyISAM COMMENT='Pedido de Productos';
+# -----------------------------------------------------------------------
+# orders_orderItem# -----------------------------------------------------------------------
+DROP TABLE IF EXISTS `orders_orderItem`;
+
+CREATE TABLE `orders_orderItem`(
+    `id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Id del item del pedido',
+    `orderId` INTEGER NOT NULL  COMMENT 'Id del pedido',
+    `productId` INTEGER NOT NULL  COMMENT 'Id del usuario',
+    `price` FLOAT  COMMENT 'Precio del producto',
+    `quantity` INTEGER  COMMENT 'Cantidad del producto en el pedido',
+    PRIMARY KEY(`id`),
+    CONSTRAINT `orders_orderItem_ibfk_1` FOREIGN KEY (`orderId`) REFERENCES `orders_order` (`id`),
+    CONSTRAINT `orders_orderItem_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `product` (`id`))
+Type=MyISAM COMMENT='Item del Pedido de Productos';
+# -----------------------------------------------------------------------
+# orders_orderTemplate# -----------------------------------------------------------------------
+DROP TABLE IF EXISTS `orders_orderTemplate`;
+
+CREATE TABLE `orders_orderTemplate`(
+    `id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Id del pedido',
+    `name` VARCHAR(255) NOT NULL  COMMENT 'Nombre de la plantilla',
+    `created` DATETIME NOT NULL  COMMENT 'Fecha en que se creo el pedido',
+    `userId` INTEGER NOT NULL  COMMENT 'Id del usuario',
+    `affiliateId` INTEGER NOT NULL  COMMENT 'Id del afiliado',
+    `branchId` INTEGER  COMMENT 'Id de la sucursal',
+    `total` FLOAT  COMMENT 'Precio total del pedido',
+    PRIMARY KEY(`id`),
+    CONSTRAINT `orders_orderTemplate_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `usersByAffiliate_user` (`id`),
+    CONSTRAINT `orders_orderTemplate_ibfk_2` FOREIGN KEY (`affiliateId`) REFERENCES `affiliate` (`id`),
+    CONSTRAINT `orders_orderTemplate_ibfk_3` FOREIGN KEY (`branchId`) REFERENCES `branch` (`id`))
+Type=MyISAM COMMENT='Plantillas de Pedido de Productos';
+# -----------------------------------------------------------------------
+# orders_orderTemplateItem# -----------------------------------------------------------------------
+DROP TABLE IF EXISTS `orders_orderTemplateItem`;
+
+CREATE TABLE `orders_orderTemplateItem`(
+    `id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Id del item del pedido',
+    `orderTemplateId` INTEGER NOT NULL  COMMENT 'Id del pedido',
+    `productId` INTEGER NOT NULL  COMMENT 'Id del usuario',
+    `price` FLOAT  COMMENT 'Precio del producto',
+    `quantity` INTEGER  COMMENT 'Cantidad del producto en el pedido',
+    PRIMARY KEY(`id`),
+    CONSTRAINT `orders_orderTemplateItem_ibfk_1` FOREIGN KEY (`orderTemplateId`) REFERENCES `orders_orderTemplate` (`id`),
+    CONSTRAINT `orders_orderTemplateItem_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `product` (`id`))
+Type=MyISAM COMMENT='Item de la Plantilla de Pedido de Productos';
+# -----------------------------------------------------------------------
+# branch# -----------------------------------------------------------------------
+DROP TABLE IF EXISTS `branch`;
+
+CREATE TABLE `branch`(
+    `id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Id de la sucursal',
+    `affiliateId` INTEGER NOT NULL  COMMENT 'Id del afiliado',
+    `number` INTEGER NOT NULL  COMMENT 'Numero de la sucursal',
+    `name` VARCHAR(255)  COMMENT 'Nombre de la sucursal',
+    PRIMARY KEY(`id`),
+    CONSTRAINT `branch_ibfk_1` FOREIGN KEY (`affiliateId`) REFERENCES `affiliate` (`id`))
+Type=MyISAM COMMENT='Sucursales de Afiliados';
+  
+  
+  
+  
+  
   
   
   
