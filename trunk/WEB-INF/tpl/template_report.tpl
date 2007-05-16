@@ -7,9 +7,9 @@
 <!--[if !IE]>--> <link href="css/mer_mozilla.css" rel="stylesheet" type="text/css"> <!--<![endif]-->
 <link rel="stylesheet" href="css/mer_reporte.css" type="text/css">
 <link rel="shortcut icon" href="images/mer.ico">
-<script src="scripts/functions.js">
-</script>
+<script language="JavaScript" type="text/javascript" src="scripts/functions.js"></script>
 </head>
+<body>
 <table width='700' border='0' cellspacing='0' cellpadding='0'>
 	<tr>
 		<td><div id="imprimir" class="texto_noimprimir"><strong><a href="javascript:void(null);" class="texto" onClick="printFunction();">Click aquí para Imprimir 
