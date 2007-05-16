@@ -106,7 +106,7 @@ class ModulePeer extends BaseModulePeer {
 *	@param string $moduleName nombre del modulo
 *	@return true si se agrego correctamente
 */
-	function addModule($moduleName) {
+	function addAndInstallModule($moduleName) {
 		try{
 			$path="WEB-INF/classes/modules/$moduleName/$moduleName.xml";
 		
@@ -117,20 +117,23 @@ class ModulePeer extends BaseModulePeer {
 			$xml = file_get_contents($path);
 			$arrayXml = $converter->xml2array($xml);
 
+			//print_r($arrayXml);
+
 			
 			//////////
 			// seccion de comprobaciones
-			
+			//			echo "0";
 			if (empty($arrayXml))return false;
-			
-			if (empty ($arrayXml["config"]["description"]) ) return false;
-			if (empty ($arrayXml["config"]["label"]) ) return false;
-			
-			if (empty($arrayXml["config"]["alwaysActive"] ) )
-				$arrayXml["config"]["alwaysActive"]=0;
-
-			if (!empty($arrayXml["config"]["moduleDependencies"] ) ){
-				foreach ($arrayXml["config"]["moduleDependencies"] as $moduleDependency){
+			//echo "1";
+			if (empty ($arrayXml["moduleInstalation"]["config"]["description"]) ) return false;
+			//echo "2";
+			if (empty ($arrayXml["moduleInstalation"]["config"]["label"]) ) return false;
+						echo "3";
+			if (empty($arrayXml["moduleInstalation"]["config"]["alwaysActive"] ) )
+				$arrayXml["moduleInstalation"]["config"]["alwaysActive"]=0;
+			//echo "3";
+			if (!empty($arrayXml["moduleInstalation"]["config"]["moduleDependencies"] ) ){
+				foreach ($arrayXml["moduleInstalation"]["config"]["moduleDependencies"] as $moduleDependency){
 					$moduleDep = new ModuleDependencyPeer();
 					$moduleDep->setDependency($moduleName, $moduleDependency);
 				}
@@ -140,10 +143,10 @@ class ModulePeer extends BaseModulePeer {
 			// parte de carga a la base de datos
 			$moduleObj = new Module();
 			$moduleObj->setName($moduleName);
-			$moduleObj ->setDescription($arrayXml["config"]["description"]);
-			$moduleObj ->setLabel($arrayXml["config"]["label"]);
+			$moduleObj ->setDescription($arrayXml["moduleInstalation"]["config"]["description"]);
+			$moduleObj ->setLabel($arrayXml["moduleInstalation"]["config"]["label"]);
 			$moduleObj ->setActive(0);
-			$moduleObj ->setAlwaysActive($arrayXml["config"]["alwaysActive"]);
+			$moduleObj ->setAlwaysActive($arrayXml["moduleInstalation"]["config"]["alwaysActive"]);
 			$moduleObj ->save();
 		}catch (PropelException $e) {}
 		return true;

@@ -71,8 +71,6 @@ class ModulesListAction extends BaseAction {
 		* @var string $modulos que contendra los actions
 		*/
 
-
-		
 		
 		$i=$k=0;
 		$dir = "WEB-INF/classes/modules/";
@@ -82,10 +80,13 @@ class ModulesListAction extends BaseAction {
 				if(!$modulePeer->get($moduleName) ){
 				//		echo "a new item: $moduleName!\n";
 					//	echo "mod name: $moduleName";
-						$newModule=$modulePeer->addModule($moduleName);
+						//echo "$moduleName";
+						$newModule=$modulePeer->addAndInstallModule($moduleName);
 						if (!$newModule){
 							$modulesError[$k]=$moduleName;
 							$k++;
+							//echo "oh yeah";
+							//die();
 						}
 						else{
 						$moduleStatus=$modulePeer->get($moduleName);
@@ -103,6 +104,11 @@ class ModulesListAction extends BaseAction {
 				}
 			}
 		}
+
+		
+
+
+
 		$newModulesNumber=count($modules);
 		$smarty->assign("modulesNumber",$newModulesNumber);
 
