@@ -6,6 +6,9 @@
   * mientras que ofrece un sistema de paginado y 
   * navegación de resultados de manera automática.
   *
+  * @author Webstudio <ws2000@web-studio.com.ar>
+  * Clase modificada para usar conexion a base de datos en clase externa y
+  * manejo de querys con "GROUP BY" y "ORDER BY"
   * @author Diego Urrutibehety
   * @version 0.1
   * @package	Paginado
