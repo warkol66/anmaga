@@ -15,6 +15,14 @@ Menu Users
 	</td>
   </tr>
 |-/if-|
+|-if $module|upper eq "CATALOG" || $module|upper eq "ORDERS" -|
+	<tr> 
+    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=ordersViewCart">Ver carrito de compras</a>
+		<a class="menuSubButton" href="Main.php?do=ordersList">Ver ordenes</a>
+		<a class="menuSubButton" href="Main.php?do=ordersTemplatesList">Ver plantillas de ordenes</a></div>
+	</td>
+  </tr>
+|-/if-|
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesList">Distribuidores / Mayoristas</a></td>
   </tr>
@@ -46,6 +54,14 @@ Menu UsersByAffiliate
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=catalogShow">Catálogo</a></td>
   </tr>
+|-if $module|upper eq "CATALOG" || $module|upper eq "ORDERS" -|
+	<tr> 
+    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=ordersViewCart">Ver carrito de compras</a>
+		<a class="menuSubButton" href="Main.php?do=ordersList">Ver ordenes</a>
+		<a class="menuSubButton" href="Main.php?do=ordersTemplatesList">Ver plantillas de ordenes</a></div>
+	</td>
+  </tr>
+|-/if-|
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersViewCart">Pedido en Proceso</a></td>
   </tr>

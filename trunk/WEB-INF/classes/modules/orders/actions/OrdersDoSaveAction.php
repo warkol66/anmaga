@@ -43,7 +43,8 @@ class OrdersDoSaveAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Orders";
+		$module = "Orders";
+		$smarty->assign("module",$module);
 
 		$user = $_SESSION["loginUserByAffiliate"];
 

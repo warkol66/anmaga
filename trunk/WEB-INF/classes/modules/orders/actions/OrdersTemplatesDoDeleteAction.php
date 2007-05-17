@@ -42,7 +42,10 @@ class OrdersTemplatesDoDeleteAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "OrderTemplates";
+		$module = "Orders";
+		$section = "Templates";
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
     OrderTemplatePeer::delete($_POST["id"]);
 

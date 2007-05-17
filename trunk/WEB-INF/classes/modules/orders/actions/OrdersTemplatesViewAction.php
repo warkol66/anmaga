@@ -43,7 +43,9 @@ class OrdersTemplatesViewAction extends BaseAction {
 		}
 
 		$module = "Orders";
-		$section = "OrderTemplates";
+		$section = "Templates";
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
     $orderTemplate = OrderTemplatePeer::get($_GET["id"]);
     if ( empty($orderTemplate) ) {

@@ -42,8 +42,11 @@ class OrdersTemplatesListAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Orders";
-		$section = "Templates";     
+		$module = "Orders";
+		$section = "Templates";
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
+
 
 		if (!empty($_SESSION["loginUser"])) {
 	    $pager = OrderTemplatePeer::getAllPaginated($_GET["page"]);
