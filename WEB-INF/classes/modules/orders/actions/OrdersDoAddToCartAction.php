@@ -46,6 +46,9 @@ class OrdersDoAddToCartAction extends BaseAction {
 
 		$module = "Orders";
 		$section = "Templates";
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
+
 		
     $order = OrderPeer::get($_GET["id"]);
     if ( !empty($order) ) {

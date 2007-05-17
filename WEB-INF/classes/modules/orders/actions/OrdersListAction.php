@@ -42,7 +42,9 @@ class OrdersListAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Orders";
+		$module = "Orders";
+		$smarty->assign("module",$module);
+
 
 		if (!empty($_SESSION["loginUser"])) {
 	    $pager = OrderPeer::getAllPaginated($_GET["page"]);
