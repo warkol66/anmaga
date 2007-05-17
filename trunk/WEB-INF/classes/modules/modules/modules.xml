@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <moduleInstalation>
 	<config>
-		<label>Modules</label>
+		<label>Módulos</label>
 		<description>Administrador de Módulos del Sistema</description>
 		<esp>
-			<label>Modulos</label>
+			<label>Módulos</label>
 			<description>Administrador de Módulos del Sistema</description>
 		</esp>
 		<eng>
@@ -18,21 +18,43 @@
 		</moduleDependencies>
 	</config>
 	<actions>
-		<moduleList>
+		<modulesList>
 			<actionLog>
-				<actionLabel>Ingreso a modules list</actionLabel>
-				<esp>
-					<actionLabel>Ingreso a modules list</actionLabel>
-				</esp>
-				<eng>
-					<actionLabel>Enter to Module list</actionLabel>
-				</eng>
+				<success>
+					<label>Ingresar a listar módulos</label>
+					<esp>Ingresar a listar módulos</esp>
+					<eng>Enter to Module list</eng>
+				</success>
+				<failure>
+					<label>No pudo ingresar a listar módulos</label>
+					<esp>No pudo ingresar a listar módulos</esp>
+					<eng>He cannot enter to module list</eng>
+				</failure>
 			</actionLog>
 			<securityAction>
 				<access>1</access>
-				<accessUsersByAffiliate>0</accessUsersByAffiliate>
-				<pair></pair>
+				<accessUsersByAffiliate>1</accessUsersByAffiliate>
+				<pair>ModuleDoList</pair>
 			</securityAction>
-		</moduleList>
+		</modulesList>
+		<modulesEdit>
+			<actionLog>
+				<success>
+					<label>Ingresar a editar modulo</label>
+					<esp>Ingresar a editar modulo</esp>
+					<eng>Enter to edit module </eng>
+				</success>
+				<failure>
+					<label>No pudo ingresar a editar modulo</label>
+					<esp>No pudo ingresar a editar modulo</esp>
+					<eng>He cannot enter to edit module</eng>
+				</failure>
+			</actionLog>
+			<securityAction>
+				<access>3</access>
+				<accessUsersByAffiliate>3</accessUsersByAffiliate>
+				<pair>ModuleDoEdit</pair>
+			</securityAction>
+		</modulesEdit>
 	</actions>
 </moduleInstalation>

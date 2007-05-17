@@ -10,6 +10,9 @@
   include_once 'anmaga/ModuleDependency.php';
 
 
+  include_once 'anmaga/SecurityActionPeer.php';
+  include_once 'anmaga/ActionLogPeer.php';
+
 /**
  * Skeleton subclass for performing query and update operations on the 'modules_module' table.
  *
@@ -117,37 +120,73 @@ class ModulePeer extends BaseModulePeer {
 			$xml = file_get_contents($path);
 			$arrayXml = $converter->xml2array($xml);
 
-			//print_r($arrayXml);
-
+			echo "este es el xml hecho array, fijense como queda:\n";
+			print_r($arrayXml);
+			
 			
 			//////////
 			// seccion de comprobaciones
-			//			echo "0";
+			//	echo "0";
 			if (empty($arrayXml))return false;
 			//echo "1";
 			if (empty ($arrayXml["moduleInstalation"]["config"]["description"]) ) return false;
 			//echo "2";
 			if (empty ($arrayXml["moduleInstalation"]["config"]["label"]) ) return false;
-						echo "3";
+			//echo "3";
 			if (empty($arrayXml["moduleInstalation"]["config"]["alwaysActive"] ) )
 				$arrayXml["moduleInstalation"]["config"]["alwaysActive"]=0;
-			//echo "3";
+			//echo "4";
 			if (!empty($arrayXml["moduleInstalation"]["config"]["moduleDependencies"] ) ){
 				foreach ($arrayXml["moduleInstalation"]["config"]["moduleDependencies"] as $moduleDependency){
-					$moduleDep = new ModuleDependencyPeer();
-					$moduleDep->setDependency($moduleName, $moduleDependency);
+					//$moduleDep = new ModuleDependencyPeer();
+					//$moduleDep->setDependency($moduleName, $moduleDependency);
 				}
 			}
 
+
+			foreach ($arrayXml["moduleInstalation"]["actions"] as $actionName => $actionProperties){
+
+			//////////
+			// parte de carga a la DB tabla security_action
+			$securityActionPeer = new SecurityActionPeer();
+			$securityActionPeer->addActionWithPair($actionName, $moduleName, $actionProperties["securityAction"]["access"],$actionProperties["securityAction"]["pair"]);
+
+			//////////
+			// parte de carga a la DB tabla log_actionLog
+			
+			// version supuesta
+			/*
+			foreach ($actionProperties["actionLog"] as $forward => $label){
+				foreach ($label as $languageLabel){
+
+					$actionLogLabel = new ActionLogLabelPeer();
+					//////////
+					// $moduleName = nombre modulo
+					// $actionName
+					// $label = contenido de etiqueta, ejemplo "entrar a module list"
+					// $language = tipo de idioma de etiqueta, posible contenido = label, esp, eng
+					// $forward = tipo de forward, posible contenido= success, failure
+						ejemplo:	$moduleName=modules
+									$actionName=modulesList
+									$label= Entrar a listar modulos
+									$language= esp
+									$forward= success
+					
+					$actionLogLabel->add->($moduleName,$actionName,$language,$label,$forward);
+			*/
+
+			}
+
+
 			//////////
 			// parte de carga a la base de datos
-			$moduleObj = new Module();
+		/*	$moduleObj = new Module();
 			$moduleObj->setName($moduleName);
 			$moduleObj ->setDescription($arrayXml["moduleInstalation"]["config"]["description"]);
 			$moduleObj ->setLabel($arrayXml["moduleInstalation"]["config"]["label"]);
 			$moduleObj ->setActive(0);
 			$moduleObj ->setAlwaysActive($arrayXml["moduleInstalation"]["config"]["alwaysActive"]);
-			$moduleObj ->save();
+			$moduleObj ->save();*/
 		}catch (PropelException $e) {}
 		return true;
 	}
