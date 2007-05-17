@@ -85,12 +85,10 @@ class ModulesListAction extends BaseAction {
 						if (!$newModule){
 							$modulesError[$k]=$moduleName;
 							$k++;
-							//echo "oh yeah";
-							//die();
 						}
 						else{
 						$moduleStatus=$modulePeer->get($moduleName);
-
+						// echo "$moduleStatus";
 						if( ( $status[$i]=$moduleStatus->getAlwaysActive() ) == NULL ) $status[$i]=" No Activo";
 						else $status[$i]="Activo";
 						
@@ -113,6 +111,9 @@ class ModulesListAction extends BaseAction {
 		$smarty->assign("modulesNumber",$newModulesNumber);
 
 		$smarty->assign("modules",$modules);
+
+		//////////
+		// hay que mostrarlos
 		$smarty->assign("modulesError",$modulesError);
 
 		$assignedModules= $modulePeer->getAll();
