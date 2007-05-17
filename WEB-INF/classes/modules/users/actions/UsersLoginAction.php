@@ -45,6 +45,8 @@ class UsersLoginAction extends BaseAction {
 		}
 
 		$module = "Users";
+		
+    $smarty->assign("message",$_GET["message"]);		
 
 		return $mapping->findForwardConfig('success');
 	}

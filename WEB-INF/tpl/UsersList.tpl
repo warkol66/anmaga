@@ -65,6 +65,10 @@
 			<td><input name='surname' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUserInfo->getSurname()-||-/if-|' size="70" /></td>
 		</tr>
 		<tr>
+			<td class='titulodato1'>E-mail</td>
+			<td><input name='mailAddress' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUserInfo->getMailAddress()-||-/if-|' size="70" /></td>
+		</tr>
+		<tr>
 			<td class='titulodato1'>##165,Contraseña##</td>
 			<td><input name='pass' type='password' class='textodato' value='' size="30" /></td>
 		</tr>

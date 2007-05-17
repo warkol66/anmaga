@@ -79,8 +79,6 @@ class OrderTemplatePeer extends BaseOrderTemplatePeer {
 	*/
   function delete($id) {
   	$ordertemplateObj = OrderTemplatePeer::retrieveByPK($id);
-  	require_once("OrderTemplateItemPeer.php");
-		OrderTemplateItemPeer::deleteByOrderTemplateId($id);
     $ordertemplateObj->delete();
 		return true;
   }

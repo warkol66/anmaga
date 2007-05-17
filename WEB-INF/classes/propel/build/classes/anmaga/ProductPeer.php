@@ -244,13 +244,13 @@ class ProductPeer extends BaseProductPeer {
     if ( !empty($this->searchPriceFrom) || !empty($this->searchPriceTo) ) {
     	$cond->addJoin(NodePeer::OBJECTID, ProductPeer::ID);
     	if ( !empty($this->searchPriceFrom) ) {
-				$criterion = $cond->getNewCriterion(ProductPeer::PRICE, $this->searchPriceFrom, Criteria::GREATER_THAN);
+				$criterion = $cond->getNewCriterion(ProductPeer::PRICE, $this->searchPriceFrom, Criteria::GREATER_EQUAL);
 			}
     	if ( !empty($this->searchPriceTo) ) {
       	if (!empty($criterion))
-      		$criterion->addAnd($cond->getNewCriterion(ProductPeer::PRICE, $this->searchPriceTo, Criteria::LESS_THAN));
+      		$criterion->addAnd($cond->getNewCriterion(ProductPeer::PRICE, $this->searchPriceTo, Criteria::LESS_EQUAL));
         else
-        	$criterion = $cond->getNewCriterion(ProductPeer::PRICE, $this->searchPriceTo, Criteria::LESS_THAN);
+        	$criterion = $cond->getNewCriterion(ProductPeer::PRICE, $this->searchPriceTo, Criteria::LESS_EQUAL);
      	}
       $cond->add($criterion);
     }

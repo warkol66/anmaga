@@ -1,14 +1,13 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("UserPeer.php");
 
-class UsersDoEditAction extends BaseAction {
+class UsersPasswordRecoveryAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function UsersDoEditAction() {
+	function UsersPasswordRecoveryAction() {
 		;
 	}
 
@@ -32,7 +31,10 @@ class UsersDoEditAction extends BaseAction {
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
-
+    	/**
+     	* Use a different template
+     	*/
+		$this->template->template = "TemplateLogin.tpl";
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
@@ -43,40 +45,6 @@ class UsersDoEditAction extends BaseAction {
 		}
 
 		$module = "Users";
-
-    $userPeer = new UserPeer();
-
-		if ( $_POST["accion"] == "edicion" ) {
-			//estoy editando un usuario existente
-
-			if ( $_POST["pass"] == $_POST["pass2"] ) {
-
-				if ( $userPeer->update($_POST["id"],$_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"]) )
-  	    	return $mapping->findForwardConfig('success');
-				else {
-					header("Location: Main.php?do=usersList&user=".$_POST["id"]."&message=errorUpdate");
-					exit;
-				}
-			}
-			else {
-				header("Location: Main.php?do=usersList&user=".$_POST["id"]."&message=wrongPassword");
-				exit;
-			}
-
-		}
-		else {
-		  //estoy creando un nuevo usuario
-		  
-			if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {
-
-				$userPeer->create($_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"]);
-				return $mapping->findForwardConfig('success');
-			}
-			else {
-				header("Location: Main.php?do=usersList&user=&message=wrongPassword");
-				exit;
-			}
-		}
 
 		return $mapping->findForwardConfig('success');
 	}

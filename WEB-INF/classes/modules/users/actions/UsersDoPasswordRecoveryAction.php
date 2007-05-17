@@ -3,12 +3,12 @@
 require_once("BaseAction.php");
 require_once("UserPeer.php");
 
-class UsersDoEditAction extends BaseAction {
+class UsersDoPasswordRecoveryAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function UsersDoEditAction() {
+	function UsersDoPasswordRecoveryAction() {
 		;
 	}
 
@@ -32,6 +32,8 @@ class UsersDoEditAction extends BaseAction {
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
+    
+		$this->template->template = "TemplateMail.tpl";
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -44,41 +46,33 @@ class UsersDoEditAction extends BaseAction {
 
 		$module = "Users";
 
-    $userPeer = new UserPeer();
+		if ( !empty($_POST["username"]) && !empty($_POST["mailAddress"]) ) {
+			$userAndPassword = UserPeer::generatePassword($_POST["username"],$_POST["mailAddress"]);
+			if ( !empty($userAndPassword) ) {
+        $smarty->assign("user",$userAndPassword[0]);
+        $smarty->assign("password",$userAndPassword[1]);
+        $body = $smarty->fetch("UsersPasswordRecoveryMail.tpl");
 
-		if ( $_POST["accion"] == "edicion" ) {
-			//estoy editando un usuario existente
+				$userInfo = $userAndPassword[0]->getUserInfo();
+				require_once("libmail.inc.php");
 
-			if ( $_POST["pass"] == $_POST["pass2"] ) {
+				global $system;
 
-				if ( $userPeer->update($_POST["id"],$_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"]) )
-  	    	return $mapping->findForwardConfig('success');
-				else {
-					header("Location: Main.php?do=usersList&user=".$_POST["id"]."&message=errorUpdate");
-					exit;
-				}
-			}
-			else {
-				header("Location: Main.php?do=usersList&user=".$_POST["id"]."&message=wrongPassword");
-				exit;
-			}
+				$m = new Mail();
+				$m->From($system["config"]["system"]["parameters"]["fromEmail"]);
+				$m->To($userInfo->getMailAddress());
+				$m->Subject("Nueva Contraseña");
+				$m->Body($body);
+				$m->Send();
 
-		}
-		else {
-		  //estoy creando un nuevo usuario
-		  
-			if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {
-
-				$userPeer->create($_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"]);
 				return $mapping->findForwardConfig('success');
 			}
-			else {
-				header("Location: Main.php?do=usersList&user=&message=wrongPassword");
-				exit;
-			}
 		}
+		
+		$this->template->template = "TemplateLogin.tpl";		
 
-		return $mapping->findForwardConfig('success');
+    $smarty->assign("message","wrongUser");
+		return $mapping->findForwardConfig('failure');
 	}
 
 }

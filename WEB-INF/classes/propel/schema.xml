@@ -8,6 +8,7 @@
   <column name="created" required="true"  type="TIMESTAMP"  description="Creation date for"/>
   <column name="updated" required="true"  type="TIMESTAMP"  description="Last update date"/>
   <column name="levelId" type="INTEGER" description="User Level" />
+  <column name="lastLogin" type="TIMESTAMP" description="Fecha del ultimo login del usuario" />
 	<unique>
 		<unique-column name="username" />
 	</unique>
@@ -23,6 +24,7 @@
   <column name="userId" required="true" primaryKey="true" type="INTEGER" description="User Id" />
   <column name="name" type="VARCHAR" size="255" description="name"/>
   <column name="surname" type="VARCHAR" size="255" description="surname"/>
+  <column name="mailAddress" type="VARCHAR" size="255" description="Email" />
 	<foreign-key foreignTable="users_user" >
       <reference local="userId" foreign="id" />
     </foreign-key>
@@ -103,6 +105,7 @@
   <column name="created" required="true"  type="TIMESTAMP"  description="Creation date for"/>
   <column name="updated" required="true"  type="TIMESTAMP"  description="Last update date"/>
   <column name="levelId" type="INTEGER" description="User Level" />
+  <column name="lastLogin" type="TIMESTAMP" description="Fecha del ultimo login del usuario" />
 	<unique>
 		<unique-column name="username" />
 	</unique>
@@ -121,6 +124,7 @@
   <column name="userId" required="true" primaryKey="true" type="INTEGER" description="User Id" />
   <column name="name" type="VARCHAR" size="255" description="name"/>
   <column name="surname" type="VARCHAR" size="255" description="surname"/>
+  <column name="mailAddress" type="VARCHAR" size="255" description="Email" />
 	<foreign-key foreignTable="usersByAffiliate_user" >
       <reference local="userId" foreign="id" />
     </foreign-key>
@@ -290,7 +294,7 @@
 		<column name="productId" type="INTEGER"  required="true" description="Id del usuario" />
     <column name="price" type="FLOAT" description="Precio del producto" />
     <column name="quantity" type="INTEGER" description="Cantidad del producto en el pedido" />
-		<foreign-key foreignTable="orders_order" >
+		<foreign-key foreignTable="orders_order" onDelete="cascade">
 			<reference local="orderId" foreign="id" />
 		</foreign-key>
 		<foreign-key foreignTable="product" >

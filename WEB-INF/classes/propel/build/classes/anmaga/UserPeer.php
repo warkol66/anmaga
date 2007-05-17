@@ -56,9 +56,10 @@ class UserPeer extends BaseUserPeer {
   * @param string $surname Apellido del usuario
   * @param string $pass Contraseña del usuario
   * @param int $levelId Id del nivel de usuarios
+  * @param string $mailAddress Email del usuario
   * @return boolean true si se creo el usuario correctamente, false sino
 	*/
-  function create($username,$name,$surname,$pass,$levelId) {
+  function create($username,$name,$surname,$pass,$levelId,$mailAddress) {
 		$user = new User();
 		$user->setUsername($username);
 		$user->setPassword(md5($pass."ASD"));
@@ -71,6 +72,7 @@ class UserPeer extends BaseUserPeer {
 		$userInfo->setUserId($user->getId());
 		$userInfo->setName($name);
 		$userInfo->setSurname($surname);
+		$userInfo->setMailAddress($mailAddress);
 		$userInfo->save();
 		return true;
   }
@@ -152,9 +154,10 @@ class UserPeer extends BaseUserPeer {
   * @param string $surname Apellido del usuario
   * @param string $pass Contraseña del usuario
   * @param int $levelId Id del nivel de usuarios
+  * @param string $mailAddress Email del usuario
   * @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
-  function update($id,$username,$name,$surname,$pass,$levelId) {
+  function update($id,$username,$name,$surname,$pass,$levelId,$mailAddress) {
 		try {
 			$user = UserPeer::retrieveByPK($id);
 			$user->setUsername($username);
@@ -166,6 +169,7 @@ class UserPeer extends BaseUserPeer {
 			$userInfo = UserInfoPeer::retrieveByPK($id);
 			$userInfo->setName($name);
 			$userInfo->setSurname($surname);
+			$userInfo->setMailAddress($mailAddress);			
 			$userInfo->save();
 			return true;
 		}
@@ -219,10 +223,74 @@ class UserPeer extends BaseUserPeer {
 		$user = $todosObj[0];
 		if ( !empty($user) ) {
 			if ( $user->getPassword() == md5($password."ASD") ) {
+				$user->setLastLogin(time());
+				$user->save();
 				return $user;
 			}
 		}
 		return false;
   }
+
+
+	/**
+	* Autentica a un usuario.
+	*
+	* @param string $username Nombre de usuario
+	* @param string $mailAddress Email
+	* @return array [0] -> User Informacion sobre el usuario; [1] -> New password, false si no fue exitosa la autenticacion de usuario e email
+	*/
+  function generatePassword($username,$mailAddress) {
+		$cond = new Criteria();
+		$cond->add(UserPeer::USERNAME, $username);
+		$cond->add(UserPeer::ACTIVE, "1");
+		$todosObj = UserPeer::doSelectJoinUserInfo($cond);
+		$user = $todosObj[0];
+		if ( !empty($user) ) {
+			$userInfo = $user->getUserInfo();
+			if ( !empty($userInfo) && $userInfo->getMailAddress() == $mailAddress ) {
+				$newPassword = UserPeer::getNewPassword();
+				$user->setPassword(md5($newPassword."ASD"));
+				$user->save();
+				$result = array();
+				$result[0] = $user;
+				$result[1] = $newPassword;
+				return $result;
+			}
+		}
+		return false;
+  }
+
+  /**
+  * Genera una nueva contraseña.
+  *
+  * @param int $length [optional] Longitud de la contraseña
+  * @return string Contraseña
+  */
+	function getNewPassword($length = 8)
+	{
+  	// start with a blank password
+	  $password = "";
+
+  	// define possible characters
+	  $possible = "0123456789bcdfghjkmnpqrstvwxyz";
+
+	  // set up a counter
+  	$i = 0;
+
+	  // add random characters to $password until $length is reached
+  	while ($i < $length) {
+
+	    // pick a random character from the possible ones
+  	  $char = substr($possible, mt_rand(0, strlen($possible)-1), 1);
+
+	    // we don't want this character if it's already in the password
+  	  if (!strstr($password, $char)) {
+	      $password .= $char;
+  	    $i++;
+	    }
+	  }
+  	// done!
+	  return $password;
+	}
 
 }

@@ -97,6 +97,8 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 		$user = $todosObj[0];
 		if ( !empty($user) ) {
 			if ( $user->getPassword() == md5($password."ASD") ) {
+				$user->setLastLogin(time());
+				$user->save();
 				return $user;
 			}
 		}
