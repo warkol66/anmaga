@@ -65,6 +65,25 @@
 			<forward name="failure" path="UsersLogin.tpl"/>
 		</action>
 		
+		<action    path = "usersPasswordRecovery"
+					     type = "UsersPasswordRecoveryAction"
+					     name = "usersPasswordRecovery"
+					    scope = "request"
+					 validate = "true">
+			<description value="Envio de nueva password"/>
+			<forward name="success" path="UsersPasswordRecovery.tpl"/>
+		</action>
+
+		<action    path = "usersDoPasswordRecovery"
+					     type = "UsersDoPasswordRecoveryAction"
+					     name = "usersDoPasswordRecovery"
+					    scope = "request"
+					 validate = "true">
+			<description value="Envio de nueva password"/>
+			<forward name="success" path="Main.php?do=usersLogin&amp;message=passwordSent" redirect="true" />
+			<forward name="failure" path="UsersPasswordRecovery.tpl"/>
+		</action>
+
 		<action    path = "usersWelcome"
 					     type = "UsersWelcomeAction"
 					     name = "usersWelcome"
