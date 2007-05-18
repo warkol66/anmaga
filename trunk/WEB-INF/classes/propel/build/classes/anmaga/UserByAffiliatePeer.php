@@ -7,7 +7,8 @@
   include_once 'UserByAffiliate.php';
   
   include_once 'UsersByAffiliateUserGroupPeer.php';
-
+	
+	include_once 'UsersByAffiliateUserInfo.php';
 
 /**
  * Skeleton subclass for performing query and update operations on the 'users_userbyaffiliate' table.
@@ -37,7 +38,11 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 		return $todosObj;
   }
 
-
+	/**
+	* Obtiene todos los usuarios por afiliado.
+	*
+	*	@return array Informacion sobre todos los usuarios
+	*/
 	function getAll() {
 		$cond = new Criteria();
 		$cond->add(UserByAffiliatePeer::ACTIVE,1);
@@ -71,24 +76,51 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 		return $todosObj;
   }
 
-	function create($affiliateId,$username,$password,$levelId) {
+
+  /**
+  * Crea un usuario nuevo por afiliado.
+  *
+  * @param string $username Nombre de usuario
+  * @param string $name Nombre del usuario
+  * @param string $surname Apellido del usuario
+  * @param string $pass Contraseña del usuario
+  * @param int $levelId Id del nivel de usuarios
+  * @param string $mailAddress Email del usuario
+  * @return boolean true si se creo el usuario correctamente, false sino
+	*/
+	function create($affiliateId,$username,$password,$levelId,$name,$surname,$mailAddress) {
 	
-		try{
-		$document = new UserByAffiliate();
-		$document->setUsername($username);
-		$document->setAffiliateId($affiliateId);
-		$document->setActive(1);
-		$document->setCreated(now);
-		$document->setUpdated(now);
-		$document->setLevelId($levelId);
+		$userByAffiliate = new UserByAffiliate();
+		$userByAffiliate->setUsername($username);
+		$userByAffiliate->setAffiliateId($affiliateId);
+		$userByAffiliate->setActive(1);
+		$userByAffiliate->setCreated(now);
+		$userByAffiliate->setUpdated(now);
+		$userByAffiliate->setLevelId($levelId);
 		if(!empty($password)){
-			$document->setPassword(md5($password."ASD"));
+			$userByAffiliate->setPassword(md5($password."ASD"));
 		}
-		$document->save();
-		}catch (PropelException $e) {}
+		$userByAffiliate->save();
+
+
+		$userByAffiliateInfo = new UsersByAffiliateUserInfo();
+		$userByAffiliateInfo->setUserId($userByAffiliate->getId());
+		$userByAffiliateInfo->setName($name);
+		$userByAffiliateInfo->setSurname($surname);
+		$userByAffiliateInfo->setMailAddress($mailAddress);
+		$userByAffiliateInfo->save();
+
 		return;
 	}
 
+
+	/**
+	* Autentica a un usuario por afiliado.
+	*
+	* @param string $username Nombre de usuario
+	* @param string $password Contraseña 
+	* @return User Informacion sobre el usuario, false si no fue exitosa la autenticacion
+	*/
   function auth($username,$password) {
 		$cond = new Criteria();
 		$cond->add(UserByAffiliatePeer::USERNAME, $username);
@@ -105,6 +137,15 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 		return false;
   }
 
+
+
+
+	/**
+	* Setea el acceso en 0 o elimina usuario 
+	*
+	* @param int $id Id del usuario
+	* @return boolean true
+	*/
   function delete($id) {
 		$affiliate = UserByAffiliatePeer::retrieveByPk($id);
 		if (UserByAffiliatePeer::DELETEUSERS)
@@ -117,29 +158,53 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
   }
 
 
-
-
+  /**
+  * Obtiene la informacion de un usuario.
+  *
+  * @param int $id Id del usuario
+  * @return array Informacion del usuario
+  */
 	function get($id) {
-		$obj = UserByAffiliatePeer::retrieveByPK($id);
-		return $obj;
+		$cond = new Criteria();
+		$cond->add(UserByAffiliatePeer::ID, $id);
+		$todosObj = UserByAffiliatePeer::doSelectJoinUsersByAffiliateUserInfo($cond);
+		return $todosObj[0];
 	}
 
 
-  function update($id,$affiliateId,$username,$password,$levelId) {
-		$document = UserByAffiliatePeer::retrieveByPK($id);
-		$document->setUsername($username);
-		$document->setAffiliateId($affiliateId);
-		$document->setUpdated(now);
-		$document->setLevelId($levelId);
+	/**
+  * Actualiza la informacion de un usuario por afiliado.
+  *
+  * @param int $id Id del usuario
+  * @param string $username Nombre de usuario
+  * @param string $name Nombre del usuario
+  * @param string $surname Apellido del usuario
+  * @param string $pass Contraseña del usuario
+  * @param int $levelId Id del nivel de usuarios
+  * @param string $mailAddress Email del usuario
+  * @return boolean true si se actualizo la informacion correctamente
+	*/
+  function update($id,$affiliateId,$username,$password,$levelId,$name,$surname,$mailAddress) {
+		$userByAffiliate = UserByAffiliatePeer::retrieveByPK($id);
+		$userByAffiliate->setUsername($username);
+		$userByAffiliate->setAffiliateId($affiliateId);
+		$userByAffiliate->setUpdated(now);
+		$userByAffiliate->setLevelId($levelId);
 		if(!empty($password)){
-			$document->setPassword(md5($password."ASD"));
+			$userByAffiliate->setPassword(md5($password."ASD"));
 		}
-		$document->save();
-		return;
-  }
+		$userByAffiliate->save();
+			
+		$userByAffiliateInfo = UsersByAffiliateUserInfoPeer::retrieveByPK($id);
+		$userByAffiliateInfo->setName($name);
+		$userByAffiliateInfo->setSurname($surname);
+		$userByAffiliateInfo->setMailAddress($mailAddress);			
+		$userByAffiliateInfo->save();
+		return true;
+	}
   
   /**
-  * Obtiene los grupos de usuarios en los cuales es miembro un usuario.
+  * Obtiene los grupos de usuarios en los cuales es miembro un usuario por afiliado.
   *
   * @param int $id Id del usuario
   * @return array Grupos de Usuarios
@@ -194,7 +259,7 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 	}
 	
 	/**
-	* Activa un usuario a partir del id.
+	* Activa un usuario por afiliado a partir del id.
 	*
   * @param int $id Id del usuario
 	*	@return boolean true
@@ -205,5 +270,76 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 		$user->save();
 		return true;
   }
+
+
+
+
+
+	/**
+	* Autentica a un usuario.
+	*
+	* @param string $username Nombre de usuario
+	* @param string $mailAddress Email
+	* @return array [0] -> User Informacion sobre el usuario; [1] -> New password, false si no fue exitosa la autenticacion de usuario e email
+	*/
+  function generatePassword($username,$mailAddress) {
+		$cond = new Criteria();
+		$cond->add(UserByAffiliatePeer::USERNAME, $username);
+		$cond->add(UserByAffiliatePeer::ACTIVE, "1");
+		$todosObj = UserByAffiliatePeer::doSelectJoinUsersByAffiliateUserInfo($cond);
+		$user = $todosObj[0];
+		if ( !empty($user) ) {
+			$userInfo = $user->getUsersByAffiliateUserInfo();
+			if ( !empty($userInfo) && $userInfo->getMailAddress() == $mailAddress ) {
+				$newPassword = UserByAffiliatePeer::getNewPassword();
+				$user->setPassword(md5($newPassword."ASD"));
+				$user->save();
+				$result = array();
+				$result[0] = $user;
+				$result[1] = $newPassword;
+				return $result;
+			}
+		}
+		return false;
+  }
+
+  /**
+  * Genera una nueva contraseña.
+  *
+  * @param int $length [optional] Longitud de la contraseña
+  * @return string Contraseña
+  */
+	function getNewPassword($length = 8)
+	{
+  	// start with a blank password
+	  $password = "";
+
+  	// define possible characters
+	  $possible = "0123456789bcdfghjkmnpqrstvwxyz";
+
+	  // set up a counter
+  	$i = 0;
+
+	  // add random characters to $password until $length is reached
+  	while ($i < $length) {
+
+	    // pick a random character from the possible ones
+  	  $char = substr($possible, mt_rand(0, strlen($possible)-1), 1);
+
+	    // we don't want this character if it's already in the password
+  	  if (!strstr($password, $char)) {
+	      $password .= $char;
+  	    $i++;
+	    }
+	  }
+  	// done!
+	  return $password;
+	}
+
+
+
+
+
+
 
 } // UserByAffiliatePeer

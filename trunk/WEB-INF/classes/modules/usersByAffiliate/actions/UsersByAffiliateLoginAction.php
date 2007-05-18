@@ -27,6 +27,9 @@ class UsersByAffiliateLoginAction extends BaseAction {
 
 		$module = "UsersByAffiliate";
 
+		$message=$_GET["message"];
+		$smarty->assign("message",$message);
+
 		return $mapping->findForwardConfig('success');
 	}
 

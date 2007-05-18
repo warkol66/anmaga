@@ -52,11 +52,23 @@
 			##161,Realice los cambios en el usuario y haga click en Aceptar para guardar las modificaciones.##|-/if-| <br />
 	<br />
 <form method='post' action='Main.php?do=usersByAffiliateDoEditUser'>
-	<input type='hidden' name='id' value='|-if $accion eq "edicion"-||-$currentUser->getId()-||-/if-|' />
+	<input type='hidden' name='id' value='|-if $accion eq "edicion"-||-$currentUsersByAffiliate->getId()-||-/if-|' />
 	<table width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 		<tr>
 			<td nowrap="nowrap" class='tdTitle'>##162,Identificación de Usuario##</td>
-			<td><input name='username' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUser->getUsername()-||-/if-|' size="40" /></td>
+			<td><input name='username' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUsersByAffiliate->getUsername()-||-/if-|' size="40" /></td>
+		</tr>
+		<tr>
+			<td class='tdTitle'>##163,Nombre##</td>
+			<td><input name='name' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUsersByAffiliateUserInfo->getName()-||-/if-|' size="70" /></td>
+		</tr>
+		<tr>
+			<td class='tdTitle'>##164,Apellido##</td>
+			<td><input name='surname' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUsersByAffiliateUserInfo->getSurname()-||-/if-|' size="70" /></td>
+		</tr>
+		<tr>
+			<td class='tdTitle'>E-mail</td>
+			<td><input name='mailAddress' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUsersByAffiliateUserInfo->getMailAddress()-||-/if-|' size="70" /></td>
 		</tr>
 		<tr>
 			<td class='tdTitle'>##165,Contraseña##</td>
@@ -72,7 +84,7 @@
         <select name='levelId'>
         	<option value="">Seleccionar nivel</option>
 					|-foreach from=$levels item=level name=for_levels-|
-        	<option value="|-$level->getId()-|"|-if $accion eq "edicion" and $level->getId() eq $currentUser->getLevelId()-| selected="selected"|-/if-|>|-$level->getName()-|</option>
+        	<option value="|-$level->getId()-|"|-if $accion eq "edicion" and $level->getId() eq $currentUsersByAffiliate->getLevelId()-| selected="selected"|-/if-|>|-$level->getName()-|</option>
 					|-/foreach-|
        	</select>
 			</td>
@@ -104,7 +116,7 @@
 |-if $accion eq "edicion"-|
 <table width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 	<caption>
-	##167,El usuario ## |-$currentUser->getUsername()-| ##168,es miembro de los grupos:##
+	##167,El usuario ## |-$currentUsersByAffiliate->getUsername()-| ##168,es miembro de los grupos:##
 	</caption>
 	|-if $currentUserGroups|@count eq 0-|
 	<tr>
@@ -119,7 +131,7 @@
 	|-assign var="group" value=$userGroup->getUsersByAffiliateGroup()-|
 	<tr>
 		<td><div class='titulo2'>|-$group->getName()-|</div></td>
-		<td class='cellopciones' nowrap> [ <a href='Main.php?do=usersByAffiliateDoRemoveFromGroup&user=|-$currentUser->getId()-|&group=|-$group->getId()-|' class='delete'>##115,Eliminar##</a> ] </td>
+		<td class='cellopciones' nowrap> [ <a href='Main.php?do=usersByAffiliateDoRemoveFromGroup&user=|-$currentUsersByAffiliate->getId()-|&group=|-$group->getId()-|' class='delete'>##115,Eliminar##</a> ] </td>
 	</tr>
 	|-/foreach-|
 	|-/if-|
@@ -133,7 +145,7 @@
 					<option value="|-$group->getId()-|">|-$group->getName()-|</option>
 								|-/foreach-|
 				</select>
-				<input type="hidden" name="user" value="|-$currentUser->getId()-|" />
+				<input type="hidden" name="user" value="|-$currentUsersByAffiliate->getId()-|" />
 				<input type='submit' value='##123,Agregar##' class='button' />
 			</form></td>
 	</tr>

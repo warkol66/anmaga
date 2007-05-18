@@ -85,7 +85,7 @@ class UsersByAffiliateDoEditUserAction extends BaseAction {
 
 			if ( $_POST["pass"] == $_POST["pass2"] ) {
 
-				$userPeer->update($_POST["id"],$affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"]);
+				$userPeer->update($_POST["id"],$affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"],$_POST["name"],$_POST["surname"],$_POST["mailAddress"]);
  	    	return $mapping->findForwardConfig('success');
 			}
 			else {
@@ -99,7 +99,7 @@ class UsersByAffiliateDoEditUserAction extends BaseAction {
 		  
 			if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {
 
-				$userPeer->create($affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"]);
+				$userPeer->create($affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"],$_POST["name"],$_POST["surname"],$_POST["mailAddress"]);
 				return $mapping->findForwardConfig('success');
 			}
 			else {
