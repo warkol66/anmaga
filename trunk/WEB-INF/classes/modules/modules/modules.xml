@@ -1,60 +1,129 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <moduleInstalation>
-	<config>
-		<label>Módulos</label>
-		<description>Administrador de Módulos del Sistema</description>
-		<esp>
-			<label>Módulos</label>
-			<description>Administrador de Módulos del Sistema</description>
-		</esp>
-		<eng>
-			<label>Modules</label>
-			<description>Modules manager</description>
-		</eng>
-		<allwaysActive>1</allwaysActive>
-		<moduleDependencies>
-			<module1>Users</module1>
-			<module2>SecurityAction</module2>
-		</moduleDependencies>
-	</config>
-	<actions>
-		<modulesList>
-			<actionLog>
-				<success>
-					<label>Ingresar a listar módulos</label>
-					<esp>Ingresar a listar módulos</esp>
-					<eng>Enter to Module list</eng>
-				</success>
-				<failure>
-					<label>No pudo ingresar a listar módulos</label>
-					<esp>No pudo ingresar a listar módulos</esp>
-					<eng>He cannot enter to module list</eng>
-				</failure>
-			</actionLog>
-			<securityAction>
-				<access>1</access>
-				<accessUsersByAffiliate>1</accessUsersByAffiliate>
-				<pair>ModuleDoList</pair>
-			</securityAction>
-		</modulesList>
-		<modulesEdit>
-			<actionLog>
-				<success>
-					<label>Ingresar a editar modulo</label>
-					<esp>Ingresar a editar modulo</esp>
-					<eng>Enter to edit module </eng>
-				</success>
-				<failure>
-					<label>No pudo ingresar a editar modulo</label>
-					<esp>No pudo ingresar a editar modulo</esp>
-					<eng>He cannot enter to edit module</eng>
-				</failure>
-			</actionLog>
-			<securityAction>
-				<access>3</access>
-				<accessUsersByAffiliate>3</accessUsersByAffiliate>
-				<pair>ModuleDoEdit</pair>
-			</securityAction>
-		</modulesEdit>
-	</actions>
+		<config>
+				<label>Módulos</label>
+				<description>Administrador de Módulos del Sistema</description>
+				<esp>
+						<label>Módulos</label>
+						<description>Administrador de Módulos del Sistema</description>
+				</esp>
+				<eng>
+						<label>Modules</label>
+						<description>Modules manager</description>
+				</eng>
+				<allwaysActive>1</allwaysActive>
+				<moduleDependencies>
+						<module1>Users</module1>
+						<module2>SecurityAction</module2>
+				</moduleDependencies>
+		</config>
+		<actions>
+				<modulesList>
+						<actionLog>
+								<success>
+										<label>Ingresar a listar módulos</label>
+										<esp>Ingresar a listar módulos</esp>
+										<eng>Enter to Module list</eng>
+								</success>
+								<failure>
+										<label>No pudo ingresar a listar módulos</label>
+										<esp>No pudo ingresar a listar módulos</esp>
+										<eng>He cannot enter to module list</eng>
+								</failure>
+						</actionLog>
+						<securityAction>
+								<access>1</access>
+								<accessUsersByAffiliate>1</accessUsersByAffiliate>
+								<pair>ModuleDoList</pair>
+						</securityAction>
+				</modulesList>
+				<modulesEdit>
+						<actionLog>
+								<success>
+										<label>Ingresar a editar modulo</label>
+										<esp>Ingresar a editar modulo</esp>
+										<eng>Enter to edit module </eng>
+								</success>
+								<failure>
+										<label>No pudo ingresar a editar modulo</label>
+										<esp>No pudo ingresar a editar modulo</esp>
+										<eng>He cannot enter to edit module</eng>
+								</failure>
+						</actionLog>
+						<securityAction>
+								<access>3</access>
+								<accessUsersByAffiliate>3</accessUsersByAffiliate>
+								<pair>ModuleDoEdit</pair>
+						</securityAction>
+				</modulesEdit>
+		</actions>
+		<!--Propuesta  XML con namespaces, creo que es mas entendible (los nombres con _ son para no ser pisados)-->
+		<moduleInstalation:_config>
+				<label>Módulos</label>
+				<description>Administrador de Módulos del Sistema</description>
+				<esp>
+						<label>Módulos</label>
+						<description>Administrador de Módulos del Sistema</description>
+				</esp>
+				<eng>
+						<label>Modules</label>
+						<description>Modules manager</description>
+				</eng>
+				<allwaysActive>1</allwaysActive>
+				<moduleDependencies>
+						<module1>Users</module1>
+						<module2>SecurityAction</module2>
+				</moduleDependencies>
+		</moduleInstalation:_config>
+		<moduleInstalation:_actions>
+				<action:moduleList>
+						<actionLogs>
+								<forward:success>
+										<label>Mostrar lista de módulos del sistema</label>
+										<esp>Mostrar lista de módulos del sistema</esp>
+										<eng>List system modules</eng>
+								</forward:success>
+								<forward:failure>
+										<label>No se pudo mostrar lista de módulos del sistema</label>
+										<esp>No se pudo mostrar lista de módulos del sistema</esp>
+										<eng>Unable to list system modules</eng>
+								</forward:failure>
+						</actionLogs>
+						<securityAction>
+								<usersBitLevel>3</usersBitLevel>
+								<usersByaffiliateBitLevel>3</usersByaffiliateBitLevel>
+								<actionPair>ModuleDoEdit</actionPair>
+						</securityAction>
+				</action:moduleList>
+				<action:modulesEdit>
+	        </action:modulesEdit>
+				<action:modulesDoEdit>
+	        </action:modulesDoEdit>
+				<action:modulesDoActivateX>
+	        </action:modulesDoActivateX>
+		</moduleInstalation:_actions>
+		<moduleInstalation:sql>
+	#-----------------------------------------------------------------------------
+	#-- modules_module
+	#-----------------------------------------------------------------------------
+	CREATE TABLE IF NOT EXISTS `modules_module` (
+	`name` VARCHAR( 255 ) NOT NULL COMMENT 'nombre del modulo',
+	`label` VARCHAR( 255 ) COMMENT 'Etiqueta',
+	`description` VARCHAR( 255 ) COMMENT 'Descripcion del modulo',
+	`active` INTEGER default 0 NOT NULL COMMENT 'Estado del modulo',
+	`alwaysActive` INTEGER default 0 NOT NULL COMMENT 'Modulo siempre activo',
+	PRIMARY KEY ( `name` ) ,
+	CONSTRAINT `modules_module_FK_1` FOREIGN KEY ( `name` ) REFERENCES `modules_dependency` ( `module` ) ON DELETE CASCADE
+	) TYPE = MYISAM COMMENT = ' Registro de modulos';
+
+	#-----------------------------------------------------------------------------
+	#-- modules_dependency
+	#-----------------------------------------------------------------------------
+	CREATE  TABLE IF NOT EXISTS `modules_dependency`
+	(
+		`module` VARCHAR(255)  NOT NULL COMMENT 'Modulo',
+		`dependence` VARCHAR(255)  NOT NULL COMMENT 'Dependiente',
+		PRIMARY KEY (`module`,`dependence`)
+	)Type=MyISAM COMMENT='Dependencia de modulos ';
+	</moduleInstalation:sql>
 </moduleInstalation>
