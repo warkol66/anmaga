@@ -537,6 +537,25 @@
            validate = "true">
     <forward name="success" path="Main.php?do=usersByAffiliateList" redirect="true" />
     </action>
+
+	<action    path = "usersByAffiliatePasswordRecovery"
+				 type = "UsersByAffiliatePasswordRecoveryAction"
+				 name = "usersByAffiliatePasswordRecovery"
+				scope = "request"
+			 validate = "true">
+		<description value="Envio de nueva password"/>
+		<forward name="success" path="UsersByAffiliatePasswordRecovery.tpl"/>
+	</action>
+
+	<action    path = "usersByAffiliateDoPasswordRecovery"
+				 type = "UsersByAffiliateDoPasswordRecoveryAction"
+				 name = "usersByAffiliateDoPasswordRecovery"
+				scope = "request"
+			 validate = "true">
+		<description value="Envio de nueva password"/>
+		<forward name="success" path="/Main.php?do=usersByAffiliateLogin&amp;message=passwordSent" redirect="true" />
+		<forward name="failure" path="UsersByAffiliatePasswordRecovery.tpl"/>
+	</action>
 	</action-mappings>    
     
 <!-- Module UsersByAffiliate - Section Levels -->

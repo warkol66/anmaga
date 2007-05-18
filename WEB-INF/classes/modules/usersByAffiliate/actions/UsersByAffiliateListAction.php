@@ -2,6 +2,7 @@
 
 require_once("BaseAction.php");
 require_once("UserByAffiliatePeer.php");
+require_once("UsersByAffiliateUserInfo.php");
 require_once("UsersByAffiliateGroupPeer.php");
 require_once("UsersByAffiliateLevelPeer.php");
 require_once("AffiliatePeer.php");
@@ -89,7 +90,10 @@ class UsersByAffiliateListAction extends BaseAction {
 
 			try {
 				$user = $usersPeer->get($_GET["user"]);
-				$smarty->assign("currentUser",$user);
+				//echo "usuario $user ...";
+
+				$smarty->assign("currentUsersByAffiliate",$user);
+				$smarty->assign("currentUsersByAffiliateUserInfo",$user->getUsersByAffiliateUserInfo());
 				$groups = $usersPeer->getGroupsByUser($_GET["user"]);
 				$smarty->assign("currentUserGroups",$groups);
 				$groups = UsersByAffiliateGroupPeer::getAll();

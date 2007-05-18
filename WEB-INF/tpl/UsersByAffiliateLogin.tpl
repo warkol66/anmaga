@@ -19,6 +19,11 @@
 					<td><div align='center' class='errorMessage'>Usuario desconocido o contrase&ntilde;a incorrecta!. Intente nuevamente.</div></td> 
 				</tr> 
 				|-/if-|
+				|-if $message eq "passwordSent"-|
+				<tr>
+					<td><div align='center' class='errorMessage'>Se envio una nueva contrase&ntilde;a a su casilla de correo.</div></td> 
+				</tr> 
+				|-/if-|
 				<tr> 
 					<td>&nbsp;</td> 
 				</tr> 
