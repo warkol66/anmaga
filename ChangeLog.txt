@@ -9,4 +9,10 @@ ALTER TABLE `users_user` ADD `lastLogin` DATETIME COMMENT 'Fecha del ultimo logi
 # Agregado mail a users_userInfo
 ALTER TABLE `users_userInfo` ADD `mailAddress` VARCHAR( 255 ) NOT NULL COMMENT 'Email';
 
+# Agregado último login a users_user
+ALTER TABLE `usersByAffiliate_user` ADD `lastLogin` DATETIME COMMENT 'Fecha del ultimo login del usuario';
+
+# Agregado mail a users_userInfo
+ALTER TABLE `usersByAffiliate_userInfo` ADD `mailAddress` VARCHAR( 255 ) NOT NULL COMMENT 'Email';
+
 ------------------------------
