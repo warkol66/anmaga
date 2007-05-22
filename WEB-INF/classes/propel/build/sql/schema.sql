@@ -366,13 +366,13 @@ CREATE TABLE `modules_dependency`
 )Type=MyISAM COMMENT='Dependencia de modulos ';
 
 #-----------------------------------------------------------------------------
-#-- log_actionLog
+#-- actionLogs_log
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `log_actionLog`;
+DROP TABLE IF EXISTS `actionLogs_log`;
 
 
-CREATE TABLE `log_actionLog`
+CREATE TABLE `actionLogs_log`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id log',
 	`userId` INTEGER  NOT NULL COMMENT 'Id del usuario',
@@ -381,15 +381,35 @@ CREATE TABLE `log_actionLog`
 	`action` VARCHAR(100)  NOT NULL COMMENT 'action en que se logueo el dato',
 	`message` VARCHAR(100)  NOT NULL COMMENT 'mensaje del log',
 	PRIMARY KEY (`id`),
-	INDEX `log_actionLog_FI_1` (`userId`),
-	CONSTRAINT `log_actionLog_FK_1`
+	INDEX `actionLogs_log_FI_1` (`userId`),
+	CONSTRAINT `actionLogs_log_FK_1`
 		FOREIGN KEY (`userId`)
 		REFERENCES `users_user` (`id`),
-	INDEX `log_actionLog_FI_2` (`action`),
-	CONSTRAINT `log_actionLog_FK_2`
+	INDEX `actionLogs_log_FI_2` (`action`),
+	CONSTRAINT `actionLogs_log_FK_2`
 		FOREIGN KEY (`action`)
 		REFERENCES `security_action` (`action`)
 )Type=MyISAM COMMENT='logs del sistema';
+
+#-----------------------------------------------------------------------------
+#-- actionLogs_label
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `actionLogs_label`;
+
+
+CREATE TABLE `actionLogs_label`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id log',
+	`action` VARCHAR(100)  NOT NULL COMMENT 'action en que se loguea el dato',
+	`label` VARCHAR(100)  NOT NULL COMMENT 'mensaje del log',
+	`language` VARCHAR(100) COMMENT 'idioma de la etiqueta',
+	`forward` VARCHAR(100) COMMENT 'tipo de accion de la etiqueta',
+	PRIMARY KEY (`id`),
+	CONSTRAINT `actionLogs_label_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `actionLogs_log` (`id`)
+)Type=MyISAM COMMENT='Etiquetas de logueo';
 
 #-----------------------------------------------------------------------------
 #-- node

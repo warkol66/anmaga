@@ -208,7 +208,7 @@
  </table>
 
 
-<table phpName="ActionLog" name="log_actionLog" description="logs del sistema">
+<table phpName="ActionLog" name="actionLogs_log" description="logs del sistema">
 	<column name="id" type="INTEGER"  required="true" description="Id log" primaryKey="true" autoIncrement="true"  />
 	<column name="userId" type="INTEGER"  required="true" description="Id del usuario" />
 	<column name="affiliateId" type="INTEGER"  required="true" description="Id del afiliado" />
@@ -220,6 +220,18 @@
 	</foreign-key>
 	<foreign-key foreignTable="security_action" >
 		<reference local="action" foreign="action" />
+	</foreign-key>
+</table>
+
+
+<table phpName="ActionLogLabel" name="actionLogs_label" description="Etiquetas de logueo">
+	<column name="id" type="INTEGER"  required="true" description="Id log" primaryKey="true" autoIncrement="true"  />
+	<column name="action" type="VARCHAR" size="100"  required="true" description="action en que se loguea el dato" />
+	<column name="label" type="VARCHAR" size="100"  required="true" description="mensaje del log"/>
+	<column name="language" type="VARCHAR" size="100" description="idioma de la etiqueta"/>
+	<column name="forward" type="VARCHAR" size="100" description="tipo de accion de la etiqueta"/>
+	<foreign-key foreignTable="actionLogs_log" >
+		<reference local="id" foreign="id" />
 	</foreign-key>
 </table>
 
