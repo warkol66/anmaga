@@ -1,108 +1,87 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <moduleInstalation>
-		<config>
-				<label>Módulos</label>
-				<description>Administrador de Módulos del Sistema</description>
-				<esp>
-						<label>Módulos</label>
-						<description>Administrador de Módulos del Sistema</description>
-				</esp>
-				<eng>
-						<label>Modules</label>
-						<description>Modules manager</description>
-				</eng>
-				<allwaysActive>1</allwaysActive>
-				<moduleDependencies>
-						<module1>Users</module1>
-						<module2>SecurityAction</module2>
-				</moduleDependencies>
-		</config>
-		<actions>
-				<modulesList>
-						<actionLog>
-								<success>
-										<label>Ingresar a listar módulos</label>
-										<esp>Ingresar a listar módulos</esp>
-										<eng>Enter to Module list</eng>
-								</success>
-								<failure>
-										<label>No pudo ingresar a listar módulos</label>
-										<esp>No pudo ingresar a listar módulos</esp>
-										<eng>He cannot enter to module list</eng>
-								</failure>
-						</actionLog>
-						<securityAction>
-								<access>1</access>
-								<accessUsersByAffiliate>1</accessUsersByAffiliate>
-								<pair>ModuleDoList</pair>
-						</securityAction>
-				</modulesList>
-				<modulesEdit>
-						<actionLog>
-								<success>
-										<label>Ingresar a editar modulo</label>
-										<esp>Ingresar a editar modulo</esp>
-										<eng>Enter to edit module </eng>
-								</success>
-								<failure>
-										<label>No pudo ingresar a editar modulo</label>
-										<esp>No pudo ingresar a editar modulo</esp>
-										<eng>He cannot enter to edit module</eng>
-								</failure>
-						</actionLog>
-						<securityAction>
-								<access>3</access>
-								<accessUsersByAffiliate>3</accessUsersByAffiliate>
-								<pair>ModuleDoEdit</pair>
-						</securityAction>
-				</modulesEdit>
-		</actions>
-		<!--Propuesta  XML con namespaces, creo que es mas entendible (los nombres con _ son para no ser pisados)-->
-		<moduleInstalation:_config>
-				<label>Módulos</label>
-				<description>Administrador de Módulos del Sistema</description>
-				<esp>
-						<label>Módulos</label>
-						<description>Administrador de Módulos del Sistema</description>
-				</esp>
-				<eng>
-						<label>Modules</label>
-						<description>Modules manager</description>
-				</eng>
-				<allwaysActive>1</allwaysActive>
-				<moduleDependencies>
-						<module1>Users</module1>
-						<module2>SecurityAction</module2>
-				</moduleDependencies>
-		</moduleInstalation:_config>
-		<moduleInstalation:_actions>
-				<action:moduleList>
-						<actionLogs>
-								<forward:success>
-										<label>Mostrar lista de módulos del sistema</label>
-										<esp>Mostrar lista de módulos del sistema</esp>
-										<eng>List system modules</eng>
-								</forward:success>
-								<forward:failure>
-										<label>No se pudo mostrar lista de módulos del sistema</label>
-										<esp>No se pudo mostrar lista de módulos del sistema</esp>
-										<eng>Unable to list system modules</eng>
-								</forward:failure>
-						</actionLogs>
-						<securityAction>
-								<usersBitLevel>3</usersBitLevel>
-								<usersByaffiliateBitLevel>3</usersByaffiliateBitLevel>
-								<actionPair>ModuleDoEdit</actionPair>
-						</securityAction>
-				</action:moduleList>
-				<action:modulesEdit>
-	        </action:modulesEdit>
-				<action:modulesDoEdit>
-	        </action:modulesDoEdit>
-				<action:modulesDoActivateX>
-	        </action:modulesDoActivateX>
-		</moduleInstalation:_actions>
-		<moduleInstalation:sql>
+	<moduleInstalation:config>
+		<label>Módulos</label>
+		<description>Administrador de Módulos del Sistema</description>
+		<esp>
+			<label>Módulos</label>
+			<description>Administrador de Módulos del Sistema</description>
+		</esp>
+		<eng>
+			<label>Modules</label>
+			<description>Modules manager</description>
+		</eng>
+		<alwaysActive>1</alwaysActive>
+		<moduleDependencies>
+			<module1>Users</module1>
+			<module2>SecurityAction</module2>
+		</moduleDependencies>
+	</moduleInstalation:config>
+	<moduleInstalation:actions>
+		<modulesList>
+			<actionLogs>
+				<forward:success>
+					<label>Mostrar lista de módulos del sistema</label>
+					<esp>Mostrar lista de módulos del sistema</esp>
+					<eng>List system modules</eng>
+				</forward:success>
+				<forward:failure>
+					<label>No se pudo mostrar lista de módulos del sistema</label>
+					<esp>No se pudo mostrar lista de módulos del sistema</esp>
+					<eng>Unable to list system modules</eng>
+				</forward:failure>
+			</actionLogs>
+			<securityAction>
+				<usersBitLevel>3</usersBitLevel>
+				<usersByaffiliateBitLevel>3</usersByaffiliateBitLevel>
+				<actionPair>ModulesDoList</actionPair>
+			</securityAction>
+		</modulesList>
+		<modulesEdit>
+			<actionLogs>
+				<success>
+					<label>Ingresar a editar modulo</label>
+					<esp>Ingresar a editar modulo</esp>
+					<eng>Enter to edit module </eng>
+				</success>
+				<failure>
+					<label>No pudo ingresar a editar modulo</label>
+					<esp>No pudo ingresar a editar modulo</esp>
+					<eng>He cannot enter to edit module</eng>
+				</failure>
+			</actionLogs>
+			<securityAction>
+				<usersBitLevel>3</usersBitLevel>
+				<usersByaffiliateBitLevel>3</usersByaffiliateBitLevel>
+				<actionPair>ModulesDoEdit</actionPair>
+			</securityAction>
+		</modulesEdit>
+		<modulesDoActivateX>
+			<actionLogs>
+				<success>
+					<label>Activar un módulo</label>
+					<esp>Activar un módulo</esp>
+					<eng>Active module </eng>
+				</success>
+				<errorDependencyOff>
+					<label>No pudo activar un módulo</label>
+					<esp>No pudo activar un módulo</esp>
+					<eng>He cannot enable a module</eng>
+				</errorDependencyOff>
+				<errorDependencyOn>
+					<label>No pudo desactivar un módulo</label>
+					<esp>No pudo desactivar un módulo</esp>
+					<eng>He cannot disable a module</eng>
+				</errorDependencyOn>
+			</actionLogs>
+			<securityAction>
+				<usersBitLevel>1</usersBitLevel>
+				<usersByaffiliateBitLevel>1</usersByaffiliateBitLevel>
+				<actionPair></actionPair>
+			</securityAction>
+		</modulesDoActivateX>
+	</moduleInstalation:actions>
+	<moduleInstalation:sql>
 	#-----------------------------------------------------------------------------
 	#-- modules_module
 	#-----------------------------------------------------------------------------

@@ -20,4 +20,6 @@ require_once 'anmaga/om/BaseActionLogLabel.php';
  */
 class ActionLogLabel extends BaseActionLogLabel {
 
+
+
 } // ActionLogLabel

@@ -24,4 +24,20 @@
  */
 class ActionLogLabelPeer extends BaseActionLogLabelPeer {
 
+
+
+  function add($actionName,$language,$label,$forward) {
+		
+		$actionLogLabelObj = new ActionLogLabel();
+		$actionLogLabelObj->setAction($actionName);
+		if ($label == 'label') echo"";
+		else $actionLogLabelObj ->setLabel($label);
+		$actionLogLabelObj ->setLanguage($language);
+		$actionLogLabelObj ->setForward($forward);
+		$actionLogLabelObj ->save();
+
+
+  }
+
+
 } // ActionLogLabelPeer
