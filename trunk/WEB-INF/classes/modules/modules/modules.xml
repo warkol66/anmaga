@@ -82,10 +82,7 @@
 		</modulesDoActivateX>
 	</moduleInstalation:actions>
 	<moduleInstalation:sql>
-	#-----------------------------------------------------------------------------
-	#-- modules_module
-	#-----------------------------------------------------------------------------
-	CREATE TABLE IF NOT EXISTS `modules_module` (
+		<sql1>CREATE TABLE IF NOT EXISTS `damian` (
 	`name` VARCHAR( 255 ) NOT NULL COMMENT 'nombre del modulo',
 	`label` VARCHAR( 255 ) COMMENT 'Etiqueta',
 	`description` VARCHAR( 255 ) COMMENT 'Descripcion del modulo',
@@ -94,15 +91,9 @@
 	PRIMARY KEY ( `name` ) ,
 	CONSTRAINT `modules_module_FK_1` FOREIGN KEY ( `name` ) REFERENCES `modules_dependency` ( `module` ) ON DELETE CASCADE
 	) TYPE = MYISAM COMMENT = ' Registro de modulos';
-
-	#-----------------------------------------------------------------------------
-	#-- modules_dependency
-	#-----------------------------------------------------------------------------
-	CREATE  TABLE IF NOT EXISTS `modules_dependency`
-	(
-		`module` VARCHAR(255)  NOT NULL COMMENT 'Modulo',
-		`dependence` VARCHAR(255)  NOT NULL COMMENT 'Dependiente',
-		PRIMARY KEY (`module`,`dependence`)
-	)Type=MyISAM COMMENT='Dependencia de modulos ';
+		</sql1>
+		<sql2>
+	CREATE  TABLE IF NOT EXISTS `marcos_genio`	(		`module` VARCHAR(255)  NOT NULL COMMENT 'Modulo',		`dependence` VARCHAR(255)  NOT NULL COMMENT 'Dependiente',		PRIMARY KEY (`module`,`dependence`)	)Type=MyISAM COMMENT='Dependencia de modulos ';
+		</sql2>
 	</moduleInstalation:sql>
 </moduleInstalation>

@@ -138,14 +138,15 @@ function modulesDoActivateX(form) {
 	var pars = 'do=modulesDoActivateX';
 	var fields = Form.serialize(form);
 
-
+	var myVar = 'flag';
 	var myAjax = new Ajax.Updater(
 				{success: 'message'},
 				url,
 				{
 					method: 'post',
 					parameters: pars,
-					postBody: fields
+					postBody: fields,
+					evalScripts: true,
 				});
 }
 
