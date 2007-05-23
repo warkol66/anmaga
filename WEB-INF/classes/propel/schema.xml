@@ -230,9 +230,6 @@
 	<column name="label" type="VARCHAR" size="100"  required="true" description="mensaje del log"/>
 	<column name="language" type="VARCHAR" size="100" description="idioma de la etiqueta"/>
 	<column name="forward" type="VARCHAR" size="100" description="tipo de accion de la etiqueta"/>
-	<foreign-key foreignTable="actionLogs_log" >
-		<reference local="id" foreign="id" />
-	</foreign-key>
 </table>
 
   <table phpName="Node" name="node" description="Nodo del Arbol" >

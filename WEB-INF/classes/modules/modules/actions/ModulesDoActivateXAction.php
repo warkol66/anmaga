@@ -53,15 +53,16 @@ class ModulesDoActivateXAction extends BaseAction {
 		}
 
 		//asigno modulo y seccion
-		$modulo = "Modules";
+		$module = "Modules";
 
 
-		$smarty->assign("modulo",$modulo);
+		$smarty->assign("module",$module);
 
 		$modulePeer = new ModulePeer();
 		$moduleDependencyPeer = new ModuleDependencyPeer();
 		
 		$moduleName=$_POST["module"];
+		$smarty->assign("moduleName",$moduleName);
 		if(!$activeModule=$_POST["activeModule"]) $activeModule=0;
 
 

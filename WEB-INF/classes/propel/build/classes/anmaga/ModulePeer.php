@@ -123,19 +123,19 @@ class ModulePeer extends BaseModulePeer {
 			//echo "este es el xml hecho array, fijense como queda:\n";
 			//print_r($arrayXml);
 			
-			
+			echo "aaa";
 			//////////
 			// seccion de comprobaciones
 			//	echo "0";
 			if (empty($arrayXml))return false;
-			//echo "1";
+			echo "1";
 			if (empty ($arrayXml["moduleInstalation"]["moduleInstalation:config"]["description"]) ) return false;
-			//echo "2";
+			echo "2";
 			if (empty ($arrayXml["moduleInstalation"]["moduleInstalation:config"]["label"]) ) return false;
-			//echo "3";
+			echo "3";
 			if (empty($arrayXml["moduleInstalation"]["moduleInstalation:config"]["alwaysActive"] ) )
 				$arrayXml["moduleInstalation"]["moduleInstalation:config"]["alwaysActive"]=0;
-			//echo "4";
+			echo "4";
 			if (!empty($arrayXml["moduleInstalation"]["moduleInstalation:config"]["moduleDependencies"] ) ){
 				foreach ($arrayXml["moduleInstalation"]["moduleInstalation:config"]["moduleDependencies"] as $moduleDependency){
 					$moduleDep = new ModuleDependencyPeer();
@@ -187,8 +187,65 @@ class ModulePeer extends BaseModulePeer {
 				//////////
 				// parte tablas sql puras
 				$sqlData=$arrayXml["moduleInstalation"]["moduleInstalation:sql"];
+				
+				//$stmt = $con->createStatement();
+				//$rs = $stmt->executeQuery($sql, ResultSet::FETCHMODE_NUM);
+				
+				//print_r($arrayXml);
+				foreach ($sqlData as $eachQuery){
+					//$moduleObj = new Module();
+					//$moduleObj->execute($eachQuery);
+					  // echo "yupi!";
+						 $con = Propel::getConnection(ModulePeer::DATABASE_NAME);
+						  $stmt = $con->createStatement();
+							//print_r($eachQuery);
+						 $rs = $stmt->executeUpdate($eachQuery);
+
+				}
 
 
+
+			//////////
+			// parte carga actions a xml de configuracion phpmvc
+				
+				//////////
+				// la parte a cargar
+				$phpmvcInstalationPath="WEB-INF/classes/modules/$moduleName/phpmvc-config-$moduleName.xml";
+				$xmlPhpmvc=fopen($phpmvcInstalationPath,"r");
+				$xmlPhpmvcLoad=(fread($xmlPhpmvc,filesize($phpmvcInstalationPath)));
+				
+				$buffer="";
+				//////////
+				// el xml original
+				$configPhpmvcPath="WEB-INF/phpmvc-config.xml";
+				$configPhpmvc=fopen($configPhpmvcPath,"rb+");
+
+				//////////
+				// el xml resultante
+				$configPhpmvcResult=fopen("$configPhpmvcPath.tmp","wb");
+
+				if ($configPhpmvc) {
+					$buffer = fgets($configPhpmvc);
+					while (!feof($configPhpmvc) && $buffer!="<!-- instalation tag-->\r\n") {
+						fputs($configPhpmvcResult,$buffer);	
+						$buffer = fgets($configPhpmvc);
+						}
+					fwrite($configPhpmvcResult,$xmlPhpmvcLoad);
+					fputs($configPhpmvcResult,"\r\n\r\n\r\n");
+					while(!feof($configPhpmvc)){
+						fputs($configPhpmvcResult,$buffer);	
+						$buffer = fgets($configPhpmvc);
+					}
+
+
+					fclose($configPhpmvcResult);
+					fclose($configPhpmvc);
+					fclose($xmlPhpmvc);
+					rename($configPhpmvcPath,"$configPhpmvcPath.backup");
+					rename("$configPhpmvcPath.tmp",$configPhpmvcPath);
+				}
+
+				
 
 			//////////
 			// parte de carga a la base de datos

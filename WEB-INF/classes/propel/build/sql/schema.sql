@@ -405,10 +405,7 @@ CREATE TABLE `actionLogs_label`
 	`label` VARCHAR(100)  NOT NULL COMMENT 'mensaje del log',
 	`language` VARCHAR(100) COMMENT 'idioma de la etiqueta',
 	`forward` VARCHAR(100) COMMENT 'tipo de accion de la etiqueta',
-	PRIMARY KEY (`id`),
-	CONSTRAINT `actionLogs_label_FK_1`
-		FOREIGN KEY (`id`)
-		REFERENCES `actionLogs_log` (`id`)
+	PRIMARY KEY (`id`)
 )Type=MyISAM COMMENT='Etiquetas de logueo';
 
 #-----------------------------------------------------------------------------

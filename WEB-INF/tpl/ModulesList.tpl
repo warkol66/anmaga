@@ -64,7 +64,7 @@ function checkscript() {
 				<input type="checkbox" name="activeModule" value="1" checked="checked" disabled="disabled" />
 				<img border="0" src="images/help.png" height="20" width="20" onClick="return checkscript()"/>	
 			|-else-| 		
-				<input type="checkbox" name="activeModule" value="1" |-if $asModule->getActive() eq 1-|checked="checked"|-/if-| onclick="modulesDoActivateX(this.form)" />	
+				<input type="checkbox" id="active_|-$asModule->getName()-|" name="activeModule" value="1" |-if $asModule->getActive() eq 1-|checked="checked"|-/if-| onclick="modulesDoActivateX(this.form)" />	
 			<input type="submit" name="activar" value ="Guardar" />
 			|-/if-|
 					</form>

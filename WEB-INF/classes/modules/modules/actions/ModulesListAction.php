@@ -75,6 +75,7 @@ class ModulesListAction extends BaseAction {
 		$i=$k=0;
 		$dir = "WEB-INF/classes/modules/";
 		$dh  = opendir($dir);
+
 		while (false !== ($moduleName = readdir($dh))){
 			if ($moduleName[0]!='.'){	
 				if(!$modulePeer->get($moduleName) ){
