@@ -120,135 +120,55 @@ class ModulePeer extends BaseModulePeer {
 			$xml = file_get_contents($path);
 			$arrayXml = $converter->xml2array($xml);
 			//$arrayXml = $converter->xml2array_ns($xml,":");
-			//echo "este es el xml hecho array, fijense como queda:\n";
-			//print_r($arrayXml);
 			
-			echo "aaa";
 			//////////
 			// seccion de comprobaciones
-			//	echo "0";
 			if (empty($arrayXml))return false;
-			echo "1";
+
 			if (empty ($arrayXml["moduleInstalation"]["moduleInstalation:config"]["description"]) ) return false;
-			echo "2";
+
 			if (empty ($arrayXml["moduleInstalation"]["moduleInstalation:config"]["label"]) ) return false;
-			echo "3";
+
 			if (empty($arrayXml["moduleInstalation"]["moduleInstalation:config"]["alwaysActive"] ) )
 				$arrayXml["moduleInstalation"]["moduleInstalation:config"]["alwaysActive"]=0;
-			echo "4";
+
 			if (!empty($arrayXml["moduleInstalation"]["moduleInstalation:config"]["moduleDependencies"] ) ){
+				//////////
+				// parte de carga a la DB tabla modules_dependency	
 				foreach ($arrayXml["moduleInstalation"]["moduleInstalation:config"]["moduleDependencies"] as $moduleDependency){
 					$moduleDep = new ModuleDependencyPeer();
 					$moduleDep->setDependency($moduleName, $moduleDependency);
 				}
 			}
 
-			
 			foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"] as $actionName => $actionProperties){
 			
-			//////////
-			// parte de carga a la DB tabla security_action
-			$securityActionPeer = new SecurityActionPeer();
-			$securityActionPeer->addActionWithPair($actionName, $moduleName, $actionProperties["securityAction"]["usersBitLevel"],$actionProperties["securityAction"]["actionPair"]);
-
-
-			//////////
-			// parte de carga a la DB tabla log_actionLog
-			
-			// version supuesta
-
-				foreach ($actionProperties["actionLogs"] as $forward => $label){
-					//print_r($label);
-					foreach ($label as $languageLabel =>$labelName){
-						
-						$actionLogLabel = new ActionLogLabelPeer();
-						//////////
-						// $moduleName = nombre modulo
-						// $actionName
-						// $label = contenido de etiqueta, ejemplo "entrar a module list"
-						// $language = tipo de idioma de etiqueta, posible contenido = label, esp, eng
-						// $forward = tipo de forward, posible contenido= success, failure
-							/*ejemplo:	$moduleName=modules
-										$actionName=modulesList
-										$label= Entrar a listar modulos
-										$language= esp
-										$forward= success*/
-						
-						$actionLogLabel->add($actionName,$languageLabel,$labelName,$forward);
-					}
-				
-
-				}
-
-
-			}
-
-
 				//////////
-				// parte tablas sql puras
-				$sqlData=$arrayXml["moduleInstalation"]["moduleInstalation:sql"];
+				// parte de carga a la DB tabla security_action
+				$securityAction=ModulePeer::loadSecurityAction($actionName,$moduleName,$actionProperties["securityAction"]);
+				if(!$securityAction) return false;
+
 				
-				//$stmt = $con->createStatement();
-				//$rs = $stmt->executeQuery($sql, ResultSet::FETCHMODE_NUM);
-				
-				//print_r($arrayXml);
-				foreach ($sqlData as $eachQuery){
-					//$moduleObj = new Module();
-					//$moduleObj->execute($eachQuery);
-					  // echo "yupi!";
-						 $con = Propel::getConnection(ModulePeer::DATABASE_NAME);
-						  $stmt = $con->createStatement();
-							//print_r($eachQuery);
-						 $rs = $stmt->executeUpdate($eachQuery);
+				//////////
+				// parte de carga a la DB tabla actionLogs_label
+				$actionLogs=ModulePeer::loadActionLogs($actionName,$actionProperties["actionLogs"]);
+				if(!$actionLogs) return false;
 
-				}
+			} // end foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"]
 
-
+		
+			//////////
+			// parte tablas sql puras			
+			$sql=ModulePeer::loadSqlData($arrayXml["moduleInstalation"]["moduleInstalation:sql"]);
+			if(!$sql)return false;
 
 			//////////
 			// parte carga actions a xml de configuracion phpmvc
-				
-				//////////
-				// la parte a cargar
-				$phpmvcInstalationPath="WEB-INF/classes/modules/$moduleName/phpmvc-config-$moduleName.xml";
-				$xmlPhpmvc=fopen($phpmvcInstalationPath,"r");
-				$xmlPhpmvcLoad=(fread($xmlPhpmvc,filesize($phpmvcInstalationPath)));
-				
-				$buffer="";
-				//////////
-				// el xml original
-				$configPhpmvcPath="WEB-INF/phpmvc-config.xml";
-				$configPhpmvc=fopen($configPhpmvcPath,"rb+");
-
-				//////////
-				// el xml resultante
-				$configPhpmvcResult=fopen("$configPhpmvcPath.tmp","wb");
-
-				if ($configPhpmvc) {
-					$buffer = fgets($configPhpmvc);
-					while (!feof($configPhpmvc) && $buffer!="<!-- instalation tag-->\r\n") {
-						fputs($configPhpmvcResult,$buffer);	
-						$buffer = fgets($configPhpmvc);
-						}
-					fwrite($configPhpmvcResult,$xmlPhpmvcLoad);
-					fputs($configPhpmvcResult,"\r\n\r\n\r\n");
-					while(!feof($configPhpmvc)){
-						fputs($configPhpmvcResult,$buffer);	
-						$buffer = fgets($configPhpmvc);
-					}
-
-
-					fclose($configPhpmvcResult);
-					fclose($configPhpmvc);
-					fclose($xmlPhpmvc);
-					rename($configPhpmvcPath,"$configPhpmvcPath.backup");
-					rename("$configPhpmvcPath.tmp",$configPhpmvcPath);
-				}
-
-				
+			$phpmvcConfig=ModulePeer::loadPhpmvcConfig($moduleName);
+			if(!$phpmvcConfig) return false;
 
 			//////////
-			// parte de carga a la base de datos
+			// parte de carga a la base de datos tabla modules_module
 			$moduleObj = new Module();
 			$moduleObj->setName($moduleName);
 			$moduleObj ->setDescription($arrayXml["moduleInstalation"]["moduleInstalation:config"]["description"]);
@@ -260,6 +180,121 @@ class ModulePeer extends BaseModulePeer {
 		return true;
 	}
 
+
+/**
+*
+*	Subfuncion de agregar modulo que agrega datos del modulo en la parte security
+*	@param string $actionName nombre del action
+*	@param array $actionProperties propiedades del action
+*	@return true si se agrego correctamente
+*/
+
+function loadSecurityAction($actionName,$moduleName,$actionProperties){
+	$securityActionPeer = new SecurityActionPeer();
+	$securityActionPeer->addActionWithPair($actionName, $moduleName, $actionProperties["usersBitLevel"],$actionProperties["actionPair"]);
+	return true;
+}
+
+
+/**
+*
+*	Subfuncion de agregar modulo que agrega datos del modulo en la tabla logs
+*	@param string $actionName nombre del action
+*	@param array $actionProperties propiedades del action a agregar 
+*	@return true si se agrego correctamente
+*/
+function loadActionLogs($actionName,$actionProperties){
+	foreach ($actionProperties as $forward => $label){
+		foreach ($label as $languageLabel =>$labelName){
+			
+			$actionLogLabel = new ActionLogLabelPeer();
+			//////////
+			// $moduleName = nombre modulo
+			// $actionName
+			// $label = contenido de etiqueta, ejemplo "entrar a module list"
+			// $language = tipo de idioma de etiqueta, posible contenido = label, esp, eng
+			// $forward = tipo de forward, posible contenido= success, failure
+				//ejemplo:	$moduleName=modules
+				//			$actionName=modulesList
+				//			$label= Entrar a listar modulos
+				//			$language= esp
+				//			$forward= success
+			
+			$actionLogLabel->add($actionName,$languageLabel,$labelName,$forward);
+		}
+
+	} //end foreach ($actionProperties
+	return true;
+}
+
+
+/**
+*
+*	Subfuncion de agregar modulo que agrega tablas sql
+*	@param string $sql variable que contiene codigo sql
+*	@return true si se agrego correctamente
+*/
+function loadSqlData($sql){
+	foreach ($sql as $eachQuery){
+		 $con = Propel::getConnection(ModulePeer::DATABASE_NAME);
+		 $stmt = $con->createStatement();
+
+		 $rs = $stmt->executeUpdate($eachQuery);
+	}
+	return true;
+}
+
+
+/**
+*
+*	Subfuncion de agregar modulo que agrega informacion al xml "phpmvc-config"
+*	@param string $moduleName nombre del modulo
+*	@return true si se agrego correctamente
+*/
+function loadPhpmvcConfig($moduleName){
+
+	//////////
+	// la parte a cargar
+	$phpmvcInstalationPath="WEB-INF/classes/modules/$moduleName/phpmvc-config-$moduleName.xml";
+	$xmlPhpmvc=fopen($phpmvcInstalationPath,"r");
+	$xmlPhpmvcLoad=(fread($xmlPhpmvc,filesize($phpmvcInstalationPath)));
+
+	$buffer="";
+	//////////
+	// el xml original
+	$configPhpmvcPath="WEB-INF/phpmvc-config.xml";
+	$configPhpmvc=fopen($configPhpmvcPath,"rb+");
+
+	//////////
+	// el xml resultante
+	$configPhpmvcResult=fopen("$configPhpmvcPath.tmp","wb");
+
+	if ($configPhpmvc) {
+		$buffer = fgets($configPhpmvc);
+		while (!feof($configPhpmvc) && $buffer!="<!-- instalation tag-->\r\n") {
+			fputs($configPhpmvcResult,$buffer);	
+			$buffer = fgets($configPhpmvc);
+			}
+		fwrite($configPhpmvcResult,$xmlPhpmvcLoad);
+		fputs($configPhpmvcResult,"\r\n\r\n\r\n");
+		while(!feof($configPhpmvc)){
+			fputs($configPhpmvcResult,$buffer);	
+			$buffer = fgets($configPhpmvc);
+		}
+
+		//////////
+		// cierro archivos
+		fclose($configPhpmvcResult);
+		fclose($configPhpmvc);
+		fclose($xmlPhpmvc);
+
+		//////////
+		// dejo archivo anterior como backup, renombro archivo resultante como original
+		rename($configPhpmvcPath,"$configPhpmvcPath.backup");
+		rename("$configPhpmvcPath.tmp",$configPhpmvcPath);
+	}
+	return true;
+}
 
 
 
