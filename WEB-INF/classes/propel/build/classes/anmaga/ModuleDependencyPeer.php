@@ -27,11 +27,13 @@ class ModuleDependencyPeer extends BaseModuleDependencyPeer {
 
 
 	function setDependency ($moduleName,$dependency){
-		$obj = new ModuleDependency();
-		$obj->setModule($moduleName);
-		$obj->setDependence($dependency);
-		$obj->save();
-		return;
+		try{
+			$obj = new ModuleDependency();
+			$obj->setModule($moduleName);
+			$obj->setDependence($dependency);
+			$obj->save();
+			return;
+		}catch (PropelException $e) {}
   }
 
 

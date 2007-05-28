@@ -90,14 +90,16 @@ class ModulesListAction extends BaseAction {
 						else{
 						$moduleStatus=$modulePeer->get($moduleName);
 						// echo "$moduleStatus";
-						if( ( $status[$i]=$moduleStatus->getAlwaysActive() ) == NULL ) $status[$i]=" No Activo";
-						else $status[$i]="Activo";
-						
-						$module = array();
-						$module["module"] = $moduleName;
-						$module["active"] = $status[$i];
-						$modules[] = $module;
-						$i++;
+						if($moduleStatus){
+							if( ( $status[$i]=$moduleStatus->getAlwaysActive() ) == NULL ) $status[$i]=" No Activo";
+							else $status[$i]="Activo";
+	
+							$module = array();
+							$module["module"] = $moduleName;
+							$module["active"] = $status[$i];
+							$modules[] = $module;
+							$i++;
+						}
 						}
 
 				}

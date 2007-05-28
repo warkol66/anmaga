@@ -58,17 +58,25 @@ class ModulePeer extends BaseModulePeer {
 	}
 	
 	
-	function delete($module)
-		{ 	try{
-			$obj = new Module();
-			$obj = ModulePeer::retrieveByPK($module);
-			if(!empty($obj))
-				{
-					$obj->delete();
-				}
-		}catch (PropelException $e) {}
-		return;
-		}
+
+
+/**
+*
+*	Elimina un modulo
+*	@param string $moduleName nombre del modulo
+*	@return true si se eliminó correctamente
+*/
+	function delete($moduleName){
+		try{
+				$obj = new Module();
+				$obj = ModulePeer::retrieveByPK($moduleName);
+				if(!empty($obj))
+					{
+						$obj->delete();
+					}
+			}catch (PropelException $e) {}
+			return true;
+	}
 
 
 	/**
@@ -121,37 +129,43 @@ class ModulePeer extends BaseModulePeer {
 			$arrayXml = $converter->xml2array($xml);
 			//$arrayXml = $converter->xml2array_ns($xml,":");
 			
+			//print_r($arrayXml);
 			//////////
 			// seccion de comprobaciones
 			if (empty($arrayXml))return false;
+			
+			$xmlConfig=$arrayXml["moduleInstalation"]["moduleInstalation:config"];
+			
+			if (empty ($xmlConfig["description"]) ) return false;
 
-			if (empty ($arrayXml["moduleInstalation"]["moduleInstalation:config"]["description"]) ) return false;
+			if (empty ($xmlConfig["label"]) ) return false;
 
-			if (empty ($arrayXml["moduleInstalation"]["moduleInstalation:config"]["label"]) ) return false;
+			if (empty($xmlConfig["alwaysActive"] ) )
+				$xmlConfig["alwaysActive"]=0;
 
-			if (empty($arrayXml["moduleInstalation"]["moduleInstalation:config"]["alwaysActive"] ) )
-				$arrayXml["moduleInstalation"]["moduleInstalation:config"]["alwaysActive"]=0;
-
-			if (!empty($arrayXml["moduleInstalation"]["moduleInstalation:config"]["moduleDependencies"] ) ){
+			if (!empty($xmlConfig["moduleDependencies"] ) ){
 				//////////
 				// parte de carga a la DB tabla modules_dependency	
-				foreach ($arrayXml["moduleInstalation"]["moduleInstalation:config"]["moduleDependencies"] as $moduleDependency){
-					$moduleDep = new ModuleDependencyPeer();
-					$moduleDep->setDependency($moduleName, $moduleDependency);
+				foreach ($xmlConfig["moduleDependencies"] as $moduleDependency){
+				/*	$moduleDep = new ModuleDependencyPeer();
+					$dependency=$moduleDep->setDependency($moduleName, $moduleDependency);
+					if (!$dependency)
+						return false;*/
 				}
 			}
 
 			foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"] as $actionName => $actionProperties){
-			
 				//////////
 				// parte de carga a la DB tabla security_action
 				$securityAction=ModulePeer::loadSecurityAction($actionName,$moduleName,$actionProperties["securityAction"]);
+	
 				if(!$securityAction) return false;
 
 				
 				//////////
 				// parte de carga a la DB tabla actionLogs_label
 				$actionLogs=ModulePeer::loadActionLogs($actionName,$actionProperties["actionLogs"]);
+	
 				if(!$actionLogs) return false;
 
 			} // end foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"]
@@ -161,22 +175,24 @@ class ModulePeer extends BaseModulePeer {
 			// parte tablas sql puras			
 			$sql=ModulePeer::loadSqlData($arrayXml["moduleInstalation"]["moduleInstalation:sql"]);
 			if(!$sql)return false;
+			
 
 			//////////
 			// parte carga actions a xml de configuracion phpmvc
 			$phpmvcConfig=ModulePeer::loadPhpmvcConfig($moduleName);
 			if(!$phpmvcConfig) return false;
 
+
 			//////////
 			// parte de carga a la base de datos tabla modules_module
 			$moduleObj = new Module();
 			$moduleObj->setName($moduleName);
-			$moduleObj ->setDescription($arrayXml["moduleInstalation"]["moduleInstalation:config"]["description"]);
-			$moduleObj ->setLabel($arrayXml["moduleInstalation"]["moduleInstalation:config"]["label"]);
+			$moduleObj ->setDescription($xmlConfig["description"]);
+			$moduleObj ->setLabel($xmlConfig["label"]);
 			$moduleObj ->setActive(0);
-			$moduleObj ->setAlwaysActive($arrayXml["moduleInstalation"]["moduleInstalation:config"]["alwaysActive"]);
+			$moduleObj ->setAlwaysActive($xmlConfig["alwaysActive"]);
 			$moduleObj ->save();
-		//}catch (PropelException $e) {}
+	//	}catch (PropelException $e) {}
 		return true;
 	}
 
@@ -190,9 +206,13 @@ class ModulePeer extends BaseModulePeer {
 */
 
 function loadSecurityAction($actionName,$moduleName,$actionProperties){
-	$securityActionPeer = new SecurityActionPeer();
-	$securityActionPeer->addActionWithPair($actionName, $moduleName, $actionProperties["usersBitLevel"],$actionProperties["actionPair"]);
-	return true;
+	@include_once('SecurityActionPeer.php');
+		if (class_exists('SecurityActionPeer')){
+			$securityActionPeer = new SecurityActionPeer();
+			$securityActionPeer->addActionWithPair($actionName, $moduleName, $actionProperties["usersBitLevel"],$actionProperties["actionPair"]);
+			return true;
+		}
+		else return false;
 }
 
 
@@ -204,27 +224,32 @@ function loadSecurityAction($actionName,$moduleName,$actionProperties){
 *	@return true si se agrego correctamente
 */
 function loadActionLogs($actionName,$actionProperties){
-	foreach ($actionProperties as $forward => $label){
-		foreach ($label as $languageLabel =>$labelName){
-			
-			$actionLogLabel = new ActionLogLabelPeer();
-			//////////
-			// $moduleName = nombre modulo
-			// $actionName
-			// $label = contenido de etiqueta, ejemplo "entrar a module list"
-			// $language = tipo de idioma de etiqueta, posible contenido = label, esp, eng
-			// $forward = tipo de forward, posible contenido= success, failure
-				//ejemplo:	$moduleName=modules
-				//			$actionName=modulesList
-				//			$label= Entrar a listar modulos
-				//			$language= esp
-				//			$forward= success
-			
-			$actionLogLabel->add($actionName,$languageLabel,$labelName,$forward);
-		}
+	@include_once('ActionLogLabelPeer.php');
+	if (class_exists('ActionLogLabelPeer')){
+	
+		foreach ($actionProperties as $forward => $label){
+			foreach ($label as $languageLabel =>$labelName){
+				
+				$actionLogLabel = new ActionLogLabelPeer();
+				//////////
+				// $moduleName = nombre modulo
+				// $actionName
+				// $label = contenido de etiqueta, ejemplo "entrar a module list"
+				// $language = tipo de idioma de etiqueta, posible contenido = label, esp, eng
+				// $forward = tipo de forward, posible contenido= success, failure
+					//ejemplo:	$moduleName=modules
+					//			$actionName=modulesList
+					//			$label= Entrar a listar modulos
+					//			$language= esp
+					//			$forward= success
+				
+				$actionLogLabel->add($actionName,$languageLabel,$labelName,$forward);
+			}
 
-	} //end foreach ($actionProperties
-	return true;
+		} //end foreach ($actionProperties
+		return true;
+	}
+	else return false;
 }
 
 
