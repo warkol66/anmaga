@@ -1,28 +1,28 @@
 <table border='0' cellpadding='0' cellspacing='0' width='100%'>
 	<tr>
-		<td class='titulo'>##40,Configuración del Sistema##</td>
+		<td class='title'>##40,Configuración del Sistema##</td>
 	</tr>
 	<tr>
-		<td class='subrayatitulo'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='fondotitulo'>##178,Administración de Grupos de Usuarios##</td>
+		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<td class='texto'>##179,A continuación podrá editar la lista de grupos de usuarios, permitiendo, al editar el grupo, modificar las categorías que pueden acceder los usuarios miembros del grupo.##</td>
+		<td class='backgroundTitle'>##178,Administración de Grupos de Usuarios##</td>
 	</tr>
 	<tr>
-		<td class='texto'>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>##179,A continuación podrá editar la lista de grupos de usuarios, permitiendo, al editar el grupo, modificar las categorías que pueden acceder los usuarios miembros del grupo.##</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
 	</tr>
 	|-if $accion eq "edicion"-|
 	<tr>
-		<td class='texto'>##180,Realice los cambios en el grupo de usuarios y haga click en "Aceptar" para guardar las modificaciones. ##</td>
+		<td>##180,Realice los cambios en el grupo de usuarios y haga click en "Aceptar" para guardar las modificaciones. ##</td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
@@ -30,27 +30,27 @@
 	|-/if-|
 </table>
 |-if $message eq "deleted"-|
-<div align='center' class='textoerror'>##181,Grupo de Usuarios eliminado##</div>
+<div align='center' class='errorMessage'>##181,Grupo de Usuarios eliminado##</div>
 |-/if-|
 |-if $message eq "errorUpdate"-|
-<div align='center' class='textoerror'>##182,Ha ocurrido un error al intentar guardar la información del grupo de usuarios##</div>
+<div align='center' class='errorMessage'>##182,Ha ocurrido un error al intentar guardar la información del grupo de usuarios##</div>
 |-/if-|
 |-if $message eq "saved"-|
-<div align='center' class='textoerror'>##183,Grupo de Usuarios guardado##</div>
+<div align='center' class='errorMessage'>##183,Grupo de Usuarios guardado##</div>
 |-/if-|
 |-if $message eq "blankName"-|
-<div align='center' class='textoerror'>##184,El Grupo de Usuarios debe tener un Nombre##</div>
+<div align='center' class='errorMessage'>##184,El Grupo de Usuarios debe tener un Nombre##</div>
 |-/if-|
 |-if $message eq "notAddedToGroup"-|
-<div align='center' class='textoerror'>##185,Ha ocurrido un error al intentar agregar la categoría al grupo##</div>
+<div align='center' class='errorMessage'>##185,Ha ocurrido un error al intentar agregar la categoría al grupo##</div>
 |-/if-|
 |-if $message eq "notRemovedFromGroup"-|
-<div align='center' class='textoerror'>##186,Ha ocurrido un error al intentar eliminar la categoría del grupo##</div>
+<div align='center' class='errorMessage'>##186,Ha ocurrido un error al intentar eliminar la categoría del grupo##</div>
 |-/if-|
 |-if $accion eq "edicion"-|
 <form method='post' action='Main.php?do=usersGroupsDoEdit'>
 	<input type='hidden' name='id' value='|-$currentGroup->getId()-|' />
-	<table class='tablaborde' cellpadding='5' cellspacing='1'>
+	<table class='tableTdBorders' cellpadding='5' cellspacing='0'>
 		<tr>
 			<th colspan="2">##187,Editar nombre del Grupo ##</th>
 		</tr>
@@ -104,7 +104,7 @@
 	</tr>
 </table>
 |-/if-| <br />
-<table class='tablaborde' cellpadding='5' cellspacing='1' width='100%'>
+<table class='tableTdBorders' cellpadding='5' cellspacing='0' width='100%'>
 	<tr>
 		<th width="90%" nowrap="nowrap">##194,Grupo de Usuarios del Sistema ##</th>
 		<th width="10%" nowrap="nowrap">&nbsp;</th>
@@ -113,7 +113,11 @@
 	<tr>
 		<td class='celldato'><div class='titulo2'>|-$group->getName()-|</div></td>
 		<td class='cellopciones' nowrap> [ <a href='Main.php?do=usersGroupsList&group=|-$group->getId()-|' class='edit'>##114,Editar##</a> ]
-			[ <a href='Main.php?do=usersGroupsDoDelete&group=|-$group->getId()-|' class='elim' onclick="return confirm('##256,Esta opción eliminar permanentemente a este Grupo. ¿Está seguro que desea eliminarlo?##');">##115,Eliminar##</a> ] </td>
+|-if $group->getId() lt 3 -|
+			[ <span class='deactivated'>##115,Eliminar##</span> ] 
+|-else-|
+			[ <a href='Main.php?do=usersGroupsDoDelete&group=|-$group->getId()-|' class='delete' onclick="return confirm('##256,Esta opción eliminar permanentemente a este Grupo. ¿Está seguro que desea eliminarlo?##');">##115,Eliminar##</a> ] 
+|-/if-|</td>
 	</tr>
 	|-/foreach-|
 	<tr>

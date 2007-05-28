@@ -32,14 +32,22 @@ Menu Users
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=configView">Configuración</a></td>
   </tr>
+|-if $module|upper eq "CONFIG"-|
 	<tr> 
     <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=configSet">Cambiar Configuración</a>
 		<a class="menuSubButton" href="Main.php?do=configEdit">Editar Configuración</a></div></td>
   </tr>
+|-/if-|
 	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersList">Editar Usuarios</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersList">Administración de Usuarios</a></td>
   </tr>
+|-if $module|upper eq "USERS"-|
 	<tr> 
+    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=usersLevelsList">Administrar Niveles de Usuario</a>
+		<a class="menuSubButton" href="Main.php?do=usersGroupsList">Administrar Grupos de Usuarios</a></div>
+	</td>
+  </tr>
+|-/if-|	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=modulesList">Administrar módulos</a></td>
   </tr>
 	<tr> 

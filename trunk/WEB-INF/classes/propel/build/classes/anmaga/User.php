@@ -22,7 +22,7 @@ class User extends BaseUser {
 		return $todosObj;
 	}
 
-	function isAdmin() {
+	function isSupervisor() {
   	$groups = $this->getGroups();
   	foreach ($groups as $group) {
   		if ( $group->getGroupId() == 1 ) {
@@ -31,8 +31,8 @@ class User extends BaseUser {
 		}
 		return false;
 	}
-	
-	function isSupervisor() {
+
+	function isAdmin() {
   	$groups = $this->getGroups();
   	foreach ($groups as $group) {
   		if ( $group->getGroupId() == 2 ) {
@@ -40,7 +40,7 @@ class User extends BaseUser {
   		}
 		}
 		return false;
-	}
+	}	
 
    /**
     * Return an array with all the categories this user can access

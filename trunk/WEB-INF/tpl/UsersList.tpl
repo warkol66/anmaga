@@ -61,23 +61,23 @@
 			<td><input name='name' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUserInfo->getName()-||-/if-|' size="70" /></td>
 		</tr>
 		<tr>
-			<td class='titulodato1'>##164,Apellido##</td>
+			<td class='tdTitle'>##164,Apellido##</td>
 			<td><input name='surname' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUserInfo->getSurname()-||-/if-|' size="70" /></td>
 		</tr>
 		<tr>
-			<td class='titulodato1'>E-mail</td>
+			<td class='tdTitle'>E-mail</td>
 			<td><input name='mailAddress' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUserInfo->getMailAddress()-||-/if-|' size="70" /></td>
 		</tr>
 		<tr>
-			<td class='titulodato1'>##165,Contraseña##</td>
+			<td class='tdTitle'>##165,Contraseña##</td>
 			<td><input name='pass' type='password' class='textodato' value='' size="30" /></td>
 		</tr>
 		<tr>
-			<td class='titulodato1'>##166,Repetir Contraseña##</td>
+			<td class='tdTitle'>##166,Repetir Contraseña##</td>
 			<td><input name='pass2' type='password' class='textodato' value='' size="30" /></td>
 		</tr>
 		<tr>
-			<td class='titulodato1'>Nivel de Usuario</td>
+			<td class='tdTitle'>Nivel de Usuario</td>
 			<td>
 				<select name='levelId'>
 					<option value="">Seleccionar nivel</option>
@@ -151,17 +151,17 @@
 		<td>|-$userInfo->getName()-|</td>
 		<td>|-$userInfo->getSurname()-|</td>
 		<td class='cellTextOptions' nowrap>[ <a href='Main.php?do=usersList&user=|-$user->getId()-|' class='edit'>##114,Editar##</a> ]
-|-if $loginUser->getUsername() eq $user->getUsername()-|
-			[ <a href='Main.php?do=usersDoDelete&user=|-$user->getId()-|' class='elim'>##115,Eliminar##</a> ]
-|-else-|
+|-if $loginUser->getUsername() eq $user->getUsername() || $user->getLevelId() lt 3 -|
 			[ <span class='deactivated'>##115,Eliminar##</span> ] 
+|-else-|
+			[ <a href='Main.php?do=usersDoDelete&user=|-$user->getId()-|' class='delete'>##115,Eliminar##</a> ]
 |-/if-|
 		</td>
 	</tr>
 	|-/foreach-|
 	|-if $licensesLeft gt 0-|
 	<tr>
-		<td class='cellboton' colspan='4'><form action='Main.php' method='get'>
+		<td class='buttonCell' colspan='4'><form action='Main.php' method='get'>
 				<input type="hidden" name="do" value="usersList" />
 				<input type="hidden" name="user" value="" />
 				<input type='submit' value='##173,Nuevo Usuario##' class='button' />
