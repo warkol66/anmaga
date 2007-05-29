@@ -1,10 +1,19 @@
+01 Encabezado
+detalle o encabezado; Nro de pedido; Fecha del pedido; Fecha ; Fecha; Razón social; Responsable; email responsable; Empresa provedora; Nro Proveedor; Sucursal; Código Sucursal; Dirección Sucursal;  Tipo de PEdido; 
 01;288065;22/05/2007;06/06/2007;//;Ferretería EPA, C.A.;Roberto Gatti;reposicion9@epa.com.ve;NEGOCIADORA ANMAGA, C.A;4291;EPA02;002;Avenida Norte 1 C/C transversal 5, Zona Industrial Cababobo    Edif. EPA;Pedido Compra;65;No;No;20700474;2277052,14;22977526,14;0;Sin Observación
+
+02 Detalle
+
+detalle o encabezado; código de producto, descripcion; código anmaga; Cantidad; Unidad; Total; Unidades por empaque; no se;Precio por unidad; total
 02;288065;1006217;TUBO CUERO PEQ ANTIB;3-040-001;12;PZA;12;1;0;11330;135960
 02;288065;1006477;REFRIGER COOLANT GL;1-100-001;6;PAQ;30;5;0;3485;104550
 02;288065;1006478;SHAMPOO P/CARRO LIT.;1-010-010;12;PAQ;12;1;0;2155;25860
 02;288065;1021156;CONO PLEGAB 18" CINT;3-312-030;16;PZA;64;4;0;28385;1816640
 02;288065;1024006;GATO T/BOTELLA   4TN;3-140-020;4;PAQ;32;8;0;25190;806080
 02;288065;1024045;GATO T/CAIMAN C/EST;3-143-001;4;PAQ;492;123;0;36202;17811384
+
+
+
 01;288066;22/05/2007;06/06/2007;//;Ferretería EPA, C.A.;Roberto Gatti;reposicion9@epa.com.ve;NEGOCIADORA ANMAGA, C.A;4291;EPA03;003;Avenidad Cuatricentenario C/C Paseo Vzla C.C. LA GRANJA via    Naguanagua;Pedido Compra;65;No;No;4312916;474420,76;4787336,76;0;Sin Observación
 02;288066;1006479;LIMPIAPARAB WIPER LT;1-110-010;12;PAQ;72;6;0;1535;110520
 02;288066;1021156;CONO PLEGAB 18" CINT;3-312-030;16;PZA;32;2;0;28385;908320
