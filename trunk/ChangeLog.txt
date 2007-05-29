@@ -1,4 +1,14 @@
 ﻿==============================
+Revisión 99
+------------------------------
+# se agrega un campo a security_action
+
+ALTER TABLE `security_action` ADD `label` VARCHAR( 255 ) NULL ;
+
+
+
+
+==============================
 Revisión 97
 ------------------------------
 
