@@ -125,8 +125,9 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 		$cond = new Criteria();
 		$cond->add(UserByAffiliatePeer::USERNAME, $username);
 		$cond->add(UserByAffiliatePeer::ACTIVE, "1");
-		$todosObj = UserByAffiliatePeer::doSelect($cond);	
+		$todosObj = UserByAffiliatePeer::doSelectJoinUsersByAffiliateUserInfo($cond);	
 		$user = $todosObj[0];
+
 		if ( !empty($user) ) {
 			if ( $user->getPassword() == md5($password."ASD") ) {
 				$user->setLastLogin(time());
