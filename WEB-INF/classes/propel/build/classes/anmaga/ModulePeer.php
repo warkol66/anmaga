@@ -135,7 +135,7 @@ class ModulePeer extends BaseModulePeer {
 			if (empty($arrayXml))return false;
 			
 			$xmlConfig=$arrayXml["moduleInstalation"]["moduleInstalation:config"];
-			
+	
 			if (empty ($xmlConfig["description"]) ) return false;
 
 			if (empty ($xmlConfig["label"]) ) return false;
@@ -147,10 +147,10 @@ class ModulePeer extends BaseModulePeer {
 				//////////
 				// parte de carga a la DB tabla modules_dependency	
 				foreach ($xmlConfig["moduleDependencies"] as $moduleDependency){
-				/*	$moduleDep = new ModuleDependencyPeer();
+					$moduleDep = new ModuleDependencyPeer();
 					$dependency=$moduleDep->setDependency($moduleName, $moduleDependency);
 					if (!$dependency)
-						return false;*/
+						return false;
 				}
 			}
 
@@ -209,7 +209,7 @@ function loadSecurityAction($actionName,$moduleName,$actionProperties){
 	@include_once('SecurityActionPeer.php');
 		if (class_exists('SecurityActionPeer')){
 			$securityActionPeer = new SecurityActionPeer();
-			$securityActionPeer->addActionWithPair($actionName, $moduleName, $actionProperties["usersBitLevel"],$actionProperties["actionPair"]);
+			$securityActionPeer->addActionWithPair($actionName, $moduleName, $actionProperties["usersBitLevel"],$actionProperties["actionPair"],$actionProperties["label"]);
 			return true;
 		}
 		else return false;

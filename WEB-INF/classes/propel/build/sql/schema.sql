@@ -119,6 +119,7 @@ CREATE TABLE `security_action`
 	`module` VARCHAR(100) COMMENT 'Modulo',
 	`section` VARCHAR(100) COMMENT 'Seccion',
 	`access` INTEGER COMMENT 'El acceso a ese action',
+	`label` VARCHAR(255) COMMENT 'Etiqueta del action',
 	`accessUsersByAffiliate` INTEGER COMMENT 'El acceso a ese action para los usuarios por afiliados',
 	`active` INTEGER COMMENT 'Si el action esta activo o no',
 	`pair` VARCHAR(100) COMMENT 'Par del Action',

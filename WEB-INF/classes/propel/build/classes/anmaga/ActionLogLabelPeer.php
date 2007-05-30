@@ -39,4 +39,13 @@ class ActionLogLabelPeer extends BaseActionLogLabelPeer {
   }
 
 
+	function getAllByActionLanguageEsp($action,$forward) {
+		$criteria = new Criteria();
+		$criteria->add(ActionLogLabelPeer::ACTION, $action);
+		$criteria->add(ActionLogLabelPeer::LANGUAGE, 'esp');
+		$criteria->add(ActionLogLabelPeer::FORWARD, $forward);
+    $obj = ActionLogLabelPeer::doSelect($criteria);
+    return $obj[0];
+	}
+
 } // ActionLogLabelPeer

@@ -2,4 +2,5 @@ Error: Ha intentado desactivar un m&oacute;dulo que necesita la desactivaci&oacu
 
 <script language="JavaScript">
 	$('active_|-$moduleName-|').checked = true;
+	$('messageMod').innerHTML = "";
 </script>

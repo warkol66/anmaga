@@ -69,7 +69,7 @@ class ModulesEditAction extends BaseAction {
 		
 		$smarty->assign("module",$assignedModule);
 			
-
+		doLogV2('success');
 
 		
 		return $mapping->findForwardConfig('success');

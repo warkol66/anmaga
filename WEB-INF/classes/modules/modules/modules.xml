@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <moduleInstalation>
 	<moduleInstalation:config>
-		<label>Módulos</label>
-		<description>Administrador de Módulos del Sistema</description>
 		<esp>
 			<label>Módulos</label>
 			<description>Administrador de Módulos del Sistema</description>
@@ -20,22 +18,25 @@
 	<moduleInstalation:actions>
 		<modulesList>
 			<actionLogs>
-				<forward:success>
-					<label>Mostrar lista de módulos del sistema</label>
+				<success>
 					<esp>Mostrar lista de módulos del sistema</esp>
 					<eng>List system modules</eng>
-				</forward:success>
-				<forward:failure>
-					<label>No se pudo mostrar lista de módulos del sistema</label>
+				</success>
+				<failure>
 					<esp>No se pudo mostrar lista de módulos del sistema</esp>
 					<eng>Unable to list system modules</eng>
-				</forward:failure>
+				</failure>
 			</actionLogs>
 			<securityAction>
 				<usersBitLevel>3</usersBitLevel>
 				<usersByaffiliateBitLevel>3</usersByaffiliateBitLevel>
 				<actionPair>ModulesDoList</actionPair>
+				<label>Listado de módulos</label>
 			</securityAction>
+			<menu>
+				<esp>Modulo</esp>
+				<eng>Module</eng>
+			</menu>
 		</modulesList>
 		<modulesEdit>
 			<actionLogs>
@@ -54,7 +55,12 @@
 				<usersBitLevel>3</usersBitLevel>
 				<usersByaffiliateBitLevel>3</usersByaffiliateBitLevel>
 				<actionPair>ModulesDoEdit</actionPair>
+				<label>Edición de módulos</label>
 			</securityAction>
+			<menu>
+				<esp></esp>
+				<eng></eng>
+			</menu>
 		</modulesEdit>
 		<modulesDoActivateX>
 			<actionLogs>
@@ -78,11 +84,16 @@
 				<usersBitLevel>1</usersBitLevel>
 				<usersByaffiliateBitLevel>1</usersByaffiliateBitLevel>
 				<actionPair></actionPair>
+				<label>Activación de módulos</label>
 			</securityAction>
+			<menu>
+				<esp></esp>
+				<eng></eng>
+			</menu>
 		</modulesDoActivateX>
 	</moduleInstalation:actions>
 	<moduleInstalation:sql>
-		<sql1>CREATE TABLE IF NOT EXISTS `damian` (
+		<sql1>CREATE TABLE IF NOT EXISTS `modules_module` (
 	`name` VARCHAR( 255 ) NOT NULL COMMENT 'nombre del modulo',
 	`label` VARCHAR( 255 ) COMMENT 'Etiqueta',
 	`description` VARCHAR( 255 ) COMMENT 'Descripcion del modulo',
@@ -93,7 +104,7 @@
 	) TYPE = MYISAM COMMENT = ' Registro de modulos';
 		</sql1>
 		<sql2>
-	CREATE  TABLE IF NOT EXISTS `marcos_genio`	(		`module` VARCHAR(255)  NOT NULL COMMENT 'Modulo',		`dependence` VARCHAR(255)  NOT NULL COMMENT 'Dependiente',		PRIMARY KEY (`module`,`dependence`)	)Type=MyISAM COMMENT='Dependencia de modulos ';
+	CREATE  TABLE IF NOT EXISTS `modules_dependency`	(		`module` VARCHAR(255)  NOT NULL COMMENT 'Modulo',		`dependence` VARCHAR(255)  NOT NULL COMMENT 'Dependiente',		PRIMARY KEY (`module`,`dependence`)	)Type=MyISAM COMMENT='Dependencia de modulos ';
 		</sql2>
 	</moduleInstalation:sql>
 </moduleInstalation>

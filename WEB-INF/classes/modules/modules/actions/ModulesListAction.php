@@ -106,9 +106,7 @@ class ModulesListAction extends BaseAction {
 			}
 		}
 
-		
-
-
+		print_r($loginUser);		
 		$newModulesNumber=count($modules);
 		$smarty->assign("modulesNumber",$newModulesNumber);
 
@@ -123,6 +121,8 @@ class ModulesListAction extends BaseAction {
 		$smarty->assign("assignedModules",$assignedModules);
 
 	//	doLog("Entrar en ModulesList");
+
+		doLogV2('success');
 		
 		return $mapping->findForwardConfig('success');
 	}

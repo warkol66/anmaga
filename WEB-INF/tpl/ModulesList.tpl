@@ -17,9 +17,13 @@ function checkscript() {
 
 <table width="60%" border="0" align="center" cellpadding="0" cellspacing="0" class="tablaborde"> 
 	<tr>
+		<td id="messageMod"></td>
+	</tr>
+	<tr>
 		<td id="message">
-		<span id="systemWorking" style="display:none;">Actualizando sistema...</span>
+		<span id="systemWorking" style="display:none;"></span>
 		</td>
+		<td id="messageMod"></td>
 	</tr>
 	|-if $modulesNumber > 1-|
 	<tr>
@@ -64,8 +68,7 @@ function checkscript() {
 				<input type="checkbox" name="activeModule" value="1" checked="checked" disabled="disabled" />
 				<img border="0" src="images/help.png" height="20" width="20" onClick="return checkscript()"/>	
 			|-else-| 		
-				<input type="checkbox" id="active_|-$asModule->getName()-|" name="activeModule" value="1" |-if $asModule->getActive() eq 1-|checked="checked"|-/if-| onclick="modulesDoActivateX(this.form)" />	
-			<input type="submit" name="activar" value ="Guardar" />
+				<input type="checkbox" id="active_|-$asModule->getName()-|" name="activeModule" value="1" |-if $asModule->getActive() eq 1-|checked="checked"|-/if-| onclick="modulesDoActivateX(this.form)" />
 			|-/if-|
 					</form>
 			</td> 
