@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<moduleInstalation>
+	<moduleInstalation:config>
+		<label>xtraMódulos</label>
+		<description>xtraAdministrador de Módulos del Sistema</description>
+		<esp>
+			<label>xtraMódulos</label>
+			<description>xtraAdministrador de Módulos del Sistema</description>
+		</esp>
+		<eng>
+			<label>xtraModules</label>
+			<description>xtraModules manager</description>
+		</eng>
+		<alwaysActive>0</alwaysActive>
+		<moduleDependencies>
+			<module1>Modules</module1>
+		</moduleDependencies>
+	</moduleInstalation:config>
+	<moduleInstalation:actions>
+		<modulesList>
+			<actionLogs>
+				<forward:success>
+					<label>xtraostrar lista de módulos del sistema</label>
+					<esp>xtraMostrar lista de módulos del sistema</esp>
+					<eng>xtraList system modules</eng>
+				</forward:success>
+				<forward:failure>
+					<label>xtraNo se pudo mostrar lista de módulos del sistema</label>
+					<esp>xtraNo se pudo mostrar lista de módulos del sistema</esp>
+					<eng>xtraUnable to list system modules</eng>
+				</forward:failure>
+			</actionLogs>
+			<securityAction>
+				<usersBitLevel>3</usersBitLevel>
+				<usersByaffiliateBitLevel>3</usersByaffiliateBitLevel>
+				<actionPair>xtraModulesDoList</actionPair>
+				<label>xtraListado de módulos</label>
+			</securityAction>
+		</modulesList>
+		<modulesEdit>
+			<actionLogs>
+				<success>
+					<label>xtraIngresar a editar modulo</label>
+					<esp>xtraIngresar a editar modulo</esp>
+					<eng>xtraEnter to edit module </eng>
+				</success>
+				<failure>
+					<label>xtraNo pudo ingresar a editar modulo</label>
+					<esp>xtraNo pudo ingresar a editar modulo</esp>
+					<eng>xtraHe cannot enter to edit module</eng>
+				</failure>
+			</actionLogs>
+			<securityAction>
+				<usersBitLevel>3</usersBitLevel>
+				<usersByaffiliateBitLevel>3</usersByaffiliateBitLevel>
+				<actionPair>xtraModulesDoEdit</actionPair>
+				<label>xtraEdición de módulos</label>
+			</securityAction>
+		</modulesEdit>
+		<modulesDoActivateX>
+			<actionLogs>
+				<success>
+					<label>xtraActivar un módulo</label>
+					<esp>xtraActivar un módulo</esp>
+					<eng>xtraActive module </eng>
+				</success>
+				<errorDependencyOff>
+					<label>xtraNo pudo activar un módulo</label>
+					<esp>xtraNo pudo activar un módulo</esp>
+					<eng>xtraHe cannot enable a module</eng>
+				</errorDependencyOff>
+				<errorDependencyOn>
+					<label>xtraNo pudo desactivar un módulo</label>
+					<esp>xtraNo pudo desactivar un módulo</esp>
+					<eng>xtraHe cannot disable a module</eng>
+				</errorDependencyOn>
+			</actionLogs>
+			<securityAction>
+				<usersBitLevel>1</usersBitLevel>
+				<usersByaffiliateBitLevel>1</usersByaffiliateBitLevel>
+				<actionPair></actionPair>
+				<label>xtraActivación de módulos</label>
+			</securityAction>
+		</modulesDoActivateX>
+	</moduleInstalation:actions>
+	<moduleInstalation:sql>
+		<sql1>CREATE TABLE IF NOT EXISTS `xtra1` (
+	`name` VARCHAR( 255 ) NOT NULL COMMENT 'nombre del modulo',
+	`label` VARCHAR( 255 ) COMMENT 'Etiqueta',
+	`description` VARCHAR( 255 ) COMMENT 'Descripcion del modulo',
+	`active` INTEGER default 0 NOT NULL COMMENT 'Estado del modulo',
+	`alwaysActive` INTEGER default 0 NOT NULL COMMENT 'Modulo siempre activo',
+	PRIMARY KEY ( `name` ) ,
+	CONSTRAINT `modules_module_FK_1` FOREIGN KEY ( `name` ) REFERENCES `modules_dependency` ( `module` ) ON DELETE CASCADE
+	) TYPE = MYISAM COMMENT = ' Registro de modulos';
+		</sql1>
+		<sql2>
+	CREATE  TABLE IF NOT EXISTS `xtra2`	(		`module` VARCHAR(255)  NOT NULL COMMENT 'Modulo',		`dependence` VARCHAR(255)  NOT NULL COMMENT 'Dependiente',		PRIMARY KEY (`module`,`dependence`)	)Type=MyISAM COMMENT='Dependencia de modulos ';
+		</sql2>
+	</moduleInstalation:sql>
+</moduleInstalation>

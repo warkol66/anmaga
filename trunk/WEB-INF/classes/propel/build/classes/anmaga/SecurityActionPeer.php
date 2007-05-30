@@ -149,7 +149,7 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	* @param string $pair Nombre del par
 	* @return true si todo está ok
 	*/
-	function addActionWithPair($action,$modulo,$access,$pair=null) {
+	function addActionWithPair($action,$modulo,$access,$pair=null,$label) {
 		try{
 		$security = new securityAction();
 		$security->setAction($action);
@@ -159,6 +159,7 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		$security->setSection(1);
 		$security->setAccess($access);
 		$security->setAccessUsersByAffiliate($access);
+		$security->setLabel($label);
 		$security->save();
 		}catch (PropelException $e) {}
 		return;

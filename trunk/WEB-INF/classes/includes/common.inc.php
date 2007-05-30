@@ -348,6 +348,70 @@ function doLog($message) {
 }
 
 
+/**
+ * Guarda un registro de log.
+ * 
+ * @param string $message El mensaje a incluir en el log
+ * @return void
+ */
+function doLogV2($forward) {
+
+
+	include_once 'ActionLog.php';	
+
+	@include_once('ActionLogLabelPeer.php');
+	if (class_exists('ActionLogLabelPeer')){
+		$actionLogLabel = new ActionLogLabelPeer();
+		$actionLogLabelObject=$actionLogLabel->getAllByActionLanguageEsp($_REQUEST['do'],$forward);
+	}
+
+	if(!empty($_SESSION['loginUser'])){
+		$userId = $_SESSION['loginUser'];
+		$affiliateId = 0;
+
+
+
+	}
+	elseif(!empty($_SESSION['loginUserByRegistration'])){ 
+		$userId=$_SESSION['loginUserByRegistration'];
+		$affiliateId =999999 ;
+
+	}
+	else{
+		///////////
+		/// si no existe la variable de la sesion usersByAffiliate, la voy a tener que crear de esta manera
+		/// Habrá que normalizar el nombre del modulo usersByAfiliate, $_SESSION["login_user_affiliate"] --> $_SESSION['UserByAffiliate']
+		
+		if(is_object($_SESSION["loginUserByAffiliate"])){
+			//////////
+			// version con propel toma esta linea
+			$userId=$_SESSION["loginUserByAffiliate"]->getId();
+			$affiliateId=$_SESSION["loginUserByAffiliate"]->getAffiliateId();
+		}
+
+			//////////
+			// version sin propel toma esta linea
+		else $userId=$_SESSION["loginUserByAffiliate"];
+
+
+
+		//$affiliateId =$_SESSION['affiliateId']; 
+	}
+		try{
+		$logs = new ActionLog();
+		$logs->setUserId($userId);
+		$logs->setAffiliateId($affiliateId);
+		$logs->setDatetime(now);
+		$logs->setAction($_REQUEST['do']);
+		$logs->setMessage($actionLogLabelObject->getLabel());
+		$logs->save();
+		}catch (PropelException $e) {}
+
+
+
+}
+
+
 
 class Common
 {

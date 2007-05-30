@@ -138,7 +138,6 @@ function modulesDoActivateX(form) {
 	var pars = 'do=modulesDoActivateX';
 	var fields = Form.serialize(form);
 
-	var myVar = 'flag';
 	var myAjax = new Ajax.Updater(
 				{success: 'message'},
 				url,
@@ -148,6 +147,7 @@ function modulesDoActivateX(form) {
 					postBody: fields,
 					evalScripts: true,
 				});
+		$('messageMod').innerHTML = "Actualizando sistema...";
 }
 
 

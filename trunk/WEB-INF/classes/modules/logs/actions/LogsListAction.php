@@ -71,8 +71,13 @@ class LogsListAction extends BaseAction {
 		$smarty->assign("dateFrom",date('d-m-Y',mktime(0,0,0,date("m")-1,date("d"),date("Y"))));        
 		$smarty->assign("dateTo",date('d-m-Y'));
 		
-		$smarty->assign("LOGIN",$_SESSION['usuario']);
-		$smarty->assign("SESION", $_SESSION);
+		//$smarty->assign("LOGIN",$_SESSION['usuario']);
+		//$smarty->assign("SESION", $_SESSION);
+
+		$module = "Logs";
+
+		$smarty->assign("module",$module);
+ 
 
 		//////////
 		/// obtengo todos los usuarios
@@ -162,6 +167,7 @@ class LogsListAction extends BaseAction {
 
 			  doLog('List histrico de datos');
 
+		
 			$savedLogs=$selectedLogs->getResult();
 
 			//print_r($uuu);
@@ -210,9 +216,13 @@ class LogsListAction extends BaseAction {
 
          
 
-       doLog('Entrar a listar');
-       
-        
+    doLog('Entrar a listar');
+
+		//////////
+		// version 2 del logueo, en estado beta
+		//$actionName="logsList";
+		doLogV2(); 
+			
     $smarty->assign("DISPLAY",1);        
     
 

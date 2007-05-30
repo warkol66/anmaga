@@ -32,7 +32,7 @@ class ModuleDependencyPeer extends BaseModuleDependencyPeer {
 			$obj->setModule($moduleName);
 			$obj->setDependence($dependency);
 			$obj->save();
-			return;
+			return true;
 		}catch (PropelException $e) {}
   }
 

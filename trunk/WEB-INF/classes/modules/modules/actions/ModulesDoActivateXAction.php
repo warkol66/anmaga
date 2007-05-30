@@ -69,7 +69,7 @@ class ModulesDoActivateXAction extends BaseAction {
 		
 		$savedModules= $modulePeer->getAll();
 		
-		if (isset($_POST["activar"]) ){
+		//if (isset($_POST["activar"]) ){
 					//////////
 					// si el modulo no posee dependencias, se actualiza directamente			
 				$dependencies=$moduleDependencyPeer->get($moduleName);
@@ -103,17 +103,19 @@ class ModulesDoActivateXAction extends BaseAction {
 				if($flag==1){
 						$smarty->assign("flag",$flag);
 						$smarty->assign("dependenciesName",$dependenciesNames);
+						doLogV2('errorDependencyOn');
 						return $mapping->findForwardConfig('errorDependencyOn');
 				}
 				if ($flag==2){
 						$smarty->assign("dependenciesName",$dependenciesNames);
+						doLogV2('errorDependencyOff');
 						return $mapping->findForwardConfig('errorDependencyOff');		
 				}
 				$assignedModules= $modulePeer->setActive($moduleName,$activeModule);
 			} //else dependencies
-		} //isset
+	//	} //isset
 
-
+		doLogV2('success');
 		//////////
 		// Forward control to the specified success URI
 		return $mapping->findForwardConfig('success');

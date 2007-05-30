@@ -4,4 +4,5 @@ Error: Ha intentado activar un m&oacute;dulo que necesita la activaci&oacute;n d
 
 <script language="JavaScript">
 	$('active_|-$moduleName-|').checked = false;
+	$('messageMod').innerHTML = "";
 </script>
