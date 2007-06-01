@@ -63,15 +63,23 @@
 
    <table name="security_action" phpName="SecurityAction"  description="Actions del sistema">
     <column name="action" type="VARCHAR" size="100" description="Action pagina" primaryKey='true' />
-		<column name="module" type="VARCHAR" size="100" description="Modulo" />
-		<column name="section" type="VARCHAR" size="100" description="Seccion"/>
+	<column name="module" type="VARCHAR" size="100" description="Modulo" />
+	<column name="section" type="VARCHAR" size="100" description="Seccion"/>
     <column name="access" type="INTEGER" description="El acceso a ese action" />
-	<column name="label" type="VARCHAR" size="255" description="Etiqueta del action"/>
     <column name="accessUsersByAffiliate" type="INTEGER" description="El acceso a ese action para los usuarios por afiliados" />
-		<column name="active" type="INTEGER" description="Si el action esta activo o no" />
+	<column name="active" type="INTEGER" description="Si el action esta activo o no" />
     <column name="pair" type="VARCHAR" size="100" description="Par del Action" />
+	<foreign-key foreignTable="security_actionLabel" >
+		<reference local="action" foreign="action" />
+	</foreign-key>
   </table>
 
+  <table name="security_actionLabel" phpName="SecurityActionLabel"  description="etiquetas de actions de seguridad">
+    	<column name="id" type="INTEGER"  required="true" description="Id label security" primaryKey="true" autoIncrement="true"  />
+	<column name="action" type="VARCHAR" size="100" description="Action pagina" primaryKey='true' />
+	<column name="language" type="VARCHAR" size="100" description="Idioma de la etiqueta" />
+	<column name="label" type="VARCHAR" size="100" description="Etiqueta"/>
+  </table>
 
   <table name="affiliate" phpName="Affiliate"  description="Afiliados">
 	 <column name="id" required="true" primaryKey="true" type="INTEGER" description="Id afiliado" autoIncrement="true"/>
@@ -192,20 +200,28 @@
 
 
 <table name="modules_module" phpName='Module' description=" Registro de modulos">
-  <column name="name" required="true" primaryKey='true' size="255" type="VARCHAR"  description="nombre del modulo"/>
-   <column size="255" type="VARCHAR" name="label" description="Etiqueta" />
-    <column size="255" type="VARCHAR" name="description" description="Descripcion del modulo" />
-  <column name="active" required="true" type="BOOLEAN"  default="0" description="Estado del modulo"/>
-  <column name="alwaysActive" required="true" type="BOOLEAN"  default="0" description="Modulo siempre activo"/>
-<foreign-key foreignTable="modules_dependency" onDelete="cascade">
-     <reference local="name" foreign="module"/>
-  </foreign-key> 
- 
+	<column name="name" required="true" primaryKey='true' size="255" type="VARCHAR"  description="nombre del modulo"/>
+	<column name="active" required="true" type="BOOLEAN"  default="0" description="Estado del modulo"/>
+	<column name="alwaysActive" required="true" type="BOOLEAN"  default="0" description="Modulo siempre activo"/>
+	<foreign-key foreignTable="modules_dependency" onDelete="cascade">
+		<reference local="name" foreign="module"/>
+	</foreign-key>
  </table>
 
  <table name="modules_dependency" phpName='ModuleDependency' description="Dependencia de modulos ">
-   <column size="255" type="VARCHAR" primaryKey='true' name="module" description="Modulo" />
-    <column size="255" type="VARCHAR" primaryKey='true' name="dependence" description="Dependiente" />
+	<column size="255" type="VARCHAR" primaryKey='true' name="module" description="Modulo" />
+	<column size="255" type="VARCHAR" primaryKey='true' name="dependence" description="Dependiente" />
+ </table>
+
+ <table name="modules_label" phpName='ModuleLabel' description="Etiquetas de modulos ">
+ 	<column name="id" type="INTEGER"  required="true" description="Id module label" primaryKey="true" autoIncrement="true"  />
+	<column name="name" required="true" primaryKey='true' size="255" type="VARCHAR"  description="nombre del modulo"/>
+	<column size="255" type="VARCHAR" name="label" description="Etiqueta" />
+	<column size="255" type="VARCHAR" name="description" description="Descripcion del modulo" />
+	<column name="language" type="VARCHAR" size="100" description="idioma de la etiqueta"/>
+	<foreign-key foreignTable="modules_module" onDelete="cascade">
+		<reference local="name" foreign="name"/>
+	</foreign-key> 
  </table>
 
 
@@ -215,7 +231,8 @@
 	<column name="affiliateId" type="INTEGER"  required="true" description="Id del afiliado" />
 	<column name="datetime" type="TIMESTAMP"  required="true" description="Fecha en que se logueo el dato" />
 	<column name="action" type="VARCHAR" size="100"  required="true" description="action en que se logueo el dato" />
-	<column name="message" type="VARCHAR" size="100"  required="true" description="mensaje del log"/>
+	<column name="object" type="VARCHAR" size="100"  required="true" description="objeto sobre el cual se realizo la accion"/>
+	<column name="forward" type="VARCHAR" size="100" description="tipo de accion de la etiqueta"/>
 	<foreign-key foreignTable="users_user" >
 		<reference local="userId" foreign="id" />
 	</foreign-key>
@@ -226,8 +243,8 @@
 
 
 <table phpName="ActionLogLabel" name="actionLogs_label" description="Etiquetas de logueo">
-	<column name="id" type="INTEGER"  required="true" description="Id log" primaryKey="true" autoIncrement="true"  />
-	<column name="action" type="VARCHAR" size="100"  required="true" description="action en que se loguea el dato" />
+	<column name="id" type="INTEGER"  required="true" description="Id Label" primaryKey="true" autoIncrement="true"  />
+	<column name="action" primaryKey="true" type="VARCHAR" size="100"  required="true" description="action en que se loguea el dato" />
 	<column name="label" type="VARCHAR" size="100"  required="true" description="mensaje del log"/>
 	<column name="language" type="VARCHAR" size="100" description="idioma de la etiqueta"/>
 	<column name="forward" type="VARCHAR" size="100" description="tipo de accion de la etiqueta"/>
