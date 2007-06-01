@@ -13,6 +13,8 @@
   include_once 'anmaga/SecurityActionPeer.php';
   include_once 'anmaga/ActionLogPeer.php';
   include_once 'anmaga/ActionLogLabelPeer.php';
+	include_once 'anmaga/ModuleLabelPeer.php';
+
 /**
  * Skeleton subclass for performing query and update operations on the 'modules_module' table.
  *
@@ -53,8 +55,10 @@ class ModulePeer extends BaseModulePeer {
 *	@return object $module nombre del modulo seleccionado
 */
 	function get($moduleName) {
-		   	$obj = ModulePeer::retrieveByPK($moduleName);
-		return $obj;
+		$cond = new Criteria();
+		$cond->add(ModulePeer::NAME, $moduleName);
+		$obj = ModulePeer::doSelect($cond);
+		return $obj[0];
 	}
 	
 	
@@ -136,22 +140,23 @@ class ModulePeer extends BaseModulePeer {
 			
 			$xmlConfig=$arrayXml["moduleInstalation"]["moduleInstalation:config"];
 	
-			if (empty ($xmlConfig["description"]) ) return false;
+			$xmlInfo=$xmlConfig["language"]["eng"];
 
-			if (empty ($xmlConfig["label"]) ) return false;
-
+			if (empty ($xmlInfo["description"]) ) return false;
+			if (empty ($xmlInfo["label"]) ) return false;
 			if (empty($xmlConfig["alwaysActive"] ) )
 				$xmlConfig["alwaysActive"]=0;
 
 			if (!empty($xmlConfig["moduleDependencies"] ) ){
 				//////////
 				// parte de carga a la DB tabla modules_dependency	
-				foreach ($xmlConfig["moduleDependencies"] as $moduleDependency){
-					$moduleDep = new ModuleDependencyPeer();
-					$dependency=$moduleDep->setDependency($moduleName, $moduleDependency);
-					if (!$dependency)
-						return false;
-				}
+			//	foreach ($xmlConfig["moduleDependencies"] as $moduleDependency){
+			//		$moduleDep = new ModuleDependencyPeer();
+			//		$dependency=$moduleDep->setDependency($moduleName, $moduleDependency);
+			//		if (!$dependency)
+				//		return false;
+
+			//	}
 			}
 
 			foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"] as $actionName => $actionProperties){
@@ -159,14 +164,14 @@ class ModulePeer extends BaseModulePeer {
 				// parte de carga a la DB tabla security_action
 				$securityAction=ModulePeer::loadSecurityAction($actionName,$moduleName,$actionProperties["securityAction"]);
 	
-				if(!$securityAction) return false;
+			//	if(!$securityAction) return false;
 
 				
 				//////////
 				// parte de carga a la DB tabla actionLogs_label
 				$actionLogs=ModulePeer::loadActionLogs($actionName,$actionProperties["actionLogs"]);
 	
-				if(!$actionLogs) return false;
+			//	if(!$actionLogs) return false;
 
 			} // end foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"]
 
@@ -174,27 +179,58 @@ class ModulePeer extends BaseModulePeer {
 			//////////
 			// parte tablas sql puras			
 			$sql=ModulePeer::loadSqlData($arrayXml["moduleInstalation"]["moduleInstalation:sql"]);
-			if(!$sql)return false;
+			//if(!$sql)return false;
 			
 
 			//////////
 			// parte carga actions a xml de configuracion phpmvc
 			$phpmvcConfig=ModulePeer::loadPhpmvcConfig($moduleName);
-			if(!$phpmvcConfig) return false;
-
+			//if(!$phpmvcConfig) return false;
 
 			//////////
 			// parte de carga a la base de datos tabla modules_module
-			$moduleObj = new Module();
-			$moduleObj->setName($moduleName);
-			$moduleObj ->setDescription($xmlConfig["description"]);
-			$moduleObj ->setLabel($xmlConfig["label"]);
-			$moduleObj ->setActive(0);
-			$moduleObj ->setAlwaysActive($xmlConfig["alwaysActive"]);
-			$moduleObj ->save();
+
+			$newModule=ModulePeer::loadModule($moduleName,$xmlConfig);
+			if (!$newModule)
+				return false;
+			
 	//	}catch (PropelException $e) {}
 		return true;
 	}
+
+
+
+/**
+*
+*	Subfuncion de agregar modulo que agrega los datos de un modulo en las tablas de modulo
+*	@param string $moduleName nombre del modulo
+*	@param array $xmlConfig datos del modulo que provenian del xml config
+*	@return true si se agrego correctamente
+*/
+
+function loadModule ($moduleName,$xmlConfig){
+	try{
+		$moduleObj = new Module();
+		$moduleObj->setName($moduleName);
+		$moduleObj ->setActive(0);
+		$moduleObj ->setAlwaysActive($xmlConfig["alwaysActive"]);
+		$moduleObj ->save();
+		foreach ($xmlConfig["language"] as $language => $data){
+				$moduleLabelObj = new ModuleLabel();
+				$moduleLabelObj->setName($moduleName);
+				$moduleLabelObj->setLanguage($language);
+				$moduleLabelObj->setDescription($data["description"]);
+				$moduleLabelObj->setLabel($data["label"]);
+				$moduleLabelObj->save();
+
+		}
+
+		return true;
+	}catch (PropelException $e) {}
+}
+
+
+
 
 
 /**
@@ -209,6 +245,12 @@ function loadSecurityAction($actionName,$moduleName,$actionProperties){
 	@include_once('SecurityActionPeer.php');
 		if (class_exists('SecurityActionPeer')){
 			$securityActionPeer = new SecurityActionPeer();
+			//////////
+			// si en el xml se carga all como bitlevel, significa que será nivel máximo
+			// el nivel máximo está seteado como 1073741823 (2¨30-1)
+			if ($actionProperties["usersBitLevel"] == 'all')
+				$actionProperties["usersBitLevel"] =1073741823;
+
 			$securityActionPeer->addActionWithPair($actionName, $moduleName, $actionProperties["usersBitLevel"],$actionProperties["actionPair"],$actionProperties["label"]);
 			return true;
 		}
@@ -277,11 +319,14 @@ function loadSqlData($sql){
 *	@return true si se agrego correctamente
 */
 function loadPhpmvcConfig($moduleName){
-
+	
+	$date=date('d-m-y:H:i:s');
+//	echo "hi";
 	//////////
 	// la parte a cargar
 	$phpmvcInstalationPath="WEB-INF/classes/modules/$moduleName/phpmvc-config-$moduleName.xml";
-	$xmlPhpmvc=fopen($phpmvcInstalationPath,"r");
+	//print_r($phpmvcInstalationPath);
+	$xmlPhpmvc=fopen($phpmvcInstalationPath,"rb");
 	$xmlPhpmvcLoad=(fread($xmlPhpmvc,filesize($phpmvcInstalationPath)));
 
 	$buffer="";
@@ -292,7 +337,7 @@ function loadPhpmvcConfig($moduleName){
 
 	//////////
 	// el xml resultante
-	$configPhpmvcResult=fopen("$configPhpmvcPath.tmp","wb");
+	$configPhpmvcResult=fopen("$configPhpmvcPath.$date.tmp","wb");
 
 	if ($configPhpmvc) {
 		$buffer = fgets($configPhpmvc);
@@ -313,10 +358,15 @@ function loadPhpmvcConfig($moduleName){
 		fclose($configPhpmvc);
 		fclose($xmlPhpmvc);
 
+	/*	echo "\n\n";
+		print_r("$configPhpmvcPath.$date.tmp");
+		echo "aa";
+		*/
 		//////////
 		// dejo archivo anterior como backup, renombro archivo resultante como original
-		rename($configPhpmvcPath,"$configPhpmvcPath.backup");
-		rename("$configPhpmvcPath.tmp",$configPhpmvcPath);
+		rename($configPhpmvcPath,"$configPhpmvcPath$date.backup");
+		rename("$configPhpmvcPath.$date.tmp",$configPhpmvcPath);
+		unlink("$configPhpmvcPath.$date.tmp");
 	}
 	return true;
 }
@@ -336,8 +386,8 @@ function updateModule($module,$description,$label) {
 		try{
 		$moduleObj = new Module();
 		$moduleObj = ModulePeer::retrieveByPK($module);
-		$moduleObj ->setDescription($description);
-		$moduleObj ->setLabel($label);
+	//	$moduleObj ->setDescription($description);
+	//	$moduleObj ->setLabel($label);
 
 		$moduleObj ->save();
 		}catch (PropelException $e) {}

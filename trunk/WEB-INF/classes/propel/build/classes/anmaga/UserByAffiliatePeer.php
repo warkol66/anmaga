@@ -169,6 +169,7 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 		$cond = new Criteria();
 		$cond->add(UserByAffiliatePeer::ID, $id);
 		$todosObj = UserByAffiliatePeer::doSelectJoinUsersByAffiliateUserInfo($cond);
+		
 		return $todosObj[0];
 	}
 

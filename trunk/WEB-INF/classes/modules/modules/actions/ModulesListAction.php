@@ -122,7 +122,7 @@ class ModulesListAction extends BaseAction {
 
 	//	doLog("Entrar en ModulesList");
 
-		doLogV2('success');
+	//	doLogV2('success');
 		
 		return $mapping->findForwardConfig('success');
 	}

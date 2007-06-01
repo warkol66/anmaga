@@ -6,6 +6,8 @@
   // include object class
   include_once 'SecurityAction.php';
 
+	include_once 'SecurityActionLabelPeer.php';
+
 
 /**
  * Skeleton subclass for performing query and update operations on the 'SecurityAction' table.
@@ -149,7 +151,7 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	* @param string $pair Nombre del par
 	* @return true si todo está ok
 	*/
-	function addActionWithPair($action,$modulo,$access,$pair=null,$label) {
+	function addActionWithPair($action,$modulo,$access,$pair=null,$labels) {
 		try{
 		$security = new securityAction();
 		$security->setAction($action);
@@ -159,10 +161,19 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		$security->setSection(1);
 		$security->setAccess($access);
 		$security->setAccessUsersByAffiliate($access);
-		$security->setLabel($label);
 		$security->save();
 		}catch (PropelException $e) {}
-		return;
+		echo "\n";
+		print_r($labels);
+		echo "\n";
+		foreach ($labels as $language => $label){
+				$securityLabelPeer = new SecurityActionLabel();
+				$securityLabelPeer ->setAction($action);
+				$securityLabelPeer ->setLanguage($language);
+				$securityLabelPeer ->setLabel($label);
+				$securityLabelPeer->save();
+			}
+		return true;
 	}
 
 

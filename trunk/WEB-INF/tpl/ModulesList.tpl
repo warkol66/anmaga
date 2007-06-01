@@ -55,10 +55,7 @@ function checkscript() {
 				<a href="Main.php?do=modulesEdit&moduleName=|-$asModule->getName()-|">|-$asModule->getName()-|</a>
 			</td>
 			<td class="celldato">
-				|-$asModule->getDescription()-|
-			</td>
-			<td class="celldato">
-				|-$asModule->getLabel()-|
+			
 			</td>
 			<td class="celldato">
 				<form id="form_|-$asModule->getName()-|">

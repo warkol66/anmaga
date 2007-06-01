@@ -119,12 +119,31 @@ CREATE TABLE `security_action`
 	`module` VARCHAR(100) COMMENT 'Modulo',
 	`section` VARCHAR(100) COMMENT 'Seccion',
 	`access` INTEGER COMMENT 'El acceso a ese action',
-	`label` VARCHAR(255) COMMENT 'Etiqueta del action',
 	`accessUsersByAffiliate` INTEGER COMMENT 'El acceso a ese action para los usuarios por afiliados',
 	`active` INTEGER COMMENT 'Si el action esta activo o no',
 	`pair` VARCHAR(100) COMMENT 'Par del Action',
-	PRIMARY KEY (`action`)
+	PRIMARY KEY (`action`),
+	CONSTRAINT `security_action_FK_1`
+		FOREIGN KEY (`action`)
+		REFERENCES `security_actionLabel` (`action`)
 )Type=MyISAM COMMENT='Actions del sistema';
+
+#-----------------------------------------------------------------------------
+#-- security_actionLabel
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `security_actionLabel`;
+
+
+CREATE TABLE `security_actionLabel`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id label security',
+	`action` VARCHAR(100)  NOT NULL COMMENT 'Action pagina',
+	`language` VARCHAR(100) COMMENT 'Idioma de la etiqueta',
+	`label` VARCHAR(100) COMMENT 'Etiqueta',
+	PRIMARY KEY (`id`,`action`),
+	INDEX `I_referenced_security_action_FK_1_1` (`action`)
+)Type=MyISAM COMMENT='etiquetas de actions de seguridad';
 
 #-----------------------------------------------------------------------------
 #-- affiliate
@@ -341,8 +360,6 @@ DROP TABLE IF EXISTS `modules_module`;
 CREATE TABLE `modules_module`
 (
 	`name` VARCHAR(255)  NOT NULL COMMENT 'nombre del modulo',
-	`label` VARCHAR(255) COMMENT 'Etiqueta',
-	`description` VARCHAR(255) COMMENT 'Descripcion del modulo',
 	`active` INTEGER default 0 NOT NULL COMMENT 'Estado del modulo',
 	`alwaysActive` INTEGER default 0 NOT NULL COMMENT 'Modulo siempre activo',
 	PRIMARY KEY (`name`),
@@ -367,6 +384,28 @@ CREATE TABLE `modules_dependency`
 )Type=MyISAM COMMENT='Dependencia de modulos ';
 
 #-----------------------------------------------------------------------------
+#-- modules_label
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `modules_label`;
+
+
+CREATE TABLE `modules_label`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id module label',
+	`name` VARCHAR(255)  NOT NULL COMMENT 'nombre del modulo',
+	`label` VARCHAR(255) COMMENT 'Etiqueta',
+	`description` VARCHAR(255) COMMENT 'Descripcion del modulo',
+	`language` VARCHAR(100) COMMENT 'idioma de la etiqueta',
+	PRIMARY KEY (`id`,`name`),
+	INDEX `modules_label_FI_1` (`name`),
+	CONSTRAINT `modules_label_FK_1`
+		FOREIGN KEY (`name`)
+		REFERENCES `modules_module` (`name`)
+		ON DELETE CASCADE
+)Type=MyISAM COMMENT='Etiquetas de modulos ';
+
+#-----------------------------------------------------------------------------
 #-- actionLogs_log
 #-----------------------------------------------------------------------------
 
@@ -380,7 +419,8 @@ CREATE TABLE `actionLogs_log`
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Id del afiliado',
 	`datetime` DATETIME  NOT NULL COMMENT 'Fecha en que se logueo el dato',
 	`action` VARCHAR(100)  NOT NULL COMMENT 'action en que se logueo el dato',
-	`message` VARCHAR(100)  NOT NULL COMMENT 'mensaje del log',
+	`object` VARCHAR(100)  NOT NULL COMMENT 'objeto sobre el cual se realizo la accion',
+	`forward` VARCHAR(100) COMMENT 'tipo de accion de la etiqueta',
 	PRIMARY KEY (`id`),
 	INDEX `actionLogs_log_FI_1` (`userId`),
 	CONSTRAINT `actionLogs_log_FK_1`
@@ -401,12 +441,12 @@ DROP TABLE IF EXISTS `actionLogs_label`;
 
 CREATE TABLE `actionLogs_label`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id log',
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id Label',
 	`action` VARCHAR(100)  NOT NULL COMMENT 'action en que se loguea el dato',
 	`label` VARCHAR(100)  NOT NULL COMMENT 'mensaje del log',
 	`language` VARCHAR(100) COMMENT 'idioma de la etiqueta',
 	`forward` VARCHAR(100) COMMENT 'tipo de accion de la etiqueta',
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`,`action`)
 )Type=MyISAM COMMENT='Etiquetas de logueo';
 
 #-----------------------------------------------------------------------------
