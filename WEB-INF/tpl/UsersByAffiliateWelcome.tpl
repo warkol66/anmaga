@@ -1,7 +1,7 @@
 <table border='0' cellpadding='0' cellspacing='0' width='100%'>
 	<tr>
-		<td class='title'>| -assign var="userInfo" value=$loginUserByAffiliate->getUserByAffiliateInfo()- |
-| -$userInfo->getName()- |, | -$userInfo->getSurname()- | - Bienvenido al Sistema |-$parameters.siteName-|</td>
+		<td class='title'>|-assign var="userInfo" value=$loginUserByAffiliate->getUsersByAffiliateUserInfo()-|
+|-$userInfo->getName()-|, |-$userInfo->getSurname()-| - Bienvenido al Sistema |-$parameters.siteName-|</td>
 	</tr>
 	<tr>
 		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
