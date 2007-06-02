@@ -14,15 +14,15 @@ CREATE TABLE `security_actionLabel`
 
 
 ## tabla security_action
-ALTER TABLE `security_action` DROP `label` 
+ALTER TABLE `security_action` DROP `label`;
 
 
 
 ## tabla actionLogs_log
-ALTER TABLE `actionlogs_log` CHANGE `message` `object` VARCHAR( 100 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'objeto sobre el cual se realizo la accion'
+ALTER TABLE `actionLogs_log` CHANGE `message` `object` VARCHAR( 100 ) NOT NULL COMMENT 'objeto sobre el cual se realizo la accion';
 
 
-ALTER TABLE `actionlogs_log` ADD `forward` VARCHAR( 100 ) NOT NULL COMMENT 'tipo de accion de la etiqueta';
+ALTER TABLE `actionLogs_log` ADD `forward` VARCHAR( 100 ) NOT NULL COMMENT 'tipo de accion de la etiqueta';
 
 
 ## tabla modules_module
