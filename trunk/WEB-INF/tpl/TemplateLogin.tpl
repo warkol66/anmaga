@@ -1,3 +1,14 @@
+|-*
+<?php
+/**
+* Template
+* Template externo para el login de usuarios de sistema
+*
+* $author Modulos Empresarios / Egytca
+* @package users
+*/
+?>
+*-|
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
