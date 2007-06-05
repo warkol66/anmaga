@@ -184,7 +184,7 @@ class ModulePeer extends BaseModulePeer {
 
 			//////////
 			// parte carga actions a xml de configuracion phpmvc
-			$phpmvcConfig=ModulePeer::loadPhpmvcConfig($moduleName);
+		//	$phpmvcConfig=ModulePeer::loadPhpmvcConfig($moduleName);
 			//if(!$phpmvcConfig) return false;
 
 			//////////
@@ -320,14 +320,21 @@ function loadSqlData($sql){
 */
 function loadPhpmvcConfig($moduleName){
 	
-	$date=date('d-m-y:H:i:s');
-//	echo "hi";
+
+	$date=date('Ydm_His');
+
 	//////////
 	// la parte a cargar
 	$phpmvcInstalationPath="WEB-INF/classes/modules/$moduleName/phpmvc-config-$moduleName.xml";
-	//print_r($phpmvcInstalationPath);
+
 	$xmlPhpmvc=fopen($phpmvcInstalationPath,"rb");
 	$xmlPhpmvcLoad=(fread($xmlPhpmvc,filesize($phpmvcInstalationPath)));
+
+	
+	//////////
+	// comparationLine contiene la primer linea de nuestro xml a ejecutar, que contiene un tag html
+	fseek($xmlPhpmvc,0);
+	$comparationLine=fgets($xmlPhpmvc);
 
 	$buffer="";
 	//////////
@@ -335,6 +342,8 @@ function loadPhpmvcConfig($moduleName){
 	$configPhpmvcPath="WEB-INF/phpmvc-config.xml";
 	$configPhpmvc=fopen($configPhpmvcPath,"rb+");
 
+
+	
 	//////////
 	// el xml resultante
 	$configPhpmvcResult=fopen("$configPhpmvcPath.$date.tmp","wb");
@@ -342,6 +351,15 @@ function loadPhpmvcConfig($moduleName){
 	if ($configPhpmvc) {
 		$buffer = fgets($configPhpmvc);
 		while (!feof($configPhpmvc) && $buffer!="<!-- instalation tag-->\r\n") {
+			
+			//////////
+			// si el modulo ya estaba instalado en el xml...
+			if ($buffer == $comparationLine){
+				fclose($configPhpmvcResult);
+				fclose($configPhpmvc);
+				fclose($xmlPhpmvc);
+				return false;
+			}
 			fputs($configPhpmvcResult,$buffer);	
 			$buffer = fgets($configPhpmvc);
 			}
@@ -358,10 +376,7 @@ function loadPhpmvcConfig($moduleName){
 		fclose($configPhpmvc);
 		fclose($xmlPhpmvc);
 
-	/*	echo "\n\n";
-		print_r("$configPhpmvcPath.$date.tmp");
-		echo "aa";
-		*/
+
 		//////////
 		// dejo archivo anterior como backup, renombro archivo resultante como original
 		rename($configPhpmvcPath,"$configPhpmvcPath$date.backup");
@@ -420,16 +435,13 @@ function dependencyStatus ($dependencyName){
 		$obj = new Module();
 		$obj = ModulePeer::retrieveByPK($dependencyName);
 		if($obj){
-		//	echo "a";
 			if (!$obj->getAlwaysActive() ){
-				//echo "b";
 				if(!$obj->getActive() ) {
 					return 0;
 				}
 			}	
 		}
 		else return 0;
-	//	echo "c";
 		return 1;
 }
 

@@ -46,16 +46,15 @@ function checkscript() {
 		<tr> 
 			<th scope="col">Modulos</th>
 			<th scope="col">Descripcion</th>
-			<th scope="col">Etiqueta</th>
 			<th scope="col">Activar</th> 
 		</tr>
 		|-foreach from=$assignedModules item=asModule name=modulef-|
 		<tr>
 			<td class="celldato">
-				<a href="Main.php?do=modulesEdit&moduleName=|-$asModule->getName()-|">|-$asModule->getName()-|</a>
+				<a href="Main.php?do=modulesEdit&moduleName=|-$asModule->getName()-|">|-$asModule->getLabel()-|</a>
 			</td>
 			<td class="celldato">
-			
+			|-$asModule->getDescription()-|
 			</td>
 			<td class="celldato">
 				<form id="form_|-$asModule->getName()-|">

@@ -163,9 +163,7 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		$security->setAccessUsersByAffiliate($access);
 		$security->save();
 		}catch (PropelException $e) {}
-		echo "\n";
-		print_r($labels);
-		echo "\n";
+
 		foreach ($labels as $language => $label){
 				$securityLabelPeer = new SecurityActionLabel();
 				$securityLabelPeer ->setAction($action);

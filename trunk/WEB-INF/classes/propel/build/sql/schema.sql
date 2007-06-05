@@ -362,11 +362,7 @@ CREATE TABLE `modules_module`
 	`name` VARCHAR(255)  NOT NULL COMMENT 'nombre del modulo',
 	`active` INTEGER default 0 NOT NULL COMMENT 'Estado del modulo',
 	`alwaysActive` INTEGER default 0 NOT NULL COMMENT 'Modulo siempre activo',
-	PRIMARY KEY (`name`),
-	CONSTRAINT `modules_module_FK_1`
-		FOREIGN KEY (`name`)
-		REFERENCES `modules_dependency` (`module`)
-		ON DELETE CASCADE
+	PRIMARY KEY (`name`)
 )Type=MyISAM COMMENT=' Registro de modulos';
 
 #-----------------------------------------------------------------------------
@@ -378,9 +374,13 @@ DROP TABLE IF EXISTS `modules_dependency`;
 
 CREATE TABLE `modules_dependency`
 (
-	`module` VARCHAR(255)  NOT NULL COMMENT 'Modulo',
+	`moduleName` VARCHAR(255)  NOT NULL COMMENT 'Modulo',
 	`dependence` VARCHAR(255)  NOT NULL COMMENT 'Dependiente',
-	PRIMARY KEY (`module`,`dependence`)
+	PRIMARY KEY (`moduleName`,`dependence`),
+	CONSTRAINT `modules_dependency_FK_1`
+		FOREIGN KEY (`moduleName`)
+		REFERENCES `modules_module` (`name`)
+		ON DELETE CASCADE
 )Type=MyISAM COMMENT='Dependencia de modulos ';
 
 #-----------------------------------------------------------------------------

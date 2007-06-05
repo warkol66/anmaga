@@ -82,4 +82,9 @@ class User extends BaseUser {
 		return;
 	}
 
+
+	function getAffiliateId(){
+		return 0;
+	}
+
 }
