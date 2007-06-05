@@ -79,9 +79,7 @@ class ModulesListAction extends BaseAction {
 		while (false !== ($moduleName = readdir($dh))){
 			if ($moduleName[0]!='.'){	
 				if(!$modulePeer->get($moduleName) ){
-				//		echo "a new item: $moduleName!\n";
-					//	echo "mod name: $moduleName";
-						//echo "$moduleName";
+
 						$newModule=$modulePeer->addAndInstallModule($moduleName);
 						if (!$newModule){
 							$modulesError[$k]=$moduleName;
@@ -89,7 +87,7 @@ class ModulesListAction extends BaseAction {
 						}
 						else{
 						$moduleStatus=$modulePeer->get($moduleName);
-						// echo "$moduleStatus";
+
 						if($moduleStatus){
 							if( ( $status[$i]=$moduleStatus->getAlwaysActive() ) == NULL ) $status[$i]=" No Activo";
 							else $status[$i]="Activo";
@@ -106,7 +104,7 @@ class ModulesListAction extends BaseAction {
 			}
 		}
 
-		print_r($loginUser);		
+
 		$newModulesNumber=count($modules);
 		$smarty->assign("modulesNumber",$newModulesNumber);
 
@@ -117,12 +115,15 @@ class ModulesListAction extends BaseAction {
 		$smarty->assign("modulesError",$modulesError);
 
 		$assignedModules= $modulePeer->getAll();
-
+		/*foreach($assignedModules as $assignedModule)
+			$assignedModule->getLabel();
+		print_r($assignedModules);*/
 		$smarty->assign("assignedModules",$assignedModules);
 
-	//	doLog("Entrar en ModulesList");
 
-	//	doLogV2('success');
+
+		$userInfo=Common::userInfoToDoLog();
+		Common::doLog($userInfo,$_REQUEST['do'],'success','listando general');
 		
 		return $mapping->findForwardConfig('success');
 	}

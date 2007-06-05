@@ -20,4 +20,29 @@ require_once 'anmaga/om/BaseModule.php';
  */	
 class Module extends BaseModule {
 
+	function getLabel(){
+		
+		try{
+		global $system;
+		$language=$system["config"]["mluse"]["language"];
+		include_once 'anmaga/ModuleLabelPeer.php';
+		$language='eng';
+		$moduleLabelInfo=ModuleLabelPeer::getByModuleAndLanguage($this->GetName(),$language);
+		return $moduleLabelInfo->getLabel();
+		}catch (PropelException $e) {}
+	}
+
+		function getDescription(){
+		
+		try{
+		global $system;
+		$language=$system["config"]["mluse"]["language"];
+		include_once 'anmaga/ModuleLabelPeer.php';
+		$language='eng';
+		$moduleLabelInfo=ModuleLabelPeer::getByModuleAndLanguage($this->GetName(),$language);
+		return $moduleLabelInfo->getDescription();
+		}catch (PropelException $e) {}
+	}
+
+
 } // Module
