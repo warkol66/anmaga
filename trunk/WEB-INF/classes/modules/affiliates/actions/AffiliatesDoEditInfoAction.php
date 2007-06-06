@@ -87,11 +87,11 @@ class AffiliatesDoEditInfoAction extends BaseAction {
 		// 1 significaria que no tenia info interna
 		if($_POST["flag"]==1){
 	
-			$affiliate=$affiliateInfoPeer->add($id,$_POST["internalId"],$_POST["address"],$_POST["phone"],$_POST["mail"],$_POST["contact"]);
+			$affiliate=$affiliateInfoPeer->add($id,$_POST["internalId"],$_POST["address"],$_POST["phone"],$_POST["mail"],$_POST["contact"],$_POST["contactEmail"],$_POST["web"],$_POST["memo"]);
 		}
 		else{
 		
-		$affiliate=$affiliateInfoPeer->update($id,$_POST["internalId"],$_POST["address"],$_POST["phone"],$_POST["mail"],$_POST["contact"]);
+		$affiliate=$affiliateInfoPeer->update($id,$_POST["internalId"],$_POST["address"],$_POST["phone"],$_POST["mail"],$_POST["contact"],$_POST["contactEmail"],$_POST["web"],$_POST["memo"]);
 
 		}
 

@@ -8,6 +8,7 @@
 <link rel="shortcut icon" href="images/favicon.ico">
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/functions.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/datePicker.js"></script>
 <script language="JavaScript" type="text/JavaScript">
 	var url="|-$systemUrl-|";
 </script>

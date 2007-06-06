@@ -1,7 +1,8 @@
-<?php
+﻿<?php
 
 require_once("BaseAction.php");
 require_once("OrderPeer.php");
+require_once("AffiliatePeer.php");
 
 class OrdersListAction extends BaseAction {
 
@@ -45,22 +46,47 @@ class OrdersListAction extends BaseAction {
 		$module = "Orders";
 		$smarty->assign("module",$module);
 
+		$orderPeer = new OrderPeer();
+		
+		$url = "Main.php?do=ordersList";		
 
-		if (!empty($_SESSION["loginUser"])) {
-	    $pager = OrderPeer::getAllPaginated($_GET["page"]);
-	    $smarty->assign("all",1);
-	 	}
-		else {
-    	$pager = OrderPeer::getAllByAffiliateIdPaginated($_SESSION["loginUserByAffiliate"]->getAffiliateId(),$_GET["page"]);
-    	$smarty->assign("all",0);
+		if (empty($_SESSION["loginUser"])) {
+			$orderPeer->setSearchAffiliateId($_SESSION["loginUserByAffiliate"]->getAffiliateId());
+			$smarty->assign("all",0);
 		}
+		else {
+			if (!empty($_GET["affiliateId"])) {
+				$orderPeer->setSearchAffiliateId($_GET["affiliateId"]);
+				$url .= "&affiliateId=".$_GET['affiliateId'];			
+			}
+			$affiliates = AffiliatePeer::getAll();
+			$smarty->assign("affiliates",$affiliates);
+			$smarty->assign("all",1);
+		}
+		
+		if (!empty($_GET["dateFrom"])) {
+			$orderPeer->setSearchDateFrom(Common::usDateToDbDate($_GET["dateFrom"]));
+			$url .= "&dateFrom=".$_GET['dateFrom'];
+		}
+		
+		if (!empty($_GET["state"])) {
+			$orderPeer->setSearchState($_GET["state"]);
+			$url .= "&state=".$_GET['state'];
+		}		
 
+		if (!empty($_GET["dateTo"])) {
+			$orderPeer->setSearchDateTo(Common::usDateToDbDate($_GET["dateTo"]));						
+			$url .= "&dateTo=".$_GET['dateTo'];
+		}
+			
+		$pager = $orderPeer->getSearchPaginated($_GET["page"]);
+		
 		$smarty->assign("orders",$pager->getResult());
 		$smarty->assign("pager",$pager);
-		$url = "Main.php?do=ordersList";
+
 		$smarty->assign("url",$url);
 
-    $smarty->assign("message",$_GET["message"]);
+    	$smarty->assign("message",$_GET["message"]);
 
 		return $mapping->findForwardConfig('success');
 	}

@@ -81,7 +81,25 @@
 				<input name="contact" type="text" value="|-if $flag ne 1-||-$affiliateInfo->getContact()-||-/if-|" size="40"> 
 			</td>
 		</tr>
-		
+		<tr>
+			<td width="20%" nowrap class="tdTitle">Email persona contacto</td>
+			<td width="80%"> 
+				<input name="contactEmail" type="text" value="|-if $flag ne 1-||-$affiliateInfo->getContactEmail()-||-/if-|" size="40">
+			</td>
+		</tr>
+		<tr>
+			<td width="20%" nowrap class="tdTitle">Sitio WEB</td>
+			<td width="80%">
+				<input name="web" type="text" value="|-if $flag ne 1-||-$affiliateInfo->getWeb()-||-/if-|" size="40">
+			</td>
+		</tr>
+		<tr>
+			<td width="20%" nowrap class="tdTitle">Información</td>
+			<td width="80%"> 
+				<textarea name="memo">|-if $flag ne 1-||-$affiliateInfo->getMemo()-||-/if-|</textarea>
+			</td>
+		</tr>
+
 		 <tr align="right"> 
 			 <td colspan="2"> <input name="save" type="submit" class="botonchico" value="Guardar Cambios"> 
 			 </td>

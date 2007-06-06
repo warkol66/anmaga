@@ -171,6 +171,7 @@ CREATE TABLE `affiliate`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id afiliado',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'nombre afiliado',
+	`ownerId` INTEGER COMMENT 'Id del usuario administrador del afiliado',
 	PRIMARY KEY (`id`),
 	CONSTRAINT `affiliate_FK_1`
 		FOREIGN KEY (`id`)
@@ -192,6 +193,9 @@ CREATE TABLE `affiliateInfo`
 	`phone` VARCHAR(50) COMMENT 'Telefono afiliado',
 	`email` VARCHAR(50) COMMENT 'Email afiliado',
 	`contact` VARCHAR(50) COMMENT 'Nombre de persona de contacto',
+	`contactEmail` VARCHAR(100) COMMENT 'Email de persona de contacto',
+	`web` VARCHAR(255) COMMENT 'Direccion web del afiliado',
+	`memo` TEXT COMMENT 'Informacion adicional del afiliado',
 	PRIMARY KEY (`affiliateId`),
 	CONSTRAINT `affiliateInfo_FK_1`
 		FOREIGN KEY (`affiliateId`)
@@ -565,11 +569,11 @@ DROP TABLE IF EXISTS `orders_order`;
 CREATE TABLE `orders_order`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del pedido',
+	`number` INTEGER COMMENT 'Numero interno del pedido',
 	`created` DATETIME  NOT NULL COMMENT 'Fecha en que se creo el pedido',
 	`userId` INTEGER  NOT NULL COMMENT 'Id del usuario',
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Id del afiliado',
 	`branchId` INTEGER COMMENT 'Id de la sucursal',
-	`processed` DATETIME COMMENT 'Fecha en que se proceso el pedido',
 	`total` FLOAT COMMENT 'Precio total del pedido',
 	`state` INTEGER COMMENT 'Estado del pedido',
 	PRIMARY KEY (`id`),
@@ -612,6 +616,38 @@ CREATE TABLE `orders_orderItem`
 		FOREIGN KEY (`productId`)
 		REFERENCES `product` (`id`)
 )Type=MyISAM COMMENT='Item del Pedido de Productos';
+
+#-----------------------------------------------------------------------------
+#-- orders_stateChanges
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `orders_stateChanges`;
+
+
+CREATE TABLE `orders_stateChanges`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del cambio de estado del pedido',
+	`created` DATETIME  NOT NULL COMMENT 'Fecha en que se cambio el estado',
+	`orderId` INTEGER  NOT NULL COMMENT 'Id del pedido',
+	`userId` INTEGER  NOT NULL COMMENT 'Id del usuario',
+	`affiliateId` INTEGER  NOT NULL COMMENT 'Id del afiliado',
+	`state` INTEGER  NOT NULL COMMENT 'Nuevo estado',
+	`comment` VARCHAR(255) COMMENT 'Comentarios',
+	PRIMARY KEY (`id`),
+	INDEX `orders_stateChanges_FI_1` (`orderId`),
+	CONSTRAINT `orders_stateChanges_FK_1`
+		FOREIGN KEY (`orderId`)
+		REFERENCES `orders_order` (`id`)
+		ON DELETE CASCADE,
+	INDEX `orders_stateChanges_FI_2` (`userId`),
+	CONSTRAINT `orders_stateChanges_FK_2`
+		FOREIGN KEY (`userId`)
+		REFERENCES `usersByAffiliate_user` (`id`),
+	INDEX `orders_stateChanges_FI_3` (`affiliateId`),
+	CONSTRAINT `orders_stateChanges_FK_3`
+		FOREIGN KEY (`affiliateId`)
+		REFERENCES `affiliate` (`id`)
+)Type=MyISAM COMMENT='Cambios de Estado de Pedidos de Productos';
 
 #-----------------------------------------------------------------------------
 #-- orders_orderTemplate
@@ -683,6 +719,10 @@ CREATE TABLE `branch`
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Id del afiliado',
 	`number` INTEGER  NOT NULL COMMENT 'Numero de la sucursal',
 	`name` VARCHAR(255) COMMENT 'Nombre de la sucursal',
+	`phone` VARCHAR(100) COMMENT 'Telefono de la sucursal',
+	`contact` VARCHAR(50) COMMENT 'Nombre de persona de contacto',
+	`contactEmail` VARCHAR(100) COMMENT 'Email de persona de contacto',
+	`memo` TEXT COMMENT 'Informacion adicional de la sucursal',
 	PRIMARY KEY (`id`),
 	INDEX `branch_FI_1` (`affiliateId`),
 	CONSTRAINT `branch_FK_1`

@@ -32,7 +32,7 @@ class AffiliateInfoPeer extends BaseAffiliateInfoPeer {
 		return $todosObj[0];
   }
 
- function update($id,$internalNumber,$address,$phone,$email,$contact) {
+ function update($id,$internalNumber,$address,$phone,$email,$contact,$contactEmail,$web,$memo) {
 		$affiliate = AffiliateInfoPeer::retrieveByPK($id);		
 		//$affiliate->setAffiliateId($id);		
 		$affiliate->setAffiliateInternalNumber($internalNumber);
@@ -40,11 +40,14 @@ class AffiliateInfoPeer extends BaseAffiliateInfoPeer {
 		$affiliate->setPhone($phone);
 		$affiliate->setEmail($email);
 		$affiliate->setContact($contact);
+		$affiliate->setContactEmail($contactEmail);		
+		$affiliate->setWeb($web);
+		$affiliate->setMemo($memo);
 		$affiliate->save();
 		return true;
   }
 
-	 function add($affiliateId,$internalNumber,$address,$phone,$email,$contact) {
+	 function add($affiliateId,$internalNumber,$address,$phone,$email,$contact,$contactEmail,$web,$memo) {
 		$affiliate = new AffiliateInfo();		
 		$affiliate->setAffiliateId($affiliateId);		
 		$affiliate->setAffiliateInternalNumber($internalNumber);
@@ -52,6 +55,9 @@ class AffiliateInfoPeer extends BaseAffiliateInfoPeer {
 		$affiliate->setPhone($phone);
 		$affiliate->setEmail($email);
 		$affiliate->setContact($contact);
+		$affiliate->setContactEmail($contactEmail);		
+		$affiliate->setWeb($web);
+		$affiliate->setMemo($memo);		
 		$affiliate->save();
 		return true;
   }

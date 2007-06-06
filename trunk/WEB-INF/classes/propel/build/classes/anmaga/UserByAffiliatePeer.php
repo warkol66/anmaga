@@ -110,7 +110,7 @@ class UserByAffiliatePeer extends BaseUserByAffiliatePeer {
 		$userByAffiliateInfo->setMailAddress($mailAddress);
 		$userByAffiliateInfo->save();
 
-		return;
+		return $userByAffiliate;
 	}
 
 

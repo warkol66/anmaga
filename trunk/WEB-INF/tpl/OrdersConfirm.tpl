@@ -34,8 +34,20 @@
 	<input type="submit" value="Edit Order" class="boton" />
 </form>
 
+<br />
+
 |- if $orderItems|@count gt 0-|
 <form action="Main.php" method="post">
+	<label for="number">Number:</label>
+	<input type="text" name="number" />
+	|-if $branchs|@count gt 0-|
+	<select name="branchId">
+		<option value="">Seleccionar Branch</option>
+		|-foreach from=$branchs item=branch-|
+		<option value="|-$branch->getId()-|">|-$branch->getName()-| (|-$branch->getNumber()-|)</option>
+		|-/foreach-|
+	</select>
+	|-/if-|
 	<input type="hidden" name="do" value="ordersDoGenerate" />
 	<input type="submit" value="Confirm Order" class="boton" />
 </form>

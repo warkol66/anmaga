@@ -58,7 +58,7 @@ class OrdersDoGenerateAction extends BaseAction {
 				$total += ($item->getPrice() * $item->getQuantity());
 		}
 
-    $orderId = OrderPeer::create($user->getId(),$user->getAffiliateId(),$total);
+    $orderId = OrderPeer::create($_POST["number"],$user->getId(),$user->getAffiliateId(),$total,$_POST["branchId"]);
     
     if (!empty($orderId)) {
     	foreach ($items as $item) {
