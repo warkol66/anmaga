@@ -98,6 +98,7 @@
 			</menu>
 		</modulesDoActivateX>
 	</moduleInstalation:actions>
+	<moduleInstalation:securityModule>3</moduleInstalation:securityModule>
 	<moduleInstalation:sql>
 		<sql1>CREATE TABLE IF NOT EXISTS `modules_module` (
 	`name` VARCHAR( 255 ) NOT NULL COMMENT 'nombre del modulo',

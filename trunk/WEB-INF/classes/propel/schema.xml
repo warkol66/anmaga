@@ -73,6 +73,12 @@
 		<reference local="action" foreign="action" />
 	</foreign-key>
   </table>
+  
+  <table name="security_module" phpName="SecurityModule"  description="Modulos del sistema">
+	<column name="module" type="VARCHAR" size="100" description="Modulo" primaryKey='true'/>
+    <column name="access" type="INTEGER" description="El acceso a ese action" />
+    <column name="accessUsersByAffiliate" type="INTEGER" description="El acceso a ese action para los usuarios por afiliados" />
+  </table>
 
   <table name="security_actionLabel" phpName="SecurityActionLabel"  description="etiquetas de actions de seguridad">
     	<column name="id" type="INTEGER"  required="true" description="Id label security" primaryKey="true" autoIncrement="true"  />

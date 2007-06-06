@@ -5,6 +5,7 @@
 require_once("BaseAction.php");
 require_once("SecurityActionPeer.php");
 require_once("LevelPeer.php");
+require_once("ModulePeer.php");
 
 
 /**
@@ -15,12 +16,12 @@ require_once("LevelPeer.php");
 * @version 1.0
 * @public
 */
-class SecurityActionListAction extends BaseAction {
+class SecurityModuleListAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function SecurityActionListAction() {
+	function SecurityModuleListAction() {
 		;
 	}
 
@@ -63,17 +64,12 @@ class SecurityActionListAction extends BaseAction {
 		$smarty->assign("modulo",$modulo);
 		$smarty->assign("section",$section);
 
-		$dir = "WEB-INF/classes/modules/";
-		$dh  = opendir($dir);
-		while (false !== ($module = readdir($dh))) {
-			if ($module[0]!='.') {	
-				$i++;
-				$moduleName[$i]=$module;
-			}
-		}
+		$modules=ModulePeer::getAll();
 		
 		$loginUser=$_SESSION['loginUser'];
-		$userLevel=$loginUser->getLevelid();
+		$userLevel=$loginUser->getLevelId();
+
+		SecurityActionPeer::checkAccess(Common::userInfoToDoLog(),'modulesList');
 
 
 		if(isset($_GET["module"])) {
@@ -100,7 +96,7 @@ class SecurityActionListAction extends BaseAction {
 
 		$smarty->assign("actions",$actions);
 		$smarty->assign("levelsave",$levelSave);
-		$smarty->assign("modulesName",$moduleName);
+		$smarty->assign("modules",$modules);
 		$smarty->assign("moduleView",$moduleView);
 		$smarty->assign("levels",$levels);
 		$smarty->assign("userLevel",$userLevel);

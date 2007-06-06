@@ -25,8 +25,16 @@
 class ActionLogLabelPeer extends BaseActionLogLabelPeer {
 
 
-
-  function add($actionName,$language,$label,$forward) {
+  /**
+	* Agrega una etiqueta
+	* @param string $actionName nombre del action
+	* @param string $language idioma
+	* @param string $label etiqueta
+	* @param string $forward tipo de forward
+	* @return true si salio todo ok
+	*/
+	
+	function add($actionName,$language,$label,$forward) {
 		
 		$actionLogLabelObj = new ActionLogLabel();
 		$actionLogLabelObj->setAction($actionName);
@@ -34,10 +42,17 @@ class ActionLogLabelPeer extends BaseActionLogLabelPeer {
 		$actionLogLabelObj ->setLanguage($language);
 		$actionLogLabelObj ->setForward($forward);
 		$actionLogLabelObj ->save();
-
+		return true;
 
   }
 
+
+	/**
+	* Obtiene una etiqueta dependiendo el nombre del action y el forward
+	* @param string $action nombre del action
+	* @param string $forward tipo de forward
+	* @return object $obj objeto encontrado
+	*/
 
 	function getAllByActionLanguageEsp($action,$forward) {
 		$criteria = new Criteria();

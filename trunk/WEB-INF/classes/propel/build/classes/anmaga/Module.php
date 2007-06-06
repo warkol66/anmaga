@@ -20,6 +20,15 @@ require_once 'anmaga/om/BaseModule.php';
  */	
 class Module extends BaseModule {
 
+	
+	
+	/**
+	*
+	* Obtiene la etiqueta de ese modulo
+	*
+	* @return string label la etiqueta
+	*/
+	
 	function getLabel(){
 		
 		try{
@@ -32,17 +41,40 @@ class Module extends BaseModule {
 		}catch (PropelException $e) {}
 	}
 
-		function getDescription(){
+	
 		
+	/**
+	*
+	* Obtiene la descripcion de ese modulo
+	*
+	* @return string description la descripcion
+	*/
+	function getDescription(){
 		try{
-		global $system;
-		$language=$system["config"]["mluse"]["language"];
-		include_once 'anmaga/ModuleLabelPeer.php';
-		$language='eng';
-		$moduleLabelInfo=ModuleLabelPeer::getByModuleAndLanguage($this->GetName(),$language);
-		return $moduleLabelInfo->getDescription();
+			global $system;
+			$language=$system["config"]["mluse"]["language"];
+			include_once 'anmaga/ModuleLabelPeer.php';
+			$language='eng';
+			$moduleLabelInfo=ModuleLabelPeer::getByModuleAndLanguage($this->GetName(),$language);
+			return $moduleLabelInfo->getDescription();
 		}catch (PropelException $e) {}
 	}
+
+	/**
+	*
+	* Obtiene el accesso de ese modulo
+	*
+	* @return string access el acceso
+	*/
+	function getAccess(){
+		try{
+			include_once 'anmaga/SecurityModulePeer.php';
+			$securityAccess=SecurityModulePeer::GetAccess($this->GetName());
+			return $securityAccess->getAccess();
+		}catch (PropelException $e) {}
+	}
+
+
 
 
 } // Module
