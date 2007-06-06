@@ -466,6 +466,45 @@
     </action>
 
 	</action-mappings>
+	
+<!-- Section Branchs -->
+  <action-mappings>
+    <action    path = "affiliatesBranchsEdit"
+               type = "AffiliatesBranchsEditAction"
+               name = "affiliatesBranchsEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="AffiliatesBranchsEdit.tpl" />
+    </action>
+
+    <action    path = "affiliatesBranchsDoEdit"
+               type = "AffiliatesBranchsDoEditAction"
+               name = "affiliatesBranchsDoEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=affiliatesBranchsList&amp;message=ok" redirect="true" />
+    <forward name="failure" path="AffiliatesBranchsEdit.tpl" />
+    </action>
+
+    <action    path = "affiliatesBranchsList"
+               type = "AffiliatesBranchsListAction"
+               name = "affiliatesBranchsList"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="AffiliatesBranchsList.tpl" />
+    </action>
+
+    <action    path = "affiliatesBranchsDoDelete"
+               type = "AffiliatesBranchsDoDeleteAction"
+               name = "affiliatesBranchsDoDelete"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=affiliatesBranchsList&amp;message=deleted_ok" redirect="true" />
+    </action>
+  </action-mappings>
+<!-- Fin Section Branchs -->
+
+<!-- Fin Module Affiliates -->	
 
 		<!-- Module Users By Affiliate -->
 	<action-mappings module="UsersByAffiliate">
@@ -1074,6 +1113,14 @@
     <forward name="success" path="Main.php?do=ordersList&amp;message=deleted_ok" redirect="true" />
     </action>
     
+    <action    path = "ordersCartDoDelete"
+               type = "OrdersCartDoDeleteAction"
+               name = "ordersCartDoDelete"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=ordersViewCart&amp;message=deleted_ok" redirect="true" />
+    </action>
+    
     <action    path = "ordersAddItemToCartX"
                type = "OrdersAddItemToCartXAction"
                name = "ordersAddItemToCartX"
@@ -1088,6 +1135,23 @@
               scope = "request"
            validate = "true">
     <forward name="success" path="OrdersChangeItemCartX.tpl" />
+    </action>
+    
+    <action    path = "ordersRemoveItemCartX"
+               type = "OrdersRemoveItemCartXAction"
+               name = "ordersRemoveItemCartX"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="OrdersRemoveItemCartX.tpl" />
+    </action>
+    
+    <action    path = "ordersStateDoChangeX"
+               type = "OrdersStateDoChangeXAction"
+               name = "ordersStateDoChangeX"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="OrdersStateDoChangeX.tpl" />
+	<forward name="failure" path="OrdersStateDoChangeXFailure.tpl" />
     </action>
     
     <action    path = "ordersViewCart"
@@ -1129,6 +1193,22 @@
            validate = "true">
     <forward name="success" path="Main.php?do=ordersTemplatesList&amp;message=ok" redirect="true" />
     </action>
+	
+	<action    path = "ordersImport"
+			type = "OrdersImportAction"
+			name = "ordersImport"
+			scope = "request"
+		validate = "true">
+	<forward name="success" path="OrdersImport.tpl" />
+	</action>		
+	
+	<action    path = "ordersDoImport"
+			type = "OrdersDoImportAction"
+			name = "ordersDoImport"
+			scope = "request"
+		validate = "true">
+	<forward name="success" path="Main.php?do=ordersImport" redirect="true" />
+	</action>	
   </action-mappings>
   
 <!-- Section OrderTemplates -->

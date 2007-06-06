@@ -400,6 +400,18 @@ class Common
 
 		return $yearFilter;
 	}
+	
+	/**
+	*	Recibe una fecha en formato mm-dd-yyyy y la devuelve yyyy-mm-dd
+	* 
+	* @param string $usDate Fecha en formato mm-dd-yyyy
+	* @return string Fecha en formate yyyy-mm-dd
+  */
+	function usDateToDbDate($usDate) {
+		$dateExplode = explode("-", $usDate);
+		$dbDate = date("Y-m-d",mktime(0,0,0,$dateExplode[1],$dateExplode[0],$dateExplode[2]));
+		return $dbDate;
+ 	}	
 
 	function userInfoToDoLog(){
 			

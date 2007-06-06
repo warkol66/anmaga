@@ -145,7 +145,7 @@ function modulesDoActivateX(form) {
 					method: 'post',
 					parameters: pars,
 					postBody: fields,
-					evalScripts: true,
+					evalScripts: true
 				});
 		$('messageMod').innerHTML = "Actualizando sistema...";
 }
@@ -153,7 +153,6 @@ function modulesDoActivateX(form) {
 
 function ordersAddItemToCartX(form) {
 	var fields = Form.serialize(form);
-
 
 	var myAjax = new Ajax.Updater(
 				{success: 'messageCart'},
@@ -168,7 +167,6 @@ function ordersAddItemToCartX(form) {
 function ordersChangeItemCartX(form) {
 	var fields = Form.serialize(form);
 
-
 	var myAjax = new Ajax.Updater(
 				{success: 'messageCart'},
 				url,
@@ -177,5 +175,39 @@ function ordersChangeItemCartX(form) {
 					postBody: fields
 				});
 	$('messageCart').innerHTML = "Modifing cart...";
+}
+
+function ordersRemoveItemCartX(form) {
+	var fields = Form.serialize(form);
+
+	var myAjax = new Ajax.Updater(
+				{success: 'messageCart'},
+				url,
+				{
+					method: 'post',
+					postBody: fields,
+					evalScripts: true
+				});
+	$('messageCart').innerHTML = "Removing product from cart...";
+}
+
+function ordersStateDoChangeX(form) {
+	var newState = $('state').value;
+	if (newState != "") {
+		var fields = Form.serialize(form);
+
+		var myAjax = new Ajax.Updater(
+				{success: 'stateChanges'},
+				url,
+				{
+					method: 'post',
+					postBody: fields,
+					evalScripts: true,
+					insertion: Insertion.Bottom
+				});
+		$('messageState').innerHTML = "Changing state...";
+	} else {
+		alert("Select new state!");
+	}
 }
 

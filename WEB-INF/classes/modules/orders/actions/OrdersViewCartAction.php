@@ -49,7 +49,8 @@ class OrdersViewCartAction extends BaseAction {
 
 		$orderItems = $_SESSION["orderItems"];
 		$smarty->assign("orderItems",$orderItems);
-
+		
+		$smarty->assign("message",$_GET["message"]);
 
 		return $mapping->findForwardConfig('success');
 	}

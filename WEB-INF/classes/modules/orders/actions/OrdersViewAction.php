@@ -45,6 +45,7 @@ class OrdersViewAction extends BaseAction {
 		$module = "Orders";
 		$section = "Orders";
 
+		//TODO: agregar chequeo de acceso
     $order = OrderPeer::get($_GET["id"]);
     if ( empty($order) ) {
 			return $mapping->findForwardConfig('notExists');

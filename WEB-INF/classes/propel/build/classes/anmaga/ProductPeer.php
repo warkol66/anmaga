@@ -212,6 +212,22 @@ class ProductPeer extends BaseProductPeer {
 		$alls = ProductPeer::doSelect($cond);
 		return $alls[0];
   }
+
+  /**
+  * Obtiene un producto en base a su codigo, quitando los guiones de los codigos de los productos.
+	*
+	* @param string $code Codigo del producto
+	*	@return Product Producto con el codigo pasado como parametro
+  */
+	function getByCodeModified($code) {
+		$con = Propel::getConnection(ProductPeer::DATABASE_NAME);
+		$sql = "SELECT * FROM ".ProductPeer::TABLE_NAME." WHERE REPLACE(code,'-','') = '".$code."'";
+		$stmt = $con->createStatement();
+		$rs = $stmt->executeQuery($sql, ResultSet::FETCHMODE_NUM);
+		
+		$objects = parent::populateObjects($rs);
+		return $objects[0]; 		
+  }
   
   function setSearchParentNodeId($parentNodeId) {
   	$this->searchParentNodeId = $parentNodeId;

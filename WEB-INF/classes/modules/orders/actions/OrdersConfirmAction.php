@@ -3,6 +3,7 @@
 require_once("BaseAction.php");
 require_once("OrderItem.php");
 require_once("ProductPeer.php");
+require_once("BranchPeer.php");
 
 class OrdersConfirmAction extends BaseAction {
 
@@ -45,6 +46,9 @@ class OrdersConfirmAction extends BaseAction {
 
 		$module = "Orders";
 		$smarty->assign("module",$module);
+		
+		$branchs = BranchPeer::getAllByAffiliateId($_SESSION["loginUserByAffiliate"]->getAffiliateId());
+		$smarty->assign("branchs",$branchs);
 		
 
 		$orderItems = $_SESSION["orderItems"];

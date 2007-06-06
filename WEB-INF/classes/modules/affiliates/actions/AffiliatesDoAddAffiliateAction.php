@@ -14,6 +14,7 @@
 require_once 'BaseAction.php';
 require_once("AffiliatePeer.php");
 require_once("AffiliateInfoPeer.php");
+require_once("UserByAffiliatePeer.php");
 
 
 /**
@@ -79,9 +80,14 @@ class AffiliatesDoAddAffiliateAction extends BaseAction {
 
 		$id=AffiliatePeer::add($name);
 
-		$affiliate=AffiliateInfoPeer::add($id,$_POST["affiliateInternalNumber"],$_POST["address"],$_POST["phone"],$_POST["mail"],$_POST["contact"]);
+		AffiliateInfoPeer::add($id,$_POST["affiliateInternalNumber"],$_POST["address"],$_POST["phone"],$_POST["mail"],$_POST["contact"],$_POST["contactEmail"],$_POST["web"],$_POST["memo"]);
 				
-					
+		if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {	
+			$user = UserByAffiliatePeer::create($id,$_POST["username"],$_POST["pass"],1,$_POST["nameuser"],$_POST["surname"],$_POST["mailAddress"]);
+			$affiliate = AffiliatePeer::get($id);
+			$affiliate->setOwnerId($user->getId());
+			$affiliate->save();
+		}					
 					
 					
 					

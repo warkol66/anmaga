@@ -55,10 +55,8 @@ class AffiliatePeer extends BaseAffiliatePeer {
 	 }
 
   function get($id) {
-		$cond = new Criteria();
-		$cond->add(AffiliatePeer::ID,$id);
-		$todosObj = AffiliatePeer::doSelect($cond);
-		return $todosObj[0];
+		$affiliate = AffiliatePeer::retrieveByPK($id);
+		return $affiliate;
   }
 
 
