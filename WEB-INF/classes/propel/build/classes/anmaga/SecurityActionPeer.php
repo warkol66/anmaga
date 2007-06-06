@@ -78,6 +78,12 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
   }
 
 
+
+	/**
+	* elimina un action
+	* @param string $action nombre del action
+	* @return true
+	*/
 	function delete($action)
 		{ 	try{
 			$obj = new securityAction();
@@ -87,7 +93,7 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 					$obj->delete();
 				}
 		}catch (PropelException $e) {}
-		return;
+		return true;
 		}
 
 
@@ -160,6 +166,7 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 			$security->setPair($pair);
 		$security->setSection(1);
 		$security->setAccess($access);
+		$security->setActive(1);
 		$security->setAccessUsersByAffiliate($access);
 		$security->save();
 		}catch (PropelException $e) {}
@@ -207,6 +214,14 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		$obj->save();
 		return;
 	}
+
+	
+	
+	/**
+	* obtiene un action
+	* @param string $action nombre del action
+	* @return object $obj action encontrado
+	*/
 
 	function get($action) {
 		   	$obj = SecurityActionPeer::retrieveByPK($action);
@@ -271,5 +286,29 @@ function getModules() {
    return $result;
  }
 
+/**
+* checkea el permiso de un usuario al modulo de un action
+* @param array $user niveles de acceso del usuario
+* @param string $action nombre del action
+* @return true si todo salio ok
+*/
+function checkAccess($user,$action){
+	$module=SecurityActionPeer::getModuleByAction($action);
+	
+}
+
+
+/**
+* obtiene el nombre del modulo de un action
+* @param string $action nombre del action
+* @return string $module nombre del modulo del action
+*/
+function getModuleByAction($action) {
+		$criteria = new Criteria();
+		$criteria->add(SecurityActionPeer::ACTION, $action);
+    $obj = SecurityActionPeer::doSelect($criteria);
+		return $obj[0]->getModule();
+
+	}
 
 } // SecurityActionPeer

@@ -121,9 +121,9 @@ class ModulesListAction extends BaseAction {
 		$smarty->assign("assignedModules",$assignedModules);
 
 
-
-		$userInfo=Common::userInfoToDoLog();
-		Common::doLog($userInfo,$_REQUEST['do'],'success','listando general');
+		//////////
+		// linea de logueo
+		Common::doLog(Common::userInfoToDoLog(),$_REQUEST['do'],'success','listando general');
 		
 		return $mapping->findForwardConfig('success');
 	}

@@ -150,28 +150,41 @@ class ModulePeer extends BaseModulePeer {
 			if (!empty($xmlConfig["moduleDependencies"] ) ){
 				//////////
 				// parte de carga a la DB tabla modules_dependency	
-			//	foreach ($xmlConfig["moduleDependencies"] as $moduleDependency){
-			//		$moduleDep = new ModuleDependencyPeer();
-			//		$dependency=$moduleDep->setDependency($moduleName, $moduleDependency);
-			//		if (!$dependency)
-				//		return false;
+				foreach ($xmlConfig["moduleDependencies"] as $moduleDependency){
+					$moduleDep = new ModuleDependencyPeer();
+					$dependency=$moduleDep->setDependency($moduleName, $moduleDependency);
+					if (!$dependency)
+						return false;
 
-			//	}
+				}
 			}
 
+
+			//////////
+			// parte de carga a la DB tabla security_module		
+			$securityModule=ModulePeer::loadSecurityModule($moduleName,$arrayXml["moduleInstalation"]["moduleInstalation:securityModule"]);
+
+			if(!$securityModule) return false;
+
 			foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"] as $actionName => $actionProperties){
+				
+				//////////
+				// parte carga actions a xml de configuracion phpmvc
+				//	$phpmvcConfig=ModulePeer::loadPhpmvcConfig($moduleName);
+				//if(!$phpmvcConfig) return false;
+				
 				//////////
 				// parte de carga a la DB tabla security_action
 				$securityAction=ModulePeer::loadSecurityAction($actionName,$moduleName,$actionProperties["securityAction"]);
 	
-			//	if(!$securityAction) return false;
+				if(!$securityAction) return false;
 
-				
+
 				//////////
 				// parte de carga a la DB tabla actionLogs_label
 				$actionLogs=ModulePeer::loadActionLogs($actionName,$actionProperties["actionLogs"]);
 	
-			//	if(!$actionLogs) return false;
+				if(!$actionLogs) return false;
 
 			} // end foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"]
 
@@ -179,13 +192,9 @@ class ModulePeer extends BaseModulePeer {
 			//////////
 			// parte tablas sql puras			
 			$sql=ModulePeer::loadSqlData($arrayXml["moduleInstalation"]["moduleInstalation:sql"]);
-			//if(!$sql)return false;
+			if(!$sql)return false;
 			
 
-			//////////
-			// parte carga actions a xml de configuracion phpmvc
-		//	$phpmvcConfig=ModulePeer::loadPhpmvcConfig($moduleName);
-			//if(!$phpmvcConfig) return false;
 
 			//////////
 			// parte de carga a la base de datos tabla modules_module
@@ -237,6 +246,7 @@ function loadModule ($moduleName,$xmlConfig){
 *
 *	Subfuncion de agregar modulo que agrega datos del modulo en la parte security
 *	@param string $actionName nombre del action
+*	@param string $moduleName nombre del modulo
 *	@param array $actionProperties propiedades del action
 *	@return true si se agrego correctamente
 */
@@ -257,6 +267,30 @@ function loadSecurityAction($actionName,$moduleName,$actionProperties){
 		else return false;
 }
 
+
+/**
+*
+*	Subfuncion de agregar modulo que agrega datos del modulo en la parte security_module
+*	@param string $moduleName nombre del modulo
+*	@param int $actionProperties propiedades del modulo
+*	@return true si se agrego correctamente
+*/
+
+function loadSecurityModule($moduleName,$moduleProperties){
+	@include_once('SecurityModulePeer.php');
+		if (class_exists('SecurityModulePeer')){
+			$securityModulePeer = new SecurityModulePeer();
+			//////////
+			// si en el xml se carga all como bitlevel, significa que será nivel máximo
+			// el nivel máximo está seteado como 1073741823 (2¨30-1)
+			if ($moduleProperties == 'all')
+				$moduleProperties =1073741823;
+
+			$securityModulePeer->addModule($moduleName, $moduleProperties);
+			return true;
+		}
+		else return false;
+}
 
 /**
 *

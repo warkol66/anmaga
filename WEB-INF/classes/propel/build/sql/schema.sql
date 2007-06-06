@@ -129,6 +129,21 @@ CREATE TABLE `security_action`
 )Type=MyISAM COMMENT='Actions del sistema';
 
 #-----------------------------------------------------------------------------
+#-- security_module
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `security_module`;
+
+
+CREATE TABLE `security_module`
+(
+	`module` VARCHAR(100)  NOT NULL COMMENT 'Modulo',
+	`access` INTEGER COMMENT 'El acceso a ese action',
+	`accessUsersByAffiliate` INTEGER COMMENT 'El acceso a ese action para los usuarios por afiliados',
+	PRIMARY KEY (`module`)
+)Type=MyISAM COMMENT='Modulos del sistema';
+
+#-----------------------------------------------------------------------------
 #-- security_actionLabel
 #-----------------------------------------------------------------------------
 
@@ -375,7 +390,7 @@ DROP TABLE IF EXISTS `modules_dependency`;
 CREATE TABLE `modules_dependency`
 (
 	`moduleName` VARCHAR(255)  NOT NULL COMMENT 'Modulo',
-	`dependence` VARCHAR(255)  NOT NULL COMMENT 'Dependiente',
+	`dependence` VARCHAR(255)  NOT NULL COMMENT 'Modulos de los cuales depende',
 	PRIMARY KEY (`moduleName`,`dependence`),
 	CONSTRAINT `modules_dependency_FK_1`
 		FOREIGN KEY (`moduleName`)

@@ -1,3 +1,4 @@
+<table>
 |-if $moduleView ne 'todos' -|<h3>Seguridad del módulo |-$moduleView-|</h3>
 |-else-|<h3>Seguridad de |-$moduleView-| los módulos</h3>
 |-/if-|
@@ -16,10 +17,13 @@
 			 <td><input type="submit"> </td>
 		 </tr>
 </form>
-
-
-
-<a href="Main.php?do=securityActionLoad">Lista Actions</a> 
+<tr>
+	<td>
+		<a href="Main.php?do=securityActionLoad">Lista Actions</a> 
+	</td>
+</tr>
+</table>
+<table>
 <form name="security2" action="Main.php?do=securityActionDoSave" method="POST">
 	<table width="100%" border="0" cellpadding="0" cellspacing="1" class="tablaborde"> 
 		<tr> 
@@ -48,3 +52,4 @@
 	</table> 
 <input type="submit">
 </form>
+</table>
