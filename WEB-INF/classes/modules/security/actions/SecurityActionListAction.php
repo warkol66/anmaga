@@ -72,6 +72,8 @@ class SecurityActionListAction extends BaseAction {
 			}
 		}
 		
+		//////////
+		//quitar este metodo		
 		$loginUser=$_SESSION['loginUser'];
 		$userLevel=$loginUser->getLevelid();
 

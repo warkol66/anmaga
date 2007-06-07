@@ -273,41 +273,85 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	}
 
 
-function getModules() {
-   
-	$criteria = new Criteria();
-	$criteria->clearSelectColumns()->addSelectColumn(SecurityActionPeer::MODULE);
-	$criteria->setDistinct(MODULE);
-   $rs = BasePeer::doSelect($criteria);
-   $result = array();
-   while($rs->next()) {
-     $result[] = $rs->get(1);
-   }
-   return $result;
- }
-
-/**
-* checkea el permiso de un usuario al modulo de un action
-* @param array $user niveles de acceso del usuario
-* @param string $action nombre del action
-* @return true si todo salio ok
-*/
-function checkAccess($user,$action){
-	$module=SecurityActionPeer::getModuleByAction($action);
-	
-}
-
-
-/**
-* obtiene el nombre del modulo de un action
-* @param string $action nombre del action
-* @return string $module nombre del modulo del action
-*/
-function getModuleByAction($action) {
+	function getModules() {
+	   
 		$criteria = new Criteria();
-		$criteria->add(SecurityActionPeer::ACTION, $action);
-    $obj = SecurityActionPeer::doSelect($criteria);
-		return $obj[0]->getModule();
+		$criteria->clearSelectColumns()->addSelectColumn(SecurityActionPeer::MODULE);
+		$criteria->setDistinct(MODULE);
+	   $rs = BasePeer::doSelect($criteria);
+	   $result = array();
+	   while($rs->next()) {
+		 $result[] = $rs->get(1);
+	   }
+	   return $result;
+	 }
+
+	/**
+	* checkea el permiso de un usuario al modulo de un action
+	* @param array $user niveles de acceso del usuario
+	* @param string $action nombre del action
+	* @return true si todo salio ok
+	*/
+	function checkAccess($user,$action){
+		$module=SecurityActionPeer::getModuleByAction($action);
+		
+		echo "affiliate id es :";
+		print_r($user['affiliateId']);
+			echo "sip \n";
+		
+		if ( $user['affiliateId']== 999999 ){
+			$moduleLevel=4;
+		}
+		elseif ($user['affiliateId']== 0 ){
+			$moduleLevel=1;
+		}
+		else $moduleLevel=2;
+		
+		
+		include_once 'SecurityModulePeer.php';
+		$securityModule=SecurityModulePeer::get($module);
+		print_r($securityModule);
+		
+		$access=SecurityActionPeer::checkAccessBitToBit($securityModule->getAccess,$moduleLevel);
+		echo "\naccess es $access \n";
+
+		//if ($access == 0) return false;
+
+		include_once 'LevelPeer.php';
+
+		//if ( empty($level) || ($level->getBitLevel() & $accessAction) == 0 ) {
+		//	header("Location:Main.php?do=noPermission");
+		//	exit();
+		//}
+
+	}
+
+
+	/**
+	* obtiene el nombre del modulo de un action
+	* @param string $action nombre del action
+	* @return string $module nombre del modulo del action
+	*/
+	function getModuleByAction($action) {
+			$criteria = new Criteria();
+			$criteria->add(SecurityActionPeer::ACTION, $action);
+		$obj = SecurityActionPeer::doSelect($criteria);
+			return $obj[0]->getModule();
+
+		}
+
+	/**
+	 *
+	 * Compara 2 numberos bit a bit
+	 * @param int $paramUser bit del usuario
+	 * @param int $paramModule bit del modulo
+	 * @return 1 si un numero se incluye en otro
+	 */
+	function checkAccessBitToBit($paramModule,$paramUser){
+		if ((intval($paramModule) & intval($paramUser)) > 0 )
+				return 1;
+
+			return 0;
 
 	}
 

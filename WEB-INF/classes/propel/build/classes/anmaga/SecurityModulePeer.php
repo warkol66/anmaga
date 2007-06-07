@@ -87,8 +87,35 @@ class SecurityModulePeer extends BaseSecurityModulePeer {
 		$obj ->setAccess($access);
 		$obj ->save();
 		return true;
-  }
+	}
 
+
+	/**
+	*
+	*	Toma un modulo
+	*	@param string $moduleName nombre del modulo
+	*	@return object $module nombre del modulo seleccionado
+	*/
+	function get($moduleName) {
+		$cond = new Criteria();
+		$cond->add(SecurityModulePeer::MODULE, $moduleName);
+		$obj = SecurityModulePeer::doSelect($cond);
+		return $obj[0];
+	}
+
+	
+	/**
+	*
+	*	Toma el acceso de un modulo
+	*	@param string $moduleName nombre del modulo
+	*	@return string $obj el acceso del modulo
+	*/
+	function getAccessByModule($moduleName) {
+		$cond = new Criteria();
+		$cond->add(SecurityModulePeer::MODULE, $moduleName);
+		$obj = SecurityModulePeer::doSelect($cond);
+		return $obj[0]->getAccess();
+	}
 
 
 } // SecurityModulePeer

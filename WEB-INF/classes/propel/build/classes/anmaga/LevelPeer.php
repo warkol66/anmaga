@@ -112,4 +112,16 @@ class LevelPeer extends BaseLevelPeer {
 		return true;
   }
 
+  /**
+  * Obtiene el nivel de un usuario
+  *
+  * @param int $id Id del nivel de usuarios
+  * @return int $level nivel de usuario
+  */
+  function getLevelByUser($id) {
+		$level = LevelPeer::retrieveByPk($id);
+		return $level->getBitLevel();
+  }
+
+
 }

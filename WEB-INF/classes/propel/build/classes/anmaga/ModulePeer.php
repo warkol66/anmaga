@@ -209,280 +209,274 @@ class ModulePeer extends BaseModulePeer {
 
 
 
-/**
-*
-*	Subfuncion de agregar modulo que agrega los datos de un modulo en las tablas de modulo
-*	@param string $moduleName nombre del modulo
-*	@param array $xmlConfig datos del modulo que provenian del xml config
-*	@return true si se agrego correctamente
-*/
+	/**
+	*
+	*	Subfuncion de agregar modulo que agrega los datos de un modulo en las tablas de modulo
+	*	@param string $moduleName nombre del modulo
+	*	@param array $xmlConfig datos del modulo que provenian del xml config
+	*	@return true si se agrego correctamente
+	*/
 
-function loadModule ($moduleName,$xmlConfig){
-	try{
-		$moduleObj = new Module();
-		$moduleObj->setName($moduleName);
-		$moduleObj ->setActive(0);
-		$moduleObj ->setAlwaysActive($xmlConfig["alwaysActive"]);
-		$moduleObj ->save();
-		foreach ($xmlConfig["language"] as $language => $data){
-				$moduleLabelObj = new ModuleLabel();
-				$moduleLabelObj->setName($moduleName);
-				$moduleLabelObj->setLanguage($language);
-				$moduleLabelObj->setDescription($data["description"]);
-				$moduleLabelObj->setLabel($data["label"]);
-				$moduleLabelObj->save();
-
-		}
-
-		return true;
-	}catch (PropelException $e) {}
-}
-
-
-
-
-
-/**
-*
-*	Subfuncion de agregar modulo que agrega datos del modulo en la parte security
-*	@param string $actionName nombre del action
-*	@param string $moduleName nombre del modulo
-*	@param array $actionProperties propiedades del action
-*	@return true si se agrego correctamente
-*/
-
-function loadSecurityAction($actionName,$moduleName,$actionProperties){
-	@include_once('SecurityActionPeer.php');
-		if (class_exists('SecurityActionPeer')){
-			$securityActionPeer = new SecurityActionPeer();
-			//////////
-			// si en el xml se carga all como bitlevel, significa que será nivel máximo
-			// el nivel máximo está seteado como 1073741823 (2¨30-1)
-			if ($actionProperties["usersBitLevel"] == 'all')
-				$actionProperties["usersBitLevel"] =1073741823;
-
-			$securityActionPeer->addActionWithPair($actionName, $moduleName, $actionProperties["usersBitLevel"],$actionProperties["actionPair"],$actionProperties["label"]);
-			return true;
-		}
-		else return false;
-}
-
-
-/**
-*
-*	Subfuncion de agregar modulo que agrega datos del modulo en la parte security_module
-*	@param string $moduleName nombre del modulo
-*	@param int $actionProperties propiedades del modulo
-*	@return true si se agrego correctamente
-*/
-
-function loadSecurityModule($moduleName,$moduleProperties){
-	@include_once('SecurityModulePeer.php');
-		if (class_exists('SecurityModulePeer')){
-			$securityModulePeer = new SecurityModulePeer();
-			//////////
-			// si en el xml se carga all como bitlevel, significa que será nivel máximo
-			// el nivel máximo está seteado como 1073741823 (2¨30-1)
-			if ($moduleProperties == 'all')
-				$moduleProperties =1073741823;
-
-			$securityModulePeer->addModule($moduleName, $moduleProperties);
-			return true;
-		}
-		else return false;
-}
-
-/**
-*
-*	Subfuncion de agregar modulo que agrega datos del modulo en la tabla logs
-*	@param string $actionName nombre del action
-*	@param array $actionProperties propiedades del action a agregar 
-*	@return true si se agrego correctamente
-*/
-function loadActionLogs($actionName,$actionProperties){
-	@include_once('ActionLogLabelPeer.php');
-	if (class_exists('ActionLogLabelPeer')){
-	
-		foreach ($actionProperties as $forward => $label){
-			foreach ($label as $languageLabel =>$labelName){
-				
-				$actionLogLabel = new ActionLogLabelPeer();
-				//////////
-				// $moduleName = nombre modulo
-				// $actionName
-				// $label = contenido de etiqueta, ejemplo "entrar a module list"
-				// $language = tipo de idioma de etiqueta, posible contenido = label, esp, eng
-				// $forward = tipo de forward, posible contenido= success, failure
-					//ejemplo:	$moduleName=modules
-					//			$actionName=modulesList
-					//			$label= Entrar a listar modulos
-					//			$language= esp
-					//			$forward= success
-				
-				$actionLogLabel->add($actionName,$languageLabel,$labelName,$forward);
-			}
-
-		} //end foreach ($actionProperties
-		return true;
-	}
-	else return false;
-}
-
-
-/**
-*
-*	Subfuncion de agregar modulo que agrega tablas sql
-*	@param string $sql variable que contiene codigo sql
-*	@return true si se agrego correctamente
-*/
-function loadSqlData($sql){
-	foreach ($sql as $eachQuery){
-		 $con = Propel::getConnection(ModulePeer::DATABASE_NAME);
-		 $stmt = $con->createStatement();
-
-		 $rs = $stmt->executeUpdate($eachQuery);
-	}
-	return true;
-}
-
-
-/**
-*
-*	Subfuncion de agregar modulo que agrega informacion al xml "phpmvc-config"
-*	@param string $moduleName nombre del modulo
-*	@return true si se agrego correctamente
-*/
-function loadPhpmvcConfig($moduleName){
-	
-
-	$date=date('Ydm_His');
-
-	//////////
-	// la parte a cargar
-	$phpmvcInstalationPath="WEB-INF/classes/modules/$moduleName/phpmvc-config-$moduleName.xml";
-
-	$xmlPhpmvc=fopen($phpmvcInstalationPath,"rb");
-	$xmlPhpmvcLoad=(fread($xmlPhpmvc,filesize($phpmvcInstalationPath)));
-
-	
-	//////////
-	// comparationLine contiene la primer linea de nuestro xml a ejecutar, que contiene un tag html
-	fseek($xmlPhpmvc,0);
-	$comparationLine=fgets($xmlPhpmvc);
-
-	$buffer="";
-	//////////
-	// el xml original
-	$configPhpmvcPath="WEB-INF/phpmvc-config.xml";
-	$configPhpmvc=fopen($configPhpmvcPath,"rb+");
-
-
-	
-	//////////
-	// el xml resultante
-	$configPhpmvcResult=fopen("$configPhpmvcPath.$date.tmp","wb");
-
-	if ($configPhpmvc) {
-		$buffer = fgets($configPhpmvc);
-		while (!feof($configPhpmvc) && $buffer!="<!-- instalation tag-->\r\n") {
-			
-			//////////
-			// si el modulo ya estaba instalado en el xml...
-			if ($buffer == $comparationLine){
-				fclose($configPhpmvcResult);
-				fclose($configPhpmvc);
-				fclose($xmlPhpmvc);
-				return false;
-			}
-			fputs($configPhpmvcResult,$buffer);	
-			$buffer = fgets($configPhpmvc);
-			}
-		fwrite($configPhpmvcResult,$xmlPhpmvcLoad);
-		fputs($configPhpmvcResult,"\r\n\r\n\r\n");
-		while(!feof($configPhpmvc)){
-			fputs($configPhpmvcResult,$buffer);	
-			$buffer = fgets($configPhpmvc);
-		}
-
-		//////////
-		// cierro archivos
-		fclose($configPhpmvcResult);
-		fclose($configPhpmvc);
-		fclose($xmlPhpmvc);
-
-
-		//////////
-		// dejo archivo anterior como backup, renombro archivo resultante como original
-		rename($configPhpmvcPath,"$configPhpmvcPath$date.backup");
-		rename("$configPhpmvcPath.$date.tmp",$configPhpmvcPath);
-		unlink("$configPhpmvcPath.$date.tmp");
-	}
-	return true;
-}
-
-
-
-/**
-*
-*	Actualiza en la base de datos módulos
-*	@param string $moduleName nombre del modulo
-*	@param string $description descripcion del modulo
-*	@param string $label etiqueta del módulo
-*	@return true si se agrego correctamente
-*/
-
-function updateModule($module,$description,$label) {
+	function loadModule ($moduleName,$xmlConfig){
 		try{
-		$moduleObj = new Module();
-		$moduleObj = ModulePeer::retrieveByPK($module);
-	//	$moduleObj ->setDescription($description);
-	//	$moduleObj ->setLabel($label);
+			$moduleObj = new Module();
+			$moduleObj->setName($moduleName);
+			$moduleObj ->setActive(0);
+			$moduleObj ->setAlwaysActive($xmlConfig["alwaysActive"]);
+			$moduleObj ->save();
+			foreach ($xmlConfig["language"] as $language => $data){
+					$moduleLabelObj = new ModuleLabel();
+					$moduleLabelObj->setName($moduleName);
+					$moduleLabelObj->setLanguage($language);
+					$moduleLabelObj->setDescription($data["description"]);
+					$moduleLabelObj->setLabel($data["label"]);
+					$moduleLabelObj->save();
 
-		$moduleObj ->save();
+			}
+
+			return true;
 		}catch (PropelException $e) {}
+	}
+
+
+
+
+
+	/**
+	*
+	*	Subfuncion de agregar modulo que agrega datos del modulo en la parte security
+	*	@param string $actionName nombre del action
+	*	@param string $moduleName nombre del modulo
+	*	@param array $actionProperties propiedades del action
+	*	@return true si se agrego correctamente
+	*/
+
+	function loadSecurityAction($actionName,$moduleName,$actionProperties){
+		@include_once('SecurityActionPeer.php');
+			if (class_exists('SecurityActionPeer')){
+				$securityActionPeer = new SecurityActionPeer();
+				//////////
+				// si en el xml se carga all como bitlevel, significa que será nivel máximo
+				// el nivel máximo está seteado como 1073741823 (2¨30-1)
+				if ($actionProperties["usersBitLevel"] == 'all')
+					$actionProperties["usersBitLevel"] =1073741823;
+
+				$securityActionPeer->addActionWithPair($actionName, $moduleName, $actionProperties["usersBitLevel"],$actionProperties["actionPair"],$actionProperties["label"]);
+				return true;
+			}
+			else return false;
+	}
+
+
+	/**
+	*
+	*	Subfuncion de agregar modulo que agrega datos del modulo en la parte security_module
+	*	@param string $moduleName nombre del modulo
+	*	@param int $actionProperties propiedades del modulo
+	*	@return true si se agrego correctamente
+	*/
+
+	function loadSecurityModule($moduleName,$moduleProperties){
+		@include_once('SecurityModulePeer.php');
+			if (class_exists('SecurityModulePeer')){
+				$securityModulePeer = new SecurityModulePeer();
+				//////////
+				// si en el xml se carga all como bitlevel, significa que será nivel máximo
+				// el nivel máximo está seteado como 1073741823 (2¨30-1)
+				if ($moduleProperties == 'all')
+					$moduleProperties =1073741823;
+
+				$securityModulePeer->addModule($moduleName, $moduleProperties);
+				return true;
+			}
+			else return false;
+	}
+
+	/**
+	*
+	*	Subfuncion de agregar modulo que agrega datos del modulo en la tabla logs
+	*	@param string $actionName nombre del action
+	*	@param array $actionProperties propiedades del action a agregar 
+	*	@return true si se agrego correctamente
+	*/
+	function loadActionLogs($actionName,$actionProperties){
+		@include_once('ActionLogLabelPeer.php');
+		if (class_exists('ActionLogLabelPeer')){
+		
+			foreach ($actionProperties as $forward => $label){
+				foreach ($label as $languageLabel =>$labelName){
+					
+					$actionLogLabel = new ActionLogLabelPeer();
+					//////////
+					// $moduleName = nombre modulo
+					// $actionName
+					// $label = contenido de etiqueta, ejemplo "entrar a module list"
+					// $language = tipo de idioma de etiqueta, posible contenido = label, esp, eng
+					// $forward = tipo de forward, posible contenido= success, failure
+						//ejemplo:	$moduleName=modules
+						//			$actionName=modulesList
+						//			$label= Entrar a listar modulos
+						//			$language= esp
+						//			$forward= success
+					
+					$actionLogLabel->add($actionName,$languageLabel,$labelName,$forward);
+				}
+
+			} //end foreach ($actionProperties
+			return true;
+		}
+		else return false;
+	}
+
+
+	/**
+	*
+	*	Subfuncion de agregar modulo que agrega tablas sql
+	*	@param string $sql variable que contiene codigo sql
+	*	@return true si se agrego correctamente
+	*/
+	function loadSqlData($sql){
+		foreach ($sql as $eachQuery){
+			 $con = Propel::getConnection(ModulePeer::DATABASE_NAME);
+			 $stmt = $con->createStatement();
+
+			 $rs = $stmt->executeUpdate($eachQuery);
+		}
+		return true;
+	}
+
+
+	/**
+	*
+	*	Subfuncion de agregar modulo que agrega informacion al xml "phpmvc-config"
+	*	@param string $moduleName nombre del modulo
+	*	@return true si se agrego correctamente
+	*/
+	function loadPhpmvcConfig($moduleName){
+		
+
+		$date=date('Ydm_His');
+
+		//////////
+		// la parte a cargar
+		$phpmvcInstalationPath="WEB-INF/classes/modules/$moduleName/phpmvc-config-$moduleName.xml";
+
+		$xmlPhpmvc=fopen($phpmvcInstalationPath,"rb");
+		$xmlPhpmvcLoad=(fread($xmlPhpmvc,filesize($phpmvcInstalationPath)));
+
+		
+		//////////
+		// comparationLine contiene la primer linea de nuestro xml a ejecutar, que contiene un tag html
+		fseek($xmlPhpmvc,0);
+		$comparationLine=fgets($xmlPhpmvc);
+
+		$buffer="";
+		//////////
+		// el xml original
+		$configPhpmvcPath="WEB-INF/phpmvc-config.xml";
+		$configPhpmvc=fopen($configPhpmvcPath,"rb+");
+
+
+		
+		//////////
+		// el xml resultante
+		$configPhpmvcResult=fopen("$configPhpmvcPath.$date.tmp","wb");
+
+		if ($configPhpmvc) {
+			$buffer = fgets($configPhpmvc);
+			while (!feof($configPhpmvc) && $buffer!="<!-- instalation tag-->\r\n") {
+				
+				//////////
+				// si el modulo ya estaba instalado en el xml...
+				if ($buffer == $comparationLine){
+					fclose($configPhpmvcResult);
+					fclose($configPhpmvc);
+					fclose($xmlPhpmvc);
+					return false;
+				}
+				fputs($configPhpmvcResult,$buffer);	
+				$buffer = fgets($configPhpmvc);
+				}
+			fwrite($configPhpmvcResult,$xmlPhpmvcLoad);
+			fputs($configPhpmvcResult,"\r\n\r\n\r\n");
+			while(!feof($configPhpmvc)){
+				fputs($configPhpmvcResult,$buffer);	
+				$buffer = fgets($configPhpmvc);
+			}
+
+			//////////
+			// cierro archivos
+			fclose($configPhpmvcResult);
+			fclose($configPhpmvc);
+			fclose($xmlPhpmvc);
+
+
+			//////////
+			// dejo archivo anterior como backup, renombro archivo resultante como original
+			rename($configPhpmvcPath,"$configPhpmvcPath$date.backup");
+			rename("$configPhpmvcPath.$date.tmp",$configPhpmvcPath);
+			unlink("$configPhpmvcPath.$date.tmp");
+		}
 		return true;
 	}
 
 
 
-/**
-*
-*	Checkea las dependencias de un modulo
-*	@param string $moduleName nombre del modulo
-*	@return object $dependencies dependencias del modulo
-*/
-//useless
-/*function hasDependencies ($moduleName){
-		$obj = new Module();
-		$obj = ModulePeer::retrieveByPK($moduleName);
-}
-*/
+	/**
+	*
+	*	Actualiza en la base de datos módulos
+	*	@param string $moduleName nombre del modulo
+	*	@param string $description descripcion del modulo
+	*	@param string $label etiqueta del módulo
+	*	@return true si se agrego correctamente
+	*/
 
+	function updateModule($module,$description,$label) {
+			try{
+			$moduleObj = new Module();
+			$moduleObj = ModulePeer::retrieveByPK($module);
+		//	$moduleObj ->setDescription($description);
+		//	$moduleObj ->setLabel($label);
 
-/**
-*
-*	Checkea el estado de una dependencia
-*	@param string $dependencyName nombre de la dependencia
-*	@return true si esta activada, false si está desactivada
-*/
-function dependencyStatus ($dependencyName){
-		$obj = new Module();
-		$obj = ModulePeer::retrieveByPK($dependencyName);
-		if($obj){
-			if (!$obj->getAlwaysActive() ){
-				if(!$obj->getActive() ) {
-					return 0;
-				}
-			}	
+			$moduleObj ->save();
+			}catch (PropelException $e) {}
+			return true;
 		}
-		else return 0;
-		return 1;
-}
 
 
 
+	/**
+	*
+	*	Checkea las dependencias de un modulo
+	*	@param string $moduleName nombre del modulo
+	*	@return object $dependencies dependencias del modulo
+	*/
+	//useless
+	/*function hasDependencies ($moduleName){
+			$obj = new Module();
+			$obj = ModulePeer::retrieveByPK($moduleName);
+	}
+	*/
 
 
-
+	/**
+	*
+	*	Checkea el estado de una dependencia
+	*	@param string $dependencyName nombre de la dependencia
+	*	@return true si esta activada, false si está desactivada
+	*/
+	function dependencyStatus ($dependencyName){
+			$obj = new Module();
+			$obj = ModulePeer::retrieveByPK($dependencyName);
+			if($obj){
+				if (!$obj->getAlwaysActive() ){
+					if(!$obj->getActive() ) {
+						return 0;
+					}
+				}	
+			}
+			else return 0;
+			return 1;
+	}
 
 } // ModulePeer
