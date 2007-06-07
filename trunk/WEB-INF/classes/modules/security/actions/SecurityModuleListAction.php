@@ -66,9 +66,14 @@ class SecurityModuleListAction extends BaseAction {
 
 		$modules=ModulePeer::getAll();
 		
+		//////////
+		// hay que ver esto
+		
 		$loginUser=$_SESSION['loginUser'];
 		$userLevel=$loginUser->getLevelId();
 
+		//////////
+		// linea de test por ahora, sacar luego		
 		SecurityActionPeer::checkAccess(Common::userInfoToDoLog(),'modulesList');
 
 
@@ -89,7 +94,7 @@ class SecurityModuleListAction extends BaseAction {
 		}
 
 		//obtengo todos los niveles con bitlevel mayor al del usuario logueado
-    $levels = LevelPeer::getAllWithBitLevelGreaterThan($userLevel);
+		$levels = LevelPeer::getAllWithBitLevelGreaterThan($userLevel);
 
 		//contiene un nivel a comparar, equivalente a 2¨30 -1
 		$levelSave=1073741823;

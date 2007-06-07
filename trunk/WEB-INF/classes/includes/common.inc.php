@@ -413,6 +413,11 @@ class Common
 		return $dbDate;
  	}	
 
+	/**
+	* obtiene el id de usuario y de afiliado
+	*
+	* @return array $info informacion encontrada
+	*/	
 	function userInfoToDoLog(){
 			
 		$info = array();
