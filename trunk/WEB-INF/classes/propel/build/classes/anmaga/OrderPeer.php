@@ -35,6 +35,26 @@ class OrderPeer extends BaseOrderPeer {
 		global $system;
 		return $system["config"]["system"]["rowsPerPage"];
 	}
+	
+	function getStateNameFromNumber($number) {
+		global $protectedWords;
+		$stateTexts = $protectedWords["orderStates"];
+		switch ($number) {
+			case OrderPeer::STATE_NEW: 
+				return $stateTexts["new"];
+			case OrderPeer::STATE_ACCEPTED: 
+				return $stateTexts["accepted"];				
+			case OrderPeer::STATE_PENDING_APPROVAL: 
+				return $stateTexts["pendingApproval"];
+			case OrderPeer::STATE_IN_PROCESS: 
+				return $stateTexts["inProcess"];
+			case OrderPeer::STATE_COMPLETED: 
+				return $stateTexts["completed"];
+			case OrderPeer::STATE_CANCELLED: 
+				return $stateTexts["cancelled"];	
+		}
+		return "";
+	}
 
   /**
   * Crea un order nuevo.

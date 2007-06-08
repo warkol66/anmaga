@@ -20,6 +20,11 @@ require_once 'anmaga/om/BaseOrderStateChange.php';
  */
 class OrderStateChange extends BaseOrderStateChange {
 
+        /*
+        * Obtiene el usuario asociado al cambio de estado.
+        *
+        * @return User/UserByAffiliate Usuario asociado
+        */
         function getUser() {
                 if ($this->getAffiliateId() == "0") {
                         require_once("UserPeer.php");
@@ -28,5 +33,15 @@ class OrderStateChange extends BaseOrderStateChange {
                 else
                         return $this->getUserByAffiliate();
         }
+        
+        /*
+        * Obtiene el nombre del estado.
+        * 
+        * @return string Nombre del estado
+        */
+        function getStateName() {
+                require_once("OrderPeer.php");
+                return OrderPeer::getStateNameFromNumber($this->getState());
+        }        
 
 } // OrderStateChange

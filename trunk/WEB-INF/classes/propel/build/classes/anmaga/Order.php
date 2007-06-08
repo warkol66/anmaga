@@ -14,4 +14,13 @@ require_once 'anmaga/om/BaseOrder.php';
  */
 class Order extends BaseOrder {
 
+        /*
+        * Obtiene el nombre del estado.
+        * 
+        * @return string Nombre del estado
+        */
+        function getStateName() {
+                return OrderPeer::getStateNameFromNumber($this->getState());
+        }
+
 }
