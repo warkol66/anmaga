@@ -56,16 +56,7 @@ class	SecurityModuleDoSaveAction extends BaseAction {
 		// contiene todos los modulos
 		$modules=$_POST["modules"];
 
-		//Obtengo el nivel base del modulo que debe tener en base al nivel del usuario logueado
-		$loginUser=$_SESSION['loginUser'];
-		$userLevel=$loginUser->getLevelid();
-		$baseLevel = 1;
-		while ($userLevel > 1) {
-			$baseLevel += $userLevel;
-			$userLevel = $userLevel / 2;
-		}
 
-		//por cada action voy seteando en $baseLevel los accesos
 		//Cabe destacar que igualmente los nuevos accesos vienen en $_POST["activeaction"];
 		foreach($modules as $module)
 			SecurityModulePeer::clearAccess($module,$baseLevel);
@@ -89,7 +80,6 @@ class	SecurityModuleDoSaveAction extends BaseAction {
 			foreach($activeModules as $activeModule) {
 				$level+=$activeModule;
   		}
-			$level += $baseLevel;
 			SecurityModulePeer::setNewAccess($key,$level);
 		}
 

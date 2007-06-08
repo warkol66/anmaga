@@ -6,6 +6,7 @@ require_once("BaseAction.php");
 require_once("SecurityActionPeer.php");
 require_once("LevelPeer.php");
 
+require_once("ModulePeer.php");
 
 /**
 * Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
@@ -63,49 +64,43 @@ class SecurityActionListAction extends BaseAction {
 		$smarty->assign("modulo",$modulo);
 		$smarty->assign("section",$section);
 
-		$dir = "WEB-INF/classes/modules/";
-		$dh  = opendir($dir);
-		while (false !== ($module = readdir($dh))) {
-			if ($module[0]!='.') {	
-				$i++;
-				$moduleName[$i]=$module;
-			}
-		}
+		$modules=ModulePeer::getAll();
+		
 		
 		//////////
-		//quitar este metodo		
-		$loginUser=$_SESSION['loginUser'];
-		$userLevel=$loginUser->getLevelid();
-
+		// nuevo metodo para obtener la clase de usuario y su nivel
+		$userLevel=SecurityActionPeer::userInfoToSecurity();
 
 		if(isset($_GET["module"])) {
 			if($_GET["module"]!='todos'){
-				$actions = SecurityActionPeer::getAllByModuleAndBitLevel($_GET["module"],$userLevel);
-				$moduleView=$_POST["module"];
+				$actions = SecurityActionPeer::getAllByModuleAndBitLevel($_GET["module"],$userLevel['levelId']);
+				$moduleView=$_GET["module"];
 			}
 			else {
 				//obtengo todos los actions de la base de datos y los envio al smarty
-				$actions = SecurityActionPeer::getAllByBitLevel($userLevel);
+				$actions = SecurityActionPeer::getAllByBitLevel($userLevel['levelId']);
 				$moduleView=$_GET["module"];
 			}
-		}	else {
+		}	
+		else {
 			//obtengo todos los actions de la base de datos y los envio al smarty
-			$actions = SecurityActionPeer::getAllByBitLevel($userLevel);
+			$actions = SecurityActionPeer::getAllByBitLevel($userLevel['levelId']);
 			$moduleView='todos';
 		}
 
 		//obtengo todos los niveles con bitlevel mayor al del usuario logueado
-    $levels = LevelPeer::getAllWithBitLevelGreaterThan($userLevel);
+    $levels = LevelPeer::getAllWithBitLevelGreaterThan($userLevel['levelId']);
 
 		//contiene un nivel a comparar, equivalente a 2¨30 -1
 		$levelSave=1073741823;
 
+
 		$smarty->assign("actions",$actions);
 		$smarty->assign("levelsave",$levelSave);
-		$smarty->assign("modulesName",$moduleName);
+		$smarty->assign("modulesName",$modules);
 		$smarty->assign("moduleView",$moduleView);
 		$smarty->assign("levels",$levels);
-		$smarty->assign("userLevel",$userLevel);
+		$smarty->assign("userLevel",$userLevel['levelId']);
 
 		//////////
 		// Forward control to the specified success URI

@@ -20,4 +20,31 @@ require_once 'om/BaseSecurityAction.php';
  */	
 class SecurityAction extends BaseSecurityAction {
 
+
+	/**
+	*
+	* Obtiene la etiqueta de ese Action
+	*
+	* @return string label la etiqueta
+	*/
+	
+	function getLabel(){
+		
+		try{
+		global $system;
+		$language=$system["config"]["mluse"]["language"];
+		include_once 'anmaga/SecurityActionLabelPeer.php';
+		$language='eng';
+		$actionLabelInfo=SecurityActionLabelPeer::getByActionAndLanguage($this->GetAction(),$language);
+		return $actionLabelInfo->getLabel();
+		}catch (PropelException $e) {}
+	}
+
+
+
+
+
+
+
+
 } // SecurityAction
