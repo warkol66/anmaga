@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 require_once("BaseAction.php");
 require_once("OrderPeer.php");
@@ -45,13 +45,20 @@ class OrdersViewAction extends BaseAction {
 		$module = "Orders";
 		$section = "Orders";
 
-		//TODO: agregar chequeo de acceso
-    $order = OrderPeer::get($_GET["id"]);
-    if ( empty($order) ) {
+    	$order = OrderPeer::get($_GET["id"]);
+    	if ( empty($order) ) {
 			return $mapping->findForwardConfig('notExists');
 		}
+		
+		if (empty($_SESSION["loginUser"])) {
+			if ($_SESSION["loginUserByAffiliate"]->getAffiliateId() != $order->getAffiliateId())
+				return $mapping->findForwardConfig('noPermission');
+		}			
 
-    $smarty->assign("order",$order);
+    	$smarty->assign("order",$order);
+		
+		global $protectedWords;
+		$smarty->assign("stateTexts",$protectedWords["orderStates"]);
 
 		return $mapping->findForwardConfig('success');
 	}

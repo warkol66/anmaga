@@ -56,8 +56,16 @@ class OrdersStateDoChangeXAction extends BaseAction {
 			$affiliateId = $_SESSION["loginUserByAffiliate"]->getAffiliateId();
 		} 
 				
-		//TODO: agregar chequeo de acceso
 		$order = OrderPeer::get($_POST["orderId"]);
+		
+		if ( empty($order) ) {
+			return $mapping->findForwardConfig('notExists');
+		}		
+		
+		if (empty($_SESSION["loginUser"])) {
+			if ($_SESSION["loginUserByAffiliate"]->getAffiliateId() != $order->getAffiliateId())
+				return $mapping->findForwardConfig('noPermission');
+		}			
 		
 		if ( !empty($order) && !empty($_POST["orderId"]) && $_POST["state"] != "" ) {
 			$stateChange = OrderStateChangePeer::create($_POST["orderId"],$userId,$affiliateId,$_POST["state"],$_POST["comment"]);
@@ -65,6 +73,7 @@ class OrdersStateDoChangeXAction extends BaseAction {
 			$order->save();
 			$smarty->assign("stateChange",$stateChange);
 			$smarty->assign("state",$_POST["state"]);
+			$smarty->assign("stateName",OrderPeer::getStateNameFromNumber($_POST["state"]));
 			return $mapping->findForwardConfig('success');
 		}
 		
