@@ -67,34 +67,32 @@ class SecurityModuleListAction extends BaseAction {
 		$modules=ModulePeer::getAll();
 		
 		//////////
-		// hay que ver esto
-		
-		$loginUser=$_SESSION['loginUser'];
-		$userLevel=$loginUser->getLevelId();
+		// nuevo metodo para obtener la clase de usuario y su nivel
+		$userLevel=SecurityActionPeer::userInfoToSecurity();
 
 		//////////
 		// linea de test por ahora, sacar luego		
-		SecurityActionPeer::checkAccess(Common::userInfoToDoLog(),'modulesList');
+		//SecurityActionPeer::checkAccess(SecurityActionPeer::userInfoToSecurity(),'modulesList');
 
 
 		if(isset($_GET["module"])) {
 			if($_GET["module"]!='todos'){
-				$actions = SecurityActionPeer::getAllByModuleAndBitLevel($_GET["module"],$userLevel);
+				$actions = SecurityActionPeer::getAllByModuleAndBitLevel($_GET["module"],$userLevel['levelId']);
 				$moduleView=$_POST["module"];
 			}
 			else {
 				//obtengo todos los actions de la base de datos y los envio al smarty
-				$actions = SecurityActionPeer::getAllByBitLevel($userLevel);
+				$actions = SecurityActionPeer::getAllByBitLevel($userLevel['levelId']);
 				$moduleView=$_GET["module"];
 			}
 		}	else {
 			//obtengo todos los actions de la base de datos y los envio al smarty
-			$actions = SecurityActionPeer::getAllByBitLevel($userLevel);
+			$actions = SecurityActionPeer::getAllByBitLevel($userLevel['levelId']);
 			$moduleView='todos';
 		}
 
 		//obtengo todos los niveles con bitlevel mayor al del usuario logueado
-		$levels = LevelPeer::getAllWithBitLevelGreaterThan($userLevel);
+		$levels = LevelPeer::getAllWithBitLevelGreaterThan($userLevel['levelId']);
 
 		//contiene un nivel a comparar, equivalente a 2¨30 -1
 		$levelSave=1073741823;
@@ -104,7 +102,21 @@ class SecurityModuleListAction extends BaseAction {
 		$smarty->assign("modules",$modules);
 		$smarty->assign("moduleView",$moduleView);
 		$smarty->assign("levels",$levels);
-		$smarty->assign("userLevel",$userLevel);
+		$smarty->assign("userLevel",$userLevel['levelId']);
+
+
+		//////////
+		// array de tipos de usuarios
+		$userTypes= array();
+		$userTypes[1]['type']='Users';
+		$userTypes[1]['bitUser']=1;
+		$userTypes[2]['type']='Users By Affiliate';
+		$userTypes[2]['bitUser']=2;
+		$userTypes[3]['type']='Users By Registration';
+		$userTypes[3]['bitUser']=4;
+
+
+		$smarty->assign("userTypes",$userTypes);
 
 		//////////
 		// Forward control to the specified success URI
@@ -115,4 +127,3 @@ class SecurityModuleListAction extends BaseAction {
 	}
 
 }
-?>

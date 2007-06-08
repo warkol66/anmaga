@@ -58,7 +58,15 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		$allActions = SecurityActionPeer::getAll();
 		return SecurityActionPeer::getOnlyActionsWithAccess($allActions,$bitLevel);
   }
-  
+ 
+	
+	/**
+	* Obtiene todos los actions cargados en la DB con acceso
+	*
+	* @param stringg $allActions todos los actions
+	* @param int $bitLevel Bit Level
+	* @return array Actions
+	*/
   function getOnlyActionsWithAccess($allActions,$bitLevel) {
 		$actions = array();
 		foreach ($allActions as $action) {
@@ -68,6 +76,14 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		return $actions;
   }
   
+
+	/**
+	* Obtiene todos los actions cargados en la DB con acceso para users by affiliate
+	*
+	* @param stringg $allActions todos los actions
+	* @param int $bitLevel Bit Level
+	* @return array Actions
+	*/
   function getOnlyActionsWithAccessUsersByAffiliate($allActions,$bitLevel) {
 		$actions = array();
 		foreach ($allActions as $action) {
@@ -236,6 +252,11 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 */
 
 
+	/**
+	* obtengo todos los actions de un modulo
+	* @param string $module nombre del modulo
+	* @return object $obj actions encontrados
+	*/
 	function getAllByModule($module) {
 		$criteria = new Criteria();
 		$criteria->add(SecurityActionPeer::MODULE, $module);
@@ -243,17 +264,36 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
     return $obj;
 	}
 	
+
+
+	/**
+	* obtengo todos los actions de un modulo, dependiendo el nivel para users by affiliate
+	* @param string $module nombre del modulo
+	* @param int $bitLevel  nivel
+	* @return object $obj actions encontrados
+	*/
 	function getAllByModuleAndBitLevelUsersByAffiliate($module,$bitLevel) {
 		$allActions = SecurityActionPeer::getAllByModule($module);
 		return SecurityActionPeer::getOnlyActionsWithAccessUsersByAffiliate($allActions,$bitLevel);
 	}
 	
+
+	/**
+	* obtengo todos los actions de un modulo, dependiendo el nivel
+	* @param string $module nombre del modulo
+	* @param int $bitLevel  nivel
+	* @return object $obj actions encontrados
+	*/
 	function getAllByModuleAndBitLevel($module,$bitLevel) {
 		$allActions = SecurityActionPeer::getAllByModule($module);
 		return SecurityActionPeer::getOnlyActionsWithAccess($allActions,$bitLevel);
 	}
 
-	
+	/**
+	* Verifico si un action está o no
+	* @param string $action nombre del action
+	* @return true si se encuentra
+	*/
 	function getAllByAction($action) {
 		$criteria = new Criteria();
 		$criteria->add(SecurityActionPeer::ACTION, $action);
@@ -262,6 +302,12 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 			else    return false;
 	}
 	
+
+	/**
+	* Obtiene un action a partir de su par
+	* @param string $pair nombre del action par
+	* @return object $obj si lo encontró
+	*/
 	function getByPair($pair) {
 		$criteria = new Criteria();
 		$criteria->add(SecurityActionPeer::PAIR, $pair);
@@ -273,6 +319,10 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	}
 
 
+	/**
+	* Obtiene todos los nombres de modulos (1 sola vez por nombre)
+	* @return array $result los modulos encontrados
+	*/
 	function getModules() {
 	   
 		$criteria = new Criteria();
@@ -293,37 +343,52 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	* @return true si todo salio ok
 	*/
 	function checkAccess($user,$action){
+		
+		//////////
+		// obtengo el nombre del modulo a tratar
 		$module=SecurityActionPeer::getModuleByAction($action);
 		
-		echo "affiliate id es :";
-		print_r($user['affiliateId']);
-			echo "sip \n";
 		
-		if ( $user['affiliateId']== 999999 ){
+		//////////
+		// obtengo el nivel al modulo segun tipo de usuario
+		// user['type'] cotiene el tipo de usuario, donde 0 es user,
+		// 999999 es user by registration y cualquier otro es user by affiliate
+
+		if ( $user['userType']== 999999 ){
 			$moduleLevel=4;
 		}
-		elseif ($user['affiliateId']== 0 ){
+		elseif ($user['userType']== 0 ){
 			$moduleLevel=1;
 		}
 		else $moduleLevel=2;
-		
-		
+
+		//////////
+		// Obtengo el acceso al modulo
 		include_once 'SecurityModulePeer.php';
-		$securityModule=SecurityModulePeer::get($module);
-		print_r($securityModule);
+		$securityModule=SecurityModulePeer::getAccessByModule($module);
+
+		//////////
+		// comparo accesos bit a bit				
+		$access=SecurityActionPeer::checkAccessBitToBit($moduleLevel,$securityModule);
+
+		//////////
+		// comprobacion Modulo: retorno falso si el tipo de usuario no puede entrar al modulo
+		if ($access == 0) return false;
+
+
+		//////////
+		// Obtengo action y su nivel de acceso
+		$actionProperties = SecurityActionPeer::get($action);
+		$actionAccess=$actionProperties->getAccess();
+
+		//////////
+		// comprobacion Modulo: retorno falso si el nivel de usuario no es suficiente para acceder al action
+		if ( ($user['levelId'] & $actionAccess) == 0 ) {
+			return false;
+		}
 		
-		$access=SecurityActionPeer::checkAccessBitToBit($securityModule->getAccess,$moduleLevel);
-		echo "\naccess es $access \n";
-
-		//if ($access == 0) return false;
-
-		include_once 'LevelPeer.php';
-
-		//if ( empty($level) || ($level->getBitLevel() & $accessAction) == 0 ) {
-		//	header("Location:Main.php?do=noPermission");
-		//	exit();
-		//}
-
+		
+		return true;
 	}
 
 
@@ -347,12 +412,54 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	 * @param int $paramModule bit del modulo
 	 * @return 1 si un numero se incluye en otro
 	 */
-	function checkAccessBitToBit($paramModule,$paramUser){
-		if ((intval($paramModule) & intval($paramUser)) > 0 )
+	function checkAccessBitToBit($paramUser,$paramModule){
+		if ((intval($paramModule) & intval($paramUser)) > 0 ){
 				return 1;
-
+		}
 			return 0;
 
 	}
+
+
+	/**
+	* obtiene el nivel de usuario y el id de afiliado de dicho usuario
+	*
+	* @return array $info informacion encontrada
+	*/	
+	function userInfoToSecurity(){
+			
+		$info = array();
+		if(!empty($_SESSION['loginUser'])){
+			$info["levelId"] = $_SESSION['loginUser'];
+			if(is_object($info["levelId"]))
+				$info["levelId"]=$info["levelId"]->getLevelId();
+				$info["userType"] = 0;
+		}
+		elseif(!empty($_SESSION['loginUserByRegistration'])){ 
+			$info["levelId"]=$_SESSION['loginUserByRegistration'];
+			$info["userType"] =999999 ;
+
+		}
+		else{
+
+			
+			if(is_object($_SESSION["loginUserByAffiliate"])){
+				//////////
+				// version con propel toma esta linea
+				$info["levelId"]=$_SESSION["loginUserByAffiliate"]->getLevelId();
+				$info["userType"]=$_SESSION["loginUserByAffiliate"]->getAffiliateId();
+			}
+
+				//////////
+				// version sin propel toma esta linea
+			else $info["levelId"]=$_SESSION["loginUserByAffiliate"];
+		}
+		return $info;
+	}
+
+
+
+
+
 
 } // SecurityActionPeer
