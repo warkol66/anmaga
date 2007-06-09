@@ -1,15 +1,37 @@
-﻿<div id="div_order">
+﻿<table border='0' cellpadding='0' cellspacing='0' width='100%'>
+	<tr>
+		<td class='title'>Pedidos</td>
+	</tr>
+	<tr>
+		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td class='backgroundTitle'>Administraci&oacute;n de Pedidos </td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>Administrar pedido: <strong>|-$order->getId()-|</strong></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+</table>
+<div id="div_order">
 	<h2>Order</h2>
-
-	<p><strong>Created:</strong> |-$order->getCreated()-|</p>
-	<p><strong>Affiliate:</strong> |-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</p>
-	<p><strong>Branch:</strong> |-assign var=branch value=$order->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|</p>
-	<p><strong>User:</strong> |-assign var=user value=$order->getUserByAffiliate()-||-if $user-||-$user->getUsername()-||-/if-|</p>
+<strong>Creada:</strong> |-$order->getCreated()-|<br>
+	<strong>Mayorista:</strong> |-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|<br>
+	<strong>Sucursal:</strong> |-assign var=branch value=$order->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|<br>
+	<strong>Usuario:</strong> |-assign var=user value=$order->getUserByAffiliate()-||-if $user-||-$user->getUsername()-||-/if-|<br>
 	<p>
 		<strong>Estado Actual:</strong> <span id="state_actual">|-$order->getState()-|</span>
 	</p>
 	<p>
-		<table>
+	<table>
 			<caption>Cambios de Estados y Observaciones</caption>
 			<thead>
 				<tr>
@@ -27,7 +49,7 @@
 				</tr>
 				|-/foreach-|
 			</tbody>
-		</table>
+	</table>
 	</p>
 		<form action="Main.php" method="post">
 			<label for="state">Nuevo Estado:</label>
@@ -62,9 +84,9 @@
 		<tr>
 			<td class="tdSize1">|-$product->getcode()-|</td>
 			<td class="tdSize1">|-$productNode->getname()-|</td>
-			<td class="tdSize1">|-$item->getprice()|number_format:2:",":"."-|</td>
-			<td class="tdSize1">|-$item->getQuantity()-|</td>
-			<td class="tdSize1">|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity()-|</td>
+			<td align="right" class="tdSize1">|-$item->getprice()|number_format:2:",":"."-|</td>
+			<td align="right" class="tdSize1">|-$item->getQuantity()|number_format:2:",":"."-|</td>
+			<td align="right" class="tdSize1">|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-||-$totalItem|number_format:2:",":"."-|</td>
 		</tr>
 		|-foreachelse-|
 		<tr>
@@ -75,7 +97,7 @@
 	</table> 
 </div>
 
-	<p><strong>Total:</strong> |-$order->getTotal()-|</p>
+	<p><strong>Total:</strong> |-$order->getTotal()|number_format:2:",":"."-|</p>
 
 
 |- if $order->getOrderItems()|@count gt 0-|
