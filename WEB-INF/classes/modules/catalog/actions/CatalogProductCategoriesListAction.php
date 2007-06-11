@@ -43,16 +43,16 @@ class CatalogProductCategoriesListAction extends BaseAction {
 		}
 
 		$module = "Catalog";
-    $smarty->assign("module",$module);
+		$smarty->assign("module",$module);
 
 		$moduleSection = "ProductCategories";
-    $smarty->assign("moduleSection",$section);
+		$smarty->assign("moduleSection",$section);
 
 		$productCategories = TreePeer::getAllOnlyKind("ProductCategory");
 
-    $smarty->assign("productCategories",$productCategories);
+		$smarty->assign("productCategories",$productCategories);
 
-    $smarty->assign("message",$_GET["message"]);
+		$smarty->assign("message",$_GET["message"]);
 		$smarty->assign("loaded",$_GET["loaded"]);    
 
 		return $mapping->findForwardConfig('success');

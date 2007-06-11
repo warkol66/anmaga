@@ -43,17 +43,16 @@ class ProductPeer extends BaseProductPeer {
 	function create($code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId) {
     try {
 			$productObj = new Product();
-  	  $productObj->setCode($code);
+			$productObj->setCode($code);
 			$productObj->setDescription($description);
 			$productObj->setPrice($price);
 			$productObj->setUnitId($unitId);
 			$productObj->setMeasureUnitId($measureUnitId);
 			$productObj->save();
-
-			$uploadfile = 'WEB-INF/products/' . $productObj->getId();
-
-			if (!empty($image['tmp_name']))
-				move_uploaded_file($image['tmp_name'], $uploadfile);
+			
+			if (!empty($image['tmp_name'])) {
+				ProductPeer::createImages($image,$productObj->getId());
+			}
 
 	    require_once("NodePeer.php");
   	  return NodePeer::create($name,"Product",$productObj->getId(),$parentNodeId,0);
@@ -61,6 +60,86 @@ class ProductPeer extends BaseProductPeer {
 		catch (PropelException $e) {
 			return false;
 		}
+	}
+	
+	/**
+	* Chequea el tamaño y formato de la imagen.
+	*
+	* @param array $image Imagen
+	* @return boolean true si es valida
+	*/
+	function checkImage($image) {
+		global $system;
+		if ( filesize($image['tmp_name']) <= $system["config"]["catalog"]["image"]["maxSize"]) {
+			$parts = split('/',$image['type']);
+			$format = $parts[1];
+			$formats = $system["config"]["catalog"]["image"]["formats"];
+			$valid = false;
+			foreach( $formats as $ext => $value )
+			{
+				if ($value["value"] == "YES" && $ext == $format)
+					$valid = true;
+			}
+			return $valid;
+		}	
+		else
+			return false;
+	}
+	
+	/**
+	* Copia la imagen del producto y crea el thumbnail.
+	*
+	* @param array $image Imagen
+	* @param string $name Nombre 
+	* @return void
+	*/	
+	function createImages($image,$name) {		
+		
+		if (ProductPeer::checkImage($image)) {
+			$uploadFile = 'WEB-INF/products/' . $name;
+			move_uploaded_file($image['tmp_name'], $uploadFile);	
+		
+			global $system;	
+			$width = $system["config"]["catalog"]["image"]["thumbnail"]["width"];
+			$height = $system["config"]["catalog"]["image"]["thumbnail"]["height"];
+			$resizeFormat = $system["config"]["catalog"]["image"]["thumbnail"]["resizeFormat"];
+			
+			$file = $uploadFile;
+			list($actualWidth, $actualHeight) = getimagesize($file);
+			
+			switch ($resizeFormat) {
+				case "1":
+					$newWidth = $width;
+					$newHeight = $height;
+					break;
+				case "2":
+					$newHeight = $height;
+					$perc = $newHeight / $actualHeight;
+					$newWidth = $actualWidth * $perc;
+					break;
+				case "3":
+					$newWidth = $width;
+					$perc = $newWidth / $actualWidth;
+					$newHeight = $actualHeight * $perc;			
+					break;							
+			}
+
+			$tn = imagecreatetruecolor($newWidth, $newHeight);
+			
+			switch ($image['type']) {
+				case "image/jpeg":
+					$newImage = imagecreatefromjpeg($file);
+					break;
+				case "image/png":
+					$newImage = imagecreatefrompng($file);
+					break;				
+			}
+			
+			imagecopyresampled($tn, $newImage, 0, 0, 0, 0, $newWidth, $newHeight, $actualWidth, $actualHeight);
+			
+			imagejpeg($tn, $uploadFile."_t0", 100); 	
+		}
+	
 	}
 	
   /**
@@ -90,10 +169,9 @@ class ProductPeer extends BaseProductPeer {
 			$productObj->setMeasureUnitId($measureUnitId);
 			$productObj->save();
 
-			$uploadfile = 'WEB-INF/products/' . $productObj->getId();
-
-			if (!empty($image['tmp_name']))
-				move_uploaded_file($image['tmp_name'], $uploadfile);
+			if (!empty($image['tmp_name'])) {
+				ProductPeer::createImages($image,$productObj->getId());
+			}
 
 			if (!empty($oldProduct)) {
 			  $node = $productObj->getNode();
@@ -140,10 +218,9 @@ class ProductPeer extends BaseProductPeer {
 		$productObj->setprice($price);
 		$productObj->setUnitId($unitId);
 		$productObj->setMeasureUnitId($measureUnitId);
-		if (!empty($image)) {
-			$uploadfile = 'WEB-INF/products/' . $productObj->getId();
-  		move_uploaded_file($image['tmp_name'], $uploadfile);
-  	}
+		if (!empty($image['tmp_name'])) {
+			ProductPeer::createImages($image,$productObj->getId());
+		}
 		$productObj->save();
 		return true;
   }
@@ -228,6 +305,23 @@ class ProductPeer extends BaseProductPeer {
 		$objects = parent::populateObjects($rs);
 		return $objects[0]; 		
   }
+
+	/**
+	* Actualiza el precio de un producto.
+	*
+	* @param string $code Codigo del producto
+	* @param int $price Nuevo Precio
+	* @return boolean true si se actualizo la informacion correctamente, false sino
+	*/
+	function updatePrice($code,$price) {
+		$product = ProductPeer::getByCode($code);
+		if (!empty($product)) {
+			$product->setPrice($price);
+			$product->save();
+			return true;
+		}
+		return false;
+	}
   
   function setSearchParentNodeId($parentNodeId) {
   	$this->searchParentNodeId = $parentNodeId;
@@ -274,6 +368,17 @@ class ProductPeer extends BaseProductPeer {
 		$pager = new PropelPager($cond,"NodePeer", "doSelect",$page,$perPage);
 		return $pager;
 	 }
+	
+	/**
+	* Obtiene todos los productos.
+	*
+	* @return array Informacion sobre los productos
+	*/
+	function getAllNodes() {
+		$cond = new Criteria();
+		$cond->add(NodePeer::KIND, "Product");
+		return NodePeer::doSelect($cond);
+	 }	
 
 }
 ?>

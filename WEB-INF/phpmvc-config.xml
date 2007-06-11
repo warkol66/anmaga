@@ -803,6 +803,7 @@
               scope = "request"
            validate = "true">
     <forward name="success" path="CatalogProductsList.tpl" />
+	<forward name="csv" path="CatalogProductsListCsv.tpl" />	
     </action>
 
     <action    path = "catalogProductsDoDelete"
@@ -1095,6 +1096,8 @@
               scope = "request"
            validate = "true">
     <forward name="success" path="OrdersView.tpl" />
+	<forward name="notExists" path="NoPermission.tpl" />
+	<forward name="noPermission" path="NoPermission.tpl" />
     </action>
 
     <action    path = "ordersList"
@@ -1152,6 +1155,8 @@
            validate = "true">
     <forward name="success" path="OrdersStateDoChangeX.tpl" />
 	<forward name="failure" path="OrdersStateDoChangeXFailure.tpl" />
+	<forward name="notExists" path="NoPermission.tpl" />
+	<forward name="noPermission" path="NoPermission.tpl" />	
     </action>
     
     <action    path = "ordersViewCart"
