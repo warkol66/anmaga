@@ -1,4 +1,4 @@
-Menu Users
+|-if $loginUser neq ""-|
 <table width="150" border="0" cellpadding="0" cellspacing="0" class="menuCell">
   <tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersWelcome">Ir al Inicio</a></td>
@@ -23,6 +23,12 @@ Menu Users
 	</td>
   </tr>
 |-/if-|
+	<tr> 
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersList">Lista de Pedidos</a></td>
+  </tr>
+	<tr> 
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersImport">Importar Pedidos</a></td>
+  </tr>
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesList">Distribuidores / Mayoristas</a></td>
   </tr>
@@ -54,7 +60,8 @@ Menu Users
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
   </tr>
 </table>
-Menu UsersByAffiliate
+|-/if-|
+|-if $loginUserByAffiliate neq ""-|
 <table width="150" border="0" cellpadding="0" cellspacing="0" class="menuCell">
   <tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByaffiliateWelcome">Ir al Inicio</a></td>
@@ -86,6 +93,4 @@ Menu UsersByAffiliate
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
   </tr>
 </table>
-
-
-
+|-/if-|
