@@ -57,6 +57,16 @@ class CatalogProductsListAction extends BaseAction {
     $smarty->assign("productCategories",$productCategories);
 
 		$productPeer = new ProductPeer();
+		
+		if ($_GET["csv"] == "1") {
+			$products = $productPeer->getAllNodes();
+			$smarty->assign("products",$products);
+			$this->template->template = "TemplateCsv.tpl";	
+			header("content-disposition: attachment; filename=products.csv");
+			header("Content-type: text/csv; charset=UTF-8");			
+			return $mapping->findForwardConfig('csv');
+		}
+		
 
 		if (!empty($_GET["priceFrom"]))
 			$productPeer->setSearchPriceFrom($_GET["priceFrom"]);

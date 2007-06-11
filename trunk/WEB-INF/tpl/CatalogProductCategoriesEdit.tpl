@@ -48,6 +48,7 @@
 							<input type="radio" name="mode" value="1">Reemplazar Catalogo de la Categoria</input>
 							<input type="radio" name="mode" value="2">Reemplazar Codigos Existentes</input>
 							<input type="radio" name="mode" value="3" checked="checked">Solo Agregar Nuevos</input>
+							<input type="radio" name="mode" value="4">Solo Actualizar Precios</input>
 						</p>
 						<p>
 							<input type="hidden" name="parentNodeId" id="parentNodeId" value="|-$node->getId()-|" />

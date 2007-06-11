@@ -24,6 +24,7 @@
 		</form> 
 		<a href="Main.php?do=catalogProductsList">Sin Filtros</a> </div> 
 	<h3><a href="Main.php?do=catalogProductsEdit">Agregar Product</a></h3> 
+	<h3><a href="Main.php?do=catalogProductsList&amp;csv=1">Exportar Productos a CSV</a></h3> 
 	<table width="100%" border="0" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products"> 
 		<thead> 
 			<tr> 

@@ -69,6 +69,8 @@ class CatalogProductsDoLoadWithCategoryAction extends BaseAction {
 					break;
 				case "2": //Reemplaza codigos existentes
 					break;
+				case "4": //Solo actualiza precios
+					break;					
 				default: //Solo agrega nuevos
      			break;
      	}
@@ -96,18 +98,22 @@ class CatalogProductsDoLoadWithCategoryAction extends BaseAction {
 						$measureUnitId = 0;
 					switch ($_POST["mode"]) {
 						case "1": //Reemplaza todo el catalogo
-        			if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$parentNodeId,$unitId,$measureUnitId) > 0 )
-        				$loaded++;
+        					if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$parentNodeId,$unitId,$measureUnitId) > 0 )
+        						$loaded++;
 							break;
 						case "2": //Reemplaza codigos existentes
-        			if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$parentNodeId,$unitId,$measureUnitId) > 0 )
-        				$loaded++;
+        					if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$parentNodeId,$unitId,$measureUnitId) > 0 )
+        						$loaded++;
 							break;
+						case "4": //Solo actualiza los precios
+							if ( ProductPeer::updatePrice($product[0],$product[3]) )
+								$loaded++;
+							break; 
 						default: //Solo agrega nuevos
-        			if ( ProductPeer::create($product[0],$product[1],$product[2],$product[3],null,$parentNodeId,$unitId,$measureUnitId) > 0 )
-        				$loaded++;
-        			break;
-     			}
+        					if ( ProductPeer::create($product[0],$product[1],$product[2],$product[3],null,$parentNodeId,$unitId,$measureUnitId) > 0 )
+        						$loaded++;
+        					break;
+     				}
 				}
 			}
 

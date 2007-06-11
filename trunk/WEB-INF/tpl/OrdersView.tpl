@@ -28,7 +28,7 @@
 	<strong>Sucursal:</strong> |-assign var=branch value=$order->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|<br>
 	<strong>Usuario:</strong> |-assign var=user value=$order->getUserByAffiliate()-||-if $user-||-$user->getUsername()-||-/if-|<br>
 	<p>
-		<strong>Estado Actual:</strong> <span id="state_actual">|-$order->getState()-|</span>
+		<strong>Estado Actual:</strong> <span id="state_actual">|-$order->getStateName()-|</span>
 	</p>
 	<p>
 	<table>
@@ -44,7 +44,7 @@
 					<td>|-$stateChange->getCreated()-|</td>
 					<td>|-assign var=affiliate value=$stateChange->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>
 					<td>|-assign var=user value=$stateChange->getUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
-					<td>|-$stateChange->getState()-|</td>
+					<td>|-$stateChange->getStateName()-|</td>
 					<td>|-$stateChange->getComment()-|</td>
 				</tr>
 				|-/foreach-|
@@ -54,12 +54,12 @@
 		<form action="Main.php" method="post">
 			<label for="state">Nuevo Estado:</label>
 			<select name="state" id="state">
-				<option value="0"|-if $order->getState() eq 0-| selected="selected"|-/if-|>Emitida</option>
-				<option value="1"|-if $order->getState() eq 1-| selected="selected"|-/if-|>Aceptada</option>
-				<option value="2"|-if $order->getState() eq 2-| selected="selected"|-/if-|>Pendiente Aprobación</option>
-				<option value="3"|-if $order->getState() eq 3-| selected="selected"|-/if-|>En Proceso</option>
-				<option value="4"|-if $order->getState() eq 4-| selected="selected"|-/if-|>Completa</option>
-				<option value="5"|-if $order->getState() eq 5-| selected="selected"|-/if-|>Cancelada</option>
+				<option value="0"|-if $order->getState() eq 0-| selected="selected"|-/if-|>|-$stateTexts.new-|</option>
+				<option value="1"|-if $order->getState() eq 1-| selected="selected"|-/if-|>|-$stateTexts.accepted-|</option>
+				<option value="2"|-if $order->getState() eq 2-| selected="selected"|-/if-|>|-$stateTexts.pendingApproval-|</option>
+				<option value="3"|-if $order->getState() eq 3-| selected="selected"|-/if-|>|-$stateTexts.inProcess-|</option>
+				<option value="4"|-if $order->getState() eq 4-| selected="selected"|-/if-|>|-$stateTexts.completed-|</option>
+				<option value="5"|-if $order->getState() eq 5-| selected="selected"|-/if-|>|-$stateTexts.cancelled-|</option>
 			</select>
 			<label for="comment">Observación:</label>
 			<textarea name="comment" id="comment"></textarea>	
