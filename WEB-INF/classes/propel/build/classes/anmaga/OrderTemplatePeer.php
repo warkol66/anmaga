@@ -159,4 +159,3 @@ class OrderTemplatePeer extends BaseOrderTemplatePeer {
 
 
 }
-?>
