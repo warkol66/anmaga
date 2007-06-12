@@ -119,4 +119,3 @@ class CatalogProductsDoLoadInCategoryAction extends BaseAction {
 	}
 
 }
-?>

@@ -56,4 +56,3 @@ class CatalogProductsDoDeleteAction extends BaseAction {
 	}
 
 }
-?>

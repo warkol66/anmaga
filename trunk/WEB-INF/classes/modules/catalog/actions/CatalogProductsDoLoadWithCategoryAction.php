@@ -128,4 +128,3 @@ class CatalogProductsDoLoadWithCategoryAction extends BaseAction {
 	}
 
 }
-?>

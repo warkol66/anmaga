@@ -74,4 +74,3 @@ class CatalogMeasureUnitsDoEditAction extends BaseAction {
 	}
 
 }
-?>

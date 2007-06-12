@@ -58,4 +58,3 @@ class CatalogUnitsListAction extends BaseAction {
 	}
 
 }
-?>

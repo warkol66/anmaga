@@ -75,4 +75,3 @@ class CatalogUnitsDoEditAction extends BaseAction {
 	}
 
 }
-?>
