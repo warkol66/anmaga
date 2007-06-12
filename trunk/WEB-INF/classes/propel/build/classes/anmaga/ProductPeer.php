@@ -381,4 +381,3 @@ class ProductPeer extends BaseProductPeer {
 	 }	
 
 }
-?>

@@ -127,4 +127,3 @@ class ProductCategoryPeer extends BaseProductCategoryPeer {
 
 
 }
-?>

@@ -83,4 +83,3 @@ class OrderItemPeer extends BaseOrderItemPeer {
   }
 
 }
-?>

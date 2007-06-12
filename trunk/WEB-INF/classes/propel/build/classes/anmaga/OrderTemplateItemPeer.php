@@ -96,4 +96,3 @@ class OrderTemplateItemPeer extends BaseOrderTemplateItemPeer {
   }
 
 }
-?>
