@@ -59,4 +59,3 @@ class OrdersConfirmAction extends BaseAction {
 	}
 
 }
-?>

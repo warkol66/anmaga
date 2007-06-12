@@ -81,4 +81,3 @@ class OrdersStateDoChangeXAction extends BaseAction {
 	}
 
 }
-?>

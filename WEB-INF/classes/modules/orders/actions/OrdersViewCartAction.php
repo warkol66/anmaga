@@ -56,4 +56,3 @@ class OrdersViewCartAction extends BaseAction {
 	}
 
 }
-?>

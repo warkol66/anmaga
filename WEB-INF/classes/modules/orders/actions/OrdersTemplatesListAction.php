@@ -68,4 +68,3 @@ class OrdersTemplatesListAction extends BaseAction {
 	}
 
 }
-?>

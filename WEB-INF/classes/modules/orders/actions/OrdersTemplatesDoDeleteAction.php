@@ -54,4 +54,3 @@ class OrdersTemplatesDoDeleteAction extends BaseAction {
 	}
 
 }
-?>
