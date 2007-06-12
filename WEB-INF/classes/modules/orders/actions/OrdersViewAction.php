@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once("BaseAction.php");
 require_once("OrderPeer.php");
 
