@@ -56,4 +56,3 @@ class CatalogMeasureUnitsDoDeleteAction extends BaseAction {
 	}
 
 }
-?>

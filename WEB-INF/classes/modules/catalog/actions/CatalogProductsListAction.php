@@ -88,4 +88,3 @@ class CatalogProductsListAction extends BaseAction {
 	}
 
 }
-?>

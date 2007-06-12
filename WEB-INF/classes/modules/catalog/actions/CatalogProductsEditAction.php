@@ -84,4 +84,3 @@ class CatalogProductsEditAction extends BaseAction {
 	}
 
 }
-?>

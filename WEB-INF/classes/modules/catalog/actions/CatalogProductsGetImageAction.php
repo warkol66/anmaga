@@ -58,4 +58,3 @@ class CatalogProductsGetImageAction extends BaseAction {
 	}
 
 }
-?>
