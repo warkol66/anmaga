@@ -32,10 +32,10 @@ class Module extends BaseModule {
 	function getLabel(){
 		
 		try{
+		include_once 'anmaga/ModuleLabelPeer.php';
 		global $system;
 		$language=$system["config"]["mluse"]["language"];
-		include_once 'anmaga/ModuleLabelPeer.php';
-		$language='eng';
+		if(empty($language)) $language='eng';
 		$moduleLabelInfo=ModuleLabelPeer::getByModuleAndLanguage($this->GetName(),$language);
 		return $moduleLabelInfo->getLabel();
 		}catch (PropelException $e) {}
@@ -51,10 +51,12 @@ class Module extends BaseModule {
 	*/
 	function getDescription(){
 		try{
+			include_once 'anmaga/ModuleLabelPeer.php';
+			
 			global $system;
 			$language=$system["config"]["mluse"]["language"];
-			include_once 'anmaga/ModuleLabelPeer.php';
-			$language='eng';
+			if(empty($language)) $language='eng';
+			
 			$moduleLabelInfo=ModuleLabelPeer::getByModuleAndLanguage($this->GetName(),$language);
 			return $moduleLabelInfo->getDescription();
 		}catch (PropelException $e) {}

@@ -435,11 +435,23 @@ class ModulePeer extends BaseModulePeer {
 			try{
 			$moduleObj = new Module();
 			$moduleObj = ModulePeer::retrieveByPK($module);
-		//	$moduleObj ->setDescription($description);
-		//	$moduleObj ->setLabel($label);
-
 			$moduleObj ->save();
 			}catch (PropelException $e) {}
+			
+			$cond = new Criteria();
+			$cond->add(ModuleLabelPeer::NAME, $module);
+			
+			global $system;
+			$language=$system["config"]["mluse"]["language"];
+			if(empty($language)) $language='eng';
+
+			$cond->add(ModuleLabelPeer::LANGUAGE, $language);
+			$moduleLabel = ModuleLabelPeer::doSelect($cond);
+
+			$moduleLabel[0]->setDescription($description);
+			$moduleLabel[0] ->setLabel($label);
+			$moduleLabel[0] ->save();
+
 			return true;
 		}
 
