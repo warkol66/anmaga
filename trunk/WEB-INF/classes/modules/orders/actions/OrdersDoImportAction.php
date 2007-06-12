@@ -173,4 +173,3 @@ class OrdersDoImportAction extends BaseAction {
 	}
 
 }
-?>

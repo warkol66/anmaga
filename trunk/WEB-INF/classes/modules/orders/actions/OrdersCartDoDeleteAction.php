@@ -51,4 +51,3 @@ class OrdersCartDoDeleteAction extends BaseAction {
 	}
 
 }
-?>

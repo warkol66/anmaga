@@ -90,4 +90,3 @@ class OrdersDoAddToCartAction extends BaseAction {
 	}
 
 }
-?>

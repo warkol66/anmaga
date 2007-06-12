@@ -54,4 +54,3 @@ class OrdersDoDeleteAction extends BaseAction {
 	}
 
 }
-?>

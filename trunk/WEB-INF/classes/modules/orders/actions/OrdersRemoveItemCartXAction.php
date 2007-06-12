@@ -72,4 +72,3 @@ class OrdersRemoveItemCartXAction extends BaseAction {
 	}
 
 }
-?>
