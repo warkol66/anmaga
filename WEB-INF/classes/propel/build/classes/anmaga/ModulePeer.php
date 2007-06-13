@@ -159,6 +159,10 @@ class ModulePeer extends BaseModulePeer {
 				}
 			}
 
+			//////////
+			// parte tablas sql puras			
+			$sql=ModulePeer::loadSqlData($arrayXml["moduleInstalation"]["moduleInstalation:sql"]);
+			if(!$sql)return false;
 
 			//////////
 			// parte de carga a la DB tabla security_module		
@@ -166,13 +170,14 @@ class ModulePeer extends BaseModulePeer {
 
 			if(!$securityModule) return false;
 
+			//////////
+			// parte carga actions a xml de configuracion phpmvc
+				$phpmvcConfig=ModulePeer::loadPhpmvcConfig($moduleName);
+			if(!$phpmvcConfig) return false;
+
+			
 			foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"] as $actionName => $actionProperties){
-				
-				//////////
-				// parte carga actions a xml de configuracion phpmvc
-				//	$phpmvcConfig=ModulePeer::loadPhpmvcConfig($moduleName);
-				//if(!$phpmvcConfig) return false;
-				
+
 				//////////
 				// parte de carga a la DB tabla security_action
 				$securityAction=ModulePeer::loadSecurityAction($actionName,$moduleName,$actionProperties["securityAction"]);
@@ -187,13 +192,6 @@ class ModulePeer extends BaseModulePeer {
 				if(!$actionLogs) return false;
 
 			} // end foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"]
-
-		
-			//////////
-			// parte tablas sql puras			
-			$sql=ModulePeer::loadSqlData($arrayXml["moduleInstalation"]["moduleInstalation:sql"]);
-			if(!$sql)return false;
-			
 
 
 			//////////

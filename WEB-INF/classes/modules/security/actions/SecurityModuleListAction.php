@@ -65,7 +65,7 @@ class SecurityModuleListAction extends BaseAction {
 		$smarty->assign("section",$section);
 
 		$modules=ModulePeer::getAll();
-		
+
 		//////////
 		// nuevo metodo para obtener la clase de usuario y su nivel
 		$userLevel=SecurityActionPeer::userInfoToSecurity();
@@ -75,32 +75,15 @@ class SecurityModuleListAction extends BaseAction {
 		//SecurityActionPeer::checkAccess(SecurityActionPeer::userInfoToSecurity(),'modulesList');
 
 
-		if(isset($_GET["module"])) {
-			if($_GET["module"]!='todos'){
-				$actions = SecurityActionPeer::getAllByModuleAndBitLevel($_GET["module"],$userLevel['levelId']);
-				$moduleView=$_POST["module"];
-			}
-			else {
-				//obtengo todos los actions de la base de datos y los envio al smarty
-				$actions = SecurityActionPeer::getAllByBitLevel($userLevel['levelId']);
-				$moduleView=$_GET["module"];
-			}
-		}	else {
-			//obtengo todos los actions de la base de datos y los envio al smarty
-			$actions = SecurityActionPeer::getAllByBitLevel($userLevel['levelId']);
-			$moduleView='todos';
-		}
-
 		//obtengo todos los niveles con bitlevel mayor al del usuario logueado
 		$levels = LevelPeer::getAllWithBitLevelGreaterThan($userLevel['levelId']);
 
 		//contiene un nivel a comparar, equivalente a 2¨30 -1
 		$levelSave=1073741823;
 
-		$smarty->assign("actions",$actions);
+
 		$smarty->assign("levelsave",$levelSave);
 		$smarty->assign("modules",$modules);
-		$smarty->assign("moduleView",$moduleView);
 		$smarty->assign("levels",$levels);
 		$smarty->assign("userLevel",$userLevel['levelId']);
 
