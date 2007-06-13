@@ -33,6 +33,9 @@
     <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesList">Distribuidores / Mayoristas</a></td>
   </tr>
 	<tr> 
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesBranchsList">Sucursales de Distribuidores / Mayoristas</a></td>
+  </tr>
+	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateList">Usuarios de Distribuidores / Mayoristas</a></td>
   </tr>
 	<tr> 
@@ -88,6 +91,9 @@
   </tr>
 	<tr>
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateList">Usuarios de Distribuidores / Mayoristas</a></td>
+  </tr>
+	<tr> 
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesBranchsList">Sucursales</a></td>
   </tr>
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>

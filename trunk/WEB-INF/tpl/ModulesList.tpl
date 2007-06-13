@@ -21,26 +21,29 @@ function checkscript() {
 		 <td>&nbsp;</td> 
 	 </tr> 
 	<tr> 
-		 <td>A continuación podrá administrar los módulos disponibles en el sistema. Para activar o desactivar módulos, debe tener en cuenta las dependencias de los mismos.</td> 
+		 <td class="tdSize2">A continuación podrá administrar los módulos disponibles en el sistema. Para activar o desactivar módulos, debe tener en cuenta las dependencias de los mismos.</td> 
 	 </tr> 
 	<tr> 
 		 <td>&nbsp;</td> 
 	 </tr> 
 </table> 
-<table width="60%" border="0" align="center" cellpadding="0" cellspacing="0" class="tablaborde"> 
+<table width="70%" border="0" align="center" cellpadding="5" cellspacing="0"> 
 	<tr> 
-		<td id="message"><span id="systemWorking" style="display:none;"></span></td> 
-		<td id="messageMod"></td> 
+		<td class="tdSize2" id="message"><span id="systemWorking" style="display:none;"></span></td> 
+		<td class="tdSize2" id="messageMod"></td> 
 	</tr> 
 	|-if $modulesNumber gt 0-|
 	<tr> 
-		<td colspan="2"> Se cargarón en el sistema el siguiente número de módulos nuevos: |-$modulesNumber-| módulo(s) </td> 
+		<td colspan="2" class="tdSize2">Se cargarón en el sistema el siguiente número de módulos nuevos: |-$modulesNumber-| módulo(s) </td> 
+	</tr> 
+	<tr> 
+		<td colspan="2" class="tdSize2">Detalle de módulos instalados:</td> 
 	</tr> 
 	|-/if-|
 	|-foreach from=$modules item=module name=modu-|
 	<tr> 
-		<td>|-$module.module-|</td> 
-		<td>|-$module.active-|</td> 
+		<td class="tdSize1">|-$module.module-|</td> 
+		<td class="tdSize1">|-$module.active-|</td> 
 	</tr> 
 	|-/foreach-|
 	<tr> 

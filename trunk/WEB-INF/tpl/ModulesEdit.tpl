@@ -15,7 +15,7 @@
 		 <td>&nbsp;</td> 
 	 </tr> 
 	<tr> 
-		 <td>A continuación podrá cambiar la etiqueta del nombre del módulo y su descripción. Estos cambios no alteran la funcionalidad de los módulos, son sólo los nombres y descripciones que se le  mostrarán al usuario.</td> 
+		 <td class="tdSize2">A continuación podrá cambiar la etiqueta del nombre del módulo y su descripción. Estos cambios no alteran la funcionalidad de los módulos, son sólo los nombres y descripciones que se le  mostrarán al usuario.</td> 
   </tr> 
 	<tr> 
 		 <td>&nbsp;</td> 
