@@ -431,6 +431,7 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		$info = array();
 		if(!empty($_SESSION['loginUser'])){
 			$info["levelId"] = $_SESSION['loginUser'];
+			$info["userType"] = 0;
 			if(is_object($info["levelId"]))
 				$info["levelId"]=$info["levelId"]->getLevelId();
 				$info["userType"] = 0;
