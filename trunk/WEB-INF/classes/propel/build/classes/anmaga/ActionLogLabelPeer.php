@@ -48,6 +48,23 @@ class ActionLogLabelPeer extends BaseActionLogLabelPeer {
 
 
 	/**
+	* Obtiene una etiqueta
+	* @param string $action nombre del action
+	* @param string $forward tipo de forward
+	* @param string $language idioma
+	* @return object $obj objeto encontrado
+	*/
+
+	function getAllByInfo($action,$forward,$language) {
+		$criteria = new Criteria();
+		$criteria->add(ActionLogLabelPeer::ACTION, $action);
+		$criteria->add(ActionLogLabelPeer::LANGUAGE, $language);
+		$criteria->add(ActionLogLabelPeer::FORWARD, $forward);
+    $obj = ActionLogLabelPeer::doSelect($criteria);
+    return $obj[0];
+	}
+
+		/**
 	* Obtiene una etiqueta dependiendo el nombre del action y el forward
 	* @param string $action nombre del action
 	* @param string $forward tipo de forward

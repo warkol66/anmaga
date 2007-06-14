@@ -103,8 +103,9 @@
 			<tr class="thresultado"> 
 				<th width="10%" nowrap scope="col"><a href='Main.php?|-$QUERY_STRING_NO_ORDER-|&order=fecha' class='thresultado'>Fecha y Hora</a></th>
 				<th width="10%" scope="col"><a href='Main.php?|-$QUERY_STRING_NO_ORDER-|&order=nombre' class='thresultado'>Usuario</a></th>
-				<th width="40%" scope="col"><a href='Main.php?|-$QUERY_STRING_NO_ORDER-|&order=accion' class='thresultado'>Acci&oacute;n</a></th>
-				<th width="30%" scope="col"><a href='Main.php?|-$QUERY_STRING_NO_ORDER-|&order=mensaje' class='thresultado'>Mensaje</a></th>
+				<th width="40%" scope="col"><a href='Main.php?|-$QUERY_STRING_NO_ORDER-|&order=accion'
+				class='thresultado'>Archivo</a></th>
+				<th width="30%" scope="col"><a href='Main.php?|-$QUERY_STRING_NO_ORDER-|&order=mensaje' class='thresultado'>Acci&oacute;n</a></th>
 				<th width="30%" scope="col"><a href='Main.php?|-$QUERY_STRING_NO_ORDER-|&order=mensaje' class='thresultado'>Modulo</a></th>
 
 			</tr>
@@ -122,7 +123,7 @@
 					|-$usersName[$smarty.foreach.ctacte.iteration]-|
 			  </td>
 			  <td scope="col" >|-$log->getAction()-|</td>
-			  <td scope="col" >|-$log->getMessage()-|</td>
+			  <td scope="col" >|-$log->getLabel()-|:|-$log->getObject()-|</td>
 			  <td scope="col" >|-if $action ne '' -| |-$action->getModule()-| |-/if-|</td>
 			</tr>
 			|-/foreach-|
