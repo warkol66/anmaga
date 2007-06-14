@@ -165,7 +165,7 @@ class LogsListAction extends BaseAction {
 			
 			}
 
-			  doLog('List histrico de datos');
+		//	  doLog('List histrico de datos');
 
 		
 			$savedLogs=$selectedLogs->getResult();
@@ -216,12 +216,12 @@ class LogsListAction extends BaseAction {
 
          
 
-    doLog('Entrar a listar');
+   // doLog('Entrar a listar');
 
 		//////////
 		// version 2 del logueo, en estado beta
 		//$actionName="logsList";
-		doLogV2(); 
+	//	doLogV2(); 
 			
     $smarty->assign("DISPLAY",1);        
     

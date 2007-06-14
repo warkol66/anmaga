@@ -20,4 +20,30 @@ require_once 'om/BaseActionLog.php';
  */	
 class ActionLog extends BaseActionLog {
 
+
+	/**
+	*
+	* Obtiene la etiqueta de ese modulo
+	*
+	* @return string label la etiqueta
+	*/
+	
+	function getLabel(){
+		
+		try{
+		include_once 'anmaga/ActionLogLabelPeer.php';
+		global $system;
+		$language=$system["config"]["mluse"]["language"];
+		if(empty($language)) $language='eng';
+		$logLabelInfo=ActionLogLabelPeer::getAllByInfo($this->GetAction(),$this->GetForward(),$language);
+		return $logLabelInfo->getLabel();
+		}catch (PropelException $e) {}
+	}
+
+
+
+
+
+
+
 } // ActionLog
