@@ -65,23 +65,20 @@
 																|-if $all eq "1"-|<td class="tdSize1">|-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
 																<td class="tdSize1">|-assign var=branch value=$order->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
 																<td class="tdSize1">|-$order->gettotal()|number_format:2:",":"."-|</td>
-																<td class="tdSize1">|-$order->getstate()-|</td>
+																<td class="tdSize1">|-$order->getStateName()-|</td>
 																<td>
 									<form action="Main.php" method="get">
 										<input type="hidden" name="do" value="ordersView" />
 										<input type="hidden" name="id" value="|-$order->getid()-|" />
 										<input type="submit" name="submit_go_view_order" value="Ver" class="boton" />
 									</form>
+									|-if $all eq "0"-|
 									<form action="Main.php" method="get">
 										<input type="hidden" name="do" value="ordersDoAddToCart" />
 										<input type="hidden" name="id" value="|-$order->getid()-|" />
 										<input type="submit" name="submit_go_add_order" value="Add To Cart" class="boton" />
 									</form>
-									<form action="Main.php" method="post">
-										<input type="hidden" name="do" value="ordersDoDelete" />
-										<input type="hidden" name="id" value="|-$order->getid()-|" />
-										<input type="submit" name="submit_go_delete_order" value="Borrar" onclick="return confirm('Seguro que desea eliminar el order?')" class="boton" />
-									</form>
+									|-/if-|
 								</td>
 							</tr>
 						|-/foreach-|

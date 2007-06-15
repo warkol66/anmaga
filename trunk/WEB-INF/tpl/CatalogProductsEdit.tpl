@@ -25,7 +25,7 @@
 							</p>
 							|-if $action eq "edit"-|
 							<div>
-								<img src="Main.php?do=productsGetImage&id=|-$product->getId()-|" alt="|-$node->getname()-|" />
+								<img src="Main.php?do=catalogProductsGetImage&id=|-$node->getId()-|" alt="|-$node->getname()-|" />
 							</div>
 							|-/if-|
 							<p>

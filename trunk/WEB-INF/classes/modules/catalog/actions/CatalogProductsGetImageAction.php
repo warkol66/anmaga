@@ -52,7 +52,10 @@ class CatalogProductsGetImageAction extends BaseAction {
 		global $moduleRootDir;
 
     if ( !empty($_GET["id"]) ) {
-			readfile($moduleRootDir."/WEB-INF/products/".$_GET["id"]);
+			$file = $moduleRootDir."/WEB-INF/products/".$_GET["id"];
+			if (!empty($_GET["tn"])) 
+				$file .= "_t0";
+			readfile($file);
     }
 
 	}
