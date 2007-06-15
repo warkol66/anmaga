@@ -51,7 +51,7 @@ class ModuleDependencyPeer extends BaseModuleDependencyPeer {
 	*/
 	function get($moduleName) {
 		$cond = new Criteria();
-		$cond->add(ModuleDependencyPeer::MODULE, $moduleName);
+		$cond->add(ModuleDependencyPeer::MODULENAME, $moduleName);
 		$todosObj = ModuleDependencyPeer::doSelect($cond);
 		return $todosObj;
 	}

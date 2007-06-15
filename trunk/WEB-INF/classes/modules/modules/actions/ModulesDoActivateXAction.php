@@ -103,19 +103,19 @@ class ModulesDoActivateXAction extends BaseAction {
 				if($flag==1){
 						$smarty->assign("flag",$flag);
 						$smarty->assign("dependenciesName",$dependenciesNames);
-						doLogV2('errorDependencyOn');
+					//	doLogV2('errorDependencyOn');
 						return $mapping->findForwardConfig('errorDependencyOn');
 				}
 				if ($flag==2){
 						$smarty->assign("dependenciesName",$dependenciesNames);
-						doLogV2('errorDependencyOff');
+					//	doLogV2('errorDependencyOff');
 						return $mapping->findForwardConfig('errorDependencyOff');		
 				}
 				$assignedModules= $modulePeer->setActive($moduleName,$activeModule);
 			} //else dependencies
 	//	} //isset
 
-		doLogV2('success');
+		//doLogV2('success');
 		//////////
 		// Forward control to the specified success URI
 		return $mapping->findForwardConfig('success');

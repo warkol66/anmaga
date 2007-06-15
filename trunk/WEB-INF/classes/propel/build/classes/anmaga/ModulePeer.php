@@ -123,8 +123,10 @@ class ModulePeer extends BaseModulePeer {
 */
 	function addAndInstallModule($moduleName) {
 		//try{
+		//	echo "\n\n";
+		//	echo "$moduleName   -";
 			$path="WEB-INF/classes/modules/$moduleName/$moduleName.xml";
-		
+		//	echo "$path   -";
 			/////////
 			// parte de carga de xml
 			require_once('includes/assoc_array2xml.php');
@@ -133,17 +135,28 @@ class ModulePeer extends BaseModulePeer {
 			$arrayXml = $converter->xml2array($xml);
 			//$arrayXml = $converter->xml2array_ns($xml,":");
 			
-			//print_r($arrayXml);
+		//	print_r($arrayXml);
 			//////////
 			// seccion de comprobaciones
-			if (empty($arrayXml))return false;
+
+		//	print_r($moduleName);
+			if (empty($arrayXml)){
+				echo "error 1";
+				return false;
+			}
 			
 			$xmlConfig=$arrayXml["moduleInstalation"]["moduleInstalation:config"];
 	
 			$xmlInfo=$xmlConfig["language"]["eng"];
 
-			if (empty ($xmlInfo["description"]) ) return false;
-			if (empty ($xmlInfo["label"]) ) return false;
+			if (empty ($xmlInfo["description"]) ){
+				echo "error 2";
+				return false;
+			}
+			if (empty ($xmlInfo["label"]) ){
+				echo "error 3";
+				return false;
+			}
 			if (empty($xmlConfig["alwaysActive"] ) )
 				$xmlConfig["alwaysActive"]=0;
 
@@ -153,8 +166,10 @@ class ModulePeer extends BaseModulePeer {
 				foreach ($xmlConfig["moduleDependencies"] as $moduleDependency){
 					$moduleDep = new ModuleDependencyPeer();
 					$dependency=$moduleDep->setDependency($moduleName, $moduleDependency);
-					if (!$dependency)
+					if (!$dependency){
+						echo "error 4";
 						return false;
+					}
 
 				}
 			}
@@ -162,18 +177,26 @@ class ModulePeer extends BaseModulePeer {
 			//////////
 			// parte tablas sql puras			
 			$sql=ModulePeer::loadSqlData($arrayXml["moduleInstalation"]["moduleInstalation:sql"]);
-			if(!$sql)return false;
+			if(!$sql){
+				echo "error 5";
+				return false;
+			}
 
 			//////////
 			// parte de carga a la DB tabla security_module		
 			$securityModule=ModulePeer::loadSecurityModule($moduleName,$arrayXml["moduleInstalation"]["moduleInstalation:securityModule"]);
 
-			if(!$securityModule) return false;
-
+			if(!$securityModule){
+				echo "error 6";
+				return false;
+			}
 			//////////
 			// parte carga actions a xml de configuracion phpmvc
 				$phpmvcConfig=ModulePeer::loadPhpmvcConfig($moduleName);
-			if(!$phpmvcConfig) return false;
+			if(!$phpmvcConfig){
+				echo "error 7";
+				return false;
+			}
 
 			
 			foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"] as $actionName => $actionProperties){
@@ -182,14 +205,20 @@ class ModulePeer extends BaseModulePeer {
 				// parte de carga a la DB tabla security_action
 				$securityAction=ModulePeer::loadSecurityAction($actionName,$moduleName,$actionProperties["securityAction"]);
 	
-				if(!$securityAction) return false;
+				if(!$securityAction){
+					echo "error 8";
+					return false;
+				}
 
 
 				//////////
 				// parte de carga a la DB tabla actionLogs_label
 				$actionLogs=ModulePeer::loadActionLogs($actionName,$actionProperties["actionLogs"]);
 	
-				if(!$actionLogs) return false;
+				if(!$actionLogs){
+					echo "error 9";
+					return false;
+				}
 
 			} // end foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"]
 
@@ -198,8 +227,10 @@ class ModulePeer extends BaseModulePeer {
 			// parte de carga a la base de datos tabla modules_module
 
 			$newModule=ModulePeer::loadModule($moduleName,$xmlConfig);
-			if (!$newModule)
+			if (!$newModule){
+				echo "error 10";
 				return false;
+			}
 			
 	//	}catch (PropelException $e) {}
 		return true;
