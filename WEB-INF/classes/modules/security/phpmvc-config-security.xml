@@ -32,22 +32,6 @@
 			<forward name="success" path="/Main.php?do=securityActionListUsersByAffiliate" redirect='true'/>
 		</action>
 
-		<action    path = "securityActionLoad"
-							 type = "SecurityActionLoadAction"
-							 name = "securityActionLoad"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="SecurityActionLoad.tpl" />
-		</action>
-
-		<action    path = "securityActionDoLoad"
-							 type = "SecurityActionDoLoadAction"
-							 name = "securityActionDoLoad"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=securityActionLoad" redirect='true'/>
-		</action>
-
 		<action    path = "securityActionDoSave"
 							 type = "SecurityActionDoSaveAction"
 							 name = "securityActionDoSave"
