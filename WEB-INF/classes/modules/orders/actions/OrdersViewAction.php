@@ -53,6 +53,13 @@ class OrdersViewAction extends BaseAction {
 			if ($_SESSION["loginUserByAffiliate"]->getAffiliateId() != $order->getAffiliateId())
 				return $mapping->findForwardConfig('noPermission');
 		}			
+		
+		if (empty($_SESSION["loginUser"])) {
+			$smarty->assign("all",0);
+		}
+		else {
+			$smarty->assign("all",1);
+		}		
 
     	$smarty->assign("order",$order);
 		

@@ -1074,14 +1074,6 @@
 			<forward name="success" path="OrdersList.tpl" />
 		</action>
 
-		<action    path = "ordersDoDelete"
-							 type = "OrdersDoDeleteAction"
-							 name = "ordersDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=ordersList&amp;message=deleted_ok" redirect="true" />
-		</action>
-
 		<action    path = "ordersCartDoDelete"
 							 type = "OrdersCartDoDeleteAction"
 							 name = "ordersCartDoDelete"

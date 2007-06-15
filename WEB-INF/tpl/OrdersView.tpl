@@ -106,10 +106,10 @@
 		</tbody> 
   </table> 
 </div>
-|- if $order->getOrderItems()|@count gt 0-|
+|-if $all eq "0" and $order->getOrderItems()|@count gt 0-|
 <form action="Main.php" method="post"> 
 	<input type="hidden" name="do" value="ordersDoAddToCart" /> 
 	<input type="hidden" name="id" value="|-$order->getId()-|" /> 
 	<input type="submit" value="Add To Cart" class="button" /> 
 </form>
-|-/if-| 
+|-/if-|  
