@@ -2,6 +2,9 @@
 
 require_once("BaseAction.php");
 require_once("ProductPeer.php");
+require_once("ProductCategoryPeer.php"); 
+require_once("UnitPeer.php");
+require_once("MeasureUnitPeer.php");
 require_once("NodePeer.php");
 
 class CatalogProductsDoLoadInCategoryAction extends BaseAction {
@@ -62,7 +65,7 @@ class CatalogProductsDoLoadInCategoryAction extends BaseAction {
 
 			switch ($_POST["mode"]) {
 				case "1": //Reemplaza todo el catalogo de esa categoria
-					NodePeer::deleteAllByKindAndParentId("Product",$_POST["parentNodeId"]);
+					ProductPeer::deleteAllByParentId($_POST["parentNodeId"]);
 					break;
 				case "2": //Reemplaza codigos existentes
 					break;

@@ -278,6 +278,7 @@
     <column name="price" type="FLOAT" description="Precio del producto" />
     <column name="unitId" type="INTEGER" description="Unidades" />
     <column name="measureUnitId" type="INTEGER" description="Unidad de Medida" />
+    <column name="active" required="true" default="true"  type="BOOLEAN"  description="Is product active?"/>
 		<unique>
 			<unique-column name="code" />
 		</unique>

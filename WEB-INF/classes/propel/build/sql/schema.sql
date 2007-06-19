@@ -505,6 +505,7 @@ CREATE TABLE `product`
 	`price` FLOAT COMMENT 'Precio del producto',
 	`unitId` INTEGER COMMENT 'Unidades',
 	`measureUnitId` INTEGER COMMENT 'Unidad de Medida',
+	`active` INTEGER default 1 NOT NULL COMMENT 'Is product active?',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `product_U_1` (`code`),
 	INDEX `product_FI_1` (`unitId`),

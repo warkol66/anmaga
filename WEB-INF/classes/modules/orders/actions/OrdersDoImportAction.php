@@ -61,104 +61,16 @@ class OrdersDoImportAction extends BaseAction {
 		
 		$affiliateName = $affiliate->getName();
 		
-		switch ($affiliateName) {
-			case "EPA":			
-				$affiliateType = 1;
-				break;		
-			case "Makro":
-				$affiliateType = 2;
-				break;
-		}
+		require_once("OrdersPlugin".ucwords($affiliateName).".php");
 		
-		$affiliateType = 1;
+		$separator = OrdersImportPlugin::getSeparator();
 		
-		switch ($affiliateType) {
-			case 1:
-				$separator = ";";
-				break;
-			case 2:
-				$separator = ",";
-				break;
-			default:
-				$separator = ",";
-		} 		
-
 		$loaded = 0;
 
 		if (!empty($_FILES["csv"])) {
-
-			$handle = fopen($_FILES["csv"]["tmp_name"], "r");    
-			$rows = array();
-			while (($data = fgetcsv($handle, 1000, $separator)) !== FALSE) {
-						$rows[] = $data;
-			}
-			fclose($handle);  
-			
-			$orders = array();
-			$items = array();			
+			$orders = OrdersImportPlugin::getOrdersFromFile($_FILES["csv"]["tmp_name"]);	
 			
 			//print_r($rows);
-			
-			switch ($affiliateType) {
-				case 1: 
-				/*
-					formato download.csv
-					01 Encabezado
-					detalle o encabezado; Nro de pedido; Fecha del pedido; Fecha ; Fecha; Razón social; Responsable; email responsable; Empresa provedora; Nro Proveedor; Sucursal; Código Sucursal; Dirección Sucursal;  Tipo de PEdido;
-					02 Detalle
-					detalle o encabezado; Nro de pedido; código de producto; descripcion; código anmaga; Cantidad; Unidad; Total; Unidades por empaque; no se;Precio por unidad; total					
-				*/
-					foreach ($rows as $row) {
-						if ($row[0] == "1") { //Es un encabezado
-							if ( !empty($row[1]) && !empty($row[2]) && !empty($row[11]) ) {
-								$order = array();
-								$order["number"] = $row[1];
-								$order["created"] = $row[2];
-								$order["branchNumber"] = $row[11];
-								$order["modifiedProductCodes"] = false;
-								$orders[$order["number"]] = $order;
-							}							
-						}
-						if ($row[0] == "2") { //Es un detalle
-							if ( !empty($row[1]) && !empty($row[4]) && !empty($row[7]) && !empty($row[10]) ) {
-								$item = array();
-								$item["orderNumber"] = $row[1];
-								$item["productCode"] = str_pad($row[4], strlen($row[4])+1, "0", STR_PAD_LEFT);
-								$item["quantity"] = $row[7];
-								$item["price"] = $row[10];
-								$orders[$item["orderNumber"]]["items"][] = $item;
-							}							
-						}						
-					}
-					break;
-				case 2: 
-				/*
-					formato orders_V....csv
-					Nro,Tipo,Nro Prov,Nro Suc Prov,Tienda,Estado,Emision,Entrega,Planific Entrega,PlanificaciÃ³n,Import,Total Import,Cant Total,Cant Pallet,Cant Camadas,Cod Art Prov,Cod Art Makro,Cant Recebida,Cant Pedida,1era Compra,Costo,Costo Neto,Folder
-				*/					
-					$first = true;
-					foreach ($rows as $row) {
-						if ( $first && !empty($row[0]) && is_numeric($row[0]) && !empty($row[6]) && !empty($row[4]) ) {
-							$order = array();
-							$order["number"] = $row[0];
-							$order["created"] = $row[6];
-							$order["branchNumber"] = $row[4];
-							$order["modifiedProductCodes"] = true;
-							$orders[$order["number"]] = $order;
-							$first = false;
-						}							
-						if ( !$first && !empty($row[0]) && !empty($row[15]) && !empty($row[18]) && !empty($row[21]) ) {
-							$item = array();
-							$item["orderNumber"] = $row[0];
-							$item["productCode"] = str_pad($row[15], strlen($row[15])+1, "0", STR_PAD_LEFT);
-							$item["quantity"] = $row[18];
-							$item["price"] = $row[21];
-							$orders[$item["orderNumber"]]["items"][] = $item;
-						}												
-					}				
-					break;
-				default: 
-			}
      	}
 		
 		//print_r($orders);die;

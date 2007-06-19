@@ -174,6 +174,8 @@ class ProductPeer extends BaseProductPeer {
 			}
 
 			if (!empty($oldProduct)) {
+				$productObj->setActive(true);
+				$productObj->save();
 			  $node = $productObj->getNode();
 			  $node->setName($name);
 			  $node->setParentId($parentNodeId);
@@ -233,8 +235,43 @@ class ProductPeer extends BaseProductPeer {
 	*/
   function delete($id) {
   	$productObj = ProductPeer::retrieveByPK($id);
-    $productObj->delete();
+    $productObj->setActive(false);
+	$productObj->save();
 		return true;
+  }
+
+	/**
+	* Elimina todos los productos.
+	*
+	* @return void
+	*/
+  function deleteAll() {
+  	$products = ProductPeer::getAll();
+	foreach ($products as $productObj) {
+    	$productObj->setActive(false);
+		$productObj->save();
+	}
+	return;
+  }
+
+	/**
+	* Elimina todos los productos.
+	*
+	* @param int $parentNodeId Id del nodo de la categoria padre
+	* @return void
+	*/
+  function deleteAllByParentId($parentNodeId) {
+	$cond = new Criteria();
+	$cond->add(NodePeer::KIND, "Product");
+	$cond->addJoin(NodePeer::OBJECTID, ProductPeer::ID);
+	$cond->add(ProductPeer::ACTIVE, true);		
+	$cond->add(NodePeer::PARENTID, $parentNodeId);
+	$products = ProductPeer::doSelect($cond);
+	foreach ($products as $productObj) {
+    	$productObj->setActive(false);
+		$productObj->save();
+	}
+	return;
   }
 
   /**
@@ -255,6 +292,7 @@ class ProductPeer extends BaseProductPeer {
   */
 	function getAll() {
 		$cond = new Criteria();
+		$cond->add(ProductPeer::ACTIVE, true);
 		$alls = ProductPeer::doSelect($cond);
 		return $alls;
   }
@@ -271,6 +309,7 @@ class ProductPeer extends BaseProductPeer {
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
+		$cond->add(ProductPeer::ACTIVE, true);
 		$cond->addAscendingOrderByColumn(ProductPeer::CODE);
 
 		$pager = new PropelPager($cond,"ProductPeer", "doSelect",$page,$perPage);
@@ -348,11 +387,13 @@ class ProductPeer extends BaseProductPeer {
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->add(NodePeer::KIND, "Product");
+		$cond->addJoin(NodePeer::OBJECTID, ProductPeer::ID);
+		$cond->add(ProductPeer::ACTIVE, true);
+		
     if (!empty($this->searchParentNodeId))
 			$cond->add(NodePeer::PARENTID, $this->searchParentNodeId);
 
-    if ( !empty($this->searchPriceFrom) || !empty($this->searchPriceTo) ) {
-    	$cond->addJoin(NodePeer::OBJECTID, ProductPeer::ID);
+    if ( !empty($this->searchPriceFrom) || !empty($this->searchPriceTo) ) {    	
     	if ( !empty($this->searchPriceFrom) ) {
 				$criterion = $cond->getNewCriterion(ProductPeer::PRICE, $this->searchPriceFrom, Criteria::GREATER_EQUAL);
 			}
@@ -377,6 +418,8 @@ class ProductPeer extends BaseProductPeer {
 	function getAllNodes() {
 		$cond = new Criteria();
 		$cond->add(NodePeer::KIND, "Product");
+		$cond->addJoin(NodePeer::OBJECTID, ProductPeer::ID);
+		$cond->add(ProductPeer::ACTIVE, true);		
 		return NodePeer::doSelect($cond);
 	 }	
 
