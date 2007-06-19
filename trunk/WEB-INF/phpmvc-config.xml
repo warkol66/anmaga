@@ -386,6 +386,21 @@
 					 validate = "true">
 			<forward name="success" path="Main.php?do=configView&amp;message=ok" redirect="true" />
 		</action>
+
+		<action    path = "configCreateXmlForAction"
+							 type = "ConfigCreateXmlForAction"
+							 name = "configCreateXmlForAction"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ConfigCreateXmlForAction.tpl"/>
+		</action>
+		<action    path = "configDoCreateXmlForAction"
+							 type = "ConfigDoCreateXmlForAction"
+							 name = "configDoCreateXmlForAction"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="Main.php?do=configCreateXmlForAction&amp;message=ok" redirect="true" />
+		</action>
 	</action-mappings>
 <!-- End Module Config -->
 
