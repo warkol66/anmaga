@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("NodePeer.php");
+require_once("ProductPeer.php");
 
 class CatalogProductsDoDeleteAction extends BaseAction {
 
@@ -49,7 +49,7 @@ class CatalogProductsDoDeleteAction extends BaseAction {
     $smarty->assign("moduleSection",$section);
 
 
-    NodePeer::deleteWithSubTree($_POST["id"]);
+    ProductPeer::delete($_POST["id"]);
 
 		return $mapping->findForwardConfig('success');
 

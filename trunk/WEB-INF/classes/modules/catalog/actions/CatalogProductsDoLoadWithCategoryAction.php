@@ -65,7 +65,7 @@ class CatalogProductsDoLoadWithCategoryAction extends BaseAction {
 			
 			switch ($_POST["mode"]) {
 				case "1": //Reemplaza todo el catalogo
-					NodePeer::deleteAllByKind("Product");
+					ProductPeer::deleteAll();
 					break;
 				case "2": //Reemplaza codigos existentes
 					break;

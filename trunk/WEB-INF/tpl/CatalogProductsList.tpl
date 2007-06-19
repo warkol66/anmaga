@@ -56,7 +56,7 @@
 				</form> 
 				<form action="Main.php" method="post"> 
 					<input type="hidden" name="do" value="catalogProductsDoDelete" /> 
-					<input type="hidden" name="id" value="|-$node->getid()-|" /> 
+					<input type="hidden" name="id" value="|-$product->getid()-|" /> 
 					<input type="submit" name="submit_go_delete_product" value="Borrar" onclick="return confirm('Seguro que desea eliminar el producto?')" class="button" /> 
 				</form></td> 
 		</tr> 
