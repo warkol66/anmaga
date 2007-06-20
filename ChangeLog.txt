@@ -1,4 +1,11 @@
-﻿
+﻿==============================
+Revisión 138
+------------------------------
+Ejecutar SQL para agregar campos a tablas existentes en 
+
+# Agregado active a tabla productos
+ALTER TABLE `product` ADD `active` INT NOT NULL DEFAULT '1' COMMENT 'Is product active?';
+
 ==============================
 Revisión 115
 ------------------------------
