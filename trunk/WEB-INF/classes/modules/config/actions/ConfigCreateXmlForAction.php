@@ -81,6 +81,7 @@ class ConfigCreateXmlForAction extends BaseAction {
 			if(empty($xml)){
 				$path="config/emptyXml.xml";
 				$xml = file_get_contents($path);
+				$flag=1;
 			}
 
 			$arrayXml = $converter->xml2array($xml);
@@ -88,37 +89,63 @@ class ConfigCreateXmlForAction extends BaseAction {
 			$smarty->assign("config",$arrayXml);
 			
 			
-			//////////
-			// parte de carga de nombres de actions, $actions contiene todos los nombres de actions del modulo
-			$actionPath = "WEB-INF/classes/modules/$selectedModule/actions/";
-			$dh  = opendir($actionPath);
+			if ($flag != 1){
+				//////////
+				// parte de carga de nombres de actions, $actions contiene todos los nombres de actions del modulo
+				$actionPath = "WEB-INF/classes/modules/$selectedModule/actions/";
+				$dh  = opendir($actionPath);
 
-			while (false!== ($actionName = readdir($dh)) ){ 
+				while (false!== ($actionName = readdir($dh)) ){ 
 
-				if (ereg("(.*)Action.php$",$actionName,$files))	{	
-					
-					$actions[$moduleFolder][] = $files[1];
-					//los ordeno
-					array_multisort($actions[$moduleFolder]);
-			
+					if (ereg("(.*)Action.php$",$actionName,$files))	{	
+						
+						$actions[$moduleFolder][] = $files[1];
+						//los ordeno
+						array_multisort($actions[$moduleFolder]);
+				
+					}
 				}
-			}
-			print_r($actions);
-			foreach($actions as $action){
-				$pathXmlAction="config/emptyXmlAction.xml";
-				$xmlAction = file_get_contents($pathXmlAction);
 
-				$arrayAction = $converter->xml2array($xmlAction);
-				echo "array action es :  \n";
-				print_r($arrayAction);
-				echo "\naction es $action\n";
-				$arrayNew[$action]=$arrayAction["EDITTHISTAG"];
-				print_R($arrayNew);
-			}
+				//////////
+				// Guardo los nombres de los actions actualmente "instalados" en el xml
+			foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"] as $ak){
+					echo "\n \n A es ahora:";
+					print_r($ak);
+				}
+				
+				//////////
+				// Seccion donde creo un array de nuevos actions con sus respectivos tags
+				// hay un foreach de mas que se tendría que ver como hacer para sacarlo
+				
+				foreach($actions as $action){
+					foreach($action as $actionName){
+						
+						
+						$pathXmlAction="config/emptyXmlAction.xml";
+						$xmlAction = file_get_contents($pathXmlAction);
+
+						$arrayActionAux = $converter->xml2array($xmlAction);
+						//		echo "array action es :  \n";
+						//	print_r($arrayAction);
+						//print_r($ac);
+						//	echo "\naction es $action\n";
+						$arrayAction[$actionName]=$arrayActionAux["editThisTag"];
+						//	print_r($arrayNew);
+					}
+				}
+
+				$pair="hola";
+				$smarty->assign("pair",$pair);
+
+				$smarty->assign("actions",$actions);
+
+				$smarty->assign("actionXmls",$arrayAction);
+			} // if flag != 1
+		
+		} // if empty selectedModule
 
 
-			$smarty->assign("actions",$actions);
-		}
+		$smarty->assign("flag",$flag);
 
 		$smarty->assign("message",$_GET["message"]);		
 

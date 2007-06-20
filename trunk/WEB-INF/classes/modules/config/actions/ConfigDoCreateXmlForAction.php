@@ -2,12 +2,12 @@
 
 require_once("BaseAction.php");
 
-class ConfigDoCreateXmlForActionAction extends BaseAction {
+class ConfigDoCreateXmlForAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ConfigDoCreateXmlForActionAction() {
+	function ConfigDoCreateXmlForAction() {
 		;
 	}
 
@@ -44,15 +44,39 @@ class ConfigDoCreateXmlForActionAction extends BaseAction {
 		$module = "Config";
 
 		$smarty->assign("module",$module);
+
+		$selectedModule=$_POST["module"];
 	/*global $system;
 		if (empty($_POST["module"]))
 			$system["config"] = $_POST["config"];
 		else*/
-			$system["config"][$_POST["module"]] = $_POST["config"][$_POST["module"]];
+			//$system["config"][$_POST["module"]] = $_POST["config"][$_POST["module"]];
+		//	print_r($_POST["configb"]);
 		require_once('includes/assoc_array2xml.php');
 		$converter= new assoc_array2xml;
-		$xml = $converter->array2xml($system["config"]);
-		file_put_contents("config/config.xml",$xml);
+
+		$config=$_POST["config"];
+		$newActionArray=$_POST["configb"];
+
+		$originalActionArray=$config["$selectedModule"]["moduleInstalation"]["moduleInstalation:actions"];
+
+		if(empty ( $originalActionArray ) ) 
+			$originalActionArray= array();
+
+		$fusionActionArray=array_merge ($originalActionArray,$newActionArray );
+
+		$config["$selectedModule"]["moduleInstalation"]["moduleInstalation:actions"]=$fusionActionArray;
+		//print_r($c); //$_POST["configb"]);
+
+		$xml = $converter->array2xml($config);
+
+
+		//////////
+		// incluir este path en la version final en file_put_contents
+		$path = "WEB-INF/classes/modules/$selectedModule/$selectedModule.xml";
+
+		file_put_contents("config/configXX.xml",$xml);
+
 
 		return $mapping->findForwardConfig('success');
 	}

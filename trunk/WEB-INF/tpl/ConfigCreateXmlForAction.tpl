@@ -1,6 +1,6 @@
 <table border='0' cellpadding='0' cellspacing='0' width='100%'>
 	<tr>
-		<td class='title'>Configuración del Sistema</td>
+		<td class='title'>Creación de Xml's para modulos</td>
 	</tr>
 	<tr>
 		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
@@ -9,7 +9,7 @@
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<td class='backgroundTitle'>Variables de Configuración del Sistema</td>
+		<td class='backgroundTitle'>Crear Xml</td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
@@ -21,7 +21,7 @@
 	<td>&nbsp;</td>
 </tr>
 |-/if-|	<tr>
-		<td>A continuación podrá editar las variables de configuración del sistema.</td>
+		<td>A continuación podrá elegir un módulo para posteriormente ver y editar su xml.</td>
 	</tr>
 	<tr>
 		<td>
@@ -36,7 +36,7 @@
 					|-/foreach-|
 					</select>
 					<input type="hidden" name="do" value="configCreateXmlForAction" />
-				</form>
+		  </form>
 		</td>
 	</tr>
 </table>
@@ -45,11 +45,17 @@
 			<ul id="config_ul">
 				<li id="config[|-$selectedModule-|]"><span class='titulo2'>|-$selectedModule-|</span>
 					<ul id="config[|-$selectedModule-|]_ul">
-						|-include file=ConfigSetInclude.tpl elements=$config name=[$selectedModule]-|
+						<p>|-include file=ConfigSetInclude.tpl elements=$config name=[$selectedModule]-|</p>
+						<p>&nbsp;</p>
 					</ul>
-				</li>
+					|- if $flag != 1 -|
+					<ul id="configb">
+						<p><strong>Nuevos Actions Encontrados:</strong> |-include file=ConfigCreateXmlForActionInclude.tpl elements=$actionXmls name=[$selectedModule]-| </p>
+					</ul>
+					|-/if-|
+			  </li>
 			</ul>
-	<input type="hidden" name="do" value="configDoCreateXmlToAction" />
+	<input type="hidden" name="do" value="configDoCreateXmlForAction" />
 	<input type="hidden" name="module" value="|-$selectedModule-|" />
 	<input type="submit" value="Guardar" class="button" />
 </form>
