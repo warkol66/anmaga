@@ -269,81 +269,6 @@
 	</action-mappings>
 <!-- End Module Htmls -->
 
-<!-- Module Security -->
-	<action-mappings module="Security">
-		<action    path = "noPermission"
-							 type = "NoPermissionAction"
-							 name = "noPermission"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="NoPermission.tpl" />
-		</action>
-
-		<action    path = "securityActionList"
-							 type = "SecurityActionListAction"
-							 name = "securityActionList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="SecurityActionList.tpl" />
-		</action>
-
-		<action    path = "securityActionListUsersByAffiliate"
-							 type = "SecurityActionListUsersByAffiliateAction"
-							 name = "securityActionListUsersByAffiliate"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="SecurityActionListUsersByAffiliate.tpl" />
-		</action>
-
-		<action    path = "securityActionDoSaveByAffiliate"
-							 type = "SecurityActionDoSaveByAffiliateAction"
-							 name = "securityActionDoSaveByAffiliateAction"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=securityActionListUsersByAffiliate" redirect='true'/>
-		</action>
-
-		<action    path = "securityActionLoad"
-							 type = "SecurityActionLoadAction"
-							 name = "securityActionLoad"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="SecurityActionLoad.tpl" />
-		</action>
-
-		<action    path = "securityActionDoLoad"
-							 type = "SecurityActionDoLoadAction"
-							 name = "securityActionDoLoad"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=securityActionLoad" redirect='true'/>
-		</action>
-
-		<action    path = "securityActionDoSave"
-							 type = "SecurityActionDoSaveAction"
-							 name = "securityActionDoSave"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=securityActionList" redirect='true'/>
-		</action>
-
-	<action    path = "securityModuleList"
-							 type = "SecurityModuleListAction"
-							 name = "securityModuleList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="SecurityModuleList.tpl" />
-		</action>
-
-	<action    path = "securityModuleDoSave"
-							 type = "SecurityModuleDoSaveAction"
-							 name = "securityModuleDoSave"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=securityModuleList" redirect='true'/>
-		</action>
-	</action-mappings>
-<!-- End Module Security -->
 
 <!-- Module Config -->
 	<action-mappings module="Config">
@@ -399,7 +324,7 @@
 							 name = "configDoCreateXmlForAction"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=configCreateXmlForAction&amp;message=ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=configCreateXmlForAction&amp;message=ok" redirect="true" />
 		</action>
 	</action-mappings>
 <!-- End Module Config -->
@@ -933,34 +858,6 @@
 
 <!-- End Module Catalog -->
 
-<!-- Module Logs -->
-	<action-mappings module = "Logs">
-		<action    path = "logsList"
-							 type = "LogsListAction"
-							 name = "logsList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="LogsList.tpl"/>
-			<forward name="failure" path="demoPageError.tpl"/>
-		</action>
-
-		<action    path = "logsPurge"
-							 type = "LogsPurgeAction"
-							 name = "logsPurge"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="LogsPurge.tpl"/>
-		</action>
-
-		<action    path = "logsDoPurge"
-							 type = "LogsDoPurgeAction"
-							 name = "logsDoPurge"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=logsList" redirect="true" />
-		</action>
-	</action-mappings>
-<!-- End Module Logs -->
 
 <!-- Module Documents -->
 	<action-mappings module="Documents">
@@ -1226,6 +1123,99 @@
 <!-- End Section OrderTemplates -->
 
 <!-- End Module Orders -->
+
+
+<!-- ========== Action Mapping Módulo Logs  ============================== -->
+
+	<action-mappings        module = "Logs">
+
+		<action    path = "logsList"
+					     type = "LogsListAction"
+					     name = "logsList"
+					    scope = "request"
+					 validate = "true">
+			<forward name="success" path="LogsList.tpl"/>
+			<forward name="failure" path="demoPageError.tpl"/>
+		</action>
+		<action    path = "logsPurge"
+					     type = "LogsPurgeAction"
+					     name = "logsPurge"
+					    scope = "request"
+					 validate = "true">
+			<forward name="success" path="LogsPurge.tpl"/>
+		</action>
+		<action    path = "logsDoPurge"
+					     type = "LogsDoPurgeAction"
+					     name = "logsDoPurge"
+					    scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=logsList" redirect="true" />
+		</action>
+
+	</action-mappings>
+
+<!-- ========== End Logs ================================================= -->->
+
+
+<!-- Module Security -->
+	<action-mappings module="Security">
+		<action    path = "noPermission"
+							 type = "NoPermissionAction"
+							 name = "noPermission"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="NoPermission.tpl" />
+		</action>
+
+		<action    path = "securityActionList"
+							 type = "SecurityActionListAction"
+							 name = "securityActionList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityActionList.tpl" />
+		</action>
+
+		<action    path = "securityActionListUsersByAffiliate"
+							 type = "SecurityActionListUsersByAffiliateAction"
+							 name = "securityActionListUsersByAffiliate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityActionListUsersByAffiliate.tpl" />
+		</action>
+
+		<action    path = "securityActionDoSaveByAffiliate"
+							 type = "SecurityActionDoSaveByAffiliateAction"
+							 name = "securityActionDoSaveByAffiliateAction"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityActionListUsersByAffiliate" redirect='true'/>
+		</action>
+
+		<action    path = "securityActionDoSave"
+							 type = "SecurityActionDoSaveAction"
+							 name = "securityActionDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityActionList" redirect='true'/>
+		</action>
+
+	<action    path = "securityModuleList"
+							 type = "SecurityModuleListAction"
+							 name = "securityModuleList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="SecurityModuleList.tpl" />
+		</action>
+
+	<action    path = "securityModuleDoSave"
+							 type = "SecurityModuleDoSaveAction"
+							 name = "securityModuleDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityModuleList" redirect='true'/>
+		</action>
+	</action-mappings>
+<!-- End Module Security -->
 
 
 <!-- instalation tag-->
