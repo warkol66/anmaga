@@ -108,32 +108,52 @@ class ConfigCreateXmlForAction extends BaseAction {
 
 				//////////
 				// Guardo los nombres de los actions actualmente "instalados" en el xml
-			foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"] as $ak){
-					echo "\n \n A es ahora:";
-					print_r($ak);
+			foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"] as $installedActionName => $savedActions){
+
+				$savedActionNames[]=$installedActionName;
+
 				}
+
 				
 				//////////
 				// Seccion donde creo un array de nuevos actions con sus respectivos tags
-				// hay un foreach de mas que se tendría que ver como hacer para sacarlo
+				// hay un foreach de mas (el 2do) que se tendría que ver como hacer para sacarlo
 				
-				foreach($actions as $action){
-					foreach($action as $actionName){
 						
-						
-						$pathXmlAction="config/emptyXmlAction.xml";
-						$xmlAction = file_get_contents($pathXmlAction);
 
-						$arrayActionAux = $converter->xml2array($xmlAction);
-						//		echo "array action es :  \n";
-						//	print_r($arrayAction);
-						//print_r($ac);
-						//	echo "\naction es $action\n";
-						$arrayAction[$actionName]=$arrayActionAux["editThisTag"];
-						//	print_r($arrayNew);
+				foreach($actions as $action){
+					//foreach($action as $actionName){					
+
+					$newActions=array_diff($savedActionNames,$action);
+					$newActionsB=array_diff($action,$savedActionNames);
+
+					//echo "a es :$a    ";
+					print_r($newActions);
+					print_r($newActionsB);
+							//if ((strcasecmp ($savedActionName,$actionName)) == 0){
+							//if(!in_array ( strtolower($actionName),strtolower($savedActionNames) )){
+
+					foreach ($newActions as $eachAction){
+								$pathXmlAction="config/emptyXmlAction.xml";
+								$xmlAction = file_get_contents($pathXmlAction);
+
+									//echo "action name es : $action y action saved es $savedActionName    ";					
+								$arrayActionAux = $converter->xml2array($xmlAction);
+								$arrayAction[$eachAction]=$arrayActionAux["editThisTag"];
+							
 					}
+
+						
+						//	echo "array action es :  \n";
+						//	print_r($arrayAction);
+
+						//	print_r($arrayNew);
+					
 				}
 
+				//////////
+				// hardcoreado
+				
 				$pair="hola";
 				$smarty->assign("pair",$pair);
 
