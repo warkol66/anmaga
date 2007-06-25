@@ -963,6 +963,20 @@
 			<forward name="errorDependencyOff" path="ModulesDoActivateXModuleOff.tpl"/>
 			<forward name="errorDependencyOn" path="ModulesDoActivateXModuleOn.tpl"/>
 		</action>
+		<action    path = "modulesDoCreateXml"
+							 type = "ModulesDoCreateXml"
+							 name = "modulesDoCreateXml"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=modulesCreateXml&amp;message=ok" redirect="true" />
+		</action>
+		<action    path = "modulesCreateXml"
+							 type = "ModulesCreateXml"
+							 name = "modulesCreateXml"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ModulesCreateXml.tpl" />
+		</action>
 	</action-mappings>
 <!-- End Module Modules -->
 
