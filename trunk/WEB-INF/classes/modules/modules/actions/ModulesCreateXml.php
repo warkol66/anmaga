@@ -48,6 +48,10 @@ class ModulesCreateXml extends BaseAction {
 
 		$smarty->assign("module",$module);
 
+		
+		/////////
+		// parte 1
+
 		/*
 		* Hecho exclusivamente para mostrar todos los modulos existentes en la lista de filtros
 		*
@@ -64,23 +68,33 @@ class ModulesCreateXml extends BaseAction {
 		$smarty->assign("modules",$allModulesName);
 
 
+
+
+		//////////
+		//parte 2, ya viene el modulo
 		$selectedModule=$_GET["module"];
 
 		$smarty->assign("selectedModule",$selectedModule);
 
+
+		//////////
+		// no está vacio?
 		if (!empty($selectedModule)) {
-			$config = array();
+			
 			
 			require_once('includes/assoc_array2xml.php');
-			
 			$converter= new assoc_array2xml;		
+			
+			$config = array();
 
 			//////////
 			// esa direccion de directorio es especifica de un modulo
 			$path = "WEB-INF/classes/modules/$selectedModule/$selectedModule.xml";
-			
 			$xml = file_get_contents($path);
 
+			
+			//////////
+			// si no está en el directorio se carga un xml default
 			if(empty($xml)){
 				$path="config/emptyXml.xml";
 				$xml = file_get_contents($path);
@@ -89,66 +103,49 @@ class ModulesCreateXml extends BaseAction {
 
 			$arrayXml = $converter->xml2array($xml);
 
-				
-			//print_r($arrayXml);
-
 			$smarty->assign("config",$arrayXml);
+		
 			
-			
-			foreach ($arrayXml as $key1 => $array1){
-					$a=ModulesXml::insertTag(0,$key1);
-					echo "aca viene a:\n\n";
-					//print_r($a);
-					echo "\n\n"; 
-					if(is_array($array1)){
-						echo "key1 es = $key1\n\n";
-						foreach ($array1 as $key2 => $array2){
-								if(is_array($array2)){
-															echo "key2 es = $key2\n\n";
-																				$b=ModulesXml::insertTag($a,$key2);
-									foreach ($array2 as $key3 => $array3){
-											if(is_array($array3)){
-																		echo "key3 es = $key3\n\n";
-																		$c=ModulesXml::insertTag($b,$key3);
-												foreach ($array3 as $key4 => $array4){
-														if(is_array($array4)){
-																					echo "key4 es = $key4\n\n";
-																					$d=ModulesXml::insertTag($c,$key4);
-															foreach ($array4 as $key5 => $array5){
-																						echo "array 5 es : $array5";
-																						$e=ModulesXml::insertTag($d,$key5);
-																						echo "key5 es = $key5\n\n";
-															}
-														} //cierre if array 4
-														else {
-															echo "key 4.0 es $key4\n";
-															$d=ModulesXml::insertTag($c,$key4,$array4);
-														}
-												}
-											}// cierre if array 3
-											else {
-												echo "key 3.0 es $key3\n";
-													$c=ModulesXml::insertTag($b,$key3,$array3);
-											}
-									}
-								} // cierre if array 2
-								else {
-									echo "key 2.0 es $key2\n";
-									$b=ModulesXml::insertTag($a,$key2,$array2);
-								}
-
-						}
-					} //cierre if array 1
-					else echo "key 1.0 es $array1\n";
+			//////////
+			// parte 3: carga de nuevo modulo a la DB
+			if ($flag == 1) {	
+				
+				//////////
+				// Aca se carga el xml a la base de datos
+				foreach ($arrayXml as $keyArray => $array1){
+					$idBase=ModulesXml::insertTag(0,$keyArray,$selectedModule);
 					
+					if(is_array($array1)){
+						ModulesXml::viewChild($idBase,$array1);
+					}				
+				}
 			}
 
 
 
-
+			//////////
+			// parte 4: existe xml en el directorio
 			if ($flag != 1){
+				
+				//////////
+				// Existe en la base de datos?
+				$xmlOnDatabase=ModulesXml::searchIdXml($selectedModule);
+				if(empty($xmlOnDatabase)){
+					
+					//////////
+					// Aca se carga el xml a la base de datos
+					foreach ($arrayXml as $keyArray => $array1){
+						$idBase=ModulesXml::insertTag(0,$keyArray,$selectedModule);
+						
+						if(is_array($array1)){
+							ModulesXml::viewChild($idBase,$array1);
+						}				
+					}
+				}
+				
 				//////////
 				// parte de carga de nombres de actions, $actions contiene todos los nombres de actions del modulo
+				// actions del directorio
 				$actionPath = "WEB-INF/classes/modules/$selectedModule/actions/";
 				$dh  = opendir($actionPath);
 
@@ -163,9 +160,34 @@ class ModulesCreateXml extends BaseAction {
 					}
 				}
 
+
+			
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				//////////
 				// Guardo los nombres de los actions actualmente "instalados" en el xml
-			foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"] as $installedActionName => $savedActions){
+				foreach ($arrayXml["moduleInstalation"]["moduleInstalation:actions"] as $installedActionName => $savedActions){
 
 				$savedActionNames[]=$installedActionName;
 
