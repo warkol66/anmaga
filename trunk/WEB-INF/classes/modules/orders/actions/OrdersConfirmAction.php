@@ -47,7 +47,7 @@ class OrdersConfirmAction extends BaseAction {
 		$module = "Orders";
 		$smarty->assign("module",$module);
 		
-		$branchs = BranchPeer::getAllByAffiliateId($_SESSION["loginUserByAffiliate"]->getAffiliateId());
+		$branchs = BranchPeer::getAllByAffiliateId($_SESSION["loginAffiliateUser"]->getAffiliateId());
 		$smarty->assign("branchs",$branchs);
 		
 

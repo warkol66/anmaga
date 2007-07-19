@@ -47,7 +47,7 @@ class OrdersDoGenerateAction extends BaseAction {
 		$smarty->assign("module",$module);
 
 
-		$user = $_SESSION["loginUserByAffiliate"];
+		$user = $_SESSION["loginAffiliateUser"];
 
 		$items = $_SESSION["orderItems"];
 
