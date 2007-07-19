@@ -21,8 +21,8 @@ require_once 'om/BaseAffiliate.php';
 class Affiliate extends BaseAffiliate {
 
         function getOwner() {
-                require_once("UserByAffiliatePeer.php");
-                return UserByAffiliatePeer::get($this->getOwnerId());
+                require_once("AffiliateUserPeer.php");
+                return AffiliateUserPeer::get($this->getOwnerId());
         }
 
 } // Affiliate

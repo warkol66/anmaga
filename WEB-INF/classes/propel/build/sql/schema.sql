@@ -119,7 +119,7 @@ CREATE TABLE `security_action`
 	`module` VARCHAR(100) COMMENT 'Modulo',
 	`section` VARCHAR(100) COMMENT 'Seccion',
 	`access` INTEGER COMMENT 'El acceso a ese action',
-	`accessUsersByAffiliate` INTEGER COMMENT 'El acceso a ese action para los usuarios por afiliados',
+	`accessAffiliateUser` INTEGER COMMENT 'El acceso a ese action para los usuarios por afiliados',
 	`active` INTEGER COMMENT 'Si el action esta activo o no',
 	`pair` VARCHAR(100) COMMENT 'Par del Action',
 	PRIMARY KEY (`action`),
@@ -139,7 +139,7 @@ CREATE TABLE `security_module`
 (
 	`module` VARCHAR(100)  NOT NULL COMMENT 'Modulo',
 	`access` INTEGER COMMENT 'El acceso a ese action',
-	`accessUsersByAffiliate` INTEGER COMMENT 'El acceso a ese action para los usuarios por afiliados',
+	`accessAffiliateUser` INTEGER COMMENT 'El acceso a ese action para los usuarios por afiliados',
 	PRIMARY KEY (`module`)
 )Type=MyISAM COMMENT='Modulos del sistema';
 
@@ -161,31 +161,31 @@ CREATE TABLE `security_actionLabel`
 )Type=MyISAM COMMENT='etiquetas de actions de seguridad';
 
 #-----------------------------------------------------------------------------
-#-- affiliate
+#-- affiliates_affiliate
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `affiliate`;
+DROP TABLE IF EXISTS `affiliates_affiliate`;
 
 
-CREATE TABLE `affiliate`
+CREATE TABLE `affiliates_affiliate`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id afiliado',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'nombre afiliado',
 	`ownerId` INTEGER COMMENT 'Id del usuario administrador del afiliado',
 	PRIMARY KEY (`id`),
-	CONSTRAINT `affiliate_FK_1`
+	CONSTRAINT `affiliates_affiliate_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `affiliateInfo` (`affiliateId`)
+		REFERENCES `affiliates_affiliateInfo` (`affiliateId`)
 )Type=MyISAM COMMENT='Afiliados';
 
 #-----------------------------------------------------------------------------
-#-- affiliateInfo
+#-- affiliates_affiliateInfo
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `affiliateInfo`;
+DROP TABLE IF EXISTS `affiliates_affiliateInfo`;
 
 
-CREATE TABLE `affiliateInfo`
+CREATE TABLE `affiliates_affiliateInfo`
 (
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Id afiliado',
 	`affiliateInternalNumber` INTEGER  NOT NULL COMMENT 'Id interno',
@@ -197,19 +197,19 @@ CREATE TABLE `affiliateInfo`
 	`web` VARCHAR(255) COMMENT 'Direccion web del afiliado',
 	`memo` TEXT COMMENT 'Informacion adicional del afiliado',
 	PRIMARY KEY (`affiliateId`),
-	CONSTRAINT `affiliateInfo_FK_1`
+	CONSTRAINT `affiliates_affiliateInfo_FK_1`
 		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliate` (`id`)
+		REFERENCES `affiliates_affiliate` (`id`)
 )Type=MyISAM COMMENT='Informacion del afiliado';
 
 #-----------------------------------------------------------------------------
-#-- usersByAffiliate_user
+#-- affiliates_user
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `usersByAffiliate_user`;
+DROP TABLE IF EXISTS `affiliates_user`;
 
 
-CREATE TABLE `usersByAffiliate_user`
+CREATE TABLE `affiliates_user`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'User Id',
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Id afiliado',
@@ -221,85 +221,85 @@ CREATE TABLE `usersByAffiliate_user`
 	`levelId` INTEGER COMMENT 'User Level',
 	`lastLogin` DATETIME COMMENT 'Fecha del ultimo login del usuario',
 	PRIMARY KEY (`id`),
-	UNIQUE KEY `usersByAffiliate_user_U_1` (`username`),
-	CONSTRAINT `usersByAffiliate_user_FK_1`
+	UNIQUE KEY `affiliates_user_U_1` (`username`),
+	CONSTRAINT `affiliates_user_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `usersByAffiliate_userInfo` (`userId`),
-	INDEX `usersByAffiliate_user_FI_2` (`levelId`),
-	CONSTRAINT `usersByAffiliate_user_FK_2`
+		REFERENCES `affiliates_userInfo` (`userId`),
+	INDEX `affiliates_user_FI_2` (`levelId`),
+	CONSTRAINT `affiliates_user_FK_2`
 		FOREIGN KEY (`levelId`)
-		REFERENCES `usersByAffiliate_level` (`id`),
-	INDEX `usersByAffiliate_user_FI_3` (`affiliateId`),
-	CONSTRAINT `usersByAffiliate_user_FK_3`
+		REFERENCES `affiliates_level` (`id`),
+	INDEX `affiliates_user_FI_3` (`affiliateId`),
+	CONSTRAINT `affiliates_user_FK_3`
 		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliate` (`id`)
+		REFERENCES `affiliates_affiliate` (`id`)
 )Type=MyISAM COMMENT='Usuarios de afiliado';
 
 #-----------------------------------------------------------------------------
-#-- usersByAffiliate_userInfo
+#-- affiliates_userInfo
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `usersByAffiliate_userInfo`;
+DROP TABLE IF EXISTS `affiliates_userInfo`;
 
 
-CREATE TABLE `usersByAffiliate_userInfo`
+CREATE TABLE `affiliates_userInfo`
 (
 	`userId` INTEGER  NOT NULL COMMENT 'User Id',
 	`name` VARCHAR(255) COMMENT 'name',
 	`surname` VARCHAR(255) COMMENT 'surname',
 	`mailAddress` VARCHAR(255) COMMENT 'Email',
 	PRIMARY KEY (`userId`),
-	CONSTRAINT `usersByAffiliate_userInfo_FK_1`
+	CONSTRAINT `affiliates_userInfo_FK_1`
 		FOREIGN KEY (`userId`)
-		REFERENCES `usersByAffiliate_user` (`id`)
+		REFERENCES `affiliates_user` (`id`)
 )Type=MyISAM COMMENT='Information about users by affiliates';
 
 #-----------------------------------------------------------------------------
-#-- usersByAffiliate_level
+#-- affiliates_level
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `usersByAffiliate_level`;
+DROP TABLE IF EXISTS `affiliates_level`;
 
 
-CREATE TABLE `usersByAffiliate_level`
+CREATE TABLE `affiliates_level`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Level ID',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Level Name',
 	`bitLevel` INTEGER COMMENT 'Bit del nivel',
 	PRIMARY KEY (`id`),
-	UNIQUE KEY `usersByAffiliate_level_U_1` (`name`)
+	UNIQUE KEY `affiliates_level_U_1` (`name`)
 )Type=MyISAM COMMENT='Levels';
 
 #-----------------------------------------------------------------------------
-#-- usersByAffiliate_userGroup
+#-- affiliates_userGroup
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `usersByAffiliate_userGroup`;
+DROP TABLE IF EXISTS `affiliates_userGroup`;
 
 
-CREATE TABLE `usersByAffiliate_userGroup`
+CREATE TABLE `affiliates_userGroup`
 (
 	`userId` INTEGER  NOT NULL COMMENT 'Group ID',
 	`groupId` INTEGER  NOT NULL COMMENT 'Group ID',
 	PRIMARY KEY (`userId`,`groupId`),
-	CONSTRAINT `usersByAffiliate_userGroup_FK_1`
+	CONSTRAINT `affiliates_userGroup_FK_1`
 		FOREIGN KEY (`userId`)
-		REFERENCES `usersByAffiliate_user` (`id`),
-	INDEX `usersByAffiliate_userGroup_FI_2` (`groupId`),
-	CONSTRAINT `usersByAffiliate_userGroup_FK_2`
+		REFERENCES `affiliates_user` (`id`),
+	INDEX `affiliates_userGroup_FI_2` (`groupId`),
+	CONSTRAINT `affiliates_userGroup_FK_2`
 		FOREIGN KEY (`groupId`)
-		REFERENCES `usersByAffiliate_group` (`id`)
+		REFERENCES `affiliates_group` (`id`)
 		ON DELETE CASCADE
 )Type=MyISAM COMMENT='Users / Groups';
 
 #-----------------------------------------------------------------------------
-#-- usersByAffiliate_group
+#-- affiliates_group
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `usersByAffiliate_group`;
+DROP TABLE IF EXISTS `affiliates_group`;
 
 
-CREATE TABLE `usersByAffiliate_group`
+CREATE TABLE `affiliates_group`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Group ID',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Group Name',
@@ -307,7 +307,7 @@ CREATE TABLE `usersByAffiliate_group`
 	`updated` DATETIME  NOT NULL COMMENT 'Last update date',
 	`bitLevel` INTEGER COMMENT 'Nivel',
 	PRIMARY KEY (`id`),
-	UNIQUE KEY `usersByAffiliate_group_U_1` (`name`)
+	UNIQUE KEY `affiliates_group_U_1` (`name`)
 )Type=MyISAM COMMENT='Groups';
 
 #-----------------------------------------------------------------------------
@@ -348,23 +348,23 @@ CREATE TABLE `users_groupCategory`
 )Type=MyISAM COMMENT='Groups / Categories';
 
 #-----------------------------------------------------------------------------
-#-- usersByAffiliate_groupCategory
+#-- affiliates_groupCategory
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `usersByAffiliate_groupCategory`;
+DROP TABLE IF EXISTS `affiliates_groupCategory`;
 
 
-CREATE TABLE `usersByAffiliate_groupCategory`
+CREATE TABLE `affiliates_groupCategory`
 (
 	`groupId` INTEGER  NOT NULL COMMENT 'Group ID',
 	`categoryId` INTEGER  NOT NULL COMMENT 'Category ID',
 	PRIMARY KEY (`groupId`,`categoryId`),
-	CONSTRAINT `usersByAffiliate_groupCategory_FK_1`
+	CONSTRAINT `affiliates_groupCategory_FK_1`
 		FOREIGN KEY (`groupId`)
-		REFERENCES `usersByAffiliate_group` (`id`)
+		REFERENCES `affiliates_group` (`id`)
 		ON DELETE CASCADE,
-	INDEX `usersByAffiliate_groupCategory_FI_2` (`categoryId`),
-	CONSTRAINT `usersByAffiliate_groupCategory_FK_2`
+	INDEX `affiliates_groupCategory_FI_2` (`categoryId`),
+	CONSTRAINT `affiliates_groupCategory_FK_2`
 		FOREIGN KEY (`categoryId`)
 		REFERENCES `category` (`id`)
 )Type=MyISAM COMMENT='Groups / Categories';
@@ -581,11 +581,11 @@ CREATE TABLE `orders_order`
 	INDEX `orders_order_FI_1` (`userId`),
 	CONSTRAINT `orders_order_FK_1`
 		FOREIGN KEY (`userId`)
-		REFERENCES `usersByAffiliate_user` (`id`),
+		REFERENCES `affiliates_user` (`id`),
 	INDEX `orders_order_FI_2` (`affiliateId`),
 	CONSTRAINT `orders_order_FK_2`
 		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliate` (`id`),
+		REFERENCES `affiliates_affiliate` (`id`),
 	INDEX `orders_order_FI_3` (`branchId`),
 	CONSTRAINT `orders_order_FK_3`
 		FOREIGN KEY (`branchId`)
@@ -643,11 +643,11 @@ CREATE TABLE `orders_stateChanges`
 	INDEX `orders_stateChanges_FI_2` (`userId`),
 	CONSTRAINT `orders_stateChanges_FK_2`
 		FOREIGN KEY (`userId`)
-		REFERENCES `usersByAffiliate_user` (`id`),
+		REFERENCES `affiliates_user` (`id`),
 	INDEX `orders_stateChanges_FI_3` (`affiliateId`),
 	CONSTRAINT `orders_stateChanges_FK_3`
 		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliate` (`id`)
+		REFERENCES `affiliates_affiliate` (`id`)
 )Type=MyISAM COMMENT='Cambios de Estado de Pedidos de Productos';
 
 #-----------------------------------------------------------------------------
@@ -670,11 +670,11 @@ CREATE TABLE `orders_orderTemplate`
 	INDEX `orders_orderTemplate_FI_1` (`userId`),
 	CONSTRAINT `orders_orderTemplate_FK_1`
 		FOREIGN KEY (`userId`)
-		REFERENCES `usersByAffiliate_user` (`id`),
+		REFERENCES `affiliates_user` (`id`),
 	INDEX `orders_orderTemplate_FI_2` (`affiliateId`),
 	CONSTRAINT `orders_orderTemplate_FK_2`
 		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliate` (`id`),
+		REFERENCES `affiliates_affiliate` (`id`),
 	INDEX `orders_orderTemplate_FI_3` (`branchId`),
 	CONSTRAINT `orders_orderTemplate_FK_3`
 		FOREIGN KEY (`branchId`)
@@ -728,7 +728,7 @@ CREATE TABLE `branch`
 	INDEX `branch_FI_1` (`affiliateId`),
 	CONSTRAINT `branch_FK_1`
 		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliate` (`id`)
+		REFERENCES `affiliates_affiliate` (`id`)
 )Type=MyISAM COMMENT='Sucursales de Afiliados';
 
 # This restores the fkey checks, after having unset them earlier
