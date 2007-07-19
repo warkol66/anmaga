@@ -1,42 +1,14 @@
 <?php
-/**
-* DocumentsDoEditAction
-*
-*  Action que genera un cambio de estado en la base de datos, le llegan datos de
-*  un documento y los actualiza  en dicha base de datos.
-* 
-* @author documentacion: Marcos Meli
-* @author Archivo: Marcos Meli
-* @package mer_documents
-*/
-
-
 require_once 'BaseAction.php';
-require_once("AffiliatePeer.php");
-require_once("AffiliateInfoPeer.php");
 require_once("AffiliateUserPeer.php");
 
-
-/**
-* DocumentsDoEditAction
-*
-*  Esta clase hereda la clase BaseAction
-* 
-*/
-
-class AffiliatesDoAddAffiliateAction extends BaseAction {
+class AffiliatesUsersDoAddUserAction extends BaseAction {
 
 
-	/**
-	* DocumentsDoEditAction
-	*
-	*  Constructor por defecto
-	*
-	*/
-
-	function AffiliatesDoAddAffiliateAction() {
+	function AffiliatesUsersDoAddUserAction() {
 		;
 	}
+
 
 	/**
 	* execute
@@ -74,28 +46,29 @@ class AffiliatesDoAddAffiliateAction extends BaseAction {
 
 		$module = "Affiliates";
 		$smarty->assign("module",$module);
-	
-		
-		$name=$_POST["name"];
-
-		$id=AffiliatePeer::add($name);
-
-		AffiliateInfoPeer::add($id,$_POST["affiliateInternalNumber"],$_POST["address"],$_POST["phone"],$_POST["mail"],$_POST["contact"],$_POST["contactEmail"],$_POST["web"],$_POST["memo"]);
-				
-		if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {	
-			$user = AffiliateUserPeer::create($id,$_POST["username"],$_POST["pass"],1,$_POST["nameuser"],$_POST["surname"],$_POST["mailAddress"]);
-			$affiliate = AffiliatePeer::get($id);
-			$affiliate->setOwnerId($user->getId());
-			$affiliate->save();
-		}					
-					
-					
-					
-		return $mapping->findForwardConfig('success');
 
 
-		
+		$usersPeer= new AffiliateUserPeer();
 
+		if ( !empty($_SESSION["loginUser"]) )
+			$affiliateId = $_POST["affiliateId"];
+		else
+			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
+
+		if($_POST["password"]!=$_POST["passwordCompare"]){
+			header("Location: Main.php?do=usersByAffiliateAddUser&errormessage=wrongPasswordComparison&id=".$affiliateId);
+			exit;
+		}
+
+		$user = $usersPeer->insert($affiliateId,$_POST["username"],$_POST["password"],$_POST["levelId"]);
+
+		$myRedirectConfig = $mapping->findForwardConfig('success');
+		$myRedirectPath = $myRedirectConfig->getpath();
+    $myReqQueryString = "&affiliateId=".$affiliateId;
+    $myReqQueryString = htmlentities(urlencode($myReqQueryString));
+    $myRedirectPath .= $myReqQueryString;
+		$fc = new ForwardConfig($myRedirectPath, True);
+		return $fc;
 	}
 
 }

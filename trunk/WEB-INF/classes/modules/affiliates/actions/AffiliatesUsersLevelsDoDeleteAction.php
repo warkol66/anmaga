@@ -1,15 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("BranchPeer.php");
-require_once("AffiliatePeer.php");
+require_once("AffiliateLevelPeer.php");
 
-class AffiliatesBranchsListAction extends BaseAction {
+class AffiliatesUsersLevelsDoDeleteAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function AffiliatesBranchsListAction() {
+	function AffiliatesUsersLevelsDoDeleteAction() {
 		;
 	}
 
@@ -44,34 +43,16 @@ class AffiliatesBranchsListAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
-		$section = "Branchs";
+		$section = "Levels";
 		
-		$branchPeer = new BranchPeer();
-		
-		$url = "Main.php?do=affiliatesBranchsList";
+    $smarty->assign("module",$module);
+    $smarty->assign("section",$section);
 
-		if (!empty($_SESSION["loginUser"])) {
-			if (!empty($_GET["affiliateId"])) {
-				$branchPeer->setSearchAffiliateId($_GET["affiliateId"]);
-				$url .= "&affiliateId=".$_GET['affiliateId'];			
-			}		
-			$affiliates = AffiliatePeer::getAll();
-			$smarty->assign("affiliates",$affiliates);			
-			$smarty->assign("all",1);
-		}
-		else {
-			$branchPeer->setSearchAffiliateId($_SESSION["loginAffiliateUser"]->getAffiliateId());
-			$smarty->assign("all",0);
-		}
-		
-		$pager = $branchPeer->getSearchPaginated($_GET["page"]);
-		
-		$smarty->assign("branchs",$pager->getResult());
-		$smarty->assign("pager",$pager);
-		
-		$smarty->assign("url",$url);		
 
-		$smarty->assign("message",$_GET["message"]);
+    if ( AffiliateLevelPeer::delete($_GET["level"]) )
+			return $mapping->findForwardConfig('success');
+		else
+			return $mapping->findForwardConfig('failure');
 
 		return $mapping->findForwardConfig('success');
 	}

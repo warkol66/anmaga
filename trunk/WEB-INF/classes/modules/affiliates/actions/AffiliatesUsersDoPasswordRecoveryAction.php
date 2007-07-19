@@ -1,15 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("BranchPeer.php");
-require_once("AffiliatePeer.php");
+require_once("UserPeer.php");
 
-class AffiliatesBranchsListAction extends BaseAction {
+class AffiliatesUsersDoPasswordRecoveryAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function AffiliatesBranchsListAction() {
+	function AffiliatesUsersDoPasswordRecoveryAction() {
 		;
 	}
 
@@ -33,6 +32,8 @@ class AffiliatesBranchsListAction extends BaseAction {
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
+    
+		$this->template->template = "TemplateMail.tpl";
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -44,36 +45,34 @@ class AffiliatesBranchsListAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
-		$section = "Branchs";
-		
-		$branchPeer = new BranchPeer();
-		
-		$url = "Main.php?do=affiliatesBranchsList";
 
-		if (!empty($_SESSION["loginUser"])) {
-			if (!empty($_GET["affiliateId"])) {
-				$branchPeer->setSearchAffiliateId($_GET["affiliateId"]);
-				$url .= "&affiliateId=".$_GET['affiliateId'];			
-			}		
-			$affiliates = AffiliatePeer::getAll();
-			$smarty->assign("affiliates",$affiliates);			
-			$smarty->assign("all",1);
+		if ( !empty($_POST["username"]) && !empty($_POST["mailAddress"]) ) {
+			$userAndPassword = AffiliateUserPeer::generatePassword($_POST["username"],$_POST["mailAddress"]);
+			if ( !empty($userAndPassword) ) {
+        $smarty->assign("user",$userAndPassword[0]);
+        $smarty->assign("password",$userAndPassword[1]);
+        $body = $smarty->fetch("AffiliatePasswordRecoveryMail.tpl");
+
+				$userInfo = $userAndPassword[0]->getAffiliateUserInfo();
+				require_once("libmail.inc.php");
+
+				global $system;
+
+				$m = new Mail();
+				$m->From($system["config"]["system"]["parameters"]["fromEmail"]);
+				$m->To($userInfo->getMailAddress());
+				$m->Subject("Nueva Contraseña");
+				$m->Body($body);
+				$m->Send();
+
+				return $mapping->findForwardConfig('success');
+			}
 		}
-		else {
-			$branchPeer->setSearchAffiliateId($_SESSION["loginAffiliateUser"]->getAffiliateId());
-			$smarty->assign("all",0);
-		}
 		
-		$pager = $branchPeer->getSearchPaginated($_GET["page"]);
-		
-		$smarty->assign("branchs",$pager->getResult());
-		$smarty->assign("pager",$pager);
-		
-		$smarty->assign("url",$url);		
+		$this->template->template = "TemplateLogin.tpl";		
 
-		$smarty->assign("message",$_GET["message"]);
-
-		return $mapping->findForwardConfig('success');
+    $smarty->assign("message","wrongUser");
+		return $mapping->findForwardConfig('failure');
 	}
 
 }

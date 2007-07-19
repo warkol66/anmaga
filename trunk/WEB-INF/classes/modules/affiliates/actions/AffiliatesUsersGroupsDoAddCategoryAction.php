@@ -1,15 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("BranchPeer.php");
-require_once("AffiliatePeer.php");
+require_once("AffiliateGroupPeer.php");
 
-class AffiliatesBranchsListAction extends BaseAction {
+class AffiliatesUsersGroupsDoAddCategoryAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function AffiliatesBranchsListAction() {
+	function AffiliatesUsersGroupsDoAddCategoryAction() {
 		;
 	}
 
@@ -44,36 +43,19 @@ class AffiliatesBranchsListAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
-		$section = "Branchs";
-		
-		$branchPeer = new BranchPeer();
-		
-		$url = "Main.php?do=affiliatesBranchsList";
 
-		if (!empty($_SESSION["loginUser"])) {
-			if (!empty($_GET["affiliateId"])) {
-				$branchPeer->setSearchAffiliateId($_GET["affiliateId"]);
-				$url .= "&affiliateId=".$_GET['affiliateId'];			
-			}		
-			$affiliates = AffiliatePeer::getAll();
-			$smarty->assign("affiliates",$affiliates);			
-			$smarty->assign("all",1);
+    $groupPeer = new AffiliateGroupPeer();
+
+    if ( !empty($_POST["group"]) && !empty($_POST["category"]) ) {
+			if ( $groupPeer->addCategoryToGroup($_POST["category"],$_POST["group"]) ) {
+				header("Location: Main.php?do=usersByAffiliateGroupsList&group=".$_POST["group"]);
+				exit;
+		 }
 		}
-		else {
-			$branchPeer->setSearchAffiliateId($_SESSION["loginAffiliateUser"]->getAffiliateId());
-			$smarty->assign("all",0);
-		}
-		
-		$pager = $branchPeer->getSearchPaginated($_GET["page"]);
-		
-		$smarty->assign("branchs",$pager->getResult());
-		$smarty->assign("pager",$pager);
-		
-		$smarty->assign("url",$url);		
 
-		$smarty->assign("message",$_GET["message"]);
+		header("Location: Main.php?do=usersByAffiliateGroupsList&group=".$_POST["group"]."&message=notAddedToGroup");
+		exit;
 
-		return $mapping->findForwardConfig('success');
 	}
 
 }
