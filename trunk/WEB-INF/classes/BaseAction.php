@@ -92,14 +92,14 @@ class BaseAction extends Action {
 
 		$isUnrestrictedAction = array_search($_REQUEST["do"],$noCheckLogin);
 
-		if ( (empty($_SESSION["loginUserByAffiliate"]) && empty($_SESSION["loginUser"])) && $isUnrestrictedAction === false ) {
+		if ( (empty($_SESSION["loginAffiliateUser"]) && empty($_SESSION["loginUser"])) && $isUnrestrictedAction === false ) {
 			header("Location: Main.php?do=usersLogin");
 			exit;
 		}
 		//if(isset($_SESSION["login_user"]))
 			$loginUser = $_SESSION["loginUser"];
 	//	else
-			$loginUserAffiliate = $_SESSION["loginUserByAffiliate"];
+			$loginUserAffiliate = $_SESSION["loginAffiliateUser"];
 			
 		$noCheckPermission = array();
 
@@ -146,7 +146,7 @@ class BaseAction extends Action {
     	$smarty->assign("affiliateId",$loginUserAffiliate->getAffiliateId());
 
 		$smarty->assign("loginUser",$loginUser);
-		$smarty->assign("loginUserByAffiliate",$loginUserAffiliate);
+		$smarty->assign("loginAffiliateUser",$loginUserAffiliate);
 		$smarty->assign("STATUSLOGIN",$login);
 		$smarty->assign("LOGIN",$_SESSION['usuario']);
 		$smarty->assign("SESION", $_SESSION);
