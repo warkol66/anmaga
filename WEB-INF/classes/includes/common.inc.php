@@ -435,16 +435,16 @@ class Common
 		else{
 
 			
-			if(is_object($_SESSION["loginUserByAffiliate"])){
+			if(is_object($_SESSION["loginAffiliateUser"])){
 				//////////
 				// version con propel toma esta linea
-				$info["userId"]=$_SESSION["loginUserByAffiliate"]->getId();
-				$info["affiliateId"]=$_SESSION["loginUserByAffiliate"]->getAffiliateId();
+				$info["userId"]=$_SESSION["loginAffiliateUser"]->getId();
+				$info["affiliateId"]=$_SESSION["loginAffiliateUser"]->getAffiliateId();
 			}
 
 				//////////
 				// version sin propel toma esta linea
-			else $info["userId"]=$_SESSION["loginUserByAffiliate"];
+			else $info["userId"]=$_SESSION["loginAffiliateUser"];
 		}
 		return $info;
 	}
