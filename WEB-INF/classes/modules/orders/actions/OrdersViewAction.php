@@ -50,7 +50,7 @@ class OrdersViewAction extends BaseAction {
 		}
 		
 		if (empty($_SESSION["loginUser"])) {
-			if ($_SESSION["loginUserByAffiliate"]->getAffiliateId() != $order->getAffiliateId())
+			if ($_SESSION["loginAffiliateUser"]->getAffiliateId() != $order->getAffiliateId())
 				return $mapping->findForwardConfig('noPermission');
 		}			
 		

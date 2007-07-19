@@ -53,7 +53,7 @@ class OrdersTemplatesListAction extends BaseAction {
 	    $smarty->assign("all",1);
 	 	}
 		else {
-    	$pager = OrderTemplatePeer::getAllByAffiliateIdPaginated($_SESSION["loginUserByAffiliate"]->getAffiliateId(),$_GET["page"]);
+    	$pager = OrderTemplatePeer::getAllByAffiliateIdPaginated($_SESSION["loginAffiliateUser"]->getAffiliateId(),$_GET["page"]);
     	$smarty->assign("all",0);
 		}
 		

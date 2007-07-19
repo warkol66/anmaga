@@ -46,7 +46,7 @@ class OrdersDoSaveAction extends BaseAction {
 		$module = "Orders";
 		$smarty->assign("module",$module);
 
-		$user = $_SESSION["loginUserByAffiliate"];
+		$user = $_SESSION["loginAffiliateUser"];
 
 		$items = $_SESSION["orderItems"];
 

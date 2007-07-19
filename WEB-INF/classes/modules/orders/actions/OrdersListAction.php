@@ -51,7 +51,7 @@ class OrdersListAction extends BaseAction {
 		$url = "Main.php?do=ordersList";		
 
 		if (empty($_SESSION["loginUser"])) {
-			$orderPeer->setSearchAffiliateId($_SESSION["loginUserByAffiliate"]->getAffiliateId());
+			$orderPeer->setSearchAffiliateId($_SESSION["loginAffiliateUser"]->getAffiliateId());
 			$smarty->assign("all",0);
 		}
 		else {

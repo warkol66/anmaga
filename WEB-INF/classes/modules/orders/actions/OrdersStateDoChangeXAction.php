@@ -52,8 +52,8 @@ class OrdersStateDoChangeXAction extends BaseAction {
 			$affiliateId = 0;
 		}
 		else {
-			$userId = $_SESSION["loginUserByAffiliate"]->getId();
-			$affiliateId = $_SESSION["loginUserByAffiliate"]->getAffiliateId();
+			$userId = $_SESSION["loginAffiliateUser"]->getId();
+			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
 		} 
 				
 		$order = OrderPeer::get($_POST["orderId"]);
@@ -63,7 +63,7 @@ class OrdersStateDoChangeXAction extends BaseAction {
 		}		
 		
 		if (empty($_SESSION["loginUser"])) {
-			if ($_SESSION["loginUserByAffiliate"]->getAffiliateId() != $order->getAffiliateId())
+			if ($_SESSION["loginAffiliateUser"]->getAffiliateId() != $order->getAffiliateId())
 				return $mapping->findForwardConfig('noPermission');
 		}			
 		

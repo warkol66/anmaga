@@ -53,9 +53,9 @@ class OrdersDoImportAction extends BaseAction {
 			$user = $affiliate->getOwner();
 		}	
 		else {
-			$affiliateId = $_SESSION["loginUserByAffiliate"]->getAffiliateId();
+			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
 			$affiliate = AffiliatePeer::get($affiliateId);
-			$user = $_SESSION["loginUserByAffiliate"];			
+			$user = $_SESSION["loginAffiliateUser"];			
 		}		
 				
 		
