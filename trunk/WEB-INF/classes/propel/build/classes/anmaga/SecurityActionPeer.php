@@ -49,12 +49,12 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
   }
   
 	/**
-	* Obtiene todos los actions cargados en la base de datos por permiso para el bitlevelUsersByAffiliate
+	* Obtiene todos los actions cargados en la base de datos por permiso para el bitlevelAffiliateUser
 	*
 	* @param int $bitLevel Bit Level
 	* @return array Actions
 	*/
-	function getAllByBitLevelUsersByAffiliate($bitLevel) {
+	function getAllByBitLevelAffiliateUser($bitLevel) {
 		$allActions = SecurityActionPeer::getAll();
 		return SecurityActionPeer::getOnlyActionsWithAccess($allActions,$bitLevel);
   }
@@ -84,10 +84,10 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	* @param int $bitLevel Bit Level
 	* @return array Actions
 	*/
-  function getOnlyActionsWithAccessUsersByAffiliate($allActions,$bitLevel) {
+  function getOnlyActionsWithAccessAffiliateUser($allActions,$bitLevel) {
 		$actions = array();
 		foreach ($allActions as $action) {
-			if (($action->getAccessUsersByAffiliate() & $bitLevel) > 0)
+			if (($action->getAccessAffiliateUser() & $bitLevel) > 0)
 				$actions[] = $action;
 		}
 		return $actions;
@@ -128,15 +128,15 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
   }
 
 	/**
-	* Limpia el acceso UsersByAffiliate de un determinado action
+	* Limpia el acceso AffiliateUser de un determinado action
 	*
 	* @param string $action con el nombre del action a limpiar
 	*/
 
-  function clearAccessUsersByAffiliate($action,$baseLevel) {
+  function clearAccessAffiliateUser($action,$baseLevel) {
 		$obj = new securityAction();
 		$obj = SecurityActionPeer::retrieveByPK($action);
-		$obj->setAccessUsersByAffiliate($baseLevel);
+		$obj->setAccessAffiliateUser($baseLevel);
 		$obj->save();
 		return;
   }
@@ -158,7 +158,7 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		$security->setModule($modulo);
 		$security->setSection(1);
 		$security->setAccess($access);
-		$security->setAccessUsersByAffiliate($access);
+		$security->setAccessAffiliateUser($access);
 		$security->save();
 		}catch (PropelException $e) {}
 		return;
@@ -183,7 +183,7 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		$security->setSection(1);
 		$security->setAccess($access);
 		$security->setActive(1);
-		$security->setAccessUsersByAffiliate($access);
+		$security->setAccessAffiliateUser($access);
 		$security->save();
 		}catch (PropelException $e) {}
 
@@ -216,17 +216,17 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	}
 	
 	/**
-	* Actualiza el action con el acceso UsersByAffiliate
+	* Actualiza el action con el acceso AffiliateUser
 	*
 	* @param string $action con el nombre del action
 	* @param int $access con el numero de acceso que tendrá el action
 	* @return true si todo está ok
 	*/
 
-	function setNewAccessUsersByAffiliate($action,$access) {
+	function setNewAccessAffiliateUser($action,$access) {
 		$obj = new securityAction();
 		$obj = SecurityActionPeer::retrieveByPK($action);
-		$obj->setAccessUsersByAffiliate($access);
+		$obj->setAccessAffiliateUser($access);
 		$obj->save();
 		return;
 	}
@@ -272,9 +272,9 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	* @param int $bitLevel  nivel
 	* @return object $obj actions encontrados
 	*/
-	function getAllByModuleAndBitLevelUsersByAffiliate($module,$bitLevel) {
+	function getAllByModuleAndBitLevelAffiliateUser($module,$bitLevel) {
 		$allActions = SecurityActionPeer::getAllByModule($module);
-		return SecurityActionPeer::getOnlyActionsWithAccessUsersByAffiliate($allActions,$bitLevel);
+		return SecurityActionPeer::getOnlyActionsWithAccessAffiliateUser($allActions,$bitLevel);
 	}
 	
 
@@ -444,16 +444,16 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		else{
 
 			
-			if(is_object($_SESSION["loginUserByAffiliate"])){
+			if(is_object($_SESSION["loginAffiliateUser"])){
 				//////////
 				// version con propel toma esta linea
-				$info["levelId"]=$_SESSION["loginUserByAffiliate"]->getLevelId();
-				$info["userType"]=$_SESSION["loginUserByAffiliate"]->getAffiliateId();
+				$info["levelId"]=$_SESSION["loginAffiliateUser"]->getLevelId();
+				$info["userType"]=$_SESSION["loginAffiliateUser"]->getAffiliateId();
 			}
 
 				//////////
 				// version sin propel toma esta linea
-			else $info["levelId"]=$_SESSION["loginUserByAffiliate"];
+			else $info["levelId"]=$_SESSION["loginAffiliateUser"];
 		}
 		return $info;
 	}

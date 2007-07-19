@@ -23,7 +23,7 @@ class OrderStateChange extends BaseOrderStateChange {
         /*
         * Obtiene el usuario asociado al cambio de estado.
         *
-        * @return User/UserByAffiliate Usuario asociado
+        * @return User/AffiliateUser Usuario asociado
         */
         function getUser() {
                 if ($this->getAffiliateId() == "0") {
@@ -31,7 +31,7 @@ class OrderStateChange extends BaseOrderStateChange {
                         return UserPeer::get($this->getUserId());
                 } 
                 else
-                        return $this->getUserByAffiliate();
+                        return $this->getAffiliateUser();
         }
         
         /*
