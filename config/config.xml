@@ -55,14 +55,14 @@
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
 			</htmlsShow>
-			<usersByAffiliateLogin>
+			<affiliatesUsersLogin>
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
-			</usersByAffiliateLogin>
-			<usersByAffiliateDoLogin>
+			</affiliatesUsersLogin>
+			<affiliatesUsersDoLogin>
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
-			</usersByAffiliateDoLogin>
+			</affiliatesUsersDoLogin>
 		</noCheckLoginActions>
 		<rowsPerPage>10</rowsPerPage>
 	</system>
