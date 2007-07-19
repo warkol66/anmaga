@@ -36,7 +36,7 @@
     <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesBranchsList">Sucursales de Distribuidores / Mayoristas</a></td>
   </tr>
 	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateList">Usuarios de Distribuidores / Mayoristas</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersList">Usuarios de Distribuidores / Mayoristas</a></td>
   </tr>
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=configView">Configuración</a></td>
@@ -64,7 +64,7 @@
   </tr>
 </table>
 |-/if-|
-|-if $loginUserByAffiliate neq ""-|
+|-if $loginAffiliateUser neq ""-|
 <table width="150" border="0" cellpadding="0" cellspacing="0" class="menuCell">
   <tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByaffiliateWelcome">Ir al Inicio</a></td>
@@ -90,13 +90,13 @@
     <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersTemplatesList">Pedidos Almacenados</a></td>
   </tr>
 	<tr>
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateList">Usuarios de Distribuidores / Mayoristas</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersList">Usuarios de Distribuidores / Mayoristas</a></td>
   </tr>
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesBranchsList">Sucursales</a></td>
   </tr>
 	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByAffiliateDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
   </tr>
 </table>
 |-/if-|
