@@ -20,7 +20,7 @@ ini_set("include_path",ini_get("include_path").PATH_SEPARATOR.dirname(__FILE__).
 ini_set("include_path",ini_get("include_path").PATH_SEPARATOR.dirname(__FILE__)."/classes/ml/build/classes/");
 Propel::init("$moduleRootDir/config/anmaga-conf.php");
 require_once("UserPeer.php");
-require_once("UserByAffiliatePeer.php");
+require_once("AffiliateUserPeer.php");
 require_once("ProductPeer.php");
 require_once("OrderItemPeer.php");
 
