@@ -60,7 +60,7 @@ class	SecurityActionDoSaveByAffiliateAction extends BaseAction {
 		if (!empty($_SESSION['loginUser']))
 			$userLevel = 1;
 		else
-			$userLevel = $_SESSION['loginUserByAffiliate']->getLevelId();
+			$userLevel = $_SESSION['loginAffiliateUser']->getLevelId();
 		$baseLevel = 1;
 		while ($userLevel > 1) {
 			$baseLevel += $userLevel;
@@ -70,7 +70,7 @@ class	SecurityActionDoSaveByAffiliateAction extends BaseAction {
 		//por cada action voy seteando en $baseLevel los accesos
 		//Cabe destacar que igualmente los nuevos accesos vienen en $_POST["activeaction"];
 		foreach($actions as $act) {
-			SecurityActionPeer::clearAccessUsersByAffiliate($act,$baseLevel);
+			SecurityActionPeer::clearAccessAffiliateUser($act,$baseLevel);
 		}
 
 		//contiene todos los actions que fueron seteados para que cualquiera tenga permiso
@@ -92,7 +92,7 @@ class	SecurityActionDoSaveByAffiliateAction extends BaseAction {
 				$level+=$activeactionlevel;
   		}
 			$level += $baseLevel;
-			SecurityActionPeer::setNewAccessUsersByAffiliate($key,$level);
+			SecurityActionPeer::setNewAccessAffiliateUser($key,$level);
 		}
 
 		/*
@@ -104,7 +104,7 @@ class	SecurityActionDoSaveByAffiliateAction extends BaseAction {
 		foreach($levelmin as $levelaction) {
 			foreach ($actions as $act) {
 				if (strcmp($levelaction,$act)==0)	{
-					SecurityActionPeer::setNewAccessUsersByAffiliate($act,$levelAll);
+					SecurityActionPeer::setNewAccessAffiliateUser($act,$levelAll);
 				}
 			}
 		}

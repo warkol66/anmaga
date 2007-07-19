@@ -4,7 +4,7 @@
 
 require_once("BaseAction.php");
 require_once("SecurityActionPeer.php");
-require_once("UsersByAffiliateLevelPeer.php");
+require_once("AffiliateUserLevelPeer.php");
 
 
 /**
@@ -15,12 +15,12 @@ require_once("UsersByAffiliateLevelPeer.php");
 * @version 1.0
 * @public
 */
-class SecurityActionListUsersByAffiliateAction extends BaseAction {
+class SecurityActionListAffiliateUserAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function SecurityActionListUsersByAffiliateAction() {
+	function SecurityActionListAffiliateUserAction() {
 		;
 	}
 
@@ -75,26 +75,26 @@ class SecurityActionListUsersByAffiliateAction extends BaseAction {
 		if (!empty($_SESSION['loginUser']))
 			$userLevel = 1;
 		else
-			$userLevel = $_SESSION['loginUserByAffiliate']->getLevelId();
+			$userLevel = $_SESSION['loginAffiliateUser']->getLevelId();
 
 		if(isset($_GET["module"])) {
 			if($_GET["module"]!='todos'){
-				$actions = SecurityActionPeer::getAllByModuleAndBitLevelUsersByAffiliate($_GET["module"],$userLevel);
+				$actions = SecurityActionPeer::getAllByModuleAndBitLevelAffiliateUser($_GET["module"],$userLevel);
 				$moduleView=$_POST["module"];
 			}
 			else {
 				//obtengo todos los actions de la base de datos y los envio al smarty
-				$actions = SecurityActionPeer::getAllByBitLevelUsersByAffiliate($userLevel);
+				$actions = SecurityActionPeer::getAllByBitLevelAffiliateUser($userLevel);
 				$moduleView=$_GET["module"];
 			}
 		}	else {
 			//obtengo todos los actions de la base de datos y los envio al smarty
-			$actions = SecurityActionPeer::getAllByBitLevelUsersByAffiliate($userLevel);
+			$actions = SecurityActionPeer::getAllByBitLevelAffiliateUser($userLevel);
 			$moduleView='todos';
 		}
 
 		//obtengo todos los niveles con bitlevel mayor al del usuario logueado
-    $levels = UsersByAffiliateLevelPeer::getAllWithBitLevelGreaterThan($userLevel);
+    $levels = AffiliateUserLevelPeer::getAllWithBitLevelGreaterThan($userLevel);
 
 		//contiene un nivel a comparar, equivalente a 2¨30 -1
 		$levelSave=1073741823;
