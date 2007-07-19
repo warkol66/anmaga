@@ -15,7 +15,7 @@ include_once 'BaseAction.php';
 require_once("ActionLogPeer.php");
 require_once("UserPeer.php");
 require_once("SecurityActionPeer.php");
-require_once("UserByAffiliatePeer.php");
+require_once("AffiliateUserPeer.php");
 /**
 * LogsListAction
 *
@@ -114,7 +114,7 @@ class LogsListAction extends BaseAction {
 
 		//////////
 		// obtengo todos los usuarios por afiliado
-		$usersByAffiliatePeer = new UserByAffiliatePeer();
+		$usersByAffiliatePeer = new AffiliateUserPeer();
 		$usersBAff=$usersByAffiliatePeer->getAll();
 		$smarty->assign($usersByAffiliate,$usersBAff);
 		
@@ -182,7 +182,7 @@ class LogsListAction extends BaseAction {
 				//////////
 				// en version anmaga esto no se usa
 				elseif ($eachLog->getAffiliateId() == 999999){
-					require_once("UserByAffiliatePeer.php");
+					require_once("AffiliateUserPeer.php");
 					$usersByRegistrationPeer = new UserPeer();
 					$userLog=$usersByRegistrationPeer->get($eachLog->getUserId());
 					$userName[$i]=$userLog->getUsername();
