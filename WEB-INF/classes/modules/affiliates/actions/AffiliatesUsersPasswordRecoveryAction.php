@@ -1,15 +1,13 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("BranchPeer.php");
-require_once("AffiliatePeer.php");
 
-class AffiliatesBranchsListAction extends BaseAction {
+class AffiliatesUsersPasswordRecoveryAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function AffiliatesBranchsListAction() {
+	function AffiliatesUsersPasswordRecoveryAction() {
 		;
 	}
 
@@ -33,7 +31,10 @@ class AffiliatesBranchsListAction extends BaseAction {
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
-
+    	/**
+     	* Use a different template
+     	*/
+		$this->template->template = "TemplateLogin.tpl";
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
@@ -44,34 +45,6 @@ class AffiliatesBranchsListAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
-		$section = "Branchs";
-		
-		$branchPeer = new BranchPeer();
-		
-		$url = "Main.php?do=affiliatesBranchsList";
-
-		if (!empty($_SESSION["loginUser"])) {
-			if (!empty($_GET["affiliateId"])) {
-				$branchPeer->setSearchAffiliateId($_GET["affiliateId"]);
-				$url .= "&affiliateId=".$_GET['affiliateId'];			
-			}		
-			$affiliates = AffiliatePeer::getAll();
-			$smarty->assign("affiliates",$affiliates);			
-			$smarty->assign("all",1);
-		}
-		else {
-			$branchPeer->setSearchAffiliateId($_SESSION["loginAffiliateUser"]->getAffiliateId());
-			$smarty->assign("all",0);
-		}
-		
-		$pager = $branchPeer->getSearchPaginated($_GET["page"]);
-		
-		$smarty->assign("branchs",$pager->getResult());
-		$smarty->assign("pager",$pager);
-		
-		$smarty->assign("url",$url);		
-
-		$smarty->assign("message",$_GET["message"]);
 
 		return $mapping->findForwardConfig('success');
 	}

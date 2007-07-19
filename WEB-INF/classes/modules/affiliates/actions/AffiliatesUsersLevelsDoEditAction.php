@@ -1,15 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("BranchPeer.php");
-require_once("AffiliatePeer.php");
+require_once("AffiliateLevelPeer.php");
 
-class AffiliatesBranchsListAction extends BaseAction {
+class AffiliatesUsersLevelsDoEditAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function AffiliatesBranchsListAction() {
+	function AffiliatesUsersLevelsDoEditAction() {
 		;
 	}
 
@@ -44,34 +43,33 @@ class AffiliatesBranchsListAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
-		$section = "Branchs";
+		$section = "Levels";
 		
-		$branchPeer = new BranchPeer();
-		
-		$url = "Main.php?do=affiliatesBranchsList";
+    $smarty->assign("module",$module);
+    $smarty->assign("section",$section);
 
-		if (!empty($_SESSION["loginUser"])) {
-			if (!empty($_GET["affiliateId"])) {
-				$branchPeer->setSearchAffiliateId($_GET["affiliateId"]);
-				$url .= "&affiliateId=".$_GET['affiliateId'];			
-			}		
-			$affiliates = AffiliatePeer::getAll();
-			$smarty->assign("affiliates",$affiliates);			
-			$smarty->assign("all",1);
+		if ( !empty($_POST["id"]) ) {
+			//estoy editando un nivel de usuarios existente
+
+			if ( AffiliateLevelPeer::update($_POST["id"],$_POST["name"]) )
+  	   	return $mapping->findForwardConfig('success');
+			else {
+				header("Location: Main.php?do=usersByAffiliateLevelsList&level=".$_POST["id"]."&message=errorUpdate");
+				exit;
+			}
 		}
 		else {
-			$branchPeer->setSearchAffiliateId($_SESSION["loginAffiliateUser"]->getAffiliateId());
-			$smarty->assign("all",0);
-		}
-		
-		$pager = $branchPeer->getSearchPaginated($_GET["page"]);
-		
-		$smarty->assign("branchs",$pager->getResult());
-		$smarty->assign("pager",$pager);
-		
-		$smarty->assign("url",$url);		
+		  //estoy creando un nuevo nivel de usuarios
 
-		$smarty->assign("message",$_GET["message"]);
+			if ( !empty($_POST["name"]) ) {
+
+				AffiliateLevelPeer::create($_POST["name"]);
+				return $mapping->findForwardConfig('success');
+			}
+			else {
+				return $mapping->findForwardConfig('blankName');
+			}
+		}
 
 		return $mapping->findForwardConfig('success');
 	}

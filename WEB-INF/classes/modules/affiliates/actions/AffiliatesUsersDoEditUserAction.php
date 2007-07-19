@@ -1,42 +1,14 @@
 <?php
-/**
-* DocumentsDoEditAction
-*
-*  Action que genera un cambio de estado en la base de datos, le llegan datos de
-*  un documento y los actualiza  en dicha base de datos.
-* 
-* @author documentacion: Marcos Meli
-* @author Archivo: Marcos Meli
-* @package mer_documents
-*/
-
-
 require_once 'BaseAction.php';
-require_once("AffiliatePeer.php");
-require_once("AffiliateInfoPeer.php");
 require_once("AffiliateUserPeer.php");
+require_once("LevelPeer.php");
 
+class AffiliatesUsersDoEditUserAction extends BaseAction {
 
-/**
-* DocumentsDoEditAction
-*
-*  Esta clase hereda la clase BaseAction
-* 
-*/
-
-class AffiliatesDoAddAffiliateAction extends BaseAction {
-
-
-	/**
-	* DocumentsDoEditAction
-	*
-	*  Constructor por defecto
-	*
-	*/
-
-	function AffiliatesDoAddAffiliateAction() {
+	function AffiliateDoEditUserAction() {
 		;
 	}
+
 
 	/**
 	* execute
@@ -74,27 +46,41 @@ class AffiliatesDoAddAffiliateAction extends BaseAction {
 
 		$module = "Affiliates";
 		$smarty->assign("module",$module);
-	
-		
-		$name=$_POST["name"];
 
-		$id=AffiliatePeer::add($name);
+    $userPeer = new AffiliateUserPeer();
+    
+		if ( !empty($_SESSION["loginUser"]) )
+			$affiliateId = $_POST["affiliateId"];
+		else
+			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
 
-		AffiliateInfoPeer::add($id,$_POST["affiliateInternalNumber"],$_POST["address"],$_POST["phone"],$_POST["mail"],$_POST["contact"],$_POST["contactEmail"],$_POST["web"],$_POST["memo"]);
-				
-		if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {	
-			$user = AffiliateUserPeer::create($id,$_POST["username"],$_POST["pass"],1,$_POST["nameuser"],$_POST["surname"],$_POST["mailAddress"]);
-			$affiliate = AffiliatePeer::get($id);
-			$affiliate->setOwnerId($user->getId());
-			$affiliate->save();
-		}					
-					
-					
-					
-		return $mapping->findForwardConfig('success');
+		if ( $_POST["accion"] == "edicion" ) {
+			//estoy editando un usuario existente
 
+			if ( $_POST["pass"] == $_POST["pass2"] ) {
 
-		
+				$userPeer->update($_POST["id"],$affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"],$_POST["name"],$_POST["surname"],$_POST["mailAddress"]);
+ 	    	return $mapping->findForwardConfig('success');
+			}
+			else {
+				header("Location: Main.php?do=usersByAffiliateList&user=".$_POST["id"]."&message=wrongPassword");
+				exit;
+			}
+
+		}
+		else {
+		  //estoy creando un nuevo usuario
+		  
+			if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {
+
+				$userPeer->create($affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"],$_POST["name"],$_POST["surname"],$_POST["mailAddress"]);
+				return $mapping->findForwardConfig('success');
+			}
+			else {
+				header("Location: Main.php?do=usersList&user=&message=wrongPassword");
+				exit;
+			}
+		}
 
 	}
 

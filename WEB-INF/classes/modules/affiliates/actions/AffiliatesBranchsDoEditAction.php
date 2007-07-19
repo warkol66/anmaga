@@ -53,7 +53,7 @@ class AffiliatesBranchsDoEditAction extends BaseAction {
 			$affiliateId = $_POST["affiliateId"];
 		}
 		else {
-			$affiliateId = $_SESSION["loginUserByAffiliate"]->getAffiliateId();
+			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
 			$smarty->assign("all",0);
 		}		
 

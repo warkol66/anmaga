@@ -1,15 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("BranchPeer.php");
-require_once("AffiliatePeer.php");
+require_once("AffiliateUserPeer.php");
 
-class AffiliatesBranchsListAction extends BaseAction {
+class AffiliatesUsersDoAddToGroupAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function AffiliatesBranchsListAction() {
+	function AffiliatesUsersDoAddToGroupAction() {
 		;
 	}
 
@@ -44,36 +43,19 @@ class AffiliatesBranchsListAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
-		$section = "Branchs";
-		
-		$branchPeer = new BranchPeer();
-		
-		$url = "Main.php?do=affiliatesBranchsList";
 
-		if (!empty($_SESSION["loginUser"])) {
-			if (!empty($_GET["affiliateId"])) {
-				$branchPeer->setSearchAffiliateId($_GET["affiliateId"]);
-				$url .= "&affiliateId=".$_GET['affiliateId'];			
-			}		
-			$affiliates = AffiliatePeer::getAll();
-			$smarty->assign("affiliates",$affiliates);			
-			$smarty->assign("all",1);
-		}
-		else {
-			$branchPeer->setSearchAffiliateId($_SESSION["loginAffiliateUser"]->getAffiliateId());
-			$smarty->assign("all",0);
+    $userPeer = new AffiliateUserPeer();
+
+    if ( !empty($_POST["group"]) && !empty($_POST["user"]) ) {
+			if ( $userPeer->addUserToGroup($_POST["user"],$_POST["group"]) ) {
+				header("Location: Main.php?do=usersByAffiliateList&user=".$_POST["user"]);
+				exit;
+		 }
 		}
 		
-		$pager = $branchPeer->getSearchPaginated($_GET["page"]);
-		
-		$smarty->assign("branchs",$pager->getResult());
-		$smarty->assign("pager",$pager);
-		
-		$smarty->assign("url",$url);		
+		header("Location: Main.php?do=usersByAffiliateList&user=".$_POST["user"]."&message=notAddedToGroup");
+		exit;
 
-		$smarty->assign("message",$_GET["message"]);
-
-		return $mapping->findForwardConfig('success');
 	}
 
 }
