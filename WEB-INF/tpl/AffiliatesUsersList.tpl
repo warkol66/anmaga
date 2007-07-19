@@ -51,24 +51,24 @@
 	|-else-|
 			##161,Realice los cambios en el usuario y haga click en Aceptar para guardar las modificaciones.##|-/if-| <br />
 	<br />
-<form method='post' action='Main.php?do=usersByAffiliateDoEditUser'>
-	<input type='hidden' name='id' value='|-if $accion eq "edicion"-||-$currentUsersByAffiliate->getId()-||-/if-|' />
+<form method='post' action='Main.php?do=affiliatesUsersDoEditUser'>
+	<input type='hidden' name='id' value='|-if $accion eq "edicion"-||-$currentAffiliateUser->getId()-||-/if-|' />
 	<table width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 		<tr>
 			<td nowrap="nowrap" class='tdTitle'>##162,Identificación de Usuario##</td>
-			<td><input name='username' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUsersByAffiliate->getUsername()-||-/if-|' size="40" /></td>
+			<td><input name='username' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentAffiliateUser->getUsername()-||-/if-|' size="40" /></td>
 		</tr>
 		<tr>
 			<td class='tdTitle'>##163,Nombre##</td>
-			<td><input name='name' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUsersByAffiliateUserInfo->getName()-||-/if-|' size="70" /></td>
+			<td><input name='name' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentAffiliateUserInfo->getName()-||-/if-|' size="70" /></td>
 		</tr>
 		<tr>
 			<td class='tdTitle'>##164,Apellido##</td>
-			<td><input name='surname' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUsersByAffiliateUserInfo->getSurname()-||-/if-|' size="70" /></td>
+			<td><input name='surname' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentAffiliateUserInfo->getSurname()-||-/if-|' size="70" /></td>
 		</tr>
 		<tr>
 			<td class='tdTitle'>E-mail</td>
-			<td><input name='mailAddress' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentUsersByAffiliateUserInfo->getMailAddress()-||-/if-|' size="70" /></td>
+			<td><input name='mailAddress' type='text'  class='textodato' value='|-if $accion eq "edicion"-||-$currentAffiliateUserInfo->getMailAddress()-||-/if-|' size="70" /></td>
 		</tr>
 		<tr>
 			<td class='tdTitle'>##165,Contraseña##</td>
@@ -84,7 +84,7 @@
         <select name='levelId'>
         	<option value="">Seleccionar nivel</option>
 					|-foreach from=$levels item=level name=for_levels-|
-        	<option value="|-$level->getId()-|"|-if $accion eq "edicion" and $level->getId() eq $currentUsersByAffiliate->getLevelId()-| selected="selected"|-/if-|>|-$level->getName()-|</option>
+        	<option value="|-$level->getId()-|"|-if $accion eq "edicion" and $level->getId() eq $currentAffiliateUser->getLevelId()-| selected="selected"|-/if-|>|-$level->getName()-|</option>
 					|-/foreach-|
        	</select>
 			</td>
@@ -116,7 +116,7 @@
 |-if $accion eq "edicion"-|
 <table width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 	<caption>
-	##167,El usuario ## |-$currentUsersByAffiliate->getUsername()-| ##168,es miembro de los grupos:##
+	##167,El usuario ## |-$currentAffiliateUser->getUsername()-| ##168,es miembro de los grupos:##
 	</caption>
 	|-if $currentUserGroups|@count eq 0-|
 	<tr>
@@ -128,24 +128,24 @@
 		<th width="5%">&nbsp;</th>
 	</tr>
 	|-foreach from=$currentUserGroups item=userGroup name=for_user_group-|
-	|-assign var="group" value=$userGroup->getUsersByAffiliateGroup()-|
+	|-assign var="group" value=$userGroup->getAffiliateUserGroup()-|
 	<tr>
 		<td><div class='titulo2'>|-$group->getName()-|</div></td>
-		<td class='cellopciones' nowrap> [ <a href='Main.php?do=usersByAffiliateDoRemoveFromGroup&user=|-$currentUsersByAffiliate->getId()-|&group=|-$group->getId()-|' class='delete'>##115,Eliminar##</a> ] </td>
+		<td class='cellopciones' nowrap> [ <a href='Main.php?do=affiliatesUsersDoRemoveFromGroup&user=|-$currentAffiliateUser->getId()-|&group=|-$group->getId()-|' class='delete'>##115,Eliminar##</a> ] </td>
 	</tr>
 	|-/foreach-|
 	|-/if-|
 	<tr>
 		<td class='cellboton' colspan='4'>##171,Agregar al Usuario en el Grupo##:
 			<form action='Main.php' method='post'>
-				<input type="hidden" name="do" value="usersByAffiliateDoAddToGroup" />
+				<input type="hidden" name="do" value="affiliatesUsersDoAddToGroup" />
 				<select name="group">
 					<option value="" selected="selected">##172,Seleccionar grupo##</option>
 								|-foreach from=$groups item=group name=for_groups-|
 					<option value="|-$group->getId()-|">|-$group->getName()-|</option>
 								|-/foreach-|
 				</select>
-				<input type="hidden" name="user" value="|-$currentUsersByAffiliate->getId()-|" />
+				<input type="hidden" name="user" value="|-$currentAffiliateUser->getId()-|" />
 				<input type='submit' value='##123,Agregar##' class='button' />
 			</form></td>
 	</tr>
@@ -164,7 +164,7 @@
 					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $affiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
 				|-/foreach-|
 			</select> 
-			<input type="hidden" name="do" value="usersByAffiliateList" />
+			<input type="hidden" name="do" value="affiliatesUsersList" />
 			<input name="submit" type="submit" value="Consultar" class="button" />
 		</form>
 |-/if-|
@@ -177,13 +177,13 @@
 	|-foreach from=$users item=user name=for_users-|
 	<tr>
 		<td width="90%"><div class='titulo2'>|-$user->getUsername()-|</div></td>
-		<td width="10%" class='cellTextOptions' nowrap> [ <a href='Main.php?do=usersByAffiliateList&user=|-$user->getId()-|']' class='edit'>##114,Editar##</a> ]
-			[ <a href='Main.php?do=usersByAffiliateDoDelete&id=|-$user->getId()-|']' class='delete'>##115,Eliminar##</a> ] </td>
+		<td width="10%" class='cellTextOptions' nowrap> [ <a href='Main.php?do=affiliatesUsersList&user=|-$user->getId()-|']' class='edit'>##114,Editar##</a> ]
+			[ <a href='Main.php?do=affiliatesUsersDoDelete&id=|-$user->getId()-|']' class='delete'>##115,Eliminar##</a> ] </td>
 	</tr>
 	|-/foreach-|
 	<tr>
 		<td class='cellboton' colspan='4'><form action='Main.php' method='get'>
-				<input type="hidden" name="do" value="usersByAffiliateList" />
+				<input type="hidden" name="do" value="affiliatesUsersList" />
 				<input type="hidden" name="user" value="" />
 				<input type="hidden" name="affiliateId" value="|-$affiliateId-|" />
 				<input type='submit' value='##173,Nuevo Usuario##' class='button' />
@@ -204,7 +204,7 @@
 	|-foreach from=$deletedUsers item=user name=for_deleted_users-|
 	<tr>
 		<td width="90%"><div class='titulo2'>|-$user->getUsername()-|</div></td>
-		<td width="10%" nowrap class='cellTextOptions'> [ <a href='Main.php?do=usersByAffiliateDoActivate&user=|-$user->getId()-|' class='edit'>##176,Reactivar##</a> ] </td>
+		<td width="10%" nowrap class='cellTextOptions'> [ <a href='Main.php?do=affiliatesUsersDoActivate&user=|-$user->getId()-|' class='edit'>##176,Reactivar##</a> ] </td>
 	</tr>
 	|-/foreach-|
 </table>

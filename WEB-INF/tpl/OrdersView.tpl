@@ -26,7 +26,7 @@
 	<strong>Creada:</strong> |-$order->getCreated()-|<br> 
 	<strong>Mayorista:</strong> |-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|<br> 
 	<strong>Sucursal:</strong> |-assign var=branch value=$order->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|<br> 
-	<strong>Usuario:</strong> |-assign var=user value=$order->getUserByAffiliate()-||-if $user-||-$user->getUsername()-||-/if-|<br> 
+	<strong>Usuario:</strong> |-assign var=user value=$order->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|<br> 
 	<p> <strong>Estado Actual:</strong> <span id="state_actual">|-$order->getStateName()-|</span> </p> 
 	<p>  
 	<table width="100%" border="0" cellpadding="5" cellspacing="0"> 

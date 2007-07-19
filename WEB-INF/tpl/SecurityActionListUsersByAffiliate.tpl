@@ -11,7 +11,7 @@
 					<option value="|-$moduleName-|"> |-$moduleName-|</option>
 				|-/foreach-|
 				</select>
-				<input type="hidden" name="do" value="securityActionListUsersByAffiliate" />
+				<input type="hidden" name="do" value="securityActionListAffiliateUser" />
 			 </td>
 			 <td><input type="submit"> </td>
 		 </tr>
@@ -36,12 +36,12 @@
 			</th> 
 |-foreach from=$levels item=groupbit name=bitlevelgroup-|
 <td class="celldato">
-	<input type="checkbox" name="activeaction[|-$action->getAction()-|][]" value="|-$groupbit->getBitLevel()-|" |-checked_if_has_access first=$groupbit->getBitLevel() second=$action->getAccessUsersByAffiliate()-|>
+	<input type="checkbox" name="activeaction[|-$action->getAction()-|][]" value="|-$groupbit->getBitLevel()-|" |-checked_if_has_access first=$groupbit->getBitLevel() second=$action->getAccessAffiliateUser()-|>
 	<input type=hidden name="bitaction[|-$action->getAction()-|][|-$smarty.foreach.contar.iteration-|]" value="|-$groupbit->getBitLevel()-|">
 </td>
 |-/foreach-|
 <td class="celldato">
-	<input type="checkbox" name="all[]" value="|-$action->getAction()-|"|-if $levelsave eq $action->getAccessUsersByAffiliate()-|checked|-/if-| />
+	<input type="checkbox" name="all[]" value="|-$action->getAction()-|"|-if $levelsave eq $action->getAccessAffiliateUser()-|checked|-/if-| />
 </td>
 	 </tr>		
 	 |-/foreach-|

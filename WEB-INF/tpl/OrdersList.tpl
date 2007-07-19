@@ -61,7 +61,7 @@
 							<tr>
 																<td class="tdSize1">|-$order->getid()-|</td>
 																<td class="tdSize1">|-$order->getcreated()-|</td>
-																<td class="tdSize1">|-assign var=user value=$order->getUserByAffiliate()-||-if $user-||-$user->getUsername()-||-/if-|</td>
+																<td class="tdSize1">|-assign var=user value=$order->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
 																|-if $all eq "1"-|<td class="tdSize1">|-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
 																<td class="tdSize1">|-assign var=branch value=$order->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
 																<td class="tdSize1">|-$order->gettotal()|number_format:2:",":"."-|</td>

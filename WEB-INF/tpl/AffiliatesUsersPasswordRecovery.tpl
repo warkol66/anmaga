@@ -23,7 +23,7 @@
 					<td>&nbsp;</td> 
 				</tr> 
 			</table> 
-			<form method='post' action="Main.php?do=usersByAffiliateDoPasswordRecovery">
+			<form method='post' action="Main.php?do=affiliatesUsersDoPasswordRecovery">
 				<center> 
 					<table width='520' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'> 
 						<tr> 

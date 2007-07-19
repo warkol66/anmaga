@@ -42,7 +42,7 @@
 <div align='center' class='textoerror'>##184,El Nivel de Usuarios debe tener un Nombre##</div>
 |-/if-|
 |-if $accion eq "edicion"-|
-<form method='post' action='Main.php?do=usersByAffiliateLevelsDoEdit'>
+<form method='post' action='Main.php?do=affiliatesUsersLevelsDoEdit'>
 	<input type='hidden' name='id' value='|-$currentLevel->getId()-|' />
 	<table class='tablaborde' cellpadding='5' cellspacing='1'>
 		<tr>
@@ -70,14 +70,14 @@
 	|-foreach from=$levels item=level name=for_levels-|
 	<tr>
 		<td class='celldato'><div class='titulo2'>|-$level->getName()-|</div></td>
-		<td class='cellopciones' nowrap> [ <a href='Main.php?do=usersByAffiliateLevelsList&level=|-$level->getId()-|' class='edit'>##114,Editar##</a> ]
-			[ <a href='Main.php?do=usersByAffiliateLevelsDoDelete&level=|-$level->getId()-|' class='elim' onclick="return confirm('##256,Esta opción elimina permanentemente a este Nivel. ¿Está seguro que desea eliminarlo?##');">##115,Eliminar##</a> ] </td>
+		<td class='cellopciones' nowrap> [ <a href='Main.php?do=affiliatesUsersLevelsList&level=|-$level->getId()-|' class='edit'>##114,Editar##</a> ]
+			[ <a href='Main.php?do=affiliatesUsersLevelsDoDelete&level=|-$level->getId()-|' class='elim' onclick="return confirm('##256,Esta opción elimina permanentemente a este Nivel. ¿Está seguro que desea eliminarlo?##');">##115,Eliminar##</a> ] </td>
 	</tr>
 	|-/foreach-|
 	<tr>
 		<td class='celldato' colspan='2'><form action='Main.php' method='post'>
 				##195,Agregar Nivel de Usuarios##&nbsp;&nbsp;
-				<input type="hidden" name="do" value="usersByAffiliateLevelsDoEdit" />
+				<input type="hidden" name="do" value="affiliatesUsersLevelsDoEdit" />
 				<input type="text" name="name" value="" />
 				<input type='submit' value='##123,Agregar##' class='boton' />
 			</form></td>
