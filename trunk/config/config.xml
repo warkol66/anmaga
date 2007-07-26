@@ -14,11 +14,13 @@
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
 			</underMaintenance>
-			<siteName>Anmaga</siteName>
-			<siteDescription>Sistema Anmaga</siteDescription>
+			<siteName>Negociadora Anmaga</siteName>
+			<siteDescription>Sistema de Administración de Pedidos de Negociadora Anmaga</siteDescription>
 			<webmasterMail>gflamerich@gmail.com</webmasterMail>
 			<debugMail>gflamerich@gmail.com</debugMail>
 			<fromEmail>gflamerich@gmail.com</fromEmail>
+			<news>Novedades: Bienvenido al sistema Anmaga. En este momento este sistema se encuentra en período de prueba</news>
+			<affiliateNews>Novedades: distinguidos Clientes, Bienvenido al sistema Anmaga. En este momento este sistema se encuentra en período de prueba</affiliateNews>
 		</parameters>
 		<noCheckPermissionActions>
 			<index>
@@ -69,34 +71,9 @@
 	<mluse>
 		<language>esp</language>
 	</mluse>
-	<mer>
-		<graphs>
-			<borders>
-				<width>40</width>
-			</borders>
-			<font>
-				<size>10</size>
-			</font>
-			<baloon>
-				<label>
-					<font>
-						<font>11</font>
-						<style>9002</style>
-						<size>10</size>
-					</font>
-				</label>
-			</baloon>
-		</graphs>
-		<profiles>
-			<max_actors_compare>3</max_actors_compare>
-		</profiles>
-	</mer>
 	<users>
 		<licenses>5</licenses>
 	</users>
-	<otra>
-		<otro>12</otro>
-	</otra>
 	<catalog>
 		<image>
 			<maxSize>100000</maxSize>
@@ -107,7 +84,7 @@
 				</jpeg>
 				<png>
 					<value>YES</value>
-					<element_type>YES/NO</element_type>				
+					<element_type>YES/NO</element_type>
 				</png>
 			</formats>
 			<thumbnail>

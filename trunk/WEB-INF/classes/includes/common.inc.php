@@ -9,14 +9,14 @@
 
   include_once('Constants.inc.php');
   define('MAXIMOS_RESULTADOS_POR_PAGINA',15);
-  //ini_set("error_reporting",E_ALL);
-  //ini_set("show_errors",true);
+  ini_set("error_reporting",E_ALL);
+  ini_set("show_errors",true);
   session_cache_limiter('nocache');
   session_start();
   extract($_SESSION,EXTR_PREFIX_ALL,'session');
   extract($_GET,EXTR_PREFIX_ALL,'get');
   extract($_POST,EXTR_PREFIX_ALL,'post');
-  //error_reporting(0);
+  error_reporting(0);
 
 
 /*
@@ -342,7 +342,7 @@ class Common
 
 	/**
 	* Devuelve la edad de una persona a partir de una fecha de nacimiento entregada
-	* @param string $birth fecha de nacimiento a calcular, el formato ser· aÒo-dia-mes
+	* @param string $birth fecha de nacimiento a calcular, el formato ser√° a√±o-dia-mes
 	* @return int $ageYears edad de la fecha entregada
 	*
 	*/
@@ -350,7 +350,7 @@ class Common
 	function getAge($birth){
 	
 	///////////
-	/// el formato va a ser aÒo dia mes
+	/// el formato va a ser a√±o dia mes
 	///$birth='1985-29-11';
 		$birthday=explode("-",$birth);
 		
@@ -391,7 +391,7 @@ class Common
 		$compareFilter=date("Y-m-d");
 
 		$yearFilter=$minYear."-".$filter;
-		//echo "menor aÒo $minYearFilter,, mayor aÒo $maxYearFilter";	
+		//echo "menor a√±o $minYearFilter,, mayor a√±o $maxYearFilter";	
 
 		//////////
 		// adicionalmente se puede habilitar la comparacion
@@ -456,7 +456,7 @@ class Common
 * @param string $user datos del usuario
 * @param string $action nombre del action
 * @param string $forward tipo de forward (success, failure, errorLog, etc)
-* @param string $object objeto sobre el cual se realizÛ la acciÛn
+* @param string $object objeto sobre el cual se realiz√≥ la acci√≥n
 * @return void
 */
 function doLog($userInfo,$action,$forward,$object=null) {
