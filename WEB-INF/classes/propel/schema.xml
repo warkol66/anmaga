@@ -293,6 +293,7 @@
   <table phpName="Unit" name="unit" description="Unidades">
   	<column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id de la unidad" primaryKey='true' />
   	<column name="name" type="VARCHAR" size="255" required="true" description="Unidad" />
+  	<column name="unitQuantity" type="INTEGER" required="true" description="Cantidad de unidades que posee la unidad" />
   </table>
 
   <table phpName="MeasureUnit" name="measureUnit" description="Unidad de Medida">

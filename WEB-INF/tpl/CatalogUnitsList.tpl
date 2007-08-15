@@ -8,14 +8,16 @@
 							<tr>
                 								<th>id</th>
 																<th>name</th>
+																<th>unitQuantity</th>
 																<th>&nbsp;</th>
 							</tr>
 						</thead>
 						<tbody>
 						|-foreach from=$units item=unit name=for_units-|
 							<tr>
-								<td>|-$unit->getid()-|</td>
-								<td>|-$unit->getname()-|</td>
+								<td>|-$unit->getId()-|</td>								
+								<td>|-$unit->getName()-|</td>
+								<td>|-$unit->getUnitQuantity()-|</td>
 								<td>
 									<form action="Main.php" method="get">
 										<input type="hidden" name="do" value="catalogUnitsEdit" />

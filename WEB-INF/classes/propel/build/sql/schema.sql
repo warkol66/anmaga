@@ -529,6 +529,7 @@ CREATE TABLE `unit`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de la unidad',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Unidad',
+	`unitQuantity` INTEGER  NOT NULL COMMENT 'Cantidad de unidades que posee la unidad',
 	PRIMARY KEY (`id`)
 )Type=MyISAM COMMENT='Unidades';
 

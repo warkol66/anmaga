@@ -17,11 +17,13 @@ class UnitPeer extends BaseUnitPeer {
   * Crea un unit nuevo.
   *
   * @param string $name name del unit
+  * @param int $unitQuantity del unit  
   * @return boolean true si se creo el unit correctamente, false sino
 	*/
-	function create($name) {
+	function create($name,$unitQuantity) {
     $unitObj = new Unit();
     $unitObj->setname($name);
+    $unitObj->setUnitQuantity($unitQuantity);
 		$unitObj->save();
 		return true;
 	}
@@ -31,11 +33,13 @@ class UnitPeer extends BaseUnitPeer {
   *
   * @param int $id id del unit
   * @param string $name name del unit
+  * @param int $unitQuantity del unit    
   * @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
-  function update($id,$name) {
+  function update($id,$name,$unitQuantity) {
   	$unitObj = UnitPeer::retrieveByPK($id);
     $unitObj->setname($name);    
+    $unitObj->setUnitQuantity($unitQuantity);
 		$unitObj->save();
 		return true;
   }
