@@ -11,6 +11,10 @@
 								<input type="text" id="name" name="name" value="|-if $action eq "edit"-||-$unit->getname()-||-/if-|" title="name" maxlength="255" />
 							</p>
 							<p>
+								<label for="name">Unit Quantity</label>
+								<input type="text" id="unitQuantity" name="unitQuantity" value="|-if $action eq "edit"-||-$unit->getUnitQuantity()-||-/if-|" title="unitQuantity" maxlength="255" />
+							</p>							
+							<p>
 								|-if $action eq "edit"-|
 								<input type="hidden" name="id" id="id" value="|-if $action eq "edit"-||-$unit->getid()-||-/if-|" />
 								|-/if-|

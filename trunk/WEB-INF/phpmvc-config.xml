@@ -1056,6 +1056,14 @@
 					 validate = "true">
 			<forward name="success" path="OrdersConfirm.tpl" />
 		</action>
+		
+		<action    path = "ordersExport"
+							 type = "OrdersExportAction"
+							 name = "ordersExport"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="OrdersExport.tpl" />
+		</action>
 
 		<action    path = "ordersDoGenerate"
 							 type = "OrdersDoGenerateAction"

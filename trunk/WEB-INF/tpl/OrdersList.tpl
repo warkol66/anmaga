@@ -43,50 +43,51 @@
 						</form>
 					</div>
 
-					<table id="tabla-orders" width="100%" class="tableTdBorders">
-						<thead>
-							<tr>
-                								<th class="thFillTitle">id</th>
-																<th class="thFillTitle">created</th>
-																<th class="thFillTitle">user</th>
-																|-if $all eq "1"-|<th class="thFillTitle">affiliate</th>|-/if-|
-																<th class="thFillTitle">branch</th>
-																<th class="thFillTitle">total</th>
-																<th class="thFillTitle">state</th>
-																<th class="thFillTitle">&nbsp;</th>
-							</tr>
-						</thead>
-						<tbody>
-						|-foreach from=$orders item=order name=for_orders-|
-							<tr>
-																<td class="tdSize1">|-$order->getid()-|</td>
-																<td class="tdSize1">|-$order->getcreated()-|</td>
-																<td class="tdSize1">|-assign var=user value=$order->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
-																|-if $all eq "1"-|<td class="tdSize1">|-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
-																<td class="tdSize1">|-assign var=branch value=$order->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
-																<td class="tdSize1">|-$order->gettotal()|number_format:2:",":"."-|</td>
-																<td class="tdSize1">|-$order->getStateName()-|</td>
-																<td>
-									<form action="Main.php" method="get">
-										<input type="hidden" name="do" value="ordersView" />
-										<input type="hidden" name="id" value="|-$order->getid()-|" />
-										<input type="submit" name="submit_go_view_order" value="Ver" class="boton" />
-									</form>
-									|-if $all eq "0"-|
-									<form action="Main.php" method="get">
-										<input type="hidden" name="do" value="ordersDoAddToCart" />
-										<input type="hidden" name="id" value="|-$order->getid()-|" />
-										<input type="submit" name="submit_go_add_order" value="Add To Cart" class="boton" />
-									</form>
-									|-/if-|
-								</td>
-							</tr>
-						|-/foreach-|
+					<form action="Main.php" method="get">
+					
+						<table id="tabla-orders" width="100%" class="tableTdBorders">
+							<thead>
+								<tr>
+													<th class="thFillTitle">id</th>
+																	<th class="thFillTitle">created</th>
+																	<th class="thFillTitle">user</th>
+																	|-if $all eq "1"-|<th class="thFillTitle">affiliate</th>|-/if-|
+																	<th class="thFillTitle">branch</th>
+																	<th class="thFillTitle">total</th>
+																	<th class="thFillTitle">state</th>
+																	<th class="thFillTitle">&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+							|-foreach from=$orders item=order name=for_orders-|
+								<tr>
+																	<td class="tdSize1">|-$order->getid()-|</td>
+																	<td class="tdSize1">|-$order->getcreated()-|</td>
+																	<td class="tdSize1">|-assign var=user value=$order->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
+																	|-if $all eq "1"-|<td class="tdSize1">|-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
+																	<td class="tdSize1">|-assign var=branch value=$order->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
+																	<td class="tdSize1">|-$order->gettotal()|number_format:2:",":"."-|</td>
+																	<td class="tdSize1">|-$order->getStateName()-|</td>
+																	<td>
+										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersView&id=|-$order->getid()-|'" value="Ver" class="boton" />
+										|-if $all eq "0"-|
+										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersDoAddToCart&id=|-$order->getid()-|'" value="Add To Cart" class="boton" />
+										|-/if-|
+										<input type="checkbox" name="orders[]" value="|-$order->getid()-|" />
+									</td>
+								</tr>
+							|-/foreach-|
+							
+								<tr> 
+									<td colspan="9">|-include file="PaginateInclude.tpl"-|</td> 
+								</tr>
+	
+							</tbody>
+						</table>
 						
-							<tr> 
-								<td colspan="9">|-include file="PaginateInclude.tpl"-|</td> 
-							</tr>
-
-						</tbody>
-					</table>
+						<input type="hidden" name="do" value="ordersExport" />
+						<input type="submit" value="Exportar ordenes seleccionadas" class="boton" />
+						
+					</form>
+						
 				</div>

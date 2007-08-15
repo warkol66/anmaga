@@ -52,22 +52,22 @@ class CatalogUnitsDoEditAction extends BaseAction {
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un unit existente
 
-			if ( UnitPeer::update($_POST["id"],$_POST["name"]) )
-      	return $mapping->findForwardConfig('success');
-      else
-      	return $mapping->findForwardConfig('success');
-
+			if ( UnitPeer::update($_POST["id"],$_POST["name"],$_POST["unitQuantity"]) )
+				return $mapping->findForwardConfig('success');
+			else
+				return $mapping->findForwardConfig('success');
+		
 		}
 		else {
 		  //estoy creando un nuevo unit
 
-      if ( !UnitPeer::create($_POST["name"]) ) {
-			$smarty->assign("id",$_POST["id"]);
-						$smarty->assign("name",$_POST["name"]);
-							$smarty->assign("action","create");
+			if ( !UnitPeer::create($_POST["name"],$_POST["unitQuantity"]) ) {
+				$unit = UnitPeer::get($_GET["id"]);
+				$smarty->assign("unit",$unit);
+				$smarty->assign("action","create");
 				$smarty->assign("message","error");
 				return $mapping->findForwardConfig('failure');
-      }
+			}
 
 			return $mapping->findForwardConfig('success');
 		}
