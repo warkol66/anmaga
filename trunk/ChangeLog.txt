@@ -1,4 +1,12 @@
 ﻿==============================
+Revisión 158
+------------------------------
+Ejecutar SQL para agregar campos a tablas existentes en 
+
+# Agregado active a tabla unit
+ALTER TABLE `unit` ADD `unitQuantity` INT NOT NULL COMMENT 'Cantidad de unidades que posee la unidad';
+
+==============================
 Revisión 138
 ------------------------------
 Ejecutar SQL para agregar campos a tablas existentes en 
