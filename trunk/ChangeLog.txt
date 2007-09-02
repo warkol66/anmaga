@@ -165,3 +165,13 @@ ALTER TABLE `usersByAffiliate_user` ADD `lastLogin` DATETIME COMMENT 'Fecha del 
 ALTER TABLE `usersByAffiliate_userInfo` ADD `mailAddress` VARCHAR( 255 ) NOT NULL COMMENT 'Email';
 
 ------------------------------
+
+==============================
+Revisión 160
+------------------------------
+Ejecutar SQL para agregar campos a tablas existentes en 
+
+# Agregado a unit
+ALTER TABLE `unit` ADD `unitQuantity` INTEGER NOT NULL COMMENT 'Cantidad de unidades que posee la unidad';
+
+------------------------------
