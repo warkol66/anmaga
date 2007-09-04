@@ -187,7 +187,7 @@ class UserPeer extends BaseUserPeer {
   function delete($id) {
 		$user = UserPeer::retrieveByPk($id);
 		if (UserPeer::DELETEUSERS)
-			$affiliate->delete();
+			$user->delete();
 		else {
 			$user->setActive(0);
 			$user->save();

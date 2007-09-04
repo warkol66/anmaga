@@ -23,5 +23,6 @@ require_once("UserPeer.php");
 require_once("AffiliateUserPeer.php");
 require_once("ProductPeer.php");
 require_once("OrderItemPeer.php");
+require_once("UserByRegistrationPeer.php");
 
 ?>

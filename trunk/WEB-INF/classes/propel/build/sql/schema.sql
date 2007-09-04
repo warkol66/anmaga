@@ -732,5 +732,48 @@ CREATE TABLE `branch`
 		REFERENCES `affiliates_affiliate` (`id`)
 )Type=MyISAM COMMENT='Sucursales de Afiliados';
 
+#-----------------------------------------------------------------------------
+#-- usersByRegistration_user
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `usersByRegistration_user`;
+
+
+CREATE TABLE `usersByRegistration_user`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'User Id',
+	`username` VARCHAR(255)  NOT NULL COMMENT 'username',
+	`password` VARCHAR(255)  NOT NULL COMMENT 'password',
+	`active` INTEGER  NOT NULL COMMENT 'Is user active?',
+	`created` DATETIME  NOT NULL COMMENT 'Creation date for',
+	`updated` DATETIME  NOT NULL COMMENT 'Last update date',
+	`ip` VARCHAR(255)  NOT NULL COMMENT 'Registration IP',
+	`lastLogin` DATETIME COMMENT 'Fecha del ultimo login del usuario',
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `usersByRegistration_user_U_1` (`username`),
+	CONSTRAINT `usersByRegistration_user_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `usersByRegistration_userInfo` (`userId`)
+)Type=MyISAM COMMENT='Users by registration';
+
+#-----------------------------------------------------------------------------
+#-- usersByRegistration_userInfo
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `usersByRegistration_userInfo`;
+
+
+CREATE TABLE `usersByRegistration_userInfo`
+(
+	`userId` INTEGER  NOT NULL COMMENT 'UserByRegistration Id',
+	`name` VARCHAR(255) COMMENT 'name',
+	`surname` VARCHAR(255) COMMENT 'surname',
+	`mailAddress` VARCHAR(255) COMMENT 'Email',
+	PRIMARY KEY (`userId`),
+	CONSTRAINT `usersByRegistration_userInfo_FK_1`
+		FOREIGN KEY (`userId`)
+		REFERENCES `usersByRegistration_user` (`id`)
+)Type=MyISAM COMMENT='Information about users by registration';
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

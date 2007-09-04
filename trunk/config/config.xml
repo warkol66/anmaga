@@ -65,6 +65,30 @@
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
 			</affiliatesUsersDoLogin>
+			<usersByRegistrationLogin>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</usersByRegistrationLogin>
+			<usersByRegistrationDoLogin>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</usersByRegistrationDoLogin>
+			<usersByRegistrationEdit>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</usersByRegistrationEdit>
+			<usersByRegistrationDoEdit>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</usersByRegistrationDoEdit>
+			<usersByRegistrationPasswordRecovery>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</usersByRegistrationPasswordRecovery>
+			<usersByRegistrationDoPassRecovery>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</usersByRegistrationDoPassRecovery>
 		</noCheckLoginActions>
 		<rowsPerPage>10</rowsPerPage>
 	</system>
