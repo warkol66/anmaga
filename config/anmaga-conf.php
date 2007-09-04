@@ -20,7 +20,7 @@ return array (
         array (
           'phptype' => 'mysql',
           'hostspec' => 'localhost:3316',
-          'database' => 'anmaga',
+          'database' => 'anmaga2',
           'username' => 'root',
           'password' => 'dxukal',
         ),

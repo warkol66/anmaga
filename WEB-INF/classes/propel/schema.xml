@@ -406,5 +406,32 @@
   </foreign-key>
 </table>
 
+ <table name="usersByRegistration_user" phpName='UserByRegistration' description="Users by registration">
+  <column name="id" required="true" primaryKey="true" type="INTEGER" description="User Id" autoIncrement="true"/>
+  <column name="username" required="true"  type="VARCHAR" size="255" description="username"/>
+  <column name="password" required="true"  type="VARCHAR" size="255" description="password"/>
+  <column name="active" required="true"  type="BOOLEAN"  description="Is user active?"/>
+  <column name="created" required="true"  type="TIMESTAMP"  description="Creation date for"/>
+  <column name="updated" required="true"  type="TIMESTAMP"  description="Last update date"/>
+  <column name="ip" required="true"  type="VARCHAR" size="255" description="Registration IP" />
+  <column name="lastLogin" type="TIMESTAMP" description="Fecha del ultimo login del usuario" />
+	<unique>
+		<unique-column name="username" />
+	</unique>
+  <foreign-key foreignTable="usersByRegistration_userInfo" >
+    <reference local="id" foreign="userId" />
+  </foreign-key>
+ </table>
+
+ <table name="usersByRegistration_userInfo" phpName='UserByRegistrationInfo' description="Information about users by registration">
+  <column name="userId" required="true" primaryKey="true" type="INTEGER" description="UserByRegistration Id" />
+  <column name="name" type="VARCHAR" size="255" description="name"/>
+  <column name="surname" type="VARCHAR" size="255" description="surname"/>
+  <column name="mailAddress" type="VARCHAR" size="255" description="Email" />
+	<foreign-key foreignTable="usersByRegistration_user" >
+      <reference local="userId" foreign="id" />
+    </foreign-key>
+ </table>
+
 
   </database>
