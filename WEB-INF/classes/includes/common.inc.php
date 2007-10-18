@@ -479,6 +479,23 @@ function doLog($userInfo,$action,$forward,$object=null) {
 		$logs->save();
 	}catch (PropelException $e) {}
 }
+/**
+ * Indica si un usuario es afiliado.
+ */
+function isAffiliatedUser() {
+	
+	if (isset($_SESSION["loginAffiliateUser"]))
+			return true;
+	return false;
+	
+}
+
+function getAffiliatedId() {
+	
+	$user = $_SESSION["loginAffiliateUser"];
+	return $user->getAffiliateId();
+	
+}
 
 
 }

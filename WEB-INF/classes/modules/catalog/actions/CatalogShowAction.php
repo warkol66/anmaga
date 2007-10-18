@@ -2,6 +2,7 @@
 
 require_once("BaseAction.php");
 require_once("TreePeer.php");
+require_once("AffiliateProductPeer.php");
 
 class CatalogShowAction extends BaseAction {
 
@@ -43,19 +44,39 @@ class CatalogShowAction extends BaseAction {
 		}
 
 		$module = "Catalog";
-    $smarty->assign("module",$module);
-
+	    $smarty->assign("module",$module);
 		$productCategories = TreePeer::getAllOnlyKind("ProductCategory");
+		$smarty->assign("productCategories",$productCategories);
+		
+			
+		if (Common::isAffiliatedUser()) {
+			if (AffiliateProductPeer::affiliateHasPriceList(Common::getAffiliatedId())) {
+				//CASO ESPECIAL DE LISTA DE PRECIOS SEPARADA POR AFILIADO
+	
+				if (!empty($_GET["categoryId"])) {
+			    	$categoryNode = NodePeer::get($_GET["categoryId"]);
+			      	$smarty->assign("categoryNode",$categoryNode);
+			      	$pager = $categoryNode->getChildsOnlyKindPaginatedAffiliate("Product",$_GET["page"]);
+					}
+				else {
+					$pager = TreePeer::getAllRootsByKindPaginatedAffiliate("Product",$_GET["page"]);
+				}
+		
 
-    $smarty->assign("productCategories",$productCategories);
-
-		if (!empty($_GET["categoryId"])) {
-    	$categoryNode = NodePeer::get($_GET["categoryId"]);
-      $smarty->assign("categoryNode",$categoryNode);
-      $pager = $categoryNode->getChildsOnlyKindPaginated("Product",$_GET["page"]);
+			}
 		}
 		else {
-			$pager = TreePeer::getAllRootsByKindPaginated("Product",$_GET["page"]);
+
+			if (!empty($_GET["categoryId"])) {
+		    	$categoryNode = NodePeer::get($_GET["categoryId"]);
+		      	$smarty->assign("categoryNode",$categoryNode);
+		      	$pager = $categoryNode->getChildsOnlyKindPaginated("Product",$_GET["page"]);
+				}
+			else {
+				$pager = TreePeer::getAllRootsByKindPaginated("Product",$_GET["page"]);
+			}
+			
+			
 		}
 		
 		$productNodes = $pager->getResult();
@@ -65,10 +86,10 @@ class CatalogShowAction extends BaseAction {
 			$url .= "&categoryId=".$categoryNode->getId();
 		$smarty->assign("url",$url);
 		$smarty->assign("productNodes",$productNodes);
-
-    $smarty->assign("message",$_GET["message"]);
-
+	   	$smarty->assign("message",$_GET["message"]);	
+		
 		return $mapping->findForwardConfig('success');
+		
 	}
 
 }
