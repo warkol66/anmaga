@@ -160,5 +160,10 @@ class Node extends BaseNode {
 		$this->delete();
 		return true;
 	}
+	
+	
+
+
+
 
 }
