@@ -775,5 +775,28 @@ CREATE TABLE `usersByRegistration_userInfo`
 		REFERENCES `usersByRegistration_user` (`id`)
 )Type=MyISAM COMMENT='Information about users by registration';
 
+#-----------------------------------------------------------------------------
+#-- catalog_affiliateProduct
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `catalog_affiliateProduct`;
+
+
+CREATE TABLE `catalog_affiliateProduct`
+(
+	`productId` INTEGER  NOT NULL COMMENT 'Producto',
+	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
+	`price` FLOAT COMMENT 'Precio del producto',
+	PRIMARY KEY (`productId`,`affiliateId`),
+	UNIQUE KEY `catalog_affiliateProduct_U_1` (`productId`, `affiliateId`),
+	CONSTRAINT `catalog_affiliateProduct_FK_1`
+		FOREIGN KEY (`productId`)
+		REFERENCES `product` (`id`),
+	INDEX `catalog_affiliateProduct_FI_2` (`affiliateId`),
+	CONSTRAINT `catalog_affiliateProduct_FK_2`
+		FOREIGN KEY (`affiliateId`)
+		REFERENCES `affiliates_affiliate` (`id`)
+)Type=MyISAM COMMENT='Precios de Productos por Afiliado';
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
