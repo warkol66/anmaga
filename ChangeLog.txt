@@ -1,4 +1,22 @@
 ﻿==============================
+Revisión 170
+------------------------------
+
+#agregado a branch
+ALTER TABLE `branch` ADD `code` VARCHAR( 20 ) NULL COMMENT 'Codigo de la sucursal' AFTER `number` ;
+
+
+==============================
+Revisión 160
+------------------------------
+Ejecutar SQL para agregar campos a tablas existentes en 
+
+# Agregado a unit
+ALTER TABLE `unit` ADD `unitQuantity` INTEGER NOT NULL COMMENT 'Cantidad de unidades que posee la unidad';
+
+------------------------------
+
+==============================
 Revisión 158
 ------------------------------
 Ejecutar SQL para agregar campos a tablas existentes en 
@@ -166,12 +184,3 @@ ALTER TABLE `usersByAffiliate_userInfo` ADD `mailAddress` VARCHAR( 255 ) NOT NUL
 
 ------------------------------
 
-==============================
-Revisión 160
-------------------------------
-Ejecutar SQL para agregar campos a tablas existentes en 
-
-# Agregado a unit
-ALTER TABLE `unit` ADD `unitQuantity` INTEGER NOT NULL COMMENT 'Cantidad de unidades que posee la unidad';
-
-------------------------------
