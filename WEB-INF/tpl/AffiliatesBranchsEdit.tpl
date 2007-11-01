@@ -48,6 +48,10 @@
 		<td class="tdSize1"><input type="text" id="number" name="number" value="|-if $action eq 'edit'-||-$branch->getnumber()-||-/if-|" size="15" title="number" /></td>
 	</tr>
 	<tr>
+		<td class="tdTitle">Código de Sucursal </td>
+		<td class="tdSize1"><input type="text" id="code" name="code" value="|-if $action eq 'edit'-||-$branch->getCode()-||-/if-|" size="15" title="code" /></td>
+	</tr>	
+	<tr>
 		<td class="tdTitle">Nombre de Sucursal</td>
 		<td class="tdSize1"><input type="text" id="name" name="name" value="|-if $action eq 'edit'-||-$branch->getname()-||-/if-|" title="name" size="45" maxlength="255" /></td>
 	</tr>
