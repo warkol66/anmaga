@@ -1,4 +1,4 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'> 
+<table border='0' cellpadding='0' cellspacing='0' width='100%'>
 	<tr> 
 		<td class='title'>Clientes y Distribuidores Mayoristas </td> 
 	</tr> 
@@ -34,7 +34,7 @@
 									|-foreach from=$affiliates item=affiliate-|
 					<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|</option> 
 									|-/foreach-|
-				</select> 
+				</select>
 				<input type="hidden" name="do" value="affiliatesBranchsList" /> 
 				<input type="submit" value="Buscar" class="button" /> 
 		</form> 
@@ -49,6 +49,7 @@
 				<th width="20%" class="thFillTitle">Afiliado</th> 
 				|-/if-|
 				<th width="5%" class="thFillTitle">Nro.</th> 
+				<th width="5%" class="thFillTitle">Code</th>
 				<th width="15%" class="thFillTitle">Sucursal</th> 
 				<th width="10%" class="thFillTitle">Teléfono</th> 
 				<th width="10%" class="thFillTitle">Contacto</th> 
@@ -63,6 +64,7 @@
 			<td class="tdSize1 top">|-assign var=affiliate value=$branch->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td> 
 			|-/if-|
 			<td class="tdSize1 top center">|-$branch->getnumber()-|</td> 
+      <td class="tdSize1 top center">|-$branch->getCode()-|</td> 
 			<td class="tdSize1 top">|-$branch->getname()-|</td> 
 			<td class="tdSize1 top">|-$branch->getphone()-|</td> 
 			<td class="tdSize1 top">|-$branch->getcontact()-|, email: |-$branch->getcontactEmail()-|</td> 
