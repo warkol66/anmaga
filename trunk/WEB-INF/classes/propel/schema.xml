@@ -396,6 +396,7 @@
   <column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id de la sucursal" primaryKey='true' />
   <column name="affiliateId" type="INTEGER"  required="true" description="Id del afiliado" />
   <column name="number" type="INTEGER"  required="true" description="Numero de la sucursal" />
+	<column name="code" size="20" type="VARCHAR" description="Codigo de la sucursal" />
   <column name="name" size="255" type="VARCHAR" description="Nombre de la sucursal" />
   <column name="phone" size="100" type="VARCHAR" description="Telefono de la sucursal" />
   <column name="contact" type="VARCHAR" size="50" description="Nombre de persona de contacto"/>
