@@ -35,9 +35,10 @@ class BranchPeer extends BaseBranchPeer {
   * @param string $contact contact del branch
   * @param string $contactEmail contactEmail del branch
   * @param string $memo memo del branch
+  * @param string $code code del branch
   * @return boolean true si se creo el branch correctamente, false sino
 	*/
-	function create($affiliateId,$number,$name,$phone,$contact,$contactEmail,$memo) {
+	function create($affiliateId,$number,$name,$phone,$contact,$contactEmail,$memo,$code) {
     $branchObj = new Branch();
     $branchObj->setaffiliateId($affiliateId);
 		$branchObj->setnumber($number);
@@ -46,6 +47,7 @@ class BranchPeer extends BaseBranchPeer {
 		$branchObj->setcontact($contact);
 		$branchObj->setcontactEmail($contactEmail);
 		$branchObj->setmemo($memo);
+		$branchObj->setCode($code);
 		$branchObj->save();
 		return true;
 	}
@@ -61,9 +63,10 @@ class BranchPeer extends BaseBranchPeer {
   * @param string $contact contact del branch
   * @param string $contactEmail contactEmail del branch
   * @param string $memo memo del branch
+  * @param string $code code del branch
   * @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
-  function update($id,$affiliateId,$number,$name,$phone,$contact,$contactEmail,$memo) {
+  function update($id,$affiliateId,$number,$name,$phone,$contact,$contactEmail,$memo,$code) {
   	$branchObj = BranchPeer::retrieveByPK($id);
     $branchObj->setaffiliateId($affiliateId);
     $branchObj->setnumber($number);
@@ -72,6 +75,7 @@ class BranchPeer extends BaseBranchPeer {
     $branchObj->setcontact($contact);
     $branchObj->setcontactEmail($contactEmail);
     $branchObj->setmemo($memo);    
+		$branchObj->setCode($code);    
     $branchObj->save();
 		return true;
   }

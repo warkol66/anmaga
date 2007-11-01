@@ -720,6 +720,7 @@ CREATE TABLE `branch`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de la sucursal',
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Id del afiliado',
 	`number` INTEGER  NOT NULL COMMENT 'Numero de la sucursal',
+	`code` VARCHAR(20) COMMENT 'Codigo de la sucursal',
 	`name` VARCHAR(255) COMMENT 'Nombre de la sucursal',
 	`phone` VARCHAR(100) COMMENT 'Telefono de la sucursal',
 	`contact` VARCHAR(50) COMMENT 'Nombre de persona de contacto',
@@ -774,29 +775,6 @@ CREATE TABLE `usersByRegistration_userInfo`
 		FOREIGN KEY (`userId`)
 		REFERENCES `usersByRegistration_user` (`id`)
 )Type=MyISAM COMMENT='Information about users by registration';
-
-#-----------------------------------------------------------------------------
-#-- catalog_affiliateProduct
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `catalog_affiliateProduct`;
-
-
-CREATE TABLE `catalog_affiliateProduct`
-(
-	`productId` INTEGER  NOT NULL COMMENT 'Producto',
-	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
-	`price` FLOAT COMMENT 'Precio del producto',
-	PRIMARY KEY (`productId`,`affiliateId`),
-	UNIQUE KEY `catalog_affiliateProduct_U_1` (`productId`, `affiliateId`),
-	CONSTRAINT `catalog_affiliateProduct_FK_1`
-		FOREIGN KEY (`productId`)
-		REFERENCES `product` (`id`),
-	INDEX `catalog_affiliateProduct_FI_2` (`affiliateId`),
-	CONSTRAINT `catalog_affiliateProduct_FK_2`
-		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliates_affiliate` (`id`)
-)Type=MyISAM COMMENT='Precios de Productos por Afiliado';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
