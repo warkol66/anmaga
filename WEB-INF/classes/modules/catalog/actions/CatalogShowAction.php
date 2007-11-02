@@ -49,8 +49,7 @@ class CatalogShowAction extends BaseAction {
 		$smarty->assign("productCategories",$productCategories);
 		
 			
-		if (Common::isAffiliatedUser()) {
-			if (AffiliateProductPeer::affiliateHasPriceList(Common::getAffiliatedId())) {
+		if (Common::isAffiliatedUser() && AffiliateProductPeer::affiliateHasPriceList(Common::getAffiliatedId())) {
 				//CASO ESPECIAL DE LISTA DE PRECIOS SEPARADA POR AFILIADO
 	
 				if (!empty($_GET["categoryId"])) {
@@ -61,9 +60,7 @@ class CatalogShowAction extends BaseAction {
 				else {
 					$pager = TreePeer::getAllRootsByKindPaginatedAffiliate("Product",$_GET["page"]);
 				}
-		
 
-			}
 		}
 		else {
 

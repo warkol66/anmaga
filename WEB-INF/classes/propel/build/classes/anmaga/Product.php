@@ -22,7 +22,7 @@ class Product extends BaseProduct {
 	
 	function getPrice() {
 	
-		if (Common::isAffiliatedUser()) {
+		if (Common::isAffiliatedUser() && AffiliateProductPeer::affiliateHasPriceList(Common::getAffiliatedId())) {
 			
 			$cond = new Criteria();
 			$cond->add(AffiliateProductPeer::AFFILIATEID,Common::getAffiliatedId());
