@@ -11,7 +11,8 @@
     <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=catalogProductCategoriesList">Administrar Categorías de Productos</a>
 		<a class="menuSubButton" href="Main.php?do=catalogProductsList">Administrar Productos</a>
 		<a class="menuSubButton" href="Main.php?do=catalogUnitsList">Administrar Unidades</a>
-		<a class="menuSubButton" href="Main.php?do=catalogMeasureUnitsList">Administrar Unidades de Medida</a></div>
+		<a class="menuSubButton" href="Main.php?do=catalogMeasureUnitsList">Administrar Unidades de Medida</a>
+		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductsImport">Administrar listas de precio por cliente</a></div>
 	</td>
   </tr>
 |-/if-|

@@ -49,12 +49,12 @@
 				<th width="20%" class="thFillTitle">Afiliado</th> 
 				|-/if-|
 				<th width="5%" class="thFillTitle">Nro.</th> 
-				<th width="5%" class="thFillTitle">Code</th>
+				<th width="5%" class="thFillTitle">C&oacute;digo</th>
 				<th width="15%" class="thFillTitle">Sucursal</th> 
 				<th width="10%" class="thFillTitle">Teléfono</th> 
 				<th width="10%" class="thFillTitle">Contacto</th> 
 				<th width="30%" class="thFillTitle">Memo</th> 
-				<th width="5%" class="thFillTitle">&nbsp;</th> 
+				<th width="5%" nowrap class="thFillTitle">&nbsp;</th> 
 			</tr> 
 		</thead> 
 		<tbody>  |-foreach from=$branchs item=branch name=for_branchs-|
@@ -69,18 +69,21 @@
 			<td class="tdSize1 top">|-$branch->getphone()-|</td> 
 			<td class="tdSize1 top">|-$branch->getcontact()-|, email: |-$branch->getcontactEmail()-|</td> 
 			<td class="tdSize1 top">|-$branch->getmemo()-|</td> 
-			<td class="tdTextOptions center middle"> <form action="Main.php" method="get"> 
+			<td nowrap class="tdTextOptions center middle"> <form action="Main.php" method="get" style="display:inline;"> 
 					<input type="hidden" name="do" value="affiliatesBranchsEdit" /> 
 					<input type="hidden" name="id" value="|-$branch->getid()-|" /> 
 					<input type="submit" name="submit_go_edit_branch" value="Editar" class="buttonSmall" /> 
 				</form> 
-				<form action="Main.php" method="post"> 
+				<form action="Main.php" method="post" style="display:inline;"> 
 					<input type="hidden" name="do" value="affiliatesBranchsDoDelete" /> 
 					<input type="hidden" name="id" value="|-$branch->getid()-|" /> 
 					<input type="submit" name="submit_go_delete_branch" value="Borrar" onclick="return confirm('¿Seguro que desea eliminar la sucursal?')" class="buttonSmall" /> 
-				</form></td> 
+			</form></td> 
 		</tr> 
 		|-/foreach-|
+	<tr>
+		<td colspan="9">|-include file="PaginateInclude.tpl"-|</td>
+	</tr>
 		</tbody> 
 	</table> 
 </div>
