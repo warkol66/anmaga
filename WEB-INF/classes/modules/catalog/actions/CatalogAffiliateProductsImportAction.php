@@ -27,12 +27,20 @@ class CatalogAffiliateProductsImportAction extends BaseAction {
 		}
 		
 		$module = "Catalog";
+		$smarty->assign('module',$module);
+
+		$moduleSection = "AffiliatesProducts";
+    $smarty->assign("moduleSection",$section);
 		
 		//obtenemos todos los afiliados posibles
 		$affiliatePeer = new AffiliatePeer();
 		$result = $affiliatePeer->getAll();
 		
 		$smarty->assign('affiliates',$result);
+
+		//Definimos para el template los campos del archivo a importar
+		$importKey = "(Código de producto: obligatorio; Precio: Obligatorio)";
+		$smarty->assign('importKey',$importKey);
 		
 		return $mapping->findForwardConfig('success');
 		

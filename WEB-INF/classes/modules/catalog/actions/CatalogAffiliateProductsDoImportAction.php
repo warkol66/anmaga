@@ -26,6 +26,11 @@ class CatalogAffiliateProductsDoImportAction extends BaseAction {
 		}
 		
 		$module = "Catalog";
+		$smarty->assign('module',$module);
+
+		$moduleSection = "AffiliatesProducts";
+    $smarty->assign("moduleSection",$section);
+
 		$affiliateProductPeer = new AffiliateProductPeer();
 		
 		if (isset($_POST['affiliate']) && isset($_FILES["fileImport"]["tmp_name"])) {
