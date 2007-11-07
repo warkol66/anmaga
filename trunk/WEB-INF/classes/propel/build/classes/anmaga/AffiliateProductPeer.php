@@ -32,6 +32,10 @@ class AffiliateProductPeer extends BaseAffiliateProductPeer {
 	 */
 	function add($affiliateId,$productId,$price) {
 		
+		//regla de negocio, no se dan de alta aquellos cuyo precio sea cero.
+		if ($price == 0)
+			return false;
+		
 		$affiliateProduct = new AffiliateProduct();		
 		$affiliateProduct->setAffiliateId($affiliateId);
 		$affiliateProduct->setProductId($productId);
