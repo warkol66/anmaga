@@ -5,6 +5,7 @@
 
   // include object class
   include_once 'anmaga/AffiliateProduct.php';
+  require_once('anmaga/ProductPeer.php');
 
 
 /**
@@ -34,6 +35,11 @@ class AffiliateProductPeer extends BaseAffiliateProductPeer {
 		
 		//regla de negocio, no se dan de alta aquellos cuyo precio sea cero.
 		if ($price == 0)
+			return false;
+
+		//si el producto no existe, no darlo de alta
+		$product = ProductPeer::get($productId);
+		if (empty($product))
 			return false;
 		
 		$affiliateProduct = new AffiliateProduct();		
