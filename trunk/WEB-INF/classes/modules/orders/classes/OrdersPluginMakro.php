@@ -25,23 +25,22 @@ class OrdersImportPlugin {
 			Nro,Tipo,Nro Prov,Nro Suc Prov,Tienda,Estado,Emision,Entrega,Planific Entrega,PlanificaciÃ³n,Import,Total Import,Cant Total,Cant Pallet,Cant Camadas,Cod Art Prov,Cod Art Makro,Cant Recebida,Cant Pedida,1era Compra,Costo,Costo Neto,Folder
 		*/	
 		$orders = array();				
-		$first = true;
-		foreach ($rows as $row) {
-			if ( $first && !empty($row[0]) && is_numeric($row[0]) && !empty($row[6]) && !empty($row[4]) ) {
-				$order = array();
-				$order["number"] = $row[0];
-				$order["created"] = $row[6];
-				$order["branchNumber"] = $row[4];
-				$order["modifiedProductCodes"] = true;
-				$orders[$order["number"]] = $order;
-				$first = false;
-			}							
-			if ( !$first && !empty($row[0]) && !empty($row[15]) && !empty($row[18]) && !empty($row[21]) ) {
+		foreach ($rows as $row) {						
+			if ( !empty($row[0]) && is_numeric($row[0]) && !empty($row[15]) && !empty($row[18]) && !empty($row[21]) && !empty($row[6]) && !empty($row[4]) ) {
 				$item = array();
 				$item["orderNumber"] = $row[0];
 				$item["productCode"] = str_pad($row[15], strlen($row[15])+1, "0", STR_PAD_LEFT);
 				$item["quantity"] = $row[18];
 				$item["price"] = $row[21];
+				//si todavia no se cargo la informacion de la orden esa
+				if ( !isset($orders[$item["orderNumber"]]) ) {
+					$order = array();
+					$order["number"] = $row[0];
+					$order["created"] = $row[6];
+					$order["branchNumber"] = $row[4];
+					$order["modifiedProductCodes"] = true;
+					$orders[$order["number"]] = $order;				
+				}
 				$orders[$item["orderNumber"]]["items"][] = $item;
 			}												
 		}
