@@ -34,6 +34,9 @@ class OrdersImportPlugin {
 				if ( !empty($row[1]) && !empty($row[2]) && !empty($row[11]) ) {
 					$order = array();
 					$order["number"] = $row[1];
+					$order["total"] = $row[19];
+					$order["tax"] = $row[18];
+					$order["subtotal"] = $row[17];
 					$order["created"] = $row[2];
 					$order["branchNumber"] = $row[11];
 					$order["modifiedProductCodes"] = false;
