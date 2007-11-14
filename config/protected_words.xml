@@ -8,6 +8,7 @@
 		<pendingApproval>Pendiente Aprobación</pendingApproval>
 		<inProcess>En Proceso</inProcess>
 		<completed>Completa</completed>
-		<cancelled>Cancelada</cancelled>		
+		<cancelled>Cancelada</cancelled>
+		<toBeVerified>A Verificar</toBeVerified>	
 	</orderStates>
 </protectedWords>
