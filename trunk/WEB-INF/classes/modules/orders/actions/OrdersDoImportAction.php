@@ -75,13 +75,15 @@ class OrdersDoImportAction extends BaseAction {
 		
 		//print_r($orders);die;
 		$results = OrderPeer::createFromArray($orders,$user);
-
-    	$myRedirectConfig = $mapping->findForwardConfig('success');
-    	$myRedirectPath = $myRedirectConfig->getpath();
-		$queryData = '&results[ordersCreated]='.$results["ordersCreated"].'&results[ordersNotCreated]='.$results["ordersNotCreated"].'&results[productsFound]='.$results["productsFound"].'&results[productsNotFound]='.$results["productsNotFound"];
-		$myRedirectPath .= $queryData;
-		$fc = new ForwardConfig($myRedirectPath, True);
-    	return $fc;
+		
+		$smarty->assign("results",$results);	
+		
+		if (!empty($_SESSION["loginUser"])) {
+			$affiliates = AffiliatePeer::getAll();
+			$smarty->assign("affiliates",$affiliates);
+		}		
+		
+		return $mapping->findForwardConfig('success');
 	}
 
 }
