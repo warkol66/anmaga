@@ -117,11 +117,14 @@ class BranchPeer extends BaseBranchPeer {
   /**
   * Obtiene un branch a partir de su number.
   *
+  * @param int $number Numero de branch  
+  * @param int $affiliateId Id del affiliate  
   *	@return Branch Branch
   */
-  function getByNumber($number) {
+  function getByNumber($number,$affiliateId) {
     $cond = new Criteria();
     $cond->add(BranchPeer::NUMBER, $number);    
+    $cond->add(BranchPeer::AFFILIATEID, $affiliateId);    
     $alls = BranchPeer::doSelect($cond);
     return $alls[0];
   }  

@@ -20,6 +20,7 @@ class OrderPeer extends BaseOrderPeer {
 	const STATE_IN_PROCESS = 3;
 	const STATE_COMPLETED = 4;
 	const STATE_CANCELLED = 5;
+	const STATE_TO_BE_VERIFIED = 6;
 
 	private $searchAffiliateId;
 	private $searchDateFrom;
@@ -52,6 +53,8 @@ class OrderPeer extends BaseOrderPeer {
 				return $stateTexts["completed"];
 			case OrderPeer::STATE_CANCELLED: 
 				return $stateTexts["cancelled"];	
+			case OrderPeer::STATE_TO_BE_VERIFIED: 
+				return $stateTexts["toBeVerified"];					
 		}
 		return "";
 	}
@@ -124,6 +127,38 @@ class OrderPeer extends BaseOrderPeer {
 		$orderObj = OrderPeer::retrieveByPK($id);
     return $orderObj;
   }
+  
+  /**
+  * Obtiene la informacion de un order.
+  *
+  * @param string $number Number del order
+  * @param int $affiliateId Id del afiliado
+  * @return array Informacion del order
+  */  
+  function getByNumber($number,$affiliateId) {
+	$cond = new Criteria();
+	$cond->add(OrderPeer::NUMBER, $number);    
+	$cond->add(OrderPeer::AFFILIATEID, $affiliateId);    
+	$alls = OrderPeer::doSelect($cond);
+	return $alls[0];
+  }    
+  
+  /**
+  * Indica si existe una orden con ese numero.
+  *
+  * @param string $number Number del order
+  * @param int $affiliateId Id del afiliado
+  * @return array Informacion del order
+  */  
+  function existsByNumber($number,$affiliateId) {
+	$cond = new Criteria();
+	$cond->add(OrderPeer::NUMBER, $number);    
+	$cond->add(OrderPeer::AFFILIATEID, $affiliateId);    
+	$alls = OrderPeer::doSelect($cond);
+	if (count($alls) > 0)
+		return true;
+	return false;
+  }    
 
   /**
   * Obtiene todos los orders.
@@ -254,37 +289,96 @@ class OrderPeer extends BaseOrderPeer {
 		
 		require_once("OrderItemPeer.php");
 		require_once("BranchPeer.php");
+		require_once("OrderStateChangePeer.php");
 		
 		$results = array();
 		$results["ordersCreated"] = 0;
 		$results["ordersNotCreated"] = 0;
 		$results["productsFound"] = 0;
 		$results["productsNotFound"] = 0;
-	
+		$results["productsCodesNotFounds"] = array();
+		$results["ordersReport"] = array();
+		$results["duplicatedOrders"] = array();
+		$results["duplicatedOrdersCount"] = 0;
+		
 		foreach ($orders as $order) {
-			$total = OrderPeer::getTotalFromItems($order["items"]);
-			$branchId = BranchPeer::getByNumber($order["branchNumber"]);
-			$orderId = OrderPeer::create($order["number"],$user->getId(),$user->getAffiliateId(),$total,$branchId);
-	
-			if (!empty($orderId)) {
-				$results["ordersCreated"]++;
-				foreach ($order["items"] as $item) {
-					if ($order["modifiedProductCodes"])
-						$product = ProductPeer::getByCodeModified($item["productCode"]);
-					else
-						$product = ProductPeer::getByCode($item["productCode"]);
-					//Si encontro al producto con ese codigo
-					if (!empty($product)) {
-						$results["productsFound"]++;
-						OrderItemPeer::create($orderId,$product->getId(),$item["price"],$item["quantity"]);						
-					}
-					else
-						$results["productsNotFound"]++;
-				}
-			}
+			$totalInFile = $order["total"];
+			$subtotalInFile = $order["subtotal"];
+			$totalCalculated = OrderPeer::getTotalFromItems($order["items"]);
+			if (!empty($totalInFile))
+				$total = $totalInFile;
 			else
-				$results["ordersNotCreated"]++;	
+				$total = $totalCalculated;
+			$branch = BranchPeer::getByNumber($order["branchNumber"],$user->getAffiliateId());
+			if ($branch)
+				$branchId = $branch->getId();
+			else
+				$branchId = null;
+			
+			//$existsOrder = OrderPeer::existsByNumber($order["number"],$user->getAffiliateId());
+			$existsOrder = false;
+			if ($existsOrder) {
+				$results["duplicatedOrdersCount"]++;
+				$results["duplicatedOrders"][] = $order["number"];
+			}	
+			else {			
+				$orderId = OrderPeer::create($order["number"],$user->getId(),$user->getAffiliateId(),$total,$branchId);
+   
+				//cambio el estado de la orden si hay discrepancias entre el importe en el archivo y el importe calculado
+				if (!empty($subtotalInFile) && $subtotalInFile != $totalCalculated) {
+					$comment = "Discrepancias de Totales: SubTotal en Archivo: ".$subtotalInFile." - SubTotal Calculado: ".$totalCalculated;
+					OrderStateChangePeer::create($orderId,$user->getId(),$user->getAffiliateId(),OrderPeer::STATE_TO_BE_VERIFIED,$comment);	
+					$orderObj = OrderPeer::get($orderId);
+					if ($orderObj) {
+						$orderObj->setState(OrderPeer::STATE_TO_BE_VERIFIED);
+						$orderObj->save();					
+					}
+				} 	
+				
+				/*
+				TODO: Agregar verificacion de precios.
+				En el encabezado tenes, subtotal, impuesto y total. Con esos tres dato, sacas la alicuota del iva: 
+				por ejemplo, 100; 21; 121, la alicuota es 21%
+				Con esa alicuota, es que vas a calcular que los precios del cada articulo con los de la lista de precios
+   				*/
+				
+				if (!empty($orderId)) {
+					$results["ordersCreated"]++;
+					foreach ($order["items"] as $item) {
+						if ($order["modifiedProductCodes"])
+							$product = ProductPeer::getByCodeModified($item["productCode"]);
+						else
+							$product = ProductPeer::getByCode($item["productCode"]);
+						//Si encontro al producto con ese codigo
+						if (!empty($product)) {
+							$results["productsFound"]++;
+							OrderItemPeer::create($orderId,$product->getId(),$item["price"],$item["quantity"]);						
+						}
+						else {
+							$results["productsNotFound"]++;
+							$results["productsCodesNotFounds"][] = $item["productCode"];
+							$results["ordersReport"][$orderId][] = array("code" => $item["productCode"], "quantity" => $item["quantity"]);
+						}
+					}
+					//cambio el estado de la orden si tuvo productos no encontrados
+					if (!empty($results["ordersReport"][$orderId])) {
+						$comment = "Productos No Encontrados:";
+						foreach ($results["ordersReport"][$orderId] as $product) {
+							$comment .= "Product Code: ".$product["code"]." - Quantity: ".$product["quantity"]."\r\n";
+						}
+						OrderStateChangePeer::create($orderId,$user->getId(),$user->getAffiliateId(),OrderPeer::STATE_TO_BE_VERIFIED,$comment);	
+						$orderObj = OrderPeer::get($orderId);
+						if ($orderObj) {
+							$orderObj->setState(OrderPeer::STATE_TO_BE_VERIFIED);
+							$orderObj->save();					
+						}
+					} 			
+				}
+				else
+					$results["ordersNotCreated"]++;	
+			}
 		}
+		$results["productsCodesNotFoundsUnique"] = sort(array_unique($results["productsCodesNotFounds"]));
 		return $results;
 	}
 
