@@ -1,4 +1,11 @@
 ﻿==============================
+Revisión 180
+------------------------------
+
+ALTER TABLE `orders_statechanges` CHANGE `comment` `comment` TEXT CHARACTER SET latin1 COLLATE latin1_general_cs NULL DEFAULT NULL COMMENT 'Comentarios'
+
+
+==============================
 Revisión 171
 ------------------------------
 
