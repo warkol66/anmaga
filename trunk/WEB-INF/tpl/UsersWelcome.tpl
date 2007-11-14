@@ -20,4 +20,6 @@
 	</tr>
 |-/if-|
 </table>
+
+|-include_module-|
 	

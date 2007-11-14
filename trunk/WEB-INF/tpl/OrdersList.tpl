@@ -23,6 +23,7 @@
 									<option value="3">En Proceso</option>
 									<option value="4">Completa</option>
 									<option value="5">Cancelada</option>
+									<option value="6">A Verificar</option>
 								</select>
 							</p>							
 							|-if $all eq "1"-|
