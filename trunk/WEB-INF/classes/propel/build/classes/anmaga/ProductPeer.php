@@ -176,15 +176,15 @@ class ProductPeer extends BaseProductPeer {
 			if (!empty($oldProduct)) {
 				$productObj->setActive(true);
 				$productObj->save();
-			  $node = $productObj->getNode();
-			  $node->setName($name);
-			  $node->setParentId($parentNodeId);
-			  $node->save();
+			  	$node = $productObj->getNode();
+			  	$node->setName($name);
+			  	$node->setParentId($parentNodeId);
+			  	$node->save();
 				return $node->getId();
 			}
 			else {
-		    require_once("NodePeer.php");
-  		  return NodePeer::create($name,"Product",$productObj->getId(),$parentNodeId,0);
+				require_once("NodePeer.php");
+				return NodePeer::create($name,"Product",$productObj->getId(),$parentNodeId,0);
   		}
   	}
 		catch (PropelException $e) {
