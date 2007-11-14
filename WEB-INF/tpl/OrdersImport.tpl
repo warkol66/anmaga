@@ -4,9 +4,59 @@
 					<ul>
 						<li>Ordenes Creadas: |-$results.ordersCreated-|</li>
 						<li>Ordenes No Creadas: |-$results.ordersNotCreated-|</li>
+						<li>Ordenes Duplicadas: |-$results.duplicatedOrdersCount-|</li>
 						<li>Productos Encontrados: |-$results.productsFound-|</li>
 						<li>Productos No Encontrados: |-$results.productsNotFound-|</li>
-					</ul>
+					</ul>					
+					|-if $results.productsCodesNotFounds ne ""-|
+					<a href="#" onclick="$('productsNotFound').toggle();">Mostar Códigos de Productos No Encontrados</a>
+					<div id="productsNotFound" style="display:none;">
+						<h3>Códigos de Productos no Encontrados</h3>
+						<ul>
+							|-foreach from=$results.productsCodesNotFounds item=code-|
+							<li>|-$code-|</li>
+							|-/foreach-|
+						</ul>
+					</div>
+					|-/if-|
+					<br />
+					|-if $results.duplicatedOrders ne ""-|
+					<a href="#" onclick="$('duplicatedOrders').toggle();">Mostar Números de Ordenes Duplicadas</a>
+					<div id="duplicatedOrders" style="display:none;">
+						<h3>Números de Ordenes Duplicadas</h3>
+						<ul>
+							|-foreach from=$results.duplicatedOrders item=order-|
+							<li>|-$order-|</li>
+							|-/foreach-|
+						</ul>
+					</div>
+					|-/if-|
+					<br />					
+					|-if $results.ordersReport ne ""-|
+					<a href="#" onclick="$('ordersReport').toggle();">Mostar Detalle de las Ordenes con Productos no Encontrados</a>
+					<div id="ordersReport" style="display:none;">					
+						<h3>Detalle de las Ordenes con Productos no Encontrados</h3>
+						<ul>
+							|-foreach from=$results.ordersReport item=order key=orderId-|
+							<li>Id Orden: |-$orderId-|
+								<table>
+									<caption>Productos</caption>
+									<tr>
+										<th>Code</th>
+										<th>Cantidad</th>
+									</tr>
+								|-foreach from=$order item=product-|
+									<tr>
+										<td>|-$product.code-|</td>
+										<td>|-$product.quantity-|</td>
+									</tr>
+								|-/foreach-|
+								</table>
+							</li>
+							|-/foreach-|
+						</ul>
+					</div>
+					|-/if-|					
 				|-/if-|
 					
 				<div>
