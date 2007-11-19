@@ -71,6 +71,7 @@
 																	<td class="tdSize1">|-$order->getStateName()-|</td>
 																	<td>
 										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersView&id=|-$order->getid()-|'" value="Ver" class="boton" />
+										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersEdit&id=|-$order->getid()-|'" value="Editar" class="boton" />
 										|-if $all eq "0"-|
 										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersDoAddToCart&id=|-$order->getid()-|'" value="Add To Cart" class="boton" />
 										|-/if-|

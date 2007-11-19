@@ -9,6 +9,7 @@
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/functions.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/datePicker.js"></script>
+<script language="JavaScript" src="scripts/scriptaculous.js" type="text/javascript"></script>
 <script language="JavaScript" type="text/JavaScript">
 	var url="|-$systemUrl-|";
 </script>

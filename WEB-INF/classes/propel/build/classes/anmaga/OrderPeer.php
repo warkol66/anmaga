@@ -5,6 +5,7 @@ require_once 'om/BaseOrderPeer.php';
 
 // The object class
 include_once 'Order.php';
+require_once('OrderItemPeer.php');
 
 /**
  * Class OrderPeer
@@ -381,5 +382,6 @@ class OrderPeer extends BaseOrderPeer {
 		$results["productsCodesNotFoundsUnique"] = sort(array_unique($results["productsCodesNotFounds"]));
 		return $results;
 	}
+	
 
 }

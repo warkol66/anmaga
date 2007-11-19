@@ -22,5 +22,83 @@ class Order extends BaseOrder {
         function getStateName() {
                 return OrderPeer::getStateNameFromNumber($this->getState());
         }
+        
+                /**
+         * Agrega un Item a la Orden de Pedido
+         *
+         *
+         * 
+         */
+        function addItem ($productId,$productId,$price,$quantity) {
 
+                try {
+                        $item = OrderItemPeer::create($this->getId(),$productId,$price,$quantity);
+                }
+                catch(PropelException $exp) {
+                        return false;
+                }
+
+                //se agrego satisfactoriamente
+
+                
+                $total = $this->getTotal();
+                $this->setTotal($total + ($price * $quantity));
+
+                try {
+                        $this->save();
+                }
+                catch (PropelException $exp){
+                        return false;
+                }
+
+                return $item;
+
+        }
+        
+        function deleteItem($itemId) {
+                
+                $item = OrderItemPeer::get($itemId);
+                $oldQuantity = $item->getQuantity();
+                $oldPrice = $item->getPrice();
+                
+                if (!OrderItemPeer::delete($itemId))
+                        return false;
+                $total = $this->getTotal();
+                $this->setTotal($total - ($oldQuantity * $oldPrice));
+                
+                $this->save();
+                
+                return true;
+        }
+        
+        function updateQuantityItem($itemId,$quantity) {
+                
+                $item = OrderItemPeer::get($itemId);
+                $oldQuantity = $item->getQuantity();
+                $price = $item->getPrice();
+                
+                $item->setQuantity($quantity);
+                try {
+                        $item->save();
+                } catch (PropelException $exp) {
+                        return false;
+                }
+                
+                $total = $this->getTotal() - ($oldQuantity * $price) + ($quantity * $price);
+                $this->setTotal($total);
+                
+                try {
+                        $this->save();
+                } catch (PropelException $exp) {
+                        return false;
+                }
+                
+                return true;
+                
+        }
+
+        function getTotalFormat() {
+        
+        	return number_format($this->getTotal(),2,",",".");
+        }
 }
