@@ -1015,6 +1015,60 @@
 			<forward name="noPermission" path="NoPermission.tpl" />
 		</action>
 
+		<action    path = "ordersEdit"
+							 type = "OrdersEditAction"
+							 name = "ordersEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="OrdersEdit.tpl" />
+			<forward name="notExists" path="NoPermission.tpl" />
+			<forward name="noPermission" path="NoPermission.tpl" />
+		</action>
+
+		<action    path = "ordersDoEdit"
+							 type = "OrdersDoEditAction"
+							 name = "ordersDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=ordersList&amp;message=saved" redirect="true"/>
+			<forward name="error" path="OrdersEdit.tpl" />
+			<forward name="notExists" path="NoPermission.tpl" />
+			<forward name="noPermission" path="NoPermission.tpl" />
+		</action>
+
+		<action    path = "ordersItemsDoAddX"
+							 type = "OrdersItemsDoAddXAction"
+							 name = "ordersItemsDoAddX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="OrdersItemsDoAddX.tpl" />
+			<forward name="failure" path="OrdersItemsDoAddXFailure.tpl" />
+			<forward name="notExists" path="NoPermission.tpl" />
+			<forward name="noPermission" path="NoPermission.tpl" />	
+		</action>
+		
+		<action    path = "ordersItemsDoDeleteX"
+							 type = "OrdersItemsDoDeleteXAction"
+							 name = "ordersItemsDoDeleteX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="OrdersItemsDoDeleteX.tpl" />
+			<forward name="failure" path="OrdersItemsDoDeleteXFailure.tpl" />
+
+			
+		</action>
+
+		<action    path = "ordersItemsDoEditX"
+							 type = "OrdersItemsDoEditXAction"
+							 name = "ordersItemsDoEditX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="OrdersItemsDoEditX.tpl" />
+			<forward name="failure" path="OrdersItemsDoEditX.tpl" />
+
+
+		</action>
+
 		<action    path = "ordersList"
 							 type = "OrdersListAction"
 							 name = "ordersList"

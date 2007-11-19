@@ -29,7 +29,7 @@ class OrderItemPeer extends BaseOrderItemPeer {
 		$orderitemObj->setprice($price);
 		$orderitemObj->setquantity($quantity);
 		    $orderitemObj->save();
-		return true;
+		return $orderitemObj;
 	}
 
   /**
