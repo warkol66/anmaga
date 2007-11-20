@@ -107,8 +107,8 @@ class Order extends BaseOrder {
          */
         function getDateCreated() {
         
-                $date = date_parse($this->getCreated());
-                return  $date['year'] . "-" . $date['month'] . "-" . $date['day'];
+                $date = getdate(strtotime($this->getCreated()));
+                return  $date['year'] . "-" . $date['mon'] . "-" . $date['mday'];
         
         }
         /*
@@ -117,9 +117,9 @@ class Order extends BaseOrder {
          */
         function setDateCreated($date) {
                  
-                $date = new DateTime($date);
-                $dateTimeString = $date->format('Y-m-d H:i:s');
-                $this->setCreated($dateTimeString);
+                //$date = new DateTime($date);
+                //$dateTimeString = $date->format('Y-m-d H:i:s');
+                $this->setCreated($date);
                 
                 try {
                         $this->save();
