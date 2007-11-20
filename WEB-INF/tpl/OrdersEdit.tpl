@@ -30,7 +30,10 @@
 	<h3>Edicion de Opciones Generales</h3>
 	<form action="Main.php" method="post"> 
 		<strong>Numero:</strong> <input type="text" name="number" value="|-$order->getNumber()-|" /><br />
-		<strong>Creada:</strong> |-$order->getCreated()-|<br> 
+		<strong>Creada:</strong> 
+			<input name="created" type="text" value="|-$order->getDateCreated()-|" size="10">&nbsp;&nbsp;
+			<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('created', false, 'ymd', '-');" title="Seleccione la fecha">&nbsp;&nbsp;		
+		<br /> 
 		<strong>Mayorista:</strong> |-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|<br> 
 		|-assign var=currentBranch value=$order->getBranch()-|
 		<strong>Sucursal:</strong> <select name="branch">

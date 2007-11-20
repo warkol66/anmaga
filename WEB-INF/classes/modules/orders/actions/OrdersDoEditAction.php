@@ -70,8 +70,8 @@ class OrdersDoEditAction extends BaseAction {
 			$order->setNumber($_POST['number']);
 		if (isset($_POST['branch']))
 			$order->setBranch(BranchPeer::get($_POST['branch']));
-		if ( isset($_POST['date']))
-			$order->setCreate($_POST['date']);
+		if ( isset($_POST['created']))
+			$order->setDateCreated($_POST['created']);
 		//salvamos la orden
 		try {
 			$order->save();
