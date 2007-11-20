@@ -221,7 +221,7 @@ function ordersSendOrdersExport(form) {
 
 function ordersSendOrdersDelete(form) {
 
-	$('do').value = "ordersDelete";
+	$('do').value = "ordersDoDelete";
 	form.submit();
 
 	return true;
