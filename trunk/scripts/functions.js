@@ -211,3 +211,18 @@ function ordersStateDoChangeX(form) {
 	}
 }
 
+function ordersSendOrdersExport(form) {
+	
+	$('do').value = "ordersExport";
+	form.submit();
+	
+	return true;
+} // End of ordersSendOrdersExport
+
+function ordersSendOrdersDelete(form) {
+
+	$('do').value = "ordersDelete";
+	form.submit();
+
+	return true;
+} // End of ordersSendOrdersExport

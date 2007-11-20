@@ -134,18 +134,19 @@
 
 			</td>
 		</tr> 
-		|-foreachelse-|
-		<tr> 
-			<td colspan="5">Sin Productos</td> 
-		</tr> 
 		|-/foreach-|
-		|-if $order->getOrderItems()|@count gt 0-|
+		</tbody> 
+  </table>
+  <table>
+  	  <tbody width="100%" border="0" cellpadding="5" cellspacing="0" class="tableTdBorders" >
+      |-if $order->getOrderItems()|@count gt 0-|
 		<tr id="product-total"> 
 			<td colspan="5" class="tdTitle right">Total:&nbsp;&nbsp;<span id="product_total_value">|-$order->getTotal()|number_format:2:",":"."-|</span></td> 
 		</tr> 
 		|-/if-|
 		</tbody> 
   </table>
+  
   	<div id="test" class="test">
 	    <a title="product-add-link" id="product-add-link" onclick="showProductAdd()" >Agregar un Producto</a>
 	</div>

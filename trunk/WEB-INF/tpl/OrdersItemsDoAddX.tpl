@@ -21,14 +21,9 @@
 	</td>
 </tr> 
 
-|-if $order->getOrderItems()|@count gt 0-|
-<tr id="product-total"> 
-	<td colspan="5" class="tdTitle right">Total:&nbsp;&nbsp;<span id="product_total_value">|-$order->getTotal()|number_format:2:",":"."-|</span></td> 
-</tr> 
-|-/if-|
-
 <script type="text/javascript">
     //<![CDATA[
     $('messageAdd').innerHTML = "";
+	$('product_total_value').innerHTML = '|- $order->getTotalFormat()-|';
     //]]>
 </script>

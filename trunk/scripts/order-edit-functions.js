@@ -1,11 +1,13 @@
 function showProductAdd() {
 	$('product-add-box').show();
 	$('product-add-link').hide();
+	$('productQuantity').value = "1";
 }
 
 function cancelProductAdd() {
 	$('product-add-box').hide();
 	$('product-add-link').show();
+	$('productQuantity').value = "1";
 	
 }
 
@@ -22,7 +24,6 @@ function ordersItemsDoAddX(form) {
 	}
 	
 	$('messageAdd').innerHTML = "agregando item...";
-	$('product-total').remove();
 	
 	var fields = Form.serialize(form);
 	var myAjax = new Ajax.Updater(
@@ -39,7 +40,7 @@ function ordersItemsDoAddX(form) {
 	
 	$('product-add-box').hide();
 	$('product-add-link').show();
-	$('productQuantity').value = "";
+	$('productQuantity').value = "1";
 	
 	return true;
 }
