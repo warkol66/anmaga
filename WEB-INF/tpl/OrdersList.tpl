@@ -2,6 +2,7 @@
 				<div id="div_orders">
 					|-if $message eq "ok"-|<span class="message_ok">Orden guardada correctamente</span>|-/if-|
 					|-if $message eq "deleted_ok"-|<span class="message_ok">Orden eliminada correctamente</span>|-/if-|
+					|-if $message eq "orders_deleted_ok"-|<span class="message_ok">Ordenes eliminadas correctamente</span>|-/if-|
 					
 					<div class="filter">
 						<form action="Main.php" method="get">
@@ -87,8 +88,11 @@
 							</tbody>
 						</table>
 						
-						<input type="hidden" name="do" value="ordersExport" />
-						<input type="submit" value="Exportar ordenes seleccionadas" class="boton" />
+						<input type="hidden" name="do" id="do" value="" />
+						
+						<input type="button" onclick="ordersSendOrdersExport(this.form)"value="Exportar ordenes seleccionadas" class="boton" /><br />
+						<input type="button" onclick="ordersSendOrdersDelete(this.form)" value="Eliminar ordenes Seleccionadas" class="boton" />
+
 						
 					</form>
 						

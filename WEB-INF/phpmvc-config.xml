@@ -1143,6 +1143,14 @@
 					 validate = "true">
 			<forward name="success" path="OrdersExport.tpl" />
 		</action>
+		
+		<action    path = "ordersDelete"	
+						 type = "OrdersDeleteAction"
+						 name = "ordersDelete"
+						scope = "request"
+				 validate = "true">
+		<forward name="success" path="Main.php?do=ordersList&amp;message=orders_deleted_ok" redirect="true" />
+		</action>
 
 		<action    path = "ordersDoGenerate"
 							 type = "OrdersDoGenerateAction"
