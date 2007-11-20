@@ -101,4 +101,34 @@ class Order extends BaseOrder {
         
         	return number_format($this->getTotal(),2,",",".");
         }
+        /**
+         * Devuelve la fecha en la que fue Creada la Order
+         *
+         */
+        function getDateCreated() {
+        
+                $date = date_parse($this->getCreated());
+                return  $date['year'] . "-" . $date['month'] . "-" . $date['day'];
+        
+        }
+        /*
+         * Permite modificar la fecha en la que fue modificada la orden
+         *
+         */
+        function setDateCreated($date) {
+                 
+                $date = new DateTime($date);
+                $dateTimeString = $date->format('Y-m-d H:i:s');
+                $this->setCreated($dateTimeString);
+                
+                try {
+                        $this->save();
+                }
+                catch (PropelException $exp) {
+                        return false;
+                }
+                
+                return true;
+        
+        }
 }
