@@ -48,6 +48,7 @@ class OrdersImportPlugin {
 					$item = array();
 					$item["orderNumber"] = $row[1];
 					$item["productCode"] = str_pad($row[4], strlen($row[4])+1, "0", STR_PAD_LEFT);
+					$item["affiliateProductCode"] = $row[2];
 					$item["quantity"] = $row[7];
 					$item["price"] = $row[10];
 					$orders[$item["orderNumber"]]["items"][] = $item;

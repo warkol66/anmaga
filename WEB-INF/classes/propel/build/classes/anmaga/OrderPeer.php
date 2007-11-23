@@ -291,6 +291,7 @@ class OrderPeer extends BaseOrderPeer {
 		require_once("OrderItemPeer.php");
 		require_once("BranchPeer.php");
 		require_once("OrderStateChangePeer.php");
+		require_once("AffiliateProductCodePeer.php");
 		
 		$results = array();
 		$results["ordersCreated"] = 0;
@@ -324,17 +325,29 @@ class OrderPeer extends BaseOrderPeer {
 			}	
 			else {			
 				$orderId = OrderPeer::create($order["number"],$user->getId(),$user->getAffiliateId(),$total,$branchId);
+   				$orderObj = OrderPeer::get($orderId);
+   				$orderObj->setCreated($order["created"]);
+				$orderObj->save();
    
 				//cambio el estado de la orden si hay discrepancias entre el importe en el archivo y el importe calculado
 				if (!empty($subtotalInFile) && $subtotalInFile != $totalCalculated) {
 					$comment = "Discrepancias de Totales: SubTotal en Archivo: ".$subtotalInFile." - SubTotal Calculado: ".$totalCalculated;
-					OrderStateChangePeer::create($orderId,$user->getId(),$user->getAffiliateId(),OrderPeer::STATE_TO_BE_VERIFIED,$comment);	
-					$orderObj = OrderPeer::get($orderId);
+					OrderStateChangePeer::create($orderId,$user->getId(),$user->getAffiliateId(),OrderPeer::STATE_TO_BE_VERIFIED,$comment);						
 					if ($orderObj) {
 						$orderObj->setState(OrderPeer::STATE_TO_BE_VERIFIED);
 						$orderObj->save();					
 					}
 				} 	
+				
+				//cambio el estado de la orden si no se encontro el branch
+				if (!$branchId) {
+					$comment = "Sucursal no encontrada: ".$order["branchNumber"];
+					OrderStateChangePeer::create($orderId,$user->getId(),$user->getAffiliateId(),OrderPeer::STATE_TO_BE_VERIFIED,$comment);						
+					if ($orderObj) {
+						$orderObj->setState(OrderPeer::STATE_TO_BE_VERIFIED);
+						$orderObj->save();					
+					}
+				} 					
 				
 				/*
 				TODO: Agregar verificacion de precios.
@@ -346,19 +359,30 @@ class OrderPeer extends BaseOrderPeer {
 				if (!empty($orderId)) {
 					$results["ordersCreated"]++;
 					foreach ($order["items"] as $item) {
+						$product = ProductPeer::getByAffiliateProductCode($user->getAffiliateId(),$item["affiliateProductCode"]);
+						
+						/**
+							El producto se busca ahora a partir del codigo de producto del afiliado
+						
 						if ($order["modifiedProductCodes"])
 							$product = ProductPeer::getByCodeModified($item["productCode"]);
 						else
 							$product = ProductPeer::getByCode($item["productCode"]);
+						*/
+						
 						//Si encontro al producto con ese codigo
 						if (!empty($product)) {
 							$results["productsFound"]++;
-							OrderItemPeer::create($orderId,$product->getId(),$item["price"],$item["quantity"]);						
+							OrderItemPeer::create($orderId,$product->getId(),$item["price"],$item["quantity"]);	
+							//agrego el producto en la lista de codigos de productos por afiliado
+							//AffiliateProductCodePeer::create($user->getAffiliateId(),$product->getId(),$item["affiliateProductCode"]);
 						}
 						else {
 							$results["productsNotFound"]++;
 							$results["productsCodesNotFounds"][] = $item["productCode"];
 							$results["ordersReport"][$orderId][] = array("code" => $item["productCode"], "quantity" => $item["quantity"]);
+							//agrego el producto en la lista de codigos de productos por afiliado sin id de codigo
+							//AffiliateProductCodePeer::create($user->getAffiliateId(),0,$item["affiliateProductCode"]);
 						}
 					}
 					//cambio el estado de la orden si tuvo productos no encontrados

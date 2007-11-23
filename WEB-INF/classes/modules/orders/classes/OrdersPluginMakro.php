@@ -30,6 +30,7 @@ class OrdersImportPlugin {
 				$item = array();
 				$item["orderNumber"] = $row[0];
 				$item["productCode"] = str_pad($row[15], strlen($row[15])+1, "0", STR_PAD_LEFT);
+				$item["affiliateProductCode"] = $row[16];
 				$item["quantity"] = $row[18];
 				$item["price"] = $row[21];
 				//si todavia no se cargo la informacion de la orden esa

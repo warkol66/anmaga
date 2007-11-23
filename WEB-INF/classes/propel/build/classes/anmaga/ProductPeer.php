@@ -344,6 +344,22 @@ class ProductPeer extends BaseProductPeer {
 		$objects = parent::populateObjects($rs);
 		return $objects[0]; 		
   }
+  
+  /**
+  * Obtiene un producto en base al codigo de producto del afiliado.
+	*
+	* @param int $affiliateId Id del Afiliado
+	* @param string $code Codigo del producto
+	*	@return Product Producto con el codigo pasado como parametro
+  */
+	function getByAffiliateProductCode($affiliateId,$code) {
+		require_once("AffiliateProductCodePeer.php");
+		$affiliateProductCode = AffiliateProductCodePeer::getByAffiliateAndCode($affiliateId,$code);
+		if (empty($affiliateProductCode) || $affiliateProductCode->getProductId() == 0)
+			return false;
+		else
+			return $affiliateProductCode->getProduct();
+	}  
 
 	/**
 	* Actualiza el precio de un producto.
