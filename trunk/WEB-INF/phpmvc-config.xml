@@ -873,6 +873,41 @@
 
 <!-- End Section AffilateProductsImport -->
 
+<!-- Section AffiliateProductCodes -->
+    <action    path = "catalogAffiliateProductCodesEdit"
+               type = "CatalogAffiliateProductCodesEditAction"
+               name = "catalogAffiliateProductCodesEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="CatalogAffiliateProductCodesEdit.tpl" />
+    </action>
+
+    <action    path = "catalogAffiliateProductCodesDoEdit"
+               type = "CatalogAffiliateProductCodesDoEditAction"
+               name = "catalogAffiliateProductCodesDoEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=catalogAffiliateProductCodesList&amp;message=ok" redirect="true" />
+    <forward name="failure" path="CatalogAffiliateProductCodesEdit.tpl" />
+    </action>
+
+    <action    path = "catalogAffiliateProductCodesList"
+               type = "CatalogAffiliateProductCodesListAction"
+               name = "catalogAffiliateProductCodesList"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="CatalogAffiliateProductCodesList.tpl" />
+    </action>
+
+    <action    path = "catalogAffiliateProductCodesDoDel"
+               type = "CatalogAffiliateProductCodesDoDelAction"
+               name = "catalogAffiliateProductCodesDoDel"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=catalogAffiliateProductCodesList&amp;message=deleted_ok" redirect="true" />
+    </action>
+<!-- End Section AffiliateProductCodes -->
+
 
 	</action-mappings>
 

@@ -347,7 +347,7 @@
   <column name="userId" type="INTEGER"  required="true" description="Id del usuario" />
   <column name="affiliateId" type="INTEGER"  required="true" description="Id del afiliado" />
   <column name="state" type="INTEGER" required="true" description="Nuevo estado" />
-  <column name="comment" type="VARCHAR" size="255" description="Comentarios" />
+  <column name="comment" type="LONGVARCHAR" description="Comentarios" />
   <foreign-key foreignTable="orders_order" onDelete="cascade">
     <reference local="orderId" foreign="id" />
   </foreign-key>
@@ -433,6 +433,39 @@
       <reference local="userId" foreign="id" />
     </foreign-key>
  </table>
+ 
+ <table phpName="AffiliateProduct" name="catalog_affiliateProduct" description="Precios de Productos por Afiliado">
+     <column name="productId" type="INTEGER" description="Producto" required="true" primaryKey='true' />
+     <column name="affiliateId" type="INTEGER" description="Afiliado" required="true" primaryKey='true' />
+     <column name="price" type="FLOAT" description="Precio del producto" />
+ 		<unique>
+ 			<unique-column name="productId" />
+ 			<unique-column name="affiliateId" />
+ 		</unique>
+ 		<foreign-key foreignTable="product" >
+ 			<reference local="productId" foreign="id" />
+ 		</foreign-key>
+ 		<foreign-key foreignTable="affiliates_affiliate" >
+ 			<reference local="affiliateId" foreign="id" />
+ 		</foreign-key>
+   </table>
+
+ <table phpName="AffiliateProductCode" name="catalog_affiliateProductCode" description="Codigos de Productos por Afiliado">
+     <column name="id" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
+     <column name="affiliateId" type="INTEGER" description="Afiliado" required="true" />
+     <column name="productId" type="INTEGER" description="Id del Producto" />
+     <column name="productCodeAffiliate" size="255" type="VARCHAR" description="Codigo del Producto para el afiliado" />
+ 		<foreign-key foreignTable="product" >
+ 			<reference local="productId" foreign="id" />
+ 		</foreign-key>
+ 		<foreign-key foreignTable="affiliates_affiliate" >
+ 			<reference local="affiliateId" foreign="id" />
+ 		</foreign-key>
+ 		<unique>
+ 			<unique-column name="affiliateId" />
+ 			<unique-column name="productCodeAffiliate" />
+ 		</unique>
+  </table>
 
 
   </database>

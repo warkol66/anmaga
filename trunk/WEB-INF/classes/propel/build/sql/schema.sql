@@ -634,7 +634,7 @@ CREATE TABLE `orders_stateChanges`
 	`userId` INTEGER  NOT NULL COMMENT 'Id del usuario',
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Id del afiliado',
 	`state` INTEGER  NOT NULL COMMENT 'Nuevo estado',
-	`comment` VARCHAR(255) COMMENT 'Comentarios',
+	`comment` TEXT COMMENT 'Comentarios',
 	PRIMARY KEY (`id`),
 	INDEX `orders_stateChanges_FI_1` (`orderId`),
 	CONSTRAINT `orders_stateChanges_FK_1`
@@ -775,6 +775,53 @@ CREATE TABLE `usersByRegistration_userInfo`
 		FOREIGN KEY (`userId`)
 		REFERENCES `usersByRegistration_user` (`id`)
 )Type=MyISAM COMMENT='Information about users by registration';
+
+#-----------------------------------------------------------------------------
+#-- catalog_affiliateProduct
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `catalog_affiliateProduct`;
+
+
+CREATE TABLE `catalog_affiliateProduct`
+(
+	`productId` INTEGER  NOT NULL COMMENT 'Producto',
+	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
+	`price` FLOAT COMMENT 'Precio del producto',
+	PRIMARY KEY (`productId`,`affiliateId`),
+	UNIQUE KEY `catalog_affiliateProduct_U_1` (`productId`, `affiliateId`),
+	CONSTRAINT `catalog_affiliateProduct_FK_1`
+		FOREIGN KEY (`productId`)
+		REFERENCES `product` (`id`),
+	INDEX `catalog_affiliateProduct_FI_2` (`affiliateId`),
+	CONSTRAINT `catalog_affiliateProduct_FK_2`
+		FOREIGN KEY (`affiliateId`)
+		REFERENCES `affiliates_affiliate` (`id`)
+)Type=MyISAM COMMENT='Precios de Productos por Afiliado';
+
+#-----------------------------------------------------------------------------
+#-- catalog_affiliateProductCode
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `catalog_affiliateProductCode`;
+
+
+CREATE TABLE `catalog_affiliateProductCode`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
+	`productId` INTEGER COMMENT 'Id del Producto',
+	`productCodeAffiliate` VARCHAR(255) COMMENT 'Codigo del Producto para el afiliado',
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `catalog_affiliateProductCode_U_1` (`affiliateId`, `productCodeAffiliate`),
+	INDEX `catalog_affiliateProductCode_FI_1` (`productId`),
+	CONSTRAINT `catalog_affiliateProductCode_FK_1`
+		FOREIGN KEY (`productId`)
+		REFERENCES `product` (`id`),
+	CONSTRAINT `catalog_affiliateProductCode_FK_2`
+		FOREIGN KEY (`affiliateId`)
+		REFERENCES `affiliates_affiliate` (`id`)
+)Type=MyISAM COMMENT='Codigos de Productos por Afiliado';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
