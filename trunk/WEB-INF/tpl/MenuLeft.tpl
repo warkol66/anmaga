@@ -40,6 +40,9 @@
     <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersList">Usuarios de Distribuidores / Mayoristas</a></td>
   </tr>
 	<tr> 
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=catalogAffiliateProductCodesList">Conversor de códigos</a></td>
+  </tr>
+	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=configView">Configuración</a></td>
   </tr>
 |-if $module|upper eq "CONFIG"-|

@@ -7,18 +7,17 @@
 |-assign var=unit value=$product->getUnit()-|
 |-assign var=branch value=$order->getBranch()-|
  <cursor_profit_xml>
- 	<nro_ord>|-if $branch-||-$branch->getNumber()-||-/if-|-|-$order->getNumber()-|</nro_ord>
+  <nro_ord>|-$order->getNumber()-|</nro_ord>
   <co_cli>|-if $branch-||-$branch->getCode()-||-/if-|</co_cli>
   <fec_emis>|-$order->getCreated()-|</fec_emis>
   <fec_venc>|-$order->getCreated()-|</fec_venc>
-  <co_sucu>|-if $branch-||-$branch->getNumber()-||-/if-|</co_sucu>
   <reng_num>|-$smarty.foreach.for_products.iteration-|</reng_num>
-  <co_art>|-$product->getcode()-|</co_art>
-  <total_art>|-$item->getQuantity()|number_format:2:",":"."-|</total_art>
+  <co_art>|-$product->getcode()|replace:"-":"-|</co_art>
+  <total_art>|-$item->getQuantity()|number_format:5:".":"-|</total_art>
   <uni_venta>|-if $unit-||-$unit->getName()-||-/if-|</uni_venta>
-  <stotal_art>|-if $unit-||-math equation="x / y" x=$item->getQuantity() y=$unit->getUnitQuantity() assign=totalQuantity-||-$totalQuantity|number_format:2:",":"."-||-/if-|</stotal_art>
-  <prec_vta>|-$item->getprice()|number_format:2:",":"."-|</prec_vta>
-  <reng_neto>|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-||-$totalItem|number_format:2:",":"."-|</reng_neto>
+  <stotal_art>|-if $unit-||-math equation="x / y" x=$item->getQuantity() y=$unit->getUnitQuantity() assign=totalQuantity-||-$totalQuantity|number_format:2:".":"-||-/if-|</stotal_art>
+  <prec_vta>|-$item->getprice()|number_format:5:".":"-|</prec_vta>
+  <reng_neto>|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-||-$totalItem|number_format:2:".":"-|</reng_neto>
   <total_uni>|-if $unit-||-$unit->getUnitQuantity()-||-/if-|</total_uni>
  </cursor_profit_xml>
 |-/foreach-|
