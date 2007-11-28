@@ -46,11 +46,11 @@
 	<input type='hidden' name='id' value='|-$currentLevel->getId()-|' />
 	<table class='tableTdBorders' cellpadding='5' cellspacing='0'>
 		<tr>
-			<th colspan="2">##187,Editar nombre del Nivel ##</th>
+			<th colspan="2" class="thFillTitle">##187,Editar nombre del Nivel ##</th>
 		</tr>
 		<tr>
-			<td nowrap="nowrap" class='tdTitle'>##196,Nombre del Nivel##</td>
-			<td class='celldato'><input name='name' type='text'  class='textodato' value='|-$currentLevel->getName()-|' size="70" /></td>
+			<td nowrap="nowrap" class='size2'>##196,Nombre del Nivel##</td>
+			<td class='size2'><input name='name' type='text'  class='textodato' value='|-$currentLevel->getName()-|' size="70" /></td>
 		</tr>
 		<tr>
 			<td class='buttonCell' colspan='2'><input type="hidden" name="accion" value="edicion" />
@@ -64,13 +64,13 @@
 |-/if-| <br />
 <table class='tableTdBorders' cellpadding='5' cellspacing='0' width='100%'>
 	<tr>
-		<th width="90%" nowrap="nowrap">##194,Niveles de Usuarios del Sistema ##</th>
-		<th width="10%" nowrap="nowrap">&nbsp;</th>
+		<th width="90%" nowrap="nowrap" class="thFillTitle">##194,Niveles de Usuarios del Sistema ##</th>
+		<th width="10%" class="thFillTitle">&nbsp;</th>
 	</tr>
 	|-foreach from=$levels item=level name=for_levels-|
 	<tr>
-		<td><div class='titulo2'>|-$level->getName()-|</div></td>
-		<td class='cellTextOptions' nowrap> [ <a href='Main.php?do=usersLevelsList&level=|-$level->getId()-|' class='edit'>##114,Editar##</a> ]
+		<td class="size2"><div class='titulo2'>|-$level->getName()-|</div></td>
+		<td class='tdSize1 cellTextOptions center' nowrap> [ <a href='Main.php?do=usersLevelsList&level=|-$level->getId()-|' class='edit'>##114,Editar##</a> ]
 			|-if $level->getId() gt 3-|[ <a href='Main.php?do=usersLevelsDoDelete&level=|-$level->getId()-|' class='delete' onclick="return confirm('##256,Esta opción elimina permanentemente a este Nivel. ¿Está seguro que desea eliminarlo?##');">##115,Eliminar##</a> ]|-else-|[ <span class='deactivated'>##115,Eliminar##</span> ] |-/if-|</td>
 	</tr>
 	|-/foreach-|

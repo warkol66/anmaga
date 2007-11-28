@@ -383,9 +383,11 @@ textarea.campo {
 	vertical-align: middle;
 }
 .smallButton{
-	font-size: .90em;
-	line-height: 1.20em;
-	height: 1.50em;
+	font-size: .85em;
+	line-height: 1.10em;
+	height: 1.70 em;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
 }
 .tinyButton{
 	font-size: .80em;
@@ -429,7 +431,7 @@ a.menuButton:active {
 	padding: 6px 2px 6px 22px;
 	display: block;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 0.95em;
+	font-size: 0.70 em;
 	font-weight: bold;
 	text-decoration: none;
 	line-height: 1.30em;
@@ -576,10 +578,10 @@ a.detail:hover{
 	text-decoration: underline;
 }
 .cellTextOptions {
-	font-size: 0.8em;
+	text-align: center;
 }
 .tdTextOptions {
-	font-size: 0.8em;
+	text-align: center;
 }
 .center {
 	text-align: center;

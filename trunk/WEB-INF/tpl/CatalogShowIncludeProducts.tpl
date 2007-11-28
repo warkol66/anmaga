@@ -6,10 +6,10 @@
 	<table width="100%" class="tableTdBorders" id="tabla-products"> 
 		<thead> 
 			<tr> 
-				<th class="thFillTitle">code</th> 
-				<th class="thFillTitle">name</th> 
-				<th class="thFillTitle">description</th> 
-				<th class="thFillTitle">price</th> 
+				<th class="thFillTitle">Código</th> 
+				<th class="thFillTitle">Nombre</th> 
+				<th class="thFillTitle">Descripción</th> 
+				<th class="thFillTitle">Precio</th> 
 				<th class="thFillTitle"></th>
 			</tr>
 		</thead>
@@ -18,14 +18,14 @@
 			<td width="15%" nowrap class="tdSize1">|-$product->getcode()-|</td>
 			<td width="25%" class="tdSize1">|-$productNode->getname()-|</td>
 			<td width="50%" class="tdSize1">|-$product->getdescription()-|</td>
-			<td width="10%" align="right" nowrap class="tdSize1">|-$product->getprice()|number_format:2:",":"."-|</td>
-			<td>
+			<td width="10%" nowrap class="tdSize1 right">|-$product->getprice()|number_format:2:",":"."-|</td>
+			<td class="tdSize1">
 				<form>
-					<label for="quantity">Quantity</label>
-					<input type="text" name="quantity" value="1" size="3" />
+					<label for="quantity">Cantidad</label>
+					<input type="text" name="quantity" value="1" size="2" />
 					<input type="hidden" name="productId" value="|-$product->getId()-|" />
 					<input type="hidden" name="do" value="ordersAddItemToCartX" />
-					<input type="button" value="Add to Cart" class="boton" onclick="javascript:ordersAddItemToCartX(this.form)" />
+					<input type="button" value="Agregar" class="smallButton" onclick="javascript:ordersAddItemToCartX(this.form)" />
 				</form>
 			</td>
 		</tr>

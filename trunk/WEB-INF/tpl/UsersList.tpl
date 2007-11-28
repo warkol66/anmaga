@@ -115,8 +115,8 @@
 	|-foreach from=$currentUserGroups item=userGroup name=for_user_group-|
 	|-assign var="group" value=$userGroup->getGroup()-|
 	<tr>
-		<td><div class='titulo2'>|-$group->getName()-|</div></td>
-		<td class='cellTextOptions' nowrap> [ <a href='Main.php?do=usersDoRemoveFromGroup&user=|-$currentUser->getId()-|&group=|-$group->getId()-|' class='delete'>##115,Eliminar##</a> ] </td>
+		<td class="size2"><div class='titulo2'>|-$group->getName()-|</div></td>
+		<td class='size1 center cellTextOptions' nowrap> [ <a href='Main.php?do=usersDoRemoveFromGroup&user=|-$currentUser->getId()-|&group=|-$group->getId()-|' class='delete'>##115,Eliminar##</a> ] </td>
 	</tr>
 	|-/foreach-|
 	|-/if-|
@@ -139,18 +139,18 @@
 |-/if-|
 <table class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 	<tr>
-		<th width="15%">##162,Identificación de Usuario##</th>
-		<th width="40%">##163,Nombre##</th>
-		<th width="40%">##164,Apellido##</th>
-		<th width="5%">&nbsp;</th>
+		<th width="15%" class="thFillTitle">##162,Identificación de Usuario##</th>
+		<th width="40%" class="thFillTitle">##163,Nombre##</th>
+		<th width="40%" class="thFillTitle">##164,Apellido##</th>
+		<th width="5%" class="thFillTitle">&nbsp;</th>
 	</tr>
 	|-foreach from=$users item=user name=for_users-|
 	|-assign var="userInfo" value=$user->getUserInfo()-|
 	<tr>
-		<td><div class='titulo2'>|-$user->getUsername()-|</div></td>
-		<td>|-$userInfo->getName()-|</td>
-		<td>|-$userInfo->getSurname()-|</td>
-		<td class='cellTextOptions' nowrap>[ <a href='Main.php?do=usersList&user=|-$user->getId()-|' class='edit'>##114,Editar##</a> ]
+		<td class="size2"><div class='titulo2'>|-$user->getUsername()-|</div></td>
+		<td class="size2">|-$userInfo->getName()-|</td>
+		<td class="size2">|-$userInfo->getSurname()-|</td>
+		<td class='tdSize1 center cellTextOptions' nowrap>[ <a href='Main.php?do=usersList&user=|-$user->getId()-|' class='edit'>##114,Editar##</a> ]
 |-if $loginUser->getUsername() eq $user->getUsername() || $user->getLevelId() lt 3 -|
 			[ <span class='deactivated'>##115,Eliminar##</span> ] 
 |-else-|
@@ -169,7 +169,7 @@
 	</tr>
 	|-else-|
 	<tr>
-		<td class='cellButton' colspan='4'><input type='submit' value='##173,Nuevo Usuario##' class='button' onClick="return alert('Todas las licencias se encuentran en uso. Si desea dar de alta un nuevo usuario debe eliminar alguno de los existentes.');"/></td>
+		<td class='buttonCell' colspan='4'><input type='submit' value='##173,Nuevo Usuario##' class='button' onClick="return alert('Todas las licencias se encuentran en uso. Si desea dar de alta un nuevo usuario debe eliminar alguno de los existentes.');"/></td>
 	</tr>
 	|-/if-|
 </table>
@@ -181,18 +181,18 @@
 		<td colspan='4' class='celltitulo2'>##175,Usuarios Eliminados##&nbsp;<a href="javascript:void(null)" class='deta' onClick="alert('##174,Si quiere dar de alta a un usuario que estuvo registrado alguna vez, debe reactivarlo desde esta opción. Si lo intenta desde un usuario nuevo el sistema le informará que ese usuario ya está en uso.##')">##38,Ayuda##</a> </td>
 	</tr>
 	<tr>
-		<th>##162,Identificación de Usuario##</th>
-		<th>##163,Nombre##</th>
-		<th>##164,Apellido##</th>
-		<th>&nbsp;</th>
+		<th class="thFillTitle">##162,Identificación de Usuario##</th>
+		<th class="thFillTitle">##163,Nombre##</th>
+		<th class="thFillTitle">##164,Apellido##</th>
+		<th class="thFillTitle">&nbsp;</th>
 	</tr>
 	|-foreach from=$deletedUsers item=user name=for_deleted_users-|
 	|-assign var="userInfo" value=$user->getUserInfo()-|
 	<tr>
-		<td><div class='titulo2'> |-$user->getUsername()-| </div></td>
-		<td> |-$userInfo->getName()-| </td>
-		<td> |-$userInfo->getSurname()-| </td>
-		<td class='cellopcionescen' nowrap> [ <a href='Main.php?do=usersDoActivate&user=|-$user->getId()-|'
+		<td class="size2"><div class='titulo2'> |-$user->getUsername()-| </div></td>
+		<td class="size2"> |-$userInfo->getName()-| </td>
+		<td class="size2"> |-$userInfo->getSurname()-| </td>
+		<td class='tdSize1 cellTextOptions center' nowrap> [ <a href='Main.php?do=usersDoActivate&user=|-$user->getId()-|'
 |-if $licensesLeft eq 0-|
 onClick="alert('##177,Todas las licencias se encuentran en uso. Si desea dar de alta un nuevo usuario debe eliminar alguno de los existentes.##');return false;"
 |-/if-|

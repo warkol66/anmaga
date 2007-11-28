@@ -55,8 +55,8 @@
 			<th colspan="2">##187,Editar nombre del Grupo ##</th>
 		</tr>
 		<tr>
-			<td nowrap="nowrap" class='titulodato1'>##196,Nombre del Grupo##</td>
-			<td class='celldato'><input name='name' type='text'  class='textodato' value='|-$currentGroup->getName()-|' size="70" /></td>
+			<td nowrap="nowrap" class='size2'>##196,Nombre del Grupo##</td>
+			<td class='size1size2'><input name='name' type='text'  class='textodato' value='|-$currentGroup->getName()-|' size="70" /></td>
 		</tr>
 		<tr>
 			<td class='cellboton' colspan='2'><input type="hidden" name="accion" value="edicion" />
@@ -67,29 +67,29 @@
 		</tr>
 	</table>
 </form>
-<table class='tablaborde' cellpadding='5' cellspacing='1' width='100%'>
+<table class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 	<tr>
-		<th colspan="2" class='titulodato1'>##188,El grupo## |-$currentGroup->getName()-| ##189,tiene acceso a las siguientes categorías:##</th>
+		<th colspan="2" class="thFillTitle">##188,El grupo## |-$currentGroup->getName()-| ##189,tiene acceso a las siguientes categorías:##</th>
 	</tr>
 	|-if $currentGroupCategories|@count eq 0-|
 	<tr>
-		<td class='celldato'colspan="2"><div class='titulo2'>##190,El grupo todavía no posee acceso a ninguna categoría.##</div></th>
+		<td class='tdSize1'colspan="2"><div class='titulo2'>##190,El grupo todavía no posee acceso a ninguna categoría.##</div></th>
 	</tr>
 	|-else-|
 	<tr>
-		<th width="90%">##191,Categorías##</th>
-		<th width="10%" nowrap="nowrap">&nbsp;</th>
+		<th width="90%" class="thFillTitle">##191,Categorías##</th>
+		<th width="10%" class="thFillTitle">&nbsp;</th>
 	</tr>
 	|-foreach from=$currentGroupCategories item=groupCategory name=for_group_category-|
 	|-assign var="category" value=$groupCategory->getCategory()-|
 	<tr>
-		<td class='celldato'><div class='titulo2'>|-$category->getName()-|</div></td>
-		<td class='cellopciones' nowrap> [ <a href="Main.php?do=usersGroupsDoRemoveCatFromGroup&category=|-$category->getId()-|&group=|-$currentGroup->getId()-|" class='elim' onclick="return confirm('##257,Esta opción remueve el acceso del grupo a la categoría. ¿Está seguro que desea eliminarlo?##');">##192,Eliminar acceso##</a> ] </td>
+		<td class='size2'><div class='titulo2'>|-$category->getName()-|</div></td>
+		<td class='tdSize1 cellTextOptions center' nowrap> [ <a href="Main.php?do=usersGroupsDoRemoveCatFromGroup&category=|-$category->getId()-|&group=|-$currentGroup->getId()-|" class='elim' onclick="return confirm('##257,Esta opción remueve el acceso del grupo a la categoría. ¿Está seguro que desea eliminarlo?##');">##192,Eliminar acceso##</a> ] </td>
 	</tr>
 	|-/foreach-|
 	|-/if-|
 	<tr>
-		<td class='celldato' colspan='2'><form action='Main.php' method='post'>
+		<td class='tdSize1' colspan='2'><form action='Main.php' method='post'>
 				##193,Agregar categoría##&nbsp;&nbsp;
 				<input type="hidden" name="do" value="usersGroupsDoAddCategoryToGroup" />
 				<select name="category">
@@ -106,13 +106,13 @@
 |-/if-| <br />
 <table class='tableTdBorders' cellpadding='5' cellspacing='0' width='100%'>
 	<tr>
-		<th width="90%" nowrap="nowrap">##194,Grupo de Usuarios del Sistema ##</th>
-		<th width="10%" nowrap="nowrap">&nbsp;</th>
+		<th width="90%" nowrap="nowrap" class="thFillTitle">##194,Grupo de Usuarios del Sistema ##</th>
+		<th width="10%" nowrap="nowrap" class="thFillTitle">&nbsp;</th>
 	</tr>
 	|-foreach from=$groups item=group name=for_groups-|
 	<tr>
-		<td class='celldato'><div class='titulo2'>|-$group->getName()-|</div></td>
-		<td class='cellopciones' nowrap> [ <a href='Main.php?do=usersGroupsList&group=|-$group->getId()-|' class='edit'>##114,Editar##</a> ]
+		<td class='size2'><div class='titulo2'>|-$group->getName()-|</div></td>
+		<td class='tdSize1 cellTextOptions center' nowrap> [ <a href='Main.php?do=usersGroupsList&group=|-$group->getId()-|' class='edit'>##114,Editar##</a> ]
 |-if $group->getId() lt 3 -|
 			[ <span class='deactivated'>##115,Eliminar##</span> ] 
 |-else-|
