@@ -12,7 +12,8 @@
 		<a class="menuSubButton" href="Main.php?do=catalogProductsList">Administrar Productos</a>
 		<a class="menuSubButton" href="Main.php?do=catalogUnitsList">Administrar Unidades</a>
 		<a class="menuSubButton" href="Main.php?do=catalogMeasureUnitsList">Administrar Unidades de Medida</a>
-		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductsImport">Administrar listas de precio por cliente</a></div>
+		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductsImport">Administrar listas de precio por cliente</a>
+		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductCodesList">Conversor de códigos</a></div>
 	</td>
   </tr>
 |-/if-|
@@ -38,9 +39,6 @@
   </tr>
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersList">Usuarios de Distribuidores / Mayoristas</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=catalogAffiliateProductCodesList">Conversor de códigos</a></td>
   </tr>
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=configView">Configuración</a></td>

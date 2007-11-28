@@ -29,10 +29,10 @@
 	</tr>
 </table>
 <ul>
-	|-foreach from=$config item=module name=for_modules key=name-|
-	<li><span class='titulo2'>|-$name-|</span></li>
+	|-foreach from=$config item=block name=for_blocks key=name-|
+	  <li><span class='titulo2'>|-$name-|</span></li>
 	<ul>
-		|-include file=ConfigViewInclude.tpl elements=$module-|
+		|-include file=ConfigViewInclude.tpl elements=$block-|
 	</ul>
 	</li>
 	|-/foreach-|
