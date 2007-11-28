@@ -1,9 +1,31 @@
-<h2>Products</h2>
+<table border='0' cellpadding='0' cellspacing='0' width='100%'>
+	<tr>
+		<td class='title'>Catálogo de Productos </td>
+	</tr>
+	<tr>
+		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td class='backgroundTitle'>Administrar productos del sistema </td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>A continuación podrá editar los productos disponibles en el sistema </td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+</table>
 <div id="div_products"> |-if $message eq "ok"-|<span class="message_ok">Producto guardado correctamente</span>|-/if-| |-if $message eq "deleted_ok"-|<span class="message_ok">Producto eliminado correctamente</span>|-/if-|
 	<div> 
 		<form action="Main.php" method="get"> 
 			<p> 
-				<label for="parentNodeId">Category</label> 
+				<label for="parentNodeId">Categor&iacute;a</label> 
 				<select name="parentNodeId" id="parentNodeId"> 
 					<option value="">Select Category</option> 
 					
@@ -12,9 +34,9 @@
 				</select> 
 			</p> 
 			<p> 
-				<label>Price From:</label> 
+				<label>Rango de precio desde: </label>
 				<input type="text" name="priceFrom" value="|-$priceFrom-|" /> 
-				<label>To:</label> 
+				<label>hasta:</label> 
 				<input type="text" name="priceTo" value="|-$priceTo-|" /> 
 			</p> 
 			<p> 
@@ -22,18 +44,18 @@
 				<input type="submit" class="boton" value="Buscar" /> 
 			</p> 
 		</form> 
-		<a href="Main.php?do=catalogProductsList">Sin Filtros</a> </div> 
+		<a href="Main.php?do=catalogProductsList">Eliminar Filtros</a> </div> 
 	<h3><a href="Main.php?do=catalogProductsEdit">Agregar Product</a></h3> 
 	<h3><a href="Main.php?do=catalogProductsList&amp;csv=1">Exportar Productos a CSV</a></h3> 
 	<table width="100%" border="0" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products"> 
 		<thead> 
 			<tr> 
 				<th class="thFillTitle">id</th> 
-				<th class="thFillTitle">code</th> 
-				<th class="thFillTitle">name</th> 
-				<th class="thFillTitle">description</th> 
-				<th class="thFillTitle">price</th> 
-				<th class="thFillTitle">Categoria</th> 
+				<th class="thFillTitle">Código</th> 
+				<th class="thFillTitle">Nombre</th> 
+				<th class="thFillTitle">Descripción</th> 
+				<th class="thFillTitle">Precio</th> 
+				<th class="thFillTitle">Categoría</th> 
 				<th class="thFillTitle">Unidad</th> 
 				<th class="thFillTitle">Unidad de Medida</th> 
 				<th class="thFillTitle">&nbsp;</th> 
@@ -52,12 +74,12 @@
 			<td> <form action="Main.php" method="get"> 
 					<input type="hidden" name="do" value="catalogProductsEdit" /> 
 					<input type="hidden" name="id" value="|-$node->getid()-|" /> 
-					<input type="submit" name="submit_go_edit_product" value="Editar" class="button" /> 
+					<input type="submit" name="submit_go_edit_product" value="Editar" class="smallButton" /> 
 				</form> 
 				<form action="Main.php" method="post"> 
 					<input type="hidden" name="do" value="catalogProductsDoDelete" /> 
 					<input type="hidden" name="id" value="|-$product->getid()-|" /> 
-					<input type="submit" name="submit_go_delete_product" value="Borrar" onclick="return confirm('Seguro que desea eliminar el producto?')" class="button" /> 
+					<input type="submit" name="submit_go_delete_product" value="Borrar" onclick="return confirm('Seguro que desea eliminar el producto?')" class="smallButton" /> 
 				</form></td> 
 		</tr> 
 		|-/foreach-|
