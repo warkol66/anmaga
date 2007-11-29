@@ -69,7 +69,7 @@
 			<td class="tdSize1 top">|-$branch->getphone()-|</td> 
 			<td class="tdSize1 top">|-$branch->getcontact()-|, email: |-$branch->getcontactEmail()-|</td> 
 			<td class="tdSize1 top">|-$branch->getmemo()-|</td> 
-			<td nowrap class="tdTextOptions center middle"> <form action="Main.php" method="get" style="display:inline;"> 
+			<td class="tdSize1 center" nowrap="nowrap"> <form action="Main.php" method="get" style="display:inline;"> 
 					<input type="hidden" name="do" value="affiliatesBranchsEdit" /> 
 					<input type="hidden" name="id" value="|-$branch->getid()-|" /> 
 					<input type="submit" name="submit_go_edit_branch" value="Editar" class="buttonSmall" /> 

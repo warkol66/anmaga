@@ -139,7 +139,7 @@
 |-/if-|
 <table class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 	<tr>
-		<th width="15%" class="thFillTitle">##162,Identificación de Usuario##</th>
+		<th width="15%" nowrap class="thFillTitle">##162,Identificación de Usuario##</th>
 		<th width="40%" class="thFillTitle">##163,Nombre##</th>
 		<th width="40%" class="thFillTitle">##164,Apellido##</th>
 		<th width="5%" class="thFillTitle">&nbsp;</th>
