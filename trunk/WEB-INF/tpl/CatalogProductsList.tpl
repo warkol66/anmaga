@@ -25,14 +25,13 @@
 	<div> 
 		<form action="Main.php" method="get"> 
 			<p> 
+|-if $productCategories|@count neq 0-|
 				<label for="parentNodeId">Categor&iacute;a</label> 
 				<select name="parentNodeId" id="parentNodeId"> 
 					<option value="">Select Category</option> 
-					
-									|-include file="CatalogProductCategoriesIncludeOptions.tpl" productCategories=$productCategories-|
-								 
+						|-include file="CatalogProductCategoriesIncludeOptions.tpl" productCategories=$productCategories-|
 				</select> 
-			</p> 
+			</p> |-/if-|
 			<p> 
 				<label>Rango de precio desde: </label>
 				<input type="text" name="priceFrom" value="|-$priceFrom-|" /> 
@@ -41,12 +40,11 @@
 			</p> 
 			<p> 
 				<input type="hidden" name="do" value="catalogProductsList" /> 
-				<input type="submit" class="boton" value="Buscar" /> 
+				<input type="submit" class="button" value="Buscar" /> <a href="Main.php?do=catalogProductsList">Eliminar Filtros</a>
 			</p> 
 		</form> 
-		<a href="Main.php?do=catalogProductsList">Eliminar Filtros</a> </div> 
-	<h3><a href="Main.php?do=catalogProductsEdit">Agregar Product</a></h3> 
-	<h3><a href="Main.php?do=catalogProductsList&amp;csv=1">Exportar Productos a CSV</a></h3> 
+		 </div> 
+	<h3><a href="Main.php?do=catalogProductsEdit">Agregar Producto</a>&nbsp;&nbsp;&nbsp;<a href="Main.php?do=catalogProductsList&amp;csv=1">Exportar Productos a CSV</a></h3> 
 	<table width="100%" border="0" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products"> 
 		<thead> 
 			<tr> 
@@ -67,16 +65,16 @@
 			<td class="tdSize1">|-$product->getcode()-|</td> 
 			<td class="tdSize1">|-$node->getname()-|</td> 
 			<td class="tdSize1">|-$product->getdescription()-|</td> 
-			<td class="tdSize1">|-$product->getprice()-|</td> 
+			<td class="tdSize1 right">|-$product->getprice()|number_format:2:",":"."-|</td> 
 			<td class="tdSize1">|-if $parentNode-||-$parentNode->getName()-||-/if-|</td> 
-			<td class="tdSize1">|-if $unit-||-$unit->getName()-||-/if-|</td> 
-			<td class="tdSize1">|-if $measureUnit-||-$measureUnit->getName()-||-/if-|</td> 
-			<td> <form action="Main.php" method="get"> 
+			<td class="tdSize1 center">|-if $unit-||-$unit->getName()-||-/if-|</td> 
+			<td class="tdSize1 center">|-if $measureUnit-||-$measureUnit->getName()-||-/if-|</td> 
+			<td class="tdSize1" nowrap> <form action="Main.php" method="get" style="display:inline;"> 
 					<input type="hidden" name="do" value="catalogProductsEdit" /> 
 					<input type="hidden" name="id" value="|-$node->getid()-|" /> 
 					<input type="submit" name="submit_go_edit_product" value="Editar" class="smallButton" /> 
 				</form> 
-				<form action="Main.php" method="post"> 
+				<form action="Main.php" method="post" style="display:inline;"> 
 					<input type="hidden" name="do" value="catalogProductsDoDelete" /> 
 					<input type="hidden" name="id" value="|-$product->getid()-|" /> 
 					<input type="submit" name="submit_go_delete_product" value="Borrar" onclick="return confirm('Seguro que desea eliminar el producto?')" class="smallButton" /> 
