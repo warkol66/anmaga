@@ -15,7 +15,7 @@
 </script>
 </head>
 <body leftmargin='2' topmargin='2'>
-<table width="760" border="0" cellspacing="0" cellpadding="0">
+<table width="955" border="0" cellspacing="0" cellpadding="0">
 	<tr>
 		<td colspan="3" class="cabezal">&nbsp;</td>
 	</tr>
@@ -25,7 +25,7 @@
 	<tr valign="top">
 		<td width="155">|-include file="MenuLeft.tpl"-|</td>
 		<td width="5">&nbsp;</td>
-		<td width="600"><!--centerHTML start-->
+		<td width="795"><!--centerHTML start-->
 						|-$centerHTML-|
 		<!--centerHTML end --></td>
 	</tr>
