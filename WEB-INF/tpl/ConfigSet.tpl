@@ -24,15 +24,16 @@
 		<td>A continuación podrá editar las variables de configuración del sistema.</td>
 	</tr>
 	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
 		<td>
-			|-if $selectedModule ne ""-|
-				Modulo: |-$selectedModule-|
-			|-/if-|&nbsp;
+			|-if $selectedModule ne ""-|Modulo: |-$selectedModule|capitalize-|&nbsp;&nbsp;&nbsp;&nbsp;|-/if-|
       	<form action="Main.php" method="get">
 					<select name="module" onchange="this.parentNode.submit();">
-						<option value="">Seleccionar Modulo</option>
-					|-foreach from=$modules item=module name=for_modules key=module_name-|
-						<option value="|-$module_name-|">|-$module_name-|</option>
+						<option value="">|-if $selectedModule ne ""-|Seleccionar otro|-else-|Seleccionar|-/if-| Módulo</option>
+					|-foreach from=$modules item=blcok name=for_block key=block_name-|
+						<option value="|-$block_name-|">|-$block_name|capitalize-|</option>
 					|-/foreach-|
 					</select>
 					<input type="hidden" name="do" value="configSet" />
@@ -42,13 +43,13 @@
 </table>
 |-if $selectedModule ne ""-|
 <form method="post" action="Main.php">
-			<ul id="config_ul">
-				<li id="config[|-$selectedModule-|]"><span class='titulo2'>|-$selectedModule-|</span>
-					<ul id="config[|-$selectedModule-|]_ul">
-						|-include file=ConfigSetInclude.tpl elements=$config name=[$selectedModule]-|
-					</ul>
-				</li>
+	<ul id="config_ul">
+		<li id="config[|-$selectedModule-|]"><span class='titulo2'>|-$selectedModule-|</span>
+			<ul id="config[|-$selectedModule-|]_ul">
+				|-include file=ConfigSetInclude.tpl elements=$config name=[$selectedModule]-|
 			</ul>
+		</li>
+	</ul>
 	<input type="hidden" name="do" value="configDoSet" />
 	<input type="hidden" name="module" value="|-$selectedModule-|" />
 	<input type="submit" value="Guardar" class="button" />

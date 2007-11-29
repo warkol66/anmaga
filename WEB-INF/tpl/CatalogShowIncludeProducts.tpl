@@ -6,27 +6,27 @@
 	<table width="100%" class="tableTdBorders" id="tabla-products"> 
 		<thead> 
 			<tr> 
-				<th class="thFillTitle">Código</th> 
-				<th class="thFillTitle">Nombre</th> 
-				<th class="thFillTitle">Descripción</th> 
-				<th class="thFillTitle">Precio</th> 
-				<th class="thFillTitle"></th>
+				<th width="5%" class="thFillTitle">Código</th> 
+				<th width="35%" class="thFillTitle">Nombre</th> 
+				<th width="50%" class="thFillTitle">Descripción</th> 
+				<th width="5%" class="thFillTitle">Precio</th> 
+				<th width="5%" class="thFillTitle">&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>  |-foreach from=$productNodes item=productNode name=for_products-| |-assign var=product value=$productNode->getInfo()-|
 		<tr>
-			<td width="15%" nowrap class="tdSize1">|-$product->getcode()-|</td>
-			<td width="25%" class="tdSize1">|-$productNode->getname()-|</td>
-			<td width="50%" class="tdSize1">|-$product->getdescription()-|</td>
-			<td width="10%" nowrap class="tdSize1 right">|-$product->getprice()|number_format:2:",":"."-|</td>
-			<td class="tdSize1">
+			<td nowrap class="tdSize1 right">|-$product->getcode()-|</td>
+			<td class="tdSize1">|-$productNode->getname()-|</td>
+			<td class="tdSize1">|-$product->getdescription()-|</td>
+			<td nowrap class="tdSize1 right">|-if $product->getprice() neq 0-||-$product->getprice()|number_format:2:",":"."-||-/if-|</td>
+			<td class="tdSize1">|-if $product->getprice() neq 0-|
 				<form>
 					<label for="quantity">Cantidad</label>
 					<input type="text" name="quantity" value="1" size="2" />
 					<input type="hidden" name="productId" value="|-$product->getId()-|" />
 					<input type="hidden" name="do" value="ordersAddItemToCartX" />
 					<input type="button" value="Agregar" class="smallButton" onclick="javascript:ordersAddItemToCartX(this.form)" />
-				</form>
+				</form>|-/if-|
 			</td>
 		</tr>
 		|-foreachelse-|
