@@ -28,23 +28,25 @@ class AffiliateProductPeer extends BaseAffiliateProductPeer {
 	/**
 	 * Agrega un precio diferencial para un producto para un cierto afiliado
 	 * @param affiliateId integer id del afiliado
-	 * @param productId integer id del producto
+	 * @param productCode integer codigo del producto
 	 * @param price double precio diferencial
 	 */
-	function add($affiliateId,$productId,$price) {
+	function add($affiliateId,$productCode,$price) {		
 		
 		//regla de negocio, no se dan de alta aquellos cuyo precio sea cero.
-		if ($price == 0)
+		if ($price == 0) {
 			return false;
+		}
 
 		//si el producto no existe, no darlo de alta
-		$product = ProductPeer::get($productId);
-		if (empty($product))
+		$product = ProductPeer::getByCodeModified($productCode);
+		if (empty($product)) {
 			return false;
+		}
 		
 		$affiliateProduct = new AffiliateProduct();		
 		$affiliateProduct->setAffiliateId($affiliateId);
-		$affiliateProduct->setProductId($productId);
+		$affiliateProduct->setProductId($product->getId());
 		$affiliateProduct->setPrice($price);
 		try {
 			$affiliateProduct->save();

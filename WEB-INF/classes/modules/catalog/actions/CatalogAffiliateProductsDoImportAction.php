@@ -29,7 +29,7 @@ class CatalogAffiliateProductsDoImportAction extends BaseAction {
 		$smarty->assign('module',$module);
 
 		$moduleSection = "AffiliatesProducts";
-    $smarty->assign("moduleSection",$section);
+    	$smarty->assign("moduleSection",$section);
 
 		$affiliateProductPeer = new AffiliateProductPeer();
 		
@@ -52,12 +52,12 @@ class CatalogAffiliateProductsDoImportAction extends BaseAction {
 			if ($rowsReaded > 0) 
 				$affiliateProductPeer->deletePrices($_POST['affiliate']);				
 			
-			
 			//procesamiento de filas de datos		
-			foreach ($archive as $row) {			
+			foreach ($archive as $row) {
 				if ($affiliateProductPeer->add($_POST['affiliate'],$row[0],$row[1])!= false) {
 					$rowsCreated++;
 				}
+				
 			}
 			
 			fclose($handle);
