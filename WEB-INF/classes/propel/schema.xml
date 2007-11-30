@@ -453,11 +453,8 @@
  <table phpName="AffiliateProductCode" name="catalog_affiliateProductCode" description="Codigos de Productos por Afiliado">
      <column name="id" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
      <column name="affiliateId" type="INTEGER" description="Afiliado" required="true" />
-     <column name="productId" type="INTEGER" description="Id del Producto" />
+     <column name="productCode" size="255" type="VARCHAR" description="Codigo del Producto" />
      <column name="productCodeAffiliate" size="255" type="VARCHAR" description="Codigo del Producto para el afiliado" />
- 		<foreign-key foreignTable="product" >
- 			<reference local="productId" foreign="id" />
- 		</foreign-key>
  		<foreign-key foreignTable="affiliates_affiliate" >
  			<reference local="affiliateId" foreign="id" />
  		</foreign-key>

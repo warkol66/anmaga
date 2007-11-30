@@ -62,6 +62,8 @@ class CatalogAffiliateProductCodesEditAction extends BaseAction {
 		}
 		else {
 			//voy a crear un affiliateproductcode nuevo
+			$affiliateProductCode = new AffiliateProductCode();
+			$smarty->assign("affiliateproductcode",$affiliateProductCode);
 			$products = ProductPeer::getAll();
 			$smarty->assign("products",$products);
 			$affiliates = AffiliatePeer::getAll();

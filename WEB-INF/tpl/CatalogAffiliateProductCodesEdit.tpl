@@ -11,7 +11,7 @@
 								<td class="tdSize1">
 									<select id="affiliateId" name="affiliateId" title="affiliateId">
 									|-foreach from=$affiliates item=affiliate name=for_affiliates-|
-										<option value="|-$affiliate->getId()-|"|-if $affiliateId eq $affiliate->getId()-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
+										<option value="|-$affiliate->getId()-|"|-if $affiliateproductcode->getAffiliateId() eq $affiliate->getId()-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
 									|-/foreach-|
 									</select>
 								</td>
@@ -19,10 +19,10 @@
 							<tr>
 								<td class="tdTitle">Producto: </td>
 								<td class="tdSize1">
-									<select name="productId">
+									<select name="productCode">
 									|- foreach from=$products item=product -|
 										|-assign var=productNode value=$product->getNode()-| 
-										<option value="|-$product->getId()-|"|-if $productId eq $product->getId()-| selected="selected"|-/if-|>|- $product->getCode()-|, |- $productNode->getName()-|</option>
+										<option value="|-$product->getCode()-|"|-if $affiliateproductcode->getProductCode() eq $product->getCode()-| selected="selected"|-/if-|>|- $product->getCode()-|, |- $productNode->getName()-|</option>
 									|-/foreach-|
 									</select>
 								</td>

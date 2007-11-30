@@ -20,4 +20,16 @@ require_once 'anmaga/om/BaseAffiliateProductCode.php';
  */
 class AffiliateProductCode extends BaseAffiliateProductCode {
 
+  /**
+  * Obtiene el producto asociado.
+  *
+  * @return Product Informacion del producto
+  */
+  function getProduct() {  
+    $cond = new Criteria();
+    $cond->add(ProductPeer::CODE, $this->getProductCode());
+    $alls = ProductPeer::doSelect($cond);
+    return $alls[0];  
+  }
+
 } // AffiliateProductCode

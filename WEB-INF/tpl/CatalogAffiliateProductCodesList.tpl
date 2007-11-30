@@ -25,10 +25,30 @@
 					|-if $message eq "ok"-|<span class="message_ok">Código de Producto por Afiliado guardado correctamente</span>|-/if-|
 					|-if $message eq "deleted_ok"-|<span class="message_ok">Código de Producto por Afiliado eliminado correctamente</span>|-/if-|
 					<h3><a href="Main.php?do=catalogAffiliateProductCodesEdit">Agregar Código de Producto por Afiliado</a></h3>
+					
+					<div>
+						<form action="Main.php" method="get">
+							<p>
+								<label for="affiliateId">Affiliate:</label>
+								<select name="affiliateId">
+									<option value="" selected="selected">Seleccionar</option>
+									|-foreach from=$affiliates item=affiliate-|
+									<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|</option>
+									|-/foreach-|
+								</select>
+							</p>						
+							<p>
+								<input type="hidden" name="do" id="do" value="catalogAffiliateProductCodesList" />
+								<input type="submit" value="Ver" />
+							</p>
+						</form>
+					</div>					
+					
+					|-if $affiliateproductcodes-|
+					<h3>Codigos de Productos del Affiliate |-$selectedAffiliate->getName()-|</h3>
 					<table id="tabla-affiliateproductcodes" width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 						<thead>
 							<tr>
-								<th class="thFillTitle">Afiliado</th>
 								<th class="thFillTitle">Código</th>
 								<th class="thFillTitle">C&oacute;digo Anmaga, Producto</th>
 								<th class="thFillTitle">&nbsp;</th>
@@ -37,9 +57,8 @@
 						<tbody>
 						|-foreach from=$affiliateproductcodes item=affiliateproductcode name=for_affiliateproductcodes-|
 							<tr>
-								<td class="tdSize1">|-assign var=affiliate value=$affiliateproductcode->getAffiliate()-||-$affiliate->getName()-|</td>
 								<td class="tdSize1 right">|-$affiliateproductcode->getproductCodeAffiliate()-|</td>
-								<td class="tdSize1">|-if $affiliateproductcode->getproductId() ne ""-||-assign var=product value=$affiliateproductcode->getProduct()-||-assign var=productNode value=$product->getNode()-||- $product->getCode()-|, |- $productNode->getName()-||-/if-|</td>
+								<td class="tdSize1">|-assign var=product value=$affiliateproductcode->getProduct()-||-if $product ne ""-||-assign var=productNode value=$product->getNode()-||- $product->getCode()-|, |- $productNode->getName()-||-/if-|</td>
 								<td nowrap>
 									<form action="Main.php" method="get" style="display:inline;">
 										<input type="hidden" name="do" value="catalogAffiliateProductCodesEdit" />
@@ -53,6 +72,12 @@
 									</form>								</td>
 							</tr>
 						|-/foreach-|
+						
+							<tr> 
+								<td colspan="9">|-include file="PaginateInclude.tpl"-|</td> 
+							</tr>						
+						
 						</tbody>
 					</table>
+					|-/if-|
 				</div>

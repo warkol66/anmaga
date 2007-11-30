@@ -2,6 +2,7 @@
 
 require_once("BaseAction.php");
 require_once("AffiliateProductCodePeer.php");
+require_once("AffiliatePeer.php");
 
 class CatalogAffiliateProductCodesListAction extends BaseAction {
 
@@ -43,12 +44,21 @@ class CatalogAffiliateProductCodesListAction extends BaseAction {
 		}
 
 		$module = "Catalog";
-
-    $affiliateproductcodes = AffiliateProductCodePeer::getAll();
-
-    $smarty->assign("affiliateproductcodes",$affiliateproductcodes);
-
-    $smarty->assign("message",$_GET["message"]);
+	
+		$affiliates = AffiliatePeer::getAll();
+		$smarty->assign("affiliates",$affiliates);		
+   
+		if (!empty($_REQUEST["affiliateId"])) {
+			$selectedAffiliate = AffiliatePeer::get($_REQUEST["affiliateId"]); 
+			$smarty->assign("selectedAffiliate",$selectedAffiliate);		
+			$pager = AffiliateProductCodePeer::getAllByAffiliateIdPaginated($_REQUEST["affiliateId"],$_GET["page"]);
+			$smarty->assign("affiliateproductcodes",$pager->getResult());
+			$smarty->assign("pager",$pager);
+			$url = "Main.php?do=catalogAffiliateProductCodesList&affiliateId=".$_REQUEST["affiliateId"];
+			$smarty->assign("url",$url);			
+		}
+   
+		$smarty->assign("message",$_GET["message"]);
 
 		return $mapping->findForwardConfig('success');
 	}

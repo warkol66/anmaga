@@ -13,7 +13,7 @@
 					<div id="productsNotFound" style="display:none;">
 						<h3>Códigos de Productos no Encontrados</h3>
 						<ul>
-							|-foreach from=$results.productsCodesNotFounds item=code-|
+							|-foreach from=$results.productsCodesNotFoundsUnique item=code-|
 							<li>|-$code-|</li>
 							|-/foreach-|
 						</ul>

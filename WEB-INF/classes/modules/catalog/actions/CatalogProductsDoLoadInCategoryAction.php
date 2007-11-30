@@ -65,7 +65,10 @@ class CatalogProductsDoLoadInCategoryAction extends BaseAction {
 
 			switch ($_POST["mode"]) {
 				case "1": //Reemplaza todo el catalogo de esa categoria
-					ProductPeer::deleteAllByParentId($_POST["parentNodeId"]);
+					if (empty($_POST["parentNodeId"])) 
+						ProductPeer::deleteAll();
+					else
+						ProductPeer::deleteAllByParentId($_POST["parentNodeId"]);
 					break;
 				case "2": //Reemplaza codigos existentes
 					break;
