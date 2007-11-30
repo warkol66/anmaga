@@ -1,4 +1,25 @@
 ﻿==============================
+Revisión 203
+------------------------------
+
+DROP TABLE IF EXISTS `catalog_affiliateProductCode`;
+
+
+CREATE TABLE `catalog_affiliateProductCode`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
+	`productCode` VARCHAR(255) COMMENT 'Codigo del Producto',
+	`productCodeAffiliate` VARCHAR(255) COMMENT 'Codigo del Producto para el afiliado',
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `catalog_affiliateProductCode_U_1` (`affiliateId`, `productCodeAffiliate`),
+	CONSTRAINT `catalog_affiliateProductCode_FK_1`
+		FOREIGN KEY (`affiliateId`)
+		REFERENCES `affiliates_affiliate` (`id`)
+)Type=MyISAM COMMENT='Codigos de Productos por Afiliado';
+
+
+==============================
 Revisión 190
 ------------------------------
 
