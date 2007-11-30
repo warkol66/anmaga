@@ -810,15 +810,11 @@ CREATE TABLE `catalog_affiliateProductCode`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
-	`productId` INTEGER COMMENT 'Id del Producto',
+	`productCode` VARCHAR(255) COMMENT 'Codigo del Producto',
 	`productCodeAffiliate` VARCHAR(255) COMMENT 'Codigo del Producto para el afiliado',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `catalog_affiliateProductCode_U_1` (`affiliateId`, `productCodeAffiliate`),
-	INDEX `catalog_affiliateProductCode_FI_1` (`productId`),
 	CONSTRAINT `catalog_affiliateProductCode_FK_1`
-		FOREIGN KEY (`productId`)
-		REFERENCES `product` (`id`),
-	CONSTRAINT `catalog_affiliateProductCode_FK_2`
 		FOREIGN KEY (`affiliateId`)
 		REFERENCES `affiliates_affiliate` (`id`)
 )Type=MyISAM COMMENT='Codigos de Productos por Afiliado';

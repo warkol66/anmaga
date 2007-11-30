@@ -317,8 +317,9 @@ class OrderPeer extends BaseOrderPeer {
 			else
 				$branchId = null;
 			
-			//$existsOrder = OrderPeer::existsByNumber($order["number"],$user->getAffiliateId());
-			$existsOrder = false;
+			//Comentar la siguiente linea y descomentar la de abajo para desactivar el chequeo de ordenes duplicadas
+			$existsOrder = OrderPeer::existsByNumber($order["number"],$user->getAffiliateId());
+			//$existsOrder = false;
 			if ($existsOrder) {
 				$results["duplicatedOrdersCount"]++;
 				$results["duplicatedOrders"][] = $order["number"];
@@ -375,7 +376,7 @@ class OrderPeer extends BaseOrderPeer {
 							$results["productsFound"]++;
 							OrderItemPeer::create($orderId,$product->getId(),$item["price"],$item["quantity"]);	
 							//agrego el producto en la lista de codigos de productos por afiliado
-							//AffiliateProductCodePeer::create($user->getAffiliateId(),$product->getId(),$item["affiliateProductCode"]);
+							//AffiliateProductCodePeer::create($user->getAffiliateId(),$product->getCode(),$item["affiliateProductCode"]);
 						}
 						else {
 							$results["productsNotFound"]++;
@@ -403,7 +404,8 @@ class OrderPeer extends BaseOrderPeer {
 					$results["ordersNotCreated"]++;	
 			}
 		}
-		$results["productsCodesNotFoundsUnique"] = sort(array_unique($results["productsCodesNotFounds"]));
+		$results["productsCodesNotFoundsUnique"] = array_unique($results["productsCodesNotFounds"]);
+		sort($results["productsCodesNotFoundsUnique"]);
 		return $results;
 	}
 	

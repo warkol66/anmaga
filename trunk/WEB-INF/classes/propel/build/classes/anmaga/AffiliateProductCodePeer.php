@@ -14,18 +14,28 @@ include_once 'anmaga/AffiliateProductCode.php';
 class AffiliateProductCodePeer extends BaseAffiliateProductCodePeer {
 
   /**
+  * Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
+  *
+  * @return int Cantidad de filas por pagina
+  */
+  function getRowsPerPage() {
+    global $system;
+    return $system["config"]["system"]["rowsPerPage"];
+  }
+
+  /**
   * Crea un codigo de producto por afiliado nuevo.
   *
   * @param int $affiliateId affiliateId del affiliateproductcode
-  * @param int $productId productId del affiliateproductcode
+  * @param int $productCode productCode del affiliateproductcode
   * @param string $productCodeAffiliate productCodeAffiliate del affiliateproductcode
   * @return boolean true si se creo el affiliateproductcode correctamente, false sino
 	*/
-	function create($affiliateId,$productId,$productCodeAffiliate) {
+	function create($affiliateId,$productCode,$productCodeAffiliate) {
     try {
       $affiliateproductcodeObj = new AffiliateProductCode();
       $affiliateproductcodeObj->setaffiliateId($affiliateId);
-      $affiliateproductcodeObj->setproductId($productId);
+      $affiliateproductcodeObj->setproductCode($productCode);
       $affiliateproductcodeObj->setproductCodeAffiliate($productCodeAffiliate);
       $affiliateproductcodeObj->save();
     }
@@ -40,14 +50,14 @@ class AffiliateProductCodePeer extends BaseAffiliateProductCodePeer {
   *
   * @param int $id id del affiliateproductcode
   * @param int $affiliateId affiliateId del affiliateproductcode
-  * @param int $productId productId del affiliateproductcode
+  * @param int $productCode productCode del affiliateproductcode
   * @param string $productCodeAffiliate productCodeAffiliate del affiliateproductcode
   * @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
-  function update($id,$affiliateId,$productId,$productCodeAffiliate) {
+  function update($id,$affiliateId,$productCode,$productCodeAffiliate) {
   	$affiliateproductcodeObj = AffiliateProductCodePeer::retrieveByPK($id);
     $affiliateproductcodeObj->setaffiliateId($affiliateId);
-    $affiliateproductcodeObj->setproductId($productId);
+    $affiliateproductcodeObj->setproductCode($productCode);
     $affiliateproductcodeObj->setproductCodeAffiliate($productCodeAffiliate);    
     $affiliateproductcodeObj->save();
 		return true;
@@ -101,6 +111,40 @@ class AffiliateProductCodePeer extends BaseAffiliateProductCodePeer {
 		$alls = AffiliateProductCodePeer::doSelect($cond);
 		return $alls;
   }
+  
+  /**
+  * Obtiene todos los codigos de productos por afiliado para un afiliado.
+  *
+  * @param int $affiliateId Id del affiliate  
+  *	@return array Informacion sobre todos los affiliateproductcodes
+  */
+  function getAllByAffiliateId($affiliateId) {
+    $cond = new Criteria();
+    $cond->add(AffiliateProductCodePeer::AFFILIATEID, $affiliateId);    
+    $alls = AffiliateProductCodePeer::doSelect($cond);
+    return $alls;
+  }  
+  
+  /**
+  * Obtiene todos los codigos de productos por afiliado para un afiliado paginados.
+  *
+  * @param int $affiliateId Id del affiliate    
+  * @param int $page [optional] Numero de pagina actual
+  * @param int $perPage [optional] Cantidad de filas por pagina
+  *	@return array Informacion sobre todos los affiliateproductcodes
+  */
+  function getAllByAffiliateIdPaginated($affiliateId,$page=1,$perPage=-1) {  
+    if ($perPage == -1)
+      $perPage = 	AffiliateProductCodePeer::getRowsPerPage();
+    if (empty($page))
+      $page = 1;
+    require_once("propel/util/PropelPager.php");
+    $cond = new Criteria();
+    $cond->add(AffiliateProductCodePeer::AFFILIATEID, $affiliateId);        
+
+    $pager = new PropelPager($cond,"AffiliateProductCodePeer", "doSelect",$page,$perPage);
+    return $pager;
+   }  
 
 }
 ?>
