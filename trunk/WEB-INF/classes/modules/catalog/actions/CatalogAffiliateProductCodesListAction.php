@@ -44,6 +44,7 @@ class CatalogAffiliateProductCodesListAction extends BaseAction {
 		}
 
 		$module = "Catalog";
+	  $smarty->assign("module",$module);
 	
 		$affiliates = AffiliatePeer::getAll();
 		$smarty->assign("affiliates",$affiliates);		

@@ -44,7 +44,7 @@ class CatalogShowAction extends BaseAction {
 		}
 
 		$module = "Catalog";
-	    $smarty->assign("module",$module);
+	  $smarty->assign("module",$module);
 		$productCategories = TreePeer::getAllOnlyKind("ProductCategory");
 		$smarty->assign("productCategories",$productCategories);
 		
