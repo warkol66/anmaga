@@ -9,8 +9,8 @@
  <cursor_profit_xml>
   <nro_ord>|-$order->getNumber()-|</nro_ord>
   <co_cli>|-if $branch-||-$branch->getCode()-||-/if-|</co_cli>
-  <fec_emis>|-$order->getCreated()-|</fec_emis>
-  <fec_venc>|-$order->getCreated()-|</fec_venc>
+  <fec_emis>|-$order->getCreated()|date_format:"%Y-%m-%d"-|</fec_emis>
+  <fec_venc>|-$order->getCreated()|date_format:"%Y-%m-%d"-|-|</fec_venc>
   <reng_num>|-$smarty.foreach.for_products.iteration-|</reng_num>
   <co_art>|-$product->getcode()|replace:"-":"-|</co_art>
   <total_art>|-$item->getQuantity()|number_format:5:".":"-|</total_art>
