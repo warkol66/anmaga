@@ -355,7 +355,7 @@ class ProductPeer extends BaseProductPeer {
 	function getByAffiliateProductCode($affiliateId,$code) {
 		require_once("AffiliateProductCodePeer.php");
 		$affiliateProductCode = AffiliateProductCodePeer::getByAffiliateAndCode($affiliateId,$code);
-		if (empty($affiliateProductCode) || $affiliateProductCode->getProductId() == 0)
+		if (empty($affiliateProductCode) || $affiliateProductCode->getProductCode() == 0)
 			return false;
 		else
 			return $affiliateProductCode->getProduct();
