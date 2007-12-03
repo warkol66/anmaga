@@ -45,6 +45,7 @@ class CatalogAffiliateProductCodesEditAction extends BaseAction {
 		}
 
 		$module = "Catalog";
+	  $smarty->assign("module",$module);
 
     if ( !empty($_GET["id"]) ) {
 			//voy a editar un affiliateproductcode
