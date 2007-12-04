@@ -7,7 +7,7 @@ body {
 	margin-left: 0px;
 	margin-right: 0px;
 }
-body,td,input,textarea,.TXTnormal {
+body,td,input,textarea,.TXTnormal,caption {
 	font-family: Arial, Helvetica, sans-serif;
 }
 th {
@@ -385,7 +385,7 @@ textarea.campo {
 .smallButton{
 	font-size: .85em;
 	line-height: 1.10em;
-	height: 1.70 em;
+	height: 1.70em;
 	margin: 0 0 0 0;
 	padding: 0 0 0 0;
 }
@@ -431,7 +431,7 @@ a.menuButton:active {
 	padding: 6px 2px 6px 22px;
 	display: block;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 0.70 em;
+	font-size: 0.70em;
 	font-weight: bold;
 	text-decoration: none;
 	line-height: 1.30em;
@@ -604,4 +604,16 @@ a.detail:hover{
 .buttonSmall {
 	font-size: .80em;
 	height: 1.80em;
+}
+.textButton {
+	border: 2px outset;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.90em;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin: 5px;
+}
+caption {
+	font-weight: bold;
+	padding: 5px;
 }

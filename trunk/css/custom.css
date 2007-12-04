@@ -222,3 +222,16 @@ a.detail:hover{
 	color: #FFFFFF;
 	background-color: #000066;
 }
+.textButton {
+	background-color: #DCDCDC;
+	border-color: #DCDCDC;
+}
+
+caption {
+}
+table.tableTdBorders caption {
+	background-color: #EFEFEF;
+	color: #00008B;
+	border: 1px solid #00008B;
+}
+

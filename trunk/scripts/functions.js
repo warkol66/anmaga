@@ -2,28 +2,19 @@ function cambiaclase(element,clase) {
 	var NAME = document.getElementById(element);
 	NAME.className=clase;
 }
-		function logout(){
-			return window.confirm("Esta seguro que quiere salir del sistema?")
-		}
 
-<!-- Script usado para hacer un checkbox masivo -->
-
-<!-- Begin
-var checkflag = "false";
-function check(field) {
-if (checkflag == "false") {
-for (i = 0; i < field.length; i++) {
-field[i].checked = true;}
-checkflag = "true";
-return "Deseleccionar Todos"; }
-else {
-for (i = 0; i < field.length; i++) {
-field[i].checked = false; }
-checkflag = "false";
-return "Seleccionar Todos"; }
+function logout(){
+	return window.confirm("Esta seguro que quiere salir del sistema?")
 }
-//  End -->
 
+function CheckAllBoxes(fmobj) {
+  for (var i=0;i<fmobj.elements.length;i++) {
+    var e = fmobj.elements[i];
+    if ( (e.name != 'allbox') && (e.type=='checkbox') && (!e.disabled) ) {
+      e.checked = fmobj.allbox.checked;
+    }
+  }
+}
 
 function switch_vis(element,display)
 {
@@ -45,6 +36,7 @@ function switch_vis(element,display)
 	}
 	e_ref.style.display=display;
 }
+
 function switch_value(element,value)
 {
 	var e_ref="";
@@ -65,6 +57,7 @@ function switch_value(element,value)
 	}
 	e_ref.value=value;
 }
+
 function switch_vis_mult(elements)
 {
 	var i=0;
@@ -73,7 +66,6 @@ function switch_vis_mult(elements)
 		switch_vis(elements[i],'none');
 	}
 }
-
 
 function addConfigAttribute(li) {
 	ul = document.getElementById(li.id+"_ul");

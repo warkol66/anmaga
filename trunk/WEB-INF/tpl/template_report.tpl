@@ -3,10 +3,9 @@
 <head>
 <title>##12,Sistema para Manejo Estratégico de Relaciones con los Actores Clave##</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="stylesheet" href="css/mer.css" type="text/css">
-<!--[if !IE]>--> <link href="css/mer_mozilla.css" rel="stylesheet" type="text/css"> <!--<![endif]-->
-<link rel="stylesheet" href="css/mer_reporte.css" type="text/css">
-<link rel="shortcut icon" href="images/mer.ico">
+<link rel="stylesheet" href="css/style.css" type="text/css">
+<!--[if !IE]> <link href="css/style_ns6+.css" rel="stylesheet" type="text/css"> <![endif]-->
+<link rel="shortcut icon" href="images/favicon.ico">
 <script language="JavaScript" type="text/javascript" src="scripts/functions.js"></script>
 </head>
 <body>
