@@ -51,6 +51,54 @@
 
 	</form>
 	
+
+	<p>
+	<table width="100%" border="0" cellpadding="5" cellspacing="0">
+		<caption>
+ 		Cambios de Estados y Observaciones 
+		</caption> 
+		<thead> 
+			<tr> 
+				<th width="15%" class="thFillTitle">Fecha</th> 
+				<th width="20%" class="thFillTitle">Afiliado</th> 
+				<th width="15%" class="thFillTitle">Usuario</th> 
+				<th width="10%" class="thFillTitle">Estado</th> 
+				<th width="40%" class="thFillTitle">Observación</th> 
+			</tr> 
+		</thead> 
+		<tbody id="stateChanges">  |-foreach from=$order->getOrderStateChanges() item=stateChange-|
+		<tr> 
+			<td class="tdSize1 center top">|-$stateChange->getCreated()-|</td> 
+			<td class="tdSize1 top">|-assign var=affiliate value=$stateChange->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td> 
+			<td class="tdSize1 top">|-assign var=user value=$stateChange->getUser()-||-if $user-||-$user->getUsername()-||-/if-|</td> 
+			<td class="tdSize1 top">|-$stateChange->getStateName()-|</td> 
+			<td class="tdSize1 top">|-$stateChange->getComment()-|</td> 
+		</tr> 
+		|-/foreach-|
+		</tbody> 
+  </table> 
+	</p> 
+	<form action="Main.php" method="post"> 
+		<label for="state">Nuevo Estado:</label> 
+		<select name="state" id="state"> 
+			<option value="0"|-if $order->getState() eq 0-| selected="selected"|-/if-|>|-$stateTexts.new-|</option> 
+			<option value="1"|-if $order->getState() eq 1-| selected="selected"|-/if-|>|-$stateTexts.accepted-|</option> 
+			<option value="2"|-if $order->getState() eq 2-| selected="selected"|-/if-|>|-$stateTexts.pendingApproval-|</option> 
+			<option value="3"|-if $order->getState() eq 3-| selected="selected"|-/if-|>|-$stateTexts.inProcess-|</option> 
+			<option value="4"|-if $order->getState() eq 4-| selected="selected"|-/if-|>|-$stateTexts.completed-|</option> 
+			<option value="5"|-if $order->getState() eq 5-| selected="selected"|-/if-|>|-$stateTexts.cancelled-|</option> 
+		</select> <br>
+
+		<label for="comment">Observación:</label> 
+		<textarea name="comment" cols="60" rows="4" wrap="VIRTUAL" id="comment"></textarea> 
+		<input type="button" value="Agregar" onclick="javascript:ordersStateDoChangeX(this.form)" class="button" /> 
+		<input type="hidden" name="do" value="ordersStateDoChangeX" /> 
+		<input type="hidden" name="orderId" value="|-$order->getId()-|" /> 
+		<span id="messageState"></span> 
+	</form> 
+	</p>   	
+
+	
 	<h3>Edicion del Detalle de la Orden</h3>
 	
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tableTdBorders" > 
@@ -89,18 +137,20 @@
 			</td>
 		</tr> 
 		|-/foreach-|
-		</tbody> 
+		</tbody>
   </table>
+
+
   <table>
   	  <tbody width="100%" border="0" cellpadding="5" cellspacing="0" class="tableTdBorders" >
       |-if $order->getOrderItems()|@count gt 0-|
-		<tr id="product-total"> 
-			<td colspan="5" class="tdTitle right">Total:&nbsp;&nbsp;<span id="product_total_value">|-$order->getTotal()|number_format:2:",":"."-|</span></td> 
-		</tr> 
+		<tr id="product-total">
+			<td colspan="5" class="tdTitle right">Total:&nbsp;&nbsp;<span id="product_total_value">|-$order->getTotal()|number_format:2:",":"."-|</span></td>
+		</tr>
 		|-/if-|
-		</tbody> 
+		</tbody>
   </table>
-  
+
   	<div id="test" class="test">
 	    <a title="product-add-link" id="product-add-link" onclick="showProductAdd()" >Agregar un Producto</a>
 	</div>
