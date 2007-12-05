@@ -1,3 +1,0 @@
-
-The php.MVC framework
-
