@@ -469,26 +469,117 @@ CREATE TABLE `actionLogs_label`
 )Type=MyISAM COMMENT='Etiquetas de logueo';
 
 #-----------------------------------------------------------------------------
-#-- node
+#-- request
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `node`;
+DROP TABLE IF EXISTS `request`;
 
 
-CREATE TABLE `node`
+CREATE TABLE `request`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del nodo',
-	`name` VARCHAR(255)  NOT NULL COMMENT 'Nombre del nodo',
-	`kind` VARCHAR(255)  NOT NULL COMMENT 'Tipo de nodo',
-	`objectId` INTEGER COMMENT 'Id del objeto relacionado al nodo',
-	`parentId` INTEGER COMMENT 'Id del nodo padre',
-	`position` INTEGER COMMENT 'Orden entre los hermanos del nodo',
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Request Id',
+	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
+	`userId` INTEGER  NOT NULL COMMENT 'User',
+	`status` INTEGER  NOT NULL COMMENT 'Request Status',
+	`timestampStatus` DATETIME COMMENT 'Fecha del ultimo cambio de status',
 	PRIMARY KEY (`id`),
-	INDEX `node_FI_1` (`parentId`),
-	CONSTRAINT `node_FK_1`
-		FOREIGN KEY (`parentId`)
-		REFERENCES `node` (`id`)
-)Type=MyISAM COMMENT='Nodo del Arbol';
+	INDEX `request_FI_1` (`userId`),
+	CONSTRAINT `request_FK_1`
+		FOREIGN KEY (`userId`)
+		REFERENCES `users_user` (`id`)
+)Type=MyISAM COMMENT='Requests';
+
+#-----------------------------------------------------------------------------
+#-- productRequest
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `productRequest`;
+
+
+CREATE TABLE `productRequest`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'ProductRequest Id',
+	`requestId` INTEGER  NOT NULL COMMENT 'Request',
+	`productId` INTEGER  NOT NULL COMMENT 'Product',
+	`supplierId` INTEGER COMMENT 'Supplier',
+	`quantity` INTEGER COMMENT 'Cantidad del producto en el pedido',
+	`priceSupplier` FLOAT COMMENT 'Precio del proveedor',
+	`timestampPriceSupplier` DATETIME COMMENT 'Fecha de la ultima modificacion del priceSupplier',
+	`priceClient` FLOAT COMMENT 'Precio para el cliente',
+	`timestampPriceClient` DATETIME COMMENT 'Fecha de la ultima modificacion del priceClient',
+	`icotermId` INTEGER COMMENT 'Icoterm',
+	`portId` INTEGER COMMENT 'Port',
+	`status` INTEGER  NOT NULL COMMENT 'Request Status',
+	`timestampStatus` DATETIME COMMENT 'Fecha del ultimo cambio de status',
+	PRIMARY KEY (`id`),
+	INDEX `productRequest_FI_1` (`requestId`),
+	CONSTRAINT `productRequest_FK_1`
+		FOREIGN KEY (`requestId`)
+		REFERENCES `request` (`id`),
+	INDEX `productRequest_FI_2` (`productId`),
+	CONSTRAINT `productRequest_FK_2`
+		FOREIGN KEY (`productId`)
+		REFERENCES `product` (`id`),
+	INDEX `productRequest_FI_3` (`supplierId`),
+	CONSTRAINT `productRequest_FK_3`
+		FOREIGN KEY (`supplierId`)
+		REFERENCES `supplier` (`id`),
+	INDEX `productRequest_FI_4` (`icotermId`),
+	CONSTRAINT `productRequest_FK_4`
+		FOREIGN KEY (`icotermId`)
+		REFERENCES `icoterm` (`id`),
+	INDEX `productRequest_FI_5` (`portId`),
+	CONSTRAINT `productRequest_FK_5`
+		FOREIGN KEY (`portId`)
+		REFERENCES `port` (`id`)
+)Type=MyISAM COMMENT='Products of each request';
+
+#-----------------------------------------------------------------------------
+#-- productRequestConfirmation
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `productRequestConfirmation`;
+
+
+CREATE TABLE `productRequestConfirmation`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'ProductRequestConfirmation Id',
+	`productRequestId` INTEGER  NOT NULL COMMENT 'Product Request',
+	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
+	`userId` INTEGER  NOT NULL COMMENT 'User',
+	`attach` VARCHAR(255) COMMENT 'Nombre del archivo adjunto',
+	PRIMARY KEY (`id`),
+	INDEX `productRequestConfirmation_FI_1` (`productRequestId`),
+	CONSTRAINT `productRequestConfirmation_FK_1`
+		FOREIGN KEY (`productRequestId`)
+		REFERENCES `productRequest` (`id`),
+	INDEX `productRequestConfirmation_FI_2` (`userId`),
+	CONSTRAINT `productRequestConfirmation_FK_2`
+		FOREIGN KEY (`userId`)
+		REFERENCES `affiliates_user` (`id`)
+)Type=MyISAM COMMENT='Confirmacion por parte del cliente a cada pedido de producto';
+
+#-----------------------------------------------------------------------------
+#-- comment
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `comment`;
+
+
+CREATE TABLE `comment`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'ProductRequestConfirmation Id',
+	`productRequestId` INTEGER  NOT NULL COMMENT 'Product Request',
+	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
+	`userId` INTEGER  NOT NULL COMMENT 'User',
+	`text` TEXT COMMENT 'Texto del comentario',
+	`type` TINYINT  NOT NULL COMMENT 'Client|Supplier',
+	PRIMARY KEY (`id`),
+	INDEX `comment_FI_1` (`productRequestId`),
+	CONSTRAINT `comment_FK_1`
+		FOREIGN KEY (`productRequestId`)
+		REFERENCES `productRequest` (`id`)
+)Type=MyISAM COMMENT='Comentarios';
 
 #-----------------------------------------------------------------------------
 #-- product
@@ -499,329 +590,87 @@ DROP TABLE IF EXISTS `product`;
 
 CREATE TABLE `product`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del producto',
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Product Id',
 	`code` VARCHAR(255) COMMENT 'Codigo del producto',
-	`description` VARCHAR(255) COMMENT 'Descripcion',
-	`price` FLOAT COMMENT 'Precio del producto',
-	`unitId` INTEGER COMMENT 'Unidades',
-	`measureUnitId` INTEGER COMMENT 'Unidad de Medida',
-	`active` INTEGER default 1 NOT NULL COMMENT 'Is product active?',
+	`name` VARCHAR(255) COMMENT 'Nombre del producto',
+	`description` TEXT COMMENT 'Descripcion del producto',
+	`supplierId` INTEGER COMMENT 'Supplier',
+	`active` INTEGER  NOT NULL COMMENT 'Is product active?',
 	PRIMARY KEY (`id`),
-	UNIQUE KEY `product_U_1` (`code`),
-	INDEX `product_FI_1` (`unitId`),
+	INDEX `product_FI_1` (`supplierId`),
 	CONSTRAINT `product_FK_1`
-		FOREIGN KEY (`unitId`)
-		REFERENCES `unit` (`id`),
-	INDEX `product_FI_2` (`measureUnitId`),
-	CONSTRAINT `product_FK_2`
-		FOREIGN KEY (`measureUnitId`)
-		REFERENCES `measureUnit` (`id`)
-)Type=MyISAM COMMENT='Producto';
+		FOREIGN KEY (`supplierId`)
+		REFERENCES `supplier` (`id`)
+)Type=MyISAM COMMENT='Productos';
 
 #-----------------------------------------------------------------------------
-#-- unit
+#-- port
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `unit`;
+DROP TABLE IF EXISTS `port`;
 
 
-CREATE TABLE `unit`
+CREATE TABLE `port`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de la unidad',
-	`name` VARCHAR(255)  NOT NULL COMMENT 'Unidad',
-	`unitQuantity` INTEGER  NOT NULL COMMENT 'Cantidad de unidades que posee la unidad',
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Port Id',
+	`code` VARCHAR(255) COMMENT 'Codigo del puerto',
+	`name` VARCHAR(255) COMMENT 'Nombre del puerto',
+	`active` INTEGER  NOT NULL COMMENT 'Is port active?',
 	PRIMARY KEY (`id`)
-)Type=MyISAM COMMENT='Unidades';
+)Type=MyISAM COMMENT='Puerto';
 
 #-----------------------------------------------------------------------------
-#-- measureUnit
+#-- icoterm
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `measureUnit`;
+DROP TABLE IF EXISTS `icoterm`;
 
 
-CREATE TABLE `measureUnit`
+CREATE TABLE `icoterm`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de la unidad de medida',
-	`name` VARCHAR(255)  NOT NULL COMMENT 'Unidad de Medida',
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Tcoterm Id',
+	`name` VARCHAR(255) COMMENT 'Nombre del Tcoterm',
+	`description` VARCHAR(255) COMMENT 'Descripcion del Tcoterm',
+	`active` INTEGER  NOT NULL COMMENT 'Is icoterm active?',
 	PRIMARY KEY (`id`)
-)Type=MyISAM COMMENT='Unidad de Medida';
+)Type=MyISAM COMMENT='Icoterm';
 
 #-----------------------------------------------------------------------------
-#-- productCategory
+#-- supplier
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `productCategory`;
+DROP TABLE IF EXISTS `supplier`;
 
 
-CREATE TABLE `productCategory`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de la categoria',
-	`description` VARCHAR(255) COMMENT 'Descripcion',
-	PRIMARY KEY (`id`)
-)Type=MyISAM COMMENT='Categorias de Productos';
-
-#-----------------------------------------------------------------------------
-#-- orders_order
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `orders_order`;
-
-
-CREATE TABLE `orders_order`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del pedido',
-	`number` INTEGER COMMENT 'Numero interno del pedido',
-	`created` DATETIME  NOT NULL COMMENT 'Fecha en que se creo el pedido',
-	`userId` INTEGER  NOT NULL COMMENT 'Id del usuario',
-	`affiliateId` INTEGER  NOT NULL COMMENT 'Id del afiliado',
-	`branchId` INTEGER COMMENT 'Id de la sucursal',
-	`total` FLOAT COMMENT 'Precio total del pedido',
-	`state` INTEGER COMMENT 'Estado del pedido',
-	PRIMARY KEY (`id`),
-	INDEX `orders_order_FI_1` (`userId`),
-	CONSTRAINT `orders_order_FK_1`
-		FOREIGN KEY (`userId`)
-		REFERENCES `affiliates_user` (`id`),
-	INDEX `orders_order_FI_2` (`affiliateId`),
-	CONSTRAINT `orders_order_FK_2`
-		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliates_affiliate` (`id`),
-	INDEX `orders_order_FI_3` (`branchId`),
-	CONSTRAINT `orders_order_FK_3`
-		FOREIGN KEY (`branchId`)
-		REFERENCES `branch` (`id`)
-)Type=MyISAM COMMENT='Pedido de Productos';
-
-#-----------------------------------------------------------------------------
-#-- orders_orderItem
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `orders_orderItem`;
-
-
-CREATE TABLE `orders_orderItem`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del item del pedido',
-	`orderId` INTEGER  NOT NULL COMMENT 'Id del pedido',
-	`productId` INTEGER  NOT NULL COMMENT 'Id del usuario',
-	`price` FLOAT COMMENT 'Precio del producto',
-	`quantity` INTEGER COMMENT 'Cantidad del producto en el pedido',
-	PRIMARY KEY (`id`),
-	INDEX `orders_orderItem_FI_1` (`orderId`),
-	CONSTRAINT `orders_orderItem_FK_1`
-		FOREIGN KEY (`orderId`)
-		REFERENCES `orders_order` (`id`)
-		ON DELETE CASCADE,
-	INDEX `orders_orderItem_FI_2` (`productId`),
-	CONSTRAINT `orders_orderItem_FK_2`
-		FOREIGN KEY (`productId`)
-		REFERENCES `product` (`id`)
-)Type=MyISAM COMMENT='Item del Pedido de Productos';
-
-#-----------------------------------------------------------------------------
-#-- orders_stateChanges
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `orders_stateChanges`;
-
-
-CREATE TABLE `orders_stateChanges`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del cambio de estado del pedido',
-	`created` DATETIME  NOT NULL COMMENT 'Fecha en que se cambio el estado',
-	`orderId` INTEGER  NOT NULL COMMENT 'Id del pedido',
-	`userId` INTEGER  NOT NULL COMMENT 'Id del usuario',
-	`affiliateId` INTEGER  NOT NULL COMMENT 'Id del afiliado',
-	`state` INTEGER  NOT NULL COMMENT 'Nuevo estado',
-	`comment` TEXT COMMENT 'Comentarios',
-	PRIMARY KEY (`id`),
-	INDEX `orders_stateChanges_FI_1` (`orderId`),
-	CONSTRAINT `orders_stateChanges_FK_1`
-		FOREIGN KEY (`orderId`)
-		REFERENCES `orders_order` (`id`)
-		ON DELETE CASCADE,
-	INDEX `orders_stateChanges_FI_2` (`userId`),
-	CONSTRAINT `orders_stateChanges_FK_2`
-		FOREIGN KEY (`userId`)
-		REFERENCES `affiliates_user` (`id`),
-	INDEX `orders_stateChanges_FI_3` (`affiliateId`),
-	CONSTRAINT `orders_stateChanges_FK_3`
-		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliates_affiliate` (`id`)
-)Type=MyISAM COMMENT='Cambios de Estado de Pedidos de Productos';
-
-#-----------------------------------------------------------------------------
-#-- orders_orderTemplate
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `orders_orderTemplate`;
-
-
-CREATE TABLE `orders_orderTemplate`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del pedido',
-	`name` VARCHAR(255)  NOT NULL COMMENT 'Nombre de la plantilla',
-	`created` DATETIME  NOT NULL COMMENT 'Fecha en que se creo el pedido',
-	`userId` INTEGER  NOT NULL COMMENT 'Id del usuario',
-	`affiliateId` INTEGER  NOT NULL COMMENT 'Id del afiliado',
-	`branchId` INTEGER COMMENT 'Id de la sucursal',
-	`total` FLOAT COMMENT 'Precio total del pedido',
-	PRIMARY KEY (`id`),
-	INDEX `orders_orderTemplate_FI_1` (`userId`),
-	CONSTRAINT `orders_orderTemplate_FK_1`
-		FOREIGN KEY (`userId`)
-		REFERENCES `affiliates_user` (`id`),
-	INDEX `orders_orderTemplate_FI_2` (`affiliateId`),
-	CONSTRAINT `orders_orderTemplate_FK_2`
-		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliates_affiliate` (`id`),
-	INDEX `orders_orderTemplate_FI_3` (`branchId`),
-	CONSTRAINT `orders_orderTemplate_FK_3`
-		FOREIGN KEY (`branchId`)
-		REFERENCES `branch` (`id`)
-)Type=MyISAM COMMENT='Plantillas de Pedido de Productos';
-
-#-----------------------------------------------------------------------------
-#-- orders_orderTemplateItem
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `orders_orderTemplateItem`;
-
-
-CREATE TABLE `orders_orderTemplateItem`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del item del pedido',
-	`orderTemplateId` INTEGER  NOT NULL COMMENT 'Id del pedido',
-	`productId` INTEGER  NOT NULL COMMENT 'Id del usuario',
-	`price` FLOAT COMMENT 'Precio del producto',
-	`quantity` INTEGER COMMENT 'Cantidad del producto en el pedido',
-	PRIMARY KEY (`id`),
-	INDEX `orders_orderTemplateItem_FI_1` (`orderTemplateId`),
-	CONSTRAINT `orders_orderTemplateItem_FK_1`
-		FOREIGN KEY (`orderTemplateId`)
-		REFERENCES `orders_orderTemplate` (`id`)
-		ON DELETE CASCADE,
-	INDEX `orders_orderTemplateItem_FI_2` (`productId`),
-	CONSTRAINT `orders_orderTemplateItem_FK_2`
-		FOREIGN KEY (`productId`)
-		REFERENCES `product` (`id`)
-)Type=MyISAM COMMENT='Item de la Plantilla de Pedido de Productos';
-
-#-----------------------------------------------------------------------------
-#-- branch
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `branch`;
-
-
-CREATE TABLE `branch`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de la sucursal',
-	`affiliateId` INTEGER  NOT NULL COMMENT 'Id del afiliado',
-	`number` INTEGER  NOT NULL COMMENT 'Numero de la sucursal',
-	`code` VARCHAR(20) COMMENT 'Codigo de la sucursal',
-	`name` VARCHAR(255) COMMENT 'Nombre de la sucursal',
-	`phone` VARCHAR(100) COMMENT 'Telefono de la sucursal',
-	`contact` VARCHAR(50) COMMENT 'Nombre de persona de contacto',
-	`contactEmail` VARCHAR(100) COMMENT 'Email de persona de contacto',
-	`memo` TEXT COMMENT 'Informacion adicional de la sucursal',
-	PRIMARY KEY (`id`),
-	INDEX `branch_FI_1` (`affiliateId`),
-	CONSTRAINT `branch_FK_1`
-		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliates_affiliate` (`id`)
-)Type=MyISAM COMMENT='Sucursales de Afiliados';
-
-#-----------------------------------------------------------------------------
-#-- usersByRegistration_user
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `usersByRegistration_user`;
-
-
-CREATE TABLE `usersByRegistration_user`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'User Id',
-	`username` VARCHAR(255)  NOT NULL COMMENT 'username',
-	`password` VARCHAR(255)  NOT NULL COMMENT 'password',
-	`active` INTEGER  NOT NULL COMMENT 'Is user active?',
-	`created` DATETIME  NOT NULL COMMENT 'Creation date for',
-	`updated` DATETIME  NOT NULL COMMENT 'Last update date',
-	`ip` VARCHAR(255)  NOT NULL COMMENT 'Registration IP',
-	`lastLogin` DATETIME COMMENT 'Fecha del ultimo login del usuario',
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `usersByRegistration_user_U_1` (`username`),
-	CONSTRAINT `usersByRegistration_user_FK_1`
-		FOREIGN KEY (`id`)
-		REFERENCES `usersByRegistration_userInfo` (`userId`)
-)Type=MyISAM COMMENT='Users by registration';
-
-#-----------------------------------------------------------------------------
-#-- usersByRegistration_userInfo
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `usersByRegistration_userInfo`;
-
-
-CREATE TABLE `usersByRegistration_userInfo`
-(
-	`userId` INTEGER  NOT NULL COMMENT 'UserByRegistration Id',
-	`name` VARCHAR(255) COMMENT 'name',
-	`surname` VARCHAR(255) COMMENT 'surname',
-	`mailAddress` VARCHAR(255) COMMENT 'Email',
-	PRIMARY KEY (`userId`),
-	CONSTRAINT `usersByRegistration_userInfo_FK_1`
-		FOREIGN KEY (`userId`)
-		REFERENCES `usersByRegistration_user` (`id`)
-)Type=MyISAM COMMENT='Information about users by registration';
-
-#-----------------------------------------------------------------------------
-#-- catalog_affiliateProduct
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `catalog_affiliateProduct`;
-
-
-CREATE TABLE `catalog_affiliateProduct`
-(
-	`productId` INTEGER  NOT NULL COMMENT 'Producto',
-	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
-	`price` FLOAT COMMENT 'Precio del producto',
-	PRIMARY KEY (`productId`,`affiliateId`),
-	UNIQUE KEY `catalog_affiliateProduct_U_1` (`productId`, `affiliateId`),
-	CONSTRAINT `catalog_affiliateProduct_FK_1`
-		FOREIGN KEY (`productId`)
-		REFERENCES `product` (`id`),
-	INDEX `catalog_affiliateProduct_FI_2` (`affiliateId`),
-	CONSTRAINT `catalog_affiliateProduct_FK_2`
-		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliates_affiliate` (`id`)
-)Type=MyISAM COMMENT='Precios de Productos por Afiliado';
-
-#-----------------------------------------------------------------------------
-#-- catalog_affiliateProductCode
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `catalog_affiliateProductCode`;
-
-
-CREATE TABLE `catalog_affiliateProductCode`
+CREATE TABLE `supplier`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
-	`productId` INTEGER COMMENT 'Id del Producto',
-	`productCodeAffiliate` VARCHAR(255) COMMENT 'Codigo del Producto para el afiliado',
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `catalog_affiliateProductCode_U_1` (`affiliateId`, `productCodeAffiliate`),
-	INDEX `catalog_affiliateProductCode_FI_1` (`productId`),
-	CONSTRAINT `catalog_affiliateProductCode_FK_1`
-		FOREIGN KEY (`productId`)
-		REFERENCES `product` (`id`),
-	CONSTRAINT `catalog_affiliateProductCode_FK_2`
-		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliates_affiliate` (`id`)
-)Type=MyISAM COMMENT='Codigos de Productos por Afiliado';
+	`name` VARCHAR(255)  NOT NULL COMMENT 'Nombre',
+	`active` INTEGER  NOT NULL COMMENT 'Is supplier active?',
+	PRIMARY KEY (`id`)
+)Type=MyISAM COMMENT='Proveedores';
+
+#-----------------------------------------------------------------------------
+#-- SupplierUser
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `SupplierUser`;
+
+
+CREATE TABLE `SupplierUser`
+(
+	`userId` INTEGER  NOT NULL COMMENT 'User ID',
+	`supplierId` INTEGER  NOT NULL COMMENT 'Supplier ID',
+	PRIMARY KEY (`userId`,`supplierId`),
+	CONSTRAINT `SupplierUser_FK_1`
+		FOREIGN KEY (`userId`)
+		REFERENCES `users_user` (`id`)
+		ON DELETE CASCADE,
+	INDEX `SupplierUser_FI_2` (`supplierId`),
+	CONSTRAINT `SupplierUser_FK_2`
+		FOREIGN KEY (`supplierId`)
+		REFERENCES `supplier` (`id`)
+)Type=MyISAM COMMENT='Users / Suppliers';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
