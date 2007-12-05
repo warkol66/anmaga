@@ -283,7 +283,7 @@
   <column name="timestampPriceSupplier" type="TIMESTAMP" description="Fecha de la ultima modificacion del priceSupplier" />
   <column name="priceClient" type="FLOAT" description="Precio para el cliente" />
   <column name="timestampPriceClient" type="TIMESTAMP" description="Fecha de la ultima modificacion del priceClient" />
-  <column name="icotermId" type="INTEGER" description="Icoterm" />
+  <column name="incotermId" type="INTEGER" description="Icoterm" />
   <column name="portId" type="INTEGER" description="Port" />
   <column name="status" type="INTEGER" description="Request Status" required="true" />
   <column name="timestampStatus" type="TIMESTAMP" description="Fecha del ultimo cambio de status" />
@@ -296,8 +296,8 @@
   <foreign-key foreignTable="supplier" >
     <reference local="supplierId" foreign="id" />
   </foreign-key>
-  <foreign-key foreignTable="icoterm" >
-    <reference local="icotermId" foreign="id" />
+  <foreign-key foreignTable="incoterm" >
+    <reference local="incotermId" foreign="id" />
   </foreign-key>
   <foreign-key foreignTable="port" >
     <reference local="portId" foreign="id" />
@@ -353,7 +353,7 @@
   <column type="BOOLEAN" name="active" required="true" description="Is port active?" />
  </table>
 
- <table name="icoterm" phpName='Icoterm' description="Icoterm">
+ <table name="incoterm" phpName='Incoterm' description="Incoterm">
   <column name="id" required="true" primaryKey="true" type="INTEGER" description="Tcoterm Id" autoIncrement="true"/>
   <column name="name" size="255" type="VARCHAR" description="Nombre del Tcoterm" />
   <column name="description" size="255" type="VARCHAR" description="Descripcion del Tcoterm" />  

@@ -507,7 +507,7 @@ CREATE TABLE `productRequest`
 	`timestampPriceSupplier` DATETIME COMMENT 'Fecha de la ultima modificacion del priceSupplier',
 	`priceClient` FLOAT COMMENT 'Precio para el cliente',
 	`timestampPriceClient` DATETIME COMMENT 'Fecha de la ultima modificacion del priceClient',
-	`icotermId` INTEGER COMMENT 'Icoterm',
+	`incotermId` INTEGER COMMENT 'Icoterm',
 	`portId` INTEGER COMMENT 'Port',
 	`status` INTEGER  NOT NULL COMMENT 'Request Status',
 	`timestampStatus` DATETIME COMMENT 'Fecha del ultimo cambio de status',
@@ -524,10 +524,10 @@ CREATE TABLE `productRequest`
 	CONSTRAINT `productRequest_FK_3`
 		FOREIGN KEY (`supplierId`)
 		REFERENCES `supplier` (`id`),
-	INDEX `productRequest_FI_4` (`icotermId`),
+	INDEX `productRequest_FI_4` (`incotermId`),
 	CONSTRAINT `productRequest_FK_4`
-		FOREIGN KEY (`icotermId`)
-		REFERENCES `icoterm` (`id`),
+		FOREIGN KEY (`incotermId`)
+		REFERENCES `incoterm` (`id`),
 	INDEX `productRequest_FI_5` (`portId`),
 	CONSTRAINT `productRequest_FK_5`
 		FOREIGN KEY (`portId`)
@@ -620,20 +620,20 @@ CREATE TABLE `port`
 )Type=MyISAM COMMENT='Puerto';
 
 #-----------------------------------------------------------------------------
-#-- icoterm
+#-- incoterm
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `icoterm`;
+DROP TABLE IF EXISTS `incoterm`;
 
 
-CREATE TABLE `icoterm`
+CREATE TABLE `incoterm`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Tcoterm Id',
 	`name` VARCHAR(255) COMMENT 'Nombre del Tcoterm',
 	`description` VARCHAR(255) COMMENT 'Descripcion del Tcoterm',
 	`active` INTEGER  NOT NULL COMMENT 'Is icoterm active?',
 	PRIMARY KEY (`id`)
-)Type=MyISAM COMMENT='Icoterm';
+)Type=MyISAM COMMENT='Incoterm';
 
 #-----------------------------------------------------------------------------
 #-- supplier
