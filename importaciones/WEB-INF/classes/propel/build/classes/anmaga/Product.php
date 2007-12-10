@@ -20,4 +20,13 @@ require_once 'anmaga/om/BaseProduct.php';
  */
 class Product extends BaseProduct {
 
+	/**
+	 * Redefinimos delete para evitar que se haga borrado real cuando 
+	 * se elimina desde el objeto. sin usar la clase peer.
+	 */
+	function delete ($con = null) {
+		$this->setactive('0');
+		$this->save();
+	}
+
 } // Product

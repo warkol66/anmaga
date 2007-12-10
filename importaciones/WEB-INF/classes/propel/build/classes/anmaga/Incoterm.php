@@ -20,4 +20,14 @@ require_once 'anmaga/om/BaseIncoterm.php';
  */
 class Incoterm extends BaseIncoterm {
 
+	/**
+	 * Redefinimos delete para evitar que se haga borrado real cuando 
+	 * se elimina desde el objeto. sin usar la clase peer.
+	 */
+	function delete ($con = null) {
+		$this->setactive('0');
+		$this->save();
+	}
+
+
 } // Incoterm

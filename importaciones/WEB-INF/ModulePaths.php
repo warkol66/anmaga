@@ -99,6 +99,13 @@ class ModulePaths {
 		$appDirs[]      = 'WEB-INF/classes/modules/register/actions';
 		$appDirs[]      = 'WEB-INF/classes/modules/register/forms';
 		$appDirs[]      = 'WEB-INF/classes/modules/register/classes';		
+		
+		//importaciones
+		$appDirs[]      = 'WEB-INF/classes/modules/import';
+		$appDirs[]      = 'WEB-INF/classes/modules/import/actions';
+		$appDirs[]      = 'WEB-INF/classes/modules/import/forms';
+		$appDirs[]      = 'WEB-INF/classes/modules/import/classes';		
+			
 
 		return $appDirs;
 

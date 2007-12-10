@@ -20,7 +20,7 @@ return array (
         array (
           'phptype' => 'mysql',
           'hostspec' => 'localhost',
-          'database' => 'anmaga',
+          'database' => 'importaciones',
           'username' => 'root',
           'password' => 'termal',
         ),
@@ -32,7 +32,7 @@ return array (
         array (
           'phptype' => 'mysql',
           'hostspec' => 'localhost',
-          'database' => 'anmaga',
+          'database' => 'importaciones',
           'username' => 'root',
           'password' => 'termal',
         ),
