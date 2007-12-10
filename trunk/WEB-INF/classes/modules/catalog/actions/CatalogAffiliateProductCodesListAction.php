@@ -60,7 +60,7 @@ class CatalogAffiliateProductCodesListAction extends BaseAction {
 		}
    
 		$smarty->assign("message",$_GET["message"]);
-
+		$smarty->assign("page",$_GET['page']);
 		return $mapping->findForwardConfig('success');
 	}
 

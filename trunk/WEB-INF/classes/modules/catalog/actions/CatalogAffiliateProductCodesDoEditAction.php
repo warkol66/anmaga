@@ -67,8 +67,11 @@ class CatalogAffiliateProductCodesDoEditAction extends BaseAction {
 				$smarty->assign("message","error");
 				return $mapping->findForwardConfig('failure');
       		}
-
-			return $mapping->findForwardConfig('success');
+			
+			//redireccionamiento
+			$page = $_POST['page'];
+			header("Location : Main.php?do=catalogAffiliateProductCodesList&message=ok&page=$page");
+			
 		}
 
 	}

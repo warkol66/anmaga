@@ -96,8 +96,8 @@
 																	<td class="tdSize1">|-$order->gettotal()|number_format:2:",":"."-|</td>
 																	<td nowrap class="tdSize1">|-$order->getStateName()-|</td>
 																	<td nowrap>
-										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersView&id=|-$order->getid()-|'" value="Ver" class="smallButton" />
-										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersEdit&id=|-$order->getid()-|'" value="Editar" class="smallButton" />
+										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersView&id=|-$order->getid()-|&page=|-$page-|'" value="Ver" class="smallButton" />
+										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersEdit&id=|-$order->getid()-|&page=|-$page-|'" value="Editar" class="smallButton" />
 										|-if $all eq "0"-|
 										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersDoAddToCart&id=|-$order->getid()-|'" value="Add To Cart" class="smallButton" />
 										|-/if-|

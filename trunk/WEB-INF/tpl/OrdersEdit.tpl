@@ -43,11 +43,14 @@
 	</tr>
 	<tr>
 		<td colspan="3"><input type="submit" value="Guardar" class="button" /> 
-		  <input type="hidden" name="do" value="ordersDoEdit" /> 
-		  <input type="hidden" name="orderId" value="|-$order->getId()-|" /></td>
+		  <input type="hidden" name="do" value="ordersDoEdit" />
+		  <input type="hidden" name="orderId" value="|-$order->getId()-|" />
+		  <input type="hidden" name="page" value="|-$page-|" /> </td>
 		</tr>
 </table>
 	</form>
+	
+	<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersList&page=|-$page-|'" value="Regresar" class="button" />
 	<hr  />
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tableTdBorders">
 		<caption>
