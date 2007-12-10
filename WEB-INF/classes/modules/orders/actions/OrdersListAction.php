@@ -83,7 +83,7 @@ class OrdersListAction extends BaseAction {
 		
 		$smarty->assign("orders",$pager->getResult());
 		$smarty->assign("pager",$pager);
-
+		$smarty->assign("page",$_GET["page"]);
 		$smarty->assign("url",$url);
 
     	$smarty->assign("message",$_GET["message"]);

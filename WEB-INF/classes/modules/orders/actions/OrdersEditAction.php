@@ -72,6 +72,7 @@ class OrdersEditAction extends BaseAction {
 
     	$smarty->assign("order",$order);
 		$smarty->assign("branches",$branches);
+		$smarty->assign("page",$_GET['page']);
 		
 		global $protectedWords;
 		$smarty->assign("stateTexts",$protectedWords["orderStates"]);

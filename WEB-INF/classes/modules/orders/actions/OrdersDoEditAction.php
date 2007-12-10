@@ -79,8 +79,10 @@ class OrdersDoEditAction extends BaseAction {
 		catch (Exception $exp) {
 			return $mapping->findForwardConfig('error');
 		}
-
-		return $mapping->findForwardConfig('success');
+		
+		//redireccionamiento
+		$page = $_POST['page'];
+		header("Location: Main.php?do=ordersList&message=saved&page=$page");
 	}
 
 }

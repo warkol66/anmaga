@@ -63,6 +63,7 @@
 									<form action="Main.php" method="get" style="display:inline;">
 										<input type="hidden" name="do" value="catalogAffiliateProductCodesEdit" />
 										<input type="hidden" name="id" value="|-$affiliateproductcode->getid()-|" />
+										<input type="hidden" name="page" value="|-$page-|" />
 										<input type="submit" name="submit_go_edit_affiliateproductcode" value="Editar" class="smallButton" />
 									</form>
 									<form action="Main.php" method="post" style="display:inline;">
