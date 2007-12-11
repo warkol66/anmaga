@@ -132,7 +132,7 @@
 				var editor|-$item->getId()-| = new Ajax.InPlaceEditor("quantity|-$item->getId()-|", 'Main.php?do=ordersItemsDoEditX&itemId=|-$item->getId()-|&orderId=|-$order->getId()-|', { clickToEditText : 'Editar Cantidad' });
 			</script>
 			<td class="tdSize1 bottom right">|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-|<span id="totalItem|-$item->getId()-|">|-$totalItem|number_format:2:",":"."-|</span></td> 
-			<td class="tdSize1 bottom center">
+			<td class="tdSize1 bottom center" nowrap>
 			    <input id="editButton|-$item->getId()-|"type="button" onclick="editor|-$item->getId()-|.enterEditMode();" value="Editar" class="smallButton" />
 				<form method="post" action="Main.php" id="formRemove|-$item->getId()-|" style="display:inline;">
 					<input type="hidden" name="itemId" value="|-$item->getId()-|" />
