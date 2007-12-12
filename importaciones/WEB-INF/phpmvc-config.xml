@@ -137,6 +137,15 @@
 			<forward name="success" path="/Main.php?do=usersList" redirect="true" />
 		</action>
 
+		<action    path = "usersDoLinkToSupplier"
+							 type = "UsersDoLinkToSupplierAction"
+							 name = "usersDoLinkToSupplier"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersList" redirect="true" />
+		</action>
+
+
 		<action    path = "usersDoRemoveFromGroup"
 							 type = "UsersDoRemoveFromGroupAction"
 							 name = "usersDoRemoveFromGroup"

@@ -40,7 +40,22 @@ class User extends BaseUser {
   		}
 		}
 		return false;
-	}	
+	}
+	
+	/*
+	 * Indica si un usuario es un supplier dependiendo si el mismo tiene
+	 * el nivel de usuario supplier
+	 * @returns true si es un supplier, false sino.
+	 */
+	function isSupplier(){
+		
+		$result = false;
+
+		if ($this->getLevelId() == 4)
+			$result = true;
+
+		return $result;
+	}
 
    /**
     * Return an array with all the categories this user can access
@@ -86,5 +101,7 @@ class User extends BaseUser {
 	function getAffiliateId(){
 		return 0;
 	}
+
+		
 
 }

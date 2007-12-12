@@ -43,7 +43,8 @@ class ImportProductsEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Products";
+		$module = "Import";
+		$smarty->assign('module',$module);
 
 		$suppliers = SupplierPeer::getAll();		
 		$smarty->assign("suppliers",$suppliers);

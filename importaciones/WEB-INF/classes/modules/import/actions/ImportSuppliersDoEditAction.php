@@ -42,7 +42,8 @@ class ImportSuppliersDoEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Suppliers";
+		$module = "Import";
+		$smarty->assign('module',$module);
 
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un supplier existente

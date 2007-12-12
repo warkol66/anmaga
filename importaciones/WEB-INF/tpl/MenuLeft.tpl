@@ -3,35 +3,20 @@
   <tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersWelcome">Ir al Inicio</a></td>
   </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=catalogShow">Catálogo</a></td>
+  <tr> 
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=importProductsList">Importaciones</a></td>
   </tr>
-|-if $module|upper eq "CATALOG"-|
+|-if $module|upper eq "IMPORT"-|
 	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=catalogProductCategoriesList">Administrar Categorías de Productos</a>
-		<a class="menuSubButton" href="Main.php?do=catalogProductsList">Administrar Productos</a>
-		<a class="menuSubButton" href="Main.php?do=catalogUnitsList">Administrar Unidades</a>
-		<a class="menuSubButton" href="Main.php?do=catalogMeasureUnitsList">Administrar Unidades de Medida</a>
-		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductsImport">Administrar listas de precio por cliente</a>
-		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductCodesList">Conversor de códigos</a></div>
+    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=importProductsList">Administrar Productos</a>
+		<a class="menuSubButton" href="Main.php?do=importIncotermsList">Administrar Incoterms</a>
+		<a class="menuSubButton" href="Main.php?do=importPortsList">Administrar Puertos</a>
+		<a class="menuSubButton" href="Main.php?do=importSuppliersList">Administrar Suppliers</a></div>
 	</td>
   </tr>
 |-/if-|
-|-if $module|upper eq "CATALOG" || $module|upper eq "ORDERS" -|
-	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=ordersViewCart">Ver carrito de compras</a>
-		<a class="menuSubButton" href="Main.php?do=ordersList">Ver ordenes</a>
-		<a class="menuSubButton" href="Main.php?do=ordersTemplatesList">Ver plantillas de ordenes</a></div>
-	</td>
-  </tr>
-|-/if-|
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersList">Lista de Pedidos</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersImport">Importar Pedidos</a></td>
-  </tr>
-	<tr> 
+
+  <tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesList">Distribuidores / Mayoristas</a></td>
   </tr>
 	<tr> 
@@ -70,26 +55,6 @@
 <table width="150" border="0" cellpadding="0" cellspacing="0" class="menuCell">
   <tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByaffiliateWelcome">Ir al Inicio</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=catalogShow">Catálogo</a></td>
-  </tr>
-|-if $module|upper eq "CATALOG" || $module|upper eq "ORDERS" -|
-	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=ordersViewCart">Ver carrito de compras</a>
-		<a class="menuSubButton" href="Main.php?do=ordersList">Ver ordenes</a>
-		<a class="menuSubButton" href="Main.php?do=ordersTemplatesList">Ver plantillas de ordenes</a></div>
-	</td>
-  </tr>
-|-/if-|
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersViewCart">Pedido en Proceso</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersList">Pedidos Procesados</a></td>
-  </tr>
-	<tr>
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersTemplatesList">Pedidos Almacenados</a></td>
   </tr>
 	<tr>
     <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersList">Usuarios de Distribuidores / Mayoristas</a></td>

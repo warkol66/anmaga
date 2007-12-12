@@ -42,7 +42,8 @@ class ImportPortsListAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Ports";
+		$module = "Import";
+		$smarty->assign('module',$module);
  
 		$pager = PortPeer::getAllPaginated($_GET["page"]);
 		$smarty->assign("ports",$pager->getResult());

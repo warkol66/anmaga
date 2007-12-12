@@ -42,7 +42,8 @@ class ImportIncotermsDoEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Incoterms";
+		$module = "Import";
+		$smarty->assign('module',$module);
 
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un incoterm existente

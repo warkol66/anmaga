@@ -42,7 +42,8 @@ class ImportSuppliersListAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Suppliers";
+		$module = "Import";
+		$smarty->assign('module',$module);
  
 		$pager = SupplierPeer::getAllPaginated($_GET["page"]);
 		$smarty->assign("suppliers",$pager->getResult());

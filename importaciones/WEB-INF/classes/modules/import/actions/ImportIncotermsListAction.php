@@ -42,7 +42,8 @@ class ImportIncotermsListAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Incoterms";
+		$module = "Import";
+		$smarty->assign('module',$module);
  
 		$pager = IncotermPeer::getAllPaginated($_GET["page"]);
 		$smarty->assign("incoterms",$pager->getResult());

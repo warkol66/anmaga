@@ -42,8 +42,8 @@ class ImportProductsListAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Products";
- 
+		$module = "Import";
+		$smarty->assign('module',$module);
 		$pager = ProductPeer::getAllPaginated($_GET["page"]);
 		$smarty->assign("products",$pager->getResult());
 		$smarty->assign("pager",$pager);

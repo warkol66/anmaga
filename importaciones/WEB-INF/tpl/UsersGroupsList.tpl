@@ -113,7 +113,7 @@
 	<tr>
 		<td class='size2'><div class='titulo2'>|-$group->getName()-|</div></td>
 		<td class='tdSize1 cellTextOptions center' nowrap> [ <a href='Main.php?do=usersGroupsList&group=|-$group->getId()-|' class='edit'>##114,Editar##</a> ]
-|-if $group->getId() lt 3 -|
+|-if $group->getId() lt 4 -|
 			[ <span class='deactivated'>##115,Eliminar##</span> ] 
 |-else-|
 			[ <a href='Main.php?do=usersGroupsDoDelete&group=|-$group->getId()-|' class='delete' onclick="return confirm('##256,Esta opción eliminar permanentemente a este Grupo. ¿Está seguro que desea eliminarlo?##');">##115,Eliminar##</a> ] 

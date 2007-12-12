@@ -69,7 +69,14 @@ class UsersDoEditAction extends BaseAction {
 		  
 			if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {
 
-				$userPeer->create($_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"]);
+				$user = $userPeer->create($_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"]);
+				
+				//caso especial de grupo de suppliers o proveedores
+				//verificamos si el level 
+				if ($user->isSupplier()) {
+					//lo agregamos al grupo de suppliers
+					$userPeer->addUserToSupplierGroup($user->getId());
+				}
 				return $mapping->findForwardConfig('success');
 			}
 			else {

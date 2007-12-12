@@ -42,7 +42,8 @@ class ImportSuppliersDoDeleteAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Suppliers";
+		$module = "Import";
+		$smarty->assign('module',$module);
 
     SupplierPeer::delete($_POST["id"]);
 

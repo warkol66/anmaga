@@ -42,6 +42,9 @@
 |-if $message eq "notRemovedFromGroup"-|
 <div align='center' class='errorMessage'>##159,Ha ocurrido un error al intentar eliminar el usuario al grupo##</div>
 |-/if-|
+|-if $message eq "notLinkedWithSupplier"-|
+<div align='center' class='errorMessage'>##156,Ha ocurrido un error al relacionar el usuario con el correspondiente Supplier##</div>
+|-/if-|
 |-if $accion eq "creacion" or $accion eq "edicion"-|
 	|-if $accion eq "creacion"-|
 			##160,Ingrese  la Identificación del usuario y la contraseña para el nuevo usuario,  luego haga click en Guardar para generar el nuevo usuario.##
@@ -116,11 +119,16 @@
 	|-assign var="group" value=$userGroup->getGroup()-|
 	<tr>
 		<td class="size2"><div class='titulo2'>|-$group->getName()-|</div></td>
-		<td class='size1 center cellTextOptions' nowrap> [ <a href='Main.php?do=usersDoRemoveFromGroup&user=|-$currentUser->getId()-|&group=|-$group->getId()-|' class='delete'>##115,Eliminar##</a> ] </td>
+		<td class='size1 center cellTextOptions' nowrap> 
+			|-if $currentUser->isSupplier() -|
+				[ <span class='deactivated'>##115,Eliminar##</span> ] 
+			|-else-|
+				[ <a href='Main.php?do=usersDoRemoveFromGroup&user=|-$currentUser->getId()-|&group=|-$group->getId()-|' class='delete'>##115,Eliminar##</a> ] </td>
+			|-/if-|
 	</tr>
 	|-/foreach-|
 	|-/if-|
-	<tr>
+	|-if not ($currentUser->isSupplier()) -|<tr>
 		<td class='cellboton' colspan='4'>##171,Agregar al Usuario en el Grupo##:
 			<form action='Main.php' method='post'>
 				<input type="hidden" name="do" value="usersDoAddToGroup" />
@@ -134,6 +142,7 @@
 				<input type='submit' value='##123,Agregar##' class='button' />
 			</form></td>
 	</tr>
+	|-/if-|
 </table>
 |-/if-|
 |-/if-|
@@ -173,6 +182,40 @@
 	</tr>
 	|-/if-|
 </table>
+<br />
+
+|- if (isset($currentUser) and ($currentUser->isSupplier())) -|
+<table class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
+	<tr>
+		<td colspan='4' class='celltitulo2'>Relacion de la cuenta de usuario con Supplier del Sistema</td>
+	</tr>
+</table>
+<table width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
+	<form action='Main.php' method='post'>
+	<input type="hidden" name="do" value="usersDoLinkToSupplier" />
+
+
+		<tr>			<td nowrap="nowrap" class='tdTitle'>Supplier Relacionado</td>
+			<td><select name='supplierId'>
+				<option value="">Seleccionar Supplier</option>
+				|-foreach from=$suppliers item=supplier name=for_suppliers-|
+				<option value="|-$supplier->getId()-|" |-if (isset($userSupplier)) and ($userSupplier->getSupplierId() eq $supplier->getId())-|selected="selected"|-/if-|>|-$supplier->getName()-|</option>
+				|-/foreach-|
+			</select>
+			</td>
+		</tr>		
+		<tr>
+			<td class='cellboton' colspan='2'>
+				<input type="hidden" name="userId" value="|-$currentUser->getId()-|" />
+				<input type='submit' value='Relacionar' class='button' />
+			</td>
+		</tr>
+
+	</form>
+</table>
+
+|-/if-|
+
 
 |-if $deletedUsers|@count gt 0-|
 <br />

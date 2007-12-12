@@ -1,14 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ProductPeer.php");
+require_once("UserPeer.php");
 
-class ImportProductsDoDeleteAction extends BaseAction {
+class UsersDoLinkToSupplierAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportProductsDoDeleteAction() {
+	function UsersDoLinkToSupplierAction() {
 		;
 	}
 
@@ -31,7 +31,7 @@ class ImportProductsDoDeleteAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+	    BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -42,12 +42,19 @@ class ImportProductsDoDeleteAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "Import";
-		$smarty->assign('module',$module);
+		$module = "Users";
 
-    ProductPeer::delete($_POST["id"]);
+    $userPeer = new UserPeer();
 
-		return $mapping->findForwardConfig('success');
+    		if ( !empty($_POST["supplierId"]) && !empty($_POST["userId"]) ) {
+			if ( $userPeer->linkUserWithSupplier($_POST["userId"],$_POST["supplierId"]) ) {
+				header("Location: Main.php?do=usersList&user=".$_POST["userId"]);
+				exit;
+		 }
+		}
+		
+		header("Location: Main.php?do=usersList&user=".$_POST["user"]."&message=notLinkedWithSupplier");
+		exit;
 
 	}
 

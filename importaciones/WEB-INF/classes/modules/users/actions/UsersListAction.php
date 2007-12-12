@@ -4,6 +4,8 @@ require_once("BaseAction.php");
 require_once("UserPeer.php");
 require_once("GroupPeer.php");
 require_once("LevelPeer.php");
+require_once("SupplierPeer.php");
+require_once("SupplierUserPeer.php");
 
 class UsersListAction extends BaseAction {
 
@@ -71,8 +73,15 @@ class UsersListAction extends BaseAction {
 				$smarty->assign("groups",$groups);
 				$levels = LevelPeer::getAll();
 				$smarty->assign("levels",$levels);
-	    	$smarty->assign("accion","edicion");
-	  	}
+				if ($user->isSupplier()) {
+					$suppliers = SupplierPeer::getAll();
+					$smarty->assign("suppliers",$suppliers);
+					$userSupplier = SupplierUserPeer::getSupplierByUser($user->getId());
+					if ($userSupplier != false)					
+						$smarty->assign('userSupplier',$userSupplier);
+				}
+			    	$smarty->assign("accion","edicion");
+	  		}
 			catch (PropelException $e) {
       	$smarty->assign("accion","creacion");
 			}

@@ -24,4 +24,24 @@
  */
 class SupplierUserPeer extends BaseSupplierUserPeer {
 
+	/*
+	 * Obtiene el supplier asignado a un user id, 
+	 * si el mismo esta asignado.
+	 *
+	 * @param $userId id de usuario
+	 * @return instancia de supplier si existe, o false si no existe.
+	 *
+	 */
+	function getSupplierByUser($userId) {
+	
+		$crit = new Criteria();
+		$crit->add(SupplierUserPeer::USERID  , $userId);
+		$result = SupplierUserPeer::doSelect($crit);
+		if (empty($result))
+			return false;
+		//sino devuelvo el primero
+		return $result[0];
+
+	}
+
 } // SupplierUserPeer

@@ -42,7 +42,8 @@ class ImportProductsDoEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Products";
+		$module = "Import";
+		$smarty->assign('module',$module);
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un product existente
 
