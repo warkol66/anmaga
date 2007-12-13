@@ -83,6 +83,16 @@ class RequestPeer extends BaseRequestPeer {
 	
 	}
 
+	function getAllProductRequestsForSupplier($requestId,$supplierId) {
+
+		$crit = new Criteria();
+		$crit->add(ProductRequestPeer::REQUESTID,$requestId);
+		$crit->add(ProductRequestPeer::SUPPLIERID,$supplierId);
+		$result = ProductRequestPeer::doSelect($crit);
+		return $result;
+
+	}
+
 	/**
 	* Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
 	*
@@ -129,12 +139,18 @@ class RequestPeer extends BaseRequestPeer {
 	* @TODO Join con tabla de producRequest para obtener aquellos request asignados al al supplier.
 	*/	
 	function getAllPaginatedBySupplier($supplierId,$page=1,$perPage=-1) {
-		throw new Exception;		
-		$crit = new Criteria();	
-		$crit->add(RequestPeer::SUPPLIERID,$suppplierId);
+		$crit = new Criteria();
+		$crit->addJoin(RequestPeer::ID, ProductRequestPeer::REQUESTID, Criteria::LEFT_JOIN);
+		$crit->addSelectColumn(RequestPeer::ID);
+		$crit->addSelectColumn(RequestPeer::CREATEDAT);
+		$crit->addSelectColumn(RequestPeer::USERID);
+		$crit->addSelectColumn(RequestPeer::STATUS);
+		$crit->addSelectColumn(RequestPeer::TIMESTAMPSTATUS);
+		$crit->setDistinct();
+		$crit->add(ProductRequestPeer::SUPPLIERID,$suppplierId);
+		$crit->add(ProductRequestPeer::SUPPLIERID,null,Criteria::ISNOTNULL);
 		return $this->getPaginated($crit,$page,$perPage);
 
-	
 	}
 
 	/**

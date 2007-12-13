@@ -2,6 +2,7 @@
 
 require_once("BaseAction.php");
 require_once("RequestPeer.php");
+require_once("AffiliatePeer.php");
 
 class ImportRequestListAction extends BaseAction {
 
@@ -61,7 +62,10 @@ class ImportRequestListAction extends BaseAction {
 			//Traemos los request de este afiliado.
 			$pager = $requestPeer->getAllPaginatedByUser(Common::getAffiliatedId(),$_GET["page"]);
 		}
-
+		
+		$affiliatePeer = new AffiliatePeer();
+		$smarty->assign("affiliatePeer",$affiliatePeer);
+		
 		$smarty->assign("requests",$pager->getResult());
 		$smarty->assign("pager",$pager);
 		$url = "Main.php?do=importRequestList";

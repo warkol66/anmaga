@@ -1,11 +1,9 @@
 <div id="msgBox" style="display : none;">
 	
 </div>
-
+<h3>Orden de Pedido</h3>
+|-if $loginAffiliateUser neq ""-|
 <table class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
-	<caption>
-		Orden de Pedido. 
-	</caption>
 	<tr>
 		<td class='cellboton' colspan='4'>Seleccione un producto a agregar a su Pedido: <br /><br />
 			<form id="adder" action='Main.php' method='post'>
@@ -23,13 +21,21 @@
 			</form>
 			<input type='button' value='Agregar' class='button' onClick="javascript:importAddProductToRequestX($('adder'))" />
 		</td>
+
 	</tr>
 </table>
-
+|-/if-|
 <table class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 	<thead>
-		<th width="70%" nowrap class="thFillTitle">Nombre de Producto</th>
+		<th width="30%" nowrap class="thFillTitle">Nombre de Producto</th>
 		<th width="20%" class="thFillTitle">Cantidad</th>
+		|-if ($loginAffiliateUser neq "") or ($loginUser neq "" and $loginUser->isAdmin())-|
+			<th width="10%" class="thFillTitle">Precio</th>
+		|-/if-|
+		|- if (($loginUser neq "") and ($loginUser->isAdmin() or $loginUser->isSupplier()))-|
+			<th width="10%" class="thFillTitle">Precio Supplier</th>
+		|-/if-|
+		<th width="10%" class="thFillTitle">Status</th>
 		<th width="10%" class="thFillTitle">&nbsp;</th>
 	</head>
 	<tbody id="productsTable">
@@ -37,9 +43,25 @@
 		|-assign var="product" value=$productPeer->get($productReq->getProductId())-|
 	<tr id="productRequest_|-$productReq->getId()-|">	
 		<td class="size2"><div class='titulo2'></div>|-$product->getName()-|</td>
-		<td class="size2">|-$productReq->getQuantity()-|</td>
-		<td class='tdSize1 center cellTextOptions' nowrap> [ <a class='delete' onClick="javascript:importDeleteProductFromRequest(|-$productReq->getId()-|)">##115,Eliminar##</a> ]
+		<td class="size2">|-$productReq->getQuantity()-|</td>		|-if ($loginAffiliateUser neq "") or ($loginUser neq "" and $loginUser->isAdmin())-|
+			<td class="size2">|-$productReq->getPriceClient()-|</td>
+		|-/if-|
+		|- if (($loginUser neq "") and ($loginUser->isAdmin() or $loginUser->isSupplier()))-|
+			<td class="size2">|-$productReq->getPriceSupplier()-|</td>
+		|-/if-|
+		<td class="size2">|-$productReq->getStatus()-|</td>
+		<td class='tdSize1 center cellTextOptions' nowrap>
+		|-if $loginAffiliateUser neq ""-|		
+ 			[ <a class='delete' onClick="javascript:importDeleteProductFromRequest(|-$productReq->getId()-|)">##115,Eliminar##</a> ]
+		|-/if-|
 
+		|-if $loginUser neq "" and $loginUser->isAdmin()-|
+			[ <a>opciones admin</a> ] 
+		|-/if-|
+
+		|-if $loginUser neq "" and $loginUser->isSupplier()-|
+			[ <a>opciones supplier</a> ]
+		|-/if-|
 		</td>
 	</tr>
 	|-/foreach-|

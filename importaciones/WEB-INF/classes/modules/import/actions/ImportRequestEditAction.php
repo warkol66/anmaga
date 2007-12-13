@@ -55,7 +55,16 @@ class ImportRequestEditAction extends BaseAction {
 			//voy a editar un request
 
 			$request = RequestPeer::get($_GET["id"]);
-			$productRequests = RequestPeer::getAllProductRequests($_GET['id']);
+			
+			if (Common::isSupplier()) {
+				//si es supplier solo muestro aquellos que tiene asignado.
+				$productRequests = RequestPeer::getAllProductRequestsForSupplier($_GET['id'],Common::getSupplierId());
+			}
+			else {
+				//si es el cliente o el admin ve los productRequest
+				//TODO ver si no es necesaria una validacion de que sea el usuario duenio de esa req
+				$productRequests = RequestPeer::getAllProductRequests($_GET['id']);
+			}
 
 			$smarty->assign("request",$request);
 			$smarty->assign("productRequests",$productRequests);
