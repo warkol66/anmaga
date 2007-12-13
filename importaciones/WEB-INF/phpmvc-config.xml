@@ -938,8 +938,53 @@
            validate = "true">
     <forward name="success" path="Main.php?do=importIncotermsList&amp;message=deleted_ok" redirect="true" />
     </action>
+
+
+<!-- Module ImportRequest -->
+
+    <action    path = "importRequestList"
+               type = "ImportRequestListAction"
+               name = "importRequestList"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportRequestList.tpl" />
+    </action>
+
+    <action    path = "importRequestEdit"
+               type = "ImportRequestEditAction"
+               name = "importRequestEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportRequestEdit.tpl" />
+    </action>
+
+    <action    path = "importDoAddProductToRequestX"
+               type = "ImportDoAddProductToRequestXAction"
+               name = "importDoAddProductToRequestX"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportDoAddProductToRequestXSuccess.tpl" />
+    <forward name="failure" path="ImportFailure.tpl" />
+    </action>
+
+    <action    path = "importDoDeleteProductFromRequestX"
+               type = "ImportDoDeleteProductFromRequestXAction"
+               name = "importDoDeleteProductFromRequestX"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportDoDeleteProductFromRequestXSuccess.tpl" />
+    <forward name="failure" path="ImportFailure.tpl" />
+    </action>
+
+
+
+<!-- Fin Module ImportRequest -->
+
   </action-mappings>
-<!-- Fin Modulo ImportIncoterms -->
+
+<!-- Fin Modulo ImportIncoterms -->
+
+
 <!-- End Module Import -->
 
 <!-- ========== Action Mapping Módulo Logs  ============================== -->

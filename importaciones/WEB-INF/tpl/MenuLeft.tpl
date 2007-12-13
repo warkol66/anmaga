@@ -4,11 +4,13 @@
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersWelcome">Ir al Inicio</a></td>
   </tr>
   <tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=importProductsList">Importaciones</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=importRequestList">Importaciones</a></td>
   </tr>
 |-if $module|upper eq "IMPORT"-|
 	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=importProductsList">Administrar Productos</a>
+    <td class="menuCell"><div class="menuSection">
+		<a class="menuSubButton" href="Main.php?do=importRequestList">Administrar Ordenes de Pedido</a>
+		<a class="menuSubButton" href="Main.php?do=importProductsList">Administrar Productos</a>
 		<a class="menuSubButton" href="Main.php?do=importIncotermsList">Administrar Incoterms</a>
 		<a class="menuSubButton" href="Main.php?do=importPortsList">Administrar Puertos</a>
 		<a class="menuSubButton" href="Main.php?do=importSuppliersList">Administrar Suppliers</a></div>
@@ -62,6 +64,16 @@
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesBranchsList">Sucursales</a></td>
   </tr>
+  <tr> 
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=importRequestList">Importaciones</a></td>
+  </tr>
+|-if $module|upper eq "IMPORT"-|
+	<tr> 
+    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=importRequestList">Ordenes de Pedido</a>
+	</td>
+  </tr>
+|-/if-|
+
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
   </tr>

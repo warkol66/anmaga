@@ -497,6 +497,33 @@ function getAffiliatedId() {
 	
 }
 
+function isSupplier() {
+
+	if (!isset($_SESSION['loginUser']))
+		return false;
+	
+	$user = $_SESSION['loginUser'];
+	return $user->isSupplier();
+
+}
+
+function getSupplierId() {
+
+	$user = $_SESSION["loginUser"];
+	return $user->getId();
+
+}
+
+function isAdmin() {
+
+	if (!isset($_SESSION['loginUser']))
+		return false;
+	
+	$user = $_SESSION['loginUser'];
+	return $user->isAdmin();
+
+}
+
 
 }
 ?>

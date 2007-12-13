@@ -20,4 +20,5 @@ require_once 'anmaga/om/BaseProductRequest.php';
  */
 class ProductRequest extends BaseProductRequest {
 
+
 } // ProductRequest

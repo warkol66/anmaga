@@ -5,6 +5,7 @@
 
   // include object class
   include_once 'anmaga/Request.php';
+  require_once('anmaga/ProductRequest.php');
 
 
 /**
@@ -23,5 +24,132 @@
  * @package    anmaga
  */
 class RequestPeer extends BaseRequestPeer {
+
+
+	/*
+	 * Crea una nueva request sin productos relacionados y con status NEW
+	 * para un cierto userId
+	 *
+	 * @param $userId id de usuario para el que se le creara la request
+	 * @returns el objeto request creado, o false en caso de error.
+	 */
+	function create($userId) {
+
+		//creamos la nueva request
+		$request = new Request();
+		//TODO tiempos		
+		//$request->setCreateAt(now());
+		$request->setStatus('NEW');
+		//TODO tiempos
+		//$request->setTimestampStatus(now());
+		$request->setUserId($userId);
+
+		//la guardamos
+		try {
+			$request->save();		
+		}
+		catch(PropelException $exp) {
+			return false;
+		}
+
+		return $request;
+		
+	}
+
+	/**
+	* Obtiene la informacion de un request.
+	*
+	* @param int $id id del request
+	* @return instancia de request
+	*/
+	function get($id) {
+	
+		$request = RequestPeer::retrieveByPK($id);
+		return $request;
+	}
+
+	/**
+	* Obtiene todas las products request relacionadas a un request.
+	*
+	* @param int $id id del request
+	* @return array instancias de productRequest
+	*/	
+	function getAllProductRequests($requestId) {
+	
+		$crit = new Criteria();
+		$crit->add(ProductRequestPeer::REQUESTID,$requestId);
+		$result = ProductRequestPeer::doSelect($crit);
+		return $result;
+	
+	}
+
+	/**
+	* Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
+	*
+	* @return int Cantidad de filas por pagina
+	*/
+	function getRowsPerPage() {
+		global $system;
+		return $system["config"]["system"]["rowsPerPage"];
+	}
+
+	/**
+	* Obtiene todas las requests a partir de un cierto criterio de propel.
+	*
+	* @param Criteria $crit Propel Criteria
+	* @return array instancias de Request
+	*/	
+	private function getPaginated($crit,$page=1,$perPage=-1) {
+	
+		if ($perPage == -1)
+			$perPage = RequestPeer::getRowsPerPage();		if (empty($page))
+			$page = 1;
+		require_once("propel/util/PropelPager.php");
+		$pager = new PropelPager($crit,"RequestPeer", "doSelect",$page,$perPage);
+		return $pager;
+   	}    
+
+
+	/**
+	* Obtiene todas las requests a partir de un cierto criterio de propel.
+	*
+	* @param Criteria $crit Propel Criteria
+	* @return array instancias de Request
+	*/	
+	function getAllPaginated($page=1,$perPage=-1) {
+		$crit = new Criteria();	
+		return $this->getPaginated($crit,$page,$perPage);
+	}
+
+	/**
+	* Obtiene todas las requests para un cierto supplier
+	*
+	* @param Criteria $crit Propel Criteria
+	* @return array instancias de Request
+	* @TODO Join con tabla de producRequest para obtener aquellos request asignados al al supplier.
+	*/	
+	function getAllPaginatedBySupplier($supplierId,$page=1,$perPage=-1) {
+		throw new Exception;		
+		$crit = new Criteria();	
+		$crit->add(RequestPeer::SUPPLIERID,$suppplierId);
+		return $this->getPaginated($crit,$page,$perPage);
+
+	
+	}
+
+	/**
+	* Obtiene todas las requests para un afiliado
+	*
+	* @param int $userId id de usuario afiliado.
+	* @return array instancias de Request
+	*/	
+	function getAllPaginatedByUser($userId,$page=1,$perPage=-1) {
+		$crit = new Criteria();	
+		$crit->add(RequestPeer::USERID,$userId);		
+		return $this->getPaginated($crit,$page,$perPage);
+
+	}
+
+
 
 } // RequestPeer
