@@ -1,4 +1,4 @@
-<?php
+S<?php
 
   // include base peer class
   require_once 'anmaga/om/BaseProductRequestPeer.php';
@@ -39,7 +39,7 @@ class ProductRequestPeer extends BaseProductRequestPeer {
 		$productRequest->setRequestId($requestId);
 		$productRequest->setProductId($productId);
 		$productRequest->setQuantity($quantity);
-		$productRequest->setStatus('NEW');
+		$productRequest->setNewStatus();
 		//TODO	tiempos
 		//$productRequest->setTimestampStatus(());
 		try {

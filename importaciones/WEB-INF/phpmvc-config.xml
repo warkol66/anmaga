@@ -976,6 +976,40 @@
     <forward name="failure" path="ImportFailure.tpl" />
     </action>
 
+    <action    path = "importProductRequestDetail"
+               type = "ImportProductRequestDetailAction"
+               name = "importProductRequestDetail"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportProductRequestDetail.tpl" />
+    </action>
+
+    <action    path = "importDoEditProductRequestPriceX"
+               type = "ImportDoEditProductRequestPriceXAction"
+               name = "importDoEditProductRequestPriceX"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportDoEditProductRequestPriceX.tpl" />
+    <forward name="failure" path="ImportFailure.tpl" />
+    </action>
+
+    <action    path = "importDoAssignSupplierX"
+               type = "ImportDoAssignSupplierXAction"
+               name = "importDoAssignSupplierX"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportDoAssignSupplierX.tpl" />
+    <forward name="failure" path="ImportFailure.tpl" />
+    </action>
+
+    <action    path = "importUserConfirmationX"
+               type = "ImportUserConfirmationXAction"
+               name = "importUserConfirmationX"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportUserConfirmationX.tpl" />
+    <forward name="failure" path="ImportFailure.tpl" />
+    </action>
 
 
 <!-- Fin Module ImportRequest -->

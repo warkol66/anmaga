@@ -51,7 +51,8 @@
 		|-/if-|
 		<td class="size2">|-$productReq->getStatus()-|</td>
 		<td class='tdSize1 center cellTextOptions' nowrap>
-		|-if $loginAffiliateUser neq ""-|		
+		[ <a class='delete' href="Main.php?do=importProductRequestDetail&productRequestId=|-$productReq->getId()-|">Detalle</a> ]
+		|-if $loginAffiliateUser neq ""-|
  			[ <a class='delete' onClick="javascript:importDeleteProductFromRequest(|-$productReq->getId()-|)">##115,Eliminar##</a> ]
 		|-/if-|
 

@@ -39,3 +39,43 @@ function importDeleteProductFromRequest(productReqId) {
 	return true;
 }
 
+function importAssignSupplierToProductRequest(productRequestId) {
+
+	var action = "Main.php";
+	var pars = "do=importDoAssignSupplierX&productRequestId=" + productRequestId; 
+	var myAjax = new Ajax.Updater(
+				{success: 'adminActions'},
+				url,
+				{
+					method: 'get',
+					parameters: pars,
+					evalScripts: true,
+					insertion : Insertion.Bottom
+				});
+	
+	return true;
+
+
+
+}
+
+function importConfirmProductRequest(productRequestId,confirm) {
+
+	var action = "Main.php";
+	var pars = "do=importUserConfirmationX&productRequestId=" + productRequestId + "&confirm=" + confirm; 
+	var myAjax = new Ajax.Updater(
+				{success: 'affiliateActions'},
+				url,
+				{
+					method: 'get',
+					parameters: pars,
+					evalScripts: true,
+					insertion : Insertion.Bottom
+				});
+	
+	return true;
+
+
+
+}
+

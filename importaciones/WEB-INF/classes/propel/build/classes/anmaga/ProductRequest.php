@@ -3,6 +3,13 @@
 require_once 'anmaga/om/BaseProductRequest.php';
 
 
+define('PRODUCTREQUEST_NEW',0);
+define('PRODUCTREQUEST_PENDING',1);
+define('PRODUCTREQUEST_QUOTED',2);
+define('PRODUCTREQUEST_WAITING',3);
+define('PRODUCTREQUEST_ACCEPTED',4);
+define('PRODUCTREQUEST_REJECTED',5);
+
 /**
  * Skeleton subclass for representing a row from the 'productRequest' table.
  *
@@ -19,6 +26,138 @@ require_once 'anmaga/om/BaseProductRequest.php';
  * @package    anmaga
  */
 class ProductRequest extends BaseProductRequest {
+
+	var $statusMessage = array(PRODUCTREQUEST_NEW=>'New',
+				PRODUCTREQUEST_PENDING=>'Pending',
+				PRODUCTREQUEST_QUOTED=>'Quoted',
+				PRODUCTREQUEST_WAITING=>'Waiting',
+				PRODUCTREQUEST_ACCEPTED=>'Accepted',
+				PRODUCTREQUEST_REJECTED=>'Rejected'
+
+	);
+
+	/**
+	 * Devuelve el nombre del estado actual en que se encuentra el ProductRequest
+	 *
+         * @returns string nombre del estado en que se encuentra el product request
+	 */
+	function getStatus() {
+		$status = parent::getStatus();
+		return $this->statusMessage[$status];
+	}
+
+	/**
+	 * Pone al ProductRequest en estado NEW
+	 *
+	 */
+	function setNewStatus() {
+		$this->setStatus(PRODUCTREQUEST_NEW);
+	}
+
+	/**
+	 * Pone al ProductRequest en estado PENDING
+	 *
+	 */
+	function setPendingStatus() {
+		$this->setStatus(PRODUCTREQUEST_PENDING);
+	}
+	
+
+	/**
+	 * Pone al ProductRequest en estado QUOTED
+	 *
+	 */
+	function setQuotedStatus() {
+		$this->setStatus(PRODUCTREQUEST_QUOTED);
+	}
+
+	/**
+	 * Pone al ProductRequest en estado WAITING
+	 *
+	 */
+	function setWaitingStatus() {
+		$this->setStatus(PRODUCTREQUEST_WAITING);
+	}
+
+	/**
+	 * Pone al ProductRequest en estado ACCEPTED
+	 *
+	 */
+	function setAcceptedStatus() {
+		$this->setStatus(PRODUCTREQUEST_ACCEPTED);
+	}
+
+	/**
+	 * Pone al ProductRequest en estado REJECTED
+	 *
+	 */
+	function setRejectedStatus() {
+		$this->setStatus(PRODUCTREQUEST_REJECTED);
+	}
+
+	/**
+	 * indica si el estado del Product Request es New
+	 * @returns boolean true si si tiene ese estado, false en caso contrario
+	 */
+	function isNew() {
+		$status = parent::getStatus();
+		return (PRODUCTREQUEST_NEW == $status);
+	}
+
+	/**
+	 * indica si el estado del Product Request es Quoted
+	 * @returns boolean true si si tiene ese estado, false en caso contrario
+	 */
+	function isQuoted() {
+	 
+		$status = parent::getStatus();
+		return (PRODUCTREQUEST_QUOTED == $status);
+
+	}
+
+	/**
+	 * indica si el estado del Product Request es Pending
+	 * @returns boolean true si si tiene ese estado, false en caso contrario
+	 */
+	function isPending() {
+	 
+		$status = parent::getStatus();
+		return (PRODUCTREQUEST_PENDING == $status);
+
+	}
+
+	/**
+	 * indica si el estado del Product Request es Waiting
+	 * @returns boolean true si si tiene ese estado, false en caso contrario
+	 */
+	function isWaiting() {
+	 
+		$status = parent::getStatus();
+		return (PRODUCTREQUEST_WAITING == $status);
+
+	}
+
+	/**
+	 * indica si el estado del Product Request es Accepted
+	 * @returns boolean true si si tiene ese estado, false en caso contrario
+	 */
+	function isAccepted() {
+	 
+		$status = parent::getStatus();
+		return (PRODUCTREQUEST_ACCEPTED == $status);
+
+	}
+	
+	/**
+	 * indica si el estado del Product Request es Rejected
+	 * @returns boolean true si si tiene ese estado, false en caso contrario
+	 */
+	function isRejected() {
+	 
+		$status = parent::getStatus();
+		return (PRODUCTREQUEST_REJECTED == $status);
+
+	}
 
 
 } // ProductRequest

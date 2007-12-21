@@ -2,6 +2,8 @@
 
 require_once 'anmaga/om/BaseRequest.php';
 
+//constantes utilizadas para los distintos estados
+
 
 /**
  * Skeleton subclass for representing a row from the 'request' table.
@@ -19,5 +21,6 @@ require_once 'anmaga/om/BaseRequest.php';
  * @package    anmaga
  */
 class Request extends BaseRequest {
+
 
 } // Request
