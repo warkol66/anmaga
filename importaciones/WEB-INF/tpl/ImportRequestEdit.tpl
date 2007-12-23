@@ -25,6 +25,9 @@
 	</tr>
 </table>
 |-/if-|
+
+
+<input type=button value="Volver al Listado de Ordenes de Pedido" onclick="history.go(-1)"> <br /><br />
 <table class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 	<thead>
 		<th width="30%" nowrap class="thFillTitle">Nombre de Producto</th>
@@ -52,17 +55,10 @@
 		<td class="size2">|-$productReq->getStatus()-|</td>
 		<td class='tdSize1 center cellTextOptions' nowrap>
 		[ <a class='delete' href="Main.php?do=importProductRequestDetail&productRequestId=|-$productReq->getId()-|">Detalle</a> ]
-		|-if $loginAffiliateUser neq ""-|
+		|-if $loginAffiliateUser neq "" and $productReq->isNew()-|
  			[ <a class='delete' onClick="javascript:importDeleteProductFromRequest(|-$productReq->getId()-|)">##115,Eliminar##</a> ]
 		|-/if-|
 
-		|-if $loginUser neq "" and $loginUser->isAdmin()-|
-			[ <a>opciones admin</a> ] 
-		|-/if-|
-
-		|-if $loginUser neq "" and $loginUser->isSupplier()-|
-			[ <a>opciones supplier</a> ]
-		|-/if-|
 		</td>
 	</tr>
 	|-/foreach-|

@@ -10,14 +10,16 @@
 	<tr> 
     <td class="menuCell"><div class="menuSection">
 		<a class="menuSubButton" href="Main.php?do=importRequestList">Administrar Ordenes de Pedido</a>
+		|- if $loginUser->isAdmin()-|		
 		<a class="menuSubButton" href="Main.php?do=importProductsList">Administrar Productos</a>
 		<a class="menuSubButton" href="Main.php?do=importIncotermsList">Administrar Incoterms</a>
 		<a class="menuSubButton" href="Main.php?do=importPortsList">Administrar Puertos</a>
 		<a class="menuSubButton" href="Main.php?do=importSuppliersList">Administrar Suppliers</a></div>
+		|-/if-|
 	</td>
   </tr>
 |-/if-|
-
+|- if $loginUser->isAdmin()-|		
   <tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesList">Distribuidores / Mayoristas</a></td>
   </tr>
@@ -48,6 +50,7 @@
 |-/if-|	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=modulesList">Administrar módulos</a></td>
   </tr>
+|-/if-|
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
   </tr>

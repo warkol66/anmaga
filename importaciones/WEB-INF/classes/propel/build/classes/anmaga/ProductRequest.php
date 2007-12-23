@@ -48,7 +48,7 @@ class ProductRequest extends BaseProductRequest {
 
 	/**
 	 * Pone al ProductRequest en estado NEW
-	 *
+	 * @return devuelve true si se pudo realizar el cambio de estado, false sino.
 	 */
 	function setNewStatus() {
 		$this->setStatus(PRODUCTREQUEST_NEW);
@@ -56,43 +56,84 @@ class ProductRequest extends BaseProductRequest {
 
 	/**
 	 * Pone al ProductRequest en estado PENDING
-	 *
+	 * @return devuelve true si se pudo realizar el cambio de estado, false sino.
 	 */
 	function setPendingStatus() {
-		$this->setStatus(PRODUCTREQUEST_PENDING);
+		//regla de negocio
+		// El Product Request debe estar en estado New, y debe tener un supplier asignado
+		$supplierId = $this->getSupplierId();		
+		if ( $this->isNew() && !empty($supplierId) ) {
+			$this->setStatus(PRODUCTREQUEST_PENDING);
+			return true;
+		}
+
+		return false;
 	}
 	
 
 	/**
 	 * Pone al ProductRequest en estado QUOTED
-	 *
+	 * @return devuelve true si se pudo realizar el cambio de estado, false sino.
 	 */
 	function setQuotedStatus() {
-		$this->setStatus(PRODUCTREQUEST_QUOTED);
+		//regla de negocio
+		//para pasar a este estado la orden debe estar en estado pendiente
+		//y debe tener asignado un incoterm, un precio de supplier y un puerto
+		$incotermId = $this->getIncotermId();
+		$portId = $this->getPortId();
+		$priceSupplier = $this->getPriceSupplier();
+		if ($this->isPending() && (!empty($incotermId) && !empty($portId) && !empty($priceSupplier))) {
+			$this->setStatus(PRODUCTREQUEST_QUOTED);
+			return true;
+		}
+		
+		return false;
 	}
 
 	/**
 	 * Pone al ProductRequest en estado WAITING
-	 *
+	 * @return devuelve true si se pudo realizar el cambio de estado, false sino.
 	 */
 	function setWaitingStatus() {
-		$this->setStatus(PRODUCTREQUEST_WAITING);
+		//regla de negocio
+		//para pasar a este estado la orden de debe estar en estado quoted y debe haberse fijado un precio de cliente
+		$priceClient = $this->getPriceClient();
+		if ($this->isQuoted() && !empty($priceClient)) {
+			$this->setStatus(PRODUCTREQUEST_WAITING);
+			return true;
+		}
+		
+		return false;
 	}
 
 	/**
 	 * Pone al ProductRequest en estado ACCEPTED
-	 *
+	 * @return devuelve true si se pudo realizar el cambio de estado, false sino.
 	 */
 	function setAcceptedStatus() {
-		$this->setStatus(PRODUCTREQUEST_ACCEPTED);
+		//regla de negocio
+		//para pasar a este estado la orden debe estar en estado waiting		
+		if ($this->isWaiting()) {
+			$this->setStatus(PRODUCTREQUEST_ACCEPTED);
+			return true;
+		}
+		return false;
 	}
 
 	/**
 	 * Pone al ProductRequest en estado REJECTED
-	 *
+	 * @return devuelve true si se pudo realizar el cambio de estado, false sino.
 	 */
 	function setRejectedStatus() {
-		$this->setStatus(PRODUCTREQUEST_REJECTED);
+		//regla de negocio
+		//para pasar a este estado la orden debe estar en estado waiting		
+		if ($this->isWaiting()) {		
+			$this->setStatus(PRODUCTREQUEST_REJECTED);
+			return true;
+		}
+	
+		return false;
+		
 	}
 
 	/**
@@ -158,6 +199,7 @@ class ProductRequest extends BaseProductRequest {
 		return (PRODUCTREQUEST_REJECTED == $status);
 
 	}
+
 
 
 } // ProductRequest

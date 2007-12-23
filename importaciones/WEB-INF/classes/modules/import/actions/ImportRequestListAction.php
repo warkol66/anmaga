@@ -3,6 +3,7 @@
 require_once("BaseAction.php");
 require_once("RequestPeer.php");
 require_once("AffiliatePeer.php");
+require_once("SupplierUserPeer.php");
 
 class ImportRequestListAction extends BaseAction {
 
@@ -55,7 +56,8 @@ class ImportRequestListAction extends BaseAction {
 
 		if (Common::isSupplier()) {
 			//Traemos solo los requests asignados a ese supplier.
-			$pager = $requestPeer->getAllPaginatedBySupplier(Common::getSupplierId(),$_GET["page"]);
+			$supplierUser = SupplierUserPeer::getSupplierByUser(Common::getSupplierUserId());
+			$pager = $requestPeer->getAllPaginatedBySupplier($supplierUser->getSupplierId(),$_GET["page"]);
 		}
 
 		if (Common::isAffiliatedUser()) {

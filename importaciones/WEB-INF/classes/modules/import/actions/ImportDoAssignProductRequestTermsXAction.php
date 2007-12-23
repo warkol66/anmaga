@@ -1,16 +1,17 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("RequestPeer.php");
-require_once("ProductPeer.php");
 require_once("ProductRequestPeer.php");
+require_once("ProductPeer.php");
+require_once("PortPeer.php");
+require_once("IncotermPeer.php");
 
-class ImportDoEditProductRequestPriceXAction extends BaseAction {
+class ImportDoAssignProductRequestTermsXAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportDoEditProductRequestPriceXAction() {
+	function ImportDoAssignProductRequestTermsXAction() {
 		;
 	}
 
@@ -33,11 +34,11 @@ class ImportDoEditProductRequestPriceXAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 		
+    		BaseAction::execute($mapping, $form, $request, $response);
 		
-    		BaseAction::execute($mapping, $form, $request, $response);	
 		//por ser una action ajax.		
 		$this->template->template = "template_ajax.tpl";
-
+	
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
@@ -46,44 +47,38 @@ class ImportDoEditProductRequestPriceXAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
-		
+
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
+
 		//verificamos los parametros
-		if ((!isset($_POST['productRequestId'])) and ((!isset($_POST['priceClient'])) or (!isset($_POST['priceSupplier'])))) {
+		if ((!isset($_POST['productRequestId'])) and ((!isset($_POST['incotermId'])) or (!isset($_POST['portId'])))) {
 			return $mapping->findForwardConfig('failure');
 		}
 		
 		$productRequest = ProductRequestPeer::get($_POST['productRequestId']);
 
-		if (($productRequest->isQuoted()) && (isset($_POST['priceClient']))) {
-			//caso precio a consumidor final
-
-			if (!is_numeric($_POST['priceClient']))
-				//error validacion
-				return $mapping->findForwardConfig('failure');
-
-			$productRequest->setPriceClient($_POST['priceClient']);
-			$productRequest->setWaitingStatus();
-			$success = "success-admin";
+		if (!$productRequest->isPending()) {
+			//no se puede efectuar las operaciones		
+			return $mapping->findForwardConfig('failure');
+		}
+		
+		if (isset($_POST['incotermId'])) {
+			//modificacion de incoterm			
+			$productRequest->setIncotermId($_POST['incotermId']);
+			$success = 'incoterm';
 		}
 
+		if (isset($_POST['portId'])) {
+			//modificacion de port
+			$productRequest->setPortId($_POST['portId']);
+			$success = 'port';
+		}
 
-		if (($productRequest->isPending()) && (isset($_POST['priceSupplier']))) {
-			//caso precio a anmaga de supplier
-
-			if (!is_numeric($_POST['priceSupplier']))
-				//error validacion
-				return $mapping->findForwardConfig('failure');
-
-			$productRequest->setPriceSupplier($_POST['priceSupplier']);
-			//hacemos el cambio de estado, el mismo se aplicara si se cumple la regla de negocio en el modelo
-			if ($productRequest->setQuotedStatus()) {
-				$smarty->assign('statusChanged',true);		
-			}
-
-			$success = "success-supplier";
+		//hacemos el cambio de estado, el mismo se aplicara si se cumple la regla de negocio en el modelo
+		if ($productRequest->setQuotedStatus()) {
+			$smarty->assign('statusChanged',true);		
 		}
 
 		//guardamos los cambios		
@@ -96,10 +91,11 @@ class ImportDoEditProductRequestPriceXAction extends BaseAction {
 		}
 
 		$smarty->assign('productRequest',$productRequest);
+		$smarty->assign('portPeer', new PortPeer());
+		$smarty->assign('incotermPeer', new IncotermPeer());
 
-
-		return $mapping->findForwardConfig($success);
-
+		return $mapping->findForwardConfig('success-'.$success);
+	
 	}
 
 }

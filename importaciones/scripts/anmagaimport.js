@@ -79,3 +79,39 @@ function importConfirmProductRequest(productRequestId,confirm) {
 
 }
 
+function importDoEditProductRequestPrice(form) {
+
+
+	var fields = Form.serialize(form);
+	var myAjax = new Ajax.Updater(
+				{success: 'requestStatus'},
+				url,
+				{
+					method: 'post',
+					postBody: fields,
+					evalScripts: true,
+					insertion: Insertion.Bottom
+				});
+	
+	return true;
+
+}
+
+function importDoAssignProductRequestTerms(form) {
+
+
+	var fields = Form.serialize(form);
+	var myAjax = new Ajax.Updater(
+				{success: 'requestStatus'},
+				url,
+				{
+					method: 'post',
+					postBody: fields,
+					evalScripts: true,
+					insertion: Insertion.Bottom
+				});
+	
+	return true;
+
+}
+

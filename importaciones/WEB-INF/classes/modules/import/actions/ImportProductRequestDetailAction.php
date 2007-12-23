@@ -3,6 +3,8 @@
 require_once("BaseAction.php");
 require_once("ProductRequestPeer.php");
 require_once("ProductPeer.php");
+require_once("PortPeer.php");
+require_once("IncotermPeer.php");
 
 class ImportProductRequestDetailAction extends BaseAction {
 
@@ -54,8 +56,19 @@ class ImportProductRequestDetailAction extends BaseAction {
 		if (!empty($productRequest))
 			$productInfo = ProductPeer::get($productRequest->getProductId());
 
+		if (Common::isSupplier()) {
+			//seteamos las categorias necesarias de incoterms y puertos		
+			$ports = PortPeer::getAll();
+			$incoterms = IncotermPeer::getAll();
+
+			$smarty->assign('ports',$ports);
+			$smarty->assign('incoterms',$incoterms);
+		}
+
 		$smarty->assign('productRequest',$productRequest);
 		$smarty->assign('productInfo',$productInfo);
+		$smarty->assign('portPeer', new PortPeer());
+		$smarty->assign('incotermPeer', new IncotermPeer());
 		
 
 		return $mapping->findForwardConfig('success');

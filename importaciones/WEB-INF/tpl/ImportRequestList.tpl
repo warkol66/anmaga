@@ -5,6 +5,7 @@
 				|-if $loginAffiliateUser neq ""-|							
 					<h3><a href="Main.php?do=importRequestEdit">Agregar Order de Pedido</a></h3>
 				|-/if-|
+
 					<table id="tabla-requests" class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 						<thead>
 							<tr>

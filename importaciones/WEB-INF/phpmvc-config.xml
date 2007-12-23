@@ -989,7 +989,8 @@
                name = "importDoEditProductRequestPriceX"
               scope = "request"
            validate = "true">
-    <forward name="success" path="ImportDoEditProductRequestPriceX.tpl" />
+    <forward name="success-supplier" path="ImportDoEditProductRequestPriceXSupplier.tpl" />
+    <forward name="success-admin" path="ImportDoEditProductRequestPriceXAdmin.tpl" />
     <forward name="failure" path="ImportFailure.tpl" />
     </action>
 
@@ -1010,6 +1011,17 @@
     <forward name="success" path="ImportUserConfirmationX.tpl" />
     <forward name="failure" path="ImportFailure.tpl" />
     </action>
+
+    <action    path = "importDoAssignProductRequestTermsX"
+               type = "ImportDoAssignProductRequestTermsXAction"
+               name = "importDoAssignProductRequestTermsX"
+              scope = "request"
+           validate = "true">
+    <forward name="success-port" path="ImportDoAssignProductRequestTermsXPort.tpl" />
+    <forward name="success-incoterm" path="ImportDoAssignProductRequestTermsXIncoterm.tpl" />
+    <forward name="failure" path="ImportFailure.tpl" />
+    </action>
+	
 
 
 <!-- Fin Module ImportRequest -->

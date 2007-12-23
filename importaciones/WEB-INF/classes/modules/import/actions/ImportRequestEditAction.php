@@ -3,6 +3,7 @@
 require_once("BaseAction.php");
 require_once("RequestPeer.php");
 require_once("ProductPeer.php");
+require_once("SupplierUserPeer.php");
 
 class ImportRequestEditAction extends BaseAction {
 
@@ -58,7 +59,8 @@ class ImportRequestEditAction extends BaseAction {
 			
 			if (Common::isSupplier()) {
 				//si es supplier solo muestro aquellos que tiene asignado.
-				$productRequests = RequestPeer::getAllProductRequestsForSupplier($_GET['id'],Common::getSupplierId());
+				$supplierUser = SupplierUserPeer::getSupplierByUser(Common::getSupplierUserId());
+				$productRequests = RequestPeer::getAllProductRequestsForSupplier($_GET['id'],$supplierUser->getSupplierId());
 			}
 			else {
 				//si es el cliente o el admin ve los productRequest
