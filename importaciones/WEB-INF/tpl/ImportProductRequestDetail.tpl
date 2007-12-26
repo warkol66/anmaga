@@ -95,7 +95,7 @@
 				<p>Podra modificar las opciones hasta establecer el valor de precio, incoterm y puerto. Una vez establecidos los tres, la orden pasara a Quoted</p>
 				<p><form method="post">
 					<label>Asignar precio unitario:</label><br />
-					<input type="text" name="priceSupplier" value="$productRequest->getSupplierPrice()" id="priceClient" />
+					<input type="text" name="priceSupplier" value="|-$productRequest->getSupplierPrice()-|" id="priceClient" />
 					<input type="hidden" name="do" value="importDoEditProductRequestPriceX"  />
 					<input type="hidden" name="productRequestId" value="|-$productRequest->getId()-|" />
 					<input type="button" name="Asignar Precio" onClick="javascript:importDoEditProductRequestPrice(this.form)" value="Asignar Precio" />
@@ -146,4 +146,47 @@
 
 
 |-/if-|
+
+
+<br />
+	<table id="commentTable" class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
+		<thead>
+			<th class="thFillTitle">Usuario</th>
+			<th class="thFillTitle">Mensaje</th>
+		</thead>
+		<tbody id="commentTableBody">
+
+			|-foreach from=$comments item=comment name=for_comments-|			
+			<tr style="background-color : |-if $comment->isFromAdmin()-|#00CCFF;|-/if-||-if $comment->isFromSupplier()-|#CCFF99;|-/if-||-if $comment->isFromUser()-|#FFFF66;|-/if-|">
+				<td width="10%">|-if $comment->isFromAdmin() or $comment->isFromSupplier()-||-assign var="user" value=$userPeer->get($comment->getUserId())-||- $user->getUsername() -||-/if-|
+				|-if $comment->isFromUser()-||-assign var="user" value=$affiliateUserPeer->get($comment->getUserId())-||- $user->getUsername() -||-/if-|
+				</td>
+				<td width="90%">|-$comment->getText()-|</td>
+			</tr>
+			|-/foreach-|
+		</tbody>				
+	</table>
+
+	<div id="messageSenderBox">
+		<form method="get">
+			<p>
+				<p>Envio de Mensajes</p>
+				|-if ($loginUser neq "") and $loginUser->isAdmin()-|
+
+				<label>Destinatario: </label>
+				<select name="messageTo">
+					<option value="user" selected="selected">Afiliado</option>
+					<option value="supplier">Supplier</option>
+				</select><br /><br />
+				
+				|-/if-|
+				<label>Contenido del Mensaje</label><br />
+				<textarea name="message" rows="4" cols="40"></textarea><br/>
+				<input type="button" name="send_message" value="Enviar Mensaje" onClick="javascript:importSendMessageX(this.form)"/>
+				<input type="hidden" name="productRequestId" value="|-$productRequest->getId()-|"/>
+				<input type="hidden" name="do" value="importSendMessageX" />
+			</p>
+		</form>	
+	</div>
+
 

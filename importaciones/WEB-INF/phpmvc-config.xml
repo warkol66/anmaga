@@ -939,6 +939,7 @@
     <forward name="success" path="Main.php?do=importIncotermsList&amp;message=deleted_ok" redirect="true" />
     </action>
 
+<!-- Fin Modulo ImportIncoterms -->
 
 <!-- Module ImportRequest -->
 
@@ -1021,14 +1022,20 @@
     <forward name="success-incoterm" path="ImportDoAssignProductRequestTermsXIncoterm.tpl" />
     <forward name="failure" path="ImportFailure.tpl" />
     </action>
-	
+
+    <action    path = "importSendMessageX"
+               type = "ImportSendMessageXAction"
+               name = "importSendMessageX"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportSendMessageX.tpl" />
+    <forward name="failure" path="ImportFailure.tpl" />
+    </action>	
 
 
 <!-- Fin Module ImportRequest -->
 
   </action-mappings>
-
-<!-- Fin Modulo ImportIncoterms -->
 
 
 <!-- End Module Import -->

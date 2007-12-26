@@ -4,6 +4,7 @@ require_once("BaseAction.php");
 require_once("RequestPeer.php");
 require_once("ProductPeer.php");
 require_once("SupplierUserPeer.php");
+require_once("CommentPeer.php");
 
 class ImportRequestEditAction extends BaseAction {
 
@@ -61,13 +62,15 @@ class ImportRequestEditAction extends BaseAction {
 				//si es supplier solo muestro aquellos que tiene asignado.
 				$supplierUser = SupplierUserPeer::getSupplierByUser(Common::getSupplierUserId());
 				$productRequests = RequestPeer::getAllProductRequestsForSupplier($_GET['id'],$supplierUser->getSupplierId());
+				//TODO obtenemos los comentarios del supplier
+				
 			}
 			else {
 				//si es el cliente o el admin ve los productRequest
 				//TODO ver si no es necesaria una validacion de que sea el usuario duenio de esa req
 				$productRequests = RequestPeer::getAllProductRequests($_GET['id']);
-			}
 
+			}
 			$smarty->assign("request",$request);
 			$smarty->assign("productRequests",$productRequests);
 	    		$smarty->assign("action","edit");
@@ -80,9 +83,7 @@ class ImportRequestEditAction extends BaseAction {
 		//set de peer para obtener informacion de los productos en si
 		$productPeer = new ProductPeer();
 		$smarty->assign('productPeer',$productPeer);	
-
-		$smarty->assign("message",$_GET["message"]);
-
+		$smarty->assign("message",$_GET["message"]);
 		return $mapping->findForwardConfig('success');
 	}
 

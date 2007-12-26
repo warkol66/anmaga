@@ -31,10 +31,9 @@ class ImportRequestListAction extends BaseAction {
 	* @public
 	* @returns ActionForward
 	*/
-	function execute($mapping, $form, &$request, &$response) {
-
+	function execute($mapping, $form, &$request, &$response) {
     		BaseAction::execute($mapping, $form, $request, $response);
-
+		
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
@@ -73,9 +72,9 @@ class ImportRequestListAction extends BaseAction {
 		$url = "Main.php?do=importRequestList";
 		$smarty->assign("url",$url);		
    
-		$smarty->assign("message",$_GET["message"]);
-
+		$smarty->assign("message",$_GET["message"]);
 		return $mapping->findForwardConfig('success');
+		
 	}
 
 }

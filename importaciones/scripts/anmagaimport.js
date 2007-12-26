@@ -115,3 +115,22 @@ function importDoAssignProductRequestTerms(form) {
 
 }
 
+function importSendMessageX(form) {
+
+
+	var fields = Form.serialize(form);
+	var myAjax = new Ajax.Updater(
+				{success: 'commentTableBody'},
+				url,
+				{
+					method: 'post',
+					postBody: fields,
+					evalScripts: true,
+					insertion: Insertion.Bottom
+				});
+	
+	return true;
+
+
+}
+

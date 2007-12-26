@@ -5,6 +5,9 @@ require_once("ProductRequestPeer.php");
 require_once("ProductPeer.php");
 require_once("PortPeer.php");
 require_once("IncotermPeer.php");
+require_once("CommentPeer.php");
+require_once("UserPeer.php");
+require_once("AffiliateUserPeer.php");
 
 class ImportProductRequestDetailAction extends BaseAction {
 
@@ -56,19 +59,32 @@ class ImportProductRequestDetailAction extends BaseAction {
 		if (!empty($productRequest))
 			$productInfo = ProductPeer::get($productRequest->getProductId());
 
+		
+		if (Common::isAdmin()) {
+			$comments = CommentPeer::getAllFromProductRequest($_GET['productRequestId']);
+
+		}
+
 		if (Common::isSupplier()) {
 			//seteamos las categorias necesarias de incoterms y puertos		
 			$ports = PortPeer::getAll();
 			$incoterms = IncotermPeer::getAll();
+			$comments = CommentPeer::getAllFromProductRequestForSupplier($_GET['productRequestId'],Common::getSupplierUserId());
 
 			$smarty->assign('ports',$ports);
 			$smarty->assign('incoterms',$incoterms);
 		}
 
+		if (Common::isAffiliatedUser())
+			$comments = CommentPeer::getAllFromProductRequestForAffiliateUser($_GET['productRequestId'],Common::getAffiliatedId());
+
+		$smarty->assign('comments',$comments);
 		$smarty->assign('productRequest',$productRequest);
 		$smarty->assign('productInfo',$productInfo);
 		$smarty->assign('portPeer', new PortPeer());
 		$smarty->assign('incotermPeer', new IncotermPeer());
+		$smarty->assign('affiliateUserPeer', new AffiliateUserPeer());
+		$smarty->assign('userPeer', new UserPeer());
 		
 
 		return $mapping->findForwardConfig('success');

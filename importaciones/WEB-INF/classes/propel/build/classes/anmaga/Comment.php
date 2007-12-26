@@ -2,7 +2,10 @@
 
 require_once 'anmaga/om/BaseComment.php';
 
-
+define('COMMENT_ADMIN_SUPPLIER',0);
+define('COMMENT_SUPPLIER_ADMIN',1);
+define('COMMENT_USER_ADMIN',2);
+define('COMMENT_ADMIN_USER',3);
 /**
  * Skeleton subclass for representing a row from the 'comment' table.
  *
@@ -19,5 +22,41 @@ require_once 'anmaga/om/BaseComment.php';
  * @package    anmaga
  */
 class Comment extends BaseComment {
+
+
+	/*
+         * Indica si el usuario el comentario de un Admin
+	 *
+	 * @return true si lo es, false sino
+	 */
+	function isFromAdmin() {
+		if (($this->getType() == COMMENT_ADMIN_USER) || ($this->getType() == COMMENT_ADMIN_SUPPLIER))
+			return true;
+		return false;
+	}
+
+	/*
+         * Indica si el usuario el comentario de un Supplier
+	 *
+	 * @return true si lo es, false sino
+	 */
+	function isFromSupplier() {
+
+		if ($this->getType() == COMMENT_SUPPLIER_ADMIN)
+			return true;
+		return false;
+
+	}
+
+	/*
+         * Indica si el usuario el comentario de un Afiliado
+	 *
+	 * @return true si lo es, false sino
+	 */
+	function isFromUser() {
+		if ($this->getType() == COMMENT_USER_ADMIN)
+			return true;
+		return false;
+	}
 
 } // Comment

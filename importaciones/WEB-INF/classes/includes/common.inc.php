@@ -525,5 +525,13 @@ function isAdmin() {
 }
 
 
+function getAdminUserId() {
+
+	$user = $_SESSION["loginUser"];
+	return $user->getId();
+
+}
+
+
 }
 ?>
