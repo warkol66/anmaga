@@ -2,6 +2,8 @@
 
 require_once("BaseAction.php");
 require_once("ProductPeer.php");
+require_once("SupplierPeer.php");
+
 
 class ImportProductsListAction extends BaseAction {
 
@@ -51,6 +53,7 @@ class ImportProductsListAction extends BaseAction {
 		$smarty->assign("url",$url);		
    
 		$smarty->assign("message",$_GET["message"]);
+		$smarty->assign("supplierPeer",new SupplierPeer());
 
 		return $mapping->findForwardConfig('success');
 	}

@@ -37,11 +37,11 @@ class RequestPeer extends BaseRequestPeer {
 
 		//creamos la nueva request
 		$request = new Request();
-		//TODO tiempos		
-		//$request->setCreateAt(now());
+		$datetime = date("Y-m-d H:i:s");
+		$request->setCreatedAt($datetime);
+		//TODO Status de Requests
 		$request->setStatus('NEW');
-		//TODO tiempos
-		//$request->setTimestampStatus(now());
+		$request->setTimestampStatus($datetime);
 		$request->setUserId($userId);
 
 		//la guardamos

@@ -13,7 +13,9 @@
 	<td class="size2">|-$productReq->getQuantity()-|</td>	<td class="size2">|-$productReq->getPriceClient()-|</td>
 	<td class="size2">|-$productReq->getStatus()-|</td>
 
-	<td class='tdSize1 center cellTextOptions' nowrap> [ <a class='delete' onClick="javascript:importDeleteProductFromRequest(|-$productReq->getId()-|)">##115,Eliminar##</a> ]
+	<td class='tdSize1 center cellTextOptions' nowrap> 
+[ <a class='delete' href="Main.php?do=importProductRequestDetail&productRequestId=|-$productReq->getId()-|">Detalle</a> ] 
+[ <a class='delete' onClick="javascript:importDeleteProductFromRequest(|-$productReq->getId()-|)">##115,Eliminar##</a> ]
 
 	</td>
 </tr>

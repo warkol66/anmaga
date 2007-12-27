@@ -37,6 +37,45 @@ class ProductRequest extends BaseProductRequest {
 	);
 
 	/**
+	 * Modifica el status de la instancia y su timestamp de status
+	 * @param $status integer
+	 * 
+	 */
+	function setStatus($status) {
+		//agregamos el guardado del timestamp de cambio de status
+		$datetime = date("Y-m-d H:i:s");
+		$this->setTimestampStatus($datetime);
+		return parent::setStatus($status);
+		
+	}
+
+	/**
+	 * Modifica el Precio de Supplier de la instancia y su timestamp de Precio de Supplier
+	 * @param $status integer
+	 * 
+	 */
+	function setPriceSupplier($price) {
+		//agregamos el guardado del timestamp de cambio de precio de supplier
+		$datetime = date("Y-m-d H:i:s");
+		$this->setTimestampPriceSupplier($datetime);
+		return parent::setPriceSupplier($price);
+	}
+
+	/**
+	 * Modifica el Precio de Client de la instancia y su timestamp de Precio de Client
+	 * @param $status integer
+	 * 
+	 */
+	function setPriceClient($price) {
+		//agregamos el guardado del timestamp de cambio de precio de client
+		$datetime = date("Y-m-d H:i:s");
+		$this->setTimestampPriceClient($datetime);
+		return parent::setPriceClient($price);
+
+	}
+
+
+	/**
 	 * Devuelve el nombre del estado actual en que se encuentra el ProductRequest
 	 *
          * @returns string nombre del estado en que se encuentra el product request
@@ -199,7 +238,6 @@ class ProductRequest extends BaseProductRequest {
 		return (PRODUCTREQUEST_REJECTED == $status);
 
 	}
-
 
 
 } // ProductRequest

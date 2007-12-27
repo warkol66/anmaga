@@ -26,7 +26,7 @@
 </table>
 |-/if-|
 
-
+<br />
 <input type=button value="Volver al Listado de Ordenes de Pedido" onclick="history.go(-1)"> <br /><br />
 <table class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 	<thead>

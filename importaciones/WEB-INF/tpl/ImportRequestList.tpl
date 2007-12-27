@@ -36,11 +36,12 @@
 																				<input type="hidden" name="id" value="|-$request->getid()-|" />
 																				<input type="submit" name="submit_go_edit_request" value="Editar" class="boton" />
 									</form>
-									<form action="Main.php" method="post">
+						<!--				<form action="Main.php" method="post">
 										<input type="hidden" name="do" value="" />
-																				<input type="hidden" name="id" value="|-$request->getid()-|" />
-																				<input type="submit" name="submit_go_delete_request" value="Borrar" onclick="return confirm('Seguro que desea eliminar el Request?')" class="boton" />
+														<input type="hidden" name="id" value="|-$request->getid()-|" />
+																				<input type="submit" name="submit_go_delete_request" value="Borrar" onclick="return confirm('Seguro que desea eliminar el Request?')" class="boton" /> 
 									</form>
+-->
 								</td>
 							</tr>
 						|-/foreach-|						

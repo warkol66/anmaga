@@ -3,11 +3,11 @@
 					|-if $message eq "ok"-|<span class="message_ok">Port guardado correctamente</span>|-/if-|
 					|-if $message eq "deleted_ok"-|<span class="message_ok">Port eliminado correctamente</span>|-/if-|
 					<h3><a href="Main.php?do=importPortsEdit">Agregar Port</a></h3>
-					<table id="tabla-ports">
+					<table id="tabla-ports" class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 						<thead>
 							<tr>
-																<th>code</th>
-																<th>name</th>																<th>&nbsp;</th>
+																<th class="thFillTitle">code</th>
+																<th class="thFillTitle">name</th>																<th class="thFillTitle">&nbsp;</th>
 							</tr>
 						</thead>
 						<tbody>

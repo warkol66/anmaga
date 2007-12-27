@@ -129,6 +129,7 @@ function importSendMessageX(form) {
 					insertion: Insertion.Bottom
 				});
 	
+	form.reset();
 	return true;
 
 

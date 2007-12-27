@@ -62,7 +62,7 @@
 			|- if $productRequest->isQuoted()-|
 				<p><form method="post">
 					<label>Asignar precio unitario:</label><br/>
-					<input type="text" name="priceClient" value="|-$productRequest->getClientPrice()-|" id="priceClient" />
+					<input type="text" name="priceClient" value="|-$productRequest->getPriceClient()-|" id="priceClient" />
 					<input type="hidden" name="do" value="importDoEditProductRequestPriceX"  />
 					<input type="hidden" name="productRequestId" value="|-$productRequest->getId()-|" />					
 					<input type="button" name="Asignar Precio" onClick="javascript:importDoEditProductRequestPrice(this.form)" value="Asignar Precio"/>
@@ -95,7 +95,7 @@
 				<p>Podra modificar las opciones hasta establecer el valor de precio, incoterm y puerto. Una vez establecidos los tres, la orden pasara a Quoted</p>
 				<p><form method="post">
 					<label>Asignar precio unitario:</label><br />
-					<input type="text" name="priceSupplier" value="|-$productRequest->getSupplierPrice()-|" id="priceClient" />
+					<input type="text" name="priceSupplier" value="|-$productRequest->getPriceSupplier()-|" id="priceClient" />
 					<input type="hidden" name="do" value="importDoEditProductRequestPriceX"  />
 					<input type="hidden" name="productRequestId" value="|-$productRequest->getId()-|" />
 					<input type="button" name="Asignar Precio" onClick="javascript:importDoEditProductRequestPrice(this.form)" value="Asignar Precio" />

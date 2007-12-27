@@ -5,7 +5,7 @@ S<?php
 
   // include object class
   include_once 'anmaga/ProductRequest.php';
-
+  require_once('anmaga/CommentPeer.php');
 
 /**
  * Skeleton subclass for performing query and update operations on the 'productRequest' table.
@@ -40,8 +40,8 @@ class ProductRequestPeer extends BaseProductRequestPeer {
 		$productRequest->setProductId($productId);
 		$productRequest->setQuantity($quantity);
 		$productRequest->setNewStatus();
-		//TODO	tiempos
-		//$productRequest->setTimestampStatus(());
+		$datetime = date("Y-m-d H:i:s");
+		$productRequest->setTimestampStatus($datetime);
 		try {
 			$productRequest->save();
 		}
@@ -82,6 +82,12 @@ class ProductRequestPeer extends BaseProductRequestPeer {
 		}
 		catch (PropelException $exp) {
 			return false;
+		}
+
+		//eliminamos los comentarios asociados.
+		$comments = CommentPeer::getAllFromProductRequest($productRequestId);
+		foreach( $comments as $comment ) {
+			$comment->delete();
 		}
 
 		return true;

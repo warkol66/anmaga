@@ -40,8 +40,8 @@ class CommentPeer extends BaseCommentPeer {
 		$comment->setUserId($userId);
 		$comment->setText($text);
 		$comment->setType($type);
-		$date = date("Y-m-d H:i:s");
-		$comment->setCreatedAt($date);
+		$datetime = date("Y-m-d H:i:s");
+		$comment->setCreatedAt($datetime);
 		try {
 			$comment->save();
 		}
