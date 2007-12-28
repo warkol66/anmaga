@@ -1705,3 +1705,5 @@ abstract class BaseProductRequest extends BaseObject  implements Persistent {
 	}
 
 } // BaseProductRequest
+
+?>

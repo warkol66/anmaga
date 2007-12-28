@@ -1,4 +1,4 @@
-S<?php
+<?php
 
   // include base peer class
   require_once 'anmaga/om/BaseProductRequestPeer.php';

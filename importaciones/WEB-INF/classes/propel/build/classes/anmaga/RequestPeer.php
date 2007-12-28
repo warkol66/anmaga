@@ -7,7 +7,6 @@
   include_once 'anmaga/Request.php';
   require_once('anmaga/ProductRequest.php');
 
-
 /**
  * Skeleton subclass for performing query and update operations on the 'request' table.
  *
