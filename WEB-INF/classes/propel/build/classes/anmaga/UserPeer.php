@@ -48,6 +48,22 @@ class UserPeer extends BaseUserPeer {
 		return $todosObj;
   }
 
+  /*
+   * Verifica si ya existe un usuario con ese nombre de usuario
+   * @param string $username nombre de usuario
+   * @return boolean true si el nombre de usuario existe, false sino.
+   */
+  function usernameExists($username) {
+  	$usernameLowercase = strtolower($username);
+	$crit = new Criteria();
+	$crit->add(UserPeer::USERNAME,$usernameLowercase);
+	$result = UserPeer::doSelect($crit);
+	if (empty($result))
+		return false;
+	
+	return true;
+  }
+
   /**
   * Crea un usuario nuevo.
   *
@@ -60,8 +76,13 @@ class UserPeer extends BaseUserPeer {
   * @return boolean true si se creo el usuario correctamente, false sino
 	*/
   function create($username,$name,$surname,$pass,$levelId,$mailAddress) {
+		
+		$usernameLowercase = strtolower($username);
+		if (UserPeer::usernameExists($usernameLowercase))
+			return false;
+			
 		$user = new User();
-		$user->setUsername($username);
+		$user->setUsername($usernameLowercase);
 		$user->setPassword(md5($pass."ASD"));
 		$user->setCreated(time());
 		$user->setUpdated(time());
@@ -158,8 +179,17 @@ class UserPeer extends BaseUserPeer {
   * @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
   function update($id,$username,$name,$surname,$pass,$levelId,$mailAddress) {
+
+		$usernameLowercase = strtolower($username);
 		try {
 			$user = UserPeer::retrieveByPK($id);
+			
+			if (($user->getUsername()) != $usernameLowercase) {
+				//se cambio el nombre de usuario
+				if (UserPeer::usernameExists($usernameLowercase))
+				return false;
+			}
+			
 			$user->setUsername($username);
 			$user->setUpdated(time());
 			$user->setLevelId($levelId);
@@ -217,7 +247,8 @@ class UserPeer extends BaseUserPeer {
 	*/
   function auth($username,$password) {
 		$cond = new Criteria();
-		$cond->add(UserPeer::USERNAME, $username);
+		$usernameLowercase = strtolower($username);
+		$cond->add(UserPeer::USERNAME, $usernameLowercase);
 		$cond->add(UserPeer::ACTIVE, "1");
 		$todosObj = UserPeer::doSelectJoinUserInfo($cond);
 		$user = $todosObj[0];
@@ -241,7 +272,8 @@ class UserPeer extends BaseUserPeer {
 	*/
   function generatePassword($username,$mailAddress) {
 		$cond = new Criteria();
-		$cond->add(UserPeer::USERNAME, $username);
+		$usernameLowercase = strtolower($username);
+		$cond->add(UserPeer::USERNAME, $usernameLowercase);
 		$cond->add(UserPeer::ACTIVE, "1");
 		$todosObj = UserPeer::doSelectJoinUserInfo($cond);
 		$user = $todosObj[0];

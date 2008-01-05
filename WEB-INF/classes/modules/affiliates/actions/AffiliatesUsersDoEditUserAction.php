@@ -59,8 +59,13 @@ class AffiliatesUsersDoEditUserAction extends BaseAction {
 
 			if ( $_POST["pass"] == $_POST["pass2"] ) {
 
-				$userPeer->update($_POST["id"],$affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"],$_POST["name"],$_POST["surname"],$_POST["mailAddress"]);
- 	    	return $mapping->findForwardConfig('success');
+				if ($userPeer->update($_POST["id"],$affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"],$_POST["name"],$_POST["surname"],$_POST["mailAddress"])) {
+ 	    			return $mapping->findForwardConfig('success');
+				}
+				else {
+					header("Location: Main.php?do=usersList&user=&message=errorUpdate");
+					exit;
+				}
 			}
 			else {
 				header("Location: Main.php?do=usersByAffiliateList&user=".$_POST["id"]."&message=wrongPassword");
@@ -73,8 +78,13 @@ class AffiliatesUsersDoEditUserAction extends BaseAction {
 		  
 			if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {
 
-				$userPeer->create($affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"],$_POST["name"],$_POST["surname"],$_POST["mailAddress"]);
-				return $mapping->findForwardConfig('success');
+				if ($userPeer->create($affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"],$_POST["name"],$_POST["surname"],$_POST["mailAddress"])) {
+					return $mapping->findForwardConfig('success');
+				}
+				else {
+					header("Location: Main.php?do=usersList&user=&message=errorUpdate");
+					exit;
+				}
 			}
 			else {
 				header("Location: Main.php?do=usersList&user=&message=wrongPassword");

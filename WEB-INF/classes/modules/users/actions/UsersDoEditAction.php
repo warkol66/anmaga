@@ -69,8 +69,13 @@ class UsersDoEditAction extends BaseAction {
 		  
 			if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {
 
-				$userPeer->create($_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"]);
-				return $mapping->findForwardConfig('success');
+				if ($userPeer->create($_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"])) {
+					return $mapping->findForwardConfig('success');
+				}
+				else {
+					header("Location: Main.php?do=usersList&user=&message=errorUpdate");
+					exit;
+				}
 			}
 			else {
 				header("Location: Main.php?do=usersList&user=&message=wrongPassword");

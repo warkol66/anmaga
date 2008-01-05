@@ -51,8 +51,12 @@ class UsersByRegistrationDoEditAction extends BaseAction {
 	 */
 	private function createUser($smarty) {
 		$userByRegistrationPeer = new UserByRegistrationPeer();
-		$userByRegistrationPeer->create($_POST["username"],$_POST["name"],$_POST["surname"],$_POST["password"],$_POST["email"]); 
-		$smarty->assign("message","created");
+		if ($userByRegistrationPeer->create($_POST["username"],$_POST["name"],$_POST["surname"],$_POST["password"],$_POST["email"])) {
+			$smarty->assign("message","created");
+		}
+		else {
+			$smarty->assign("message","error_username_used");
+		}
 	}
 
 	/**
@@ -66,8 +70,13 @@ class UsersByRegistrationDoEditAction extends BaseAction {
 			$user = $_SESSION['loginRegistrationUser'];
 			$userId = $user->getId();
 		}
-		$userByRegistrationPeer->update($userId,$_POST["username"],$_POST["name"],$_POST["surname"],$_POST["password"],$_POST["email"]); 
-		$smarty->assign("message","saved");
+		if ($userByRegistrationPeer->update($userId,$_POST["username"],$_POST["name"],$_POST["surname"],$_POST["password"],$_POST["email"]))
+			$smarty->assign("message","saved");
+		}
+		else {
+			$smarty->assign("message","error_username_used");
+		}
+
 	}
 	
 
@@ -164,16 +173,11 @@ class UsersByRegistrationDoEditAction extends BaseAction {
 					
 									
 				}
-				
-				
 
 		}
 		
 		$smarty->assign("message","error_fields");
 		return $mapping->findForwardConfig('failure');
-
-		
-		
 	
 	}
 

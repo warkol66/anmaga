@@ -76,6 +76,22 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 		return $todosObj;
   }
 
+  /*
+   * Verifica si ya existe un usuario con ese nombre de usuario
+   * @param string $username nombre de usuario
+   * @return boolean true si el nombre de usuario existe, false sino.
+   */
+  function usernameExists($username) {
+	$usernameLowercase = strtolower($username);
+	$crit = new Criteria();
+	$crit->add(AffiliateUserPeer::USERNAME,$usernameLowercase);
+	$result = AffiliateUserPeer::doSelect($crit);
+	if (empty($result))
+		return false;
+
+	return true;
+  }
+
 
   /**
   * Crea un usuario nuevo por afiliado.
@@ -90,8 +106,12 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 	*/
 	function create($affiliateId,$username,$password,$levelId,$name,$surname,$mailAddress) {
 	
-		$userByAffiliate = new AffiliateUser();
-		$userByAffiliate->setUsername($username);
+		$usernameLowercase = strtolower($username);
+		if (AffiliateUserPeer::usernameExists($usernameLowercase))
+			return false;
+
+		$userByAffiliate = new AffiliateUser();		
+		$userByAffiliate->setUsername($usernameLowercase);
 		$userByAffiliate->setAffiliateId($affiliateId);
 		$userByAffiliate->setActive(1);
 		$userByAffiliate->setCreated(now);
@@ -123,7 +143,9 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 	*/
   function auth($username,$password) {
 		$cond = new Criteria();
-		$cond->add(AffiliateUserPeer::USERNAME, $username);
+		
+		$usernameLowercase = strtolower($username);
+		$cond->add(AffiliateUserPeer::USERNAME, $usernameLowercase);
 		$cond->add(AffiliateUserPeer::ACTIVE, "1");
 		$todosObj = AffiliateUserPeer::doSelectJoinAffiliateUserInfo($cond);	
 		$user = $todosObj[0];
@@ -188,7 +210,14 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 	*/
   function update($id,$affiliateId,$username,$password,$levelId,$name,$surname,$mailAddress) {
 		$userByAffiliate = AffiliateUserPeer::retrieveByPK($id);
-		$userByAffiliate->setUsername($username);
+		$usernameLowercase = strtolower($username);
+		if (($userByAffiliate->getUsername()) != $usernameLowercase) {
+			//se cambio el nombre de usuario
+			if (AffiliateUserPeer::usernameExists($usernameLowercase))
+				return false;
+		}		
+		
+		$userByAffiliate->setUsername($usernameLowercase);
 		$userByAffiliate->setAffiliateId($affiliateId);
 		$userByAffiliate->setUpdated(now);
 		$userByAffiliate->setLevelId($levelId);
@@ -286,7 +315,8 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 	*/
   function generatePassword($username,$mailAddress) {
 		$cond = new Criteria();
-		$cond->add(AffiliateUserPeer::USERNAME, $username);
+		$usernameLowercase = strtolower($username);
+		$cond->add(AffiliateUserPeer::USERNAME, $usernameLowercase);
 		$cond->add(AffiliateUserPeer::ACTIVE, "1");
 		$todosObj = AffiliateUserPeer::doSelectJoinAffiliateUserInfo($cond);
 		$user = $todosObj[0];
