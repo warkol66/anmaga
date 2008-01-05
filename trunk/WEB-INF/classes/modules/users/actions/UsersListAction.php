@@ -73,11 +73,11 @@ class UsersListAction extends BaseAction {
 				$smarty->assign("levels",$levels);
 	    	$smarty->assign("accion","edicion");
 	  	}
-			catch (PropelException $e) {
-      	$smarty->assign("accion","creacion");
+		catch (PropelException $e) {
+			$smarty->assign("accion","creacion");
 			}
 		}
-		else if ( isset($_GET["user"]) ) {
+		else if ( isset($_GET["user"]) && empty($_GET["user"]) ) {
 			//voy a crear un usuario nuevo
 			
 			$levels = LevelPeer::getAll();

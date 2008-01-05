@@ -34,12 +34,13 @@ class UserByRegistrationPeer extends BaseUserByRegistrationPeer {
 	* Autentica a un usuario.
 	*
 	* @param string $username Nombre de usuario
-	* @param string $password Contraseña 
-	* @return User Informacion sobre el usuario, false si no fue exitosa la autenticacion
+	* @param string $mailAddress Email
+	* @return array [0] -> User Informacion sobre el usuario; [1] -> New password, false si no fue exitosa la autenticacion de usuario e email
 	*/
 	function auth($username,$password) {
 		$cond = new Criteria();
-		$cond->add(UserByRegistrationPeer::USERNAME, $username);
+		$usernameLowercase = strtolower($username);
+		$cond->add(UserByRegistrationPeer::USERNAME, $usernameLowercase);
 		$cond->add(UserByRegistrationPeer::ACTIVE, "1");
 		$result = UserByRegistrationPeer::doSelectJoinUserByRegistrationInfo($cond);
 		$user = $result[0];
@@ -79,6 +80,23 @@ class UserByRegistrationPeer extends BaseUserByRegistrationPeer {
 		return $result;
 	}
 
+	  /*
+	   * Verifica si ya existe un usuario con ese nombre de usuario
+	   * @param string $username nombre de usuario
+	   * @return boolean true si el nombre de usuario existe, false sino.
+	   */
+	  function usernameExists($username) {
+		$usernameLowercase = strtolower($username);
+		$crit = new Criteria();
+		$crit->add(UserByRegistrationPeer::USERNAME,$usernameLowercase);
+		$result = UserByRegistrationPeer::doSelect($crit);
+		if (empty($result))
+			return false;
+   
+		return true;
+	  }
+
+
 	/**
 	 * Crea un nuevo usuario de registracion
 	 * 
@@ -90,13 +108,16 @@ class UserByRegistrationPeer extends BaseUserByRegistrationPeer {
 	 * @return boolean true si se creo el usuario, false en caso de error. 
 	 * TODO agregar IP y last login.
 	 */
-
 	function create($username,$name,$surname,$pass,$mail) {
+		
+		$usernameLowercase = strtolower($username);
+		if (UserByRegistrationPeer::usernameExists($usernameLowercase))
+			return false;
 		
 		try {
 			//armado de usuario
 			$newuser = new UserByRegistration();
-			$newuser->setUsername($username);
+			$newuser->setUsername($usernameLowercase);
 			$newuser->setPassword(md5($pass."ASD"));
 			$newuser->setCreated(time());
 			$newuser->setUpdated(time());
@@ -145,9 +166,20 @@ class UserByRegistrationPeer extends BaseUserByRegistrationPeer {
   * @return boolean true si se actualizo la informacion correctamente, false sino
   */
   function update($id,$username,$name,$surname,$pass,$mail) {
+		
+		$usernameLowercase = strtolower($username);
+		
 		try {
+
 			$user = UserByRegistrationPeer::retrieveByPK($id);
-			$user->setUsername($username);
+						
+			if (($user->getUsername()) != $usernameLowercase) {
+				//se cambio el nombre de usuario
+				if (UserByRegistrationPeer::usernameExists($usernameLowercase))
+					return false;
+			}
+			
+			$user->setUsername($usernameLowercase);
 			$user->setUpdated(time());
 			if ( !empty($pass) )
 				$user->setPassword(md5($pass."ASD"));
@@ -196,17 +228,18 @@ class UserByRegistrationPeer extends BaseUserByRegistrationPeer {
 		
 		return true;
   }
-  
+
 	/**
 	* Autentica a un usuario.
 	*
 	* @param string $username Nombre de usuario
 	* @param string $mailAddress Email
 	* @return array [0] -> User Informacion sobre el usuario; [1] -> New password, false si no fue exitosa la autenticacion de usuario e email
-	*/
+	*/  
   function generatePassword($username,$mailAddress) {
 		$cond = new Criteria();
-		$cond->add(UserbyRegistrationPeer::USERNAME, $username);
+		$usernameLowercase = strtolower($username);
+		$cond->add(UserbyRegistrationPeer::USERNAME, $usernameLowercase);
 		$cond->add(UserByRegistrationPeer::ACTIVE, "1");
 		$todosObj = UserByRegistrationPeer::doSelectJoinUserByRegistrationInfo($cond);
 		$user = $todosObj[0];
@@ -257,12 +290,5 @@ class UserByRegistrationPeer extends BaseUserByRegistrationPeer {
   	// done!
 	  return $password;
 	}
-
-
-
-
-	
-
-	
 
 } // UserByRegistrationPeer
