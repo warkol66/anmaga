@@ -115,5 +115,36 @@ class PortPeer extends BasePortPeer {
     return $pager;
    }    
 
+	/**
+	* Obtiene todos los ports que estan inactivos.
+	*
+	*	@return array Informacion sobre todos los ports
+	*/
+	function getAllInactive() {
+		$cond = new Criteria();
+		$cond->add(PortPeer::ACTIVE, '0');
+		$alls = PortPeer::doSelect($cond);
+		return $alls;
+	}
+	
+	/**
+	 * Activa un puerto
+	 * @param $id id del puerto
+	 * @return true si fue exitoso, false sino
+	 */
+	function activate($id) {
+		$port = PortPeer::retrieveByPK($id);
+		$port->setActive(1);
+		try {
+			$port->save();
+		}
+		catch(PropelException $exp) {
+			return false;
+		}
+		
+		return true;
+	}
+
+
 }
 ?>

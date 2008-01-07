@@ -47,6 +47,11 @@ class ImportPortsListAction extends BaseAction {
  
 		$pager = PortPeer::getAllPaginated($_GET["page"]);
 		$smarty->assign("ports",$pager->getResult());
+		
+		//asignamos los inactivos
+		$inactivePorts = PortPeer::getAllInactive();
+		$smarty->assign("inactivePorts",$inactivePorts);
+		
 		$smarty->assign("pager",$pager);
 		$url = "Main.php?do=portsList";
 		$smarty->assign("url",$url);		

@@ -49,6 +49,10 @@ class ImportProductsListAction extends BaseAction {
 		$pager = ProductPeer::getAllPaginated($_GET["page"]);
 		$smarty->assign("products",$pager->getResult());
 		$smarty->assign("pager",$pager);
+		
+		$inactiveProducts = ProductPeer::getAllInactive();
+		$smarty->assign("inactiveProducts",$inactiveProducts);
+		
 		$url = "Main.php?do=productsList";
 		$smarty->assign("url",$url);		
    

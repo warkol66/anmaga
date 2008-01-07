@@ -126,5 +126,36 @@ class ProductPeer extends BaseProductPeer {
     return $pager;
    }    
 
+	/**
+	* Obtiene todos los products inactivos.
+	*
+	*	@return array Informacion sobre todos los products
+	*/
+	function getAllInactive() {
+		$cond = new Criteria();
+		$cond->add(ProductPeer::ACTIVE,'0');
+		$alls = ProductPeer::doSelect($cond);
+		return $alls;
+	}
+	
+	/**
+	* Activa un product.
+	*
+	* @param int $id id del product
+	* @return true si fue exitosa, false sino.
+	*/
+	function activate($id) {
+		$product = ProductPeer::retrieveByPK($id);
+		$product->setActive('1');
+		try {
+			$product->save();
+		}
+		catch(PropelException $exp) {
+			return false;
+		}
+		
+		return true;
+	}	
+
 }
 ?>

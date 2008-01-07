@@ -61,7 +61,9 @@ class ImportProductRequestDetailAction extends BaseAction {
 
 		
 		if (Common::isAdmin()) {
-			$comments = CommentPeer::getAllFromProductRequest($_GET['productRequestId']);
+			$comments = CommentPeer::getAllFromProductRequestForAffiliateUser($_GET['productRequestId']);
+			$commentsSupplier = CommentPeer::getAllFromProductRequestForSupplier($_GET['productRequestId']);
+			$smarty->assign('commentsSupplier',$commentsSupplier);
 
 		}
 
@@ -69,14 +71,14 @@ class ImportProductRequestDetailAction extends BaseAction {
 			//seteamos las categorias necesarias de incoterms y puertos		
 			$ports = PortPeer::getAll();
 			$incoterms = IncotermPeer::getAll();
-			$comments = CommentPeer::getAllFromProductRequestForSupplier($_GET['productRequestId'],Common::getSupplierUserId());
+			$comments = CommentPeer::getAllFromProductRequestForSupplier($_GET['productRequestId']);
 
 			$smarty->assign('ports',$ports);
 			$smarty->assign('incoterms',$incoterms);
 		}
 
 		if (Common::isAffiliatedUser())
-			$comments = CommentPeer::getAllFromProductRequestForAffiliateUser($_GET['productRequestId'],Common::getAffiliatedId());
+			$comments = CommentPeer::getAllFromProductRequestForAffiliateUser($_GET['productRequestId']);
 
 		$smarty->assign('comments',$comments);
 		$smarty->assign('productRequest',$productRequest);

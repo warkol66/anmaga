@@ -48,7 +48,7 @@ class ImportSendMessageXAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
-
+		
 		$module = "Import";
 		$smarty->assign('module',$module);
 		$commentPeer = new CommentPeer();
@@ -90,7 +90,8 @@ class ImportSendMessageXAction extends BaseAction {
 				return $mapping->findForwardConfig('failure');
 
 		}
-
+		echo $comment;
+		
 		$smarty->assign('comment',$comment);
 		$smarty->assign('userPeer',new UserPeer());
 		$smarty->assign('affiliateUserPeer',new AffiliateUserPeer());

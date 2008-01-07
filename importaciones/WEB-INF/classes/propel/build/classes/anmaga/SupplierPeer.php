@@ -115,5 +115,39 @@ class SupplierPeer extends BaseSupplierPeer {
     return $pager;
    }    
 
-}
+
+	/**
+	* Obtiene todos los suppliers inactivos.
+	*
+	*	@return array Informacion sobre todos los suppliers
+	*/
+	function getAllInactive() {
+		$cond = new Criteria();
+		$cond->add(SupplierPeer::ACTIVE,'0');
+		$alls = SupplierPeer::doSelect($cond);
+		return $alls;
+	}
+
+	/**
+	* Activa un Supplier.
+	*
+	* @param int $id id del supplier
+	* @return true si es exitosa, false sino
+	*/
+	function activate($id) {
+
+		$supplier = SupplierPeer::retrieveByPK($id);
+		$supplier->setActive('1');
+		try {
+			$supplier->save();
+		}
+		catch(PropelException $exp) {
+			return false;
+		}
+		
+		return true;
+		
+	}	
+}	
+
 ?>

@@ -1,14 +1,14 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("SupplierPeer.php");
+require_once("IncotermPeer.php");
 
-class ImportSuppliersListAction extends BaseAction {
+class ImportIncotermsDoActivateAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportSuppliersListAction() {
+	function ImportIncotermsDoActivateAction() {
 		;
 	}
 
@@ -44,20 +44,11 @@ class ImportSuppliersListAction extends BaseAction {
 
 		$module = "Import";
 		$smarty->assign('module',$module);
- 
-		$pager = SupplierPeer::getAllPaginated($_GET["page"]);
-		$smarty->assign("suppliers",$pager->getResult());
-		$smarty->assign("pager",$pager);
 
-		$inactiveSuppliers = SupplierPeer::getAllInactive();
-		$smarty->assign("inactiveSuppliers",$inactiveSuppliers);
-		
-		$url = "Main.php?do=suppliersList";
-		$smarty->assign("url",$url);		
-   
-		$smarty->assign("message",$_GET["message"]);
+		IncotermPeer::activate($_POST["id"]);
 
 		return $mapping->findForwardConfig('success');
+
 	}
 
 }

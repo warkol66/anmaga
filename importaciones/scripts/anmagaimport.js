@@ -40,7 +40,7 @@ function importDeleteProductFromRequest(productReqId) {
 }
 
 function importAssignSupplierToProductRequest(productRequestId) {
-
+	$('msgBox').hide();
 	var action = "Main.php";
 	var pars = "do=importDoAssignSupplierX&productRequestId=" + productRequestId; 
 	var myAjax = new Ajax.Updater(
@@ -60,7 +60,7 @@ function importAssignSupplierToProductRequest(productRequestId) {
 }
 
 function importConfirmProductRequest(productRequestId,confirm) {
-
+	$('msgBox').hide();
 	var action = "Main.php";
 	var pars = "do=importUserConfirmationX&productRequestId=" + productRequestId + "&confirm=" + confirm; 
 	var myAjax = new Ajax.Updater(
@@ -81,7 +81,7 @@ function importConfirmProductRequest(productRequestId,confirm) {
 
 function importDoEditProductRequestPrice(form) {
 
-
+	$('msgBox').hide();
 	var fields = Form.serialize(form);
 	var myAjax = new Ajax.Updater(
 				{success: 'requestStatus'},
@@ -99,7 +99,7 @@ function importDoEditProductRequestPrice(form) {
 
 function importDoAssignProductRequestTerms(form) {
 
-
+	$('msgBox').hide();
 	var fields = Form.serialize(form);
 	var myAjax = new Ajax.Updater(
 				{success: 'requestStatus'},
@@ -110,17 +110,22 @@ function importDoAssignProductRequestTerms(form) {
 					evalScripts: true,
 					insertion: Insertion.Bottom
 				});
-	
+	$('messageActivitySupplier').innerHTML = "guardando terminos...";	
 	return true;
 
 }
 
 function importSendMessageX(form) {
 
-
+ 	var destination = 'commentTableBody';
+ 	var option = $('selectMessageTo');
+ 	if (option != null) {
+ 		if (option.options[option.selectedIndex].value == "supplier")
+ 		destination = destination + "Supplier";
+ 	}
 	var fields = Form.serialize(form);
 	var myAjax = new Ajax.Updater(
-				{success: 'commentTableBody'},
+				{success: destination},
 				url,
 				{
 					method: 'post',

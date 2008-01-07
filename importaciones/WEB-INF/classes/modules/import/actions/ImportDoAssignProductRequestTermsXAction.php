@@ -53,27 +53,30 @@ class ImportDoAssignProductRequestTermsXAction extends BaseAction {
 		
 
 		//verificamos los parametros
-		if ((!isset($_POST['productRequestId'])) and ((!isset($_POST['incotermId'])) or (!isset($_POST['portId'])))) {
+		if ((!isset($_POST['productRequestId'])) and (!isset($_POST['priceSupplier'])) and ((!isset($_POST['incotermId'])) or (!isset($_POST['portId'])))) {
 			return $mapping->findForwardConfig('failure');
 		}
 		
 		$productRequest = ProductRequestPeer::get($_POST['productRequestId']);
+		
+		if (isset($_POST['priceSupplier'])) {
+		
+			if (!is_numeric($_POST['priceSupplier']))
+				//error validacion
+				return $mapping->findForwardConfig('failure');
 
-		if (!$productRequest->isPending()) {
-			//no se puede efectuar las operaciones		
-			return $mapping->findForwardConfig('failure');
+			$productRequest->setPriceSupplier($_POST['priceSupplier']);
+
 		}
 		
 		if (isset($_POST['incotermId'])) {
 			//modificacion de incoterm			
 			$productRequest->setIncotermId($_POST['incotermId']);
-			$success = 'incoterm';
 		}
 
 		if (isset($_POST['portId'])) {
 			//modificacion de port
 			$productRequest->setPortId($_POST['portId']);
-			$success = 'port';
 		}
 
 		//hacemos el cambio de estado, el mismo se aplicara si se cumple la regla de negocio en el modelo
@@ -94,7 +97,7 @@ class ImportDoAssignProductRequestTermsXAction extends BaseAction {
 		$smarty->assign('portPeer', new PortPeer());
 		$smarty->assign('incotermPeer', new IncotermPeer());
 
-		return $mapping->findForwardConfig('success-'.$success);
+		return $mapping->findForwardConfig('success');
 	
 	}
 

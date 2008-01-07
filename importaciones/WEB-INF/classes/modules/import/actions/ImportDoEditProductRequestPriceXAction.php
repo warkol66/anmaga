@@ -57,7 +57,7 @@ class ImportDoEditProductRequestPriceXAction extends BaseAction {
 		
 		$productRequest = ProductRequestPeer::get($_POST['productRequestId']);
 
-		if (($productRequest->isQuoted()) && (isset($_POST['priceClient']))) {
+		if (($productRequest->isQuoted() || $productRequest->isWaiting()) && (isset($_POST['priceClient']))) {
 			//caso precio a consumidor final
 
 			if (!is_numeric($_POST['priceClient']))
@@ -67,23 +67,6 @@ class ImportDoEditProductRequestPriceXAction extends BaseAction {
 			$productRequest->setPriceClient($_POST['priceClient']);
 			$productRequest->setWaitingStatus();
 			$success = "success-admin";
-		}
-
-
-		if (($productRequest->isPending()) && (isset($_POST['priceSupplier']))) {
-			//caso precio a anmaga de supplier
-
-			if (!is_numeric($_POST['priceSupplier']))
-				//error validacion
-				return $mapping->findForwardConfig('failure');
-
-			$productRequest->setPriceSupplier($_POST['priceSupplier']);
-			//hacemos el cambio de estado, el mismo se aplicara si se cumple la regla de negocio en el modelo
-			if ($productRequest->setQuotedStatus()) {
-				$smarty->assign('statusChanged',true);		
-			}
-
-			$success = "success-supplier";
 		}
 
 		//guardamos los cambios		

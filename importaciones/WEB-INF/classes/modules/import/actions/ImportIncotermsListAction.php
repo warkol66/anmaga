@@ -48,6 +48,10 @@ class ImportIncotermsListAction extends BaseAction {
 		$pager = IncotermPeer::getAllPaginated($_GET["page"]);
 		$smarty->assign("incoterms",$pager->getResult());
 		$smarty->assign("pager",$pager);
+		
+		$inactiveIncoterms = IncotermPeer::getAllInactive();
+		$smarty->assign('inactiveIncoterms',$inactiveIncoterms);
+		
 		$url = "Main.php?do=incotermsList";
 		$smarty->assign("url",$url);		
    

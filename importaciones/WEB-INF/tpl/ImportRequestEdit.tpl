@@ -52,7 +52,7 @@
 		|- if (($loginUser neq "") and ($loginUser->isAdmin() or $loginUser->isSupplier()))-|
 			<td class="size2">|-$productReq->getPriceSupplier()-|</td>
 		|-/if-|
-		<td class="size2">|-$productReq->getStatus()-|</td>
+		<td class="size2">|-if ($productReq->getStatus()) eq "Quoted" and $loginAffiliateUser neq "" -|Pending|-else-||-$productReq->getStatus()-||-/if-|</td>
 		<td class='tdSize1 center cellTextOptions' nowrap>
 		[ <a class='delete' href="Main.php?do=importProductRequestDetail&productRequestId=|-$productReq->getId()-|">Detalle</a> ]
 		|-if $loginAffiliateUser neq "" and $productReq->isNew()-|

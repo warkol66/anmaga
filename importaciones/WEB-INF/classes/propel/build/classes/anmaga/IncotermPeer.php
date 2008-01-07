@@ -120,5 +120,35 @@ class IncotermPeer extends BaseIncotermPeer {
     return $pager;
    }    
 
+	/**
+	* Obtiene todos los incoterms inactivos.
+	*	*	@return array Informacion sobre todos los incoterms
+	*/
+	function getAllInactive() {
+		$cond = new Criteria();
+		$cond->add(IncotermPeer::ACTIVE, '0');
+		$alls = IncotermPeer::doSelect($cond);
+		return $alls;
+	}
+
+	/**
+	* Activa un incoterm.
+	*
+	* @param int $id id del incoterm
+	* @return true si fue exitoso, false sino
+	*/
+	function activate($id) {
+		$incoterm = IncotermPeer::retrieveByPK($id);
+		$incoterm->setActive(1);
+		try {
+			$incoterm->save();
+		}
+		catch(PropelException $exp) {
+			return false;
+		}
+		return true;
+	}
+	
+
 }
 ?>

@@ -830,6 +830,16 @@
            validate = "true">
     <forward name="success" path="Main.php?do=importProductsList&amp;message=deleted_ok" redirect="true" />
     </action>
+    
+     <action    path = "importProductsDoActivate"
+               type = "ImportProductsDoActivateAction"
+               name = "importProductsDoActivate"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=importProductsList&amp;message=activated_ok" redirect="true" />
+    </action>
+
+    
   </action-mappings>
 <!-- Fin Modulo ImportProducts -->
 <!-- Modulo ImportSuppliers -->
@@ -866,6 +876,16 @@
            validate = "true">
     <forward name="success" path="Main.php?do=importSuppliersList&amp;message=deleted_ok" redirect="true" />
     </action>
+    
+    <action    path = "importSuppliersDoActivate"
+               type = "ImportSuppliersDoActivateAction"
+               name = "importSuppliersDoActivate"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=importSuppliersList&amp;message=activated_ok" redirect="true" />
+    </action>
+
+    
   </action-mappings>
 <!-- Fin Modulo ImportSuppliers -->
 <!-- Modulo ImportPorts -->
@@ -902,6 +922,15 @@
            validate = "true">
     <forward name="success" path="Main.php?do=importPortsList&amp;message=deleted_ok" redirect="true" />
     </action>
+    
+    <action    path = "importPortsDoActivate"
+               type = "ImportPortsDoActivateAction"
+               name = "importPortsDoActivate"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=importPortsList&amp;message=activated_ok" redirect="true" />
+    </action>
+
   </action-mappings>
 <!-- Fin Modulo ImportPorts -->
 <!-- Modulo ImportIncoterms -->
@@ -937,6 +966,14 @@
               scope = "request"
            validate = "true">
     <forward name="success" path="Main.php?do=importIncotermsList&amp;message=deleted_ok" redirect="true" />
+    </action>
+
+    <action    path = "importIncotermsDoActivate"
+               type = "ImportIncotermsDoActivateAction"
+               name = "importIncotermsDoActivate"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=importIncotermsList&amp;message=activate_ok" redirect="true" />
     </action>
 
 <!-- Fin Modulo ImportIncoterms -->
@@ -1018,8 +1055,7 @@
                name = "importDoAssignProductRequestTermsX"
               scope = "request"
            validate = "true">
-    <forward name="success-port" path="ImportDoAssignProductRequestTermsXPort.tpl" />
-    <forward name="success-incoterm" path="ImportDoAssignProductRequestTermsXIncoterm.tpl" />
+    <forward name="success" path="ImportDoAssignProductRequestTermsX.tpl" />
     <forward name="failure" path="ImportFailure.tpl" />
     </action>
 
