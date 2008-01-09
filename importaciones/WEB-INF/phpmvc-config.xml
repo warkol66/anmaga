@@ -1259,6 +1259,33 @@
 	</action-mappings>
 <!-- End Module register -->
 
+<!-- Module Install -->
+	<action-mappings module="Install">
+		<action    path = "installList"
+							 type = "InstallListAction"
+							 name = "installList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallList.tpl" />
+		</action>
+		
+		<action    path = "installSetupPermissions"
+							 type = "InstallSetupPermissionsAction"
+							 name = "installSetupPermissions"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupPermissions.tpl" />
+			<forward name="failure" path="Main.php?do=installList" redirect="true"/>
+		</action>		<action    path = "installDoSetupPermissions"
+							 type = "InstallDoSetupPermissionsAction"
+							 name = "installDoSetupPermissions"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupPermissions.tpl" />
+		</action>
+	</action-mappings>
+<!-- End Module Install -->
+
 
 <!-- instalation tag-->
 <!-- Do not remove these lines-->
