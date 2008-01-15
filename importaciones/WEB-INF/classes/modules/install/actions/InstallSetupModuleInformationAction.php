@@ -1,6 +1,6 @@
 <?php
 
-
+require_once('includes/assoc_array2xml.php');
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
 
@@ -13,12 +13,12 @@ require_once("ModulePeer.php");
 * @version 1.0
 * @public
 */
-class ModulesEditAction extends BaseAction {
+class InstallSetupModuleInformationAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ModulesEditAction() {
+	function InstallSetupModuleInformationAction() {
 		;
 	}
 
@@ -41,7 +41,7 @@ class ModulesEditAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 		global $PHP_SELF;
 		//////////
 		// Call our business logic from here
@@ -54,23 +54,20 @@ class ModulesEditAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
-		
-		//asigno modulo
-		$modulo = "Modules";
 
+		//asigno modulo
+		$modulo = "Install";
 		$smarty->assign("modulo",$modulo);
  
-
 		$modulePeer = new ModulePeer();
 
-		$moduleName=$_GET["moduleName"];
+		if (!isset($_POST['moduleName'])) {
+			return $mapping->findForwardConfig('failure');			
+		}
 
-		$assignedModule= $modulePeer->get($moduleName);	
-		
-		$smarty->assign("module",$assignedModule);
-			
-		//doLogV2('success');
-
+		$modules = $modulePeer->getAll();		
+		$smarty->assign('dependencyModules',$modules);
+		$smarty->assign('moduleName',$_POST['moduleName']);
 		
 		return $mapping->findForwardConfig('success');
 	}

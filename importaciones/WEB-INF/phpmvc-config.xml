@@ -1268,6 +1268,23 @@
 					 validate = "true">
 			<forward name="success"  path="InstallList.tpl" />
 		</action>
+
+		<action    path = "installSetupModuleInformation"
+							 type = "InstallSetupModuleInformationAction"
+							 name = "installSetupModuleInformation"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupModuleInformation.tpl" />
+			<forward name="failure" path="Main.php?do=installList" redirect="true"/>
+		</action>
+		
+		<action    path = "installDoSetupModuleInformation"
+							 type = "InstallDoSetupModuleInformationAction"
+							 name = "installDoSetupModuleInformation"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="Main.php?do=installSetupPermissions" />
+		</action>		
 		
 		<action    path = "installSetupPermissions"
 							 type = "InstallSetupPermissionsAction"
@@ -1281,8 +1298,41 @@
 							 name = "installDoSetupPermissions"
 							scope = "request"
 					 validate = "true">
-			<forward name="success"  path="InstallSetupPermissions.tpl" />
-		</action>
+			<forward name="success"  path="Main.php?do=installSetupMessages" redirect="true" />
+		</action>
+		<action    path = "installSetupMessages"
+							 type = "InstallSetupMessagesAction"
+							 name = "installSetupMessages"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupMessages.tpl" />
+			<forward name="failure" path="Main.php?do=installList" redirect="true"/>
+		</action>
+		
+		<action    path = "installDoSetupMessages"
+							 type = "InstallDoSetupMessagesAction"
+							 name = "installDoSetupMessages"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="Main.php?do=installFileCheck" />
+		</action>		
+		
+		<action    path = "installFileCheck"
+							 type = "InstallFileCheckAction"
+							 name = "installFileCheck"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallFileCheck.tpl" />
+			<forward name="failure" path="Main.php?do=installList" redirect="true"/>
+		</action>
+		
+		<action    path = "installDoFileCheck"
+							 type = "InstallDoFileCheckAction"
+							 name = "installDoFileCheck"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="Main.php?do=installList" />
+		</action>
 	</action-mappings>
 <!-- End Module Install -->
 

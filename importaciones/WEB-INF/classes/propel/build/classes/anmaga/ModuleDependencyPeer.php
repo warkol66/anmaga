@@ -56,6 +56,10 @@ class ModuleDependencyPeer extends BaseModuleDependencyPeer {
 		return $todosObj;
 	}
 
+	function getSQLInsert($moduleName,$dependencyName){
+		$sql = "INSERT INTO 'modules_dependency' ( 'moduleName' , 'dependence' ) VALUES ('$moduleName', '$dependencyName')";
+		return $sql;
+	}
 
 
 } // ModuleDependencyPeer

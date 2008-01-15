@@ -13,12 +13,12 @@ require_once("ModulePeer.php");
 * @version 1.0
 * @public
 */
-class ModulesDoEditAction extends BaseAction {
+class InstallDoSetupMessagesAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ModulesDoEditAction() {
+	function InstallDoSetupMessagesAction() {
 		;
 	}
 
@@ -41,7 +41,7 @@ class ModulesDoEditAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 		global $PHP_SELF;
 		//////////
 		// Call our business logic from here
@@ -54,28 +54,26 @@ class ModulesDoEditAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
-		
-		//asigno modulo
-		$modulo = "Modules";
 
+		//asigno modulo
+		$modulo = "Install";
 		$smarty->assign("modulo",$modulo);
  
-
 		$modulePeer = new ModulePeer();
 
-		$moduleName=$_POST["moduleName"];
-		$description=$_POST["description"];
-		$label=$_POST["label"];
-
-	
-		$updateModule= $modulePeer->updateModule($moduleName,$description,$label);	
+		if (!isset($_POST['moduleName'])) {
+			return $mapping->findForwardConfig('failure');			
+		}
 		
-		$smarty->assign("module",$assignedModule);
-			
-
+		//TODO PROCESO
 
 		
-		return $mapping->findForwardConfig('success');
+		$myRedirectConfig = $mapping->findForwardConfig('success');
+		$myRedirectPath = $myRedirectConfig->getpath();
+		$queryData = '&moduleName='.$_POST["moduleName"];
+		$myRedirectPath .= $queryData;
+		$fc = new ForwardConfig($myRedirectPath, True);
+		return $fc;
 	}
 
 }

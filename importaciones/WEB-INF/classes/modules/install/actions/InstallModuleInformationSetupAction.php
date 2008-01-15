@@ -1,6 +1,6 @@
 <?php
 
-
+require_once('includes/assoc_array2xml.php');
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
 
@@ -13,12 +13,12 @@ require_once("ModulePeer.php");
 * @version 1.0
 * @public
 */
-class InstallSetupPermissionsAction extends BaseAction {
+class InstallModuleInformationSetupAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function InstallSetupPermissionsAction() {
+	function InstallModuleInformationSetupAction() {
 		;
 	}
 
@@ -64,30 +64,7 @@ class InstallSetupPermissionsAction extends BaseAction {
 		if (!isset($_GET['moduleName'])) {
 			return $mapping->findForwardConfig('failure');			
 		}
-		
-		//buscamos todos los modulos sin instalar.
 
-		$modulePath = "WEB-INF/classes/modules/" . $_GET['moduleName'] . "/actions/";
-		$directoryHandler = opendir($modulePath);
-		$actions = array();
-		
-		while (false !== ($filename = readdir($directoryHandler))) {
-
-			//verifico si es un archivo php
-			if (is_file($modulePath . $filename) && (ereg('php$',$filename))) {
-				//buscamos aquellos que no tienen Do
-				if (strstr($filename,"Do") == false) {
-					array_push($actions,$filename);
-				}	
-			
-			}
-			
-		}
-		
-		
-		closedir($directoryHandler);
-		$smarty->assign('actions',$actions);
-		$smarty->assign('moduleName',$_GET['moduleName']);
 		
 		return $mapping->findForwardConfig('success');
 	}

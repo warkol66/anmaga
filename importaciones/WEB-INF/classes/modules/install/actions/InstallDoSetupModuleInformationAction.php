@@ -1,8 +1,8 @@
 <?php
 
-
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
+require_once("ModuleDependencyPeer.php");
 
 
 /**
@@ -13,12 +13,12 @@ require_once("ModulePeer.php");
 * @version 1.0
 * @public
 */
-class InstallSetupPermissionsAction extends BaseAction {
+class InstallDoSetupModuleInformationAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function InstallSetupPermissionsAction() {
+	function InstallDoSetupModuleInformationAction() {
 		;
 	}
 
@@ -38,7 +38,7 @@ class InstallSetupPermissionsAction extends BaseAction {
 	* @param HttpRequestBase	The HTTP response we are creating
 	* @public
 	* @returns ActionForward
-	*/
+d	*/
 	function execute($mapping, $form, &$request, &$response) {
 
 		BaseAction::execute($mapping, $form, $request, $response);
@@ -61,35 +61,55 @@ class InstallSetupPermissionsAction extends BaseAction {
  
 		$modulePeer = new ModulePeer();
 
-		if (!isset($_GET['moduleName'])) {
+		if (!isset($_POST['moduleName'])) {
 			return $mapping->findForwardConfig('failure');			
 		}
 		
-		//buscamos todos los modulos sin instalar.
-
-		$modulePath = "WEB-INF/classes/modules/" . $_GET['moduleName'] . "/actions/";
-		$directoryHandler = opendir($modulePath);
-		$actions = array();
+		$modulePath = "WEB-INF/classes/modules/" . $_POST['moduleName'] . '/';
 		
-		while (false !== ($filename = readdir($directoryHandler))) {
+		//guardado de informacion de descripcion del modulo
 
-			//verifico si es un archivo php
-			if (is_file($modulePath . $filename) && (ereg('php$',$filename))) {
-				//buscamos aquellos que no tienen Do
-				if (strstr($filename,"Do") == false) {
-					array_push($actions,$filename);
-				}	
+		$fd = fopen($modulePath . 'information.sql','w');
+
+		if ($fd == false)
+			return $mapping->findForwardConfig('failure');
 			
+		$moduleLabelPeer = new ModuleLabelPeer();
+		$sqlEng = $moduleLabelPeer->getSQLInsertSpanish($_POST['moduleName'],$_POST['labelsEnglish'],$_POST['descriptionEnglish']);
+		$sqlSpa = $moduleLabelPeer->getSQLInsertSpanish($_POST['moduleName'],$_POST['labelsSpanish'],$_POST['descriptionSpanish']);
+		
+		fprintf($fd,"%s\n",$sqlSpa);
+		fprintf($fd,"%s\n",$sqlEng);
+		
+		fclose($fd);
+		
+		//generacion de sql de las dependencias
+
+		if (isset($_POST['dependencies'])) {
+
+			$fd = fopen($modulePath . 'dependency.sql','w');
+
+			if ($fd == false)
+				return $mapping->findForwardConfig('failure');			
+			
+			foreach($_POST['dependencies'] as $dependencyName) {
+				$sql = ModuleDependencyPeer::getSQLInsert($_POST['moduleName'],$dependencyName);
+				fprintf($fd,"%s\n",$sql);								
 			}
+		
+			fclose($fd);
 			
 		}
+
+		//TODO ALWAYS ACTIVE
 		
-		
-		closedir($directoryHandler);
-		$smarty->assign('actions',$actions);
-		$smarty->assign('moduleName',$_GET['moduleName']);
-		
-		return $mapping->findForwardConfig('success');
+		$myRedirectConfig = $mapping->findForwardConfig('success');
+		$myRedirectPath = $myRedirectConfig->getpath();
+		$queryData = '&moduleName='.$_POST["moduleName"];
+		$myRedirectPath .= $queryData;
+		$fc = new ForwardConfig($myRedirectPath, True);
+		return $fc;		
+	
 	}
 
 }

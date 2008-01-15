@@ -15,13 +15,31 @@ require_once("ModulePeer.php");
 */
 class InstallDoSetupPermissionsAction extends BaseAction {
 
+	/*
+	 * Definicion de los distintos tipos de permisos que pueden haber
+	 */
+	var $permissionTypes;
 
 	// ----- Constructor ---------------------------------------------------- //
 
 	function InstallDoSetupPermissionsAction() {
-		;
+		$this->permissionTypes = array('supervisor'=>'0','admin'=>'1','user'=>'2');
 	}
 
+	function generateSQLInsertSecurityModule($module,$access,$accessAffiliateUser) {
+	
+	$query = "INSERT INTO `security_module` ( `module` , `access` , `accessAffiliateUser` ) VALUES ('$module', '$access', '$accessAffiliateUser');";
+	
+	return $query;
+	
+	}
+
+	function generateSQLInsertSecurityAction($action,$module,$section,$access,$accessAffiliateUser,$active,$pair) {
+	
+	$query = "INSERT INTO `security_action` (`action`,`module`,`section`,`access`,`accessAffiliateUser`, `active` , `pair` ) VALUES ('$action','$module','$section','$access','$accessAffiliateUser','$active','$pair');";
+	return $query;
+		
+	}
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -54,16 +72,64 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
-
+		
 		//asigno modulo
 		$modulo = "Install";
 		$smarty->assign("modulo",$modulo);
- 
+ 	
 		$modulePeer = new ModulePeer();
-
-		//TODO Procesamiento de los permisos y generacion de los insert
 		
-		return $mapping->findForwardConfig('success');
+		$permission = $_POST['permission'];
+		
+		if (!isset($_POST['permission']) && (!isset($_POST['moduleName']))) {
+			return $mapping->findForwardConfig('failure');
+		}
+
+		$modulePath = "WEB-INF/classes/modules/" . $_POST['moduleName'] . '/';
+		
+		$module = $_POST['moduleName'];
+
+		//creacion de archivo de salida		
+		
+		$fd = fopen($modulePath . $module . '-permissions.sql','w');
+		if ($fd == false) {
+			//error de apertura de archivo a generar
+			return $mapping->findForwardConfig('failure');
+		}
+			
+		//generacion del insert general sobre el modulo, security_module
+		fprintf($fd,"%s\n",$this->generateSQLInsertSecurityModule($module,'',''));
+
+		foreach (array_keys($permission) as $action) {
+		
+			if (isset($permission[$action]['all'])) {
+				//para ese action todos los permisos
+				
+			}
+			else {
+				
+				foreach (array_keys($this->permissionTypes) as $level) {
+					
+					if ((isset($permission[$action][$level])) && ($permission[$action][$level] == true)) {
+						fprintf($fd,"%s\n",$this->generateSQLInsertSecurityAction($action,$module,$section,$access,$accessAffiliateUser,$active,$pair));
+					}
+				}
+			}			
+			
+
+		}
+		
+		fclose($fd);
+		
+		$myRedirectConfig = $mapping->findForwardConfig('success');
+		$myRedirectPath = $myRedirectConfig->getpath();
+		$queryData = '&moduleName='.$_POST["moduleName"];
+		$myRedirectPath .= $queryData;
+		$fc = new ForwardConfig($myRedirectPath, True);
+		return $fc;
+		
+		
+		
 		
 	}
 
