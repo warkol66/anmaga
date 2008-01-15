@@ -1,3 +1,7 @@
+ |- if $message eq "success" -|
+ 	<div align='center' class='errorMessage'>El Modulo Ha sido instalado Correctamente</div>
+ |-/if-|
+ 
  <table border='0' cellpadding='0' cellspacing='0' width='100%'> 
 	<tr> 
 		 <td class='title'>Configuración del Sistema</td> 
@@ -28,7 +32,7 @@
 	|-foreach from=$modulesToInstall item=module name=modulef-|
 	<tr> 
 		<td class="tdSize1">|-$module-|</td> 		<td class="tdSize1" nowrap><form method="post">
-			<input type="hidden" name="do" value="installSetupPermissions" />
+			<input type="hidden" name="do" value="installSetupModuleInformation" />
 			<input type="hidden" name="moduleName" value="|-$module-|" />
 			<input type="submit" value="Instalar" />
 		</form></td> 

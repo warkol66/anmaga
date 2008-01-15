@@ -18,7 +18,7 @@
 		 <td class="tdSize2">Instalacion de modulo <strong>|-$moduleName-|</strong>.</td> 
 	 </tr> 
 	<tr> 
-		 <td class="tdSize2">Segundo Paso - Configuracion de Permisos de los Actions.</td> 
+		 <td class="tdSize2">Tercer Paso - Configuracion de Mensajes de Log.</td> 
 	 </tr> 
 	<tr> 
 		 <td>&nbsp;</td> 
@@ -26,6 +26,7 @@
 </table> 
 <form method="post">
 <input type="hidden" name="moduleName" value="|-$moduleName-|" />
+<!--
 <table width="100%" cellpadding="5" cellspacing="0" class="tableTdBorders"> 
 	<tr> 
 		<th width="20%" scope="col" class="thFillTitle">Nuevo Módulo</th> 		<th width="10%" scope="col" class="thFillTitle">Permisos</th> 
@@ -42,8 +43,10 @@
 	</tr> 
 	|-/foreach-|
 	
-</table> 
-	<input type="hidden" name="do" value="installDoSetupPermissions" />
-	<p><input type="submit" value="Generar Permisos" /></p>
+</table>
+--> 
+	<input type="hidden" name="moduleName" value="|-$moduleName-|" />
+	<input type="hidden" name="do" value="installDoSetupMessages" />
+	<p><input type="submit" value="Guardar Mensajes" /></p>
 </form>
 
