@@ -66,13 +66,21 @@ class InstallFileCheckAction extends BaseAction {
 		}
 
 		$path = "WEB-INF/classes/modules/" . $_GET['moduleName'] . "/";
-		$phpConfigXMLContent = file_get_contents($path . "phpmvc-config-" . $_GET['moduleName'] . ".xml");
- 		$modulePathsContent = file_get_contents($path . "modulepaths-" . $_GET['moduleName'] . ".php");
- 		$sqlContent = file_get_contents($path . "sql-" . $_GET['moduleName'] . ".sql");
+		$phpConfigXMLContent = file_exists($path . "phpmvc-config-" . $_GET['moduleName'] . ".xml");
+ 		$modulePathsContent = file_exists($path . "modulepaths-" . $_GET['moduleName'] . ".php");
+ 		
+ 		//archivos generados durante la instalacion
+ 		
+ 		$information = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/" . 'information.sql');
+ 		$permissions = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/" . $_GET['moduleName'] . '-permissions.sql');
+ 		
+ 		$messages = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/" . 'messages.sql');
  		
 		$smarty->assign('phpConfigXMLContent',$phpConfigXMLContent);
 		$smarty->assign('modulePathsContent',$modulePathsContent);
-		$smarty->assign('sqlContent',$sqlContent);
+		$smarty->assign('information',$information);
+		$smarty->assign('permissions',$permissions);
+		$smarty->assign('messages',$messages);
 		$smarty->assign('moduleName',$_GET['moduleName']);
 		return $mapping->findForwardConfig('success');
 	}

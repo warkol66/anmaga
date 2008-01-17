@@ -20,4 +20,43 @@ require_once 'anmaga/om/BaseModuleLabel.php';
  */	
 class ModuleLabel extends BaseModuleLabel {
 
+	/**
+		Devuelve un SQL Insert para el la tabla de ModuleLabel
+		a partir de la informacion de la instancia
+	**/
+	private function getSQLInsert($language) {
+		$this->setLanguage($language);
+		$name = $this->getName();
+		$label = $this->getLabel();
+		$description = $this->getDescription();
+		$lang = $this->getLanguage();
+		$sql = "INSERT INTO 'modules_label' ( 'name' , 'label' , 'description' , 'language' ) VALUES ('$name', '$label', '$description', '$lang');";
+		return $sql;
+	
+	}
+	/**
+		Devuelve un SQL Insert para el la tabla de ModuleLabel para el idioma Espaniol
+		a partir de la informacion de la instancia
+		@param $name Nombre del Modulo
+		@param $label Label del modulo
+		@param $description Descripcion del Modulo
+	**/
+
+	function getSQLInsertSpanish() {
+		return $this->getSQLInsert('esp');
+	}
+	
+	/**
+		Devuelve un SQL Insert para el la tabla de ModuleLabel para el idioma Ingles
+		a partir de la informacion de la instancia
+		@param $name Nombre del Modulo
+		@param $label Label del modulo
+		@param $description Descripcion del Modulo
+	**/
+	function getSQLInsertEnglish() {
+		return $this->getSQLInsert('eng');	
+	}
+	
+
+
 } // ModuleLabel

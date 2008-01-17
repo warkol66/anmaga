@@ -519,5 +519,7 @@ class ModulePeer extends BaseModulePeer {
 			else return 0;
 			return 1;
 	}
+	
+
 
 } // ModulePeer

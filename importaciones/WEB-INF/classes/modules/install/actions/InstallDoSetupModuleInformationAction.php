@@ -2,7 +2,7 @@
 
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
-require_once("ModuleDependencyPeer.php");
+require_once("ModuleDependency.php");
 
 
 /**
@@ -58,7 +58,6 @@ d	*/
 		//asigno modulo
 		$modulo = "Install";
 		$smarty->assign("modulo",$modulo);
- 
 		$modulePeer = new ModulePeer();
 
 		if (!isset($_POST['moduleName'])) {
@@ -75,33 +74,46 @@ d	*/
 			return $mapping->findForwardConfig('failure');
 			
 		$moduleLabelPeer = new ModuleLabelPeer();
-		$sqlEng = $moduleLabelPeer->getSQLInsertSpanish($_POST['moduleName'],$_POST['labelsEnglish'],$_POST['descriptionEnglish']);
-		$sqlSpa = $moduleLabelPeer->getSQLInsertSpanish($_POST['moduleName'],$_POST['labelsSpanish'],$_POST['descriptionSpanish']);
+		$moduleLabel = new ModuleLabel();
+		$moduleLabel->setName($_POST['moduleName']);
+		$moduleLabel->setLabel($_POST['labelsEnglish']);
+		$moduleLabel->setDescription($_POST['descriptionEnglish']);
+		$sqlEng = $moduleLabel->getSQLInsertEnglish();
+		$moduleLabel->setLabel($_POST['labelsSpanish']);
+		$moduleLabel->setDescription($_POST['descriptionSpanish']);
+		$sqlSpa = $moduleLabel->getSQLInsertSpanish();
 		
 		fprintf($fd,"%s\n",$sqlSpa);
 		fprintf($fd,"%s\n",$sqlEng);
 		
-		fclose($fd);
 		
 		//generacion de sql de las dependencias
-
+		
 		if (isset($_POST['dependencies'])) {
-
-			$fd = fopen($modulePath . 'dependency.sql','w');
 
 			if ($fd == false)
 				return $mapping->findForwardConfig('failure');			
-			
+
 			foreach($_POST['dependencies'] as $dependencyName) {
-				$sql = ModuleDependencyPeer::getSQLInsert($_POST['moduleName'],$dependencyName);
+
+				$moduleDependency = new ModuleDependency();
+				$moduleDependency->setModuleName($_POST['moduleName']);
+				$moduleDependency->setDependence($dependencyName);
+				$sql = $moduleDependency->getSQLInsert();
 				fprintf($fd,"%s\n",$sql);								
 			}
 		
-			fclose($fd);
 			
 		}
-
-		//TODO ALWAYS ACTIVE
+		
+		$moduleObj = new Module();
+		$moduleObj->setName($_POST['moduleName']);
+		$moduleObj->setAlwaysActive($_POST['alwaysActive']);
+		
+		$sqlAlwaysActive = $moduleObj->getSQLInsert(); 
+		fprintf($fd,"%s\n",$sqlAlwaysActive);
+		
+		fclose($fd);
 		
 		$myRedirectConfig = $mapping->findForwardConfig('success');
 		$myRedirectPath = $myRedirectConfig->getpath();
@@ -109,7 +121,7 @@ d	*/
 		$myRedirectPath .= $queryData;
 		$fc = new ForwardConfig($myRedirectPath, True);
 		return $fc;		
-	
+		
 	}
 
 }

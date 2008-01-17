@@ -20,4 +20,13 @@ require_once 'anmaga/om/BaseModuleDependency.php';
  */	
 class ModuleDependency extends BaseModuleDependency {
 
+	function getSQLInsert(){
+	
+		$moduleName = $this->getModuleName();
+		$dependencyName = $this->getDependence();
+		$sql = "INSERT INTO 'modules_dependency' ( 'moduleName' , 'dependence' ) VALUES ('$moduleName', '$dependencyName');";
+		return $sql;
+		
+	}
+
 } // ModuleDependency

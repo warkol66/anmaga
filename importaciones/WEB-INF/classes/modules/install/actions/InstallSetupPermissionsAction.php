@@ -74,19 +74,37 @@ class InstallSetupPermissionsAction extends BaseAction {
 		while (false !== ($filename = readdir($directoryHandler))) {
 
 			//verifico si es un archivo php
-			if (is_file($modulePath . $filename) && (ereg('php$',$filename))) {
-				//buscamos aquellos que no tienen Do
-				if (strstr($filename,"Do") == false) {
-					array_push($actions,$filename);
-				}	
-			
+			if (is_file($modulePath . $filename) && (ereg('(.*)Action.php$',$filename,$regs))) {
+				array_push($actions,$regs[1]);		
 			}
 			
+		
 		}
-		
-		
 		closedir($directoryHandler);
+		
+		//separacion entre accions con par y acciones sin par
+		
+		
+		foreach ($actions as $action) {
+
+			//separamos los pares de aquellos que no tienen pares
+			if (ereg("(.*)([a-z]Do[A-Z])(.*)",$action,$parts)) {
+				//armamos el nombre de la posible action sin do				
+				$actionWithoutDo = $parts[1].$parts[2][0].$parts[2][3].$parts[3];
+			
+				if (in_array($actionWithoutDo,$actions)) {			
+
+					$pairActions[$actionWithoutDo] = $action;
+				}
+		
+			}
+		}
+		$withPair = array_keys($pairActions);
+		$arrays = array_diff($actions,$withPair);
+		
 		$smarty->assign('actions',$actions);
+		$smarty->assign('withPair',$withPair);
+		$smarty->assign('pairActions',$pairActions);
 		$smarty->assign('moduleName',$_GET['moduleName']);
 		
 		return $mapping->findForwardConfig('success');

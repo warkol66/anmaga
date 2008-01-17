@@ -41,36 +41,7 @@ class ModuleLabelPeer extends BaseModuleLabelPeer {
 		}catch (PropelException $e) {}
 	}
 
-	/**
-		Devuelve un SQL Insert para el la tabla de ModuleLabel
-	**/
-	private function getSQLInsert($name,$label,$description,$lang) {
 
-		$sql = "INSERT INTO 'modules_label' ( 'name' , 'label' , 'description' , 'language' ) VALUES ('$name', '$label', '$description', '$lang');";
-		return $sql;
-	
-	}
-	/**
-		Devuelve un SQL Insert para el la tabla de ModuleLabel para el idioma Espaniol
-		@param $name Nombre del Modulo
-		@param $label Label del modulo
-		@param $description Descripcion del Modulo
-	**/
-
-	function getSQLInsertSpanish($name,$label,$description) {
-		return $this->getSQLInsert($name,$label,$description,'esp');
-	}
-	
-	/**
-		Devuelve un SQL Insert para el la tabla de ModuleLabel para el idioma Ingles
-		@param $name Nombre del Modulo
-		@param $label Label del modulo
-		@param $description Descripcion del Modulo
-	**/
-	function getSQLInsertEnglish($name,$label,$description) {
-		return $this->getSQLInsert($name,$label,$description,'eng');	
-	}
-	
 	
 
 

@@ -3,6 +3,7 @@
 
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
+require_once("SecurityModule.php");
 
 
 /**
@@ -15,30 +16,139 @@ require_once("ModulePeer.php");
 */
 class InstallDoSetupPermissionsAction extends BaseAction {
 
-	/*
-	 * Definicion de los distintos tipos de permisos que pueden haber
-	 */
-	var $permissionTypes;
 
 	// ----- Constructor ---------------------------------------------------- //
 
 	function InstallDoSetupPermissionsAction() {
-		$this->permissionTypes = array('supervisor'=>'0','admin'=>'1','user'=>'2');
+		
 	}
 
 	function generateSQLInsertSecurityModule($module,$access,$accessAffiliateUser) {
 	
-	$query = "INSERT INTO `security_module` ( `module` , `access` , `accessAffiliateUser` ) VALUES ('$module', '$access', '$accessAffiliateUser');";
+		$query = "INSERT INTO `security_module` ( `module` , `access` , `accessAffiliateUser` ) VALUES ('$module', '$access', '$accessAffiliateUser');";
 	
-	return $query;
+		return $query;
 	
 	}
 
-	function generateSQLInsertSecurityAction($action,$module,$section,$access,$accessAffiliateUser,$active,$pair) {
+
 	
-	$query = "INSERT INTO `security_action` (`action`,`module`,`section`,`access`,`accessAffiliateUser`, `active` , `pair` ) VALUES ('$action','$module','$section','$access','$accessAffiliateUser','$active','$pair');";
-	return $query;
+	/**
+	 * Escribe los permisos a la salida 
+	 * @param $module modulo al que pertenecen las actions 
+	 * @param $permission array de permisos de usuario para las acciones recibido por post
+	 * @param $permission array de permisos de afiliado para las acciones recibido por post
+	 * @param $fd file descriptor del archivo donde se deberan guardar los permisos
+	 *
+	 */
+	function writeActionsPermissionsToOutput($module,$permission,$permissionAffiliate,$fd) {
+	
+		foreach (array_keys($permission) as $action) {
 		
+			if (isset($permission[$action]['all'])) {
+				//para ese action todos los permisos
+				$bitLevel = 1073741823;	
+			}
+			else {
+				$bitLevel = 0; 
+				
+				foreach ($permission[$action]['access'] as $access) {
+					$bitLevel += $access;
+				
+				}	
+			
+			}
+			
+			if (isset($permissionAffiliate[$action]['all'])) {
+				//para ese action todos los permisos
+				$bitLevelAffiliate = 1073741823;	
+			}
+			else {
+				$bitLevelAffiliate = 0; 
+				
+				foreach ($permissionAffiliate[$action]['access'] as $access) {
+					$bitLevelAffiliate += $access;
+				
+				}	
+			
+			}
+
+			//vemos si la accion tiene definido un pair
+			$pair = "";
+			if (!empty($permission[$action]['pair']))
+				$pair = $permission[$action]['pair'];
+			
+			//TODO FALTA SECCION
+			$section = '';
+			
+			$securityAction = new SecurityAction();
+			$securityAction->setAction($action);
+			$securityAction->setModule($module);
+			$securityAction->setSection($section);
+			$securityAction->setAccess($bitLevel);
+			$securityAction->setAccessAffiliateUser($bitLevelAffiliate);
+			$securityAction->setActive(1);
+			$securityAction->setPair($pair);
+			
+			$sql = $securityAction->getSQLInsert();
+			
+			fprintf($fd,"%s\n",$sql);
+
+		}
+	
+	
+	}
+	
+	/**
+	 * Escribe los permisos a la salida 
+	 * @param $module modulo al que pertenecen las actions 
+	 * @param $permission array de permisos de usuario para las acciones recibido por post
+	 * @param $permission array de permisos de afiliado para las acciones recibido por post
+	 * @param $fd file descriptor del archivo donde se deberan guardar los permisos
+	 *
+	 */
+	function writeGeneralPermissionsToOutput($module,$permission,$permissionAffiliate,$fd) {
+	
+
+		if (isset($permission['all'])) {
+			//para ese action todos los permisos
+			$bitLevel = 1073741823;	
+		}
+		else {
+			$bitLevel = 0; 
+			
+			foreach ($permission['access'] as $access) {
+				$bitLevel += $access;
+			
+			}	
+		
+		}
+		
+		if (isset($permissionAffiliate['all'])) {
+			//para ese action todos los permisos
+			$bitLevelAffiliate = 1073741823;	
+		}
+		else {
+			$bitLevelAffiliate = 0; 
+			
+			foreach ($permissionAffiliate['access'] as $access) {
+				$bitLevelAffiliate += $access;
+			
+			}	
+		
+		}
+
+		$securityModule = new SecurityModule();
+		$securityModule->setModule($module);
+		$securityModule->setAccess($bitLevel);
+		$securityModule->setAccessAffiliateUser($bitLevelAffiliate);
+		$sql = $securityModule->getSQLInsert();
+
+		
+		fprintf($fd,"%s\n",$sql);
+
+	
+	
 	}
 
 	// ----- Public Methods ------------------------------------------------- //
@@ -53,7 +163,7 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
 	* @param ActionForm			The optional ActionForm bean for this request (if any)
 	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
+	* @param HttpRequestBase	The HTTP response we are creating	/**
 	* @public
 	* @returns ActionForward
 	*/
@@ -79,11 +189,15 @@ class InstallDoSetupPermissionsAction extends BaseAction {
  	
 		$modulePeer = new ModulePeer();
 		
-		$permission = $_POST['permission'];
 		
 		if (!isset($_POST['permission']) && (!isset($_POST['moduleName']))) {
 			return $mapping->findForwardConfig('failure');
 		}
+
+		$permission = $_POST['permission'];
+		$permissionAffiliate = $_POST['permissionAffiliate'];
+		$permissionGeneral = $_POST['permissionGeneral'];
+		$permissionAffiliateGeneral = $_POST['permissionAffiliateGeneral'];
 
 		$modulePath = "WEB-INF/classes/modules/" . $_POST['moduleName'] . '/';
 		
@@ -96,29 +210,10 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 			//error de apertura de archivo a generar
 			return $mapping->findForwardConfig('failure');
 		}
-			
-		//generacion del insert general sobre el modulo, security_module
-		fprintf($fd,"%s\n",$this->generateSQLInsertSecurityModule($module,'',''));
-
-		foreach (array_keys($permission) as $action) {
 		
-			if (isset($permission[$action]['all'])) {
-				//para ese action todos los permisos
-				
-			}
-			else {
-				
-				foreach (array_keys($this->permissionTypes) as $level) {
-					
-					if ((isset($permission[$action][$level])) && ($permission[$action][$level] == true)) {
-						fprintf($fd,"%s\n",$this->generateSQLInsertSecurityAction($action,$module,$section,$access,$accessAffiliateUser,$active,$pair));
-					}
-				}
-			}			
-			
+		$this->writeGeneralPermissionsToOutput($module,$permissionGeneral,$permissionAffiliateGeneral,$fd);
+		$this->writeActionsPermissionsToOutput($module,$permission,$permissionAffiliate,$fd);
 
-		}
-		
 		fclose($fd);
 		
 		$myRedirectConfig = $mapping->findForwardConfig('success');

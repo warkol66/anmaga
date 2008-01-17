@@ -136,13 +136,4 @@ class ActionLogPeer extends BaseActionLogPeer {
 
 
 
-
-
-
-
-
-
-
-
-
 } // ActionLogPeer

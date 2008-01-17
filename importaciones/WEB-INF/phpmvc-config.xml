@@ -1275,7 +1275,7 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success"  path="InstallSetupModuleInformation.tpl" />
-			<forward name="failure" path="Main.php?do=installList" redirect="true"/>
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
 		</action>
 		
 		<action    path = "installDoSetupModuleInformation"
@@ -1283,7 +1283,7 @@
 							 name = "installDoSetupModuleInformation"
 							scope = "request"
 					 validate = "true">
-			<forward name="success"  path="Main.php?do=installSetupPermissions" />
+			<forward name="success"  path="/Main.php?do=installSetupPermissions" redirect="true"/>
 		</action>		
 		
 		<action    path = "installSetupPermissions"
@@ -1292,13 +1292,13 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success"  path="InstallSetupPermissions.tpl" />
-			<forward name="failure" path="Main.php?do=installList" redirect="true"/>
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
 		</action>		<action    path = "installDoSetupPermissions"
 							 type = "InstallDoSetupPermissionsAction"
 							 name = "installDoSetupPermissions"
 							scope = "request"
 					 validate = "true">
-			<forward name="success"  path="Main.php?do=installSetupMessages" redirect="true" />
+			<forward name="success"  path="/Main.php?do=installSetupMessages" redirect="true" />
 		</action>
 		<action    path = "installSetupMessages"
 							 type = "InstallSetupMessagesAction"
@@ -1306,7 +1306,7 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success"  path="InstallSetupMessages.tpl" />
-			<forward name="failure" path="Main.php?do=installList" redirect="true"/>
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
 		</action>
 		
 		<action    path = "installDoSetupMessages"
@@ -1314,7 +1314,7 @@
 							 name = "installDoSetupMessages"
 							scope = "request"
 					 validate = "true">
-			<forward name="success"  path="Main.php?do=installFileCheck" />
+			<forward name="success"  path="/Main.php?do=installFileCheck" redirect="true"/>
 		</action>		
 		
 		<action    path = "installFileCheck"
@@ -1323,7 +1323,7 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success"  path="InstallFileCheck.tpl" />
-			<forward name="failure" path="Main.php?do=installList" redirect="true"/>
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
 		</action>
 		
 		<action    path = "installDoFileCheck"

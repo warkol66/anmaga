@@ -66,11 +66,37 @@ class InstallSetupMessagesAction extends BaseAction {
 		}
 
 		$path = "WEB-INF/classes/modules/" . $_GET['moduleName'] . "/";
-		$converter= new assoc_array2xml();		
-		$xml = file_get_contents($path . 'phpmvc-config'. '-' . $_GET['moduleName'] . ".xml");
-		$arrayXml = $converter->xml2array($xml);
-		$smarty->assign('moduleName',$_GET['moduleName']);
+
+		$xmlBase = file_get_contents($path . 'phpmvc-config'. '-' . $_GET['moduleName'] . ".xml");
+		$xml = "<root>" . $xmlBase . "</root>";
+
+		if(!($doc = DomDocument::loadXML($xml))) {
+			return $mapping->findForwardConfig('failure');			
+		}
 		
+		$actionsMappings = $doc->getElementsByTagName('action-mappings');
+		
+		foreach ($actionsMappings as $actionMappings) {
+		
+			$actions = $actionMappings->getElementsByTagName('action');
+			
+			foreach ($actions as $action) {
+
+				$actionName = $action->getAttribute('path');
+				$forwards = $action->getElementsByTagName('forward');
+				$messages[$actionName] = array();
+				foreach ($forwards as $forward) {
+					$forwardName = $forward->getAttribute('name');
+					array_push($messages[$actionName],$forwardName);
+				}
+
+			}
+		
+		}
+
+		$smarty->assign('actions',array_keys($messages));
+		$smarty->assign('messages',$messages);
+		$smarty->assign('moduleName',$_GET['moduleName']);		
 		return $mapping->findForwardConfig('success');
 	}
 

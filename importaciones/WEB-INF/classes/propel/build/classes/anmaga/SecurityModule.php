@@ -20,4 +20,17 @@ require_once 'anmaga/om/BaseSecurityModule.php';
  */	
 class SecurityModule extends BaseSecurityModule {
 
+	function getSQLInsert() {
+
+		$module = $this->getModule();
+		$access = $this->getAccess();
+		$accessAffiliateUser = $this->getAccessAffiliateUser();
+	
+		$query = "INSERT INTO 'security_module' ( 'module' , 'access' , 'accessAffiliateUser' ) VALUES ('$module', '$access', '$accessAffiliateUser');";
+	
+		return $query;
+	
+	}
+
+
 } // SecurityModule

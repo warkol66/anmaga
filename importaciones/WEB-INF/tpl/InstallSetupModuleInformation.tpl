@@ -53,12 +53,12 @@
 
 			</li>
 			<li>
-				<label>Es un modulo Allways Active:</label><br />
+				<label>Es un modulo Always Active:</label><br />
 				<p>
 					<label>No</label>
-					<input type="radio" name="allwaysActive" value="false" checked="checked"/>
+					<input type="radio" name="alwaysActive" value="0" checked="checked"/>
 					<label>Si</label>
-					<input type="radio" name="allwaysActive" value="true" />
+					<input type="radio" name="alwaysActive" value="1" />
 
 				</p>
 			</li>

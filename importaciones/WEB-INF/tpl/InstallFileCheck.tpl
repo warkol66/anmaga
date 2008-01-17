@@ -26,30 +26,31 @@
 </table> 
 
 <div >
-	<p>Archivo phpmvc-config-|-$moduleName-|.xml |-if empty($phpConfigXMLContent)-| inexistente |-else-|existente|-/if-|</p>
+	<p>Archivo phpmvc-config-|-$moduleName-|.xml` |-if empty($phpConfigXMLContent)-| inexistente |-else-|existente|-/if-|</p>
 	<p>
-	   |-if not empty($phpConfigXMLContent)-|
-		<code>|-$phpConfigXMLContent-|</code>
-	   |-/if-|
-	 </p>
  	<p>Archivo Module Paths modulepaths-|-$moduleName-|.php |-if empty($modulePathsContent)-| inexistente |-else-|existente|-/if-|</p>
 	<p>
-	   |-if not empty($modulePathsContent)-|
-		<code>|-$modulePathsContent-|</code>
-	   |-/if-|
-	 </p>
-	<p>Archivo sql-|-$moduleName-|.sql |-if empty($sqlContent)-| inexistente |-else-|existente|-/if-|</p>
+
+	<p>Archivos generados durante la instalacion</p>
 	<p>
-	   |-if not empty($sqlContent)-|
-		<code>|-$sqlContent-|</code>
-	   |-/if-|
+		<label>Paso 1 - Informacion del Modulo</label><br />
+		<pre>|-$information-|</pre>
 	 </p>
+	<p>
+		<label>Paso 2 - Permisos del Modulo</label><br />
+		<pre>|-$permissions-|</pre>
+	 </p>
+	<p>
+		<label>Paso 3 - Mensajes de Log</label><br />
+		<pre>|-$messages-|</pre>
+	 </p>
+	 
 
 </div>
 
 <form method="post">
 <input type="hidden" name="moduleName" value="|-$moduleName-|" />
-	<input type="hidden" name="do" value="installDoSetupMessage" />
+	<input type="hidden" name="do" value="installDoFileCheck" />
 	<p><input type="submit" value="Aceptar Configuracion" /></p>
 </form>
 

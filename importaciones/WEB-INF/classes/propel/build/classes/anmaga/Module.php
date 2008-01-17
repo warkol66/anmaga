@@ -75,6 +75,21 @@ class Module extends BaseModule {
 			return $securityAccess->getAccess();
 		}catch (PropelException $e) {}
 	}
+	
+	/**
+	 *
+	 *
+	 *
+	 */
+	 function getSQLInsert() {
+
+	 	$moduleName = $this->getName();
+		$alwaysActive = $this->getAlwaysActive();
+		$sql = "INSERT INTO 'modules_module' ( 'name' , 'active' , 'alwaysActive' ) VALUES ('$moduleName', '1', '$alwaysActive');";
+		 
+		 return $sql;
+	 
+	 }
 
 
 

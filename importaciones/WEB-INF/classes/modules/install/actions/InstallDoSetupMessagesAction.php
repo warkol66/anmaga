@@ -3,6 +3,7 @@
 
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
+require_once("ActionLogLabel.php");
 
 
 /**
@@ -64,10 +65,38 @@ class InstallDoSetupMessagesAction extends BaseAction {
 		if (!isset($_POST['moduleName'])) {
 			return $mapping->findForwardConfig('failure');			
 		}
-		
-		//TODO PROCESO
 
+		$modulePath = "WEB-INF/classes/modules/" . $_POST['moduleName'] . '/';
+				
+		$fd = fopen($modulePath  . 'messages.sql','w');
+		if (!$fd) {
+			$myRedirectConfig = $mapping->findForwardConfig('failure');
+		}
 		
+		$messages = $_POST['message'];
+		
+		foreach (array_keys($messages) as $action) {
+			
+			foreach(array_keys($messages[$action]) as $forward) {
+			
+				foreach(array_keys($messages[$action][$forward]) as $lang) {
+			
+					//creamos un action log label
+					$actionLogLabel = new ActionLogLabel();
+					$actionLogLabel->setAction($action);
+					$actionLogLabel->setForward($forward);
+					$actionLogLabel->setLanguage($lang);
+					$actionLogLabel->setLabel($messages[$action][$forward][$lang]);
+					//obtenemos el insert asociado a la instancia
+					$sql = $actionLogLabel->getSQLInsert();
+					fprintf($fd,"%s\n",$sql);
+				}			
+			}
+		
+		}
+
+		fclose($fd);
+	
 		$myRedirectConfig = $mapping->findForwardConfig('success');
 		$myRedirectPath = $myRedirectConfig->getpath();
 		$queryData = '&moduleName='.$_POST["moduleName"];

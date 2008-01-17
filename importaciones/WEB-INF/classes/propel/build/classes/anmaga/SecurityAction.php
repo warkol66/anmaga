@@ -40,7 +40,25 @@ class SecurityAction extends BaseSecurityAction {
 		}catch (PropelException $e) {}
 	}
 
-
+	/**
+	 * Obtiene el SQL Insert Correspondiente a la tabla con los datos de la instancia
+	 *
+	 *
+	 */
+	function getSQLInsert() {
+	
+		$action = $this->getAction();
+		$module = $this->getModule();
+		$section = $this->getSection();
+		$access = $this->getAccess();
+		$accessAffiliateUser = $this->getAccessAffiliateUser();
+		$active = $this->getActive();
+		$pair = $this->getPair();
+	
+		$query = "INSERT INTO `security_action` (`action`,`module`,`section`,`access`,`accessAffiliateUser`, `active` , `pair` ) VALUES ('$action','$module','$section','$access','$accessAffiliateUser','$active','$pair');";
+		return $query;
+		
+	}
 
 
 
