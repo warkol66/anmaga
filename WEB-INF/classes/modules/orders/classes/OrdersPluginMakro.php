@@ -28,7 +28,7 @@ class OrdersImportPlugin {
 		foreach ($rows as $row) {						
 			if ( !empty($row[0]) && is_numeric($row[0]) && !empty($row[15]) && !empty($row[18]) && !empty($row[21]) && !empty($row[6]) && !empty($row[4]) ) {
 				$item = array();
-				$item["orderNumber"] = $row[0];
+				$item["orderNumber"] = $row[0].$row[4];
 				$item["productCode"] = str_pad($row[15], strlen($row[15])+1, "0", STR_PAD_LEFT);
 				$item["affiliateProductCode"] = $row[16];
 				$item["quantity"] = $row[18];
@@ -36,7 +36,7 @@ class OrdersImportPlugin {
 				//si todavia no se cargo la informacion de la orden esa
 				if ( !isset($orders[$item["orderNumber"]]) ) {
 					$order = array();
-					$order["number"] = $row[0];
+					$order["number"] = $row[0].$row[4];
 					$order["created"] = $row[6];
 					$order["branchNumber"] = $row[4];
 					$order["modifiedProductCodes"] = true;
