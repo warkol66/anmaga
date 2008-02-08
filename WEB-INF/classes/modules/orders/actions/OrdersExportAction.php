@@ -61,7 +61,8 @@ class OrdersExportAction extends BaseAction {
 		}
 		
 		$smarty->assign("orders",$orders);
-		
+
+		header("content-Type:text/html; charset=windows-1252"); 		
 		header("content-disposition: attachment; filename=orders.xml");
 
 		return $mapping->findForwardConfig('success');
