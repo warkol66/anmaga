@@ -168,7 +168,7 @@
 					<option value="|-$product->getId()-|">|- $product->getCode()-|, |- $productNode->getName()-|</option>
 			|-/foreach-|
 			</select><br />
-			<label>Cantidad: </label><input type="text" id="productQuantity" name="productQuantity" value="1" /><br />
+			<label>Cantidad: </label><input type="text" id="productQuantity" name="productQuantity" value="0" /><br />
 			
 			<input type="button" onclick="javascript:ordersItemsDoAddX(this.form)" value="Agregar" class="boton" /> 
 			<input type="hidden" name="do" value="ordersItemsDoAddX" /> 
