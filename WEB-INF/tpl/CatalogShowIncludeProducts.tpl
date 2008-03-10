@@ -22,7 +22,7 @@
 			<td class="tdSize1">|-if $product->getprice() neq 0-|
 				<form>
 					<label for="quantity">Cantidad</label>
-					<input type="text" name="quantity" value="1" size="2" />
+					<input type="text" name="quantity" value="0" size="5" />
 					<input type="hidden" name="productId" value="|-$product->getId()-|" />
 					<input type="hidden" name="do" value="ordersAddItemToCartX" />
 					<input type="button" value="Agregar" class="smallButton" onclick="javascript:ordersAddItemToCartX(this.form)" />
