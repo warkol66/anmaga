@@ -296,6 +296,21 @@ class ProductPeer extends BaseProductPeer {
 		$alls = ProductPeer::doSelect($cond);
 		return $alls;
   }
+
+  /**
+  * Obtiene todos los productos con stock.
+  *
+  *	@return array Informacion sobre todos los products
+  */
+	function getAllWithStock() {
+		$cond = new Criteria();
+		$cond->add(ProductPeer::ACTIVE, true);
+		//regla de negocio, aquellos productos de precio cero no tienen stock y no pueden ser comprados.
+		$cond->add(ProductPeer::PRICE, 0, Criteria::NOT_EQUAL);
+		$alls = ProductPeer::doSelect($cond);
+		return $alls;
+  }
+
   
   /**
   * Obtiene todos los productos paginados.

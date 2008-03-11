@@ -87,6 +87,12 @@ class OrdersItemsDoAddXAction extends BaseAction {
 				return $mapping->findForwardConfig('failure');
 			}
 			
+			if ($item == false) {
+			
+				//fallo una regla negocio
+				return $mapping->findForwardConfig('failure');
+			}
+			
 			//asignamos a smarty			
 			$smarty->assign('product',$product);
 			$smarty->assign('order',$order);

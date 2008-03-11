@@ -48,7 +48,7 @@ class OrdersEditAction extends BaseAction {
 		//recuperamos la orden a editar
     	$order = OrderPeer::get($_GET["id"]);
 		
-		$products = ProductPeer::getAll();
+		$products = ProductPeer::getAllWithStock();
 		$smarty->assign("products",$products);
 		
 		if ( empty($order) ) {
