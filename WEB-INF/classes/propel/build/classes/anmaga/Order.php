@@ -31,6 +31,12 @@ class Order extends BaseOrder {
          */
         function addItem ($productId,$productId,$price,$quantity) {
 
+                //regla de negocio
+                // la cantidad de items debe ser mayor o igual a uno
+               if ($quantity <= 0) {
+                        return false;
+               }
+
                 try {
                         $item = OrderItemPeer::create($this->getId(),$productId,$price,$quantity);
                 }
