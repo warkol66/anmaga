@@ -204,6 +204,22 @@ class TreePeer {
 		
 		return $pager;
 	}
+	
+	function getAllByAffiliatePaginated($affiliateId,$page,$perPage=10) {
+		if (empty($page))
+			$page = 1;
+		require_once("propel/util/PropelPager.php");
+		$cond = new Criteria();
+
+		$cond->add(AffiliateProductPeer::AFFILIATEID, $affiliateId);
+		$cond->addJoin(NodePeer::ID , AffiliateProductPeer::PRODUCTID, Criteria::JOIN);
+		$pager = new PropelPager($cond,"NodePeer","doSelect",$page,$perPage);
+
+		return $pager;
+
+	 }
+
+	
 
 }
 
