@@ -16,7 +16,7 @@
   extract($_SESSION,EXTR_PREFIX_ALL,'session');
   extract($_GET,EXTR_PREFIX_ALL,'get');
   extract($_POST,EXTR_PREFIX_ALL,'post');
-  error_reporting(0);
+  //error_reporting(0);
 
 
 /*

@@ -906,13 +906,17 @@
            validate = "true">
     <forward name="success" path="Main.php?do=catalogAffiliateProductCodesList&amp;message=deleted_ok" redirect="true" />
     </action>
+
+	<action    path = "catalogAffiliateProductList"
+						 type = "CatalogAffiliateProductListAction"
+						 name = "catalogAffiliateProductList"
+						scope = "request"
+				 validate = "true">
+		<forward name="success" path="CatalogAffiliateProductList.tpl" />
+	</action>
+
 <!-- End Section AffiliateProductCodes -->
-
-
 	</action-mappings>
-
-
-
 
 <!-- End Module Catalog -->
 

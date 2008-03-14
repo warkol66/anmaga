@@ -81,7 +81,7 @@ class AffiliateProductPeer extends BaseAffiliateProductPeer {
 	 * Indica si un afiliado tiene una lista especial de precios
 	 */
 	function affiliateHasPriceList($affiliateId) {
-		
+	
 		$cond = new Criteria();
 		$cond->add(AffiliateProductPeer::AFFILIATEID,$affiliateId);
 		
