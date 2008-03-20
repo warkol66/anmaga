@@ -336,13 +336,16 @@ function BuildMail()
 */ 
 function Send()
 {
-	global $enDesarrollo;
+	global $system;
+	
+	$developmentMode = $system["config"]["system"]["parameters"]["developmentMode"]["value"];
+	
 	$this->BuildMail();
 
 	$this->strTo = implode( ", ", $this->sendto );
 
 	// Si el sistema esta en modo desarrollo, no envio el mail, y lo logueo en el archivo de logueo de mails
-	if ( (isset($enDesarrollo)) && ($enDesarrollo==true) ) {
+	if ($developmentMode == "YES") {
   	$handle = fopen(ARCHIVO_LOG_MAIL, "a");
 		fwrite($handle, "DATE TIME: ".date("Y-m-d H:i:s (T)")."\n");
   	fwrite($handle, "TO: ".$this->sendto[0]."\n");

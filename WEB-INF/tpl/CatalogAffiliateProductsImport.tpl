@@ -27,6 +27,13 @@
 	<p>Resultado de la importación</p>
 	<p>Registros Creados: |- $rowsCreated-|</p>
 	<p>Registros Leidos: |- $rowsReaded -|</p>
+	<p>Códigos no Encontrados: 
+		<ul>
+			|-foreach from=$errorCodes item=code-|
+			<li>|-$code-|</li>
+			|-/foreach-|
+		</ul>
+	</p>	
 </div>	
 
 |-else-|
