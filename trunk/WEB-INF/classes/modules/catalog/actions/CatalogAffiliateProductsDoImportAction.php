@@ -1,7 +1,6 @@
 <?php
-require_once 'Action.php';
 require_once 'BaseAction.php';
-require_once('AffiliateProductPeer.php');
+require_once('AffiliatePeer.php');
 
 class CatalogAffiliateProductsDoImportAction extends BaseAction {
 
@@ -30,39 +29,16 @@ class CatalogAffiliateProductsDoImportAction extends BaseAction {
 
 		$moduleSection = "AffiliatesProducts";
     	$smarty->assign("moduleSection",$section);
-
-		$affiliateProductPeer = new AffiliateProductPeer();
 		
 		if (isset($_POST['affiliate']) && isset($_FILES["fileImport"]["tmp_name"])) {
-		
-			$archive = array();
-			$rowsReaded = -1;
-			$rowsCreated = 0;
-			$handle = fopen($_FILES["fileImport"]["tmp_name"], "r");
-				
-			while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 			
-				if ($rowsReaded >= -1)
-						$archive[] = $data;
-					
-			}
-				
-			$rowsReaded = count($archive);
+			$affiliate = AffiliatePeer::get($_POST["affiliate"]);
 			
-			if ($rowsReaded > 0) 
-				$affiliateProductPeer->deletePrices($_POST['affiliate']);				
+			$result = $affiliate->doImportPrices($_FILES["fileImport"]["tmp_name"]);
 			
-			//procesamiento de filas de datos		
-			foreach ($archive as $row) {
-				if ($affiliateProductPeer->add($_POST['affiliate'],$row[0],$row[1])!= false) {
-					$rowsCreated++;
-				}
-				
-			}
-			
-			fclose($handle);
-			$smarty->assign("rowsCreated",$rowsCreated);
-			$smarty->assign("rowsReaded",$rowsReaded);
+			$smarty->assign("rowsCreated",$result["rowsCreated"]);
+			$smarty->assign("rowsReaded",$result["rowsReaded"]);
+			$smarty->assign("errorCodes",$result["errorCodes"]);			
 		
 			return $mapping->findForwardConfig('success');
 		}
