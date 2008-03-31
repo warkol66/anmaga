@@ -79,4 +79,4 @@ class UsersDoLoginAction extends BaseAction {
 	}
 
 }
-?>
+
