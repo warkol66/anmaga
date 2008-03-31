@@ -83,6 +83,11 @@ class BaseAction extends Action {
 
 		header("Content-type: text/html; charset=UTF-8");
 
+		if ( Common::inMaintenance() ) {
+			header("Location: Main.php?do=maintenance");
+			exit;
+		}		
+
 		$noCheckLogin = array();
 		
 		foreach ($system["config"]["system"]["noCheckLoginActions"] as $action => $status) {

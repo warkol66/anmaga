@@ -30,6 +30,14 @@ class AffiliatesUsersLoginAction extends BaseAction {
 		$message=$_GET["message"];
 		$smarty->assign("message",$message);
 
+		global $system;
+		$unifiedLogin = $system["config"]["system"]["parameters"]["affiliateUserLoginUnified"]["value"];
+		
+		if ($unifiedLogin == "YES") {
+			$smarty->assign("unifiedLogin",true);
+			return $mapping->findForwardConfig('success-unified');
+		}
+
 		return $mapping->findForwardConfig('success');
 	}
 
