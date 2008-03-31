@@ -12,7 +12,9 @@
 		<a class="menuSubButton" href="Main.php?do=catalogProductsList">Administrar Productos</a>
 		<a class="menuSubButton" href="Main.php?do=catalogUnitsList">Administrar Unidades</a>
 		<a class="menuSubButton" href="Main.php?do=catalogMeasureUnitsList">Administrar Unidades de Medida</a>
+		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductList">Ver lista de precio por cliente</a>
 		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductsImport">Administrar listas de precio por cliente</a>
+		
 		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductCodesList">Conversor de códigos</a></div>
 	</td>
   </tr>
