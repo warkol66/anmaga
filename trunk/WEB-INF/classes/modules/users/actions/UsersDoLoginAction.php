@@ -50,6 +50,9 @@ class UsersDoLoginAction extends BaseAction {
 				$_SESSION["login_user"] = $user;
 				$_SESSION["loginUser"] = $user;
 				$smarty->assign("loginUser",$user);
+
+				Common::doLog('success','username: ' . $_POST["username"]);
+
 				return $mapping->findForwardConfig('success');
 			}
 		}
@@ -57,6 +60,21 @@ class UsersDoLoginAction extends BaseAction {
 		$this->template->template = "TemplateLogin.tpl";
 		
     $smarty->assign("message","wrongUser");
+		global $system;
+		$maintenance = $system["config"]["system"]["parameters"]["underMaintenance"]["value"];
+
+		if ($maintenance == "YES")
+			$smarty->assign("onlyAdmin",true);
+
+		global $system;
+		$unifiedLogin = $system["config"]["system"]["parameters"]["affiliateUserLoginUnified"]["value"];
+		
+		if ($unifiedLogin == "YES") {
+			$smarty->assign("unifiedLogin",true);
+		}
+
+
+		Common::doLog('failure','username: ' . $_POST["username"]);
 		return $mapping->findForwardConfig('failure');
 	}
 
