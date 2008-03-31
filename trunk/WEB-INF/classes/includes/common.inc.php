@@ -469,6 +469,22 @@ function getAdminLogged() {
 
 }
 
+function isSupplier() {
+
+	if (!isset($_SESSION['loginUser']))
+		return false;
+	
+	$user = $_SESSION['loginUser'];
+	return $user->isSupplier();
 
 }
 
+function getSupplierUserId() {
+
+	$user = $_SESSION["loginUser"];
+	return $user->getId();
+
+}
+
+
+}

@@ -44,7 +44,6 @@ class AffiliatesUsersDoLoginAction extends BaseAction {
 
 		$module = "Affiliates";
 
-
 		if ( !empty($_POST["username"]) && !empty($_POST["password"]) ) {;
 			$user = AffiliateUserPeer::auth($_POST["username"],$_POST["password"]);
 			if ( !empty($user) ) {
@@ -72,4 +71,3 @@ class AffiliatesUsersDoLoginAction extends BaseAction {
 	}
 
 }
-?>

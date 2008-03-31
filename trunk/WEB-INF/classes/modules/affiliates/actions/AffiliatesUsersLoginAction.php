@@ -42,4 +42,3 @@ class AffiliatesUsersLoginAction extends BaseAction {
 	}
 
 }
-?>

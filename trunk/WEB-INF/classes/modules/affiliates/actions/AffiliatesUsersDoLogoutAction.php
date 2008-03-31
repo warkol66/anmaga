@@ -58,4 +58,3 @@ class AffiliatesUsersDoLogoutAction extends BaseAction {
 	}
 
 }
-?>
