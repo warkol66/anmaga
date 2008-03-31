@@ -16,7 +16,8 @@
   extract($_SESSION,EXTR_PREFIX_ALL,'session');
   extract($_GET,EXTR_PREFIX_ALL,'get');
   extract($_POST,EXTR_PREFIX_ALL,'post');
-  //error_reporting(0);
+//  error_reporting($system["config"]["system"]["errorReporting"]);
+  error_reporting(E_ALL ^ E_NOTICE);
 
 
 /*
@@ -221,114 +222,46 @@
 		}
 	}
 
-  /**
-  * loguear
-  * 
-  * loguear
-  *
-	*	@pendiente
-  * @return loguear
-  */
-	function loguear($descripcion="") {
-		include_once "WEB-INF/classes/includes/Menu.class.php";
-		$menu = new Menu();
-    $base = new DBConnection();
-    $base->connect();
-  
-/*   	if (!ereg("\\\?do=([^&]*)",$_SERVER['QUERY_STRING'],$campos))
-		{
-   		ereg("&do=([^&]*)&",$_SERVER['QUERY_STRING'],$campos);
-		}
-		$accion = $campos[1];
-		$arbol = $menu->obtenerArbolPermisosAsociativo();
-		$modulo = $arbol[ucwords($accion)]['modulo']; */
-/*		if (!empty($_SESSION['usuario']))
-		{
-			$sql = "SELECT * FROM mer_auditoria_accion WHERE id_auditoria_accion='$accion'";
-			$base->query($sql);
-			if ($base->num_rows()==0)
-    	{
-				$base->query("INSERT INTO mer_auditoria_accion(id_auditoria_accion,descripcion) VALUES('$accion','$accion')");
-			}
-    	$base->query("INSERT INTO mer_auditoria(id_usuario,fecha_hora,modulo,id_mer_auditoria_accion,descripcion) VALUES(".$_SESSION['id_usuario'].",now(),'$modulo','$accion','$descripcion')");
-	  	$base->free();
-		}
-*/
-	}
-
-
-
-  /**
-  * estaLogueado
-  * 
-  * estaLogueado
-  *
-  * @return estaLogueado
-  */
-	function estaLogueado(){
-		global $enMantenimiento;
-		if ( (isSet($_SESSION['usuario'])) && ($_SESSION['usuario']=="Supervisor") )
-			return true;
-		if ($enMantenimiento == true)
-			return false;
-		if(isSet($_SESSION['usuario']))
-			return true;
-		else
-			return false;
-	}
-
-  /**
-  * sitioEnMantenimiento
-  * 
-  * sitioEnMantenimiento
-  *
-  * @return sitioEnMantenimiento
-  */
-	function sitioEnMantenimiento() {
-		global $enMantenimiento;
-		return $enMantenimiento;
-	}
-
-
-
-
 class Common
 {
-	function isLogged(){
-		global $inMaintenance;
-		if ( (isSet($_SESSION['LOGIN'])) && ($_SESSION['usuario']=="Supervisor") )
-			return true;
-		if ($enMantenimiento == true)
+	/**
+	* Indica si el sistema se encuentra en mantenimiento y se debe reenviar al usuario a la pantalla de Maintenance.
+	*
+	* @return true si el sistema esta en mantenimiento
+	**/
+	function inMaintenance(){
+		global $system;
+		$maintenance = $system["config"]["system"]["parameters"]["underMaintenance"]["value"];
+		
+		//si no esta el sistema en mantenimiento, devolver false
+		if ($maintenance != "YES")
 			return false;
-		if(isSet($_SESSION['LOGIN']))
-			return true;
-		else
-			return false;
-	}
+		
+		$noCheckMaintenance = array();
+		$noCheckMaintenance[] = "maintenance";
+		$noCheckMaintenance[] = "usersLoginMaintenance";
+		$noCheckMaintenance[] = "usersDoLogin";		
+		$noCheckMaintenance[] = "usersDoLogout";	
+		
+		$isNoCheckMaintenanceAction = array_search($_REQUEST["do"],$noCheckMaintenance);
 
-	function setSystemParameters(){
-		$db = new DBConnection();
-		$db->connect();
-		$db->query("SELECT * FROM MOD_PARAMETROS");
-		$db->next_record();
-		$_SESSION['parameters'] = $db->Record;;
+		//si es un action que no requiere chequeo de mantenimiento, devolver false
+		if ($isNoCheckMaintenanceAction !== false)
+			return false;
+			
+		$user = $_SESSION["loginUser"];
+				
+		if (!empty($user)) {
+			$level = $user->getLevel();
+			//si el usuario logueado tiene un nivel menor a 3 (supervisor y admin), devolver false
+			if ($level < 3) 
+				return false;
+		}
+		
+		//si llego hasta aca, devolver true		
 		return true;
 	}
 
- /**
- * Mantenimiento
- *
- *  Pregunta si el login existe, y si no es el supervisor
- * @param string $post_txtlogin con el texto a verficar
- * @return True si entro a la funcion e hizo todo correctamente, sino false
- *
- */
-	function Mantenimiento($post_txtLogin){
-			if ( ($_SESSION['parametros']['SISTEMA_EN_MANTENIMIENTO']) && ( (!isset($post_txtLogin)) || (strtoupper($post_txtLogin)!='SUPERVISOR') ) ) {
-			return true;
-			}
-		return false;
-	}
 
 /*
 * Ejemplo: Common::debugger(dirname(__FILE__)."/archivo.sql","Query: ",$query);
@@ -460,7 +393,7 @@ class Common
 * @param string $object objeto sobre el cual se realizó la acción
 * @return void
 */
-function doLog($userInfo,$action,$forward,$object=null) {
+function doLog($forward,$object=null) {
 
 	include_once 'ActionLog.php';	
 
@@ -469,16 +402,24 @@ function doLog($userInfo,$action,$forward,$object=null) {
 		$actionLogLabel = new ActionLogLabelPeer();
 		$actionLogLabelObject=$actionLogLabel->getAllByActionLanguageEsp($_REQUEST['do'],$forward);
 	}*/
+	
+	//obtengo el action adonde se esta	
+	$action = strtoupper(substr($_REQUEST['do'],0,1)) . substr($_REQUEST['do'],1,strlen($_REQUEST['do']));
+	$userInfo = Common::userInfoToDoLog();
+	
 	try{
 		$logs = new ActionLog();
 		$logs->setUserId($userInfo["userId"]);
 		$logs->setAffiliateId($userInfo["affiliateId"]);
-		$logs->setDatetime(now);
+		$logs->setDatetime(time());
 		$logs->setAction($action);
 		$logs->setObject($object);
 		$logs->setForward($forward);
 		$logs->save();
-	}catch (PropelException $e) {}
+	}
+	catch (PropelException $e) {
+		;	
+	}
 }
 /**
  * Indica si un usuario es afiliado.
@@ -498,6 +439,36 @@ function getAffiliatedId() {
 	
 }
 
+function isAdmin() {
+
+	if (!isset($_SESSION['loginUser']))
+		return false;
+	
+	$user = $_SESSION['loginUser'];
+	return $user->isAdmin();
 
 }
-?>
+
+
+function getAdminUserId() {
+
+	$user = $_SESSION["loginUser"];
+	return $user->getId();
+
+}
+
+function getAffiliatedLogged() {
+
+	return $_SESSION["loginAffiliateUser"];
+
+}
+
+function getAdminLogged() {
+
+	return $_SESSION["loginUser"];
+
+}
+
+
+}
+
