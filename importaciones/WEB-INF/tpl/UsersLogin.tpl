@@ -1,3 +1,4 @@
+<script type="text/javascript" language="javascript" src="scripts/login.js"></script>
 <table width='760' border='0' cellpadding='0' cellspacing="0" class='fondoffffff'>
 	<tr> 
 		<td class="cabezal">&nbsp;</td> 
@@ -34,6 +35,17 @@
 						<tr> 
 							<td colspan='2' class='tdTitle'>Ingrese su Identificaci&oacute;n de usuario y contrase&ntilde;a para ingresar al sistema</td> 
 						</tr> 
+			|- if isset($unifiedLogin) -|
+				|-if !$onlyAdmin -|				
+						<tr>
+							<td nowrap class='tdTitle'>Tipo de Usuario</td>
+							<td class='tdData'><select name="select">
+			   		<option value="admin" selected onClick="javascript:changeActionToAdminLogin(this.form)">Administrador&nbsp;&nbsp;&nbsp;</option>
+			   		<option value="affiliate" onClick="javascript:changeActionToAffiliate(this.form)">Mayorista&nbsp;&nbsp;&nbsp;</option>
+			   </select></td>
+						</tr>
+			   |-/if-|
+			|-/if-|
 						<tr> 
 							<td width='20%' nowrap class='tdTitle'>Identificaci&oacute;n de Usuario</td> 
 							<td class='tdData'><input type='text' name='username' size='35' /></td> 

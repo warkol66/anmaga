@@ -2,10 +2,9 @@
 
 require_once("BaseAction.php");
 
-class AffiliatesUsersLoginAction extends BaseAction {
+class MaintenanceAction extends BaseAction {
 
-
-	function AffiliatesUsersLoginAction() {
+	function MaintenanceAction() {
 		;
 	}
 
@@ -24,21 +23,9 @@ class AffiliatesUsersLoginAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
-
-		$module = "Affiliates";
-
-		$message=$_GET["message"];
-		$smarty->assign("message",$message);
-
-		global $system;
-		$unifiedLogin = $system["config"]["system"]["parameters"]["affiliateUserLoginUnified"]["value"];
-		
-		if ($unifiedLogin == "YES") {
-			$smarty->assign("unifiedLogin",true);
-			return $mapping->findForwardConfig('success-unified');
-		}
-
 		return $mapping->findForwardConfig('success');
+
 	}
 
 }
+?>

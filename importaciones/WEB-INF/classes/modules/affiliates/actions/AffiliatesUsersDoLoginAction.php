@@ -44,9 +44,8 @@ class AffiliatesUsersDoLoginAction extends BaseAction {
 
 		$module = "Affiliates";
 
-
-		if ( !empty($_POST["usernameAff"]) && !empty($_POST["passwordAff"]) ) {;
-			$user = AffiliateUserPeer::auth($_POST["usernameAff"],$_POST["passwordAff"]);
+		if ( !empty($_POST["username"]) && !empty($_POST["password"]) ) {;
+			$user = AffiliateUserPeer::auth($_POST["username"],$_POST["password"]);
 			if ( !empty($user) ) {
 
 				$_SESSION["loginAffiliateUser"] = $user;
@@ -59,8 +58,16 @@ class AffiliatesUsersDoLoginAction extends BaseAction {
 		$this->template->template = "TemplateLogin.tpl";
 		
     $smarty->assign("message","wrongUser");
+
+		global $system;
+		$unifiedLogin = $system["config"]["system"]["parameters"]["affiliateUserLoginUnified"]["value"];
+		
+		if ($unifiedLogin == "YES") {
+			$smarty->assign("unifiedLogin",true);
+			return $mapping->findForwardConfig('failure-unified');
+		}
+
 		return $mapping->findForwardConfig('failure');
 	}
 
 }
-?>

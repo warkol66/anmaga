@@ -29,7 +29,14 @@
                name = "index"
               scope = "request"
            validate = "true">
-    	<forward name="success" path="Index.tpl" />
+    	<forward name="success" path="/Main.php?do=usersLogin" redirect="true" />
+    </action>
+    <action    path = "maintenance"
+               type = "MaintenanceAction"
+               name = "maintenance"
+              scope = "request"
+           validate = "true">
+    	<forward name="success" path="Maintenance.tpl" />
     </action>
     <action    path = "welcome"
                type = "WelcomeAction"
@@ -52,6 +59,7 @@
 					 validate = "true">
 			<forward name="success" path="UsersLogin.tpl"/>
 			<forward name="maintenance" path="Maintenance.tpl"/>
+			<forward name="welcome" path="/Main.php?do=usersWelcome" redirect="true" />
 		</action>
 
 		<action    path = "usersDoLogin"
@@ -76,7 +84,7 @@
 							 name = "usersDoPasswordRecovery"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=usersLogin&amp;message=passwordSent" redirect="true" />
+			<forward name="success" path="/Main.php?do=usersLogin&amp;message=passwordSent" redirect="true" />
 			<forward name="failure" path="UsersPasswordRecovery.tpl"/>
 		</action>
 
@@ -502,7 +510,8 @@
 								 name = "affiliatesUsersDoLogout"
 								scope = "request"
 						 validate = "true">
-				<forward name="success" path="/Main.php?do=index" redirect="true" />
+				<forward name="success-unified" path="/Main.php?do=usersLogin" redirect="true" />
+				<forward name="success" path="/Main.php?do=affiliatesUsersLogin" redirect="true" />
 		</action>
 
 		<action    path = "affiliatesUsersDoAddToGroup"
