@@ -23,15 +23,16 @@
  * Variable para indicar si el sitio se encuentra en estado de desarrollo
  * Captura los mails generados por el sistema y los guarda en un archivo de texto
  */ 
-	global $enDesarrollo;
+/*	global $enDesarrollo;
 	$enDesarrollo = $_SESSION["parameters"]["SISTEMA_EN_DESARROLLO"];
+*/
 /*
  * Variable para indicar si el sitio se encuentra en mantenimiento
  * No permite loguear ningun usuario nuevo, solo el supervisor
  */ 
-	global $enMantenimiento;
+/*	global $enMantenimiento;
 	$enMantenimiento = $_SESSION["parameters"]["SISTEMA_EN_MANTENIMIENTO"];
-
+*/
   /**
   * getBrowser
   * 

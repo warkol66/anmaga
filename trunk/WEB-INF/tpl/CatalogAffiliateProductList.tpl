@@ -27,7 +27,7 @@
 				|-/foreach-|
 				</select>
 				<input type="hidden" name="do" value="catalogAffiliateProductList" />
-				<input type="submit" name="search" value="Buscar Lista de Precios" />
+				<input type="submit" name="search" value="Ver Lista de Precios" />
 			</form>
 		</td>
 	</tr>
