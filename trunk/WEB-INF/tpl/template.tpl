@@ -4,6 +4,7 @@
 <title>|-$parameters.siteName-|</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" href="css/style.css" type="text/css">
+<link rel="stylesheet" href="css/main.css" type="text/css">
 <!--[if !IE]> <link href="css/style_ns6+.css" rel="stylesheet" type="text/css"> <![endif]-->
 <link rel="shortcut icon" href="images/favicon.ico">
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
@@ -25,9 +26,14 @@
 	<tr valign="top">
 		<td width="155">|-include file="MenuLeft.tpl"-|</td>
 		<td width="5">&nbsp;</td>
-		<td width="795"><!--centerHTML start-->
-						|-$centerHTML-|
-		<!--centerHTML end --></td>
+		<td width="795">	<!-- Begin Right Column -->
+	<div id="rightcolumn">
+		<!--centerHTML start-->
+		|-$centerHTML-|
+		<!--centerHTML end -->
+	</div>
+	<!-- End Right Column -->
+</td>
 	</tr>
 </table>
 <p>&nbsp;</p>

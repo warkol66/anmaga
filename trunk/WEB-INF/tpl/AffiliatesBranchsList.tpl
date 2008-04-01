@@ -1,26 +1,6 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr> 
-		<td class='title'>Clientes y Distribuidores Mayoristas </td> 
-	</tr> 
-	<tr> 
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td> 
-	</tr> 
-	<tr> 
-		<td>&nbsp;</td> 
-	</tr> 
-	<tr> 
-		<td class='backgroundTitle'>Administración de Sucursales </td> 
-	</tr> 
-	<tr> 
-		<td>&nbsp;</td> 
-	</tr> 
-	<tr> 
-		<td class="tdSize2">A continuación podrá editar la información de las sucursales.</td> 
-	</tr> 
-	<tr> 
-		<td>&nbsp;</td> 
-	</tr> 
-</table>
+<h2>Clientes y Distribuidores Mayoristas </h2> 
+	<h1>Administración de Sucursales </h1> 
+	<p>A continuación podrá editar la información de las sucursales.</p> 
 <div id="div_branchs">
 |-if $message eq "ok"-|<span class="message_ok">Sucursal guardada correctamente</span>|-/if-|
 |-if $message eq "deleted_ok"-|<span class="message_ok">Sucursal eliminada correctamente</span>|-/if-|

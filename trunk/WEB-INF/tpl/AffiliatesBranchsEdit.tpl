@@ -1,26 +1,6 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'> 
-	<tr> 
-		<td class='title'>Clientes y Distribuidores Mayoristas </td> 
-	</tr> 
-	<tr> 
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td> 
-	</tr> 
-	<tr> 
-		<td>&nbsp;</td> 
-	</tr> 
-	<tr> 
-		<td class='backgroundTitle'>|-if $action eq "edit"-|Editar|-else-|Crear|-/if-| Sucursales|-if $action eq "edit"-| - |-$branch->getname()-||-/if-|</td> 
-	</tr> 
-	<tr> 
-		<td>&nbsp;</td> 
-	</tr> 
-	<tr> 
-		<td>A continuación podrá editar la información de las sucursales.</td> 
-	</tr> 
-	<tr> 
-		<td>&nbsp;</td> 
-	</tr> 
-</table>
+<h2>Clientes y Distribuidores Mayoristas </h2> 
+	<h1>|-if $action eq "edit"-|Editar|-else-|Crear|-/if-| Sucursales|-if $action eq "edit"-| - |-$branch->getname()-||-/if-|</h1> 
+	<p>A continuación podrá editar la información de las sucursales.</p> 
  <div id="div_branch"> 
 	<form name="form_edit_branch" id="form_edit_branch" action="Main.php" method="post">
 		|-if $action eq "edit"-|

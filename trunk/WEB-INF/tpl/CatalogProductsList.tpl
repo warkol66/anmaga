@@ -1,27 +1,9 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-		<td class='title'>Catálogo de Productos </td>
-	</tr>
-	<tr>
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='backgroundTitle'>Administrar productos del sistema </td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>A continuación podrá editar los productos disponibles en el sistema </td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-</table>
-<div id="div_products"> |-if $message eq "ok"-|<span class="message_ok">Producto guardado correctamente</span>|-/if-| |-if $message eq "deleted_ok"-|<span class="message_ok">Producto eliminado correctamente</span>|-/if-|
+<h2>Catálogo de Productos </h2>
+	<h1>Administrar productos del sistema </h1>
+	<p>A continuación podrá editar los productos disponibles en el sistema </p>
+<div id="div_products"> 
+|-if $message eq "ok"-|<span class="message_ok">Producto guardado correctamente</span>|-/if-|
+|-if $message eq "deleted_ok"-|<span class="message_ok">Producto eliminado correctamente</span>|-/if-|
 	<div> 
 		<form action="Main.php" method="get"> 
 			<p> 
@@ -72,12 +54,12 @@
 			<td class="tdSize1" nowrap> <form action="Main.php" method="get" style="display:inline;"> 
 					<input type="hidden" name="do" value="catalogProductsEdit" /> 
 					<input type="hidden" name="id" value="|-$node->getid()-|" /> 
-					<input type="submit" name="submit_go_edit_product" value="Editar" class="smallButton" /> 
+					<input type="submit" name="submit_go_edit_product" value="Editar" class="buttonImageEdit" /> 
 				</form> 
 				<form action="Main.php" method="post" style="display:inline;"> 
 					<input type="hidden" name="do" value="catalogProductsDoDelete" /> 
 					<input type="hidden" name="id" value="|-$product->getid()-|" /> 
-					<input type="submit" name="submit_go_delete_product" value="Borrar" onclick="return confirm('Seguro que desea eliminar el producto?')" class="smallButton" /> 
+					<input type="submit" name="submit_go_delete_product" value="Borrar" onclick="return confirm('Seguro que desea eliminar el producto?')" class="buttonImageDelete" /> 
 				</form></td> 
 		</tr> 
 		|-/foreach-|

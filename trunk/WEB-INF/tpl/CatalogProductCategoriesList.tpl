@@ -1,26 +1,8 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-		<td class='title'>Catálogo de Productos </td>
-	</tr>
-	<tr>
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='backgroundTitle'>Administrar Productos y Categorías de Productos </td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>A continuación podrá editar los productos disponibles en el sistema </td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-</table><div id="div_productcategories">
+<h2>Catálogo de Productos </h2>
+	<h1>Administrar Productos y Categorías de Productos </h1>
+	<p>A continuación podrá editar los productos disponibles en el sistema </p>
+
+<div id="div_productcategories">
 	|-if $message eq "ok"-|<span class="message_ok">Product Category guardado correctamente</span>|-/if-|
 	|-if $message eq "deleted_ok"-|<span class="message_ok">Product Category eliminado correctamente</span>|-/if-|
 	|-if $loaded ne ""-|<span class="message_ok">Se han cargado |-$loaded-| productos</span>|-/if-|
