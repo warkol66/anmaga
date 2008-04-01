@@ -1,34 +1,9 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-		<td class='titulo'>##40,Configuración del Sistema##</td>
-	</tr>
-	<tr>
-		<td class='subrayatitulo'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='fondotitulo'>##178,Administración de Grupos de Usuarios##</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='texto'>##179,A continuación podrá editar la lista de grupos de usuarios, permitiendo, al editar el grupo, modificar las categorías que pueden acceder los usuarios miembros del grupo.##</td>
-	</tr>
-	<tr>
-		<td class='texto'>&nbsp;</td>
-	</tr>
+<h2>##40,Configuración del Sistema##</h2>
+	<h1>##178,Administración de Grupos de Usuarios##</h1>
+	<p>##179,A continuación podrá editar la lista de grupos de usuarios, permitiendo, al editar el grupo, modificar las categorías que pueden acceder los usuarios miembros del grupo.##</p>
 	|-if $accion eq "edicion"-|
-	<tr>
-		<td class='texto'>##180,Realice los cambios en el grupo de usuarios y haga click en "Aceptar" para guardar las modificaciones. ##</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
+	<p>##180,Realice los cambios en el grupo de usuarios y haga click en "Aceptar" para guardar las modificaciones. ##</p>
 	|-/if-|
-</table>
 |-if $message eq "deleted"-|
 <div align='center' class='textoerror'>##181,Grupo de Usuarios eliminado##</div>
 |-/if-|

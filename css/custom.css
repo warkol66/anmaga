@@ -235,3 +235,98 @@ table.tableTdBorders caption {
 	border: 1px solid #00008B;
 }
 
+
+fieldset {
+}
+
+/* NEW */
+.buttonImageDelete {
+	font-size: 0px !Important;
+	width: 16px;
+	height: 16px;
+	color: #ffffff !Important;
+	background-color: transparent;
+	border: none;
+	background: url(../images/newButtonDelete.gif) center no-repeat;
+	cursor:pointer;	
+}
+.buttonImageEdit {
+	font-size: 0px !Important;
+	width: 16px;
+	height: 16px;
+	color: #ffffff !Important;
+	background-color: transparent;
+	border: none;
+	background: url(../images/newButtonEdit.gif) no-repeat center;
+	cursor:pointer;	
+}
+.buttonImageAdd {
+	font-size: 0px !Important;
+	width: 16px;
+	height: 16px;
+	color: #ffffff !Important;
+	background-color: transparent;
+	border: none;
+	background: url(../images/newButtonAdd.gife.gif) no-repeat center;
+	cursor:pointer;	
+}
+.buttonImageView {
+	font-size: 0px !Important;
+	width: 16px;
+	height: 16px;
+	color: #ffffff !Important;
+	background-color: transparent;
+	border: none;
+	background: url(../images/newButtonView.gif) no-repeat center;
+	cursor:pointer;
+}
+.buttonImageViewGantt {
+	font-size: 0px !Important;
+	width: 16px;
+	height: 16px;
+	color: #ffffff !Important;
+	background-color: transparent;
+	border: none;
+	background: url(../images/newButtonViewGantt.gif) no-repeat center;
+	cursor:pointer;
+}
+.buttonImageLogin {
+	font-size: 0px !Important;
+	width: 93px;
+	height: 48px;
+	color: #ffffff !Important;
+	background-color: transparent;
+	border: none;
+	background: url(../images/button_login.gif) no-repeat center;
+	cursor:pointer;	
+}
+
+.errorMessage {
+	color: #B22222;
+	font-weight: bold;
+	padding: 8px;
+	margin: 9px;
+	border: 1px solid #B22222;
+}
+.successMessage {
+	color: #007D62;
+	font-weight: bold;
+	padding: 8px;
+	margin: 9px;
+	border: 1px solid #007D62;
+}
+.infoMessage {
+	color: #00008B;
+	font-weight: bold;
+	padding: 8px;
+	margin: 9px;
+	border: 1px solid #00008B;
+}
+fieldset {  
+	background-color: #f7f7f8;
+}
+legend {  
+	color:#0066CC
+}
+
+

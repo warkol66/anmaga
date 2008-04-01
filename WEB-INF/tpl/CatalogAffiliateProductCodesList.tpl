@@ -1,26 +1,6 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-		<td class='title'>Configuración del Sistema</td>
-	</tr>
-	<tr>
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='backgroundTitle'>Códigos de Productos por Afiliado</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>A continuación podrá editar los códigos de producto de los clientes y su código equivalente.</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-</table>
+<h2>Configuración del Sistema</h2>
+	<h1>Códigos de Productos por Afiliado</h1>
+	<p>A continuación podrá editar los códigos de producto de los clientes y su código equivalente.</p>
 				<div id="div_affiliateproductcodes">
 					|-if $message eq "ok"-|<span class="message_ok">Código de Producto por Afiliado guardado correctamente</span>|-/if-|
 					|-if $message eq "deleted_ok"-|<span class="message_ok">Código de Producto por Afiliado eliminado correctamente</span>|-/if-|

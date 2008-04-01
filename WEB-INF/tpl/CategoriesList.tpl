@@ -1,34 +1,9 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-		<td class='titulo'>##40,Configuración del Sistema##</td>
-	</tr>
-	<tr>
-		<td class='subrayatitulo'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
+<h2>##40,Configuración del Sistema##</h2>
+	<h1>##139,Editar categorías##</h1>
+	<p>##141,A  continuación podrá editar la lista de categorías disponibles. Podrá  Agregar, Modificar o Eliminar categorías de la lista de categorías  disponibles. Sólo podrá eliminar las categorías que no tengan ningún  dato asignado o ningún gráfico asociado.##</p>
 	|-if $message eq "notdeleted"-|
-	<tr>
-		<td><div align='center' class='textoerror'>##140,No se pudo eliminar la categoría porque posee datos asociados##.</div></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
+	<p><div align='center' class='textoerror'>##140,No se pudo eliminar la categoría porque posee datos asociados##.</div></p>
 	|-/if-|
-	<tr>
-		<td class='fondotitulo'>##139,Editar categorías##</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='texto'>##141,A  continuación podrá editar la lista de categorías disponibles. Podrá  Agregar, Modificar o Eliminar categorías de la lista de categorías  disponibles. Sólo podrá eliminar las categorías que no tengan ningún  dato asignado o ningún gráfico asociado.##</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-</table>
 <table class='tablaborde' width='100%' border='0' cellspacing='1' cellpadding='0' id="table_categories_list">
 	<tr>
 		<th>##142,Categorías Disponibles##</th>

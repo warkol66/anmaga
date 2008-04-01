@@ -1,26 +1,6 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-  	<td class='title'>Configuración del Sistema</td>
-	</tr>
-	<tr>
-  	<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-  	<td>&nbsp;</td>
-	</tr>
-	<tr>
-  	<td class='backgroundTitle'>Administraci&oacute;n de Usuarios por Afiliados</td>
-	</tr>
-	<tr>
-  	<td>&nbsp;</td>
-	</tr>
-	<tr>
-  	<td>A continuaci&oacute;n podr&aacute; editar la lista de Usuarios por Afiliados del sistema.</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-</table>
+<h2>Configuración del Sistema</h2>
+	<h1>Administración de Usuarios por Afiliados</h1>
+	<p>A continuación podrá editar la lista de Usuarios por Afiliados del sistema.</p>
 |-if $message eq "deleted"-|
 <div align='center' class='errorMessage'>##153,Usuario eliminado##</div>
 |-/if-|

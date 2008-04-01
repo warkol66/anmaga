@@ -1,26 +1,6 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-		<td class='title'>Catálogo de Productos </td>
-	</tr>
-	<tr>
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='backgroundTitle'>Administrar Categorías de Productos </td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>A continuación podrá editar las categorías de productos disponibles en el sistema </td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-</table>
+<h2>Catálogo de Productos </h2>
+	<h1>Administrar Categorías de Productos </h1>
+	<p>A continuación podrá editar las categorías de productos disponibles en el sistema </p>
 <div id="div_productcategory">
 	<form name="form_edit_productcategory" id="form_edit_productcategory" action="Main.php" method="post" enctype="multipart/form-data">
 		|-if $message eq "error"-|<span class="message_error">Ha ocurrido un error al intentar guardar la categoría de producto</span>|-/if-|
@@ -35,19 +15,23 @@
 				<label for="name">Categoría: </label>
 				<input type="text" id="name" name="name" value="|-if $action eq 'edit'-||-$node->getname()-||-/if-|" title="name" size="45" maxlength="255" />
 			</p>
+			<br clear="all">
 			<p>
 				<label for="description">Descripción:</label>
 				<textarea id="description" name="description" rows="5" wrap="virtual" size="38">|-if $action eq "edit"-||-$category->getdescription()-||-/if-|</textarea>
 			</p>
+			<br clear="all">
 			|-if $action eq "edit"-|
 			<div>
 				<img src="Main.php?do=productCategoriesGetImage&id=|-$category->getId()-|" alt="|-$node->getname()-|" />
 			</div>
 			|-/if-|
+			<br clear="all">
 			<p>
 				<label for="image">Imagen:</label>
 				<input type="file" id="image" name="image" title="image" />
 			</p>
+			<br clear="all">
 			<p>
 				|-if $action eq "edit"-|
 				<input type="hidden" name="id" id="id" value="|-if $action eq "edit"-||-$node->getid()-||-/if-|" />

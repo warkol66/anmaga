@@ -1,40 +1,17 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-		<td class='title'>Precios Por Afiliado</td>
-	</tr>
-	<tr>
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='backgroundTitle'>Listado de Precios Por Afiliado</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>Seleccione una afiliado para buscar su lista de precios.</td>
-	</tr>
-	<tr>
-	    <td>
-			<form method="get" >
+<h2>Precios Por Afiliado</h2>
+<h1>Listado de Precios Por Afiliado</h1>
+	<p>Seleccione una afiliado para buscar su lista de precios.</p>
+<p>			<form method="get" >
 				<select name="affiliateId">
 					<option value="" selected="selected">Seleccione un Afiliado</option>
 				|-foreach from=$affiliates item=affiliate name=for_affiliates-|
-					<option value="|-$affiliate->getId()-|" selected="selected">|-$affiliate->getName()-|</option>
+					<option value="|-$affiliate->getId()-|" selected="selected">|-$affiliate->getName()-|&nbsp;&nbsp;&nbsp;</option>
 				|-/foreach-|
 				</select>
 				<input type="hidden" name="do" value="catalogAffiliateProductList" />
 				<input type="submit" name="search" value="Ver Lista de Precios" />
 			</form>
-		</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-</table>
+</p>
 |-if isset($productNodes)-|
 	<table width="100%" class="tableTdBorders" id="tabla-products"> 
 		<thead> 

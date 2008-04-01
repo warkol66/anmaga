@@ -1,21 +1,6 @@
 ﻿<script language="JavaScript" type="text/javascript" src="scripts/order-edit-functions.js"></script>
-<table border='0' cellpadding='0' cellspacing='0' width='100%'> 
-	<tr> 
-		<td class='title'>Pedidos</td> 
-	</tr> 
-	<tr> 
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td> 
-	</tr> 
-	<tr> 
-		<td>&nbsp;</td> 
-	</tr> 
-	<tr> 
-		<td class='backgroundTitle'>Editar Pedido: |-$order->getId()-|</td> 
-	</tr> 
-	<tr> 
-		<td>&nbsp;</td> 
-	</tr> 
-</table>
+<h2>Pedidos</h2> 
+	</h1>Editar Pedido: |-$order->getId()-|</h1> 
 <div id="div_order"> 
 	<h3>Opciones Generales del Pedido </h3>
 	<form action="Main.php" method="post"> 

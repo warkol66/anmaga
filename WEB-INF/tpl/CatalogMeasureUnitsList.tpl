@@ -1,35 +1,37 @@
-				<h2>Measure Units</h2>
-				<div id="div_measureunits">
-					|-if $message eq "ok"-|<span class="message_ok">Measure Unit guardado correctamente</span>|-/if-|
-					|-if $message eq "deleted_ok"-|<span class="message_ok">Measure Unit eliminado correctamente</span>|-/if-|
-					<h3><a href="Main.php?do=catalogMeasureUnitsEdit">Agregar Measure Unit</a></h3>
-					<table id="tabla-measureunits">
-						<thead>
-							<tr>
-                								<th>id</th>
-																<th>name</th>
-																<th>&nbsp;</th>
-							</tr>
-						</thead>
-						<tbody>
-						|-foreach from=$measureunits item=measureunit name=for_measureunits-|
-							<tr>
-								<td>|-$measureunit->getid()-|</td>
-								<td>|-$measureunit->getname()-|</td>
-								<td>
-									<form action="Main.php" method="get">
-										<input type="hidden" name="do" value="catalogMeasureUnitsEdit" />
-										<input type="hidden" name="id" value="|-$measureunit->getid()-|" />
-										<input type="submit" name="submit_go_edit_measureunit" value="Editar" class="boton" />
-									</form>
-									<form action="Main.php" method="post">
-										<input type="hidden" name="do" value="catalogMeasureUnitsDoDelete" />
-										<input type="hidden" name="id" value="|-$measureunit->getid()-|" />
-										<input type="submit" name="submit_go_delete_measureunit" value="Borrar" onclick="return confirm('Seguro que desea eliminar la unidad de medida?')" class="boton" />
-									</form>
-								</td>
-							</tr>
-						|-/foreach-|
-						</tbody>
-					</table>
-				</div>
+<h2>Catálogo</h2>
+<h1>Administración de Unidades de Medida</h1>
+<div id="div_measureunits"> 
+|-if $message eq "ok"-|<span class="message_ok">Measure Unit guardado correctamente</span>|-/if-| 
+|-if $message eq "deleted_ok"-|<span class="message_ok">Measure Unit eliminado correctamente</span>|-/if-|
+	<table class='tableTdBorders' cellpadding='5' cellspacing='1' width='400' id="tabla-measureunits"> 
+		<thead> 
+			<tr>
+				 <th colspan="3" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=catalogMeasureUnitsEdit" class="agregarNueva">Agregar Unidad de Medida</a></div></th>
+			</tr>
+		<thead> 
+			<tr> 
+				<th width="20%" nowrap class="thFillTitle">Id</th> 
+				<th width="70%" nowrap class="thFillTitle">Nombre</th> 
+				<th width="10%" nowrap class="thFillTitle">&nbsp;</th> 
+			</tr> 
+		</thead> 
+		<tbody>  
+		|-foreach from=$measureunits item=measureunit name=for_measureunits-|
+		<tr> 
+			<td align="center">|-$measureunit->getid()-|</td> 
+			<td>|-$measureunit->getname()-|</td> 
+			<td nowrap> <form action="Main.php" method="get"> 
+					<input type="hidden" name="do" value="catalogMeasureUnitsEdit" /> 
+					<input type="hidden" name="id" value="|-$measureunit->getid()-|" /> 
+					<input type="submit" name="submit_go_edit_measureunit" value="Editar" class="buttonImageEdit" /> 
+				</form> 
+				<form action="Main.php" method="post"> 
+					<input type="hidden" name="do" value="catalogMeasureUnitsDoDelete" /> 
+					<input type="hidden" name="id" value="|-$measureunit->getid()-|" /> 
+					<input type="submit" name="submit_go_delete_measureunit" value="Borrar" onclick="return confirm('Seguro que desea eliminar la unidad de medida?')" class="buttonImageDelete" /> 
+			</form></td> 
+		</tr> 
+		|-/foreach-|
+		</tbody> 
+  </table> 
+</div>

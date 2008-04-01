@@ -1,4 +1,5 @@
-				<h2>Importar Orden</h2>
+				<h2>Importar Ordenes</h2>
+				<h1>Importar pedidos de mayoristas</h1>
 				
 				|-if $results ne ""-|
 					<ul>
@@ -63,11 +64,11 @@
 					<form action="Main.php" method="post" enctype="multipart/form-data">
 						|-if $affiliates|@count gt 0-|
 						<p>
-							<label for="affiliateId">Affiliate:</label>
+							<label for="affiliateId">Mayorista:</label>
 							<select name="affiliateId">
-								<option value="" selected="selected">Seleccionar</option>
+								<option value="" selected="selected">Seleccionar&nbsp;&nbsp;&nbsp;</option>
 								|-foreach from=$affiliates item=affiliate-|
-								<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|</option>
+								<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|&nbsp;&nbsp;&nbsp;</option>
 								|-/foreach-|
 							</select>
 						</p>						

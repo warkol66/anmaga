@@ -1,34 +1,9 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-  	<td class='title'>Configuraci&oacute;n del Sistema</td>
-	</tr>
-	<tr>
-  	<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-  	<td>&nbsp;</td>
-	</tr>
-	<tr>
-  	<td class='backgroundTitle'>Administraci&oacute;n de Afiliados</td>
-	</tr>
-	<tr>
-  	<td>&nbsp;</td>
-	</tr>
-	<tr>
-  	<td>A continuaci&oacute;n podr&aacute; editar la lista de Afiliados del sistema.</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
+<h2>Configuración del Sistema</h2>
+	<h1>Administración de Afiliados</h1>
+	<p>A continuación podrá editar la lista de Afiliados del sistema.</p>
 	|-if $accion eq "edicion"-|
-	<tr>
-		<td class='texto'>##180,Realice los cambios en el grupo de usuarios y haga click en "Aceptar" para guardar las modificaciones. ##</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
+		<p>##180,Realice los cambios en el grupo de usuarios y haga click en "Aceptar" para guardar las modificaciones. ##</p>
 	|-/if-|
-</table>
 |-if $message eq "deleted"-|
 <div align='center' class='errorMessage'>Afiliado eliminado</div>
 |-/if-|

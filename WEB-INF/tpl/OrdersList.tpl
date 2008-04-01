@@ -1,26 +1,8 @@
-﻿<table border='0' cellpadding='0' cellspacing='0' width='100%'> 
-	<tr> 
-		<td class='title'>Pedidos</td> 
-	</tr> 
-	<tr> 
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td> 
-	</tr> 
-	<tr> 
-		<td>&nbsp;</td> 
-	</tr> 
-	<tr> 
-		<td class='backgroundTitle'>Lista de Pedidos</td> 
-	</tr> 
-	<tr> 
-		<td>&nbsp;</td> 
-	</tr> 
-	<tr> 
-		<td class="tdSize2">Seleccione alguna opción para filtrar el listado de pedidos. Puede Ediar o Ver los pedidos. Para exportar pedidos selecciones los pedidos a exportar, y haga click en Exportar órdenes Seleccionados. Para eliminar, seleccione los pedidos a eliminar y haga click en &quot;Eliminar órdenes seleccionadas&quot;. <strong></strong></td> 
-	</tr> 
-	<tr> 
-		<td>&nbsp;</td> 
-	</tr> 
-</table>
+﻿<h2>Pedidos</h2> 
+	<h1>Lista de Pedidos</h1> 
+	<p>Seleccione alguna opción para filtrar el listado de pedidos. Puede Ediar o Ver los pedidos. <br>
+	Para exportar pedidos selecciones los pedidos a exportar, y haga click en Exportar órdenes Seleccionados. <br>
+	Para eliminar, seleccione los pedidos a eliminar y haga click en "Eliminar órdenes seleccionadas".</p> 
 <div id="div_orders">
 	|-if $message eq "ok"-|<span class="message_ok">Orden guardada correctamente</span>|-/if-|
 	|-if $message eq "deleted_ok"-|<span class="message_ok">Orden eliminada correctamente</span>|-/if-|
@@ -37,10 +19,10 @@
 					<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('dateTo', false, 'dmy', '-');" title="Seleccione la fecha"></td>
 		<td nowrap>								<label for="state">Estado</label>
 								<select name="state">
-									<option value="" selected="selected">Todos</option>
+									<option value="" selected="selected">Todos&nbsp;&nbsp;&nbsp;</option>
 									<option value="0">Emitida</option>
 									<option value="1">Aceptada</option>
-									<option value="2">Pendiente Aprobación</option>
+									<option value="2">Pendiente Aprobación&nbsp;&nbsp;&nbsp;</option>
 									<option value="3">En Proceso</option>
 									<option value="4">Completa</option>
 									<option value="5">Cancelada</option>
@@ -49,11 +31,11 @@
 	</tr>
 |-if $all eq "1"-|	<tr>
 		<td colspan="2">							
-								<label for="affiliateId">Affiliate</label>
+								<label for="affiliateId">Mayorista</label>
 								<select name="affiliateId">
-									<option value="" selected="selected">Todos</option>
+									<option value="" selected="selected">Todos&nbsp;&nbsp;&nbsp;</option>
 									|-foreach from=$affiliates item=affiliate-|
-									<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|</option>
+									<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|&nbsp;&nbsp;&nbsp;</option>
 									|-/foreach-|
 								</select></td>
 	</tr>
@@ -65,8 +47,8 @@
 		<td>&nbsp;</td>
 	</tr>
 </table>
-						</form>
-					</div>
+		</form>
+	</div>
 
 					<form action="Main.php" method="get">
 					
@@ -96,8 +78,8 @@
 																	<td class="tdSize1">|-$order->gettotal()|number_format:2:",":"."-|</td>
 																	<td nowrap class="tdSize1">|-$order->getStateName()-|</td>
 																	<td nowrap>
-										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersView&id=|-$order->getid()-|&page=|-$page-|'" value="Ver" class="smallButton" />
-										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersEdit&id=|-$order->getid()-|&page=|-$page-|'" value="Editar" class="smallButton" />
+										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersView&id=|-$order->getid()-|&page=|-$page-|'" value="Ver" class="buttonImageView" />
+										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersEdit&id=|-$order->getid()-|&page=|-$page-|'" value="Editar" class="buttonImageEdit" />
 										|-if $all eq "0"-|
 										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersDoAddToCart&id=|-$order->getid()-|'" value="Add To Cart" class="smallButton" />
 										|-/if-|
@@ -117,4 +99,4 @@
 						<input type="button" onclick="ordersSendOrdersExport(this.form)" value="Exportar órdenes seleccionadas" class="button" />&nbsp;&nbsp;&nbsp;
 						<input type="button" onclick="ordersSendOrdersDelete(this.form)" value="Eliminar órdenes seleccionadas" class="button" />
 					</form>
-				</div>
+</div>

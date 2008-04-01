@@ -1,34 +1,9 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-		<td class='titulo'>##40,Configuración del Sistema##</td>
-	</tr>
-	<tr>
-		<td class='subrayatitulo'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='fondotitulo'>Administración de Niveles de Usuarios</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='texto'>A continuación podrá editar la lista de niveles de usuarios.</td>
-	</tr>
-	<tr>
-		<td class='texto'>&nbsp;</td>
-	</tr>
+<h2>##40,Configuración del Sistema##</h2>
+	<h1>Administración de Niveles de Usuarios</h1>
+	<p>A continuación podrá editar la lista de niveles de usuarios.</p>
 	|-if $accion eq "edicion"-|
-	<tr>
-		<td class='texto'>Realice los cambios en el nivel de usuarios y haga click en "Aceptar" para guardar las modificaciones.</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
+	<p>Realice los cambios en el nivel de usuarios y haga click en "Aceptar" para guardar las modificaciones.</p>
 	|-/if-|
-</table>
 |-if $message eq "deleted"-|
 <div align='center' class='textoerror'>##181,Nivel de Usuarios eliminado##</div>
 |-/if-|
