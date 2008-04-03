@@ -1,18 +1,17 @@
+	<h2>Pedidos</h2>
+	<h1>Carrito de compras</h1>
+	<p>A continuación se muestra el contenido del carrito de compras.</p>
 <div id="div_order">
-	<h2>Order</h2>
-	
 	|-if $message eq "deleted_ok"-|<span class="message_ok">Carrito Vaciado!</span>|-/if-|
-
 	<div id="messageCart">
 	</div>
-
 	<table width="100%" class="tableTdBorders" id="tabla-products">
 		<thead>
 			<tr>
-				<th class="thFillTitle">code</th>
-				<th class="thFillTitle">name</th>
-				<th class="thFillTitle">price</th>
-				<th class="thFillTitle">quantity</th>
+				<th class="thFillTitle">Código</th>
+				<th class="thFillTitle">Nombre</th>
+				<th class="thFillTitle">Precio</th>
+				<th class="thFillTitle">Cantidad</th>
 			</tr>
 		</thead>
 		<tbody>  |-foreach from=$orderItems item=item name=for_products-| |-assign var=product value=$item->getProduct()-| |-assign var=productNode value=$product->getNode()-|
@@ -25,12 +24,12 @@
 					<input type="text" name="quantity" value="|-$item->getQuantity()-|" size="3" />
 					<input type="hidden" name="productId" value="|-$product->getId()-|" />
 					<input type="hidden" name="do" value="ordersChangeItemCartX" />
-					<input type="button" value="Change" class="boton" onclick="javascript:ordersChangeItemCartX(this.form)" />
+					<input type="button" value="Cambiar" class="boton" onclick="javascript:ordersChangeItemCartX(this.form)" />
 				</form>
 				<form>
 					<input type="hidden" name="productId" value="|-$product->getId()-|" />
 					<input type="hidden" name="do" value="ordersRemoveItemCartX" />
-					<input type="button" value="Remove" class="boton" onclick="javascript:ordersRemoveItemCartX(this.form)" />
+					<input type="button" value="Eliminar" class="boton" onclick="javascript:ordersRemoveItemCartX(this.form)" />
 				</form>
 			</td>
 		</tr>
@@ -46,16 +45,16 @@
 |- if $orderItems|@count gt 0-|
 <form action="Main.php" method="post">
 	<input type="hidden" name="do" value="ordersCartDoDelete" />
-	<input type="submit" value="Empty Cart" class="boton" onclick="return confirm('Seguro que desea vaciar el carrito?')" />
+	<input type="submit" value="Vaciar Carrito" class="boton" onclick="return confirm('Seguro que desea vaciar el carrito?')" />
 </form>
 <form action="Main.php" method="post">
 	<input type="hidden" name="do" value="ordersDoSave" />
 	<input type="hidden" name="name" id="name" value="" />
-	<input type="submit" value="Save Order" class="boton" onclick="$('name').value = window.prompt('Nombre de la orden:','');" />
+	<input type="submit" value="Guardar pedido" class="boton" onclick="$('name').value = window.prompt('Nombre de la orden:','');" />
 </form>
 <form action="Main.php" method="post">
 	<input type="hidden" name="do" value="ordersConfirm" />
-	<input type="submit" value="Generate Order" class="boton" />
+	<input type="submit" value="Generar orden" class="boton" />
 </form>
 |-/if-|
 

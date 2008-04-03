@@ -1,17 +1,20 @@
 				<h2>Ordenes</h2>
+				<h1>Plantillas de pedidos</h1>
+				<p>A continuación se muestra el listado de plantillas de pedidos existentes.</p>
 				<div id="div_orderTemplates">
 					|-if $message eq "ok"-|<span class="message_ok">Orden guardada correctamente</span>|-/if-|
 					|-if $message eq "deleted_ok"-|<span class="message_ok">Orden eliminada correctamente</span>|-/if-|
 					<table id="tabla-orderTemplates" width="100%" class="tableTdBorders">
 						<thead>
 							<tr>
-                								<th class="thFillTitle">id</th>
-																<th class="thFillTitle">name</th>
-																<th class="thFillTitle">created</th>
-																<th class="thFillTitle">userId</th>
-																|-if $all eq "1"-|<th class="thFillTitle">affiliateId</th>|-/if-|
-																<th class="thFillTitle">branchId</th>
-																<th class="thFillTitle">total</th>
+                								<th class="thFillTitle">Id</th>
+																<th class="thFillTitle">Nombre</th>
+																<th class="thFillTitle">Creada</th>
+																<th class="thFillTitle">Usuario</th>
+																|-if $all eq "1"-|<th class="thFillTitle">Afiliado</th>
+																|-/if-|
+																<th class="thFillTitle">Sucursal</th>
+																<th class="thFillTitle">Total</th>
 																<th class="thFillTitle">&nbsp;</th>
 							</tr>
 						</thead>
@@ -29,17 +32,17 @@
 									<form action="Main.php" method="get">
 										<input type="hidden" name="do" value="ordersTemplatesView" />
 										<input type="hidden" name="id" value="|-$orderTemplate->getid()-|" />
-										<input type="submit" name="submit_go_view_orderTemplate" value="Ver" class="boton" />
+										<input type="submit" name="submit_go_view_orderTemplate" value="Ver" class="buttonImageView" />
+									</form>
+									<form action="Main.php" method="post">
+										<input type="hidden" name="do" value="ordersTemplatesDoDelete" />
+										<input type="hidden" name="id" value="|-$orderTemplate->getid()-|" />
+										<input type="submit" name="submit_go_delete_orderTemplate" value="Borrar" onclick="return confirm('Seguro que desea eliminar la orden?')" class="buttomImageDelete" />
 									</form>
 									<form action="Main.php" method="get">
 										<input type="hidden" name="do" value="ordersTemplatesDoAddToCart" />
 										<input type="hidden" name="id" value="|-$orderTemplate->getid()-|" />
 										<input type="submit" name="submit_go_add_orderTemplate" value="Add To Cart" class="boton" />
-									</form>
-									<form action="Main.php" method="post">
-										<input type="hidden" name="do" value="ordersTemplatesDoDelete" />
-										<input type="hidden" name="id" value="|-$orderTemplate->getid()-|" />
-										<input type="submit" name="submit_go_delete_orderTemplate" value="Borrar" onclick="return confirm('Seguro que desea eliminar la orden?')" class="boton" />
 									</form>
 								</td>
 							</tr>

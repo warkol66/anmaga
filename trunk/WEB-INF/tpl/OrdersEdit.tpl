@@ -1,6 +1,6 @@
 ﻿<script language="JavaScript" type="text/javascript" src="scripts/order-edit-functions.js"></script>
 <h2>Pedidos</h2> 
-	</h1>Editar Pedido: |-$order->getId()-|</h1> 
+<h1>Editar Pedido: |-$order->getId()-|</h1> 
 <div id="div_order"> 
 	<h3>Opciones Generales del Pedido </h3>
 	<form action="Main.php" method="post"> 
