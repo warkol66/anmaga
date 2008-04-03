@@ -1,5 +1,7 @@
+<h2>Pedidos</h2>
+<h1>Plantilla de pedido</h1>
+<p>A continuación se muestra la plantilla de pedido: |-$orderTemplate->getName()-|. Las plantillas se pueden utilizar para repetir pedidos pulsando el botón "Agregar al carrito".</p>
 <div id="div_order">
-	<h2>Order</h2>
 
 	<p><strong>Name:</strong> |-$orderTemplate->getName()-|</p>
 	<p><strong>Created:</strong> |-$orderTemplate->getCreated()-|</p>
@@ -11,10 +13,10 @@
 	<table width="100%" class="tableTdBorders" id="tabla-products">
 		<thead>
 			<tr>
-				<th class="thFillTitle">code</th>
-				<th class="thFillTitle">name</th>
-				<th class="thFillTitle">price</th>
-				<th class="thFillTitle">quantity</th>
+				<th class="thFillTitle">C&oacute;digo</th>
+				<th class="thFillTitle">Nombre</th>
+				<th class="thFillTitle">Precio</th>
+				<th class="thFillTitle">Cantidad</th>
 				<th class="thFillTitle">Total</th>				
 			</tr>
 		</thead>
@@ -41,7 +43,7 @@
 <form action="Main.php" method="post">
 	<input type="hidden" name="do" value="ordersTemplatesDoAddToCart" />
 	<input type="hidden" name="id" value="|-$orderTemplate->getId()-|" />
-	<input type="submit" value="Add To Cart" class="boton" />
+	<input type="submit" value="Agregar al carrito" class="boton" />
 </form>
 |-/if-|
 

@@ -1,8 +1,5 @@
 |-if $loginUser neq ""-|
 <table width="150" border="0" cellpadding="0" cellspacing="0" class="menuCell">
-  <tr>
-  	<td class="">&nbsp;</td>
- 	</tr>
   <tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersWelcome">Ir al Inicio</a></td>
   </tr>

@@ -1,20 +1,6 @@
-﻿<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-		<td class='title'>Pedidos</td>
-	</tr>
-	<tr>
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='backgroundTitle'>Ver Pedido: |-$order->getId()-|</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-</table>
+﻿<h2>Pedidos</h2>
+	<h1>Ver Pedido: |-$order->getId()-|</h1>
+	<p>A continuación puede ver el detalle del pedido |-$order->getId()-|. Puede modificar la orden, cambiar el estado de la misma y agregar o eliminar items.</p>
 <div id="div_order"> 
 
 <table width="100%"  border="0" cellspacing="0" cellpadding="5">

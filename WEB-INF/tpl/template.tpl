@@ -10,33 +10,32 @@
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/functions.js"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/datePicker.js"></script>
-<script language="JavaScript" src="scripts/scriptaculous.js" type="text/javascript"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/scriptaculous.js"></script>
 <script language="JavaScript" type="text/JavaScript">
 	var url="|-$systemUrl-|";
 </script>
 </head>
-<body leftmargin='2' topmargin='2'>
-<table width="955" border="0" cellspacing="0" cellpadding="0">
-	<tr>
-		<td colspan="3" class="cabezal">&nbsp;</td>
-	</tr>
-	<tr>
-		<td colspan="3">&nbsp;</td>
-	</tr>
-	<tr valign="top">
-		<td width="155">|-include file="MenuLeft.tpl"-|</td>
-		<td width="5">&nbsp;</td>
-		<td width="795">	<!-- Begin Right Column -->
-	<div id="rightcolumn">
-		<!--centerHTML start-->
-		|-$centerHTML-|
-		<!--centerHTML end -->
-	</div>
-	<!-- End Right Column -->
-</td>
-	</tr>
-</table>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<body leftmargin='2' topmargin='2'> 
+<table width="955" border="0" cellspacing="0" cellpadding="0"> 
+	<tr> 
+		<td colspan="3" class="cabezal">&nbsp;</td> 
+	</tr> 
+	<tr> 
+		<td colspan="3">&nbsp;</td> 
+	</tr> 
+	<tr valign="top"> 
+		<td width="150">|-include file="MenuLeft.tpl"-|</td> 
+		<td width="10">&nbsp;</td> 
+		<td width="795"> <!-- Begin Right Column --> 
+			<div id="rightcolumn"> 
+				<!--centerHTML start--> 
+				|-$centerHTML-|
+				<!--centerHTML end --> 
+			</div> 
+			<!-- End Right Column --> </td> 
+	</tr> 
+</table> 
+<p>&nbsp;</p> 
+<p>&nbsp;</p> 
 </body>
 </html>
