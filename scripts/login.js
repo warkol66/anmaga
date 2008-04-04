@@ -1,9 +1,6 @@
-function changeActionToAdminLogin(form) {
-	form.action = "Main.php?do=usersDoLogin";
-
-}
-
-function changeActionToAffiliate(form) {
-	form.action = "Main.php?do=affiliatesUsersDoLogin";
-
+function changeAction(form) {
+	if ($('select').value == "affiliate")
+		form.action = "Main.php?do=affiliatesUsersDoLogin";
+	else
+		form.action = "Main.php?do=usersDoLogin";
 }

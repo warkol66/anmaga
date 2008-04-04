@@ -39,10 +39,12 @@
 				|-if !$onlyAdmin -|				
 						<tr>
 							<td nowrap class='tdTitle'>Tipo de Usuario</td>
-							<td class='tdData'><select name="select">
-			   		<option value="admin" selected onClick="javascript:changeActionToAdminLogin(this.form)">Administrador&nbsp;&nbsp;&nbsp;</option>
-			   		<option value="affiliate" onClick="javascript:changeActionToAffiliate(this.form)">Mayorista&nbsp;&nbsp;&nbsp;</option>
-			   </select></td>
+							<td class='tdData'>
+								<select id="select" name="select" onchange="javascript:changeAction(this.form)">
+			   						<option value="admin" selected="selected">Administrador&nbsp;&nbsp;&nbsp;</option>
+			   						<option value="affiliate">Mayorista&nbsp;&nbsp;&nbsp;</option>
+			   					</select>
+							</td>
 						</tr>
 			   |-/if-|
 			|-/if-|
