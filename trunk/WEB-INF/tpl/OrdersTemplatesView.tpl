@@ -10,7 +10,7 @@
 	<p><strong>User:</strong> |-assign var=user value=$orderTemplate->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</p>
 
 
-	<table width="100%" class="tableTdBorders" id="tabla-products">
+	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products">
 		<thead>
 			<tr>
 				<th class="thFillTitle">C&oacute;digo</th>

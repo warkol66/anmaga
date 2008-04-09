@@ -5,7 +5,7 @@
 	|-if $message eq "deleted_ok"-|<span class="message_ok">Carrito Vaciado!</span>|-/if-|
 	<div id="messageCart">
 	</div>
-	<table width="100%" class="tableTdBorders" id="tabla-products">
+	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products">
 		<thead>
 			<tr>
 				<th class="thFillTitle">Código</th>
@@ -24,12 +24,12 @@
 					<input type="text" name="quantity" value="|-$item->getQuantity()-|" size="3" />
 					<input type="hidden" name="productId" value="|-$product->getId()-|" />
 					<input type="hidden" name="do" value="ordersChangeItemCartX" />
-					<input type="button" value="Cambiar" class="boton" onclick="javascript:ordersChangeItemCartX(this.form)" />
+					<input type="button" value="Cambiar" class="buttonImageEdit" onclick="javascript:ordersChangeItemCartX(this.form)" />
 				</form>
 				<form>
 					<input type="hidden" name="productId" value="|-$product->getId()-|" />
 					<input type="hidden" name="do" value="ordersRemoveItemCartX" />
-					<input type="button" value="Eliminar" class="boton" onclick="javascript:ordersRemoveItemCartX(this.form)" />
+					<input type="button" value="Eliminar" class="buttonImageDelete" onclick="javascript:ordersRemoveItemCartX(this.form)" />
 				</form>
 			</td>
 		</tr>

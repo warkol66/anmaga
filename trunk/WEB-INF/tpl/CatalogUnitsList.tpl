@@ -3,10 +3,10 @@
 <div id="div_units"> 
 |-if $message eq "ok"-|<span class="message_ok">Unidad guardada correctamente</span>|-/if-| 
 |-if $message eq "deleted_ok"-|<span class="message_ok">Unidad eliminada correctamente</span>|-/if-|
-	<table class='tableTdBorders' cellpadding='5' cellspacing='1' width='400' id="tabla-units"> 
+	<table class='tableTdBorders' cellpadding='4' cellspacing='0' width='400' id="tabla-units"> 
 		<thead> 
 			<tr>
-				 <th colspan="4" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=catalogUnitsEdit" class="agregarNueva">Agregar Unidad</a></div></th>
+				 <th colspan="4"><div class="rightLink"><a href="Main.php?do=catalogUnitsEdit" class="agregarNueva">Agregar Unidad</a></div></th>
 			</tr>
 			<tr> 
 				<th width="20%" nowrap class="thFillTitle">Id</th> 

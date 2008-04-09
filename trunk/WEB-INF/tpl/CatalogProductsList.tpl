@@ -25,10 +25,13 @@
 				<input type="submit" class="button" value="Buscar" /> <a href="Main.php?do=catalogProductsList">Eliminar Filtros</a>
 			</p> 
 		</form> 
-		 </div> 
-	<h3><a href="Main.php?do=catalogProductsEdit">Agregar Producto</a>&nbsp;&nbsp;&nbsp;<a href="Main.php?do=catalogProductsList&amp;csv=1">Exportar Productos a CSV</a></h3> 
+  </div> 
+	<h3><a href="Main.php?do=catalogProductsList&amp;csv=1">Exportar Productos a CSV</a></h3> 
 	<table width="100%" border="0" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products"> 
 		<thead> 
+			<tr>
+				<th colspan="9"><div class="rightLink"><a href="Main.php?do=catalogProductsEdit" class="agregarNueva">Agregar Producto</a></div></th>
+			</tr>
 			<tr> 
 				<th class="thFillTitle">id</th> 
 				<th class="thFillTitle">Código</th> 
@@ -64,7 +67,7 @@
 		</tr> 
 		|-/foreach-|
 		<tr> 
-			<td colspan="9">|-include file="PaginateInclude.tpl"-|</td> 
+			<td colspan="9" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
 		</tr> 
 		</tbody> 
   </table> 

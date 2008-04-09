@@ -1,19 +1,18 @@
 <h2>Clientes y Distribuidores Mayoristas </h2> 
-	<h1>Administración de Sucursales </h1> 
-	<p>A continuación podrá editar la información de las sucursales.</p> 
+<h1>Administración de Sucursales </h1> 
+<p>A continuación podrá editar la información de las sucursales.</p> 
 <div id="div_branchs">
 |-if $message eq "ok"-|<span class="message_ok">Sucursal guardada correctamente</span>|-/if-|
 |-if $message eq "deleted_ok"-|<span class="message_ok">Sucursal eliminada correctamente</span>|-/if-|
-<h3><a href="Main.php?do=affiliatesBranchsEdit">Agregar Sucursal</a></h3> 
 |-if $all eq "1"-|
 	<div class="filter"> 
 		<form action="Main.php" method="get"> 
 				<label for="affiliateId">Afiliado:</label> 
 				<select name="affiliateId"> 
-					<option value="" selected="selected">Todos</option> 
-									|-foreach from=$affiliates item=affiliate-|
-					<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|</option> 
-									|-/foreach-|
+					<option value="" selected="selected">Todos&nbsp;&nbsp;&nbsp;</option> 
+					|-foreach from=$affiliates item=affiliate-|
+					<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|&nbsp;&nbsp;&nbsp;</option> 
+					|-/foreach-|
 				</select>
 				<input type="hidden" name="do" value="affiliatesBranchsList" /> 
 				<input type="submit" value="Buscar" class="button" /> 
@@ -23,6 +22,9 @@
 	|-/if-|
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" id="tabla-branchs" class="tableTdBorders"> 
 		<thead> 
+			<tr>
+				<th colspan="9"><div class="rightLink"><a href="Main.php?do=affiliatesBranchsEdit" class="agregarNueva">Agregar Sucursal</a></div></th>
+			</tr>
 			<tr> 
 				<th width="5%" class="thFillTitle">Id</th> 
 				|-if $all eq "1"-| 
@@ -52,17 +54,17 @@
 			<td class="tdSize1 center" nowrap="nowrap"> <form action="Main.php" method="get" style="display:inline;"> 
 					<input type="hidden" name="do" value="affiliatesBranchsEdit" /> 
 					<input type="hidden" name="id" value="|-$branch->getid()-|" /> 
-					<input type="submit" name="submit_go_edit_branch" value="Editar" class="buttonSmall" /> 
+					<input type="submit" name="submit_go_edit_branch" value="Editar" class="buttonImageEdit" /> 
 				</form> 
 				<form action="Main.php" method="post" style="display:inline;"> 
 					<input type="hidden" name="do" value="affiliatesBranchsDoDelete" /> 
 					<input type="hidden" name="id" value="|-$branch->getid()-|" /> 
-					<input type="submit" name="submit_go_delete_branch" value="Borrar" onclick="return confirm('¿Seguro que desea eliminar la sucursal?')" class="buttonSmall" /> 
+					<input type="submit" name="submit_go_delete_branch" value="Borrar" onclick="return confirm('¿Seguro que desea eliminar la sucursal?')" class="buttonImageDelete" /> 
 			</form></td> 
 		</tr> 
 		|-/foreach-|
 	<tr>
-		<td colspan="9">|-include file="PaginateInclude.tpl"-|</td>
+		<td colspan="9" class="pages">|-include file="PaginateInclude.tpl"-|</td>
 	</tr>
 		</tbody> 
 	</table> 
