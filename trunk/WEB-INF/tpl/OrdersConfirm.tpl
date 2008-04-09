@@ -10,18 +10,20 @@
 				<th class="thFillTitle">Nombre</th>
 				<th class="thFillTitle">Precio</th>
 				<th class="thFillTitle">Cantidad</th>
+				<th class="thFillTitle">Total</th>
 			</tr>
 		</thead>
 		<tbody>  |-foreach from=$orderItems item=item name=for_products-| |-assign var=product value=$item->getProduct()-| |-assign var=productNode value=$product->getNode()-|
 		<tr>
-			<td class="tdSize1">|-$product->getcode()-|</td>
+			<td align="right" class="tdSize1">|-$product->getcode()-|</td>
 			<td class="tdSize1">|-$productNode->getname()-|</td>
-			<td class="tdSize1">|-$item->getprice()|number_format:2:",":"."-|</td>
-			<td class="tdSize1">|-$item->getQuantity()-|</td>
+			<td align="right" class="tdSize1">|-$item->getprice()|number_format:2:",":"."-|</td>
+			<td align="right" class="tdSize1">|-$item->getQuantity()-|</td>
+			<td align="right" class="tdSize1">|-math equation="x * y" x=$item->getprice() y=$item->getQuantity() assign=subTotal-||-$subTotal|number_format:2:",":"."-|</td>
 		</tr>
 		|-foreachelse-|
 		<tr>
-			<td colspan="5">Sin Productos</td>
+			<td colspan="6">Sin Productos</td>
 		</tr>
 		|-/foreach-|
 		</tbody>
@@ -33,12 +35,14 @@
 	<input type="submit" value="Editar Pedido" class="boton" />
 </form>
 
-<br />
+<br /><br />
 
 |- if $orderItems|@count gt 0-|
+<p><strong>Datos del Pedido</strong></p>
 <form action="Main.php" method="post">
-	<label for="number">Número:</label>
-	<img src="images/helpIcon.png" width="16" height="16" title="Si el cliente asignó un número a este pedido, ingrese ese número como referencia">	<input type="text" name="number" />
+<p>	<label for="number">Número:</label>
+	<img src="images/helpIcon.png" width="16" height="16" alt="Si el cliente asignó un número a este pedido, ingrese ese número como referencia" title="Si el cliente asignó un número a este pedido, ingrese ese número como referencia">	<input type="text" name="number" />
+</p>
 	|-if $branchs|@count gt 0-|<p>Seleccione la sucursal correspondiente
 	<select name="branchId">
 		<option value="">Seleccionar sucursal</option>
@@ -46,7 +50,6 @@
 		<option value="|-$branch->getId()-|">|-$branch->getName()-| (|-$branch->getNumber()-|)</option>
 		|-/foreach-|
 	</select></p>
-	<br />
 	|-/if-|
 	<input type="hidden" name="do" value="ordersDoGenerate" />
 	<input type="submit" value="Confirmar pedido" class="boton" />
