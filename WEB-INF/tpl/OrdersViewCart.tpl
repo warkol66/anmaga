@@ -48,13 +48,13 @@
 	<input type="submit" value="Vaciar Carrito" class="boton" onclick="return confirm('Seguro que desea vaciar el carrito?')" />
 </form>
 <form action="Main.php" method="post">
-	<input type="hidden" name="do" value="ordersDoSave" />
-	<input type="hidden" name="name" id="name" value="" />
-	<input type="submit" value="Guardar pedido" class="boton" onclick="$('name').value = window.prompt('Nombre de la orden:','');" />
-</form>
-<form action="Main.php" method="post">
 	<input type="hidden" name="do" value="ordersConfirm" />
 	<input type="submit" value="Generar orden" class="boton" />
+</form>
+<form action="Main.php" method="post">
+	<input type="hidden" name="do" value="ordersDoSave" />
+	<input type="hidden" name="name" id="name" value="" />
+	<input type="submit" value="Guardar plantilla de pedido" class="boton" onclick="$('name').value = window.prompt('Nombre de la orden:','');" />
 </form>
 |-/if-|
 
