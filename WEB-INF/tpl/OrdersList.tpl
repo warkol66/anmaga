@@ -17,7 +17,10 @@
 								<label>Hasta:</label>&nbsp;<span class="size4">(mm-dd-aaaa)</span>
 								<input name="dateTo" type="text" value="|-$dateTo-|" size="10">&nbsp;&nbsp;
 					<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('dateTo', false, 'dmy', '-');" title="Seleccione la fecha"></td>
-		<td nowrap>								<label for="state">Estado</label>
+		</tr>
+	<tr>
+		<td>							
+										<label for="state">Estado</label>
 								<select name="state">
 									<option value="" selected="selected">Todos&nbsp;&nbsp;&nbsp;</option>
 									<option value="0">Emitida</option>
@@ -27,25 +30,21 @@
 									<option value="4">Completa</option>
 									<option value="5">Cancelada</option>
 									<option value="6">A Verificar</option>
-					</select></td>
-	</tr>
-|-if $all eq "1"-|	<tr>
-		<td colspan="2">							
-								<label for="affiliateId">Mayorista</label>
+					</select>
+											|-if $all eq "1"-|&nbsp;&nbsp;&nbsp;											<label for="affiliateId">Mayorista</label>
 								<select name="affiliateId">
 									<option value="" selected="selected">Todos&nbsp;&nbsp;&nbsp;</option>
 									|-foreach from=$affiliates item=affiliate-|
 									<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|&nbsp;&nbsp;&nbsp;</option>
 									|-/foreach-|
-								</select></td>
+								</select>|-/if-|</td>
 	</tr>
-							|-/if-|
+							
 	<tr>
 		<td>								<input type="hidden" name="do" value="ordersList" />
 								<input type="submit" value="Buscar" class="boton" />
 </td>
-		<td>&nbsp;</td>
-	</tr>
+		</tr>
 </table>
 		</form>
 	</div>
@@ -91,7 +90,7 @@
 							<input name="allbox" onclick="javascript:CheckAllBoxes(this.form)" type="checkbox"></td>
 								</tr>
 								<tr> 
-									<td colspan="9">|-include file="PaginateInclude.tpl"-|</td> 
+									<td colspan="9" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
 								</tr>
 							</tbody>
 						</table>

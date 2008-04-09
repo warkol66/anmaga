@@ -1,26 +1,6 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-		<td class='title'>##40,Configuración del Sistema##</td>
-	</tr>
-	<tr>
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='backgroundTitle'>##151,Administración de Usuarios##</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>##152,A continuación podrá editar la lista de usuarios del sistema##</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-</table>
+<h2>##40,Configuración del Sistema##</h2>
+<h1>##151,Administración de Usuarios##</h1>
+<p>##152,A continuación podrá editar la lista de usuarios del sistema##</p>
 |-if $message eq "deleted"-|
 <div align='center' class='errorMessage'>##153,Usuario eliminado##</div>
 |-/if-|
@@ -99,7 +79,7 @@
 	</table>
 </form>
 |-if $accion eq "edicion"-|
-<table class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
+<table class='tableTdBorders' cellpadding='4' cellspacing='0' width='100%'>
 	<caption>
 	##167,El usuario ## |-$currentUser->getUsername()-| ##168,es miembro de los grupos:##
 	</caption>
@@ -137,7 +117,7 @@
 </table>
 |-/if-|
 |-/if-|
-<table class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
+<table class='tableTdBorders' cellpadding='4' cellspacing='0' width='100%'>
 	<tr>
 		<th width="15%" nowrap class="thFillTitle">##162,Identificación de Usuario##</th>
 		<th width="40%" class="thFillTitle">##163,Nombre##</th>
@@ -176,7 +156,7 @@
 
 |-if $deletedUsers|@count gt 0-|
 <br />
-<table class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
+<table class='tableTdBorders' cellpadding='4' cellspacing='0' width='100%'>
 	<tr>
 		<td colspan='4' class='celltitulo2'>##175,Usuarios Eliminados##&nbsp;<a href="javascript:void(null)" class='deta' onClick="alert('##174,Si quiere dar de alta a un usuario que estuvo registrado alguna vez, debe reactivarlo desde esta opción. Si lo intenta desde un usuario nuevo el sistema le informará que ese usuario ya está en uso.##')">##38,Ayuda##</a> </td>
 	</tr>

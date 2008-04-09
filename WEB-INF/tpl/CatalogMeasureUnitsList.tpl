@@ -3,10 +3,10 @@
 <div id="div_measureunits"> 
 |-if $message eq "ok"-|<span class="message_ok">Measure Unit guardado correctamente</span>|-/if-| 
 |-if $message eq "deleted_ok"-|<span class="message_ok">Measure Unit eliminado correctamente</span>|-/if-|
-	<table class='tableTdBorders' cellpadding='5' cellspacing='1' width='400' id="tabla-measureunits"> 
+	<table class='tableTdBorders' cellpadding='4' cellspacing='0' width='400' id="tabla-measureunits"> 
 		<thead> 
 			<tr>
-				 <th colspan="3" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=catalogMeasureUnitsEdit" class="agregarNueva">Agregar Unidad de Medida</a></div></th>
+				 <th colspan="3"><div class="rightLink"><a href="Main.php?do=catalogMeasureUnitsEdit" class="agregarNueva">Agregar Unidad de Medida</a></div></th>
 			</tr>
 		<thead> 
 			<tr> 

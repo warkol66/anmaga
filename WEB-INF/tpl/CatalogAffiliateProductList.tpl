@@ -13,7 +13,7 @@
 			</form>
 </p>
 |-if isset($productNodes)-|
-	<table width="100%" class="tableTdBorders" id="tabla-products"> 
+	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products"> 
 		<thead> 
 			<tr> 
 				<th width="5%" class="thFillTitle">Código Producto</th> 
@@ -37,9 +37,9 @@
 		</tr>
 		|-/foreach-|
 		<tr>
-			<td colspan="5">|-include file="PaginateInclude.tpl"-|</td>
+			<td colspan="5" class="pages">|-include file="PaginateInclude.tpl"-|</td>
 		</tr> 
 		</tbody> 
-	</table> 
+</table> 
 |-/if-|
 </div>

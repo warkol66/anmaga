@@ -1,11 +1,9 @@
-	<h2>Pedidos</h2>
-	<h1>Confirmar Pedido</h1>
+<h2>Pedidos</h2>
+<h1>Confirmar Pedido</h1>
 <div id="div_order">
-
 	<div id="messageCart">
-	</div>
-
-	<table width="100%" class="tableTdBorders" id="tabla-products">
+</div>
+	<table width="100%" border="0" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products">
 		<thead>
 			<tr>
 				<th class="thFillTitle">Código</th>
@@ -40,14 +38,15 @@
 |- if $orderItems|@count gt 0-|
 <form action="Main.php" method="post">
 	<label for="number">Número:</label>
-	<input type="text" name="number" />
-	|-if $branchs|@count gt 0-|
+	<img src="images/helpIcon.png" width="16" height="16" title="Si el cliente asignó un número a este pedido, ingrese ese número como referencia">	<input type="text" name="number" />
+	|-if $branchs|@count gt 0-|<p>Seleccione la sucursal correspondiente
 	<select name="branchId">
 		<option value="">Seleccionar sucursal</option>
 		|-foreach from=$branchs item=branch-|
 		<option value="|-$branch->getId()-|">|-$branch->getName()-| (|-$branch->getNumber()-|)</option>
 		|-/foreach-|
-	</select>
+	</select></p>
+	<br />
 	|-/if-|
 	<input type="hidden" name="do" value="ordersDoGenerate" />
 	<input type="submit" value="Confirmar pedido" class="boton" />

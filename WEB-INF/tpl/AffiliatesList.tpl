@@ -51,7 +51,7 @@
 	</tr>
 	|-/foreach-|
 	<tr>
-		<td colspan="3">|-include file="PaginateInclude.tpl"-|</td>
+		<td colspan="3" class="pages">|-include file="PaginateInclude.tpl"-|</td>
 	</tr>
 	<tr>
 		<td colspan="3"><form action='Main.php' method='post'>
