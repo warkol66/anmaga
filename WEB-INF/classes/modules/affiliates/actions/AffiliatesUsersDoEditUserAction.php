@@ -47,12 +47,20 @@ class AffiliatesUsersDoEditUserAction extends BaseAction {
 		$module = "Affiliates";
 		$smarty->assign("module",$module);
 
-    $userPeer = new AffiliateUserPeer();
+	    $userPeer = new AffiliateUserPeer();
     
-		if ( !empty($_SESSION["loginUser"]) )
+		if ( !empty($_SESSION["loginUser"]) ) {
+			//si es un usuario administrador, debe si o si indicar el affiliateId para el que se esta creando.	
+			if (empty($_POST["affiliateId"])) {
+				//es un error
+				header("Location: Main.php?do=usersList&user=&message=errorUpdate");
+				exit;
+			}
 			$affiliateId = $_POST["affiliateId"];
-		else
+		}
+		else {
 			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
+		}
 
 		if ( $_POST["accion"] == "edicion" ) {
 			//estoy editando un usuario existente
