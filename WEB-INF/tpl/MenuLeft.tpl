@@ -10,7 +10,7 @@
 	<tr> 
     <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=catalogProductCategoriesList">Administrar Categorías de Productos</a>
 		<a class="menuSubButton" href="Main.php?do=catalogProductsList">Administrar Productos</a>
-		<a class="menuSubButton" href="Main.php?do=catalogUnitsList">Administrar Unidades</a>
+		<a class="menuSubButton" href="Main.php?do=catalogUnitsList">Administrar Unidades de Venta</a>
 		<a class="menuSubButton" href="Main.php?do=catalogMeasureUnitsList">Administrar Unidades de Medida</a>
 		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductList">Ver lista de precio por cliente</a>
 		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductsImport">Administrar listas de precio por cliente</a>
@@ -71,7 +71,7 @@
 |-if $loginAffiliateUser neq ""-|
 <table width="150" border="0" cellpadding="0" cellspacing="0" class="menuCell">
   <tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByaffiliateWelcome">Ir al Inicio</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersWelcome">Ir al Inicio</a></td>
   </tr>
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=catalogShow">Catálogo</a></td>

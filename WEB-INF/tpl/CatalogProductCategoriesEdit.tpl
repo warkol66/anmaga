@@ -5,33 +5,28 @@
 	<form name="form_edit_productcategory" id="form_edit_productcategory" action="Main.php" method="post" enctype="multipart/form-data">
 		|-if $message eq "error"-|<span class="message_error">Ha ocurrido un error al intentar guardar la categoría de producto</span>|-/if-|
 		|-if $loaded ne ""-|<span class="message_ok">Se han cargado |-$loaded-| productos en esta categoría</span>|-/if-|
-		<h3>|-if $action eq "edit"-|Editar|-else-|Crear|-/if-| Categorías de Productos</h3>
-		<p>
-			Ingrese los datos de la categoría de producto.
-		</p>
+		<p>Ingrese los datos de la categoría de producto</p>
 		<fieldset title="Formulario de edicin de datos de una categoria de producto">
+     <legend>Categoría de Producto</legend>
+		 		<p>|-if $action eq "edit"-|Editar|-else-|Crear|-/if-| Categorías de Productos</p>
 			|-if $action eq "edit"-||-assign var=category value=$node->getInfo()-||-/if-|
 			<p>
-				<label for="name">Categoría: </label>
+				<label for="name">Categoría</label>
 				<input type="text" id="name" name="name" value="|-if $action eq 'edit'-||-$node->getname()-||-/if-|" title="name" size="45" maxlength="255" />
 			</p>
-			<br clear="all">
 			<p>
-				<label for="description">Descripción:</label>
-				<textarea id="description" name="description" rows="5" wrap="virtual" size="38">|-if $action eq "edit"-||-$category->getdescription()-||-/if-|</textarea>
+				<label for="description">Descripción</label>
+				<textarea name="description" cols="45" rows="5" wrap="virtual" id="description">|-if $action eq "edit"-||-$category->getdescription()-||-/if-|</textarea>
 			</p>
-			<br clear="all">
 			|-if $action eq "edit"-|
 			<div>
 				<img src="Main.php?do=productCategoriesGetImage&id=|-$category->getId()-|" alt="|-$node->getname()-|" />
 			</div>
 			|-/if-|
-			<br clear="all">
 			<p>
-				<label for="image">Imagen:</label>
+				<label for="image">Imagen</label>
 				<input type="file" id="image" name="image" title="image" />
 			</p>
-			<br clear="all">
 			<p>
 				|-if $action eq "edit"-|
 				<input type="hidden" name="id" id="id" value="|-if $action eq "edit"-||-$node->getid()-||-/if-|" />

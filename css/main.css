@@ -1,0 +1,9 @@
+/* CSS Document */
+@import url("cabezal.css"); /* Importar el estilo para definir el Cabezal de la página */
+@import url("style.css");  /* Importar los estilos que cambien de color  */
+@import url("custom.css");  /* Importar los estilos que cambien de color  */
+
+@import url("style2.css"); /*  font-size: en PIXEL*/
+@import url("custom2.css");
+
+@import url("datePicker.css");
