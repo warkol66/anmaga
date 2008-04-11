@@ -16,22 +16,16 @@
   extract($_SESSION,EXTR_PREFIX_ALL,'session');
   extract($_GET,EXTR_PREFIX_ALL,'get');
   extract($_POST,EXTR_PREFIX_ALL,'post');
-//  error_reporting($system["config"]["system"]["errorReporting"]);
-  error_reporting(E_ALL ^ E_NOTICE);
 
+  //Configuracion de Error Reporting
+  global $system;
+  if (isset($system)) {  
+  	$level = $system["config"]["system"]["errorReporting"]["value"];
+  	if ($level == "")
+  		$level = 0;
+  	error_reporting($level);
+  }
 
-/*
- * Variable para indicar si el sitio se encuentra en estado de desarrollo
- * Captura los mails generados por el sistema y los guarda en un archivo de texto
- */ 
-	global $enDesarrollo;
-	$enDesarrollo = $_SESSION["parameters"]["SISTEMA_EN_DESARROLLO"];
-/*
- * Variable para indicar si el sitio se encuentra en mantenimiento
- * No permite loguear ningun usuario nuevo, solo el supervisor
- */ 
-	global $enMantenimiento;
-	$enMantenimiento = $_SESSION["parameters"]["SISTEMA_EN_MANTENIMIENTO"];
 
   /**
   * getBrowser
@@ -275,7 +269,7 @@ class Common
 
 	/**
 	* Devuelve la edad de una persona a partir de una fecha de nacimiento entregada
-	* @param string $birth fecha de nacimiento a calcular, el formato ser· aÒo-dia-mes
+	* @param string $birth fecha de nacimiento a calcular, el formato ser√° a√±o-dia-mes
 	* @return int $ageYears edad de la fecha entregada
 	*
 	*/
@@ -283,7 +277,7 @@ class Common
 	function getAge($birth){
 	
 	///////////
-	/// el formato va a ser aÒo dia mes
+	/// el formato va a ser a√±o dia mes
 	///$birth='1985-29-11';
 		$birthday=explode("-",$birth);
 		
@@ -324,7 +318,7 @@ class Common
 		$compareFilter=date("Y-m-d");
 
 		$yearFilter=$minYear."-".$filter;
-		//echo "menor aÒo $minYearFilter,, mayor aÒo $maxYearFilter";	
+		//echo "menor a√±o $minYearFilter,, mayor a√±o $maxYearFilter";	
 
 		//////////
 		// adicionalmente se puede habilitar la comparacion
@@ -389,7 +383,7 @@ class Common
 * @param string $user datos del usuario
 * @param string $action nombre del action
 * @param string $forward tipo de forward (success, failure, errorLog, etc)
-* @param string $object objeto sobre el cual se realizÛ la acciÛn
+* @param string $object objeto sobre el cual se realiz√≥ la acci√≥n
 * @return void
 */
 function doLog($forward,$object=null) {
