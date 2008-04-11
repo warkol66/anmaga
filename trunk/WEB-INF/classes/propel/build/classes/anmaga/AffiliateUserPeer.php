@@ -105,6 +105,10 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
   * @return boolean true si se creo el usuario correctamente, false sino
 	*/
 	function create($affiliateId,$username,$password,$levelId,$name,$surname,$mailAddress) {
+
+		//regla de negocio, no se puede crear un usuario de afiliado sin afiliado que sea su duenio
+		if (empty($affiliateId))
+			return false;
 	
 		$usernameLowercase = strtolower($username);
 		if (AffiliateUserPeer::usernameExists($usernameLowercase))

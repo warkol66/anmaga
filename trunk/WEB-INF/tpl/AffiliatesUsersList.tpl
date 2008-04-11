@@ -74,7 +74,6 @@
 			<td class='tdTitle'>Afiliado</td>
 			<td>
 				<select name='affiliateId'>
-					<option value="">Seleccionar afiliado</option>
 					|-foreach from=$affiliates item=affiliate name=for_affiliates-|
 					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $affiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
 					|-/foreach-|
