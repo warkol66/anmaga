@@ -7,6 +7,7 @@
 	|-if $message eq "deleted_ok"-|<span class="message_ok">Product Category eliminado correctamente</span>|-/if-|
 	|-if $loaded ne ""-|<span class="message_ok">Se han cargado |-$loaded-| productos</span>|-/if-|
 	<h3><a href="Main.php?do=catalogProductCategoriesEdit">Agregar Categoría de Producto</a></h3>
+<br>
 	<hr>
 	<form name="form_load_products" id="form_load_products" action="Main.php" method="post" enctype="multipart/form-data">
 		<p>
@@ -23,5 +24,7 @@
 			<input type="submit" value="Cargar" class="button" />
 		</p>
 	</form>
+	|-if $productCategories|@count gt 0-|
 	|-include file="CatalogProductCategoriesIncludeList.tpl" productCategories=$productCategories-|
+	|-/if-|
 </div>
