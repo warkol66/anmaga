@@ -16,24 +16,17 @@
   extract($_SESSION,EXTR_PREFIX_ALL,'session');
   extract($_GET,EXTR_PREFIX_ALL,'get');
   extract($_POST,EXTR_PREFIX_ALL,'post');
-//  error_reporting($system["config"]["system"]["errorReporting"]);
-  error_reporting(E_ALL ^ E_NOTICE);
+
+  //Configuracion de Error Reporting
+  global $system;
+  if (isset($system)) {  
+  	$level = $system["config"]["system"]["errorReporting"]["value"];
+  	if ($level == "")
+  		$level = 0;
+  	error_reporting($level);
+  }
 
 
-/*
- * Variable para indicar si el sitio se encuentra en estado de desarrollo
- * Captura los mails generados por el sistema y los guarda en un archivo de texto
- */ 
-/*	global $enDesarrollo;
-	$enDesarrollo = $_SESSION["parameters"]["SISTEMA_EN_DESARROLLO"];
-*/
-/*
- * Variable para indicar si el sitio se encuentra en mantenimiento
- * No permite loguear ningun usuario nuevo, solo el supervisor
- */ 
-/*	global $enMantenimiento;
-	$enMantenimiento = $_SESSION["parameters"]["SISTEMA_EN_MANTENIMIENTO"];
-*/
   /**
   * getBrowser
   * 
@@ -261,7 +254,6 @@ class Common
 		//si llego hasta aca, devolver true		
 		return true;
 	}
-
 
 /*
 * Ejemplo: Common::debugger(dirname(__FILE__)."/archivo.sql","Query: ",$query);
