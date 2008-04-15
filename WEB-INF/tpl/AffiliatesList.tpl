@@ -45,7 +45,7 @@
 	|-foreach from=$affiliates item=affiliate name=for_affiliate-|
 	<tr>
 		<td width="5%" class='tdSize1'><div>|-$affiliate->getId()-|</div></td>
-		<td width="85%" class='tdData'><div class='titulo2'>|-$affiliate->getName()-|</div></td>
+		<td width="85%" class='tdData'><div class='titulo2'>|-$affiliate->getName()-| |-if $affiliate->getOwnerId() neq "" -||-assign var=owner value=$affiliate->getOwner()-| [ Usuario Dueño: |-$owner->getUsername()-| ] |-/if-|</div></td>
 		<td width="10%" nowrap class='cellTextOptions'>[ <a href='Main.php?do=affiliatesViewAffiliate&id=|-$affiliate->getId()-|' class='detail'>Ver datos</a> ] [ <a href='Main.php?do=affiliatesEdit&id=|-$affiliate->getId()-|' class='edit'>##114,Editar##</a> ]
 			[ <a href='Main.php?do=affiliatesDoDelete&affiliate=|-$affiliate->getId()-|' class='delete' onclick="return confirm('##256,Esta opción eliminar permanentemente a este Grupo. ¿Está seguro que desea eliminarlo?##');">##115,Eliminar##</a> ]</td>
 	</tr>

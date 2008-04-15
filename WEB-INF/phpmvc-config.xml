@@ -379,6 +379,15 @@
 			<forward name="success" path="/Main.php?do=affiliatesList&amp;message=edited" redirect="true" />
 		</action>
 
+		<action    path = "affiliatesSetOwner"
+							 type = "AffiliatesSetOwnerAction"
+							 name = "affiliatesSetOwner"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesUsersList&amp;message=ownerEdited" redirect="true" />
+			<forward name="failure" path="/Main.php?do=affiliatesUsersList&amp;message=ownerNotEdited" redirect="true" />
+		</action>
+
 		<action    path = "affiliatesDoEditInfo"
 							 type = "AffiliatesDoEditInfoAction"
 							 name = "affiliatesDoEditInfo"
