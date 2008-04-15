@@ -7,6 +7,12 @@
 |-if $message eq "activated"-|
 <div align='center' class='errorMessage'>##154,Usuario reactivado##</div>
 |-/if-|
+|-if $message eq "ownerEdited"-|
+<div align='center' class='errorMessage'>El dueño ha sido modificado</div>
+|-/if-|
+|-if $message eq "ownerNotEdited"-|
+<div align='center' class='errorMessage'>El dueño no ha sido modificado</div>
+|-/if-|
 |-if $message eq "wrongPassword"-|
 <div align='center' class='errorMessage'>##155,Las contraseñas deben coincidir##</div>
 |-/if-|
@@ -156,7 +162,7 @@
 	|-foreach from=$users item=user name=for_users-|
 	<tr>
 		<td width="90%"><div class='titulo2'>|-$user->getUsername()-|</div></td>
-		<td width="10%" class='cellTextOptions' nowrap> [ <a href='Main.php?do=affiliatesUsersList&user=|-$user->getId()-|']' class='edit'>##114,Editar##</a> ]
+		<td width="10%" class='cellTextOptions' nowrap>[ <form method="post"><input type="hidden" name="userId" value="|-$user->getId()-|" /><input type="hidden" name="affiliateId" value="|-$user->getAffiliateId()-|" /><input type="hidden" name="do" value="affiliatesSetOwner" /><a href="#" title="Set as Owner" onClick="javascript:this.parentNode.submit();">Set as Owner</a></form> ] [ <a href='Main.php?do=affiliatesUsersList&user=|-$user->getId()-|']' class='edit'>##114,Editar##</a> ]
 			[ <a href='Main.php?do=affiliatesUsersDoDelete&id=|-$user->getId()-|']' class='delete'>##115,Eliminar##</a> ] </td>
 	</tr>
 	|-/foreach-|
