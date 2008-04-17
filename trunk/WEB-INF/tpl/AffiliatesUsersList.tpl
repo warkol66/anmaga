@@ -2,13 +2,13 @@
 	<h1>Administración de Usuarios por Afiliados</h1>
 	<p>A continuación podrá editar la lista de Usuarios por Afiliados del sistema.</p>
 |-if $message eq "deleted"-|
-<div align='center' class='errorMessage'>##153,Usuario eliminado##</div>
+<div align='center' class='successMessage'>##153,Usuario eliminado##</div>
 |-/if-|
 |-if $message eq "activated"-|
-<div align='center' class='errorMessage'>##154,Usuario reactivado##</div>
+<div align='center' class='successMessage'>##154,Usuario reactivado##</div>
 |-/if-|
 |-if $message eq "ownerEdited"-|
-<div align='center' class='errorMessage'>El dueño ha sido modificado</div>
+<div align='center' class='successMessage'>El dueño ha sido modificado</div>
 |-/if-|
 |-if $message eq "ownerNotEdited"-|
 <div align='center' class='errorMessage'>El dueño no ha sido modificado</div>
@@ -162,7 +162,8 @@
 	|-foreach from=$users item=user name=for_users-|
 	<tr>
 		<td width="90%"><div class='titulo2'>|-$user->getUsername()-|</div></td>
-		<td width="10%" class='cellTextOptions' nowrap>[ <form method="post"><input type="hidden" name="userId" value="|-$user->getId()-|" /><input type="hidden" name="affiliateId" value="|-$user->getAffiliateId()-|" /><input type="hidden" name="do" value="affiliatesSetOwner" /><a href="#" title="Set as Owner" onClick="javascript:this.parentNode.submit();">Set as Owner</a></form> ] [ <a href='Main.php?do=affiliatesUsersList&user=|-$user->getId()-|']' class='edit'>##114,Editar##</a> ]
+		<td width="10%" class='cellTextOptions' nowrap>|-if $loginUser ne '' && $affiliateId gt 0-|[ 
+			<form method="post"><input type="hidden" name="userId" value="|-$user->getId()-|" /><input type="hidden" name="affiliateId" value="|-$user->getAffiliateId()-|" /><input type="hidden" name="do" value="affiliatesSetOwner" /><a href="#" title="Set as Owner" onClick="javascript:this.parentNode.submit();">Set as Owner</a></form> ] |-/if-|[ <a href='Main.php?do=affiliatesUsersList&user=|-$user->getId()-|']' class='edit'>##114,Editar##</a> ]
 			[ <a href='Main.php?do=affiliatesUsersDoDelete&id=|-$user->getId()-|']' class='delete'>##115,Eliminar##</a> ] </td>
 	</tr>
 	|-/foreach-|
