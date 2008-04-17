@@ -4,16 +4,17 @@
 	<form method="post" action="Main.php?do=affiliatesDoEdit">
 	<input type="hidden" value="|-$affiliate->getId()-|" name="id">
 		<fieldset title="Formulario de edición de sucursales de afiliado">
-     <legend>Ingrese los datos de la sucursal</legend>
+     <legend>Afiliado</legend>
 		<p>Realice los cambios y para guardar haga click en "Guardar Cambios"</p>
 		<p><label for="affiliateId">ID</label>
 		<input name="affiliateId" type="text" value="|-$affiliate->getId()-|" size="4" disabled>
 		 </p>
 		 <p><label for="name">Nombre</label>
-			<input name="name" type="text" value="|-$affiliate->getName()-|" size="60"></td>
+			<input name="name" type="text" value="|-$affiliate->getName()-|" size="60">
 		 </p>
 		 <p> <input name="save" type="submit" class="botonchico" value="Guardar Cambios"> 
 			 </p>
+			 </fieldset>
 <br />
  [ <a href='Main.php?do=affiliatesEdit&id=|-$affiliate->getId()-|&editInfo=1' class='edit'>Editar datos Internos</a> ]	</form>
 <br />
@@ -50,10 +51,11 @@
 			</p>
 		 <p><input name="save" type="submit" class="botonchico" value="Guardar Cambios"> 
 			 </p>
+		</fieldset>
 </form>
 
 
 	 |-/if-|
-</table>
+
 
  
