@@ -1,13 +1,23 @@
 <?xml version = "1.0" encoding="Windows-1252" standalone="yes"?>
 <VFPData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="\\anmaga-server\pedidos_xml\profit_Schema.xsd">
 |-foreach from=$orders item=order name=for_orders-|
-|-foreach from=$order->getOrderItems() item=item name=for_products-|
+|-assign var=number value=$order->getNumber()-|
+|-counter start=0 assign=subnumber name=subnumber-|
+|-counter start=0 assign=iteration name=iteration-|
+|-foreach from=$order->getOrderItemsOrderByProductOrderCode() item=item name=for_products-|
+|-counter name=iteration-|
 |-assign var=product value=$item->getProduct()-|
 |-assign var=productNode value=$product->getNode()-|
+|-assign var=productOrderCode value=$product->getOrderCode()-|
+|-assign var=productOrderCodePre value=$productOrderCode|truncate:1:""-|
 |-assign var=unit value=$product->getUnit()-|
 |-assign var=branch value=$order->getBranch()-|
+|-if ($lastProductOrderCodePre ne $productOrderCodePre)-|
+|-counter name=subnumber-|
+|-counter start=0 assign=iteration name=iteration-|
+|-/if-|
 	<cursor_profit_xml>
-		<nro_ord>|-$order->getNumber()-|</nro_ord>
+		<nro_ord>|-$order->getNumber()-|_|-$subnumber-|</nro_ord>
 		<co_cli>|-if $branch-||-$branch->getCode()-||-/if-|</co_cli>
 		<fec_emis>|-$order->getCreated()|date_format:"%Y-%m-%d"-|</fec_emis>
 		<fec_venc>|-$order->getCreated()|date_format:"%Y-%m-%d"-|</fec_venc>
@@ -20,6 +30,11 @@
 		<reng_neto>|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-||-$totalItem|number_format:2:".":""-|</reng_neto>
 		<total_uni>|-if $unit-||-$unit->getUnitQuantity()-||-/if-|</total_uni>
 	</cursor_profit_xml>
+|-if ( ($iteration ne 0) and ( ($iteration mod $articlesPerOrder) eq 0 ) )-|
+|-counter name=subnumber-|
+|-counter start=0 assign=iteration name=iteration-|
+|-/if-|
+|-assign var=lastProductOrderCodePre value=$productOrderCodePre-|
 |-/foreach-|
 |-/foreach-|
 </VFPData>

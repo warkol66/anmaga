@@ -31,7 +31,7 @@
 			<affiliateNews>Novedades: distinguidos Clientes, Bienvenido al sistema Anmaga. En este momento este sistema se encuentra en período de prueba</affiliateNews>
 		</parameters>
 		<errorReporting>
-			<value>E_ALL ^ E_NOTICE</value>
+			<value>E_ALL</value>
 			<element_type>Options</element_type>
 			<element_options>
 				<option_1></option_1>
@@ -62,7 +62,7 @@
 			<usersLogin>
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
-			</usersLogin>
+			</usersLogin>  
 			<usersDoLogin>
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
@@ -144,4 +144,7 @@
 			</thumbnail>
 		</image>
 	</catalog>
+	<orders>
+		<articlesPerOrder>3</articlesPerOrder>
+	</orders>
 </config>

@@ -137,4 +137,15 @@ class Order extends BaseOrder {
                 return true;
         
         }
+        
+        /*
+         * Obtiene los items ordenados por el codigo de ordenamiento de los productos.
+         *
+         */
+        function getOrderItemsOrderByProductOrderCode() {
+                $criteria =  new Criteria();
+                $criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
+                $criteria->addAscendingOrderByColumn(ProductPeer::ORDERCODE);                  
+                return $this->getOrderItems($criteria);
+        }
 }
