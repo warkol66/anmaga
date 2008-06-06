@@ -11,6 +11,13 @@
 			<input name="code" type="text" id="code" title="code" value="|-if $action eq 'edit'-||-$product->getcode()-||-/if-|" size="40" maxlength="255" /> 
 			</p> 
 		<br clear="all">
+		
+		<p> 
+			<label for="orderCode">Código de Ordenamiento</label> 
+			<input name="orderCode" type="text" id="orderCode" title="orderCode" value="|-if $action eq 'edit'-||-$product->getOrderCode()-||-/if-|" size="40" maxlength="255" /> 
+			</p> 
+		<br clear="all">		
+		
 		<p> 
 			<label for="name">Nombre</label> 
 			<input name="name" type="text" id="name" title="name" value="|-if $action eq 'edit'-||-$node->getname()-||-/if-|" size="60" maxlength="255" /> 

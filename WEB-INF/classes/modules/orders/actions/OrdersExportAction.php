@@ -61,6 +61,11 @@ class OrdersExportAction extends BaseAction {
 		}
 		
 		$smarty->assign("orders",$orders);
+		
+		global $system;
+		
+		$articlesPerOrder = $system['config']['orders']['articlesPerOrder'];
+		$smarty->assign("articlesPerOrder",$articlesPerOrder);
 
 		header("content-Type:text/html; charset=windows-1252"); 		
 		header("content-disposition: attachment; filename=orders.xml");

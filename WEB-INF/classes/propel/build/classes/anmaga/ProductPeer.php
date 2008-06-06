@@ -38,12 +38,15 @@ class ProductPeer extends BaseProductPeer {
   * @param integer $parentNodeId Id del nodo padre
   * @param integer $unitId Id de la unidad
   * @param integer $measureUnitId Id de la unidad de medida
+  * @param string $orderCode orderCode del product  
   * @return int Id del nodo creado
 	*/
-	function create($code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId) {
+	function create($code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId,$orderCode=null) {
     try {
 			$productObj = new Product();
 			$productObj->setCode($code);
+			if (!empty($orderCode))
+				$productObj->setOrderCode($orderCode);
 			$productObj->setDescription($description);
 			$productObj->setPrice($price);
 			$productObj->setUnitId($unitId);
@@ -153,16 +156,19 @@ class ProductPeer extends BaseProductPeer {
   * @param integer $parentNodeId Id del nodo padre
   * @param integer $unitId Id de la unidad  
   * @param integer $measureUnitId Id de la unidad de medida
+  * @param string $orderCode orderCode del product      
   * @return int Id del nodo creado
 	*/
-	function createAndReplace($code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId) {
+	function createAndReplace($code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId,$orderCode=null) {
     try {
 			$oldProduct = ProductPeer::getByCode($code);
 			if (!empty($oldProduct))
 				$productObj = $oldProduct;
 			else
 				$productObj = new Product();
-  	  $productObj->setCode($code);
+  	  		$productObj->setCode($code);
+			if (!empty($orderCode))
+				$productObj->setOrderCode($orderCode);	  
 			$productObj->setDescription($description);
 			$productObj->setPrice($price);
 			$productObj->setUnitId($unitId);
@@ -205,17 +211,21 @@ class ProductPeer extends BaseProductPeer {
   * @param integer $parentNodeId Id del nodo padre
   * @param integer $unitId Id de la unidad  
   * @param integer $measureUnitId Id de la unidad de medida    
+  * @param string $orderCode orderCode del product    
   * @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
-  function update($id,$code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId) {
+  function update($id,$code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId,$orderCode=null) {
     require_once("NodePeer.php");
 		$node = NodePeer::get($id);
 		$node->setName($name);
 		$node->setParentId($parentNodeId);
 		$node->save();
 
-  	$productObj = $node->getInfo();
-    $productObj->setcode($code);
+  		$productObj = $node->getInfo();
+    	$productObj->setcode($code);
+		if (!empty($orderCode))
+			$productObj->setOrderCode($orderCode);
+	
 		$productObj->setdescription($description);
 		$productObj->setprice($price);
 		$productObj->setUnitId($unitId);
