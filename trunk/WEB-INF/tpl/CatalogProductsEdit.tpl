@@ -69,6 +69,11 @@
 			</select> 
 		</p> 
 		<br clear="all">
+		<p> 
+			<label for="salesUnit">Unidad de Venta</label> 
+			<input type="text" name="salesUnit" id="salesUnit" value="|-if $action eq 'edit'-||-$product->getSalesUnit()-||-else-|1|-/if-|" /> 
+		</p> 		
+		<br clear="all">
 		<p> |-if $action eq 'edit'-|
 			<input type="hidden" name="id" id="id" value="|-if $action eq 'edit'-||-$node->getid()-||-/if-|" /> |-/if-|
 			<input type="hidden" name="action" id="action" value="|-$action-|" /> 

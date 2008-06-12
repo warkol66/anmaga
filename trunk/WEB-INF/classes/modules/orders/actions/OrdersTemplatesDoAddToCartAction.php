@@ -47,13 +47,18 @@ class OrdersTemplatesDoAddToCartAction extends BaseAction {
 		$module = "Orders";
 		$section = "Templates";
 		
-    $orderTemplate = OrderTemplatePeer::get($_GET["id"]);
+    $orderTemplate = OrderTemplatePeer::get($_REQUEST["id"]);
     if ( !empty($orderTemplate) ) {
 
 			$items = $_SESSION["orderItems"];
 	
 			
 			foreach ($orderTemplate->getOrderTemplateItems() as $currentItem) {
+		
+				//Como la cantidad en el carrito es en unidad de ventas debo dividir la cantidad por salesUnit para obtener la cantidad a mostrar en el carrito	
+				$currentItemProduct = $currentItem->getProduct();				
+				$productQuantity = $currentItem->getQuantity() / $currentItemProduct->getSalesUnit();
+				$currentItem->setQuantity($productQuantity);			
 
 				$found = false;
 				$i = 0;
@@ -73,9 +78,9 @@ class OrdersTemplatesDoAddToCartAction extends BaseAction {
 					$orderItem = new OrderItem();
 					$orderItem->setProductId($currentItem->getProductId());
 					$orderItem->setQuantity($currentItem->getQuantity());
-		    	$product = ProductPeer::get($orderItem->getProductId());
-		    	$orderItem->setProduct($product);
-		    	$orderItem->setPrice($product->getPrice());
+		    		$product = ProductPeer::get($orderItem->getProductId());
+		    		$orderItem->setProduct($product);
+		    		$orderItem->setPrice($product->getPrice());
 					$_SESSION["orderItems"][] = $orderItem;
 				}
 			

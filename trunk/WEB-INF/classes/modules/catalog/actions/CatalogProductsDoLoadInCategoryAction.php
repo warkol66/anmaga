@@ -95,11 +95,11 @@ class CatalogProductsDoLoadInCategoryAction extends BaseAction {
 						$measureUnitId = 0;
 					switch ($_POST["mode"]) {
 						case "1": //Reemplaza todo el catalogo de esa categoria
-        					if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"],$unitId,$measureUnitId,$product[7]) > 0 )
+        					if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"],$unitId,$measureUnitId,$product[7],$product[8]) > 0 )
         						$loaded++;
 							break;
 						case "2": //Reemplaza codigos existentes
-        					if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"],$unitId,$measureUnitId,$product[7]) > 0 )
+        					if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"],$unitId,$measureUnitId,$product[7],$product[8]) > 0 )
         						$loaded++;
 							break;
 						case "4": //Solo actualiza los precios
@@ -107,7 +107,7 @@ class CatalogProductsDoLoadInCategoryAction extends BaseAction {
 								$loaded++;
 							break; 							
 						default: //Solo agrega nuevos
-        					if ( ProductPeer::create($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"],$unitId,$measureUnitId,$product[7]) > 0 )
+        					if ( ProductPeer::create($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"],$unitId,$measureUnitId,$product[7],$product[8]) > 0 )
         						$loaded++;
         					break;
      				}

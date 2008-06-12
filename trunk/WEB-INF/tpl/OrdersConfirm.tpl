@@ -8,6 +8,8 @@
 			<tr>
 				<th class="thFillTitle">Código</th>
 				<th class="thFillTitle">Nombre</th>
+				<th class="thFillTitle">Precio Unitario</th> 
+				<th class="thFillTitle">Unidad de Venta</th>
 				<th class="thFillTitle">Precio</th>
 				<th class="thFillTitle">Cantidad</th>
 				<th class="thFillTitle">Total</th>
@@ -17,9 +19,11 @@
 		<tr>
 			<td align="right" class="tdSize1">|-$product->getcode()-|</td>
 			<td class="tdSize1">|-$productNode->getname()-|</td>
-			<td align="right" class="tdSize1">|-$item->getprice()|number_format:2:",":"."-|</td>
+			<td nowrap class="tdSize1 right">|-$product->getprice()|number_format:2:",":"."-|</td>
+			<td nowrap class="tdSize1 right">|-$product->getSalesUnit()-|</td>
+			<td nowrap class="tdSize1 right">|-math equation="x * y" x=$product->getprice() y=$product->getSalesUnit() assign=totalItem-||-$totalItem|number_format:2:",":"."-|</td>
 			<td align="right" class="tdSize1">|-$item->getQuantity()-|</td>
-			<td align="right" class="tdSize1">|-math equation="x * y" x=$item->getprice() y=$item->getQuantity() assign=subTotal-||-$subTotal|number_format:2:",":"."-|</td>
+			<td align="right" class="tdSize1">|-math equation="x * y" x=$totalItem y=$item->getQuantity() assign=subTotal-||-$subTotal|number_format:2:",":"."-|</td>
 		</tr>
 		|-foreachelse-|
 		<tr>

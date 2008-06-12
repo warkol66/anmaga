@@ -8,8 +8,10 @@
 			<tr> 
 				<th width="5%" class="thFillTitle">Código</th> 
 				<th width="35%" class="thFillTitle">Nombre</th> 
-				<th width="50%" class="thFillTitle">Descripción</th> 
-				<th width="5%" class="thFillTitle">Precio</th> 
+				<th width="40%" class="thFillTitle">Descripción</th> 
+				<th width="5%" class="thFillTitle">Precio Unitario</th> 
+				<th width="5%" class="thFillTitle">Unidad de Venta</th>
+				<th width="5%" class="thFillTitle">Precio</th>
 				<th width="5%" class="thFillTitle">&nbsp;</th>
 			</tr>
 		</thead>
@@ -19,6 +21,8 @@
 			<td class="tdSize1">|-$productNode->getname()-|</td>
 			<td class="tdSize1">|-$product->getdescription()-|</td>
 			<td nowrap class="tdSize1 right">|-if $product->getprice() neq 0-||-$product->getprice()|number_format:2:",":"."-||-/if-|</td>
+			<td nowrap class="tdSize1 right">|-$product->getSalesUnit()-|</td>
+			<td nowrap class="tdSize1 right">|-if $product->getprice() neq 0-||-math equation="x * y" x=$product->getprice() y=$product->getSalesUnit() assign=totalItem-||-$totalItem|number_format:2:",":"."-||-/if-|</td>
 			<td class="tdSize1">|-if $product->getprice() neq 0-|
 				<form>
 					<label for="quantity">Cantidad</label>
@@ -31,11 +35,11 @@
 		</tr>
 		|-foreachelse-|
 		<tr>
-			<td colspan="5">Sin Productos</td>
+			<td colspan="7">Sin Productos</td>
 		</tr>
 		|-/foreach-|
 		<tr>
-			<td colspan="5" class="pages">|-include file="PaginateInclude.tpl"-|</td>
+			<td colspan="7" class="pages">|-include file="PaginateInclude.tpl"-|</td>
 		</tr> 
 		</tbody> 
 	</table> 
