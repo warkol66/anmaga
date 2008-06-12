@@ -50,13 +50,18 @@ class OrdersDoAddToCartAction extends BaseAction {
 		$smarty->assign("section",$section);
 
 		
-    $order = OrderPeer::get($_GET["id"]);
+    $order = OrderPeer::get($_REQUEST["id"]);
     if ( !empty($order) ) {
 
 			$items = $_SESSION["orderItems"];
 
 
 			foreach ($order->getOrderItems() as $currentItem) {
+			
+				//Como la cantidad en el carrito es en unidad de ventas debo dividir la cantidad por salesUnit para obtener la cantidad a mostrar en el carrito	
+				$currentItemProduct = $currentItem->getProduct();				
+				$productQuantity = $currentItem->getQuantity() / $currentItemProduct->getSalesUnit();
+				$currentItem->setQuantity($productQuantity);				
 
 				$found = false;
 				$i = 0;

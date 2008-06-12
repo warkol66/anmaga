@@ -10,6 +10,8 @@
 			<tr>
 				<th class="thFillTitle">Código</th>
 				<th class="thFillTitle">Nombre</th>
+				<th class="thFillTitle">Precio Unitario</th> 
+				<th class="thFillTitle">Unidad de Venta</th>
 				<th class="thFillTitle">Precio</th>
 				<th class="thFillTitle">Cantidad</th>
 			</tr>
@@ -18,7 +20,9 @@
 		<tr id="product_|-$product->getId()-|">
 			<td class="tdSize1">|-$product->getcode()-|</td>
 			<td class="tdSize1">|-$productNode->getname()-|</td>
-			<td class="tdSize1">|-$item->getprice()|number_format:2:",":"."-|</td>
+			<td nowrap class="tdSize1 right">|-$product->getprice()|number_format:2:",":"."-|</td>
+			<td nowrap class="tdSize1 right">|-$product->getSalesUnit()-|</td>
+			<td nowrap class="tdSize1 right">|-math equation="x * y" x=$product->getprice() y=$product->getSalesUnit() assign=totalItem-||-$totalItem|number_format:2:",":"."-|</td>
 			<td>
 				<form>
 					<input type="text" name="quantity" value="|-$item->getQuantity()-|" size="3" />
@@ -35,7 +39,7 @@
 		</tr>
 		|-foreachelse-|
 		<tr>
-			<td colspan="5">Sin Productos</td>
+			<td colspan="7">Sin Productos</td>
 		</tr>
 		|-/foreach-|
 		</tbody>

@@ -34,7 +34,9 @@ class TreePeer {
 	*/
 	function getAllRoots() {
 		$cond = new Criteria();
-		$cond->add(NodePeer::PARENTID, null);
+		$criterion = $cond->getNewCriterion(NodePeer::PARENTID, null);
+		$criterion->addOr($cond->getNewCriterion(NodePeer::PARENTID, 0));
+		$cond->add($criterion);
 		$objs = NodePeer::doSelect($cond);
 		return $objs;
 	}
@@ -87,7 +89,9 @@ class TreePeer {
 	*/
 	function getAllRootsByKind($kind) {
 		$cond = new Criteria();
-		$cond->add(NodePeer::PARENTID, null);
+		$criterion = $cond->getNewCriterion(NodePeer::PARENTID, null);
+		$criterion->addOr($cond->getNewCriterion(NodePeer::PARENTID, 0));
+		$cond->add($criterion);		
 		$cond->add(NodePeer::KIND, $kind);
 		$objs = NodePeer::doSelect($cond);
 		return $objs;
@@ -108,12 +112,40 @@ class TreePeer {
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
-		$cond->add(NodePeer::PARENTID, null);
+		$criterion = $cond->getNewCriterion(NodePeer::PARENTID, null);
+		$criterion->addOr($cond->getNewCriterion(NodePeer::PARENTID, 0));
+		$cond->add($criterion);		
 		$cond->add(NodePeer::KIND, $kind);
 
 		$pager = new PropelPager($cond,"NodePeer", "doSelect",$page,$perPage);
 		return $pager;
 	}
+
+	/**
+	* Obtiene todas las raices de productos paginadas.
+	*
+	* @param int $page [optional] Numero de pagina actual
+	* @param int $perPage [optional] Cantidad de elementos por pagina
+	* @return array Arboles
+	*/
+	function getAllRootsProductsPaginated($page=1,$perPage=-1) {
+		if ($perPage == -1)
+			$perPage = 	TreePeer::getRowsPerPage();
+		if (empty($page))
+			$page = 1;
+		require_once("propel/util/PropelPager.php");
+		$cond = new Criteria();
+		$criterion = $cond->getNewCriterion(NodePeer::PARENTID, null);
+		$criterion->addOr($cond->getNewCriterion(NodePeer::PARENTID, 0));
+		$cond->add($criterion);		
+		$cond->add(NodePeer::KIND, "Product");
+		$cond->addJoin(NodePeer::OBJECTID, ProductPeer::ID);
+		$cond->add(ProductPeer::ACTIVE, true);
+
+		$pager = new PropelPager($cond,"NodePeer", "doSelect",$page,$perPage);
+		return $pager;
+	}	
+
 
 	/**
 	* Obtiene la raiz del arbol.
@@ -195,10 +227,14 @@ class TreePeer {
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
-		$cond->add(NodePeer::PARENTID, null);
+		$criterion = $cond->getNewCriterion(NodePeer::PARENTID, null);
+		$criterion->addOr($cond->getNewCriterion(NodePeer::PARENTID, 0));
+		$cond->add($criterion);
 		$cond->add(NodePeer::KIND, $kind);
 		$cond->add(AffiliateProductPeer::AFFILIATEID, Common::getAffiliatedId());
 		$cond->addJoin(NodePeer::ID , AffiliateProductPeer::PRODUCTID, Criteria::JOIN);
+		$cond->addJoin(NodePeer::OBJECTID, ProductPeer::ID);
+		$cond->add(ProductPeer::ACTIVE, true);			
 		
 		$pager = new PropelPager($cond,"NodePeer", "doSelect",$page,$perPage);
 		

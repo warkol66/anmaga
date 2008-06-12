@@ -39,7 +39,7 @@
 						<input type="hidden" name="id" value="|-$orderTemplate->getid()-|" />
 						<input type="submit" name="submit_go_delete_orderTemplate" value="Borrar" onclick="return confirm('Seguro que desea eliminar la orden?')" class="buttonImageDelete" />
 					</form>
-					<form action="Main.php" method="get">
+					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="ordersTemplatesDoAddToCart" />
 						<input type="hidden" name="id" value="|-$orderTemplate->getid()-|" />
 						<input type="submit" name="submit_go_add_orderTemplate" value="Add To Cart" class="boton" />

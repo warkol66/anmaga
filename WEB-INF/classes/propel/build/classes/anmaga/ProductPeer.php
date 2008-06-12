@@ -39,9 +39,10 @@ class ProductPeer extends BaseProductPeer {
   * @param integer $unitId Id de la unidad
   * @param integer $measureUnitId Id de la unidad de medida
   * @param string $orderCode orderCode del product  
+  * @param integer $salesUnit Unidad de venta, 1 por defecto
   * @return int Id del nodo creado
 	*/
-	function create($code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId,$orderCode=null) {
+	function create($code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId,$orderCode=null,$salesUnit=1) {
     try {
 			$productObj = new Product();
 			$productObj->setCode($code);
@@ -51,6 +52,8 @@ class ProductPeer extends BaseProductPeer {
 			$productObj->setPrice($price);
 			$productObj->setUnitId($unitId);
 			$productObj->setMeasureUnitId($measureUnitId);
+			if (!empty($salesUnit))			
+				$productObj->setSalesUnit($salesUnit);
 			$productObj->save();
 			
 			if (!empty($image['tmp_name'])) {
@@ -156,10 +159,11 @@ class ProductPeer extends BaseProductPeer {
   * @param integer $parentNodeId Id del nodo padre
   * @param integer $unitId Id de la unidad  
   * @param integer $measureUnitId Id de la unidad de medida
-  * @param string $orderCode orderCode del product      
+  * @param string $orderCode orderCode del product    
+  * @param integer $salesUnit Unidad de venta, 1 por defecto
   * @return int Id del nodo creado
 	*/
-	function createAndReplace($code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId,$orderCode=null) {
+	function createAndReplace($code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId,$orderCode=null,$salesUnit=1) {
     try {
 			$oldProduct = ProductPeer::getByCode($code);
 			if (!empty($oldProduct))
@@ -173,6 +177,8 @@ class ProductPeer extends BaseProductPeer {
 			$productObj->setPrice($price);
 			$productObj->setUnitId($unitId);
 			$productObj->setMeasureUnitId($measureUnitId);
+			if (!empty($salesUnit))			
+				$productObj->setSalesUnit($salesUnit);
 			$productObj->save();
 
 			if (!empty($image['tmp_name'])) {
@@ -212,9 +218,10 @@ class ProductPeer extends BaseProductPeer {
   * @param integer $unitId Id de la unidad  
   * @param integer $measureUnitId Id de la unidad de medida    
   * @param string $orderCode orderCode del product    
+  * @param integer $salesUnit Unidad de venta, 1 por defecto  
   * @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
-  function update($id,$code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId,$orderCode=null) {
+  function update($id,$code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId,$orderCode=null,$salesUnit=1) {
     require_once("NodePeer.php");
 		$node = NodePeer::get($id);
 		$node->setName($name);
@@ -230,6 +237,8 @@ class ProductPeer extends BaseProductPeer {
 		$productObj->setprice($price);
 		$productObj->setUnitId($unitId);
 		$productObj->setMeasureUnitId($measureUnitId);
+		if (!empty($salesUnit))			
+			$productObj->setSalesUnit($salesUnit);
 		if (!empty($image['tmp_name'])) {
 			ProductPeer::createImages($image,$productObj->getId());
 		}

@@ -280,6 +280,7 @@
     <column name="measureUnitId" type="INTEGER" description="Unidad de Medida" />
     <column name="active" required="true" default="true"  type="BOOLEAN"  description="Is product active?"/>
     <column name="orderCode" size="255" type="VARCHAR" description="Codigo de ordenamiento del producto" />
+    <column name="salesUnit" type="INTEGER" description="Multiplo de la unidad de medida en que se puede ordenar el producto" />
 		<unique>
 			<unique-column name="code" />
 		</unique>

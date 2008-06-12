@@ -54,8 +54,13 @@ class OrdersDoGenerateAction extends BaseAction {
 		$total = 0;
 		foreach ($items as $item) {
 			//Si la cantidad del producto es mayor cero
-			if ($item->getQuantity() > 0)
+			if ($item->getQuantity() > 0) {
+				//Como la cantidad es en unidad de ventas debo multiplicar la cantidad por salesUnit para obtener la cantidad real
+				$product = $item->getProduct();
+				$productQuantity = $product->getSalesUnit() * $item->getQuantity();
+				$item->setQuantity($productQuantity);			
 				$total += ($item->getPrice() * $item->getQuantity());
+			}
 		}
 
     $orderId = OrderPeer::create($_POST["number"],$user->getId(),$user->getAffiliateId(),$total,$_POST["branchId"]);

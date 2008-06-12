@@ -67,10 +67,10 @@ class CatalogShowAction extends BaseAction {
 			if (!empty($_GET["categoryId"])) {
 		    	$categoryNode = NodePeer::get($_GET["categoryId"]);
 		      	$smarty->assign("categoryNode",$categoryNode);
-		      	$pager = $categoryNode->getChildsOnlyKindPaginated("Product",$_GET["page"]);
+		      	$pager = $categoryNode->getChildsProductsPaginated($_GET["page"]);
 				}
 			else {
-				$pager = TreePeer::getAllRootsByKindPaginated("Product",$_GET["page"]);
+				$pager = TreePeer::getAllRootsProductsPaginated($_GET["page"]);
 			}
 			
 			

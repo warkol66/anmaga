@@ -122,6 +122,27 @@ class Node extends BaseNode {
 	}
 	
 	/*
+	* Obtiene todos los productos del nodo paginados
+	*
+	* @param int $page [optional] Numero de pagina actual
+	* @param int $perPage [optional] Cantidad de elementos por pagina
+	* @return array Todos los nodos hijos.
+	*/
+	function getChildsProductsPaginated($page=1,$perPage=10) {
+		if (empty($page))
+			$page = 1;
+		require_once("propel/util/PropelPager.php");
+		$cond = new Criteria();
+		$cond->add(NodePeer::PARENTID, $this->id);
+		$cond->add(NodePeer::KIND, "Product");
+		$cond->addJoin(NodePeer::OBJECTID, ProductPeer::ID);
+		$cond->add(ProductPeer::ACTIVE, true);		
+
+		$pager = new PropelPager($cond,"NodePeer", "doSelect",$page,$perPage);
+		return $pager;
+	}	
+	
+	/*
 	* Obtiene la informacion particular de ese nodo.
 	*
 	* @return NodeKind Objeto asociado al nodo
@@ -180,6 +201,8 @@ class Node extends BaseNode {
 		$cond->add(NodePeer::KIND, $kind);
 		$cond->add(AffiliateProductPeer::AFFILIATEID, Common::getAffiliatedId());
 		$cond->addJoin(NodePeer::ID , AffiliateProductPeer::PRODUCTID, Criteria::JOIN);
+		$cond->addJoin(NodePeer::OBJECTID, ProductPeer::ID);
+		$cond->add(ProductPeer::ACTIVE, true);				
 		
 		$pager = new PropelPager($cond,"NodePeer","doSelect",$page,$perPage);
 		
