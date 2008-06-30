@@ -56,7 +56,7 @@ class OrdersChangeItemCartXAction extends BaseAction {
 			$item = $items[$i];
 			if ($item->getProductId() == $_POST["productId"]) {
 				$item->setQuantity($_POST["quantity"]);
-    		$_SESSION["orderItems"][$i] = $item;
+    			$_SESSION["orderItems"][$i] = $item;
 				$found = true;
 			}
 			$i++;
@@ -64,6 +64,16 @@ class OrdersChangeItemCartXAction extends BaseAction {
 		//Si no estaba, no hago nada
 		if (!$found) {
 
+		} else {
+			$items = $_SESSION["orderItems"];
+			$total = 0;
+			foreach ($items as $item) {
+				if (!empty($item)) {
+					$product = $item->getProduct();
+					$total += ( $product->getPrice() * $product->getSalesUnit() * $item->getQuantity() );
+				}
+			}
+			$smarty->assign("total",$total);		
 		}
 
 		return $mapping->findForwardConfig('success');

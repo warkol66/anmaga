@@ -164,7 +164,8 @@ function ordersChangeItemCartX(form) {
 				url,
 				{
 					method: 'post',
-					postBody: fields
+					postBody: fields,
+					evalScripts: true
 				});
 	$('messageCart').innerHTML = "Modifing cart...";
 }

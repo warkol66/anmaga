@@ -47,9 +47,20 @@ class OrdersConfirmAction extends BaseAction {
 		$module = "Orders";
 		$smarty->assign("module",$module);
 		
-		$branchs = BranchPeer::getAllByAffiliateId($_SESSION["loginAffiliateUser"]->getAffiliateId());
-		$smarty->assign("branchs",$branchs);
+		if (Common::isSystemUser()) {
+			$affiliateId = $_REQUEST["affiliateId"];
+			require_once("AffiliatePeer.php");
+			$affiliate = AffiliatePeer::get($affiliateId);
+			$smarty->assign("affiliate",$affiliate);
+		}
+		else
+			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
+
+		if (empty($affiliateId))
+			return $mapping->findForwardConfig('failure');
 		
+		$branchs = BranchPeer::getAllByAffiliateId($affiliateId);
+		$smarty->assign("branchs",$branchs);		
 
 		$orderItems = $_SESSION["orderItems"];
 		$smarty->assign("orderItems",$orderItems);

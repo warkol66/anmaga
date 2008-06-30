@@ -19,11 +19,18 @@
 
   //Configuracion de Error Reporting
   global $system;
-  if (isset($system)) {  
-  	$level = $system["config"]["system"]["errorReporting"]["value"];
-  	if ($level == "")
-  		$level = 0;
-  	error_reporting($level);
+  if (isset($system)) {
+
+	$conversionTable = array('E_ALL ^ E_NOTICE'=> 6143 & 8, 'E_ALL' => 6143, 'E_STRICT' => 2048);
+	$level = $system["config"]["system"]["errorReporting"]["value"];
+
+	if ($level == "") {
+		ini_set("error_reporting",0);
+	}
+	else {
+		ini_set("error_reporting",$conversionTable[$level]);
+	}
+
   }
 
 
@@ -422,6 +429,17 @@ function isAffiliatedUser() {
 			return true;
 	return false;
 	
+}
+
+/**
+ * Indica si es un usuario comun.
+ */
+function isSystemUser() {
+
+	if (isset($_SESSION["loginUser"]))
+			return true;
+	return false;
+
 }
 
 function getAffiliatedId() {

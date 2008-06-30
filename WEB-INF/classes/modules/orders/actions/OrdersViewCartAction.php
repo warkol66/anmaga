@@ -46,6 +46,13 @@ class OrdersViewCartAction extends BaseAction {
 		$module = "Orders";
 		$smarty->assign("module",$module);
 		
+		//Si es un usuario comun, cargo la lista de afiliados
+		if (Common::isSystemUser()) {
+			require_once("AffiliatePeer.php");
+			$affiliates = AffiliatePeer::getAll();
+			$smarty->assign("affiliates",$affiliates);
+		}
+		
 
 		$orderItems = $_SESSION["orderItems"];
 		$smarty->assign("orderItems",$orderItems);

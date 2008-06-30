@@ -66,6 +66,21 @@ class OrdersRemoveItemCartXAction extends BaseAction {
 		//Si no estaba, no hago nada
 		if (!$found) {
 
+		} else {
+		//Tengo que rearmar el array de items, sino queda un elemento vacio
+			$items = $_SESSION["orderItems"];
+			unset($_SESSION["orderItems"]);
+			$newItems = array();
+			$total = 0;
+			foreach ($items as $item) {
+				if (!empty($item)) {
+					$newItems[] = $item;
+					$product = $item->getProduct();
+					$total += ( $product->getPrice() * $product->getSalesUnit() * $item->getQuantity() );
+				}
+			}
+			$_SESSION["orderItems"] = $newItems;
+			$smarty->assign("total",$total);
 		}
 
 		return $mapping->findForwardConfig('success');
