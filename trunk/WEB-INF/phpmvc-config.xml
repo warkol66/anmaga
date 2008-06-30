@@ -118,6 +118,9 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="UsersList.tpl"/>
+			<forward name="include" path="UsersListInclude.tpl"/>
+			<forward name="includeLogged" path="UsersListIncludeLogged.tpl"/>
+			<forward name="includeNotLogged" path="UsersListIncludeNotLogged.tpl"/>
 		</action>
 
 		<action    path = "usersDoEdit"
@@ -1190,7 +1193,8 @@
 							 name = "ordersConfirm"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="OrdersConfirm.tpl" />
+			<forward name="success" path="OrdersConfirm.tpl" />  
+			<forward name="failure" path="Main.php?do=ordersViewCart&amp;message=error" redirect="true" />
 		</action>
 		
 		<action    path = "ordersExport"
@@ -1231,6 +1235,7 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="Main.php?do=ordersTemplatesList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="Main.php?do=ordersViewCart&amp;message=error" redirect="true" />
 		</action>
 
 		<action    path = "ordersImport"

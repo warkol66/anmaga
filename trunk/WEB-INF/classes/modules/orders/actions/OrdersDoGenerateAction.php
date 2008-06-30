@@ -46,8 +46,14 @@ class OrdersDoGenerateAction extends BaseAction {
 
 		$smarty->assign("module",$module);
 
-
-		$user = $_SESSION["loginAffiliateUser"];
+		if (Common::isSystemUser()) {
+			$affiliateId = $_REQUEST["affiliateId"];
+			require_once("AffiliatePeer.php");
+			$affiliate = AffiliatePeer::get($affiliateId);
+			$user = $affiliate->getOwner(); 
+		}
+		else
+			$user = $_SESSION["loginAffiliateUser"];		
 
 		$items = $_SESSION["orderItems"];
 

@@ -60,7 +60,7 @@ class AffiliatesBranchsDoEditAction extends BaseAction {
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un branch existente
 
-			if ( BranchPeer::update($_POST["id"],$_POST["affiliateId"],$_POST["number"],$_POST["name"],$_POST["phone"],$_POST["contact"],$_POST["contactEmail"],$_POST["memo"],$_POST["code"]) )
+			if ( BranchPeer::update($_POST["id"],$affiliateId,$_POST["number"],$_POST["name"],$_POST["phone"],$_POST["contact"],$_POST["contactEmail"],$_POST["memo"],$_POST["code"]) )
       			return $mapping->findForwardConfig('success');
 			else
 				return $mapping->findForwardConfig('success');
@@ -69,7 +69,7 @@ class AffiliatesBranchsDoEditAction extends BaseAction {
 		else {
 		  //estoy creando un nuevo branch
 
-      if ( !BranchPeer::create($_POST["affiliateId"],$_POST["number"],$_POST["name"],$_POST["phone"],$_POST["contact"],$_POST["contactEmail"],$_POST["memo"],$_POST["code"]) ) {
+      if ( !BranchPeer::create($affiliateId,$_POST["number"],$_POST["name"],$_POST["phone"],$_POST["contact"],$_POST["contactEmail"],$_POST["memo"],$_POST["code"]) ) {
 			$smarty->assign("id",$_POST["id"]);
 						$smarty->assign("affiliateId",$_POST["affiliateId"]);
 						$smarty->assign("number",$_POST["number"]);
