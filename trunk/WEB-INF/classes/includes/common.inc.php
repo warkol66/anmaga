@@ -9,7 +9,7 @@
 
   include_once('Constants.inc.php');
   define('MAXIMOS_RESULTADOS_POR_PAGINA',15);
-  ini_set("error_reporting",E_ALL);
+
   ini_set("show_errors",true);
   session_cache_limiter('nocache');
   session_start();
@@ -495,6 +495,81 @@ function getSupplierUserId() {
 	return $user->getId();
 
 }
+
+	/*
+	 * Conversion del numero al formato numerico de mysql
+	 *
+	 * @param string numero con separador de miles y decimal segun la configuracion del sistema
+	 * @return string con el formato 
+	 */
+	function convertToMysqlNumericFormat($number) {
+
+		global $system;
+
+		$thousandsSeparator = $system['config']['system']['parameters']['thousandsSeparator'];
+		$decimalSeparator = $system['config']['system']['parameters']['decimalSeparator'];
+	
+		$number = str_replace($thousandsSeparator,'',$number);
+		//el separador de miles en MySQL es punto
+		$number = str_replace($decimalSeparator,'.',$number);
+	
+		return $number;	
+	
+	}
+	
+	/*
+	 * Devuelve el nombre corto del sistema
+	 * @return string nombre corto del sistema
+	 */
+	function getSiteShortName() {
+		
+		global $system;
+		return $system['config']['system']['parameters']['siteShortName'];
+		
+	}
+	
+	/**
+	 * Devuelve un datetime en la zona horaria del usuario actual
+	 * @param string datetime
+	 * @return string datetime en la zona horaria correspondiente al usuario
+	 */
+	function getDatetimeOnTimezone($datetime) {
+
+		require_once('TimezonePeer.php');
+
+/*		if (Common::isAdmin()) {
+			//es el caso de un usuario administrador el valor de su perfil
+			$user = Common::getAdminLogged();
+			$timezoneCode = $user->getTimezone();		
+
+		}
+
+		if (Common::isAffiliatedUser()) {
+			//es el caso de un usuario affiliado el valor de su perfil
+
+			$user = Common::getAffiliatedLogged();
+			$timezoneCode = $user->getTimezone();		
+
+		}
+*/
+		if (empty($timezoneCode) || $timezoneCode == "") {		
+			//si no hubiera o no fuera un usuario administrador tomamos default de la aplicacion
+			global $system;
+			$timezoneCode = $system["config"]["system"]["parameters"]["applicationTimeZoneGMT"]["value"];
+
+			//solucion por el problema del pasaje de XML a array de PHP
+			//que toma el 0 como null
+			if ($timezoneCode == null)
+				$timezoneCode = 0;
+
+		}
+
+
+		$timezonePeer = new TimezonePeer();
+
+		return $timezonePeer->getGMT0TimeOnTimezone($datetime,$timezoneCode);
+		
+	}
 
 
 }
