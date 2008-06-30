@@ -206,7 +206,7 @@ function ordersStateDoChangeX(form) {
 
 function ordersSendOrdersExport(form) {
 	
-	$('do').value = "ordersExport";
+	$('doActions').value = "ordersExport";
 	form.submit();
 	
 	return true;
@@ -214,7 +214,7 @@ function ordersSendOrdersExport(form) {
 
 function ordersSendOrdersDelete(form) {
 
-	$('do').value = "ordersDoDelete";
+	$('doActions').value = "ordersDoDelete";
 	form.submit();
 
 	return true;

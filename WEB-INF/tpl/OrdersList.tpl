@@ -41,7 +41,7 @@
 	</tr>
 							
 	<tr>
-		<td>								<input type="hidden" name="do" value="ordersList" />
+		<td>								<input type="hidden" name="do" id="doList" value="ordersList" />
 								<input type="submit" value="Buscar" class="boton" />
 </td>
 		</tr>
@@ -94,7 +94,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<input type="hidden" name="do" id="do" value="" />
+						<input type="hidden" name="do" id="doActions" value="" />
 						<input type="button" onclick="ordersSendOrdersExport(this.form)" value="Exportar órdenes seleccionadas" class="button" />&nbsp;&nbsp;&nbsp;
 						<input type="button" onclick="ordersSendOrdersDelete(this.form)" value="Eliminar órdenes seleccionadas" class="button" />
 					</form>
