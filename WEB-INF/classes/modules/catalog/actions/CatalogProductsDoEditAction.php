@@ -52,14 +52,18 @@ class CatalogProductsDoEditAction extends BaseAction {
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un producto existente
 
-			ProductPeer::update($_POST["id"],$_POST["code"],$_POST["name"],$_POST["description"],$_POST["price"],$_FILES["image"],$_POST["parentNodeId"],$_POST["unitId"],$_POST["measureUnitId"],$_POST["orderCode"],$_POST["salesUnit"]);
+			$price = Common::convertToMysqlNumericFormat($_POST["price"]);
+
+			ProductPeer::update($_POST["id"],$_POST["code"],$_POST["name"],$_POST["description"],$price,$_FILES["image"],$_POST["parentNodeId"],$_POST["unitId"],$_POST["measureUnitId"],$_POST["orderCode"],$_POST["salesUnit"]);
      	return $mapping->findForwardConfig('success');
 
 		}
 		else {
 		  //estoy creando un nuevo producto
 
-      if ( !ProductPeer::create($_POST["code"],$_POST["name"],$_POST["description"],$_POST["price"],$_FILES["image"],$_POST["parentNodeId"],$_POST["unitId"],$_POST["measureUnitId"],$_POST["orderCode"],$_POST["salesUnit"]) ) {
+			$price = Common::convertToMysqlNumericFormat($_POST["price"]);
+
+      if ( !ProductPeer::create($_POST["code"],$_POST["name"],$_POST["description"],$price,$_FILES["image"],$_POST["parentNodeId"],$_POST["unitId"],$_POST["measureUnitId"],$_POST["orderCode"],$_POST["salesUnit"]) ) {
 				return $mapping->findForwardConfig('failure');
       }
 

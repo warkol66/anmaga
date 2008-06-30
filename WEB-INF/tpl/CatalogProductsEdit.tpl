@@ -30,7 +30,7 @@
 		<br clear="all">
 		<p> 
 			<label for="price">Precio</label> 
-			<input name="price" type="text" id="price" title="price" value="|-if $action eq 'edit'-||-$product->getprice()-||-/if-|" size="20" /> 
+			<input name="price" type="text" id="price" title="price" value="|-if $action eq 'edit'-||-$product->getprice()|system_numeric_format-||-/if-|" size="20" /> 
 			</p> 
 		<br clear="all">
 		|-if $action eq 'edit'-|
