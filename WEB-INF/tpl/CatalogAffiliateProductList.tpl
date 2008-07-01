@@ -29,7 +29,7 @@
 			<td nowrap class="tdSize1 right">|-$product->getAffiliateCode($affiliateId)-| </td>
 			<td class="tdSize1">|-$productNode->getname()-|</td>
 			<td class="tdSize1">|-$product->getdescription()-|</td>
-			<td nowrap class="tdSize1 right">|-if $product->getAffiliatePrice($affiliateId) neq 0-||-$product->getAffiliatePrice($affiliateId)|number_format:2:",":"."-||-/if-|</td>
+			<td nowrap class="tdSize1 right">|-if $product->getAffiliatePrice($affiliateId) neq 0-||-$product->getAffiliatePrice($affiliateId)|system_numeric_format-||-/if-|</td>
 		</tr>
 		|-foreachelse-|
 		<tr>

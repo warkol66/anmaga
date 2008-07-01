@@ -70,11 +70,11 @@
 								<tr>
 																	<td class="tdSize1">|-$order->getid()-|</td>
 																	|-if $all eq "1"-|<td class="tdSize1">|-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
-																	<td nowrap class="tdSize1">|-$order->getcreated()-|</td>
+																	<td nowrap class="tdSize1">|-$order->getcreated()|date_format:"%d-%m-%Y"-|</td>
 																	<td nowrap class="tdSize1 right">|-$order->getNumber()-|</td>
 																	<td class="tdSize1">|-assign var=user value=$order->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
 																	<td class="tdSize1">|-assign var=branch value=$order->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
-																	<td class="tdSize1">|-$order->gettotal()|number_format:2:",":"."-|</td>
+																	<td align="right" class="tdSize1">|-$order->gettotal()|system_numeric_format-|</td>
 																	<td nowrap class="tdSize1">|-$order->getStateName()-|</td>
 																	<td nowrap>
 										<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersView&id=|-$order->getid()-|&page=|-$page-|'" value="Ver" class="buttonImageView" />
