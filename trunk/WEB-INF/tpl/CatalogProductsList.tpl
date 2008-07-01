@@ -50,7 +50,7 @@
 			<td class="tdSize1">|-$product->getcode()-|</td> 
 			<td class="tdSize1">|-$node->getname()-|</td> 
 			<td class="tdSize1">|-$product->getdescription()-|</td> 
-			<td class="tdSize1 right">|-$product->getprice()|number_format:2:",":"."-|</td> 
+			<td class="tdSize1 right">|-$product->getprice()|system_numeric_format-|</td> 
 			<td class="tdSize1">|-if $parentNode-||-$parentNode->getName()-||-/if-|</td> 
 			<td class="tdSize1 center">|-if $unit-||-$unit->getName()-||-/if-|</td> 
 			<td class="tdSize1 center">|-if $measureUnit-||-$measureUnit->getName()-||-/if-|</td> 

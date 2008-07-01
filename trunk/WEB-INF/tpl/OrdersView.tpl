@@ -97,9 +97,9 @@
 		<tr> 
 			<td nowrap class="tdSize1 top center">|-$product->getcode()-|</td> 
 			<td class="tdSize1 top">|-$productNode->getname()-|</td> 
-			<td class="tdSize1 bottom right">|-$item->getprice()|number_format:2:",":"."-|</td> 
-			<td class="tdSize1 bottom right">|-$item->getQuantity()|number_format:2:",":"."-|</td> 
-			<td class="tdSize1 bottom right">|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-||-$totalItem|number_format:2:",":"."-|</td> 
+			<td class="tdSize1 bottom right">|-$item->getprice()|system_numeric_format-|</td> 
+			<td class="tdSize1 bottom right">|-$item->getQuantity()|system_numeric_format-|</td> 
+			<td class="tdSize1 bottom right">|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-||-$totalItem|system_numeric_format-|</td> 
 		</tr> 
 		|-foreachelse-|
 		<tr> 
@@ -108,7 +108,7 @@
 		|-/foreach-|
 		|-if $order->getOrderItems()|@count gt 0-|
 		<tr> 
-			<td colspan="5" class="tdTitle right">Total:&nbsp;&nbsp;|-$order->getTotal()|number_format:2:",":"."-|</td> 
+			<td colspan="5" class="tdTitle right">Total:&nbsp;&nbsp;|-$order->getTotal()|system_numeric_format-|</td> 
 		</tr> 
 		|-/if-|
 		</tbody> 
