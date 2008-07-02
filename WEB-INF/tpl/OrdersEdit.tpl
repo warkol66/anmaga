@@ -77,7 +77,8 @@
 			<option value="2"|-if $order->getState() eq 2-| selected="selected"|-/if-|>|-$stateTexts.pendingApproval-|</option> 
 			<option value="3"|-if $order->getState() eq 3-| selected="selected"|-/if-|>|-$stateTexts.inProcess-|</option> 
 			<option value="4"|-if $order->getState() eq 4-| selected="selected"|-/if-|>|-$stateTexts.completed-|</option> 
-			<option value="5"|-if $order->getState() eq 5-| selected="selected"|-/if-|>|-$stateTexts.cancelled-|</option> 
+			<option value="5"|-if $order->getState() eq 5-| selected="selected"|-/if-|>|-$stateTexts.cancelled-|</option>
+			<option value="6"|-if $order->getState() eq 6-| selected="selected"|-/if-|>|-$stateTexts.toBeVerified-|</option>  
 		</select></td>
 		<td class="top"><label for="comment">Observación:</label><br />
 		<textarea name="comment" cols="60" rows="4" wrap="VIRTUAL" id="comment"></textarea></td>
