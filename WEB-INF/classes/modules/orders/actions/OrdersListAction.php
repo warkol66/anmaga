@@ -69,7 +69,7 @@ class OrdersListAction extends BaseAction {
 			$url .= "&dateFrom=".$_GET['dateFrom'];
 		}
 		
-		if (!empty($_GET["state"])) {
+		if (!empty($_GET["state"]) || $_GET["state"] == "0") {
 			$orderPeer->setSearchState($_GET["state"]);
 			$url .= "&state=".$_GET['state'];
 		}		
