@@ -57,7 +57,8 @@ class OrdersListAction extends BaseAction {
 		else {
 			if (!empty($_GET["affiliateId"])) {
 				$orderPeer->setSearchAffiliateId($_GET["affiliateId"]);
-				$url .= "&affiliateId=".$_GET['affiliateId'];			
+				$url .= "&affiliateId=".$_GET['affiliateId'];
+				$smarty->assign("selectedAffiliateId",$_GET["affiliateId"]);	
 			}
 			$affiliates = AffiliatePeer::getAll();
 			$smarty->assign("affiliates",$affiliates);
@@ -67,16 +68,19 @@ class OrdersListAction extends BaseAction {
 		if (!empty($_GET["dateFrom"])) {
 			$orderPeer->setSearchDateFrom(Common::usDateToDbDate($_GET["dateFrom"]));
 			$url .= "&dateFrom=".$_GET['dateFrom'];
+			$smarty->assign("selectedDateFrom",$_GET["dateFrom"]);	
 		}
 		
 		if (!empty($_GET["state"]) || $_GET["state"] == "0") {
 			$orderPeer->setSearchState($_GET["state"]);
 			$url .= "&state=".$_GET['state'];
+			$smarty->assign("selectedState",$_GET["state"]);	
 		}		
 
 		if (!empty($_GET["dateTo"])) {
 			$orderPeer->setSearchDateTo(Common::usDateToDbDate($_GET["dateTo"]));						
 			$url .= "&dateTo=".$_GET['dateTo'];
+			$smarty->assign("selectedDateTo",$_GET["dateTo"]);	
 		}
 			
 		$pager = $orderPeer->getSearchPaginated($_GET["page"]);
