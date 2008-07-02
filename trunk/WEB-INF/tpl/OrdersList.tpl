@@ -12,10 +12,10 @@
 <table  border="0" cellspacing="0" cellpadding="5">
 	<tr>
 		<td nowrap><label>Desde:</label>&nbsp;<span class="size4">(mm-dd-aaaa)</span>
-								<input name="dateFrom" type="text" value="|-$dateFrom-|" size="10">&nbsp;&nbsp;
+								<input name="dateFrom" type="text" value="|-$selectedDateFrom-|" size="10">&nbsp;&nbsp;
 								<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('dateFrom', false, 'dmy', '-');" title="Seleccione la fecha">&nbsp;&nbsp;
 								<label>Hasta:</label>&nbsp;<span class="size4">(mm-dd-aaaa)</span>
-								<input name="dateTo" type="text" value="|-$dateTo-|" size="10">&nbsp;&nbsp;
+								<input name="dateTo" type="text" value="|-$selectedDateTo-|" size="10">&nbsp;&nbsp;
 					<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('dateTo', false, 'dmy', '-');" title="Seleccione la fecha"></td>
 		</tr>
 	<tr>
@@ -23,19 +23,19 @@
 										<label for="state">Estado</label>
 								<select name="state">
 									<option value="" selected="selected">Todos&nbsp;&nbsp;&nbsp;</option>
-									<option value="0">Emitida</option>
-									<option value="1">Aceptada</option>
-									<option value="2">Pendiente Aprobación&nbsp;&nbsp;&nbsp;</option>
-									<option value="3">En Proceso</option>
-									<option value="4">Completa</option>
-									<option value="5">Cancelada</option>
-									<option value="6">A Verificar</option>
+									<option value="0"|-if $selectedState eq 0-| "selected"|-/if-|>Emitida</option>
+									<option value="1"|-if $selectedState eq 1-| "selected"|-/if-|>Aceptada</option>
+									<option value="2"|-if $selectedState eq 2-| "selected"|-/if-|>Pendiente Aprobación&nbsp;&nbsp;&nbsp;</option>
+									<option value="3"|-if $selectedState eq 3-| "selected"|-/if-|>En Proceso</option>
+									<option value="4"|-if $selectedState eq 4-| "selected"|-/if-|>Completa</option>
+									<option value="5"|-if $selectedState eq 5-| "selected"|-/if-|>Cancelada</option>
+									<option value="6"|-if $selectedState eq 6-| "selected"|-/if-|>A Verificar</option>
 					</select>
 											|-if $all eq "1"-|&nbsp;&nbsp;&nbsp;											<label for="affiliateId">Mayorista</label>
 								<select name="affiliateId">
 									<option value="" selected="selected">Todos&nbsp;&nbsp;&nbsp;</option>
 									|-foreach from=$affiliates item=affiliate-|
-									<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|&nbsp;&nbsp;&nbsp;</option>
+									<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $selectedAffiliateId-| "selected"|-/if-|>|-$affiliate->getName()-|&nbsp;&nbsp;&nbsp;</option>
 									|-/foreach-|
 								</select>|-/if-|</td>
 	</tr>
