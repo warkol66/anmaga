@@ -20,6 +20,8 @@ require_once 'om/BaseAffiliate.php';
  */	
 class Affiliate extends BaseAffiliate {
 
+        private $hasPriceList;
+
         function getOwner() {
                 require_once("AffiliateUserPeer.php");
                 return AffiliateUserPeer::get($this->getOwnerId());
@@ -114,6 +116,27 @@ class Affiliate extends BaseAffiliate {
                 $result = array("rowsReaded" => $rowsReaded, "rowsCreated" => $rowsCreated, "errorCodes" => $errorCodes);
                 
                 return $result;
+        }
+        
+        function getProductPrice($product) {
+                require_once('AffiliateProductPeer.php');
+                //seteo el atributo que me indica si el afiliado posee lista diferenciada
+                if (!isset($this->hasPriceList)) {
+                        $this->hasPriceList = AffiliateProductPeer::affiliateHasPriceList($this->getId());
+                }   
+                if ($this->hasPriceList) {
+                        $affiliateProduct = AffiliateProductPeer::get($this->getId(),$product->getId());
+                        if (!empty($affiliateProduct)) {
+                                $price = $affiliateProduct->getPrice();
+                        }
+                        else {
+                                $price = false;
+                        }
+                }     
+                else {
+                        $price = $product->getPrice();
+                }
+                return $price;
         }
 
 } // Affiliate

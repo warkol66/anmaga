@@ -302,6 +302,10 @@ class OrderPeer extends BaseOrderPeer {
 		$results["ordersReport"] = array();
 		$results["duplicatedOrders"] = array();
 		$results["duplicatedOrdersCount"] = 0;
+		$results["productsWrongPriceCount"] = 0;
+		$results["productsWrongPrice"] = array();		
+		
+		$affiliate = $user->getAffiliate();
 		
 		foreach ($orders as $order) {
 			$totalInFile = $order["total"];
@@ -327,7 +331,7 @@ class OrderPeer extends BaseOrderPeer {
 			else {			
 				$orderId = OrderPeer::create($order["number"],$user->getId(),$user->getAffiliateId(),$total,$branchId);
    				$orderObj = OrderPeer::get($orderId);
-   				$orderObj->setCreated($order["created"]);
+   				//$orderObj->setCreated($order["created"]);
 				$orderObj->save();
    
 				//cambio el estado de la orden si hay discrepancias entre el importe en el archivo y el importe calculado
@@ -371,12 +375,23 @@ class OrderPeer extends BaseOrderPeer {
 							$product = ProductPeer::getByCode($item["productCode"]);
 						*/
 						
-						//Si encontro al producto con ese codigo
-						if (!empty($product)) {
+						//Busco el precio del producto para ese afiliado
+						$price = $affiliate->getProductPrice($product);
+						
+						//Si encontro al producto con ese codigo y encontro precio
+						if (!empty($product) && $price) {
 							$results["productsFound"]++;
-							OrderItemPeer::create($orderId,$product->getId(),$item["price"],$item["quantity"]);	
-							//agrego el producto en la lista de codigos de productos por afiliado
-							//AffiliateProductCodePeer::create($user->getAffiliateId(),$product->getCode(),$item["affiliateProductCode"]);
+							//cargo el item solo si el precio es igual
+							if ($price == $item["price"]) {
+								OrderItemPeer::create($orderId,$product->getId(),$item["price"],$item["quantity"]);	
+								//agrego el producto en la lista de codigos de productos por afiliado
+								//AffiliateProductCodePeer::create($user->getAffiliateId(),$product->getCode(),$item["affiliateProductCode"]);
+							}
+							else {
+								//si el precio estaba mal, tengo que cargarlo en la lista de productos con mal precio
+								$results["productsWrongPriceCount"]++;
+								$results["productsWrongPrice"][$orderId][] = array("code" => $item["productCode"], "quantity" => $item["quantity"], "price" => $item["price"]);
+							}								
 						}
 						else {
 							$results["productsNotFound"]++;
@@ -386,6 +401,7 @@ class OrderPeer extends BaseOrderPeer {
 							//AffiliateProductCodePeer::create($user->getAffiliateId(),0,$item["affiliateProductCode"]);
 						}
 					}
+					
 					//cambio el estado de la orden si tuvo productos no encontrados
 					if (!empty($results["ordersReport"][$orderId])) {
 						$comment = "Productos No Encontrados:";
@@ -398,7 +414,20 @@ class OrderPeer extends BaseOrderPeer {
 							$orderObj->setState(OrderPeer::STATE_TO_BE_VERIFIED);
 							$orderObj->save();					
 						}
-					} 			
+					} 	
+					//cambio el estado de la orden si hubo discrepancias en el precio de algun producto
+					if (!empty($results["productsWrongPrice"][$orderId])) {
+						$comment = "Productos con Discrepancias en el Precio:";
+						foreach ($results["productsWrongPrice"][$orderId] as $product) {
+							$comment .= "Product Code: ".$product["code"]." - Quantity: ".$product["quantity"]." - Price: ".$product["price"]."\r\n";
+						}
+						OrderStateChangePeer::create($orderId,$user->getId(),$user->getAffiliateId(),OrderPeer::STATE_TO_BE_VERIFIED,$comment);	
+						$orderObj = OrderPeer::get($orderId);
+						if ($orderObj) {
+							$orderObj->setState(OrderPeer::STATE_TO_BE_VERIFIED);
+							$orderObj->save();					
+						}
+					} 	
 				}
 				else
 					$results["ordersNotCreated"]++;	
