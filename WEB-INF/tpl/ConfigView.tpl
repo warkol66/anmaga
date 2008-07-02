@@ -28,6 +28,7 @@
 		<td>&nbsp;</td>
 	</tr>
 </table>
+<div id="boxVariables">
 <ul>
 	|-foreach from=$config item=block name=for_blocks key=name-|
 	  <li><span class='titulo2'>|-$name-|</span></li>
@@ -37,5 +38,6 @@
 	</li>
 	|-/foreach-|
 </ul>
+</div>
 <br />
 <a href="Main.php?do=configEdit">Editar Config</a>
