@@ -91,6 +91,11 @@ class AffiliateProductPeer extends BaseAffiliateProductPeer {
 		return false;
 		
 	}
+	
+	function get($affiliateId,$productId) {
+		$affiliateProduct = AffiliateProductPeer::retrieveByPK($productId,$affiliateId);
+		return $affiliateProduct;		
+	}
 
 
 } // AffiliateProductPeer
