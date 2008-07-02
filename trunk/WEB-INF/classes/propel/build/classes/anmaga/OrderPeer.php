@@ -258,7 +258,7 @@ class OrderPeer extends BaseOrderPeer {
     	if (!empty($this->searchAffiliateId))
 			$cond->add(OrderPeer::AFFILIATEID, $this->searchAffiliateId);
 			
-    	if (!empty($this->searchState))
+    	if (!empty($this->searchState) || $this->searchState == "0")
 			$cond->add(OrderPeer::STATE, $this->searchState);
 
     	if ( !empty($this->searchDateFrom) || !empty($this->searchDateTo) ) {
