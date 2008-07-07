@@ -375,11 +375,12 @@ class OrderPeer extends BaseOrderPeer {
 							$product = ProductPeer::getByCode($item["productCode"]);
 						*/
 						
-						//Busco el precio del producto para ese afiliado
-						$price = $affiliate->getProductPrice($product);
-						
 						//Si encontro al producto con ese codigo y encontro precio
-						if (!empty($product) && $price) {
+						if (!empty($product)) {
+							
+							//Busco el precio del producto para ese afiliado
+							$price = $affiliate->getProductPrice($product);						
+							
 							$results["productsFound"]++;
 							//cargo el item solo si el precio es igual
 							if ($price == $item["price"]) {
