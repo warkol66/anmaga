@@ -391,13 +391,13 @@ class OrderPeer extends BaseOrderPeer {
 							else {
 								//si el precio estaba mal, tengo que cargarlo en la lista de productos con mal precio
 								$results["productsWrongPriceCount"]++;
-								$results["productsWrongPrice"][$orderId][] = array("code" => $item["productCode"], "quantity" => $item["quantity"], "price" => $item["price"]);
+								$results["productsWrongPrice"][$orderId][] = array("code" => $product->getCode(), "quantity" => $item["quantity"], "price" => $item["price"]);
 							}								
 						}
 						else {
 							$results["productsNotFound"]++;
-							$results["productsCodesNotFounds"][] = $item["productCode"];
-							$results["ordersReport"][$orderId][] = array("code" => $item["productCode"], "quantity" => $item["quantity"]);
+							$results["productsCodesNotFounds"][] = $item["affiliateProductCode"];
+							$results["ordersReport"][$orderId][] = array("code" => $item["affiliateProductCode"], "quantity" => $item["quantity"]);
 							//agrego el producto en la lista de codigos de productos por afiliado sin id de codigo
 							//AffiliateProductCodePeer::create($user->getAffiliateId(),0,$item["affiliateProductCode"]);
 						}
