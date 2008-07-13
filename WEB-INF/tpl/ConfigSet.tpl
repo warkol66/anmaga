@@ -2,7 +2,7 @@
 	<h1>Variables de Configuración del Sistema</h1>
 		<p>A continuación podrá editar las variables de configuración del sistema.</p>
 |-if $message eq "ok"-|
-		<div class="errorMessage">Configuración Guardada!</div>
+		<div class="successMessage">Configuración Guardada!</div>
 |-/if-|
 |-if $selectedModule ne ""-|Modulo: |-$selectedModule|capitalize-|&nbsp;&nbsp;&nbsp;&nbsp;|-/if-|
 	<form action="Main.php" method="get">
