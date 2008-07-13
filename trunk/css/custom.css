@@ -307,6 +307,8 @@ fieldset {
 	padding: 8px;
 	margin: 9px;
 	border: 1px solid #B22222;
+	width: 350px;
+	text-align: center;
 }
 .successMessage {
 	color: #007D62;
@@ -314,6 +316,8 @@ fieldset {
 	padding: 8px;
 	margin: 9px;
 	border: 1px solid #007D62;
+	width: 350px;
+	text-align: center;
 }
 .infoMessage {
 	color: #00008B;

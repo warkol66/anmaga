@@ -1,12 +1,12 @@
 ﻿<h2>Pedidos</h2> 
 	<h1>Lista de Pedidos</h1> 
-	<p>Seleccione alguna opción para filtrar el listado de pedidos. Puede Ediar o Ver los pedidos. <br>
-	Para exportar pedidos selecciones los pedidos a exportar, y haga click en Exportar órdenes Seleccionados. <br>
-	Para eliminar, seleccione los pedidos a eliminar y haga click en "Eliminar órdenes seleccionadas".</p> 
+	<p>Seleccione alguna opción para filtrar el listado de pedidos. Puede Ediar o Ver los pedidos.<br>
+	Para exportar ordenes, seleccione los pedidos a exportar y haga click en "Exportar órdenes seleccionadas".<br>
+	Para eliminar pedidos, seleccione los pedidos a eliminar y haga click en "Eliminar órdenes seleccionadas".</p> 
 <div id="div_orders">
-	|-if $message eq "ok"-|<span class="message_ok">Orden guardada correctamente</span>|-/if-|
-	|-if $message eq "deleted_ok"-|<span class="message_ok">Orden eliminada correctamente</span>|-/if-|
-	|-if $message eq "orders_deleted_ok"-|<span class="message_ok">Ordenes eliminadas correctamente</span>|-/if-|
+	|-if $message eq "ok"-|<div class="successMessage">Orden guardada correctamente</div>|-/if-|
+	|-if $message eq "deleted_ok"-|<div class="successMessage">Orden eliminada correctamente</div>|-/if-|
+	|-if $message eq "orders_deleted_ok"-|<div class="successMessage">Ordenes eliminadas correctamente</div>|-/if-|
 	<div class="filter">
 		<form action="Main.php" method="get">
 <table  border="0" cellspacing="0" cellpadding="5">
@@ -31,7 +31,7 @@
 						<option value="5"|-if $selectedState eq 5-| "selected"|-/if-|>Cancelada</option>
 						<option value="6"|-if $selectedState eq 6-| "selected"|-/if-|>A Verificar</option>
 					</select>
-					|-if $all eq "1"-|&nbsp;&nbsp;&nbsp;											<label for="affiliateId">Mayorista</label>
+					|-if $all eq "1"-|&nbsp;&nbsp;&nbsp;<label for="affiliateId">Mayorista</label>
 					<select name="affiliateId">
 						<option value="" selected="selected">Todos&nbsp;&nbsp;&nbsp;</option>
 						|-foreach from=$affiliates item=affiliate-|
@@ -42,7 +42,7 @@
 				<tr>
 					<td><input type="hidden" name="do" id="doList" value="ordersList" />
 					<input type="submit" value="Buscar" class="boton" />
-					<input type="reset" value="Quitar filtros" class="boton" onclick="parent.location='Main.php?do=ordersList'">
+					<input type="reset" value="Quitar filtros" class="boton" onclick="window.location='Main.php?do=ordersList'">
 					</td>
 				</tr>
 			</table>
