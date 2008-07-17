@@ -24,6 +24,15 @@
  */	
 class AffiliatePeer extends BaseAffiliatePeer {
 
+  /**
+  * Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
+  *
+  * @return int Cantidad de filas por pagina
+  */
+  function getRowsPerPage() {
+    global $system;
+    return $system["config"]["system"]["rowsPerPage"];
+  }
 
 	function getAll() {
 		$cond = new Criteria();
@@ -31,9 +40,11 @@ class AffiliatePeer extends BaseAffiliatePeer {
 		return $todosObj;
   }
 
-	function getAllPaginated($page=1,$perPage=10) {
-		if (empty($page))
-			$page = 1;
+	function getAllPaginated($page=1,$perPage=-1) {
+    if ($perPage == -1)
+      $perPage = 	AffiliatePeer::getRowsPerPage();
+    if (empty($page))
+      $page = 1;
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->addAscendingOrderByColumn(AffiliatePeer::ID);
@@ -42,9 +53,11 @@ class AffiliatePeer extends BaseAffiliatePeer {
 		return $pager;
 	 }
 
-	function getByNamePaginated($name,$page=1,$perPage=10) {
-		if (empty($page))
-			$page = 1;
+	function getByNamePaginated($name,$page=1,$perPage=-1) {
+    if ($perPage == -1)
+      $perPage = 	AffiliatePeer::getRowsPerPage();
+    if (empty($page))
+      $page = 1;
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->add(AffiliatePeer::NAME,"%".$name."%",Criteria::LIKE);
