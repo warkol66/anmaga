@@ -241,7 +241,9 @@ class TreePeer {
 		return $pager;
 	}
 	
-	function getAllByAffiliatePaginated($affiliateId,$page,$perPage=10) {
+	function getAllByAffiliatePaginated($affiliateId,$page,$perPage=-1) {
+		if ($perPage == -1)
+			$perPage = 	TreePeer::getRowsPerPage();
 		if (empty($page))
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
