@@ -151,5 +151,10 @@
 	</catalog>
 	<orders>
 		<articlesPerOrder>11</articlesPerOrder>
+		<sendMailOnCreation>
+					<value>YES</value>
+					<element_type>YES/NO</element_type>
+		</sendMailOnCreation>
+		<recipients></recipients>
 	</orders>
 </config>
