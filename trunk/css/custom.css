@@ -241,54 +241,71 @@ fieldset {
 
 /* NEW */
 .buttonImageDelete {
-	font-size: 0px !Important;
-	width: 16px;
-	height: 16px;
-	color: #ffffff !Important;
-	background-color: transparent;
-	border: none;
-	background: url(../images/newButtonDelete.gif) center no-repeat;
-	cursor:pointer;	
+	background: url(../images/linkImageDelete.png) center no-repeat;
+}
+.buttonImageDeleteDisabled {
+	background: url(../images/linkImageDeleteDesabled.png) center no-repeat;
 }
 .buttonImageEdit {
-	font-size: 0px !Important;
-	width: 16px;
-	height: 16px;
-	color: #ffffff !Important;
-	background-color: transparent;
-	border: none;
-	background: url(../images/newButtonEdit.gif) no-repeat center;
-	cursor:pointer;	
+	background: url(../images/linkImageEdit.png) no-repeat center;
+}
+.buttonImageEditDisabled {
+	background: url(../images/linkImageEditDisabled.png) no-repeat center;
 }
 .buttonImageAdd {
-	font-size: 0px !Important;
-	width: 16px;
-	height: 16px;
-	color: #ffffff !Important;
-	background-color: transparent;
-	border: none;
-	background: url(../images/newButtonAdd.gife.gif) no-repeat center;
-	cursor:pointer;	
+	background: url(../images/linkImageAdd.png) no-repeat center;
+}
+.buttonImageAddDisabled {
+	background: url(../images/linkImageAddDisabled.png) no-repeat center;
 }
 .buttonImageView {
-	font-size: 0px !Important;
-	width: 16px;
-	height: 16px;
-	color: #ffffff !Important;
-	background-color: transparent;
-	border: none;
-	background: url(../images/newButtonView.gif) no-repeat center;
-	cursor:pointer;
+	background: url(../images/linkImageView.png) no-repeat center;
+}
+.buttonImageViewDisabled {
+	background: url(../images/linkImageViewDisabled.png) no-repeat center;
+}
+.buttonImageGoTo {
+	background: url(../images/linkImageGoTo.png) no-repeat center;
+}
+.buttonImageBack {
+	background: url(../images/linkImageBack.png) no-repeat center;
 }
 .buttonImageViewGantt {
-	font-size: 0px !Important;
-	width: 16px;
-	height: 16px;
-	color: #ffffff !Important;
-	background-color: transparent;
-	border: none;
-	background: url(../images/newButtonViewGantt.gif) no-repeat center;
-	cursor:pointer;
+	background: url(../images/linkImageViewGantt.png) no-repeat center;
+}
+.linkImageDelete {
+	background: url(../images/linkImageDelete.png) center no-repeat;
+}
+.linkImageDeleteDisabled {
+	background: url(../images/linkImageDeleteDesabled.png) center no-repeat;
+}
+.linkImageEdit {
+	background: url(../images/linkImageEdit.png) no-repeat center;
+}
+.linkImageEditDisabled {
+	background: url(../images/linkImageEditDisabled.png) no-repeat center;
+}
+.linkImageAdd {
+	background: url(../images/linkImageAdd.png) no-repeat center;
+}
+.linkImageAddDisabled {
+	background: url(../images/linkImageAddDisabled.png) no-repeat center;
+}
+.linkImageView {
+	background: url(../images/linkImageView.png) no-repeat center;
+}
+.linkImageViewDisabled {
+	background: url(../images/linkImageViewDisabled.png) no-repeat center;
+}
+.linkImageGoTo {
+	background: url(../images/linkImageGoTo.png) no-repeat center;
+}
+.linkImageBack {
+	background: url(../images/linkImageBack.png) no-repeat center;
+}
+.linkImageViewGantt {
+	background: url(../images/linkImageViewGantt.png) no-repeat center;
+}
 }
 .buttonImageLogin {
 	font-size: 0px !Important;

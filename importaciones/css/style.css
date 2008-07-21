@@ -7,7 +7,7 @@ body {
 	margin-left: 0px;
 	margin-right: 0px;
 }
-body,td,input,textarea,.TXTnormal {
+body,td,input,textarea,.TXTnormal,caption {
 	font-family: Arial, Helvetica, sans-serif;
 }
 th {
@@ -385,7 +385,7 @@ textarea.campo {
 .smallButton{
 	font-size: .85em;
 	line-height: 1.10em;
-	height: 1.70 em;
+	height: 1.70em;
 	margin: 0 0 0 0;
 	padding: 0 0 0 0;
 }
@@ -431,7 +431,7 @@ a.menuButton:active {
 	padding: 6px 2px 6px 22px;
 	display: block;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 0.70 em;
+	font-size: 0.70em;
 	font-weight: bold;
 	text-decoration: none;
 	line-height: 1.30em;
@@ -604,4 +604,123 @@ a.detail:hover{
 .buttonSmall {
 	font-size: .80em;
 	height: 1.80em;
+}
+.textButton {
+	border: 2px outset;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.90em;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin: 5px;
+}
+caption {
+	font-weight: bold;
+	padding: 5px;
+}
+fieldset {
+	padding: 8px;
+}
+fieldset legend {
+	font-weight: bold;
+	font-size: 1.4em;
+}
+fieldset label {
+	width: 120px;
+	float: left;
+	font-weight: bold;
+	vertical-align: text-top;
+	text-align: right;
+	height: 1.4em;
+	padding-top: 0;
+	margin-bottom: 0;
+	padding-right: 5px;
+}
+fieldset fieldset label {
+	width: 30px;
+	font-weight: bold;
+	display: inline;
+}
+fieldset fieldset {
+	padding: 5px;
+	width: 40%;
+	margin-left: 120px;
+}
+fieldset fieldset label {
+	font-weight: bold;
+	display: inline;
+}
+.checks label {
+	float: none;
+	width: auto;
+	clear: none;
+	display: block;
+	text-align: left;
+	height: 1.4em;
+	padding-top: 0;
+	margin-bottom: 0;
+}
+.checks label:after { 
+	content: ""; 
+} 
+.checks input {
+	float: left;
+	text-align: right;
+	width: auto;
+}
+
+
+fieldset {  
+	position: relative;
+}
+
+legend {  
+	margin-bottom: 0.5em;
+	position: relative;  
+	top: -1.5em;
+	margin-left: -.5em;
+	padding: .2em;
+}
+
+fieldset fieldset legend {  
+	background-color: transparent;
+}
+
+
+.resultSuccess {
+	font-weight: bold;
+	color: #00008B;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+.resultFailure {
+	font-weight: bold;
+	color: #B22222;	
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+option{
+	padding-right: 5px;
+	background: #FCFCFC;
+}
+/* NEW */
+.buttonImageDelete, .buttonImageDeleteDisabled, .buttonImageEdit, .buttonImageEditDisabled, 
+.buttonImageAdd, .buttonImageAddDisabled, .buttonImageView, .buttonImageViewDisabled, 
+.buttonImageGoTo, .buttonImageBack, .buttonImageViewGantt {
+	font-size: 0px !Important;
+	width: 16px;
+	height: 16px;
+	color: #ffffff !Important;
+	background-color: transparent;
+	border: none;
+	cursor:pointer;	
+}
+
+.linkImageDelete, .linkImageDeleteDisabled, .linkImageEdit, .linkImageEditDisabled, 
+.linkImageAdd, .linkImageAddDisabled, .linkImageView, .linkImageViewDisabled, .linkImageGoTo, 
+.linkImageBack, .linkImageViewGantt {
+	width: 20px;
+	height: 16px;
+	border-width: 0;
+	cursor:pointer;
 }

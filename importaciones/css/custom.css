@@ -222,3 +222,132 @@ a.detail:hover{
 	color: #FFFFFF;
 	background-color: #000066;
 }
+.textButton {
+	background-color: #DCDCDC;
+	border-color: #DCDCDC;
+}
+
+caption {
+}
+table.tableTdBorders caption {
+	background-color: #EFEFEF;
+	color: #00008B;
+	border: 1px solid #00008B;
+}
+
+
+fieldset {
+}
+
+/* NEW */
+.buttonImageDelete {
+	background: url(../images/linkImageDelete.png) center no-repeat;
+}
+.buttonImageDeleteDisabled {
+	background: url(../images/linkImageDeleteDesabled.png) center no-repeat;
+}
+.buttonImageEdit {
+	background: url(../images/linkImageEdit.png) no-repeat center;
+}
+.buttonImageEditDisabled {
+	background: url(../images/linkImageEditDisabled.png) no-repeat center;
+}
+.buttonImageAdd {
+	background: url(../images/linkImageAdd.png) no-repeat center;
+}
+.buttonImageAddDisabled {
+	background: url(../images/linkImageAddDisabled.png) no-repeat center;
+}
+.buttonImageView {
+	background: url(../images/linkImageView.png) no-repeat center;
+}
+.buttonImageViewDisabled {
+	background: url(../images/linkImageViewDisabled.png) no-repeat center;
+}
+.buttonImageGoTo {
+	background: url(../images/linkImageGoTo.png) no-repeat center;
+}
+.buttonImageBack {
+	background: url(../images/linkImageBack.png) no-repeat center;
+}
+.buttonImageViewGantt {
+	background: url(../images/linkImageViewGantt.png) no-repeat center;
+}
+.linkImageDelete {
+	background: url(../images/linkImageDelete.png) center no-repeat;
+}
+.linkImageDeleteDisabled {
+	background: url(../images/linkImageDeleteDesabled.png) center no-repeat;
+}
+.linkImageEdit {
+	background: url(../images/linkImageEdit.png) no-repeat center;
+}
+.linkImageEditDisabled {
+	background: url(../images/linkImageEditDisabled.png) no-repeat center;
+}
+.linkImageAdd {
+	background: url(../images/linkImageAdd.png) no-repeat center;
+}
+.linkImageAddDisabled {
+	background: url(../images/linkImageAddDisabled.png) no-repeat center;
+}
+.linkImageView {
+	background: url(../images/linkImageView.png) no-repeat center;
+}
+.linkImageViewDisabled {
+	background: url(../images/linkImageViewDisabled.png) no-repeat center;
+}
+.linkImageGoTo {
+	background: url(../images/linkImageGoTo.png) no-repeat center;
+}
+.linkImageBack {
+	background: url(../images/linkImageBack.png) no-repeat center;
+}
+.linkImageViewGantt {
+	background: url(../images/linkImageViewGantt.png) no-repeat center;
+}
+}
+.buttonImageLogin {
+	font-size: 0px !Important;
+	width: 93px;
+	height: 48px;
+	color: #ffffff !Important;
+	background-color: transparent;
+	border: none;
+	background: url(../images/button_login.gif) no-repeat center;
+	cursor:pointer;	
+}
+
+.errorMessage {
+	color: #B22222;
+	font-weight: bold;
+	padding: 8px;
+	margin: 9px;
+	border: 1px solid #B22222;
+	width: 350px;
+	text-align: center;
+}
+.successMessage {
+	color: #007D62;
+	font-weight: bold;
+	padding: 8px;
+	margin: 9px;
+	border: 1px solid #007D62;
+	width: 350px;
+	text-align: center;
+}
+.infoMessage {
+	color: #00008B;
+	font-weight: bold;
+	padding: 8px;
+	margin: 9px;
+	border: 1px solid #00008B;
+}
+fieldset {  
+	background-color: #f7f7f8;
+}
+legend {  
+	color:#0066CC
+}
+
+
