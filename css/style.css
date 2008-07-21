@@ -703,3 +703,24 @@ option{
 	padding-right: 5px;
 	background: #FCFCFC;
 }
+/* NEW */
+.buttonImageDelete, .buttonImageDeleteDisabled, .buttonImageEdit, .buttonImageEditDisabled, 
+.buttonImageAdd, .buttonImageAddDisabled, .buttonImageView, .buttonImageViewDisabled, 
+.buttonImageGoTo, .buttonImageBack, .buttonImageViewGantt {
+	font-size: 0px !Important;
+	width: 16px;
+	height: 16px;
+	color: #ffffff !Important;
+	background-color: transparent;
+	border: none;
+	cursor:pointer;	
+}
+
+.linkImageDelete, .linkImageDeleteDisabled, .linkImageEdit, .linkImageEditDisabled, 
+.linkImageAdd, .linkImageAddDisabled, .linkImageView, .linkImageViewDisabled, .linkImageGoTo, 
+.linkImageBack, .linkImageViewGantt {
+	width: 20px;
+	height: 16px;
+	border-width: 0;
+	cursor:pointer;
+}
