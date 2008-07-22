@@ -1,6 +1,9 @@
-<h2>Configuración del Sistema</h2>
-	<h1>Variables de Configuración del Sistema</h1>
-	<p>A continuación podrá editar las variables de configuración del sistema.</p>
+<h2>##40,Configuración del Sistema##</h2>
+<h1>Variables de Configuración del Sistema</h1>
+<!-- Link VOLVER -->
+<!-- /Link VOLVER -->
+<p>A continuación podrá editar las variables de configuración del sistema.</p>
+<!-- BOX VARIABLES ------------------------------->
 <div id="boxVariables">
 <form method="post" action="Main.php">
 	<ul>

@@ -1,26 +1,10 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-		<td class='title'>Configuración del Sistema</td>
-	</tr>
-	<tr>
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='backgroundTitle'>Variables de Configuración del Sistema</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>A continuación podrá editar las variables de configuración del sistema.</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-</table>
+<h2>##40,Configuración del Sistema##</h2>
+<h1>Variables de Configuración del Sistema</h1>
+<!-- Link VOLVER -->
+<!-- /Link VOLVER -->
+<p>A continuación podrá editar las variables de configuración del sistema.</p>
+<!-- BOX VARIABLES ------------------------------->
+<div id="boxVariables">
 <form method="post" action="Main.php">
 	<ul>
 		<li id="config"> <a class="a_image" href="#" onclick="javascript:addConfigSection(this.parentNode)"><img src="images/add-folder-green.gif" alt="Agregar Secci&oacute;n" border="0" title="Agregar Secci&oacute;n" /></a>
@@ -38,5 +22,5 @@
 	<input type="hidden" name="do" value="configDoEdit" />
 	<input type="submit" value="Guardar" class="boton" />
 </form>
-
+</div>
 <a href="Main.php?do=configView">Ver Config</a>

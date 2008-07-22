@@ -1,47 +1,22 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-		<td class='title'>Configuración del Sistema</td>
-	</tr>
-	<tr>
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='backgroundTitle'>Variables de Configuración del Sistema</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-|-if $message eq "ok"-|	<tr>
-		<td class="errorMessage">Configuración Guardada!</td>
-	</tr>
-<tr>
-	<td>&nbsp;</td>
-</tr>
-|-/if-|	<tr>
-		<td>A continuación podrá editar las variables de configuración del sistema.</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>
-			|-if $selectedModule ne ""-|Modulo: |-$selectedModule|capitalize-|&nbsp;&nbsp;&nbsp;&nbsp;|-/if-|
-      	<form action="Main.php" method="get">
-					<select name="module" onchange="this.parentNode.submit();">
-						<option value="">|-if $selectedModule ne ""-|Seleccionar otro|-else-|Seleccionar|-/if-| Módulo</option>
-					|-foreach from=$modules item=blcok name=for_block key=block_name-|
-						<option value="|-$block_name-|">|-$block_name|capitalize-|</option>
-					|-/foreach-|
-					</select>
-					<input type="hidden" name="do" value="configSet" />
-				</form>
-		</td>
-	</tr>
-</table>
+<h2>##40,Configuración del Sistema##</h2>
+<h1>Variables de Configuración del Sistema</h1>
+<!-- Link VOLVER -->
+<!-- /Link VOLVER -->
+<p>A continuación podrá editar las variables de configuración del sistema.</p>
+|-if $message eq "ok"-|<div class='successMessage'>Configuración Guardada!</div>|-/if-|
+|-if $selectedModule ne ""-|Modulo: |-$selectedModule|capitalize-|&nbsp;&nbsp;&nbsp;&nbsp;|-/if-|
+<form action="Main.php" method="get">
+	<select name="module" onchange="this.parentNode.submit();">
+		<option value="">|-if $selectedModule ne ""-|Seleccionar otro|-else-|Seleccionar|-/if-| Módulo</option>
+	|-foreach from=$modules item=blcok name=for_block key=block_name-|
+		<option value="|-$block_name-|">|-$block_name|capitalize-|</option>
+	|-/foreach-|
+	</select>
+	<input type="hidden" name="do" value="configSet" />
+</form>
 |-if $selectedModule ne ""-|
+<!-- BOX VARIABLES ------------------------------->
+<div id="boxVariables">
 <form method="post" action="Main.php">
 	<ul id="config_ul">
 		<li id="config[|-$selectedModule-|]"><span class='titulo2'>|-$selectedModule-|</span>
@@ -54,4 +29,5 @@
 	<input type="hidden" name="module" value="|-$selectedModule-|" />
 	<input type="submit" value="Guardar" class="button" />
 </form>
+</div>
 |-/if-|
