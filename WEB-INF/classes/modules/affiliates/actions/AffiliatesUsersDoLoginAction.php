@@ -44,8 +44,8 @@ class AffiliatesUsersDoLoginAction extends BaseAction {
 
 		$module = "Affiliates";
 
-		if ( !empty($_POST["username"]) && !empty($_POST["password"]) ) {;
-			$user = AffiliateUserPeer::auth($_POST["username"],$_POST["password"]);
+		if ( !empty($_POST["loginUsername"]) && !empty($_POST["loginPassword"]) ) {;
+			$user = AffiliateUserPeer::auth($_POST["loginUsername"],$_POST["loginPassword"]);
 			if ( !empty($user) ) {
 
 				$_SESSION["loginAffiliateUser"] = $user;

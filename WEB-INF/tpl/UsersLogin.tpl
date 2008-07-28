@@ -50,11 +50,11 @@
 			|-/if-|
 						<tr> 
 							<td width='20%' nowrap class='tdTitle'>Identificaci&oacute;n de Usuario</td> 
-							<td class='tdData'><input type='text' name='username' size='35' /></td> 
+							<td class='tdData'><input type='text' name='loginUsername' size='35' /></td> 
 						</tr> 
 						<tr> 
 							<td class='tdTitle'>Contrase&ntilde;a</td> 
-							<td class='tdData'><input type='password' name='password' size='20' /></td> 
+							<td class='tdData'><input type='password' name='loginPassword' size='20' /></td> 
 						</tr> 
 						<tr> 
 							<td colspan='2' class='buttonCell' align='center'><input type='submit' value='Ingresar' class='button' /></td> 

@@ -44,14 +44,14 @@ class UsersDoLoginAction extends BaseAction {
 
 		$module = "Users";
 
-		if ( !empty($_POST["username"]) && !empty($_POST["password"]) ) {
-			$user = UserPeer::auth($_POST["username"],$_POST["password"]);
+		if ( !empty($_POST["loginUsername"]) && !empty($_POST["loginPassword"]) ) {
+			$user = UserPeer::auth($_POST["loginUsername"],$_POST["loginPassword"]);
 			if ( !empty($user) ) {
 				$_SESSION["login_user"] = $user;
 				$_SESSION["loginUser"] = $user;
 				$smarty->assign("loginUser",$user);
 
-				Common::doLog('success','username: ' . $_POST["username"]);
+				Common::doLog('success','username: ' . $_POST["loginUsername"]);
 
 				return $mapping->findForwardConfig('success');
 			}
