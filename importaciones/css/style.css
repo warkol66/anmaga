@@ -619,21 +619,38 @@ caption {
 }
 fieldset {
 	padding: 8px;
+	margin-bottom: 14px;
+	position: relative;
 }
 fieldset legend {
 	font-weight: bold;
 	font-size: 1.4em;
+	margin-bottom: 0.5em;
+	position: relative;  
+	top: -1.5em;
+	margin-left: -.5em;
+	padding: .2em;
 }
 fieldset label {
-	width: 120px;
+	width: 140px;
 	float: left;
 	font-weight: bold;
 	vertical-align: text-top;
 	text-align: right;
-	height: 1.4em;
+	height: auto;
 	padding-top: 0;
 	margin-bottom: 0;
 	padding-right: 5px;
+	padding-bottom: 5px;
+	display: block;
+}
+fieldset p {
+	display: block;
+	height: auto;
+	clear: both;
+}
+fieldset fieldset legend {  
+	background-color: transparent;
 }
 fieldset fieldset label {
 	width: 30px;
@@ -648,6 +665,9 @@ fieldset fieldset {
 fieldset fieldset label {
 	font-weight: bold;
 	display: inline;
+}
+fieldset li {
+	margin-left: 35px;
 }
 .checks label {
 	float: none;
