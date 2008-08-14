@@ -1219,6 +1219,7 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="Main.php?do=ordersList&amp;message=ok" redirect="true" />
+			<forward name="email" path="OrdersEmailView.tpl" />
 		</action>
 
 		<action    path = "ordersDoAddToCart"
