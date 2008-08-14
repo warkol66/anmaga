@@ -33,6 +33,8 @@ class OrdersDoGenerateAction extends BaseAction {
 
     BaseAction::execute($mapping, $form, $request, $response);
 
+		$this->template->template = "TemplateMail.tpl";
+
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
@@ -69,18 +71,61 @@ class OrdersDoGenerateAction extends BaseAction {
 			}
 		}
 
-    $orderId = OrderPeer::create($_POST["number"],$user->getId(),$user->getAffiliateId(),$total,$_POST["branchId"]);
-    
-    if (!empty($orderId)) {
-    	foreach ($items as $item) {
-				//Si la cantidad del producto es mayor cero
-				if ($item->getQuantity() > 0) {
-					$item->setOrderId($orderId);
-					$item->save();
+		$orderId = OrderPeer::create($_POST["number"],$user->getId(),$user->getAffiliateId(),$total,$_POST["branchId"]);
+   
+		if (!empty($orderId)) {
+			foreach ($items as $item) {
+					//Si la cantidad del producto es mayor cero
+					if ($item->getQuantity() > 0) {
+						$item->setOrderId($orderId);
+						$item->save();
+					}
 				}
+		}
+   
+		$orderCreated = OrderPeer::get($orderId);
+   
+		$smarty->assign("order",$orderCreated);
+   
+		global $system;
+		$sendEmail = $system["config"]["orders"]["sendMailOnCreation"]["value"];
+   
+		if ($sendEmail == "YES") {
+   
+			$affiliate = $orderCreated->getAffiliate();
+			$owner = $affiliate->getOwner();
+			$userInfo = $owner->getAffiliateUserInfo();
+			$email = $userInfo->getMailAddress();		
+   
+			$recipients = $system["config"]["orders"]["recipients"];
+   
+			//Reemplazo punto y coma por comas
+			$unif = str_replace(";", ",",$recipients);
+   
+			//Obtengo las direcciones de Mails
+			$emails = split( ",", $unif);	
+			$emails[] = $email;	
+   
+			require_once("libmail.inc.php");
+   
+			$forwardConfig = $mapping->findForwardConfig('email'); 
+			//obtengo el template
+			$template = $forwardConfig->getPath();	
+   
+			$html_result = $smarty->fetch($template); 
+   
+			foreach ($emails as $email) {
+				$mail= new Mail;
+				$mail->From($system["config"]["system"]["parameters"]["fromEmail"]);
+				$mail->To($email);
+				$mail->Subject("Creación de nueva orden: ".$orderCreated->getNumber());
+				$mail->Body($html_result,"UTF-8");
+				$mail->Send();		
 			}
-    }
-    $_SESSION["orderItems"] = array();
+   
+		}
+   
+		$_SESSION["orderItems"] = array();
 		return $mapping->findForwardConfig('success');
 	}
 
