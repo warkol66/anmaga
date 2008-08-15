@@ -338,14 +338,14 @@ function Send()
 {
 	global $system;
 	
-	$developmentMode = $system["config"]["system"]["parameters"]["developmentMode"]["value"];
+	$mailCapture = $system["config"]["system"]["parameters"]["mailCapture"]["value"];
 	
 	$this->BuildMail();
 
 	$this->strTo = implode( ", ", $this->sendto );
 
-	// Si el sistema esta en modo desarrollo, no envio el mail, y lo logueo en el archivo de logueo de mails
-	if ($developmentMode == "YES") {
+	// Si el sistema esta en modo captura de mails, no envio el mail, y lo logueo en el archivo de logueo de mails
+	if ($mailCapture == "YES") {
   	$handle = fopen(ARCHIVO_LOG_MAIL, "a");
 		fwrite($handle, "DATE TIME: ".date("Y-m-d H:i:s (T)")."\n");
   	fwrite($handle, "TO: ".$this->sendto[0]."\n");

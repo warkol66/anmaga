@@ -10,6 +10,10 @@
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
 			</developmentMode>
+			<mailCapture>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</mailCapture>
 			<underMaintenance>
 				<value>NO</value>
 				<element_type>YES/NO</element_type>
