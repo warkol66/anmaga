@@ -337,11 +337,9 @@ function BuildMail()
 function Send()
 {
 	global $system;
-	
 	$mailCapture = $system["config"]["system"]["parameters"]["mailCapture"]["value"];
-	
-	$this->BuildMail();
 
+	$this->BuildMail();
 	$this->strTo = implode( ", ", $this->sendto );
 
 	// Si el sistema esta en modo captura de mails, no envio el mail, y lo logueo en el archivo de logueo de mails
@@ -453,5 +451,3 @@ function _build_attachement()
 }
 
 } // class Mail
-
-?>
