@@ -10,16 +10,19 @@
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
 			</developmentMode>
+			<mailCapture>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</mailCapture>
 			<underMaintenance>
 				<value>NO</value>
 				<element_type>YES/NO</element_type>
 			</underMaintenance>
 			<affiliateUserLoginUnified>
 				<value>YES</value>
-				<element_type>YES/NO</element_type>		
+				<element_type>YES/NO</element_type>
 			</affiliateUserLoginUnified>
 			<applicationTimeZoneGMT>
-				<value>-3</value>
 				<element_type>TIMEZONE</element_type>
 			</applicationTimeZoneGMT>
 			<thousandsSeparator>.</thousandsSeparator>
@@ -152,8 +155,8 @@
 	<orders>
 		<articlesPerOrder>11</articlesPerOrder>
 		<sendMailOnCreation>
-					<value>YES</value>
-					<element_type>YES/NO</element_type>
+			<value>YES</value>
+			<element_type>YES/NO</element_type>
 		</sendMailOnCreation>
 		<recipients></recipients>
 	</orders>
