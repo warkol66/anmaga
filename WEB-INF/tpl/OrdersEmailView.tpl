@@ -1,4 +1,4 @@
-﻿	<h1>Pedido: |-$order->getId()-|</h1>
+﻿|-*	<h1>Pedido: |-$order->getId()-|</h1>
 	
 <div id="div_order"> 
 
@@ -57,3 +57,27 @@
   </table> 
 </div>
 
+*-| 
+
+Pedido: |-$order->getId()-|
+Fecha: |-$order->getDateCreated()|date_format:"%d-%m-%Y"-| - Número Pedido del Cliente: |-$order->getNumber()-|
+|-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-|Mayorista: |-$affiliate->getName()-||-/if-|
+|-assign var=user value=$order->getAffiliateUser()-||-if $user-|Usuario: |-$user->getUsername()-||-/if-|
+|-assign var=branch value=$order->getBranch()-||-if $branch-|Sucursal: |-$branch->getName()-||-/if-|
+
+Estado Actual: |-$order->getStateName()-|
+
+Detalle del Pedido 
+==================
+
+Código		Producto			Precio	Cantidad	Total
+-------------------------------------------------------------------------------
+|-foreach from=$order->getOrderItems() item=item name=for_products-||-assign var=product value=$item->getProduct()-||-assign var=productNode value=$product->getNode()-|
+|-$product->getcode()-|	|-$productNode->getname()|truncate:30:"...":true-|	|-$item->getprice()|system_numeric_format-|	|-$item->getQuantity()|system_numeric_format-|	|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-||-$totalItem|system_numeric_format-|
+|-foreachelse-|
+Sin Productos
+|-/foreach-|
+|-if $order->getOrderItems()|@count gt 0-|
+===============================================================================
+Total:|-$order->getTotal()|system_numeric_format-|
+|-/if-|
