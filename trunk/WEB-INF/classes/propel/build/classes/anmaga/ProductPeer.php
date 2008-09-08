@@ -404,7 +404,19 @@ class ProductPeer extends BaseProductPeer {
 	*/
 	function updatePrice($code,$price) {
 		$product = ProductPeer::getByCode($code);
+
+		global $system;
+		
+		$decimalSeparator = $system['config']['system']['parameters']['decimalSeparator'];
+
 		if (!empty($product)) {
+
+			if ($decimalSeparator == ',') {
+				//saco los . por ser posibles separadores de miles
+				$price = str_replace('.','',$price);  
+				//reemplazo la , del separador decimal por .
+				$price = str_replace(',','.',$price);				
+			}
 			$product->setPrice($price);
 			$product->save();
 			return true;
