@@ -43,14 +43,18 @@
 	|-if $action eq "edit"-|
 	<form name="form_load_products" id="form_load_products" action="Main.php" method="post" enctype="multipart/form-data">
 		<p>
-			<label for="csv">Archivo CSV de productos a cargar en esta categoría:</label>
+			<label for="csv">Cargar Archivo CSV en esta categoría:</label>
 			<input type="file" name="csv" id="csv" />
-		</p>
+		</p><br />
+<br />
+<br />
+<br />
+
 		<p>
 			<input type="radio" name="mode" value="1">Reemplazar Catálogo de la Categoría</input>
-			<input type="radio" name="mode" value="2">Reemplazar Códigos Existentes</input>
+			<input type="radio" name="mode" value="2">Reemplazar Información de Productos con Códigos Existentes</input>
 			<input type="radio" name="mode" value="3" checked="checked">Solo Agregar Nuevos</input>
-			<input type="radio" name="mode" value="4">Solo Actualizar Precios</input>
+			<input type="radio" name="mode" value="4">Solo Actualizar Precios (Código;precio)</input>
 		</p>
 		<p>
 			<input type="hidden" name="parentNodeId" id="parentNodeId" value="|-$node->getId()-|" />

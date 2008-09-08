@@ -8,7 +8,7 @@
   </tr>
 |-if $module|upper eq "CATALOG"-|
 	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=catalogProductCategoriesList">Administrar Categorías de Productos</a>
+    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=catalogProductCategoriesList">Administrar Catálogo</a>
 		<a class="menuSubButton" href="Main.php?do=catalogProductsList">Administrar Productos</a>
 		<a class="menuSubButton" href="Main.php?do=catalogUnitsList">Administrar Unidades de Venta</a>
 		<a class="menuSubButton" href="Main.php?do=catalogMeasureUnitsList">Administrar Unidades de Medida</a>

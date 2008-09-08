@@ -77,7 +77,7 @@ class CatalogProductsDoLoadWithCategoryAction extends BaseAction {
 
 			foreach ($products as $product) {
 				//solo cargo si son 7 o mas elementos
-				if (count($product) > 6) {
+				if (count($product) > 6 || $_POST["mode"] == 4) {
 					//Busco la categoria
 					$category = ProductCategoryPeer::getByName($product[4]);
 					if (!empty($category))
@@ -106,7 +106,7 @@ class CatalogProductsDoLoadWithCategoryAction extends BaseAction {
         						$loaded++;
 							break;
 						case "4": //Solo actualiza los precios
-							if ( ProductPeer::updatePrice($product[0],$product[3]) )
+							if ( ProductPeer::updatePrice($product[0],$product[1]) )
 								$loaded++;
 							break; 
 						default: //Solo agrega nuevos
