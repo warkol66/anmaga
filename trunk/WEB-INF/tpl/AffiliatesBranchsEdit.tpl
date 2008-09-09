@@ -8,7 +8,9 @@
 		|-/if-|
 		<input type="hidden" name="action" id="action" value="|-$action-|" /> 
 		<input type="hidden" name="do" id="do" value="affiliatesBranchsDoEdit" /> 
- 		|-if $message eq "error"-|<span class="message_error">Ha ocurrido un error al intentar guardar la sucursal</span>|-/if-|
+ 		|-if $message eq "error"-|
+			<div class="failureMessage">Ha ocurrido un error al intentar guardar la sucursal</div>
+		|-/if-|
 		<fieldset title="Formulario de edición de sucursales de afiliado">
      <legend>Sucursal</legend>
 		<p> Ingrese los datos de la sucursal</p> 
@@ -49,7 +51,7 @@
 	</p>
 	<p>
 		<label for="memo">Memo</label>
-		<textarea name="memo" cols="60" rows="5" wrap="VIRTUAL" id="memo">|-if $action eq 'edit'-||-$branch->getmemo()-||-/if-|</textarea>
+		<textarea name="memo" cols="40" rows="5" wrap="VIRTUAL" id="memo">|-if $action eq 'edit'-||-$branch->getmemo()-||-/if-|</textarea>
 	</p>
 	<p>
 		<input type="submit" id="button_edit_branch" name="button_edit_branch" title="Aceptar" value="Aceptar" class="button" />

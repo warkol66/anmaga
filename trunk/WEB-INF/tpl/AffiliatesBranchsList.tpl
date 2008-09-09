@@ -2,24 +2,29 @@
 <h1>Administración de Sucursales </h1> 
 <p>A continuación podrá editar la información de las sucursales.</p> 
 <div id="div_branchs">
-|-if $message eq "ok"-|<span class="message_ok">Sucursal guardada correctamente</span>|-/if-|
-|-if $message eq "deleted_ok"-|<span class="message_ok">Sucursal eliminada correctamente</span>|-/if-|
+|-if $message eq "ok"-|
+	<div class="successMessage">Sucursal guardada correctamente</div>
+|-elseif $message eq "deleted_ok"-|
+	<div class="successMessage">Sucursal eliminada correctamente</div>
+|-/if-|
 |-if $all eq "1"-|
-	<div class="filter"> 
+	<div class="filter">
+	<p> 
 		<form action="Main.php" method="get"> 
 				<label for="affiliateId">Afiliado:</label> 
 				<select name="affiliateId"> 
-					<option value="" selected="selected">Todos&nbsp;&nbsp;&nbsp;</option> 
+					<option value="">Todos</option> 
 					|-foreach from=$affiliates item=affiliate-|
-					<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|&nbsp;&nbsp;&nbsp;</option> 
+					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $smarty.get.affiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option> 
 					|-/foreach-|
 				</select>
 				<input type="hidden" name="do" value="affiliatesBranchsList" /> 
 				<input type="submit" value="Buscar" class="button" /> 
 		</form> 
+		</p>
 	</div>
 	<br>
-	|-/if-|
+|-/if-|
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" id="tabla-branchs" class="tableTdBorders"> 
 		<thead> 
 			<tr>
@@ -31,12 +36,12 @@
 				<th width="20%" class="thFillTitle">Afiliado</th> 
 				|-/if-|
 				<th width="5%" class="thFillTitle">Nro.</th> 
-				<th width="5%" class="thFillTitle">C&oacute;digo</th>
+				<th width="5%" class="thFillTitle">Código</th>
 				<th width="15%" class="thFillTitle">Sucursal</th> 
 				<th width="10%" class="thFillTitle">Teléfono</th> 
 				<th width="10%" class="thFillTitle">Contacto</th> 
 				<th width="30%" class="thFillTitle">Memo</th> 
-				<th width="5%" nowrap class="thFillTitle">&nbsp;</th> 
+				<th width="5%"  class="thFillTitle">&nbsp;</th> 
 			</tr> 
 		</thead> 
 		<tbody>  |-foreach from=$branchs item=branch name=for_branchs-|
@@ -49,7 +54,7 @@
       <td class="tdSize1 top center">|-$branch->getCode()-|</td> 
 			<td class="tdSize1 top">|-$branch->getname()-|</td> 
 			<td class="tdSize1 top">|-$branch->getphone()-|</td> 
-			<td class="tdSize1 top">|-$branch->getcontact()-|, email: |-$branch->getcontactEmail()-|</td> 
+			<td class="tdSize1 top">|-$branch->getcontact()-||-if $branch->getcontactEmail() ne ''-|, email: |-$branch->getcontactEmail()-||-/if-|</td> 
 			<td class="tdSize1 top">|-$branch->getmemo()-|</td> 
 			<td class="tdSize1 center" nowrap="nowrap"> <form action="Main.php" method="get" style="display:inline;"> 
 					<input type="hidden" name="do" value="affiliatesBranchsEdit" /> 
@@ -63,9 +68,14 @@
 			</form></td> 
 		</tr> 
 		|-/foreach-|
+	|-if $pager->getTotalPages() gt 1-|
 	<tr>
 		<td colspan="9" class="pages">|-include file="PaginateInclude.tpl"-|</td>
 	</tr>
+	|-/if-|						
+			<tr>
+				<th colspan="9"><div class="rightLink"><a href="Main.php?do=affiliatesBranchsEdit" class="agregarNueva">Agregar Sucursal</a></div></th>
+			</tr>
 		</tbody> 
 	</table> 
 </div>

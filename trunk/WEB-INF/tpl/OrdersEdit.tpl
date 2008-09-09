@@ -11,7 +11,7 @@
 			<input name="created" type="text" value="|-$order->getDateCreated()-|" size="10">&nbsp;&nbsp;
 			<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('created', false, 'ymd', '-');" title="Seleccione la fecha"></td>
 		<td> <strong>Número Pedido del Cliente:</strong>
-      	<input type="text" name="number" value="|-$order->getNumber()-|" /></td>
+      	<input type="text" name="number" value="|-if $order->getNumber() eq 0-||-$order->getId()-||-else-||-$order->getNumber()-||-/if-|" /></td>
 	</tr>
 	<tr>
 		<td><strong>Mayorista:</strong> |-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|<br> 
@@ -103,7 +103,7 @@
 				<th width="15%" class="thFillTitle">Precio</th> 
 				<th width="10%" class="thFillTitle">Cantidad</th> 
 				<th width="15%" class="thFillTitle">Total</th>
-				<th width="10%" class="thFillTitle">Actions</th>
+				<th width="10%" class="thFillTitle">&nbsp;</th>
 			</tr> 
 		</thead> 
 		<tbody id="productsTable">  |-foreach from=$order->getOrderItems() item=item name=for_products-|

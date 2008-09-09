@@ -4,17 +4,21 @@
 	Para exportar ordenes, seleccione los pedidos a exportar y haga click en "Exportar órdenes seleccionadas".<br>
 	Para eliminar pedidos, seleccione los pedidos a eliminar y haga click en "Eliminar órdenes seleccionadas".</p> 
 <div id="div_orders">
-	|-if $message eq "ok"-|<div class="successMessage">Orden guardada correctamente</div>|-/if-|
-	|-if $message eq "deleted_ok"-|<div class="successMessage">Orden eliminada correctamente</div>|-/if-|
-	|-if $message eq "orders_deleted_ok"-|<div class="successMessage">Ordenes eliminadas correctamente</div>|-/if-|
+|-if $message eq "ok"-|
+	<div class="successMessage">Orden guardada correctamente</div>
+|-elseif $message eq "deleted_ok"-|
+	<div class="successMessage">Orden eliminada correctamente</div>
+|-elseif $message eq "orders_deleted_ok"-|
+	<div class="successMessage">Ordenes eliminadas correctamente</div>
+|-/if-|
 	<div class="filter">
 		<form action="Main.php" method="get">
 <table  border="0" cellspacing="0" cellpadding="5">
 	<tr>
-		<td nowrap><label>Desde:</label>&nbsp;<span class="size4">(mm-dd-aaaa)</span>
+		<td nowrap><label>Desde:</label>&nbsp;<span class="size4">(dd-mm-aaaa)</span>
 								<input name="dateFrom" type="text" value="|-$selectedDateFrom-|" size="10">&nbsp;&nbsp;
 								<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('dateFrom', false, 'dmy', '-');" title="Seleccione la fecha">&nbsp;&nbsp;
-								<label>Hasta:</label>&nbsp;<span class="size4">(mm-dd-aaaa)</span>
+								<label>Hasta:</label>&nbsp;<span class="size4">(dd-mm-aaaa)</span>
 								<input name="dateTo" type="text" value="|-$selectedDateTo-|" size="10">&nbsp;&nbsp;
 					<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('dateTo', false, 'dmy', '-');" title="Seleccione la fecha"></td>
 		</tr>
@@ -22,10 +26,10 @@
 		<td>							
 				<label for="state">Estado</label>
 					<select name="state">
-						<option value="" selected="selected">Todos&nbsp;&nbsp;&nbsp;</option>
+						<option value="" selected="selected">Todos</option>
 						<option value="0"|-if $selectedState neq '' && $selectedState eq 0-| "selected"|-/if-|>Emitida</option>
 						<option value="1"|-if $selectedState eq 1-| "selected"|-/if-|>Aceptada</option>
-						<option value="2"|-if $selectedState eq 2-| "selected"|-/if-|>Pendiente Aprobación&nbsp;&nbsp;&nbsp;</option>
+						<option value="2"|-if $selectedState eq 2-| "selected"|-/if-|>Pendiente Aprobación</option>
 						<option value="3"|-if $selectedState eq 3-| "selected"|-/if-|>En Proceso</option>
 						<option value="4"|-if $selectedState eq 4-| "selected"|-/if-|>Completa</option>
 						<option value="5"|-if $selectedState eq 5-| "selected"|-/if-|>Cancelada</option>
@@ -33,9 +37,9 @@
 					</select>
 					|-if $all eq "1"-|&nbsp;&nbsp;&nbsp;<label for="affiliateId">Mayorista</label>
 					<select name="affiliateId">
-						<option value="" selected="selected">Todos&nbsp;&nbsp;&nbsp;</option>
+						<option value="" selected="selected">Todos</option>
 						|-foreach from=$affiliates item=affiliate-|
-						<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $selectedAffiliateId-| "selected"|-/if-|>|-$affiliate->getName()-|&nbsp;&nbsp;&nbsp;</option>
+						<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $selectedAffiliateId-| "selected"|-/if-|>|-$affiliate->getName()-|</option>
 						|-/foreach-|
 					</select>|-/if-|</td>
 				</tr>
@@ -69,7 +73,7 @@
 				<td class="tdSize1 right">|-$order->getid()-|</td>
 				|-if $all eq "1"-|<td class="tdSize1">|-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
 				<td nowrap class="tdSize1">|-$order->getcreated()|date_format:"%d-%m-%Y"-|</td>
-				<td nowrap class="tdSize1 right">|-$order->getNumber()-|</td>
+				<td nowrap class="tdSize1 right">|-if $order->getNumber() eq 0-||-$order->getId()-||-else-||-$order->getNumber()-||-/if-|</td>
 				<td class="tdSize1">|-assign var=user value=$order->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
 				<td class="tdSize1">|-assign var=branch value=$order->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
 				<td align="right" class="tdSize1">|-$order->gettotal()|system_numeric_format-|</td>

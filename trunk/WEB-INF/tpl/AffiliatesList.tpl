@@ -5,25 +5,19 @@
 		<p>##180,Realice los cambios en el grupo de usuarios y haga click en "Aceptar" para guardar las modificaciones. ##</p>
 	|-/if-|
 |-if $message eq "deleted"-|
-<div align='center' class='errorMessage'>Afiliado eliminado</div>
-|-/if-|
-|-if $message eq "errorUpdate"-|
-<div align='center' class='errorMessage'>Ha ocurrido un error al intentar guardar la información. Intente nuevamente.</div>
-|-/if-|
-|-if $message eq "saved"-|
-<div align='center' class='errorMessage'>##183,Grupo de Usuarios guardado##</div>
-|-/if-|
-|-if $message eq "edited"-|
-<div align='center' class='errorMessage'>##183,Afiliado guardado##</div>
-|-/if-|
-|-if $message eq "blankName"-|
-<div align='center' class='errorMessage'>##184,El Grupo de Usuarios debe tener un Nombre##</div>
-|-/if-|
-|-if $message eq "notAddedToGroup"-|
-<div align='center' class='errorMessage'>##185,Ha ocurrido un error al intentar agregar la categoría al grupo##</div>
-|-/if-|
-|-if $message eq "notRemovedFromGroup"-|
-<div align='center' class='errorMessage'>##186,Ha ocurrido un error al intentar eliminar la categoría del grupo##</div>
+	<div align='center' class='errorMessage'>Afiliado eliminado</div>
+|-elseif $message eq "errorUpdate"-|
+	<div align='center' class='errorMessage'>Ha ocurrido un error al intentar guardar la información. Intente nuevamente.</div>
+|-elseif $message eq "saved"-|
+	<div align='center' class='errorMessage'>##183,Grupo de Usuarios guardado##</div>
+|-elseif $message eq "edited"-|
+	<div align='center' class='errorMessage'>##183,Afiliado guardado##</div>
+|-elseif $message eq "blankName"-|
+	<div align='center' class='errorMessage'>##184,El Grupo de Usuarios debe tener un Nombre##</div>
+|-elseif $message eq "notAddedToGroup"-|
+	<div align='center' class='errorMessage'>##185,Ha ocurrido un error al intentar agregar la categoría al grupo##</div>
+|-elseif $message eq "notRemovedFromGroup"-|
+	<div align='center' class='errorMessage'>##186,Ha ocurrido un error al intentar eliminar la categoría del grupo##</div>
 |-/if-|
 <table width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 	<tr>
@@ -40,7 +34,10 @@
 	</tr>
 	|-/if-|
 	<tr>
-		<th colspan='3'>Afiliados del Sistema <a href='Main.php?do=affiliatesAddAffiliate'>Agregar Afiliado!</a></th>
+		<th colspan='3'>Distribuidores Mayoristas</th>
+	</tr>
+	<tr>
+		<th colspan="3"><div class="rightLink"><a href="Main.php?do=affiliatesAddAffiliate" class="agregarNueva">Agregar Mayorista</a></div></th>
 	</tr>
 	|-foreach from=$affiliates item=affiliate name=for_affiliate-|
 	<tr>
