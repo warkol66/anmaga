@@ -34,8 +34,20 @@ class OrdersImportPlugin {
 				if ( !empty($row[1]) && !empty($row[2]) && !empty($row[11]) ) {
 					$order = array();
 					$order["number"] = $row[1];
+						//saco los . por ser posibles separadores de miles
+						$row[19] = str_replace('.','',$row[19]);  
+						//reemplazo la , del separador decimal por .
+						$row[19] = str_replace(',','.',$row[19]);				
 					$order["total"] = $row[19];
+						//saco los . por ser posibles separadores de miles
+						$row[18] = str_replace('.','',$row[18]);  
+						//reemplazo la , del separador decimal por .
+						$row[18] = str_replace(',','.',$row[18]);				
 					$order["tax"] = $row[18];
+						//saco los . por ser posibles separadores de miles
+						$row[17] = str_replace('.','',$row[17]);  
+						//reemplazo la , del separador decimal por .
+						$row[17] = str_replace(',','.',$row[17]);				
 					$order["subtotal"] = $row[17];
 					$order["created"] = $row[2];
 					$order["branchNumber"] = $row[11];
