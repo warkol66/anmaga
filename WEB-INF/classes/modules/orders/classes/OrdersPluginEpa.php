@@ -50,6 +50,10 @@ class OrdersImportPlugin {
 					$item["productCode"] = str_pad($row[4], strlen($row[4])+1, "0", STR_PAD_LEFT);
 					$item["affiliateProductCode"] = $row[2];
 					$item["quantity"] = $row[7];
+					//saco los . por ser posibles separadores de miles
+					$row[10] = str_replace('.','',$row[10]);  
+					//reemplazo la , del separador decimal por .
+					$row[10] = str_replace(',','.',$row[10]);				
 					$item["price"] = $row[10];
 					$orders[$item["orderNumber"]]["items"][] = $item;
 				}							

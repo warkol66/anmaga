@@ -3,7 +3,7 @@
 	<p>A continuación podrá editar la lista de Afiliados del sistema.</p>
 	<form method="post" action="Main.php?do=affiliatesDoEdit">
 	<input type="hidden" value="|-$affiliate->getId()-|" name="id">
-		<fieldset title="Formulario de edición de sucursales de afiliado">
+		<fieldset title="Formulario de edición de nombre del Afiliado">
      <legend>Afiliado</legend>
 		<p>Realice los cambios y para guardar haga click en "Guardar Cambios"</p>
 		<p><label for="affiliateId">ID</label>
@@ -16,21 +16,21 @@
 			 </p>
 			 </fieldset>
 <br />
- [ <a href='Main.php?do=affiliatesEdit&id=|-$affiliate->getId()-|&editInfo=1' class='edit'>Editar datos Internos</a> ]	</form>
+ [ <a href='Main.php?do=affiliatesEdit&id=|-$affiliate->getId()-|&editInfo=1' class='edit'>Editar Información</a> ]	</form>
 <br />
 <br />
 	|-if $editInfo eq 1 -|
 	<form method="post" action="Main.php?do=affiliatesDoEditInfo">	
 		<input name="id" type="hidden" value="|-$affiliate->getId()-|">
 		<input name="flag" type="hidden" value="|-$flag-|">
-		<fieldset title="Formulario de edición de sucursales de afiliado">
+		<fieldset title="Formulario de edición de datos de afiliado">
      <legend>Ingrese los datos de la sucursal</legend>
 		 <p><label for="internalId">ID interno</label>
-			<input name="internalId" type="text" value="|-if $flag ne 1-| |-$affiliateInfo->getAffiliateInternalNumber()-||-/if-|" size="8"> 
-			</p>
+			<input name="internalId" type="text" value="|-if $flag ne 1-| |-$affiliateInfo->getAffiliateInternalNumber()-||-/if-|" size="15"> 
+		</p>
 		 <p><label for="address">Dirección</label>
-				<input name="address" type="text" value="|-if $flag ne 1-||-$affiliateInfo->getAddress()-||-/if-|" size="50"> 
-			</p>
+				<input name="address" type="text" value="|-if $flag ne 1-||-$affiliateInfo->getAddress()-||-/if-|" size="55"> 
+		</p>
 		 <p><label for="phone">Teléfono</label>
 				<input name="phone" type="text" value="|-if $flag ne 1-||-$affiliateInfo->getPhone()-||-/if-|" size="25"> 
 			</p>
