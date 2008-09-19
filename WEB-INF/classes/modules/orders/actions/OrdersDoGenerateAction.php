@@ -112,13 +112,18 @@ class OrdersDoGenerateAction extends BaseAction {
 			//obtengo el template
 			$template = $forwardConfig->getPath();	
    
-			$html_result = $smarty->fetch($template); 
+			$html_result = $smarty->fetch($template);
+			
+			if ($orderCreated->getNumber() == 0)
+				$orderNumber = $orderCreated->getId();
+			else
+				$orderNumber = $orderCreated->getNumber();
    
 			foreach ($emails as $email) {
 				$mail= new Mail;
 				$mail->From($system["config"]["system"]["parameters"]["fromEmail"]);
 				$mail->To($email);
-				$mail->Subject("Creación de nueva orden: ".$orderCreated->getNumber());
+				$mail->Subject("Creación de nueva orden: ".$orderNumber);
 				$mail->Body($html_result,"UTF-8");
 				$mail->Send();		
 			}
