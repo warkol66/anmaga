@@ -58,10 +58,9 @@
 </div>
 
 *-| 
-
 Pedido: |-$order->getId()-|
 Fecha: |-$order->getDateCreated()|date_format:"%d-%m-%Y"-| - Número Pedido del Cliente: |-$order->getNumber()-|
-|-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-|Mayorista: |-$affiliate->getName()-||-/if-|
+|-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-|Mayorista: |-$affiliate->getName()-|&nbsp;-|-/if-|
 |-assign var=user value=$order->getAffiliateUser()-||-if $user-|Usuario: |-$user->getUsername()-||-/if-|
 |-assign var=branch value=$order->getBranch()-||-if $branch-|Sucursal: |-$branch->getName()-||-/if-|
 
