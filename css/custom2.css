@@ -109,6 +109,9 @@ form input{
 #rightcolumn h2 a:hover, #rightcolumn h2 a:active{
 	color: #0000FF;
 }
+#rightcolumn h3, #rightcolumn h4 {
+	color: #0066CC;
+}
 
 
 #rightcolumn p{

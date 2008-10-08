@@ -734,7 +734,7 @@ option{
 /* NEW */
 .buttonImageDelete, .buttonImageDeleteDisabled, .buttonImageEdit, .buttonImageEditDisabled, 
 .buttonImageAdd, .buttonImageAddDisabled, .buttonImageView, .buttonImageViewDisabled, 
-.buttonImageGoTo, .buttonImageBack, .buttonImageViewGantt {
+.buttonImageGoTo, .buttonImageBack, .buttonImageViewGantt, .buttonImageActivate {
 	font-size: 0px !Important;
 	width: 16px;
 	height: 16px;
@@ -746,7 +746,7 @@ option{
 
 .linkImageDelete, .linkImageDeleteDisabled, .linkImageEdit, .linkImageEditDisabled, 
 .linkImageAdd, .linkImageAddDisabled, .linkImageView, .linkImageViewDisabled, .linkImageGoTo, 
-.linkImageBack, .linkImageViewGantt {
+.linkImageBack.buttonImageViewGantt.buttonImageActivate {
 	width: 20px;
 	height: 16px;
 	border-width: 0;

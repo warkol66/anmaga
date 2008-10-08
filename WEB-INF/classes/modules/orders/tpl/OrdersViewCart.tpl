@@ -3,7 +3,7 @@
 	<p>A continuación se muestra el contenido del carrito de compras.</p>
 <div id="div_order">
 	|-if $message eq "deleted_ok"-|<span class="message_ok">Carrito Vaciado!</span>|-/if-|
-	<div id="messageCart">
+	<div id="messageCart" style="position:fixed; right: 50px; top: 5px;">>
 	</div>
 	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products">
 		<thead>
@@ -19,7 +19,7 @@
 		|-assign var=total value=0-|
 		<tbody>  |-foreach from=$orderItems item=item name=for_products-| |-assign var=product value=$item->getProduct()-| |-assign var=productNode value=$product->getNode()-|
 		<tr id="product_|-$product->getId()-|">
-			<td class="tdSize1">|-$product->getcode()-|</td>
+			<td align="center" class="tdSize1">|-$product->getcode()-|</td>
 			<td class="tdSize1">|-$productNode->getname()-|</td>
 			<td nowrap class="tdSize1 right">|-$product->getprice()|system_numeric_format-|</td>
 			<td align="center" nowrap class="tdSize1">|-$product->getSalesUnit()-|</td>
@@ -32,12 +32,12 @@
 					<input type="text" name="quantity" value="|-$item->getQuantity()-|" size="3" />
 					<input type="hidden" name="productId" value="|-$product->getId()-|" />
 					<input type="hidden" name="do" value="ordersChangeItemCartX" />
-					<input type="button" value="Cambiar" class="buttonImageEdit" onclick="javascript:ordersChangeItemCartX(this.form)" />
+					<input type="button" value="Cambiar" class="buttonImageActivate" title="Actualizar carrito" alt="Actualizar carrito" onclick="javascript:ordersChangeItemCartX(this.form)" />
 				</form>
 				<form>
 					<input type="hidden" name="productId" value="|-$product->getId()-|" />
 					<input type="hidden" name="do" value="ordersRemoveItemCartX" />
-					<input type="button" value="Eliminar" class="buttonImageDelete" onclick="javascript:ordersRemoveItemCartX(this.form)" />
+					<input type="button" value="Eliminar" class="buttonImageDelete" title="Eliminar del carrito" alt="Eliminar del carrito" onclick="javascript:ordersRemoveItemCartX(this.form)" />
 				</form>
 			</td>
 		</tr>
@@ -61,14 +61,22 @@
 	<input type="submit" value="Vaciar Carrito" class="boton" onclick="return confirm('Seguro que desea vaciar el carrito?')" />
 </form>
 <br>
+|-if $affiliates|@count gt 0-|
+<h3>Opciones de Administrador</h3>
+|-/if-|
 <form action="Main.php" method="post">
 	|-if $affiliates|@count gt 0-|
+	<h4>Pedido para mayorista</h4>
+	<p>Para generar este pedido para un mayorista, seleccione de la lista el mayorista, haga click en "Generar Orden".</p>
 	<select name="affiliateId">
-		<option value="">Seleccionar Afiliado&nbsp;&nbsp;&nbsp;</option>
+		<option value="">Seleccionar Afiliado</option>
 		|-foreach from=$affiliates item=affiliate-|
 		<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|</option>
 		|-/foreach-|
 	</select>
+	|-else-|
+	<h4>Procesar pedido</h4>
+	<p>Para generar este pedido, haga click en "Generar Orden".</p>
 	|-/if-|
 	<input type="hidden" name="do" value="ordersConfirm" />
 	<input type="submit" value="Generar orden" class="boton" />
@@ -76,12 +84,17 @@
 <br>
 <form action="Main.php" method="post">
 	|-if $affiliates|@count gt 0-|
+	<h4>Plantilla de pedido para mayorista</h4>
+	<p>Para guardar este pedido como plantilla para un mayorista, seleccione de la lista el mayorista, haga click en "Guardar plantilla de pedido".</p>
 	<select name="affiliateId">
-		<option value="">Seleccionar Afiliado&nbsp;&nbsp;&nbsp;</option>
+		<option value="">Seleccionar Afiliado</option>
 		|-foreach from=$affiliates item=affiliate-|
 		<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|</option>
 		|-/foreach-|
 	</select>
+	|-else-|
+	<h4>Plantillas de pedido</h4>
+	<p>Para guardar este pedido como plantilla, haga click en "Guardar plantilla de pedido".</p>
 	|-/if-|
 	<input type="hidden" name="do" value="ordersDoSave" />
 	<input type="hidden" name="name" id="name" value="" />
