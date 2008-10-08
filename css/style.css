@@ -707,6 +707,13 @@ fieldset fieldset legend {
 }
 
 
+.inProgress {
+	font-weight: bold;
+	color: #D2691E;	
+	text-decoration: blink;
+	padding-left: 30px;
+	padding-right: 30px;
+}
 .resultSuccess {
 	font-weight: bold;
 	color: #00008B;
