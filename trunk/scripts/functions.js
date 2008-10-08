@@ -139,7 +139,7 @@ function modulesDoActivateX(form) {
 					postBody: fields,
 					evalScripts: true
 				});
-		$('messageMod').innerHTML = "Actualizando sistema...";
+		$('messageMod').innerHTML = "<span class='inProgress'>Actualizando sistema...</span>";
 }
 
 
@@ -153,7 +153,7 @@ function ordersAddItemToCartX(form) {
 					method: 'post',
 					postBody: fields
 				});
-	$('messageCart').innerHTML = "Adding to cart...";
+	$('messageCart').innerHTML = "<span class='inProgress'>Agregando al carrito...</span>";
 }
 
 function ordersChangeItemCartX(form) {
@@ -167,7 +167,7 @@ function ordersChangeItemCartX(form) {
 					postBody: fields,
 					evalScripts: true
 				});
-	$('messageCart').innerHTML = "Modifing cart...";
+	$('messageCart').innerHTML = "<span class='inProgress'>Modificando carrito...</span>";
 }
 
 function ordersRemoveItemCartX(form) {
@@ -181,7 +181,7 @@ function ordersRemoveItemCartX(form) {
 					postBody: fields,
 					evalScripts: true
 				});
-	$('messageCart').innerHTML = "Removing product from cart...";
+	$('messageCart').innerHTML = "<span class='inProgress'>Eliminando producto del carrito...</span>";
 }
 
 function ordersStateDoChangeX(form) {
@@ -198,7 +198,7 @@ function ordersStateDoChangeX(form) {
 					evalScripts: true,
 					insertion: Insertion.Bottom
 				});
-		$('messageState').innerHTML = "Changing state...";
+		$('messageState').innerHTML = "<span class='inProgress'>Cambiando estado...</span>";
 	} else {
 		alert("Select new state!");
 	}
