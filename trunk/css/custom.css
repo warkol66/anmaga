@@ -273,6 +273,9 @@ fieldset {
 .buttonImageViewGantt {
 	background: url(../images/linkImageViewGantt.png) no-repeat center;
 }
+.buttonImageActivate {
+	background: url(../images/linkImageActivate.png) no-repeat center;
+}
 .linkImageDelete {
 	background: url(../images/linkImageDelete.png) center no-repeat;
 }
@@ -306,6 +309,8 @@ fieldset {
 .linkImageViewGantt {
 	background: url(../images/linkImageViewGantt.png) no-repeat center;
 }
+.linkImageActivate {
+	background: url(../images/linkImageActivate.png) no-repeat center;
 }
 .buttonImageLogin {
 	font-size: 0px !Important;
