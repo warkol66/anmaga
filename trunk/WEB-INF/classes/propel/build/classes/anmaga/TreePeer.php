@@ -253,6 +253,8 @@ class TreePeer {
 
 		$cond->add(AffiliateProductPeer::AFFILIATEID, $affiliateId);
 		$cond->addJoin(NodePeer::ID , AffiliateProductPeer::PRODUCTID, Criteria::JOIN);
+		$cond->addJoin(NodePeer::ID , ProductPeer::ID, Criteria::JOIN);
+
 		$cond->addAscendingOrderByColumn(ProductPeer::CODE);
 		$pager = new PropelPager($cond,"NodePeer","doSelect",$page,$perPage);
 
