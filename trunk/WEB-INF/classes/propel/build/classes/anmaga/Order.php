@@ -155,13 +155,12 @@ class Order extends BaseOrder {
          * Obtiene el último comentario de una orden
          *
          */
-        function getLastComment($id) {
+        function getLastComment() {
             $criteria =  new Criteria();
-            $criteria->addJoin(OrderStateChangePeer::ORDERID,OrderPeer::ID);
-            $criteria->add(OrderStateChange::ORDERID,$id,Criteria::EQUAL);
-            $criteria->addAscendingOrderByColumn(OrderStateChange::CREATED);                  
+            $criteria->add(OrderStateChangePeer::ORDERID,$this->getId(),Criteria::EQUAL);
+            $criteria->addDescendingOrderByColumn(OrderStateChangePeer::CREATED);                  
 
-						$commentObj = Order::doSelectOne($criteria);
+						$commentObj = OrderStateChangePeer::doSelectOne($criteria);
 						return $commentObj;
 
         }
