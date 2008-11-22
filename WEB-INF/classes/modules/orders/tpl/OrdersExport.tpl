@@ -11,6 +11,7 @@
 		<co_cli>|-if $branch-||-$branch->getCode()-||-/if-|</co_cli>
 		<fec_emis>|-$order->getCreated()|date_format:"%Y-%m-%d"-|</fec_emis>
 		<fec_venc>|-$order->getCreated()|date_format:"%Y-%m-%d"-|</fec_venc>
+		<descrip>|-assign var=comment value=$order->getLastComment()-||-if $comment ne ''-||-$comment->getComment()|truncate:60:""-||-/if-|</descrip>
 		<reng_num>|-$smarty.foreach.for_products.iteration-|</reng_num>
 		<co_art>|-$product->getcode()|replace:"-":""-|</co_art>
 		<total_art>|-$item->getQuantity()|number_format:5:".":""-|</total_art>
