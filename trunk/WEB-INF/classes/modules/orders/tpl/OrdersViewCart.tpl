@@ -1,9 +1,11 @@
-	<h2>Pedidos</h2>
-	<h1>Carrito de compras</h1>
+<h2>Pedidos</h2>
+<h1>Carrito de compras</h1>
 	<p>A continuación se muestra el contenido del carrito de compras.</p>
 <div id="div_order">
-	|-if $message eq "deleted_ok"-|<span class="message_ok">Carrito Vaciado!</span>|-/if-|
-	<div id="messageCart" style="position:fixed; right: 50px; top: 5px;">>
+	|-if $message eq "deleted_ok"-|
+		<div class="successMessage">Carrito Vaciado!</div>
+	|-/if-|
+	<div id="messageCart" style="position: fixed; right: 50px; top: 5px;">
 	</div>
 	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products">
 		<thead>
