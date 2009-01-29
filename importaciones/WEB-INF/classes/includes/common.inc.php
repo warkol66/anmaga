@@ -19,11 +19,18 @@
 
   //Configuracion de Error Reporting
   global $system;
-  if (isset($system)) {  
+  if (isset($system)) {
+  	
+	$conversionTable = array('E_ALL ^ E_NOTICE'=> 6135, 'E_ALL' => 6143, 'E_STRICT' => 2048);
   	$level = $system["config"]["system"]["errorReporting"]["value"];
-  	if ($level == "")
-  		$level = 0;
-  	error_reporting($level);
+  	
+  	if ($level == "") {
+  		ini_set("error_reporting",6143);
+  	}
+  	else {
+  		ini_set("error_reporting",$conversionTable[$level]);
+  	}
+  		
   }
 
 
