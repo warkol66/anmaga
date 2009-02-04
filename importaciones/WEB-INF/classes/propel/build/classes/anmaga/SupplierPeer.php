@@ -30,9 +30,10 @@ class SupplierPeer extends BaseSupplierPeer {
   * @param int $active active del supplier
   * @return boolean true si se creo el supplier correctamente, false sino
 	*/
-	function create($name) {
+	function create($name,$email) {
     $supplierObj = new Supplier();
     $supplierObj->setname($name);
+	$supplierObj->setEmail($email);
 		$supplierObj->setactive('1');
 		$supplierObj->save();
 		return true;
@@ -46,9 +47,10 @@ class SupplierPeer extends BaseSupplierPeer {
   * @param int $active active del supplier
   * @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
-  function update($id,$name) {
+  function update($id,$name,$email) {
   	$supplierObj = SupplierPeer::retrieveByPK($id);
     $supplierObj->setname($name);
+	$supplierObj->setemail($email);
     $supplierObj->setactive('1');
     $supplierObj->save();
 		return true;

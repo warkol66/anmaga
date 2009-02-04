@@ -7,9 +7,12 @@
 						</p>
 						<fieldset title="Formulario de edición de datos de un supplier">
 																																			<p>
-								<label for="name">name</label>
-																								<input type="text" id="name" name="name" value="|-if $action eq "edit"-||-$supplier->getname()-||-/if-|" title="name" maxlength="255" />
-																							</p>
+	<label for="name">name</label>
+	<input type="text" id="name" name="name" value="|-if $action eq "edit"-||-$supplier->getname()-||-/if-|" title="name" maxlength="255" />
+</p>
+<p>
+	<label for="name">email</label>																							<input type="text" id="email" name="email" value="|-if $action eq "edit"-||-$supplier->getEmail()-||-/if-|" title="name" maxlength="255" />
+</p>
 														<p>
 																|-if $action eq "edit"-|
 								<input type="hidden" name="id" id="id" value="|-if $action eq "edit"-||-$supplier->getid()-||-/if-|" />

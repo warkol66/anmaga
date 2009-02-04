@@ -48,17 +48,18 @@ class ImportSuppliersDoEditAction extends BaseAction {
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un supplier existente
 
-			if ( SupplierPeer::update($_POST["id"],$_POST["name"]) )
+			if ( SupplierPeer::update($_POST["id"],$_POST["name"],$_POST["email"]) )
       			return $mapping->findForwardConfig('success');
 
 		}
 		else {
 		  //estoy creando un nuevo supplier
 
-			if ( !SupplierPeer::create($_POST["name"]) ) {
+			if ( !SupplierPeer::create($_POST["name"],$_POST['email']) ) {
 				$supplier = new Supplier();
 			$supplier->setid($_POST["id"]);
 						$supplier->setname($_POST["name"]);
+						$supplier->setEmail($_POST["email"]);
 						$supplier->setactive($_POST["active"]);
 							$smarty->assign("supplier",$supplier);	
 				$smarty->assign("action","create");

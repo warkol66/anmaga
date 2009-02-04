@@ -264,16 +264,17 @@
 <table name="import_product" phpName='Product' description="Productos">
  <column name="id" required="true" primaryKey="true" type="INTEGER" description="Product Id" autoIncrement="true"/>
  <column name="code" size="255" type="VARCHAR" description="Codigo del producto" />
- <column name="name" size="255" type="VARCHAR" description="Nombre del producto" />
- <column name="description" type="LONGVARCHAR" description="Descripcion del producto" />
- <column name="supplierId" type="INTEGER" description="Supplier" />
+ <column name="name" size="255" type="VARCHAR" description="Nombre del producto en ingles" />
+ <column name="nameSpanish" size="255" type="VARCHAR" description="Nombre del producto en espaniol" />
+ <column name="description" type="LONGVARCHAR" description="Descripcion del producto en ingles" />
+ <column name="descriptionSpanish" type="LONGVARCHAR" description="Descripcion del producto en espaniol" />
  <column type="BOOLEAN" name="active" required="true" description="Is product active?" />
 
 </table>
 
 <table name="import_productSupplier" phpName='ProductSupplier' description="Relacion Productos Proveedores">
  <column name="productId" required="true" primaryKey="true" type="INTEGER" description="Product Id" />
- <column name="supplierId" size="255" primaryKey="true" type="VARCHAR" description="Nombre del producto" />
+ <column name="supplierId" size="255" type="VARCHAR" description="Nombre del producto" />
  <column name="code" size="255" type="VARCHAR" description="Codigo del producto" />
 
  <foreign-key foreignTable="import_product" >
@@ -289,6 +290,7 @@
 <table name="import_supplier" phpName="Supplier" description="Proveedores" >
   <column autoIncrement="true" type="INTEGER" name="id" required="true" description="" primaryKey='true' />
   <column size="255" type="VARCHAR" name="name" required="true" description="Nombre" />
+  <column size="255" type="VARCHAR" name="email" description="email" />
   <column type="BOOLEAN" name="active" required="true" description="Is supplier active?" />
 </table>
 
@@ -348,7 +350,7 @@
 	<column name="price" type="INTEGER" description="precio de producto" />
 	<column name="quantity" type="INTEGER" description="cantidad producto" />
 	<column name="portId" type="INTEGER" description="id de puerto"/>
-	<column name="incotermId" type="INTEGER" description="id de incoterm"/>
+	<column name="incotermId" type="INTEGER" description="id de incoterm"/>	
 	
 	<foreign-key foreignTable="import_supplierQuotation" >
 	  <reference local="supplierQuotationId" foreign="id" />

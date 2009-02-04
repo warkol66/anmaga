@@ -479,9 +479,10 @@ CREATE TABLE `import_product`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Product Id',
 	`code` VARCHAR(255) COMMENT 'Codigo del producto',
-	`name` VARCHAR(255) COMMENT 'Nombre del producto',
-	`description` TEXT COMMENT 'Descripcion del producto',
-	`supplierId` INTEGER COMMENT 'Supplier',
+	`name` VARCHAR(255) COMMENT 'Nombre del producto en ingles',
+	`nameSpanish` VARCHAR(255) COMMENT 'Nombre del producto en espaniol',
+	`description` TEXT COMMENT 'Descripcion del producto en ingles',
+	`descriptionSpanish` TEXT COMMENT 'Descripcion del producto en espaniol',
 	`active` INTEGER  NOT NULL COMMENT 'Is product active?',
 	PRIMARY KEY (`id`)
 )Type=MyISAM COMMENT='Productos';
@@ -496,9 +497,9 @@ DROP TABLE IF EXISTS `import_productSupplier`;
 CREATE TABLE `import_productSupplier`
 (
 	`productId` INTEGER  NOT NULL COMMENT 'Product Id',
-	`supplierId` VARCHAR(255)  NOT NULL COMMENT 'Nombre del producto',
+	`supplierId` VARCHAR(255) COMMENT 'Nombre del producto',
 	`code` VARCHAR(255) COMMENT 'Codigo del producto',
-	PRIMARY KEY (`productId`,`supplierId`),
+	PRIMARY KEY (`productId`),
 	CONSTRAINT `import_productSupplier_FK_1`
 		FOREIGN KEY (`productId`)
 		REFERENCES `import_product` (`id`),
@@ -519,6 +520,7 @@ CREATE TABLE `import_supplier`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Nombre',
+	`email` VARCHAR(255) COMMENT 'email',
 	`active` INTEGER  NOT NULL COMMENT 'Is supplier active?',
 	PRIMARY KEY (`id`)
 )Type=MyISAM COMMENT='Proveedores';

@@ -7,7 +7,8 @@
 					<h3><a href="Main.php?do=importProductsEdit">Agregar Product</a></h3>
 					<table id="tabla-products" class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 						<thead>
-							<tr>																<th class="thFillTitle">code</th>
+							<tr>
+																<th class="thFillTitle">code</th>
 																<th class="thFillTitle">name</th>
 																<th class="thFillTitle">description</th>
 																<th class="thFillTitle">Supplier</th>
@@ -20,7 +21,7 @@
 																<td>|-$product->getcode()-|</td>
 																<td>|-$product->getname()-|</td>
 																<td>|-$product->getdescription()-|</td>
-																<td>|-assign var=supplier value=$supplierPeer->get($product->getsupplierId())-||- $supplier->getName() -|</td>
+																<td>|-assign var=supplier value=$supplierPeer->get($product->getsupplierId())-||-if $supplier neq ''-||- $supplier->getName() -||-/if-|</td>
 																<td>
 									<form action="Main.php" method="get">
 										<input type="hidden" name="do" value="importProductsEdit" />
@@ -46,7 +47,8 @@
 <div >
 						<table id="tabla-products" class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 						<thead>
-							<tr>																<th class="thFillTitle">code</th>
+							<tr>
+																<th class="thFillTitle">code</th>
 																<th class="thFillTitle">name</th>
 																<th class="thFillTitle">description</th>
 																<th class="thFillTitle">Supplier</th>
@@ -59,8 +61,10 @@
 																<td>|-$product->getcode()-|</td>
 																<td>|-$product->getname()-|</td>
 																<td>|-$product->getdescription()-|</td>
-																<td>|-assign var=supplier value=$supplierPeer->get($product->getsupplierId())-||- $supplier->getName() -|</td>
-																<td>
+																<td>|-assign var=supplier value=$supplierPeer->get($product->getsupplierId())-||-if $supplier neq ''-||- $supplier->getName() -||-/if-|</td>
+																<td>
+
+
 									<form action="Main.php" method="post">
 										<input type="hidden" name="do" value="importProductsDoActivate" />
 																				<input type="hidden" name="id" value="|-$product->getid()-|" />

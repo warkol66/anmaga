@@ -10,6 +10,7 @@
 							<tr>
                 								<th class="thFillTitle">id</th>
 																<th class="thFillTitle">name</th>
+																<th class="thFillTitle">email</th>
 																<th class="thFillTitle">active</th>
 																<th class="thFillTitle">&nbsp;</th>
 							</tr>
@@ -19,6 +20,7 @@
 							<tr>
 																<td>|-$supplier->getid()-|</td>
 																<td>|-$supplier->getname()-|</td>
+																<td>|-$supplier->getEmail()-|</td>
 																<td>|-$supplier->getactive()-|</td>
 																<td>
 									<form action="Main.php" method="get">

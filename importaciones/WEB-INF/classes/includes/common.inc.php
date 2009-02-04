@@ -18,7 +18,7 @@
   extract($_POST,EXTR_PREFIX_ALL,'post');
 
   //Configuracion de Error Reporting
-  global $system;
+/*  global $system;
   if (isset($system)) {
   	
 	$conversionTable = array('E_ALL ^ E_NOTICE'=> 6135, 'E_ALL' => 6143, 'E_STRICT' => 2048);
@@ -31,8 +31,8 @@
   		ini_set("error_reporting",$conversionTable[$level]);
   	}
   		
-  }
-
+  	}
+*/
 
   /**
   * getBrowser

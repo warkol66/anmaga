@@ -318,7 +318,7 @@
 							 name = "configDoSet"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=configSet&amp;message=ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=configSet&amp;message=ok" redirect="true" />
 		</action>
 
 		<action    path = "configDoEdit"
@@ -326,7 +326,7 @@
 							 name = "configDoEdit"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=configView&amp;message=ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=configView&amp;message=ok" redirect="true" />
 		</action>
 
 		<action    path = "configCreateXmlForAction"
@@ -429,7 +429,7 @@
 							 name = "affiliatesBranchsDoEdit"
 							scope = "request"
 					 validate = "true">
-		<forward name="success" path="Main.php?do=affiliatesBranchsList&amp;message=ok" redirect="true" />
+		<forward name="success" path="/Main.php?do=affiliatesBranchsList&amp;message=ok" redirect="true" />
 		<forward name="failure" path="AffiliatesBranchsEdit.tpl" />
 		</action>
 
@@ -446,7 +446,7 @@
 							 name = "affiliatesBranchsDoDelete"
 							scope = "request"
 					 validate = "true">
-		<forward name="success" path="Main.php?do=affiliatesBranchsList&amp;message=deleted_ok" redirect="true" />
+		<forward name="success" path="/Main.php?do=affiliatesBranchsList&amp;message=deleted_ok" redirect="true" />
 		</action>
 	</action-mappings>
 <!-- End Section Branches -->
@@ -519,7 +519,7 @@
 							 name = "affiliatesUsersDoAddToGroup"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=affiliatesUsersList" redirect="true" />
+			<forward name="success" path="/Main.php?do=affiliatesUsersList" redirect="true" />
 		</action>
 
 		<action    path = "affiliatesUsersDoActivate"
@@ -536,7 +536,7 @@
 							 name = "affiliatesUsersDoRemoveFromGroup"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=affiliatesUsersList" redirect="true" />
+			<forward name="success" path="/Main.php?do=affiliatesUsersList" redirect="true" />
 		</action>
 
 		<action    path = "affiliatesUsersPasswordRecovery"
@@ -820,7 +820,7 @@
                name = "importProductsDoEdit"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=importProductsList&amp;message=ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=importProductsList&amp;message=ok" redirect="true" />
     <forward name="failure" path="ImportProductsEdit.tpl" />
     </action>
 
@@ -837,7 +837,7 @@
                name = "importProductsDoDelete"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=importProductsList&amp;message=deleted_ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=importProductsList&amp;message=deleted_ok" redirect="true" />
     </action>
     
      <action    path = "importProductsDoActivate"
@@ -845,7 +845,7 @@
                name = "importProductsDoActivate"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=importProductsList&amp;message=activated_ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=importProductsList&amp;message=activated_ok" redirect="true" />
     </action>
 
     
@@ -866,7 +866,7 @@
                name = "importSuppliersDoEdit"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=importSuppliersList&amp;message=ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=importSuppliersList&amp;message=ok" redirect="true" />
     <forward name="failure" path="ImportSuppliersEdit.tpl" />
     </action>
 
@@ -883,7 +883,7 @@
                name = "importSuppliersDoDelete"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=importSuppliersList&amp;message=deleted_ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=importSuppliersList&amp;message=deleted_ok" redirect="true" />
     </action>
     
     <action    path = "importSuppliersDoActivate"
@@ -891,7 +891,7 @@
                name = "importSuppliersDoActivate"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=importSuppliersList&amp;message=activated_ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=importSuppliersList&amp;message=activated_ok" redirect="true" />
     </action>
 
     
@@ -912,7 +912,7 @@
                name = "importPortsDoEdit"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=importPortsList&amp;message=ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=importPortsList&amp;message=ok" redirect="true" />
     <forward name="failure" path="ImportPortsEdit.tpl" />
     </action>
 
@@ -929,7 +929,7 @@
                name = "importPortsDoDelete"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=importPortsList&amp;message=deleted_ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=importPortsList&amp;message=deleted_ok" redirect="true" />
     </action>
     
     <action    path = "importPortsDoActivate"
@@ -937,7 +937,7 @@
                name = "importPortsDoActivate"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=importPortsList&amp;message=activated_ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=importPortsList&amp;message=activated_ok" redirect="true" />
     </action>
 
   </action-mappings>
@@ -957,7 +957,7 @@
                name = "importIncotermsDoEdit"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=importIncotermsList&amp;message=ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=importIncotermsList&amp;message=ok" redirect="true" />
     <forward name="failure" path="ImportIncotermsEdit.tpl" />
     </action>
 
@@ -974,7 +974,7 @@
                name = "importIncotermsDoDelete"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=importIncotermsList&amp;message=deleted_ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=importIncotermsList&amp;message=deleted_ok" redirect="true" />
     </action>
 
     <action    path = "importIncotermsDoActivate"
@@ -982,7 +982,7 @@
                name = "importIncotermsDoActivate"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=importIncotermsList&amp;message=activate_ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=importIncotermsList&amp;message=activate_ok" redirect="true" />
     </action>
 
 <!-- Fin Modulo ImportIncoterms -->
@@ -1211,7 +1211,7 @@
 							 name = "usersByRegistrationDoPassRecovery"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=usersByRegistrationLogin&amp;message=passwordSent" redirect="true" />
+			<forward name="success" path="/Main.php?do=usersByRegistrationLogin&amp;message=passwordSent" redirect="true" />
 			<forward name="failure" path="UsersByRegistrationPasswordRecovery.tpl"/>
 		</action>
 		
@@ -1302,7 +1302,9 @@
 					 validate = "true">
 			<forward name="success"  path="InstallSetupPermissions.tpl" />
 			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
-		</action>		<action    path = "installDoSetupPermissions"
+		</action>
+
+		<action    path = "installDoSetupPermissions"
 							 type = "InstallDoSetupPermissionsAction"
 							 name = "installDoSetupPermissions"
 							scope = "request"
@@ -1340,7 +1342,7 @@
 							 name = "installDoFileCheck"
 							scope = "request"
 					 validate = "true">
-			<forward name="success"  path="Main.php?do=installList" />
+			<forward name="success"  path="/Main.php?do=installList" />
 		</action>
 	</action-mappings>
 <!-- End Module Install -->

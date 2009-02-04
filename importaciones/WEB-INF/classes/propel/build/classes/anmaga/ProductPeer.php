@@ -24,47 +24,130 @@ class ProductPeer extends BaseProductPeer {
   }
 
   /**
-  * Crea un product nuevo.
-  *
-  * @param string $code code del product
-  * @param string $name name del product
-  * @param string $description description del product
-  * @param int $supplierId supplierId del product
-  * @param int $active active del product
-  * @return boolean true si se creo el product correctamente, false sino
-	*/
-	function create($code,$name,$description,$supplierId) {
-		$productObj = new Product();
-		$productObj->setcode($code);
-		$productObj->setname($name);
-		$productObj->setdescription($description);
-		$productObj->setsupplierId($supplierId);
-		$productObj->setactive('1');
-		$productObj->save();
-		return true;
-	}
+   * Valida los parametros necesarios para la creacion de un producto
+   *
+   */
+  private function validateParams($params,$productSupplierParams) {
+
+  	$productVal = (!empty($params['code']) && !empty($params['name']));
+  	$productSupplierVal = (!empty($productSupplierParams['supplierId']) && !empty($productSupplierParams['code']));
+
+	return ($productVal && $productSupplierVal);
+
+  }
 
   /**
-  * Actualiza la informacion de un product.
+  * Crea un product nueva.
   *
-  * @param int $id id del product
-  * @param string $code code del product
-  * @param string $name name del product
-  * @param string $description description del product
-  * @param int $supplierId supplierId del product
-  * @param int $active active del product
-  * @return boolean true si se actualizo la informacion correctamente, false sino
-	*/
-  function update($id,$code,$name,$description,$supplierId,$active) {
-    $productObj = ProductPeer::retrieveByPK($id);
-    $productObj->setcode($code);
-    $productObj->setname($name);
-    $productObj->setdescription($description);
-    $productObj->setsupplierId($supplierId);
-    $productObj->setactive('1');
-    $productObj->save();
-		return true;
+  * @param array $params Array asociativo con los atributos del objeto product
+  * @param array $productSupplierParams Array asociativo con los atributos del objeto productSupplier
+  * @return boolean true si se creo correctamente, false sino
+  */  
+  function create($params,$productSupplierParams) {
+
+	if (!ProductPeer::validateParams($params,$productSupplierParams)) {
+		return false;
+	}
+
+	try {
+      $productObj = new Product();
+      foreach ($params as $key => $value) {
+        $setMethod = "set".$key;
+        if ( method_exists($productObj,$setMethod) ) {          
+          if (!empty($value))
+            $productObj->$setMethod($value);
+          else
+            $productObj->$setMethod(null);
+        }
+      }
+
+	  $productObj->setActive(1);
+
+      $productObj->save();
+	
+	  $productSupplierParams['productId'] = $productObj->getId();
+	  
+	 require_once('ProductSupplier.php');
+	
+	  $productSupplierObj = new ProductSupplier();
+      foreach ($productSupplierParams as $key => $value) {
+        $setMethod = "set".$key;
+        if ( method_exists($productSupplierObj,$setMethod) ) {          
+          if (!empty($value))
+            $productSupplierObj->$setMethod($value);
+          else
+            $productSupplierObj->$setMethod(null);
+        }
+      }
+
+	  $productSupplierObj->save();
+      return true;
+
+    } catch (Exception $exp) {
+      return false;
+    }         
   }
+	
+	/**
+	* Actualiza la informacion de un product.
+	*
+    * @param array $params Array asociativo con los atributos del objeto product
+    * @param array $productSupplierParams Array asociativo con los atributos del objeto productSupplier
+	* @return boolean true si se actualizo la informacion correctamente, false sino
+	*/  
+	function update($params,$productSupplierParams) {
+	
+		if (!ProductPeer::validateParams($params,$productSupplierParams)) {
+			return false;
+		}
+
+	
+	    try {
+		  $productObj = ProductPeer::retrieveByPK($params["id"]);
+	      foreach ($params as $key => $value) {
+	        $setMethod = "set".$key;
+	        if ( method_exists($productObj,$setMethod) ) {          
+	          if (!empty($value))
+	            $productObj->$setMethod($value);
+	          else
+	            $productObj->$setMethod(null);
+	        }
+	      }
+
+		  $productObj->setActive(1);
+
+	      $productObj->save();
+
+		  $productSupplierParams['productId'] = $productObj->getId();
+
+          require_once('ProductSupplierPeer.php');
+
+          $criteria = new Criteria();
+          $criteria->add(ProductSupplierPeer::PRODUCTID,$productObj->getId());
+          $result = ProductSupplierPeer::doSelect($criteria);
+          $productSupplierObj = $result[0];
+
+	      foreach ($productSupplierParams as $key => $value) {
+	        $setMethod = "set".$key;
+	        if ( method_exists($productSupplierObj,$setMethod) ) {          
+			  if (!empty($value))
+	            $productSupplierObj->$setMethod($value);
+	          else
+	            $productSupplierObj->$setMethod(null);
+	        }
+	      }
+	
+		  $productSupplierObj->save();
+
+	      return true;
+
+	    } catch (Exception $exp) {
+	      return false;
+	    }
+
+
+	}    
+
 
 	/**
 	* Elimina un product a partir de los valores de la clave.
@@ -73,7 +156,8 @@ class ProductPeer extends BaseProductPeer {
 	*	@return boolean true si se elimino correctamente el product, false sino
 	*/
   function delete($id) {
-  	$productObj = ProductPeer::retrieveByPK($id);	$productObj->setactive('0');
+  	$productObj = ProductPeer::retrieveByPK($id);
+	$productObj->setactive('0');
 	try {
 		$productObj->save();
 	}
@@ -154,7 +238,8 @@ class ProductPeer extends BaseProductPeer {
 			return false;
 		}
 		
-		return true;
+		return true;
+
 	}	
 
 }

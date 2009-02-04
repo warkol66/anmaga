@@ -4,12 +4,11 @@
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersWelcome">Ir al Inicio</a></td>
   </tr>
   <tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=importRequestList">Importaciones</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=importProductsList">Importaciones</a></td>
   </tr>
 |-if $module|upper eq "IMPORT"-|
 	<tr> 
     <td class="menuCell"><div class="menuSection">
-		<a class="menuSubButton" href="Main.php?do=importRequestList">Administrar Ordenes de Pedido</a>
 		|- if $loginUser->isAdmin()-|		
 		<a class="menuSubButton" href="Main.php?do=importProductsList">Administrar Productos</a>
 		<a class="menuSubButton" href="Main.php?do=importIncotermsList">Administrar Incoterms</a>

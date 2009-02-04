@@ -43,26 +43,28 @@ class ImportProductsDoEditAction extends BaseAction {
 		}
 
 		$module = "Import";
-		$smarty->assign('module',$module);
+		$smarty->assign('module',$module);
+
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un product existente
 
-			if ( ProductPeer::update($_POST["id"],$_POST["code"],$_POST["name"],$_POST["description"],$_POST["supplierId"]) )
+			if ( ProductPeer::update($_POST["product"],$_POST['productSupplier']) )
       			return $mapping->findForwardConfig('success');
 
 		}
 		else {
 		  //estoy creando un nuevo product
 
-			if ( !ProductPeer::create($_POST["code"],$_POST["name"],$_POST["description"],$_POST["supplierId"]) ) {
+			if ( !ProductPeer::create($_POST["product"],$_POST['productSupplier']) ) {
 				$product = new Product();
-			$product->setid($_POST["id"]);
-						$product->setcode($_POST["code"]);
-						$product->setname($_POST["name"]);
-						$product->setdescription($_POST["description"]);
-						$product->setsupplierId($_POST["supplierId"]);
-						$product->setactive($_POST["active"]);
-							$smarty->assign("product",$product);	
+				$product->setid($_POST["id"]);
+				$product->setcode($_POST['product']["code"]);
+				$product->setname($_POST['product']["name"]);
+				$product->setnamespanish($_POST['product']["nameSpanish"]);
+				$product->setdescription($_POST['product']["description"]);
+				$product->setdescriptionSpanish($_POST['product']["descriptionSpanish"]);
+				$product->setactive($_POST['product']["active"]);
+				$smarty->assign("product",$product);	
 				$smarty->assign("action","create");
 				$smarty->assign("message","error");
 				$suppliers = SupplierPeer::getAll();		

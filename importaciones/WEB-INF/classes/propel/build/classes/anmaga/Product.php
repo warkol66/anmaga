@@ -28,5 +28,53 @@ class Product extends BaseProduct {
 		$this->setactive('0');
 		$this->save();
 	}
+	
+	private function getProductSupplier() {
+		
+		require_once('ProductSupplierPeer.php');
+		
+		$criteria = new Criteria();
+		$criteria->add(ProductSupplierPeer::PRODUCTID,$this->getId());
+		$result = ProductSupplierPeer::doSelect($criteria);
+		return $result[0];
+		
+	}
+	
+	public function getSupplier() {
+
+		$relationship = $this->getProductSupplier();
+
+		if (empty($relationship)) {
+			return false;
+		}
+
+		$supplier = $relationship->getSupplier();
+				
+		return $supplier;
+	}
+	
+	public function getSupplierId() {
+		$supplier = $this->getSupplier();
+		
+		if (empty($supplier)) {
+			return false;
+		}
+		
+		return $supplier->getId();
+	}
+	
+	public function getSupplierProductCode() {
+
+		$relationship = $this->getProductSupplier();
+
+		if (empty($relationship)) {
+			return false;
+		}
+
+		$code = $relationship->getCode();
+	
+		return $code;
+		
+	}
 
 } // Product
