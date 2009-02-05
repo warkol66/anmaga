@@ -2,13 +2,11 @@
 //Archivo de configuracion de directorio de phpmvc
 
 //Directorio donde se encuentra phpmvc
-$appServerRootDir	= "/Users/ak/Work/Proyects/externals/phpMVC/";
-
+$appServerRootDir	= "/home/anmagaex/public_html/externals/phpMVC";
 //Directorio donde se encuentra la aplicacion (sin barra al final)
-$moduleRootDir = "/Users/ak/Work/Proyects/importaciones/WEB-INF";
-
+$moduleRootDir = "/home/anmagaex/public_html/WEB-INF";
 //Directorio donde se encuentra PEAR
-$pearDir = "/usr/share/php";
+$pearDir = "";
 
 //Sistema operativo [UNIX|WINDOWS|MAC]
 $osType = "UNIX";

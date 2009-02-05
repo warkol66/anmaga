@@ -5,7 +5,7 @@ return array (
   'log' => 
   array (
     'type' => 'file',
-    'name' => 'c:\\work\\anmaga\\propel.log',
+    'name' => 'propel.log',
     'ident' => 'anmaga',
     'level' => '1',
   ),
@@ -20,9 +20,9 @@ return array (
         array (
           'phptype' => 'mysql',
           'hostspec' => 'localhost',
-          'database' => 'importaciones',
-          'username' => 'root',
-          'password' => 'termal',
+          'database' => 'anmagaex_export',
+          'username' => 'anmagaex_anmaga',
+          'password' => 'Anmaga',
         ),
       ),
       'mluse' => 
@@ -32,9 +32,9 @@ return array (
         array (
           'phptype' => 'mysql',
           'hostspec' => 'localhost',
-          'database' => 'importaciones',
-          'username' => 'root',
-          'password' => 'termal',
+          'database' => 'anmagaex_export',
+          'username' => 'anmagaex_anmaga',
+          'password' => 'Anmaga',
         ),
       ),
       'default' => 'anmaga',
