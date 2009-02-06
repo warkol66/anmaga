@@ -1,7 +1,18 @@
 /* CSS Document */
-#leftcolumn li a:hover { 
-	width:150px; 
+
+#leftColumn li a { 
+	width:135px; /* 150px ORIGINAL */
 }
-#rightcolumn { 
-	width: 790px;  /*   760px ORIGINAL */
+#leftColumn li a:hover { 
+	width:135px; /* 150px ORIGINAL */
+}
+#rightColumn { 
+	width: 760px;  /*   760px ORIGINAL */
+}
+#rssSearchBox {
+	margin-top: 2px;
+	line-height: 20px;
+}
+fieldset {
+	margin-bottom: 3.5em; /*    2em ORIGINAL */
 }

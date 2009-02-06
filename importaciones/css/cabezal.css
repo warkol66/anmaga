@@ -1,8 +1,0 @@
-/* Estilo Cabezal */
-.cabezal {
-	background-image: url(../images/cabezal.png);
-	background-repeat: no-repeat;
-	background-position: center;
-	height: 58px;
-	border-bottom: solid #00008B thin;
-}
