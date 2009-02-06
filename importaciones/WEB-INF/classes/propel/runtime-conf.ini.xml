@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<config>
+ <log>
+  <type>file</type>
+  <name>propel.log</name>
+  <ident>application</ident>
+  <level>6</level>
+ </log>
+ <propel>
+  <datasources default="application">
+   <datasource id="application">
+    <!-- the Propel adapter (usually same as phptype of connection DSN) -->
+    <adapter>mysql</adapter>
+    <connection>
+     <dsn>mysql:host=localhost; dbname=anmagaex_export</dsn>
+     <user>anmagaex_anmaga</user>
+     <password>Anmaga</password>
+    </connection>
+   </datasource>
+  </datasources>
+ </propel>
+</config>

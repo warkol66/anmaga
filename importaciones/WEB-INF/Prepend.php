@@ -15,12 +15,10 @@
   include_once 'PropertyMessageResources.php';
 
 require_once 'propel/Propel.php';
-ini_set("include_path",ini_get("include_path").PATH_SEPARATOR.dirname(__FILE__)."/classes/propel/build/classes/");
-ini_set("include_path",ini_get("include_path").PATH_SEPARATOR.dirname(__FILE__)."/classes/propel/build/classes/anmaga");
-ini_set("include_path",ini_get("include_path").PATH_SEPARATOR.dirname(__FILE__)."/classes/ml/build/classes/");
-Propel::init("$moduleRootDir/config/anmaga-conf.php");
+Propel::init("$moduleRootDir/config/application-conf.php");
 require_once("UserPeer.php");
 require_once("AffiliateUserPeer.php");
-require_once("UserByRegistrationPeer.php");
 
-?>
+//ponemos el server en GMT-0
+putenv('TZ=UTC');
+

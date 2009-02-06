@@ -1,59 +1,39 @@
 |-if $loginUser neq ""-|
-<table width="150" border="0" cellpadding="0" cellspacing="0" class="menuCell">
-  <tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersWelcome">Ir al Inicio</a></td>
-  </tr>
-  <tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=importProductsList">Importaciones</a></td>
-  </tr>
-|-if $module|upper eq "IMPORT"-|
-	<tr> 
-    <td class="menuCell"><div class="menuSection">
+	<ul>
+		<li class="menuLink"><a href="Main.php?do=usersWelcome">Ir al Inicio</a></li>
+	</ul>
+	<ul>
+		<li class="titleMenu"><a href="javascript:switch_vis('importMenu');" class="linkSwitchMenu">Importaciones</a></li>
+	</ul>
+		<div id="importMenu" style="display:|-if $module|lower eq 'import'-|block|-else-|none|-/if-|;">
+			<ul>
+				<li class="menuLink"><a href="Main.php?do=importProductsList">Importaciones</a></li>
 		|- if $loginUser->isAdmin()-|		
-		<a class="menuSubButton" href="Main.php?do=importProductsList">Administrar Productos</a>
-		<a class="menuSubButton" href="Main.php?do=importIncotermsList">Administrar Incoterms</a>
-		<a class="menuSubButton" href="Main.php?do=importPortsList">Administrar Puertos</a>
-		<a class="menuSubButton" href="Main.php?do=importSuppliersList">Administrar Suppliers</a></div>
+				<li class="menuLink"><a href="Main.php?do=importProductsList">Administrar Productos</a></li>
+				<li class="menuLink"><a href="Main.php?do=importIncotermsList">Administrar Incoterms</a></li>
+				<li class="menuLink"><a href="Main.php?do=importPortsList">Administrar Puertos</a></li>
+				<li class="menuLink"><a href="Main.php?do=importSuppliersList">Administrar Suppliers</a></li>
 		|-/if-|
-	</td>
-  </tr>
-|-/if-|
+			</ul>
+		</div>
 |- if $loginUser->isAdmin()-|		
-  <tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesList">Distribuidores / Mayoristas</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesBranchsList">Sucursales de Distribuidores / Mayoristas</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersList">Usuarios de Distribuidores / Mayoristas</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=configView">Configuración</a></td>
-  </tr>
-|-if $module|upper eq "CONFIG"-|
-	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=configSet">Cambiar Configuración</a>
-		<a class="menuSubButton" href="Main.php?do=configEdit">Editar Configuración</a></div></td>
-  </tr>
+	<ul>
+		<li class="titleMenu"><a href="javascript:switch_vis('adminMenu');" class="linkSwitchMenu">Administración</a></li>
+	</ul>
+		<div id="adminMenu" style="display:|-if $module|lower eq 'users' || $module|lower eq 'security' || $module|lower eq 'backups' || $module|lower eq 'registration' || $module|lower eq 'categories'-|block|-else-|none|-/if-|;">
+			<ul>
+				<li class="menuLink"><a href="Main.php?do=usersList">Usuarios</a></li>
+				<li class="menuLink"><a href="Main.php?do=usersGroupsList">Grupos de Usuarios</a></li>
+				<li class="menuLink"><a href="Main.php?do=usersLevelsList">Niveles Usuarios</a></li>
+				<li class="menuLink"><a href="Main.php?do=categoriesList">Categorías</a></li>
+				<li class="menuLink"><a href="Main.php?do=securityActionUsersList">Permisos de usuarios</a></li>
+				<li class="menuLink"><a href="Main.php?do=securityModuleList">Permisos de módulos</a></li>
+				<li class="menuLink"><a href="Main.php?do=backupList">Respaldos</a></li>
+
+			</ul>
+		</div>
 |-/if-|
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersList">Administración de Usuarios</a></td>
-  </tr>
-|-if $module|upper eq "USERS"-|
-	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=usersLevelsList">Administrar Niveles de Usuario</a>
-		<a class="menuSubButton" href="Main.php?do=usersGroupsList">Administrar Grupos de Usuarios</a></div>
-	</td>
-  </tr>
-|-/if-|	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=modulesList">Administrar módulos</a></td>
-  </tr>
-|-/if-|
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
-  </tr>
-</table>
+<a href="Main.php?do=usersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")' id="logout"></a>
 |-/if-|
 |-if $loginAffiliateUser neq ""-|
 <table width="150" border="0" cellpadding="0" cellspacing="0" class="menuCell">
@@ -76,8 +56,5 @@
   </tr>
 |-/if-|
 
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
-  </tr>
-</table>
+	<a href="Main.php?do=usersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")' id="logout"></a>
 |-/if-|
