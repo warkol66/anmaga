@@ -1,5 +1,5 @@
 <script type="text/javascript" language="javascript" src="scripts/login.js"></script>
- <form method='post' action="Main.php"> 
+ <form method='post' action="Main.php?do=usersDoLogin"> 
 	<!-- Begin Login --> 
 	<div id="login"> 
 		 <!-- Begin LoginTop --> 
@@ -20,27 +20,22 @@
 			<p>Tipo de Usuario
 				 <select name="select"> 
 					<option value="admin" |-if $cookieSelection eq 'admin'-|selected="selected"|-/if-| onClick="javascript:changeActionToAdminLogin(this.form)">Administrador&nbsp;&nbsp;&nbsp;</option> 
-					<option value="dependency" |-if $cookieSelection eq 'dependency'-|selected="selected"|-/if-| onClick="javascript:changeActionToDependecy(this.form)">Dependencia&nbsp;&nbsp;&nbsp;</option> 
+					<option value="dependency" |-if $cookieSelection eq 'dependency'-|selected="selected"|-/if-| onClick="javascript:changeActionToAffiliate(this.form)">Cliente&nbsp;&nbsp;&nbsp;</option> 
 				</select> 
 			 </p> 
 			|-/if-|
 			|-/if-|
 			<p></p> 
 			<h1>Usuario</h1> 
-			<p><input type='text' name='loginUsername' size='35' class="inputLogin"/> 
+			<p><input type='text' name='username' size='35' class="inputLogin"/> 
 			 </p> 
 			<h1>Contraseña</h1> 
-			<p><input type='password' name='loginPassword' size='20' class="inputLogin" /> 
+			<p><input type='password' name='password' size='20' class="inputLogin" /> 
 			 </p> 
 		</div> 
 		 <!-- End LoginContent --> 
 		 <!-- Begin LoginBottom --> 
 		 <div id="loginBottom"> 
-			|-if $unifiedLogin neq ''-|
-				<input type="hidden" name="do" value="|-if $cookieSelection eq 'dependency'-|affiliatesUsersDoLogin|-else-|usersDoLogin|-/if-|" id="usersLoginFormDo"/>
-			|-else-|
-				<input type="hidden" name="do" value="usersDoLogin" id="usersLoginFormDo"/>
-			|-/if-|
 			<input type='submit' value='Ingresar' id="loginButton" /> 
 		</div> 
 		 <!-- End LoginBottom --> 

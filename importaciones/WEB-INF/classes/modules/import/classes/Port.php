@@ -24,7 +24,7 @@ class Port extends BasePort {
 	 * Redefinimos delete para evitar que se haga borrado real cuando 
 	 * se elimina desde el objeto. sin usar la clase peer.
 	 */
-	function delete ($con = null) {
+	function delete (PropelPDO $con = null) {
 		$this->setactive('0');
 		$this->save();
 	}

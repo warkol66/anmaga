@@ -112,7 +112,7 @@ class AffiliatesDoAddAffiliateAction extends BaseAction {
 			$smarty->assign("message","error");
 			return $mapping->findForwardConfig('failure');			
 		}	
-					
+			
 		return $mapping->findForwardConfig('success');
 	}
 

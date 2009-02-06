@@ -2,7 +2,6 @@
 
 require 'actionLogs/classes/om/BaseActionLog.php';
 
-
 /**
  * Skeleton subclass for representing a row from the 'actionLogs_log' table.
  *

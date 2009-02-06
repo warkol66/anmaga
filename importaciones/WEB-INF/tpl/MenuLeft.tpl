@@ -29,6 +29,7 @@
 				<li class="menuLink"><a href="Main.php?do=securityActionUsersList">Permisos de usuarios</a></li>
 				<li class="menuLink"><a href="Main.php?do=securityModuleList">Permisos de módulos</a></li>
 				<li class="menuLink"><a href="Main.php?do=backupList">Respaldos</a></li>
+				<li class="menuLink"><a href="Main.php?do=affiliatesList">Clientes</a></li>
 
 			</ul>
 		</div>
