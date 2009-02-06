@@ -9,6 +9,28 @@ class AffiliatesUsersDoEditUserAction extends BaseAction {
 		;
 	}
 
+	function assignObjects($smarty) {
+		if (empty($_POST["id"]))
+			$smarty->assign("currentAffiliateUser",AffiliateUserPeer::getFromArray($_POST["affiliateUser"]));
+		else
+			$smarty->assign("currentAffiliateUser",AffiliateUserPeer::get($_POST["id"]));
+		$smarty->assign("currentAffiliateUserInfo",AffiliateUserInfoPeer::getFromArray($_POST["affiliateUserInfo"]));
+		$timezonePeer = new TimezonePeer();
+		$smarty->assign('timezones',$timezonePeer->getAll());	
+		$levels = AffiliateLevelPeer::getAll();
+		$smarty->assign("levels",$levels);	
+
+		if (!empty($_SESSION["loginUser"])) {
+			$affiliates = AffiliatePeer::getAll();
+			$smarty->assign("affiliates",$affiliates);
+		}	
+
+		if (empty($_POST["id"]))
+			$smarty->assign("accion","creacion");					
+		else
+			$smarty->assign("accion","edicion");
+	}
+
 
 	/**
 	* execute
@@ -46,43 +68,50 @@ class AffiliatesUsersDoEditUserAction extends BaseAction {
 
 		$module = "Affiliates";
 		$smarty->assign("module",$module);
+		
+		$usersPeer= new AffiliateUserPeer();
+		
+		$affiliateUserParams = $_POST["affiliateUser"];
+		$affiliateUserInfoParams = $_POST["affiliateUserInfo"];		
 
-    $userPeer = new AffiliateUserPeer();
-    
 		if ( !empty($_SESSION["loginUser"]) )
 			$affiliateId = $_POST["affiliateId"];
 		else
 			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
 
-		if ( $_POST["accion"] == "edicion" ) {
-			//estoy editando un usuario existente
+		$smarty->assign("affiliateId",$affiliateId);
 
-			if ( $_POST["pass"] == $_POST["pass2"] ) {
+		if ( empty($affiliateId) ) {
+			$this->assignObjects($smarty);
+			$smarty->assign("message","emptyAffiliate");			
+			return $mapping->findForwardConfig('failure');
+		}	
 
-				$userPeer->update($_POST["id"],$affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"],$_POST["name"],$_POST["surname"],$_POST["mailAddress"]);
- 	    	return $mapping->findForwardConfig('success');
-			}
-			else {
-				header("Location: Main.php?do=usersByAffiliateList&user=".$_POST["id"]."&message=wrongPassword");
-				exit;
-			}
+		if ( empty($affiliateUserParams["username"]) ) {
+			$this->assignObjects($smarty);
+			$smarty->assign("message","emptyUsername");			
+			return $mapping->findForwardConfig('failure');
+		}	
 
+		if ( ( empty($_POST["id"]) && empty($affiliateUserParams["password"]) ) || ($affiliateUserParams["password"] != $affiliateUserParams["pass2"]) ) {
+			$this->assignObjects($smarty);
+			$smarty->assign("message","wrongPassword");
+			return $mapping->findForwardConfig('failure');
 		}
-		else {
-		  //estoy creando un nuevo usuario
-		  
-			if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {
-
-				$userPeer->create($affiliateId,$_POST["username"],$_POST["pass"],$_POST["levelId"],$_POST["name"],$_POST["surname"],$_POST["mailAddress"]);
-				return $mapping->findForwardConfig('success');
-			}
-			else {
-				header("Location: Main.php?do=usersList&user=&message=wrongPassword");
-				exit;
-			}
-		}
+		
+		if (empty($_POST["id"]))
+			AffiliateUserPeer::create($affiliateId,$affiliateUserParams["username"],$affiliateUserParams["password"],$affiliateUserParams["levelId"],$affiliateUserInfoParams["name"],$affiliateUserInfoParams["surname"],$affiliateUserInfoParams["mailAddress"],$affiliateUserParams["timezone"]);
+		else
+			AffiliateUserPeer::update($_POST["id"],$affiliateId,$affiliateUserParams["username"],$affiliateUserParams["password"],$affiliateUserParams["levelId"],$affiliateUserInfoParams["name"],$affiliateUserInfoParams["surname"],$affiliateUserInfoParams["mailAddress"],$affiliateUserParams["timezone"]);
+		
+		$myRedirectConfig = $mapping->findForwardConfig('success');
+		$myRedirectPath = $myRedirectConfig->getpath();
+		$myReqQueryString = "&affiliateId=".$affiliateId;
+		$myReqQueryString = htmlentities(urlencode($myReqQueryString));
+		$myRedirectPath .= $myReqQueryString;
+		$fc = new ForwardConfig($myRedirectPath, True);
+		return $fc;		
 
 	}
 
 }
-?>

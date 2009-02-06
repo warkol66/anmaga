@@ -47,10 +47,14 @@ class UsersGroupsDoDeleteAction extends BaseAction {
 
     $groupPeer = new GroupPeer();
 
-    if ( $groupPeer->delete($_GET["group"]) )
+	    if ( $groupPeer->delete($_GET["group"]) ) {
+			Common::doLog('success','groupId: ' . $_GET["group"]);
 			return $mapping->findForwardConfig('success');
-		else
+		}		
+		else {
+			Common::doLog('failure','groupId: ' . $_GET["group"]);
 			return $mapping->findForwardConfig('failure');
+		}
 
 	}
 

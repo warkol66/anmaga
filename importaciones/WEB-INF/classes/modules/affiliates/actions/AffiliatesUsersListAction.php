@@ -6,6 +6,7 @@ require_once("AffiliateUserInfo.php");
 require_once("AffiliateGroupPeer.php");
 require_once("AffiliateLevelPeer.php");
 require_once("AffiliatePeer.php");
+require_once("TimezonePeer.php");
 
 class AffiliatesUsersListAction extends BaseAction {
 
@@ -50,11 +51,13 @@ class AffiliatesUsersListAction extends BaseAction {
 		$module = "Affiliates";
 		$section = "";
 
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+		$timezonePeer = new TimezonePeer();
+		$smarty->assign('timezones',$timezonePeer->getAll());
 
-		$usersPeer = new AffiliateUserPeer();
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
+		$usersPeer = new AffiliateUserPeer();
 		//Si esta logueado un usuario comun
 		if (!empty($_SESSION["loginUser"])) {
 			$affiliateId = $_GET["affiliateId"];
@@ -100,7 +103,8 @@ class AffiliatesUsersListAction extends BaseAction {
 				$smarty->assign("groups",$groups);
 				$levels = AffiliateLevelPeer::getAll();
 				$smarty->assign("levels",$levels);
-	    	$smarty->assign("accion","edicion");
+	    		$smarty->assign("accion","edicion");
+				$smarty->assign("affiliateId",$user->getAffiliateId());
 	  	}
 			catch (PropelException $e) {
       	$smarty->assign("accion","creacion");
@@ -112,12 +116,16 @@ class AffiliatesUsersListAction extends BaseAction {
 			$levels = AffiliateLevelPeer::getAll();
 			$smarty->assign("levels",$levels);
 
+			$smarty->assign("currentAffiliateUser",new AffiliateUser());
+			$smarty->assign("currentAffiliateUserInfo",new AffiliateUserInfo());
+
 			$smarty->assign("accion","creacion");
 		}
 
 		$smarty->assign("users",$users);
 		$smarty->assign("affId",$affiliateId);
 		$smarty->assign("message",$_GET["message"]);
+		$smarty->assign("showList",true);
 
 		return $mapping->findForwardConfig('success');
 	}

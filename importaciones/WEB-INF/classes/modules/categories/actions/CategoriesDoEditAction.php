@@ -46,29 +46,33 @@ class CategoriesDoEditAction extends BaseAction {
 		$module = "Categories";
 		$section = "Configure";
 		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+	    $smarty->assign("module",$module);
+	    $smarty->assign("section",$section);
 
-    $categoryPeer = new CategoryPeer();
+	    $categoryPeer = new CategoryPeer();
 
 		if ( $_POST["accion"] == "edicion" ) {
 			//estoy editando un category existente
 
-			if ( $categoryPeer->update($_POST["id"],$_POST["name"],$_POST["hierarchyActors"]) )
-      	return $mapping->findForwardConfig('success');
-      else
-      	return $mapping->findForwardConfig('success');
+			if ($categoryPeer->update($_POST["id"],$_POST["name"],$_POST["module"],$_POST['parentId']))
+				$myRedirectConfig = $mapping->findForwardConfig('success');
+			else
+				$myRedirectConfig = $mapping->findForwardConfig('failure');
+
+			$myRedirectPath = $myRedirectConfig->getpath();
+			$myRedirectPath .= '&module=' . $_POST['module'];
+			$fc = new ForwardConfig($myRedirectPath, True);
+			return $fc;
 
 		}
 		else {
 		  //estoy creando un nuevo category
 
-			$categoryId = $categoryPeer->create($_POST["name"]);
+			$categoryId = $categoryPeer->create($_POST["name"],$_POST['module'],$_POST['parentId']);
 			//le asigno permisos a la categoria creada a todos los grupos al cual pertenece el usuario
 			$user = getLoginUser();
-			$user->setGroupsToCategory($categoryId);
-
 			return $mapping->findForwardConfig('success');
+	
 		}
 
 	}

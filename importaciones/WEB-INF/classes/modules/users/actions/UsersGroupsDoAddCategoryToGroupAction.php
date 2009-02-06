@@ -48,11 +48,14 @@ class UsersGroupsDoAddCategoryToGroupAction extends BaseAction {
 
     if ( !empty($_POST["group"]) && !empty($_POST["category"]) ) {
 			if ( $groupPeer->addCategoryToGroup($_POST["category"],$_POST["group"]) ) {
+
+				Common::doLog('success','category: ' . $_POST["category"] . ' group: ' . $_POST["group"]);
 				header("Location: Main.php?do=usersGroupsList&group=".$_POST["group"]);
 				exit;
 		 }
 		}
 
+		Common::doLog('failure','category: ' . $_POST["category"] . ' group: ' . $_POST["group"]);
 		header("Location: Main.php?do=usersGroupsList&group=".$_POST["group"]."&message=notAddedToGroup");
 		exit;
 

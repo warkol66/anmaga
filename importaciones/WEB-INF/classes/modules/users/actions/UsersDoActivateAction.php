@@ -44,12 +44,16 @@ class UsersDoActivateAction extends BaseAction {
 
 		$module = "Users";
 
-    $userPeer = new UserPeer();
+		$userPeer = new UserPeer();
 
-    if ( $userPeer->activate($_GET["user"]) )
+		if ( $userPeer->activate($_GET["user"]) ) {
+			Common::doLog('success','userId: ' . $_GET["user"]);
 			return $mapping->findForwardConfig('success');
-		else
-			return $mapping->findForwardConfig('failure');		
+		}
+		else {
+			Common::doLog('failure','userId: ' . $_GET["user"]);
+			return $mapping->findForwardConfig('failure');
+		}
 
 	}
 

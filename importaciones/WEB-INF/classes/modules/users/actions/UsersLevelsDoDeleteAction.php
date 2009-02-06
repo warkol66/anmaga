@@ -49,10 +49,14 @@ class UsersLevelsDoDeleteAction extends BaseAction {
     $smarty->assign("section",$section);
 
 
-    if ( LevelPeer::delete($_GET["level"]) )
+	    if ( LevelPeer::delete($_GET["level"]) ) {
+			Common::doLog('success','levelId: ' . $_GET["level"]);
 			return $mapping->findForwardConfig('success');
-		else
+		}
+		else {
+			Common::doLog('failure','levelId: ' . $_GET["level"]);
 			return $mapping->findForwardConfig('failure');
+		}
 	}
 
 }

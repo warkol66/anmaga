@@ -9,6 +9,12 @@ class AffiliatesUsersDoAddUserAction extends BaseAction {
 		;
 	}
 
+	function assignObjects($smarty) {
+		$smarty->assign("currentAffiliateUser",AffiliateUserPeer::getFromArray($_POST["affiliateUser"]));
+		$smarty->assign("currentAffiliateUserInfo",AffiliateUserInfoPeer::getFromArray($_POST["affiliateUserInfo"]));
+		$timezonePeer = new TimezonePeer();
+		$smarty->assign('timezones',$timezonePeer->getAll());		
+	}
 
 	/**
 	* execute
@@ -47,29 +53,38 @@ class AffiliatesUsersDoAddUserAction extends BaseAction {
 		$module = "Affiliates";
 		$smarty->assign("module",$module);
 
-
 		$usersPeer= new AffiliateUserPeer();
+		
+		$affiliateUserParams = $_POST["affiliateUser"];
+		$affiliateUserInfoParams = $_POST["affiliateUserInfo"];		
 
 		if ( !empty($_SESSION["loginUser"]) )
 			$affiliateId = $_POST["affiliateId"];
 		else
 			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
 
-		if($_POST["password"]!=$_POST["passwordCompare"]){
-			header("Location: Main.php?do=usersByAffiliateAddUser&errormessage=wrongPasswordComparison&id=".$affiliateId);
-			exit;
+		if ( empty($affiliateUserParams["username"]) ) {
+			$this->assignObjects($smarty);
+			$smarty->assign("message","emptyUsername");			
+			return $mapping->findForwardConfig('failure');
+		}	
+
+		if ( empty($affiliateUserParams["password"]) || ($affiliateUserParams["password"] != $affiliateUserParams["pass2"]) ) {
+			$this->assignObjects($smarty);
+			$smarty->assign("message","wrongPassword");
+			return $mapping->findForwardConfig('failure');
 		}
 
-		$user = $usersPeer->insert($affiliateId,$_POST["username"],$_POST["password"],$_POST["levelId"]);
-
+		AffiliateUserPeer::create($affiliateId,$paramsUser["username"],$paramsUser["pass"],1,$paramsUserInfo["name"],$paramsUserInfo["surname"],$paramsUserInfo["mailAddress"],$paramsUser["timezone"]);
+		
 		$myRedirectConfig = $mapping->findForwardConfig('success');
 		$myRedirectPath = $myRedirectConfig->getpath();
-    $myReqQueryString = "&affiliateId=".$affiliateId;
-    $myReqQueryString = htmlentities(urlencode($myReqQueryString));
-    $myRedirectPath .= $myReqQueryString;
+		$myReqQueryString = "&affiliateId=".$affiliateId;
+		$myReqQueryString = htmlentities(urlencode($myReqQueryString));
+		$myRedirectPath .= $myReqQueryString;
 		$fc = new ForwardConfig($myRedirectPath, True);
 		return $fc;
 	}
 
 }
-?>
+

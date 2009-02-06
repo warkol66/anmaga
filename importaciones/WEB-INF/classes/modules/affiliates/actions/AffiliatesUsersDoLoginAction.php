@@ -44,30 +44,35 @@ class AffiliatesUsersDoLoginAction extends BaseAction {
 
 		$module = "Affiliates";
 
+		if (Common::hasUnifiedLogin()) {
+			$smarty->assign("unifiedLogin",true);
+			Common::setValueUnifiedLoginCookie($_POST['select']);			
+		}
+
 		if ( !empty($_POST["username"]) && !empty($_POST["password"]) ) {;
 			$user = AffiliateUserPeer::auth($_POST["username"],$_POST["password"]);
 			if ( !empty($user) ) {
-
 				$_SESSION["loginAffiliateUser"] = $user;
-
 				$smarty->assign("loginAffiliateUser",$user);
 				return $mapping->findForwardConfig('success');
 			}
+
 		}
 
 		$this->template->template = "TemplateLogin.tpl";
 		
-    $smarty->assign("message","wrongUser");
+		$smarty->assign("message","wrongUser");
 
-		global $system;
-		$unifiedLogin = $system["config"]["system"]["parameters"]["affiliateUserLoginUnified"]["value"];
-		
-		if ($unifiedLogin == "YES") {
-			$smarty->assign("unifiedLogin",true);
+
+		if (Common::hasUnifiedLogin()) {
+
+			//si hay unificado, obligamos a la opcion que se intento loguear
+			$smarty->assign('cookieSelection','dependency');
 			return $mapping->findForwardConfig('failure-unified');
 		}
-
+		
 		return $mapping->findForwardConfig('failure');
 	}
 
 }
+?>

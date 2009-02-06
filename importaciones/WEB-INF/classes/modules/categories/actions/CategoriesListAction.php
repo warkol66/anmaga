@@ -2,6 +2,7 @@
 
 require_once("BaseAction.php");
 require_once("CategoryPeer.php");
+require_once("ModulePeer.php");
 
 class CategoriesListAction extends BaseAction {
 
@@ -49,10 +50,23 @@ class CategoriesListAction extends BaseAction {
     $smarty->assign("section",$section);
 
     $user = $_SESSION["loginUser"];
-    $categories = $user->getCategories();
-
-    $smarty->assign("categories",$categories);
+	
+	//para mostrar la categoria general si no se pasa el parametro
+	if (empty($_GET['module']))
+		$_GET['module'] = '';
+		
+    $categories = $user->getCategoriesByModule($_GET['module']);
+    $smarty->assign("userCategories",$categories);
+	$parentCategories = $user->getParentCategoriesByModule($_GET['module']);
+	$smarty->assign("parentUserCategories",$parentCategories);
     
+	//categoria para select de modulos
+	$modules = ModulePeer::getAllWithCategories();
+	$smarty->assign('modules',$modules);
+	
+	$module = ModulePeer::get($_GET['module']);
+	$smarty->assign('selectedModule',$module);
+
     $smarty->assign("message",$_GET["message"]);
 
 		return $mapping->findForwardConfig('success');

@@ -4,8 +4,7 @@ require_once("BaseAction.php");
 require_once("UserPeer.php");
 require_once("GroupPeer.php");
 require_once("LevelPeer.php");
-require_once("SupplierPeer.php");
-require_once("SupplierUserPeer.php");
+require_once("TimezonePeer.php");
 
 class UsersListAction extends BaseAction {
 
@@ -49,9 +48,12 @@ class UsersListAction extends BaseAction {
 		$module = "Users";
 		$section = "Users";
 		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
+		//timezone
+		$timezonePeer = new TimezonePeer();
+		$smarty->assign("timezones",$timezonePeer->getAll());
 		$userPeer = new UserPeer();
 		$users = $userPeer->getAll();
 		$smarty->assign("users",$users);
@@ -65,6 +67,7 @@ class UsersListAction extends BaseAction {
 
 			try {
 				$user = $userPeer->get($_GET["user"]);
+				
 				$smarty->assign("currentUser",$user);
 				$groups = $userPeer->getGroupsByUser($_GET["user"]);
 				$smarty->assign("currentUserGroups",$groups);
@@ -73,20 +76,13 @@ class UsersListAction extends BaseAction {
 				$smarty->assign("groups",$groups);
 				$levels = LevelPeer::getAll();
 				$smarty->assign("levels",$levels);
-				if ($user->isSupplier()) {
-					$suppliers = SupplierPeer::getAll();
-					$smarty->assign("suppliers",$suppliers);
-					$userSupplier = SupplierUserPeer::getSupplierByUser($user->getId());
-					if ($userSupplier != false)					
-						$smarty->assign('userSupplier',$userSupplier);
-				}
-			    	$smarty->assign("accion","edicion");
-	  		}
-			catch (PropelException $e) {
-      	$smarty->assign("accion","creacion");
+	    	$smarty->assign("accion","edicion");
+	  	}
+		catch (PropelException $e) {
+			$smarty->assign("accion","creacion");
 			}
 		}
-		else if ( isset($_GET["user"]) ) {
+		else if ( isset($_GET["user"]) && empty($_GET["user"]) ) {
 			//voy a crear un usuario nuevo
 			
 			$levels = LevelPeer::getAll();

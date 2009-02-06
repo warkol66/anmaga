@@ -74,45 +74,20 @@ class AffiliatesEditAction extends BaseAction {
 		$module = "Affiliates";
 		$smarty->assign("module",$module);
 
+		$affiliatePeer = new AffiliatePeer();
+		$affiliateInfoPeer = new AffiliateInfoPeer();
 
-		$affiliatePeer= new AffiliatePeer();
+		$id = $request->getParameter("id");
 
-		$affiliateInfoPeer= new AffiliateInfoPeer();
-
-		$msg=$request->getParameter("message");
-		if(empty($msg)){
-			$msg="noError";
-		}
-		$smarty->assign("message",$msg);
-
-
-		$id=$request->getParameter("id");
-
-		$affiliate=$affiliatePeer->get($id);
-
-
-		$affInfo=$affiliateInfoPeer->get($id);
-		$smarty->assign("affiliateInfo",$affInfo);
-		// para que no tire error el tpl si affiliate info esta vacio o sea no tiene datos internos
-		if(empty($affInfo)){
-			$flag=1;
-			$smarty->assign("flag",$flag);
-		}
+		$affiliate = $affiliatePeer->get($id);
+		$affiliateInfo=$affiliateInfoPeer->get($id);
 		
-				
-		$editInfo=$_GET['editInfo'];
-
-		
-		$smarty->assign("editInfo",$editInfo);
-	
+		$smarty->assign("affiliateInfo",$affiliateInfo);
 		$smarty->assign("affiliate",$affiliate);
-
-
-
 
 		return $mapping->findForwardConfig('success');
 
 	}
 
 }
-?>
+

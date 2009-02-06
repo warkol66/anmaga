@@ -50,21 +50,15 @@ class AffiliatesViewAffiliateAction extends BaseAction {
 		$smarty->assign("module",$module);
 		$smarty->assign("section",$section);
 
-		$affiliateInfoPeer= new AffiliateInfoPeer();
-		$affiliatePeer= new AffiliatePeer();	
+		$affiliateInfoPeer = new AffiliateInfoPeer();
+		$affiliatePeer = new AffiliatePeer();	
 
-		$id=$_GET["id"];
+		$id = $_GET["id"];
 
-		$affInfo=$affiliateInfoPeer->get($id);
-		$affiliate=$affiliatePeer->get($id);
+		$affiliateInfo = $affiliateInfoPeer->get($id);
+		$affiliate = $affiliatePeer->get($id);
 		
-		// para que no tire error el tpl si affiliate info esta vacio o sea no tiene datos internos
-		if(empty($affInfo)){
-			$flag=1;
-			$smarty->assign("flag",$flag);
-		}
-		
-		$smarty->assign("affiliateInfo",$affInfo);
+		$smarty->assign("affiliateInfo",$affiliateInfo);
 
 		$smarty->assign("affiliate",$affiliate);
 

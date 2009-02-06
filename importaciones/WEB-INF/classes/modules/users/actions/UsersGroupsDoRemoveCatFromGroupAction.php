@@ -48,11 +48,14 @@ class UsersGroupsDoRemoveCatFromGroupAction extends BaseAction {
 
     if ( !empty($_GET["group"]) && !empty($_GET["category"]) ) {
 			if ( $groupPeer->removeCategoryFromGroup($_GET["category"],$_GET["group"]) ) {
+				
+				Common::doLog('success','category: ' . $_POST["category"] . ' group: ' . $_POST["group"]);
 				header("Location: Main.php?do=usersGroupsList&group=".$_GET["group"]);
 				exit;
 		 }
 		}
 
+		Common::doLog('failure','category: ' . $_POST["category"] . ' group: ' . $_POST["group"]);
 		header("Location: Main.php?do=usersGroupsList&group=".$_GET["group"]."&message=notRemovedFromGroup");
 		exit;
 

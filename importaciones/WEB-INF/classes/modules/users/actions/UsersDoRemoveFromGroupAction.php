@@ -48,11 +48,13 @@ class UsersDoRemoveFromGroupAction extends BaseAction {
 
     if ( !empty($_GET["group"]) && !empty($_GET["user"]) ) {
 			if ( $userPeer->removeUserFromGroup($_GET["user"],$_GET["group"]) ) {
+				Common::doLog('success','userId: ' . $_POST["user"] . ' group: ' . $_POST["group"]);
 				header("Location: Main.php?do=usersList&user=".$_GET["user"]);
 				exit;
 		 }
 		}
-
+		
+		Common::doLog('failure','userId: ' . $_POST["user"] . ' group: ' . $_POST["group"]);
 		header("Location: Main.php?do=usersList&user=".$_GET["user"]."&message=notRemovedFromGroup");
 		exit;
 

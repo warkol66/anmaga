@@ -45,6 +45,8 @@ class UsersLoginMaintenanceAction extends BaseAction {
 		}
 
 		$module = "Users";
+		
+		$smarty->assign("onlyAdmin",true);
 
 		return $mapping->findForwardConfig('success');
 	}

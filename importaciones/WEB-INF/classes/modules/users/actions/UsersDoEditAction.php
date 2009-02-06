@@ -51,8 +51,11 @@ class UsersDoEditAction extends BaseAction {
 
 			if ( $_POST["pass"] == $_POST["pass2"] ) {
 
-				if ( $userPeer->update($_POST["id"],$_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"]) )
-  	    	return $mapping->findForwardConfig('success');
+				if ( $userPeer->update($_POST["id"],$_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"],$_POST['timezone']) ) {
+					
+					Common::doLog('success','username: ' . $_POST["username"] . ' action: edit');
+  	    			return $mapping->findForwardConfig('success');
+  	    		}
 				else {
 					header("Location: Main.php?do=usersList&user=".$_POST["id"]."&message=errorUpdate");
 					exit;
@@ -69,22 +72,21 @@ class UsersDoEditAction extends BaseAction {
 		  
 			if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {
 
-				$user = $userPeer->create($_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"]);
-				
-				//caso especial de grupo de suppliers o proveedores
-				//verificamos si el level 
-				if ($user->isSupplier()) {
-					//lo agregamos al grupo de suppliers
-					$userPeer->addUserToSupplierGroup($user->getId());
+				if ($userPeer->create($_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"],$_POST['timezone'])) {
+					Common::doLog('success','username: ' . $_POST["username"] . ' action: creation');
+					return $mapping->findForwardConfig('success');
 				}
-				return $mapping->findForwardConfig('success');
+				else {
+					header("Location: Main.php?do=usersList&user=&message=errorUpdate");
+					exit;
+				}
 			}
 			else {
 				header("Location: Main.php?do=usersList&user=&message=wrongPassword");
 				exit;
 			}
 		}
-
+		Common::doLog('success','username: ' . $_POST["username"] . ' action: creation');
 		return $mapping->findForwardConfig('success');
 	}
 

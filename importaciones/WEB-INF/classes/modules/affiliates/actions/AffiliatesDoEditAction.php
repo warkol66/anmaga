@@ -1,40 +1,20 @@
 <?php
-/**
-* DocumentsDoEditAction
-*
-*  Action que genera un cambio de estado en la base de datos, le llegan datos de
-*  un documento y los actualiza  en dicha base de datos.
-* 
-* @author documentacion: Marcos Meli
-* @author Archivo: Marcos Meli
-* @package mer_documents
-*/
-
 
 require_once 'BaseAction.php';
 require_once("AffiliatePeer.php");
 
 
-/**
-* DocumentsDoEditAction
-*
-*  Esta clase hereda la clase BaseAction
-* 
-*/
-
 class AffiliatesDoEditAction extends BaseAction {
 
-
-	/**
-	* DocumentsDoEditAction
-	*
-	*  Constructor por defecto
-	*
-	*/
 
 	function AffiliatesDoEditAction() {
 		;
 	}
+	
+	function assignObjects($smarty) {
+		$smarty->assign("affiliate",AffiliatePeer::get($_POST["id"]));
+		$smarty->assign("affiliateInfo",AffiliateInfoPeer::getFromArray($_POST["affiliateInfo"]));
+	}	
 
 	/**
 	* execute
@@ -73,21 +53,23 @@ class AffiliatesDoEditAction extends BaseAction {
 		$module = "Affiliates";
 		$smarty->assign("module",$module);
 
-		$affiliatePeer = new AffiliatePeer();
+		$affiliateParams = $_POST["affiliate"];
+		$affiliateInfoParams = $_POST["affiliateInfo"];
 
+		if ( empty($affiliateParams["name"]) ) {
+			$this->assignObjects($smarty);
+			$smarty->assign("message","emptyAffiliateName");			
+			return $mapping->findForwardConfig('failure');
+		}
 		
-		
-		////////////		
-		// obtengo el documento seleccionado
-		$id= $_POST["id"];
-		$affiliate=$affiliatePeer->update($id,$_POST["name"]);
-
-
-
+		if (!AffiliatePeer::update($_POST["id"],$affiliateParams,$affiliateInfoParams)) {
+			$this->assignObjects($smarty);
+			$smarty->assign("message","error");
+			return $mapping->findForwardConfig('failure');			
+		}	
+					
 		return $mapping->findForwardConfig('success');
-		
-
 	}
 
 }
-?>
+

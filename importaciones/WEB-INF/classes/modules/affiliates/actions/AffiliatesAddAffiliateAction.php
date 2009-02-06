@@ -1,41 +1,20 @@
 <?php
 
 /**
-* DocumentsEditAction
+* AffiliatesAddAffiliateAction
 *
-* Action que permite ver los datos correspondientes de un documento que pueden modificarse
-*
-* @author documentacion: Marcos Meli
-* @author Archivo: Marcos Meli
-* @package mer_documents
+* Action para agregar un nuevo afiliado.
 */
 
 require_once 'BaseAction.php';
 require_once("AffiliatePeer.php");
 require_once("AffiliateInfoPeer.php");
 
-
-/**
-* DocumentsEditAction
-*
-*  Esta clase hereda la clase BaseAction
-* 
-*/
-
 class AffiliatesAddAffiliateAction extends BaseAction {
-
-
-	/**
-	* DocumentsEditAction
-	*
-	*  Constructor por defecto
-	*
-	*/
 
 	function AffiliatesAddAffiliateAction() {
 		;
 	}
-
 
 	/**
 	* execute
@@ -74,38 +53,16 @@ class AffiliatesAddAffiliateAction extends BaseAction {
 		$module = "Affiliates";
 		$smarty->assign("module",$module);
 
+		$timezonePeer = new TimezonePeer();
+		$smarty->assign('timezones',$timezonePeer->getAll());
 
-		$affiliatePeer= new AffiliatePeer();
-
-		$affiliateInfoPeer= new AffiliateInfoPeer();
-
-		$msg=$request->getParameter("message");
-		if(empty($msg)){
-			$msg="noError";
-		}
-		$smarty->assign("message",$msg);
-
-
-
-		$id=$request->getParameter("id");
-
-		$affiliate=$affiliatePeer->get($id);
-
-
-				
-		$flag=$_GET['flag'];
-
-		
-		$smarty->assign("flag",$flag);
-	
-		$smarty->assign("affiliate",$affiliate);
-
-
-
+		$smarty->assign("affiliate",new Affiliate());
+		$smarty->assign("affiliateInfo",new AffiliateInfo());
+		$smarty->assign("user",new AffiliateUser());
+		$smarty->assign("userInfo",new AffiliateUserInfo());
 
 		return $mapping->findForwardConfig('success');
 
 	}
 
 }
-?>

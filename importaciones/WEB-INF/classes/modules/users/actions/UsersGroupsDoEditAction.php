@@ -50,8 +50,10 @@ class UsersGroupsDoEditAction extends BaseAction {
 		if ( !empty($_POST["id"]) ) {
 			//estoy editando un grupo de usuarios existente
 
-			if ( $groupPeer->update($_POST["id"],$_POST["name"]) )
-  	   	return $mapping->findForwardConfig('success');
+			if ( $groupPeer->update($_POST["id"],$_POST["name"]) ) {
+				Common::doLog('success','userGroupId: ' . $_POST["id"] . ' newName: '. $_POST["name"] . 'action: edit');
+  	   			return $mapping->findForwardConfig('success');
+  	   		}
 			else {
 				header("Location: Main.php?do=usersGroupsList&group=".$_POST["id"]."&message=errorUpdate");
 				exit;
@@ -63,9 +65,11 @@ class UsersGroupsDoEditAction extends BaseAction {
 			if ( !empty($_POST["name"]) ) {
 
 				$groupPeer->create($_POST["name"]);
+				Common::doLog('success','Name: '. $_POST["name"] . 'action: create');
 				return $mapping->findForwardConfig('success');
 			}
 			else {
+				Common::doLog('blankName','');
 				return $mapping->findForwardConfig('blankName');
 			}
 		}

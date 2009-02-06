@@ -1,6 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
+require_once("TimezonePeer.php");
 
 class UsersWelcomeAction extends BaseAction {
 
@@ -42,7 +43,7 @@ class UsersWelcomeAction extends BaseAction {
 		}
 
 		$module = "Users";
-
+		
 		return $mapping->findForwardConfig('success');
 	}
 

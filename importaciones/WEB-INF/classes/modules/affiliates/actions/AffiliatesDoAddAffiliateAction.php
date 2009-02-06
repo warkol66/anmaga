@@ -37,6 +37,15 @@ class AffiliatesDoAddAffiliateAction extends BaseAction {
 	function AffiliatesDoAddAffiliateAction() {
 		;
 	}
+	
+	function assignObjects($smarty) {
+		$smarty->assign("affiliate",AffiliatePeer::getFromArray($_POST["affiliate"]));
+		$smarty->assign("affiliateInfo",AffiliateInfoPeer::getFromArray($_POST["affiliateInfo"]));
+		$smarty->assign("user",AffiliateUserPeer::getFromArray($_POST["affiliateUser"]));
+		$smarty->assign("userInfo",AffiliateUserInfoPeer::getFromArray($_POST["affiliateUserInfo"]));
+		$timezonePeer = new TimezonePeer();
+		$smarty->assign('timezones',$timezonePeer->getAll());		
+	}
 
 	/**
 	* execute
@@ -74,29 +83,38 @@ class AffiliatesDoAddAffiliateAction extends BaseAction {
 
 		$module = "Affiliates";
 		$smarty->assign("module",$module);
-	
+
+		$affiliateParams = $_POST["affiliate"];
+		$affiliateInfoParams = $_POST["affiliateInfo"];
+		$affiliateUserParams = $_POST["affiliateUser"];
+		$affiliateUserInfoParams = $_POST["affiliateUserInfo"];
+
+		if ( empty($affiliateParams["name"]) ) {
+			$this->assignObjects($smarty);
+			$smarty->assign("message","emptyAffiliateName");			
+			return $mapping->findForwardConfig('failure');
+		}
 		
-		$name=$_POST["name"];
+		if ( empty($affiliateUserParams["username"]) ) {
+			$this->assignObjects($smarty);
+			$smarty->assign("message","emptyUsername");			
+			return $mapping->findForwardConfig('failure');
+		}		
 
-		$id=AffiliatePeer::add($name);
-
-		AffiliateInfoPeer::add($id,$_POST["affiliateInternalNumber"],$_POST["address"],$_POST["phone"],$_POST["mail"],$_POST["contact"],$_POST["contactEmail"],$_POST["web"],$_POST["memo"]);
-				
-		if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {	
-			$user = AffiliateUserPeer::create($id,$_POST["username"],$_POST["pass"],1,$_POST["nameuser"],$_POST["surname"],$_POST["mailAddress"]);
-			$affiliate = AffiliatePeer::get($id);
-			$affiliate->setOwnerId($user->getId());
-			$affiliate->save();
-		}					
-					
-					
+		if ( empty($affiliateUserParams["password"]) || ($affiliateUserParams["password"] != $affiliateUserParams["pass2"]) ) {
+			$this->assignObjects($smarty);
+			$smarty->assign("message","wrongPassword");
+			return $mapping->findForwardConfig('failure');
+		}
+		
+		if (!AffiliatePeer::create($affiliateParams,$affiliateInfoParams,$affiliateUserParams,$affiliateUserInfoParams)) {
+			$this->assignObjects($smarty);
+			$smarty->assign("message","error");
+			return $mapping->findForwardConfig('failure');			
+		}	
 					
 		return $mapping->findForwardConfig('success');
-
-
-		
-
 	}
 
 }
-?>
+

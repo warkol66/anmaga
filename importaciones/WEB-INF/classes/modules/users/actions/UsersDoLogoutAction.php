@@ -43,12 +43,24 @@ class UsersDoLogoutAction extends BaseAction {
 
 		$module = "Users";
 
+		if (isset($_SESSION["login_user"])) {
+			$user = $_SESSION["login_user"];
+			$username = $user->getUsername();
+		}
+
+		if (isset($_SESSION["loginUser"])) {
+			$user = $_SESSION["loginUser"];	
+			$username = $user->getUsername();
+		}
+		
+
 		unset($_SESSION["login_user"]);
 
 		if($_SESSION["loginUser"]){
 			unset($_SESSION["loginUser"]);
 		}
-
+		
+		Common::doLog('success','username: ' . $username);
 		return $mapping->findForwardConfig('success');
 
 	}

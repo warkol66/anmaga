@@ -46,8 +46,8 @@ class UsersLoginAction extends BaseAction {
 
 		$module = "Users";
 		
-    $smarty->assign("message",$_GET["message"]);		
-
+    	$smarty->assign("message",$_GET["message"]);
+		
 		if (!empty($_SESSION["loginUser"]) || !empty($_SESSION["loginAffiliateUser"]) )
 			return $mapping->findForwardConfig('welcome');		
 
@@ -58,7 +58,9 @@ class UsersLoginAction extends BaseAction {
 			$smarty->assign("unifiedLogin",true);
 		}
 
+
 		return $mapping->findForwardConfig('success');
 	}
 
 }
+?>

@@ -35,6 +35,12 @@ class AffiliatesUsersLoginAction extends BaseAction {
 		
 		if ($unifiedLogin == "YES") {
 			$smarty->assign("unifiedLogin",true);
+		
+			$cookieName = $system["config"]["system"]["parameters"]['siteName'] . 'LoginOption';
+			if ($_COOKIE[$cookieName]) {
+				$smarty->assign('cookieSelection',$_COOKIE[$cookieName]);
+			}
+		
 			return $mapping->findForwardConfig('success-unified');
 		}
 
@@ -42,3 +48,4 @@ class AffiliatesUsersLoginAction extends BaseAction {
 	}
 
 }
+?>

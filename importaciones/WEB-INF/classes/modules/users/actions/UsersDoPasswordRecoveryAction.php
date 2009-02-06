@@ -64,14 +64,16 @@ class UsersDoPasswordRecoveryAction extends BaseAction {
 				$m->Subject("Nueva Contraseña");
 				$m->Body($body);
 				$m->Send();
-
+				
+				Common::doLog('success','username: ' . $_POST["username"] . ' Mail Address: ' . $_POST["mailAddress"]);
 				return $mapping->findForwardConfig('success');
 			}
 		}
 		
 		$this->template->template = "TemplateLogin.tpl";		
 
-    $smarty->assign("message","wrongUser");
+    	$smarty->assign("message","wrongUser");
+		Common::doLog('failure','username: ' . $_POST["username"] . ' Mail Address: ' . $_POST["mailAddress"]);
 		return $mapping->findForwardConfig('failure');
 	}
 

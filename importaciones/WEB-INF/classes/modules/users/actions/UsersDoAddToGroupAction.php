@@ -48,11 +48,13 @@ class UsersDoAddToGroupAction extends BaseAction {
 
     if ( !empty($_POST["group"]) && !empty($_POST["user"]) ) {
 			if ( $userPeer->addUserToGroup($_POST["user"],$_POST["group"]) ) {
+				Common::doLog('success','userId: ' . $_POST["user"] . ' group: ' . $_POST["group"]);
 				header("Location: Main.php?do=usersList&user=".$_POST["user"]);
 				exit;
 		 }
 		}
-		
+
+		Common::doLog('failure','userId: ' . $_POST["user"] . ' group: ' . $_POST["group"]);
 		header("Location: Main.php?do=usersList&user=".$_POST["user"]."&message=notAddedToGroup");
 		exit;
 

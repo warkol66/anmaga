@@ -44,7 +44,7 @@ class AffiliatesUsersDoLogoutAction extends BaseAction {
 		$module = "Affiliates";
 
 		unset($_SESSION["loginAffiliateUser"]);
-
+		
 		global $system;
 		$unifiedLogin = $system["config"]["system"]["parameters"]["affiliateUserLoginUnified"]["value"];
 		
@@ -53,8 +53,10 @@ class AffiliatesUsersDoLogoutAction extends BaseAction {
 			return $mapping->findForwardConfig('success-unified');
 		}
 
+
 		return $mapping->findForwardConfig('success');
 
 	}
 
 }
+?>
