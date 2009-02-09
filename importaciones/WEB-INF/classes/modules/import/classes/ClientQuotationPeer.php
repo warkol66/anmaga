@@ -23,6 +23,7 @@
  * @package    anmaga
  */
 class ClientQuotationPeer extends BaseClientQuotationPeer {
+	
 
   /**
   * Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
@@ -52,8 +53,11 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
             $clientquotationObj->$setMethod(null);
         }
       }
+
+	  $clientquotationObj->setCreatedAt(date("Y-m-d h:m:s"));
+	  $clientquotationObj->setStatus(ClientQuotation::STATUS_NEW);
       $clientquotationObj->save();
-      return true;
+      return $clientquotationObj;
     } catch (Exception $exp) {
       return false;
     }         
@@ -80,7 +84,7 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
         }
       }
       $clientquotationObj->save();
-      return true;
+      return $clientquotationObj;
     } catch (Exception $exp) {
       return false;
     }         
@@ -134,6 +138,27 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
       $page = 1;
     require_once("propel/util/PropelPager.php");
     $cond = new Criteria();     
+    $pager = new PropelPager($cond,"ClientQuotationPeer", "doSelect",$page,$perPage);
+    return $pager;
+   }    
+
+
+  /**
+  * Obtiene todos los client quotations paginados.
+  *
+  * @param int $page [optional] Numero de pagina actual
+  * @param int $perPage [optional] Cantidad de filas por pagina
+  *	@return array Informacion sobre todos los clientquotations
+  */
+  function getAllPaginatedByAffiliate($affiliate,$page=1,$perPage=-1) {
+	
+    if ($perPage == -1)
+      $perPage = 	ClientQuotationPeer::getRowsPerPage();
+    if (empty($page))
+      $page = 1;
+    require_once("propel/util/PropelPager.php");
+    $cond = new Criteria();
+	$cond->add(ClientQuotationPeer::USERID,$affiliate->getId());
     $pager = new PropelPager($cond,"ClientQuotationPeer", "doSelect",$page,$perPage);
     return $pager;
    }    

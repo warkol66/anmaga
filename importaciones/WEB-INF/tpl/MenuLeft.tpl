@@ -37,25 +37,20 @@
 <a href="Main.php?do=usersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")' id="logout"></a>
 |-/if-|
 |-if $loginAffiliateUser neq ""-|
-<table width="150" border="0" cellpadding="0" cellspacing="0" class="menuCell">
-  <tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersByaffiliateWelcome">Ir al Inicio</a></td>
-  </tr>
-	<tr>
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersList">Usuarios de Distribuidores / Mayoristas</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesBranchsList">Sucursales</a></td>
-  </tr>
-  <tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=importRequestList">Importaciones</a></td>
-  </tr>
-|-if $module|upper eq "IMPORT"-|
-	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=importRequestList">Ordenes de Pedido</a>
-	</td>
-  </tr>
-|-/if-|
+  	<ul>
+		<li class="menuLink"><a href="Main.php?do=affiliatesUsersWelcome">Ir al Inicio</a></li>
+		<li class="menuLink"><a href="Main.php?do=affiliatesUsersList">Usuarios de Distribuidores / Mayoristas</a></li>
+		<li class="menuLink"><a href="Main.php?do=affiliatesBranchsList">Sucursales</a></li>
+		<li class="menuLink"><a href="Main.php?do=importRequestList">Importaciones</a></li>
+	</ul>
+	<ul>
+		<li class="titleMenu"><a href="javascript:switch_vis('importAffiliateMenu');" class="linkSwitchMenu">Importaciones</a></li>
+  	</ul>
+	<div id="importAffiliateMenu">
+		<ul>
+			<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones</a></li>
+		</ul>
+	</div>
 
 	<a href="Main.php?do=usersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")' id="logout"></a>
 |-/if-|

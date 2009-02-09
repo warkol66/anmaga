@@ -104,6 +104,16 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent {
 	private $lastAffiliateUserGroupCriteria = null;
 
 	/**
+	 * @var        array ClientQuotation[] Collection to store aggregation of ClientQuotation objects.
+	 */
+	protected $collClientQuotations;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collClientQuotations.
+	 */
+	private $lastClientQuotationCriteria = null;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -747,6 +757,9 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent {
 			$this->collAffiliateUserGroups = null;
 			$this->lastAffiliateUserGroupCriteria = null;
 
+			$this->collClientQuotations = null;
+			$this->lastClientQuotationCriteria = null;
+
 		} // if (deep)
 	}
 
@@ -887,6 +900,14 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collClientQuotations !== null) {
+				foreach ($this->collClientQuotations as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 
 		}
@@ -984,6 +1005,14 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent {
 
 				if ($this->collAffiliateUserGroups !== null) {
 					foreach ($this->collAffiliateUserGroups as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collClientQuotations !== null) {
+					foreach ($this->collClientQuotations as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1102,6 +1131,12 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent {
 			foreach ($this->getAffiliateUserGroups() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addAffiliateUserGroup($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getClientQuotations() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addClientQuotation($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1489,6 +1524,161 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Clears out the collClientQuotations collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addClientQuotations()
+	 */
+	public function clearClientQuotations()
+	{
+		$this->collClientQuotations = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collClientQuotations collection (array).
+	 *
+	 * By default this just sets the collClientQuotations collection to an empty array (like clearcollClientQuotations());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initClientQuotations()
+	{
+		$this->collClientQuotations = array();
+	}
+
+	/**
+	 * Gets an array of ClientQuotation objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this AffiliateUser has previously been saved, it will retrieve
+	 * related ClientQuotations from storage. If this AffiliateUser is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array ClientQuotation[]
+	 * @throws     PropelException
+	 */
+	public function getClientQuotations($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(AffiliateUserPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collClientQuotations === null) {
+			if ($this->isNew()) {
+			   $this->collClientQuotations = array();
+			} else {
+
+				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+
+				ClientQuotationPeer::addSelectColumns($criteria);
+				$this->collClientQuotations = ClientQuotationPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+
+				ClientQuotationPeer::addSelectColumns($criteria);
+				if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
+					$this->collClientQuotations = ClientQuotationPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastClientQuotationCriteria = $criteria;
+		return $this->collClientQuotations;
+	}
+
+	/**
+	 * Returns the number of related ClientQuotation objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related ClientQuotation objects.
+	 * @throws     PropelException
+	 */
+	public function countClientQuotations(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(AffiliateUserPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collClientQuotations === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+
+				$count = ClientQuotationPeer::doCount($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+
+				if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
+					$count = ClientQuotationPeer::doCount($criteria, $con);
+				} else {
+					$count = count($this->collClientQuotations);
+				}
+			} else {
+				$count = count($this->collClientQuotations);
+			}
+		}
+		$this->lastClientQuotationCriteria = $criteria;
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a ClientQuotation object to this object
+	 * through the ClientQuotation foreign key attribute.
+	 *
+	 * @param      ClientQuotation $l ClientQuotation
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addClientQuotation(ClientQuotation $l)
+	{
+		if ($this->collClientQuotations === null) {
+			$this->initClientQuotations();
+		}
+		if (!in_array($l, $this->collClientQuotations, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collClientQuotations, $l);
+			$l->setAffiliateUser($this);
+		}
+	}
+
+	/**
 	 * Resets all collections of referencing foreign keys.
 	 *
 	 * This method is a user-space workaround for PHP's inability to garbage collect objects
@@ -1508,10 +1698,16 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collClientQuotations) {
+				foreach ((array) $this->collClientQuotations as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
 		$this->singleAffiliateUserInfo = null;
 		$this->collAffiliateUserGroups = null;
+		$this->collClientQuotations = null;
 			$this->aAffiliateLevel = null;
 			$this->aAffiliate = null;
 	}

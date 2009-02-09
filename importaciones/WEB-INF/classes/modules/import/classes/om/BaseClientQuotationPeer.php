@@ -410,7 +410,7 @@ abstract class BaseClientQuotationPeer {
 	}
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related User table
+	 * Returns the number of rows matching criteria, joining the related AffiliateUser table
 	 *
 	 * @param      Criteria $c
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -418,7 +418,7 @@ abstract class BaseClientQuotationPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAffiliateUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -445,7 +445,7 @@ abstract class BaseClientQuotationPeer {
 			$con = Propel::getConnection(ClientQuotationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ClientQuotationPeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$criteria->addJoin(array(ClientQuotationPeer::USERID,), array(AffiliateUserPeer::ID,), $join_behavior);
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -459,7 +459,7 @@ abstract class BaseClientQuotationPeer {
 
 
 	/**
-	 * Selects a collection of ClientQuotation objects pre-filled with their User objects.
+	 * Selects a collection of ClientQuotation objects pre-filled with their AffiliateUser objects.
 	 * @param      Criteria  $c
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -467,7 +467,7 @@ abstract class BaseClientQuotationPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAffiliateUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$c = clone $c;
 
@@ -478,9 +478,9 @@ abstract class BaseClientQuotationPeer {
 
 		ClientQuotationPeer::addSelectColumns($c);
 		$startcol = (ClientQuotationPeer::NUM_COLUMNS - ClientQuotationPeer::NUM_LAZY_LOAD_COLUMNS);
-		UserPeer::addSelectColumns($c);
+		AffiliateUserPeer::addSelectColumns($c);
 
-		$c->addJoin(array(ClientQuotationPeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$c->addJoin(array(ClientQuotationPeer::USERID,), array(AffiliateUserPeer::ID,), $join_behavior);
 		$stmt = BasePeer::doSelect($c, $con);
 		$results = array();
 
@@ -500,20 +500,20 @@ abstract class BaseClientQuotationPeer {
 				ClientQuotationPeer::addInstanceToPool($obj1, $key1);
 			} // if $obj1 already loaded
 
-			$key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			$key2 = AffiliateUserPeer::getPrimaryKeyHashFromRow($row, $startcol);
 			if ($key2 !== null) {
-				$obj2 = UserPeer::getInstanceFromPool($key2);
+				$obj2 = AffiliateUserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = UserPeer::getOMClass();
+					$omClass = AffiliateUserPeer::getOMClass();
 
 					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
-					UserPeer::addInstanceToPool($obj2, $key2);
+					AffiliateUserPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 
-				// Add the $obj1 (ClientQuotation) to $obj2 (User)
+				// Add the $obj1 (ClientQuotation) to $obj2 (AffiliateUser)
 				$obj2->addClientQuotation($obj1);
 
 			} // if joined row was not null
@@ -561,7 +561,7 @@ abstract class BaseClientQuotationPeer {
 			$con = Propel::getConnection(ClientQuotationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ClientQuotationPeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$criteria->addJoin(array(ClientQuotationPeer::USERID,), array(AffiliateUserPeer::ID,), $join_behavior);
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -595,10 +595,10 @@ abstract class BaseClientQuotationPeer {
 		ClientQuotationPeer::addSelectColumns($c);
 		$startcol2 = (ClientQuotationPeer::NUM_COLUMNS - ClientQuotationPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
+		AffiliateUserPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(ClientQuotationPeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$c->addJoin(array(ClientQuotationPeer::USERID,), array(AffiliateUserPeer::ID,), $join_behavior);
 		$stmt = BasePeer::doSelect($c, $con);
 		$results = array();
 
@@ -617,23 +617,23 @@ abstract class BaseClientQuotationPeer {
 				ClientQuotationPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-			// Add objects for joined User rows
+			// Add objects for joined AffiliateUser rows
 
-			$key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+			$key2 = AffiliateUserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
 			if ($key2 !== null) {
-				$obj2 = UserPeer::getInstanceFromPool($key2);
+				$obj2 = AffiliateUserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = UserPeer::getOMClass();
+					$omClass = AffiliateUserPeer::getOMClass();
 
 
 					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					UserPeer::addInstanceToPool($obj2, $key2);
+					AffiliateUserPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 loaded
 
-				// Add the $obj1 (ClientQuotation) to the collection in $obj2 (User)
+				// Add the $obj1 (ClientQuotation) to the collection in $obj2 (AffiliateUser)
 				$obj2->addClientQuotation($obj1);
 			} // if joined row not null
 

@@ -78,7 +78,7 @@ CREATE TABLE `import_clientQuotation`
 	INDEX `import_clientQuotation_FI_1` (`userId`),
 	CONSTRAINT `import_clientQuotation_FK_1`
 		FOREIGN KEY (`userId`)
-		REFERENCES `users_user` (`id`)
+		REFERENCES `affiliates_user` (`id`)
 )Type=MyISAM COMMENT='Cotizacion a Cliente';
 
 #-----------------------------------------------------------------------------

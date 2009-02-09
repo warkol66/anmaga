@@ -49,9 +49,9 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 	protected $timestampstatus;
 
 	/**
-	 * @var        User
+	 * @var        AffiliateUser
 	 */
-	protected $aUser;
+	protected $aAffiliateUser;
 
 	/**
 	 * @var        array ClientQuotationItem[] Collection to store aggregation of ClientQuotationItem objects.
@@ -309,8 +309,8 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 			$this->modifiedColumns[] = ClientQuotationPeer::USERID;
 		}
 
-		if ($this->aUser !== null && $this->aUser->getId() !== $v) {
-			$this->aUser = null;
+		if ($this->aAffiliateUser !== null && $this->aAffiliateUser->getId() !== $v) {
+			$this->aAffiliateUser = null;
 		}
 
 		return $this;
@@ -459,8 +459,8 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 	public function ensureConsistency()
 	{
 
-		if ($this->aUser !== null && $this->userid !== $this->aUser->getId()) {
-			$this->aUser = null;
+		if ($this->aAffiliateUser !== null && $this->userid !== $this->aAffiliateUser->getId()) {
+			$this->aAffiliateUser = null;
 		}
 	} // ensureConsistency
 
@@ -501,7 +501,7 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->aUser = null;
+			$this->aAffiliateUser = null;
 			$this->collClientQuotationItems = null;
 			$this->lastClientQuotationItemCriteria = null;
 
@@ -601,11 +601,11 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aUser !== null) {
-				if ($this->aUser->isModified() || $this->aUser->isNew()) {
-					$affectedRows += $this->aUser->save($con);
+			if ($this->aAffiliateUser !== null) {
+				if ($this->aAffiliateUser->isModified() || $this->aAffiliateUser->isNew()) {
+					$affectedRows += $this->aAffiliateUser->save($con);
 				}
-				$this->setUser($this->aUser);
+				$this->setAffiliateUser($this->aAffiliateUser);
 			}
 
 			if ($this->isNew() ) {
@@ -725,9 +725,9 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aUser !== null) {
-				if (!$this->aUser->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aUser->getValidationFailures());
+			if ($this->aAffiliateUser !== null) {
+				if (!$this->aAffiliateUser->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aAffiliateUser->getValidationFailures());
 				}
 			}
 
@@ -916,13 +916,13 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Declares an association between this object and a User object.
+	 * Declares an association between this object and a AffiliateUser object.
 	 *
-	 * @param      User $v
+	 * @param      AffiliateUser $v
 	 * @return     ClientQuotation The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setUser(User $v = null)
+	public function setAffiliateUser(AffiliateUser $v = null)
 	{
 		if ($v === null) {
 			$this->setUserid(NULL);
@@ -930,10 +930,10 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 			$this->setUserid($v->getId());
 		}
 
-		$this->aUser = $v;
+		$this->aAffiliateUser = $v;
 
 		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the User object, it will not be re-added.
+		// If this object has already been added to the AffiliateUser object, it will not be re-added.
 		if ($v !== null) {
 			$v->addClientQuotation($this);
 		}
@@ -943,25 +943,25 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 
 
 	/**
-	 * Get the associated User object
+	 * Get the associated AffiliateUser object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     User The associated User object.
+	 * @return     AffiliateUser The associated AffiliateUser object.
 	 * @throws     PropelException
 	 */
-	public function getUser(PropelPDO $con = null)
+	public function getAffiliateUser(PropelPDO $con = null)
 	{
-		if ($this->aUser === null && ($this->userid !== null)) {
-			$this->aUser = UserPeer::retrieveByPK($this->userid, $con);
+		if ($this->aAffiliateUser === null && ($this->userid !== null)) {
+			$this->aAffiliateUser = AffiliateUserPeer::retrieveByPK($this->userid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
 			   undesirable since it could result in an only partially populated collection
 			   in the referenced object.
-			   $this->aUser->addClientQuotations($this);
+			   $this->aAffiliateUser->addClientQuotations($this);
 			 */
 		}
-		return $this->aUser;
+		return $this->aAffiliateUser;
 	}
 
 	/**
@@ -1555,7 +1555,7 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 		$this->collClientQuotationItems = null;
 		$this->collSupplierQuotations = null;
 		$this->collClientPurchaseOrders = null;
-			$this->aUser = null;
+			$this->aAffiliateUser = null;
 	}
 
 } // BaseClientQuotation

@@ -24,4 +24,30 @@
  */
 class ClientQuotationItemPeer extends BaseClientQuotationItemPeer {
 
+  /**
+  * Crea un client quotation item nuevo.
+  *
+  * @param array $params Array asociativo con los atributos del objeto
+  * @return ClientQuotation creado, false sino
+  */  
+  function create($params) {
+    try {
+      $clientquotationItemObj = new ClientQuotationItem();
+      foreach ($params as $key => $value) {
+        $setMethod = "set".$key;
+        if ( method_exists($clientquotationItemObj,$setMethod) ) {          
+          if (!empty($value))
+            $clientquotationItemObj->$setMethod($value);
+          else
+            $clientquotationItemObj->$setMethod(null);
+        }
+      }
+      $clientquotationItemObj->save();
+      return $clientquotationItemObj;
+    } catch (Exception $exp) {
+      return false;
+    }         
+  }  
+
+
 } // ClientQuotationItemPeer

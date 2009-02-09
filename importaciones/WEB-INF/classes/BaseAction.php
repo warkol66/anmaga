@@ -166,5 +166,24 @@ class BaseAction extends Action {
 		if (!empty($GLOBALS['_NG_LANGUAGE_']))
 			$smarty->register_outputfilter("smarty_outputfilter_i18n");  
 	}
+
+	/**
+	 * Agrega parametros al url de un forward
+	 * @param $params array with parameters with key and value
+	 * @param $mapping
+	 * @param $forwardName nombre del forward que se quiere modificar de ese mapping
+	 */
+	function addParamsToForwards($params,$mapping,$forwardName) {
+		//redireccionamiento con opciones correctas
+		$myRedirectConfig = $mapping->findForwardConfig($forwardName);
+		$myRedirectPath = $myRedirectConfig->getpath();
+		
+		foreach ($params as $key => $value) 
+			$myRedirectPath .= "&$key=$value";
+
+		return new ForwardConfig($myRedirectPath, True);
+			
+	}
+
 }
-?>
+

@@ -21,7 +21,7 @@
 <script type="text/javascript" src="scripts/newsletter-schedule.js"></script>
 <script type="text/javascript" src="scripts/news.js"></script>
 <script type="text/javascript" src="scripts/calendar.js"></script>
-<script type="text/javascript" src="scripts/surveys-survey.js"></script>
+<script type="text/javascript" src="scripts/import.js"></script>
 |-if $module eq 'content'-|<script language="JavaScript" src="scripts/scriptaculous.js?load=effects,dragdrop" type="text/javascript"></script>|-/if-|
 <script language="JavaScript" type="text/JavaScript">
 	var url="|-$systemUrl-|";

@@ -20,4 +20,51 @@ require_once 'import/classes/om/BaseClientQuotation.php';
  */
 class ClientQuotation extends BaseClientQuotation {
 
+	const STATUS_NEW = 1;
+	const STATUS_WAITING_RESPONSE = 2;
+	
+	private $statusNames = array(
+								ClientQuotation::STATUS_NEW => 'New',
+								ClientQuotation::STATUS_WAITING_RESPONSE => 'Waiting Response',
+							);
+	
+	/**
+	 * El cliente confirma que el contenido de la cotizacion esta listo para ser cotizado por anmaga.
+	 * Internamente la cotizacion para de estado NEW a estado Waiting For Response
+	 * @return boolean
+	 */
+	public function clientConfirm() {
+		
+		try {
+
+			if ($this->getStatus() != ClientQuotation::STATUS_NEW) {
+				return false;
+			}
+
+			$this->setStatus(ClientQuotation::STATUS_WAITING_RESPONSE);
+			$this->save();
+			
+		} catch (PropelException $e) {
+			return false;
+		}
+		
+		return true;
+		
+	}
+	
+	/**
+	 * Indica si la cotizacion se encuentra en espera de respuesta.
+	 * @return boolean
+	 */
+	public function isWaitingResponse() {
+		return ($this->getStatus() == ClientQuotation::STATUS_WAITING_RESPONSE);
+	}
+	
+	/**
+	 * Devuelve el nombre del status actual de la cotizacion
+	 * 
+	 */
+	public function getStatusName() {
+		return $this->statusNames[$this->getStatus()];
+	}
 } // ClientQuotation

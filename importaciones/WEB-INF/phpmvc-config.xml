@@ -848,6 +848,8 @@
     <forward name="success" path="/Main.php?do=importProductsList&amp;message=activated_ok" redirect="true" />
     </action>
 
+
+
     
   </action-mappings>
 <!-- Fin Modulo ImportProducts -->
@@ -965,7 +967,7 @@
                type = "ImportIncotermsListAction"
                name = "importIncotermsList"
               scope = "request"
-           validate = "true">
+           validate = "true">2
     <forward name="success" path="ImportIncotermsList.tpl" />
     </action>
 
@@ -985,9 +987,58 @@
     <forward name="success" path="/Main.php?do=importIncotermsList&amp;message=activate_ok" redirect="true" />
     </action>
 
+<!-- Modulo ImportClientQuote -->
+
+    <action    path = "importClientQuoteList"
+               type = "ImportClientQuoteListAction"
+               name = "importClientQuoteList"
+              scope = "request"
+           validate = "true">
+    <forward name="success-admin" path="ImportClientQuoteAdminList.tpl" />
+    <forward name="success-affiliate" path="ImportClientQuoteAffiliateList.tpl" />
+    </action>
+
+    <action    path = "importClientQuoteCreate"
+               type = "ImportClientQuoteCreateAction"
+               name = "importClientQuoteCreate"
+              scope = "request"
+           validate = "true">
+		<forward name="success" path="/Main.php?do=importClientQuoteList&amp;message=created" redirect="true" />
+		<forward name="failure" path="/Main.php?do=importClientQuoteList&amp;message=create-failed" redirect="true" />
+    </action>
+
+    <action    path = "importClientQuoteEdit"
+               type = "ImportClientQuoteEditAction"
+               name = "importClientQuoteEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success-admin" path="ImportClientQuoteAdminEdit.tpl" />
+    <forward name="success-affiliate" path="ImportClientQuoteAffiliateEdit.tpl" />
+    </action>
+
+    <action    path = "importClientQuoteAddItemX"
+               type = "ImportClientQuoteAddItemXAction"
+               name = "importClientQuoteAddItemX"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportClientQuoteAddItemX.tpl" />
+    </action>
+
+    <action    path = "importClientQuoteConfirm"
+               type = "ImportClientQuoteConfirmAction"
+               name = "importClientQuoteConfirm"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=importClientQuoteList&amp;message=confirmed" redirect="true"/>
+    </action>
+
+
+<!-- Fin Modulo ImportClientQuote -->
+
 <!-- Fin Modulo ImportIncoterms -->
 
 <!-- Module ImportRequest -->
+<!-- Version del sistema anterior
 
     <action    path = "importRequestList"
                type = "ImportRequestListAction"
@@ -1077,7 +1128,7 @@
     <forward name="failure" path="ImportFailure.tpl" />
     </action>	
 
-
+-->
 <!-- Fin Module ImportRequest -->
 
   </action-mappings>

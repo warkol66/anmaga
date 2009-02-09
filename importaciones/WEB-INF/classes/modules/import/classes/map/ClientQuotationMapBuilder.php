@@ -66,7 +66,7 @@ class ClientQuotationMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('CREATEDAT', 'Createdat', 'TIMESTAMP', true, null);
 
-		$tMap->addForeignKey('USERID', 'Userid', 'INTEGER', 'users_user', 'ID', true, null);
+		$tMap->addForeignKey('USERID', 'Userid', 'INTEGER', 'affiliates_user', 'ID', true, null);
 
 		$tMap->addColumn('STATUS', 'Status', 'INTEGER', true, null);
 
