@@ -24,4 +24,119 @@
  */
 class ClientQuotationPeer extends BaseClientQuotationPeer {
 
+  /**
+  * Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
+  *
+  * @return int Cantidad de filas por pagina
+  */
+  function getRowsPerPage() {
+    global $system;
+    return $system["config"]["system"]["rowsPerPage"];
+  }
+  
+  /**
+  * Crea un client quotation nuevo.
+  *
+  * @param array $params Array asociativo con los atributos del objeto
+  * @return boolean true si se creo correctamente, false sino
+  */  
+  function create($params) {
+    try {
+      $clientquotationObj = new ClientQuotation();
+      foreach ($params as $key => $value) {
+        $setMethod = "set".$key;
+        if ( method_exists($clientquotationObj,$setMethod) ) {          
+          if (!empty($value))
+            $clientquotationObj->$setMethod($value);
+          else
+            $clientquotationObj->$setMethod(null);
+        }
+      }
+      $clientquotationObj->save();
+      return true;
+    } catch (Exception $exp) {
+      return false;
+    }         
+  }  
+  
+  /**
+  * Actualiza la informacion de un client quotation.
+  *
+  * @param array $params Array asociativo con los atributos del objeto
+  * @return boolean true si se actualizo la informacion correctamente, false sino
+  */  
+  function update($params) {
+    try {
+      $clientquotationObj = ClientQuotationPeer::retrieveByPK($params["id"]);    
+      if (empty($clientquotationObj))
+        throw new Exception();
+      foreach ($params as $key => $value) {
+        $setMethod = "set".$key;
+        if ( method_exists($clientquotationObj,$setMethod) ) {          
+          if (!empty($value))
+            $clientquotationObj->$setMethod($value);
+          else
+            $clientquotationObj->$setMethod(null);
+        }
+      }
+      $clientquotationObj->save();
+      return true;
+    } catch (Exception $exp) {
+      return false;
+    }         
+  }    
+
+	/**
+	* Elimina un client quotation a partir de los valores de la clave.
+	*
+  * @param int $id id del clientquotation
+	*	@return boolean true si se elimino correctamente el clientquotation, false sino
+	*/
+  function delete($id) {
+  	$clientquotationObj = ClientQuotationPeer::retrieveByPK($id);
+    $clientquotationObj->delete();
+		return true;
+  }
+
+  /**
+  * Obtiene la informacion de un client quotation.
+  *
+  * @param int $id id del clientquotation
+  * @return array Informacion del clientquotation
+  */
+  function get($id) {
+		$clientquotationObj = ClientQuotationPeer::retrieveByPK($id);
+    return $clientquotationObj;
+  }
+
+  /**
+  * Obtiene todos los client quotations.
+	*
+	*	@return array Informacion sobre todos los clientquotations
+  */
+	function getAll() {
+		$cond = new Criteria();
+		$alls = ClientQuotationPeer::doSelect($cond);
+		return $alls;
+  }
+  
+  /**
+  * Obtiene todos los client quotations paginados.
+  *
+  * @param int $page [optional] Numero de pagina actual
+  * @param int $perPage [optional] Cantidad de filas por pagina
+  *	@return array Informacion sobre todos los clientquotations
+  */
+  function getAllPaginated($page=1,$perPage=-1) {  
+    if ($perPage == -1)
+      $perPage = 	ClientQuotationPeer::getRowsPerPage();
+    if (empty($page))
+      $page = 1;
+    require_once("propel/util/PropelPager.php");
+    $cond = new Criteria();     
+    $pager = new PropelPager($cond,"ClientQuotationPeer", "doSelect",$page,$perPage);
+    return $pager;
+   }    
+
+
 } // ClientQuotationPeer
