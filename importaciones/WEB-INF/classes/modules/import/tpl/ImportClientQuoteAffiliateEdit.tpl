@@ -30,6 +30,6 @@
 |-/if-|
 
 <div id="clientQuotationItemsHolder">
-	|-include file='ImportClientQuoteItemsListInclude.tpl' clientQuotation=$clientQuotation-|
+	|-include file='ImportClientQuoteItemsAffiliateListInclude.tpl' clientQuotation=$clientQuotation-|
 </div>
 

@@ -63,6 +63,25 @@ class ImportClientQuoteConfirmAction extends BaseAction {
 			
 		}
 		
+		if (Common::isAdmin()) {
+
+			$clientQuotation = ClientQuotationPeer::get($_POST['clientQuotationId']);
+
+			if (empty($clientQuotation)) {
+				return $mapping->findForwardConfig('failure');
+			}
+	
+			if (!$clientQuotation->clientConfirm()) {
+				return $mapping->findForwardConfig('failure');
+			}
+			
+			$params = array();
+			$params['clientQuotationId'] = $clientQuotation->getId();
+			return $this->addParamsToForwards($params,$mapping,'success');
+
+			
+		}
+		
 		return $mapping->findForwardConfig('failure');
 		
 	}

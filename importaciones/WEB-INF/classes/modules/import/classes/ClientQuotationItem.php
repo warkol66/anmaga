@@ -19,5 +19,6 @@ require_once 'import/classes/om/BaseClientQuotationItem.php';
  * @package    anmaga
  */
 class ClientQuotationItem extends BaseClientQuotationItem {
+	
 
 } // ClientQuotationItem

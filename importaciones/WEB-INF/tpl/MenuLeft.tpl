@@ -7,7 +7,7 @@
 	</ul>
 		<div id="importMenu" style="display:|-if $module|lower eq 'import'-|block|-else-|none|-/if-|;">
 			<ul>
-				<li class="menuLink"><a href="Main.php?do=importProductsList">Importaciones</a></li>
+				<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones de Cliente</a></li>
 		|- if $loginUser->isAdmin()-|		
 				<li class="menuLink"><a href="Main.php?do=importProductsList">Administrar Productos</a></li>
 				<li class="menuLink"><a href="Main.php?do=importIncotermsList">Administrar Incoterms</a></li>
@@ -48,9 +48,9 @@
   	</ul>
 	<div id="importAffiliateMenu">
 		<ul>
-			<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones</a></li>
+			<li class="menuLink"><a href="		Main.php?do=importClientQuoteList">Cotizaciones</a></li>
 		</ul>
 	</div>
 
-	<a href="Main.php?do=usersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")' id="logout"></a>
+	<a href="Main.php?do=affiliatesUsersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")' id="logout"></a>
 |-/if-|

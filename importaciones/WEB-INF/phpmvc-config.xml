@@ -1032,6 +1032,13 @@
     <forward name="success" path="/Main.php?do=importClientQuoteList&amp;message=confirmed" redirect="true"/>
     </action>
 
+    <action    path = "importSupplierQuoteCreate"
+               type = "ImportSupplierQuoteCreateAction"
+               name = "importSupplierQuoteCreate"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=supplier-quotation-created" redirect="true"/>
+    </action>
 
 <!-- Fin Modulo ImportClientQuote -->
 

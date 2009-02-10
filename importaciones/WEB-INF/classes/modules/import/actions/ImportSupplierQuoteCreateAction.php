@@ -2,14 +2,13 @@
 
 require_once("BaseAction.php");
 require_once("ClientQuotationPeer.php");
-require_once("AffiliateUserPeer.php");
 
-class ImportClientQuoteListAction extends BaseAction {
+class ImportSupplierQuoteCreateAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportClientQuoteListAction() {
+	function ImportSupplierQuoteCreateAction() {
 		;
 	}
 
@@ -45,41 +44,13 @@ class ImportClientQuoteListAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
-		$url = "Main.php?do=importClientQuoteList";
-		$smarty->assign("url",$url);		
-   
-		$smarty->assign("message",$_GET["message"]);
+		$clientQuotation = ClientQuotationPeer::get($_POST['clientQuotationId']);
 		
-		if (!empty($_GET['clientQuotationId']))
-			$smarty->assign('clientQuotationId',$_GET['clientQuotationId']);
+		$params = array();
+		$params['id'] = $clientQuotation->getId();
 		
-		$clientQuotationPeer = new ClientQuotationPeer();
-		
-		if (Common::isAdmin()) {
-			//traemos todas las cotizaciones.
-			$pager = $clientQuotationPeer->getAllPaginated($_GET["page"]);
-			$affiliates = AffiliateUserPeer::getAll();
-			
-			$smarty->assign("quotations",$pager->getResult());
-			$smarty->assign("pager",$pager);
-			$smarty->assign("affiliates",$affiliates);
-			return $mapping->findForwardConfig('success-admin');
-		}
-
-		if (Common::isAffiliatedUser()) {
-			//Traemos todas las cotizaciones de ese afiliado.
-			$affiliate = Common::getAffiliatedLogged();
-			$pager = $clientQuotationPeer->getAllPaginatedByAffiliate($affiliate,$_GET["page"]);
-
-			$smarty->assign("quotations",$pager->getResult());
-			$smarty->assign("affiliate",$affiliate);
-			$smarty->assign("pager",$pager);
-			return $mapping->findForwardConfig('success-affiliate');
-		}
-		
-		return $mapping->findForwardConfig('failure');
+		return $this->addParamsToForwards($params,$mapping,'success');
 		
 	}
 
 }
-?>

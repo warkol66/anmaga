@@ -3,13 +3,13 @@
 	$('clientQuotationAdderMsgBox').innerHTML = 'se ha agregado el producto a la cotizacion.';
 </script>
 
-<li id="itemList_|-$item->getId()-|">
-		|-assign var=product value=$item->getProduct()-|
-		<strong>Codigo: |-$product->getCode()-|</strong>
-		<strong>Nombre: |-$product->getName()-|</strong>
-		<strong>Cantidad:</strong> |-$item->getQuantity()-|</strong>
-		<strong>Precio Unitario:</strong> |-$item->getPrice()-|</strong>
-</li>
+|-assign var=product value=$item->getProduct()-|
+<tr>
+	<td>|-$product->getCode()-|</td>
+	<td>|-$product->getName()-|</td>
+	<td>|-$item->getQuantity()-|</td>
+	<td>|-$item->getPrice()-|</td>			
+</tr>
 |-else-|
 
 <script type="text/javascript">

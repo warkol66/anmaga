@@ -3,6 +3,7 @@
 require_once("BaseAction.php");
 require_once("ClientQuotationPeer.php");
 require_once("ProductPeer.php");
+require_once("SupplierPeer.php");
 
 class ImportClientQuoteEditAction extends BaseAction {
 
@@ -45,6 +46,8 @@ class ImportClientQuoteEditAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
+		$smarty->assign("message",$_GET["message"]);
+		
 		$products = ProductPeer::getAll();
 		$smarty->assign('products',$products);
 		
@@ -52,8 +55,11 @@ class ImportClientQuoteEditAction extends BaseAction {
 
 		if (Common::isAdmin()) {
 			//traemos todas las cotizaciones.
+			$suppliers = SupplierPeer::getAll();
 			$clientQuotation = $clientQuotationPeer->get($_GET["id"]);
+			
 			$smarty->assign("clientQuotation",$clientQuotation);
+			$smarty->assign("suppliers",$suppliers);
 			return $mapping->findForwardConfig('success-admin');
 		}
 
