@@ -62,9 +62,23 @@ class ClientQuotation extends BaseClientQuotation {
 	
 	/**
 	 * Devuelve el nombre del status actual de la cotizacion
-	 * 
+	 * @return string
 	 */
 	public function getStatusName() {
 		return $this->statusNames[$this->getStatus()];
 	}
+	
+	/**
+	 * Obtiene un cierto elemento de la cotizacion
+	 * @param integer $id id del elemento a obtener
+	 */
+	public function getClientQuotationItem($id) {
+		$criteria = new Criteria();
+		$criteria->add(ClientQuotationItemPeer::CLIENTQUOTATIONID,$this->getId());
+		$criteria->add(ClientQuotationItemPeer::ID,$id);
+		
+		$result = $this->getClientQuotationItems($criteria);
+		return $result[0];
+	}
+	
 } // ClientQuotation

@@ -138,4 +138,34 @@ class SupplierQuotationPeer extends BaseSupplierQuotationPeer {
     return $pager;
    }    	
 
+   public function createFromClientQuotation($supplier,$clientQuotation,$items) {
+		
+		try {
+			
+			$supplierQuotation = new SupplierQuotation();
+			$supplierQuotation->setSupplierId($supplier->getId());
+			$supplierQuotation->setClientQuotationId($clientQuotation->getId());
+			$supplierQuotation->setCreatedAt(date('Y-m-d h:m:s'));
+			$supplierQuotation->setStatus(SupplierQuotation::STATUS_NEW);
+			$supplierQuotation->setTimestampStatus(date('Y-m-d h:m:s'));
+
+			foreach ($items as $clientQuotationItem) {
+
+				$supplierQuotationItem = new SupplierQuotationItem();
+				$supplierQuotationItem->setProductId($clientQuotationItem->getProductId());
+				$supplierQuotationItem->setClientQuotationItem($clientQuotationItem);
+				$supplierQuotationItem->setQuantity($clientQuotationItem->getQuantity());
+				$supplierQuotation->addSupplierQuotationItem($supplierQuotationItem);
+				
+			}
+			
+			$supplierQuotation->save();
+			
+		} catch (PropelException $e) {
+			return false;
+		}
+		
+		return $supplierQuotation;
+   }
+
 } // SupplierQuotationPeer

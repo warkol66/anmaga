@@ -1,6 +1,7 @@
 <?php
 
 require_once 'import/classes/om/BaseClientQuotationItem.php';
+require_once('SupplierQuotationItemPeer.php');
 
 
 /**
@@ -20,5 +21,27 @@ require_once 'import/classes/om/BaseClientQuotationItem.php';
  */
 class ClientQuotationItem extends BaseClientQuotationItem {
 	
+	/**
+	 * Obtiene el elemento de cotizacion del proveedor
+	 * @return SupplierQuotationItem instancia de Supplier QuotationItem o vacio en caso de que aun no se haya asignado
+	 */
+	public function getSupplierQuotationItem() {
+		
+		$criteria = new Criteria();
+		$criteria->add(SupplierQuotationItemPeer::CLIENTQUOTATIONITEMID,$this->getId());
+		$result = SupplierQuotationItemPeer::doSelect($criteria);
+		return $result[0];
+		
+	}
+	
+	/**
+	 * Indica si este elemento ya ha sido designado para cotizacion.
+	 * @return boolean
+	 */
+	public function hasASupplierQuotationRelated() {
+		$supplierQuotationItem = $this->getSupplierQuotationItem();
+		return (!empty($supplierQuotationItem));
+	}
+
 
 } // ClientQuotationItem

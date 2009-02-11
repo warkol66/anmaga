@@ -2,7 +2,7 @@
 <h1>Informacion General de la cotizacion.</h1>
 
 <div id="div_messages">
-	|-if $message eq "supplier-quotation-created"-|<div class="successMessage">Cotizacion de Proveedor creada correctamente. Puedo consultarla accediendo a este <a href="Main.php" >link</a></div>|-/if-|
+	|-if $message eq "supplier-quotation-created"-|<div class="successMessage">Cotizacion de Proveedor creada correctamente. Puedo consultarla accediendo a este <a href="Main.php?do=importSupplierQuoteEdit&amp;id=|-$supplierQuotation->getId()-|" >link</a></div>|-/if-|
 
 </div>
 

@@ -72,7 +72,7 @@ class SupplierQuotationItemMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('PRICE', 'Price', 'INTEGER', false, null);
 
-		$tMap->addColumn('QUANTITY', 'Quantity', 'INTEGER', false, null);
+		$tMap->addColumn('QUANTITY', 'Quantity', 'INTEGER', true, null);
 
 		$tMap->addForeignKey('PORTID', 'Portid', 'INTEGER', 'import_port', 'ID', false, null);
 

@@ -1,16 +1,16 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ClientQuotationPeer.php");
+require_once("SupplierQuotationPeer.php");
 require_once("ProductPeer.php");
 require_once("SupplierPeer.php");
 
-class ImportClientQuoteEditAction extends BaseAction {
+class ImportSupplierQuoteEditAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportClientEditAction() {
+	function ImportSupplierEditAction() {
 		;
 	}
 
@@ -48,10 +48,7 @@ class ImportClientQuoteEditAction extends BaseAction {
 		
 		$smarty->assign("message",$_GET["message"]);
 		
-		$products = ProductPeer::getAll();
-		$smarty->assign('products',$products);
-		
-		$clientQuotationPeer = new ClientQuotationPeer();
+		$supplierQuotationPeer = new SupplierQuotationPeer();
 
 		if (Common::isAdmin()) {
 			
@@ -61,27 +58,12 @@ class ImportClientQuoteEditAction extends BaseAction {
 			}
 
 			//traemos todas las cotizaciones.
-			$suppliers = SupplierPeer::getAll();
-			$clientQuotation = $clientQuotationPeer->get($_GET["id"]);
+			$supplierQuotation = $supplierQuotationPeer->get($_GET["id"]);
 			
-			$smarty->assign("clientQuotation",$clientQuotation);
-			$smarty->assign("suppliers",$suppliers);
-			return $mapping->findForwardConfig('success-admin');
-		}
-
-		if (Common::isAffiliatedUser()) {
-			//Traemos todas las cotizaciones de ese afiliado.
-			$affiliate = Common::getAffiliatedLogged();
-			$clientQuotation = $affiliate->getClientQuotation($_GET['id']);
+			$smarty->assign("supplierQuotation",$supplierQuotation);
 			
-			if (empty($clientQuotation)) {
-				return $mapping->findForwardConfig('failure');
-			}
-			
-			$smarty->assign("clientQuotation",$clientQuotation);
-			return $mapping->findForwardConfig('success-affiliate');
-		}
-		
+			return $mapping->findForwardConfig('success');
+		}		
 		
 		return $mapping->findForwardConfig('failure');
 		

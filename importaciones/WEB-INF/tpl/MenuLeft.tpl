@@ -7,8 +7,9 @@
 	</ul>
 		<div id="importMenu" style="display:|-if $module|lower eq 'import'-|block|-else-|none|-/if-|;">
 			<ul>
-				<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones de Cliente</a></li>
 		|- if $loginUser->isAdmin()-|		
+				<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones a Clientes</a></li>
+				<li class="menuLink"><a href="Main.php?do=importSupplierQuoteList">Cotizaciones de Proveedores</a></li>
 				<li class="menuLink"><a href="Main.php?do=importProductsList">Administrar Productos</a></li>
 				<li class="menuLink"><a href="Main.php?do=importIncotermsList">Administrar Incoterms</a></li>
 				<li class="menuLink"><a href="Main.php?do=importPortsList">Administrar Puertos</a></li>

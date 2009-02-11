@@ -14,13 +14,14 @@
 		|-foreach from=$clientQuotation->getClientQuotationItems() item=item name=for_clientQuotationsItems-|
 		|-assign var=product value=$item->getProduct()-|
 		<tr>
-			<th><input type="checkbox" name="clientQuoteItems[]" value="|-$item->getId()-|" /></th>
+			<th>|-if not $item->hasASupplierQuotationRelated()-|<input type="checkbox" name="clientQuoteItems[]" value="|-$item->getId()-|" />|-/if-|</th>
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
 			<td>|-$item->getQuantity()-|</td>
 			<td>|-$item->getPrice()-|</td>			
-			<td></td>
-			<td></td>			
+			|-assign var=supplierQuotationItem value=$item->getSupplierQuotationItem()-|
+			<td>|-if $supplierQuotationItem neq ''-||-assign var=supplierQuotation value=$supplierQuotationItem->getSupplierQuotation() -||-assign var=supplier value=$supplierQuotation->getSupplier()-||-$supplier->getName()-||-/if-|</td>
+			<td>|-if $supplierQuotationItem neq ''-||-$supplierQuotationItem->getPrice()-||-/if-|</td>			
 		</tr>
 		|-/foreach-|
 	</table>

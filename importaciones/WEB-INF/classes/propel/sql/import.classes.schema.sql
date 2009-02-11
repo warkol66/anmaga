@@ -146,7 +146,7 @@ CREATE TABLE `import_supplierQuotationItem`
 	`productId` INTEGER  NOT NULL COMMENT 'Id producto',
 	`clientQuotationItemId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de proveedor',
 	`price` INTEGER COMMENT 'precio de producto',
-	`quantity` INTEGER COMMENT 'cantidad producto',
+	`quantity` INTEGER  NOT NULL COMMENT 'cantidad producto',
 	`portId` INTEGER COMMENT 'id de puerto',
 	`incotermId` INTEGER COMMENT 'id de incoterm',
 	PRIMARY KEY (`id`),

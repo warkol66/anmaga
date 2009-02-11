@@ -44,10 +44,45 @@ class ImportSupplierQuoteCreateAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
-		$clientQuotation = ClientQuotationPeer::get($_POST['clientQuotationId']);
+		if (empty($_POST['clientQuotationId']) || empty($_POST['supplierId']) || empty($_POST['clientQuoteItems'])) {
+			return $mapping->findForwardConfig('failure');
+		}
 		
+		//obtenemos la cotizacion de cliente a procesar
+		$clientQuotation = ClientQuotationPeer::get($_POST['clientQuotationId']);
+
+		//obtenemos la informacion del proveedor
+		$supplier = SupplierPeer::get($_POST['supplierId']);
+
+
+		if (empty($clientQuotation) || empty($supplier)) {
+			return $mapping->findForwardConfig('failure');
+		}
+
+		//obtenemos los items a cotizar de la cotizacion de cliente para generar la cotizacion de proveedor
+		$clientQuotationSelectedItems = array();
+
+		foreach ($_POST['clientQuoteItems'] as $key) {
+			
+			$item = $clientQuotation->getClientQuotationItem($key);
+			
+			if (!empty($item)){
+				array_push($clientQuotationSelectedItems,$item);
+			}
+		}
+
+		if (empty($clientQuotationSelectedItems)) {
+			//caso en que no se hayan indicado elementos para procesar
+			return $mapping->findForwardConfig('failure');
+		}
+		
+		//generamos la supplierQuotation
+		
+		$supplierQuotation = SupplierQuotationPeer::createFromClientQuotation($supplier,$clientQuotation,$clientQuotationSelectedItems);
+
 		$params = array();
 		$params['id'] = $clientQuotation->getId();
+		$params['supplierQuotationId'] = $supplierQuotation->getId();
 		
 		return $this->addParamsToForwards($params,$mapping,'success');
 		

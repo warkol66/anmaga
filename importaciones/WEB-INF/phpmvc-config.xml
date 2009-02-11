@@ -1042,6 +1042,26 @@
 
 <!-- Fin Modulo ImportClientQuote -->
 
+<!-- Modulo SupplierClientQuote -->
+
+	<action    path = "importSupplierQuoteList"
+	           type = "ImportSupplierQuoteListAction"
+	           name = "importSupplierQuoteList"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="ImportSupplierQuoteList.tpl" />
+	</action>
+	
+    <action    path = "importSupplierQuoteEdit"
+               type = "ImportSupplierQuoteEditAction"
+               name = "importSupplierQuoteEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportSupplierQuoteEdit.tpl" />
+    </action>	
+
+<!-- Fin Modulo ImportSupplierQuote -->
+
 <!-- Fin Modulo ImportIncoterms -->
 
 <!-- Module ImportRequest -->

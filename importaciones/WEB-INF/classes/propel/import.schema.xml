@@ -87,7 +87,7 @@
 		<column name="productId" required="true" type="INTEGER" description="Id producto"/>
 		<column name="clientQuotationItemId" required="true" type="INTEGER" description="Id de cotizacion de proveedor"/>	
 		<column name="price" type="INTEGER" description="precio de producto" />
-		<column name="quantity" type="INTEGER" description="cantidad producto" />
+		<column name="quantity" type="INTEGER" description="cantidad producto" required='true'/>
 		<column name="portId" type="INTEGER" description="id de puerto"/>
 		<column name="incotermId" type="INTEGER" description="id de incoterm"/>	
 		

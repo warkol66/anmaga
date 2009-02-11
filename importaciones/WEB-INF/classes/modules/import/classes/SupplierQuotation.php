@@ -19,5 +19,21 @@ require_once 'import/classes/om/BaseSupplierQuotation.php';
  * @package    anmaga
  */
 class SupplierQuotation extends BaseSupplierQuotation {
+	
+	const STATUS_NEW = 1;
+	const STATUS_WAITING_RESPONSE = 2;
+	
+	private $statusNames = array(
+								ClientQuotation::STATUS_NEW => 'New'
+							);	
+	
+	/**
+	 * Devuelve el nombre del status actual de la cotizacion
+	 * @return string
+	 */
+	public function getStatusName() {
+		return $this->statusNames[$this->getStatus()];
+	}
+	
 
 } // SupplierQuotation

@@ -1,5 +1,5 @@
 <h2>Importaciones</h2>
-<h1>Cotizaciones</h1>
+<h1>Cotizaciones de Cliente</h1>
 <p>A continuación puede ver el listado de sus pedidos de cotizacion y sus correspondientes estados.</p>
 
 <div id="div_messages">
