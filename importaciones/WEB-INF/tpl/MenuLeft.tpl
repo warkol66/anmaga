@@ -10,10 +10,6 @@
 		|- if $loginUser->isAdmin()-|		
 				<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones a Clientes</a></li>
 				<li class="menuLink"><a href="Main.php?do=importSupplierQuoteList">Cotizaciones de Proveedores</a></li>
-				<li class="menuLink"><a href="Main.php?do=importProductsList">Administrar Productos</a></li>
-				<li class="menuLink"><a href="Main.php?do=importIncotermsList">Administrar Incoterms</a></li>
-				<li class="menuLink"><a href="Main.php?do=importPortsList">Administrar Puertos</a></li>
-				<li class="menuLink"><a href="Main.php?do=importSuppliersList">Administrar Suppliers</a></li>
 		|-/if-|
 			</ul>
 		</div>
@@ -23,6 +19,10 @@
 	</ul>
 		<div id="adminMenu" style="display:|-if $module|lower eq 'users' || $module|lower eq 'security' || $module|lower eq 'backups' || $module|lower eq 'registration' || $module|lower eq 'categories'-|block|-else-|none|-/if-|;">
 			<ul>
+				<li class="menuLink"><a href="Main.php?do=importProductsList">Administrar Productos</a></li>
+				<li class="menuLink"><a href="Main.php?do=importIncotermsList">Administrar Incoterms</a></li>
+				<li class="menuLink"><a href="Main.php?do=importPortsList">Administrar Puertos</a></li>
+				<li class="menuLink"><a href="Main.php?do=importSuppliersList">Administrar Suppliers</a></li>
 				<li class="menuLink"><a href="Main.php?do=usersList">Usuarios</a></li>
 				<li class="menuLink"><a href="Main.php?do=usersGroupsList">Grupos de Usuarios</a></li>
 				<li class="menuLink"><a href="Main.php?do=usersLevelsList">Niveles Usuarios</a></li>
