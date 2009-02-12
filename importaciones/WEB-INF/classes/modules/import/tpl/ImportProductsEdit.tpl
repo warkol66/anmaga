@@ -1,51 +1,54 @@
-				<div id="div_product">
-					<form name="form_edit_product" id="form_edit_product" action="Main.php" method="post">
-						|-if $message eq "error"-|<span class="message_error">Ha ocurrido un error al intentar guardar el product</span>|-/if-|
-						<h3>|-if $action eq "edit"-|Edit|-else-|Create|-/if-| Product</h3>
-						<p>
-							Ingrese los datos del product.
-						</p>
-						<fieldset title="Formulario de edici髇 de datos de un product">
-																																						 			<p>
-								<label for="code">code</label>
-																								<input type="text" id="code" name="product[code]" value="|-if $action eq "edit"-||-$product->getcode()-||-/if-|" title="code" maxlength="255" />
-							</p>
-							<p>
-								<label for="name">name</label>
-								<input type="text" id="name" name="product[name]" value="|-if $action eq "edit"-||-$product->getname()-||-/if-|" title="name" maxlength="255" />
-							</p>
-							<p>
-								<label for="description">description</label>
-								<input type="text" id="description" name="product[description]" value="|-if $action eq "edit"-||-$product->getdescription()-||-/if-|" title="description" />
-							</p>
-							<p>
-								<label for="name">name in spanish</label>
-								<input type="text" id="nameSpanish" name="product[nameSpanish]" value="|-if $action eq "edit"-||-$product->getnamespanish()-||-/if-|" title="name" maxlength="255" />
-							</p>
-							<p>
-								<label for="description">description in spanish</label>
-								<input type="text" id="descriptionSpanish" name="product[descriptionSpanish]" value="|-if $action eq "edit"-||-$product->getdescriptionspanish()-||-/if-|" title="description" />
-							</p>															
-							<p>
-								<label for="supplierId">Supplier</label>
-								<select name="productSupplier[supplierId]" name="supplierId">
-									|- foreach from=$suppliers item=supplier-|	
-									<option value="|-$supplier->getId()-|" |-if ($product->getSupplierId() == $supplier->getId())-|selected="selected"|-/if-|>|-$supplier->getName()-|</option>
-									|-/foreach-|
-								</select>			
-							</p>
-							<p>
-								<label for="code">supplier product code</label>
-								<input type="text" id="productSupplier[code]" name="productSupplier[code]" value="|-if $action eq "edit"-||-$product->getSupplierProductCode()-||-/if-|" title="code" maxlength="255" />
-							</p>
-														<p>
-																|-if $action eq "edit"-|
-								<input type="hidden" name="product[id]" id="product[id]" value="|-if $action eq "edit"-||-$product->getid()-||-/if-|" />
-								|-/if-|
-																<input type="hidden" name="action" id="action" value="|-$action-|" />
-								<input type="hidden" name="do" id="do" value="importProductsDoEdit" />
-								<input type="submit" id="button_edit_product" name="button_edit_product" title="Aceptar" value="Aceptar" class="boton" />
-							</p>
-			      </fieldset>
-					</form>
-				</div>
+<h2>##40,Configuraci贸n del Sistema##</h2>
+<h1>|-if $action eq 'edit'-|Editar|-else-|Crear|-/if-| Producto</h1>
+<div id="div_product">
+	<form name="form_edit_product" id="form_edit_product" action="Main.php" method="post">
+		|-if $message eq "error"-|
+			<div class="failureMessage">Ha ocurrido un error al intentar guardar el producto</div>
+		|-/if-|
+		<p>|-if $action eq 'edit'-|Modifique los datos del Producto y haga click en "Aceptar" para guardar el cambio|-else-|Ingrese los datos del Producto y haga click en "Aceptar" para guardar el Producto|-/if-|.
+		</p>
+		<fieldset title="Formulario de edici贸n de datos de un producto">
+		<legend>Productos</legend>
+			<p>
+				<label for="code">C贸digo</label>
+				<input type="text" id="code" name="product[code]" value="|-if $action eq 'edit'-||-$product->getcode()-||-/if-|" title="code" maxlength="255" />
+			</p>
+			<p>
+				<label for="name">Nombre</label>
+				<input name="product[name]" type="text" id="name" title="name" value="|-if $action eq 'edit'-||-$product->getname()-||-/if-|" size="65" maxlength="255" />
+			</p>
+		<p>
+				<label for="description">Descripci贸n</label>
+				<textarea name="product[description]" cols="70" rows="7" wrap="virtual" id="description" title="description">|-if $action eq 'edit'-||-$product->getdescription()-||-/if-|</textarea>
+			</p>
+			<p>
+				<label for="name">Nombre en Espa帽ol</label>
+				<input name="product[nameSpanish]" type="text" id="nameSpanish" title="name" value="|-if $action eq 'edit'-||-$product->getnamespanish()-||-/if-|" size="65" maxlength="255" />
+			</p>
+			<p>
+				<label for="description">Descripci贸n en Espa帽ol</label>
+				<textarea name="product[descriptionSpanish]" cols="70" rows="7" wrap="virtual" id="descriptionSpanish" title="description in Spanish">|-if $action eq 'edit'-||-$product->getdescriptionspanish()-||-/if-|</textarea>
+			</p>															
+			<p>
+				<label for="supplierId">Proveedor</label>
+				<select name="productSupplier[supplierId]" id="supplierId">
+					|- foreach from=$suppliers item=supplier-|	
+					<option value="|-$supplier->getId()-|" |-if ($product->getSupplierId() == $supplier->getId())-|selected="selected"|-/if-|>|-$supplier->getName()-|</option>
+					|-/foreach-|
+				</select>			
+			</p>
+			<p>
+				<label for="code">C贸digo  para el Proveedor</label>
+				<input type="text" id="productSupplier[code]" name="productSupplier[code]" value="|-if $action eq 'edit'-||-$product->getSupplierProductCode()-||-/if-|" title="code" maxlength="255" />
+			</p>
+			<p>
+				|-if $action eq 'edit'-|
+				<input type="hidden" name="product[id]" id="product[id]" value="|-if $action eq 'edit'-||-$product->getid()-||-/if-|" />
+				|-/if-|
+				<input type="hidden" name="action" id="action" value="|-$action-|" />
+				<input type="hidden" name="do" id="do" value="importProductsDoEdit" />
+				<input type="submit" id="button_edit_product" name="button_edit_product" title="Aceptar" value="Aceptar" class="button" />
+			</p>
+		</fieldset>
+	</form>
+</div>

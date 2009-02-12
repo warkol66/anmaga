@@ -1,7 +1,7 @@
 				<h2>Ordenes de Pedido</h2>
 				<div id="div_requests">
-					|-if $message eq "ok"-|<span class="message_ok">Orden de pedido guardado correctamente</span>|-/if-|
-					|-if $message eq "deleted_ok"-|<span class="message_ok">Orden de Pedido eliminado correctamente</span>|-/if-|
+					|-if $message eq "ok"-|<span class="successMessage">Orden de pedido guardado correctamente</span>|-/if-|
+					|-if $message eq "deleted_ok"-|<span class="successMessage">Orden de Pedido eliminado correctamente</span>|-/if-|
 				|-if $loginAffiliateUser neq ""-|							
 					<h3><a href="Main.php?do=importRequestEdit">Agregar Order de Pedido</a></h3>
 				|-/if-|
