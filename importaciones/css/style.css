@@ -1234,10 +1234,10 @@ a.pageLink:hover, a.pageLink:active {
 }
 .tdSearch{
 	width: 95%;
-	height: 35px;	
+	height: 32px;	
 	text-align:left;
 	padding: 4px;
-	vertical-align:middle;
+	vertical-align:top;
 /*	background-color:
 	color: */
 }
@@ -1678,4 +1678,29 @@ a.progressCancel:hover {
 #overDiv a:hover {
 	text-decoration: none;
 	cursor: pointer;
+}
+
+fieldset.nestedFieldset fieldset legend {  
+	background-color: transparent;
+}
+fieldset.nestedFieldset fieldset label {
+	width: 120px;
+	float: left;
+	font-weight: bold;
+	vertical-align: text-top;
+	text-align: right;
+	height: auto;
+	padding-top: 0;
+	margin-bottom: 0;
+	padding-right: 5px;
+	padding-bottom: 5px;
+	display: block;
+}
+fieldset.nestedFieldset fieldset {
+	padding: 5px;
+	margin-left: 0px;
+}
+fieldset.nestedFieldset fieldset label {
+	font-weight: bold;
+	display: inline;
 }

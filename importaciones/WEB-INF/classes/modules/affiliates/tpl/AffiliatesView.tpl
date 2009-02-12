@@ -1,12 +1,12 @@
 <h2>##40,Configuración del Sistema##</h2>
-<h1>Ver Instituciones</h1>
-<p>A contunuación puede ver los datos ingresados al sistema de la Institución: "|-$affiliate->getName()-|".
-<fieldset title="Ver datos de Instituciones">
-<legend>Ver Datos de la Institución</legend>
+<h1>Ver Clientes</h1>
+<p>A contunuación puede ver los datos ingresados al sistema del Cliente: "|-$affiliate->getName()-|".
+<fieldset title="Ver datos de Clientes">
+<legend>Ver Datos del Cliente</legend>
 <p><label for="affiliate[name]">Id</label> 
 	<input name="affiliate[name]" type="text" value="|-$affiliate->getId()-|" size="10" readonly="readonly" />
 </p>
-<p><label for="affiliate[name]">Institución</label> 
+<p><label for="affiliate[name]">Cliente</label> 
 	<input name="affiliate[name]" type="text" value="|-$affiliate->getName()-|" size="60" readonly="readonly" />
 	</p>
 <p><label for="affiliateInfo[affiliateInternalNumber]">Número Interno</label> 

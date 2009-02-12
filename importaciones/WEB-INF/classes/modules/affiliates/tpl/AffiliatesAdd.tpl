@@ -1,5 +1,5 @@
 ﻿<h2>##40,Configuración del Sistema##</h2>
-<h1>Administración de Instituciones</h1>
+<h1>Administración de Clientes</h1>
 <!-- Link VOLVER --> 
 <!-- /Link VOLVER --> 
 |-if $message eq "wrongPassword"-|
@@ -9,28 +9,28 @@
 <div class='errorMessage'>##185,Debe completar el nombre de usuario##</div>
 |-/if-|
 |-if $message eq "emptyAffiliateName"-|
-<div class='errorMessage'>##185,El nombre de la Institución es obligatorio##</div>
+<div class='errorMessage'>##185,El nombre del Cliente es obligatorio##</div>
 |-/if-|
 |-if $message eq "error"-|
 <div class='errorMessage'>##185,Ha ocurrido un error##</div>
 |-/if-|
-<p>A continuación podrá editar la información de las Instituciones.</p>
+<p>A continuación podrá editar la información de las Clientes.</p>
 <form method="post" action="Main.php?do=affiliatesDoAddAffiliate"> 
 
-<fieldset title="Formulario de Alta de Instituciones" class="nestedFieldset">
-<legend>Formulario de Alta de Instituciones</legend>
-	<p>Ingrese los datos de la Institución que se desea agregar y los datos del respectivo usuario administrador.</p>
+<fieldset title="Formulario de Alta de Clientes" class="nestedFieldset">
+<legend>Formulario de Alta de Clientes</legend>
+	<p>Ingrese los datos del Cliente que se desea agregar y los datos del respectivo usuario administrador.</p>
 
-	<fieldset title="Formulario de Datos de Instituciones">
-<legend>Datos de la Institución</legend>
-	<p>Ingrese los datos de la Institución que se desea agregar.</p>
+	<fieldset title="Formulario de Datos de Clientes">
+<legend>Datos del Cliente</legend>
+	<p>Ingrese los datos del Cliente que se desea agregar.</p>
 		|-include file="AffiliatesInfoInclude.tpl"-|	
 </fieldset>
 
 
-<fieldset title="Formulario de edición de Usuarios de Instituciones">
+<fieldset title="Formulario de edición de Usuarios de Clientes">
 <legend>Datos del Usuario Administrador</legend>
-	<p>Ingrese los datos del usuario administrador y haga click en "Agregar Institución "</p>
+	<p>Ingrese los datos del usuario administrador y haga click en "Agregar Cliente"</p>
 	<p><label for="affiliateUser[username]">##162,Identificación de Usuario##</label>
 		<input name='affiliateUser[username]' type='text'  class='textodato' value='|-$user->getUsername()-|' size="40" />
 	</p>

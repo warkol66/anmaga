@@ -1,22 +1,22 @@
 <h2>##40,Configuración del Sistema##</h2>
-<h1>Administración de Instituciones</h1>
+<h1>Administración de Clientes</h1>
 <!-- Link VOLVER -->
 <!-- /Link VOLVER -->
 |-if $accion eq "edicion"-|
-	<p class='paragraphEdit'>##180,Realice los cambios en la institución y haga click en "Aceptar" para guardar las modificaciones.##</p>
+	<p class='paragraphEdit'>##180,Realice los cambios en la cliente y haga click en "Aceptar" para guardar las modificaciones.##</p>
 |-else-|
-	<p>A continuación podrá editar la lista de Instituciones del sistema.</p>
+	<p>A continuación podrá editar la lista de Clientes del sistema.</p>
 |-/if-|
 |-if $message eq "deleted"-|
-<div class='successMessage'>Institución eliminada</div>
+<div class='successMessage'>Cliente eliminada</div>
 |-elseif $message eq "errorUpdate"-|
 <div class='errorMessage'>Ha ocurrido un error al intentar guardar la información. Intente nuevamente.</div>
 |-elseif $message eq "saved"-|
-<div class='successMessage'>Institución guardada</div>
+<div class='successMessage'>Cliente guardada</div>
 |-elseif $message eq "edited"-|
-<div class='successMessage'>##183,Institución guardada##</div>
+<div class='successMessage'>##183,Cliente guardada##</div>
 |-elseif $message eq "blankName"-|
-<div class='errorMessage'>##184,La institución debe tener un Nombre##</div>
+<div class='errorMessage'>##184,La cliente debe tener un Nombre##</div>
 |-elseif $message eq "notAddedToGroup"-|
 <div class='errorMessage'>##185,Ha ocurrido un error al intentar agregar la categoría al grupo##</div>
 |-elseif $message eq "notRemovedFromGroup"-|
@@ -34,11 +34,11 @@
 	</tr>
 	|-if $allFlag eq 1-|
 	<tr>
-		<th colspan='3'><a href='Main.php?do=affiliatesList'>Volver a la selección de Instituciones</a></th>
+		<th colspan='3'><a href='Main.php?do=affiliatesList'>Volver a la selección de Clientes</a></th>
 	</tr>
 	|-/if-|
 	<tr>
-		 <th colspan="3" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=affiliatesAddAffiliate" class="addLink">Agregar Institución</a></div></th>
+		 <th colspan="3" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=affiliatesAddAffiliate" class="addLink">Agregar Cliente</a></div></th>
 	</tr>
 	|-foreach from=$affiliates item=affiliate name=for_affiliate-|
 	<tr>
@@ -55,6 +55,6 @@
 		<td colspan="3" class="pages">|-include file="PaginateInclude.tpl"-|</td>
 	</tr>
 	<tr>
-		 <th colspan="3" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=affiliatesAddAffiliate" class="addLink">Agregar Institución</a></div></th>
+		 <th colspan="3" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=affiliatesAddAffiliate" class="addLink">Agregar Cliente</a></div></th>
 	</tr>
 </table>

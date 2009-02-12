@@ -1,5 +1,5 @@
 <p>
-	<label for="affiliate[name]">Institución</label> 
+	<label for="affiliate[name]">Cliente</label> 
 	<input name="affiliate[name]" type="text" value="|-$affiliate->getName()-|" size="60" />
 	</p>
 <p><label for="affiliateInfo[affiliateInternalNumber]">Número Interno</label> 

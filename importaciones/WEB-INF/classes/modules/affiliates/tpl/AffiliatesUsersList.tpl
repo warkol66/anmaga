@@ -1,11 +1,11 @@
 <h2>##40,Configuración del Sistema##</h2>
-<h1>Administración de Usuarios de Instituciones </h1>
+<h1>Administración de Usuarios de Clientes </h1>
 <!-- Link VOLVER -->
 <!-- /Link VOLVER -->
 |-if $accion eq "edicion"-|
 	<p class='paragraphEdit'>##180,Realice los cambios en el usuario y haga click en "Guardar Cambios" para guardar las modificaciones. ##</p>
 |-else-|
-	<p class='paragraphEdit'>A continuación podrá editar la lista de Usuarios de Instituciones guardados en el Sistema.</p>
+	<p class='paragraphEdit'>A continuación podrá editar la lista de Usuarios de Clientes guardados en el Sistema.</p>
 |-/if-|
 |-if $message eq "deleted"-|
 <div class='successMessage'>##153,Usuario eliminado##</div>
@@ -34,7 +34,7 @@
 	<br />
 <form method='post' action='Main.php?do=affiliatesUsersDoEditUser'>
 	<input type='hidden' name='id' value='|-$currentAffiliateUser->getId()-|' />
-<fieldset title="Formulario de edición de Usuarios de Instituciones">
+<fieldset title="Formulario de edición de Usuarios de Clientes">
 <legend>Datos del Usuario</legend>
 	<p>Ingrese los datos del usuario; para guardar, haga click en "Guardar Cambios"</p>
 	<p><label for="affiliateUser[username]">##162,Identificación de Usuario##</label>
@@ -73,9 +73,9 @@
 				</select>
 		</p>
 	|-if $affiliates|@count > 0-|
-	<p><label for="affiliateId">Institución</label>
+	<p><label for="affiliateId">Cliente</label>
 				<select name='affiliateId'>
-					<option value="">Seleccionar Institución</option>
+					<option value="">Seleccionar Cliente</option>
 					|-foreach from=$affiliates item=affiliate name=for_affiliates-|
 					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $affiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
 					|-/foreach-|
@@ -135,10 +135,10 @@
 |-if $showList-|
 
 |-if $loginUser ne ''-|
-<h3>Ver Usuarios por Institución</h3>
+<h3>Ver Usuarios por Cliente</h3>
 			<form name="affiliateFilter" action="Main.php" method="get">
 <p>			<select name="affiliateId">
-					<option value="0">Seleccione una Institución</option>
+					<option value="0">Seleccione una Cliente</option>
 					<option value="-1">Todas</option>
 				|-foreach from=$affiliates item=affiliate name=for_affiliate-|
 					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $affiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
