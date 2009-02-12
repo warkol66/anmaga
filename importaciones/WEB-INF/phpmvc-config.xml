@@ -1256,95 +1256,70 @@
 <!-- End Module Security -->
 
 
-<!-- Module register-->
-	<action-mappings module="UsersByRegistration">
-		<action    path = "usersByRegistrationLogin"
-							 type = "UsersByRegistrationLoginAction"
-							 name = "usersByRegistrationLogin"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersByRegistrationLogin.tpl"/>
-			<forward name="maintenance" path="Maintenance.tpl"/>
-		</action>
+<!-- Module Backup -->
+  <action-mappings>
+    <action    path = "backupList"
+               type = "BackupListAction"
+               name = "backupList"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="BackupList.tpl" />
+    </action>
 
-		<action    path = "usersByRegistrationDoLogin"
-							 type = "UsersByRegistrationDoLoginAction"
-							 name = "UsersByRegistrationDoLogin"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersByRegistrationWelcome.tpl"/>
-			<forward name="failure" path="UsersByRegistrationLogin.tpl"/>
-		</action>
+    <action    path = "backupCreate"
+               type = "BackupCreateAction"
+               name = "backupCreate"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=backupList&amp;message=created" redirect="true" />
+    <forward name="failure" path="/Main.php?do=backupList&amp;message=create_error" redirect="true" />
+    </action>
 
-		<action    path = "usersByRegistrationPasswordRecovery"
-							 type = "UsersByRegistrationPasswordRecoveryAction"
-							 name = "usersByRegistrationPasswordRecovery"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersByRegistrationPasswordRecovery.tpl"/>
-		</action>
-		
-		<action    path = "usersByRegistrationDoPassRecovery"
-							 type = "UsersByRegistrationDoPassRecoveryAction"
-							 name = "usersByRegistrationDoPassRecovery"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersByRegistrationLogin&amp;message=passwordSent" redirect="true" />
-			<forward name="failure" path="UsersByRegistrationPasswordRecovery.tpl"/>
-		</action>
-		
-		
-		<action    path = "usersByRegistrationDoEdit"
-							 type = "UsersByRegistrationDoEditAction"
-							 name = "usersByRegistrationDoEdit"
-							scope = "request"
-					 validate = "true">
-			<!-- casos de edicion de usuario existente -->
-			<forward name="success_admin" path="/Main.php?do=usersByRegistrationList&amp;message=saved" redirect="true"/>
-			<forward name="failure_admin" path="UsersByRegistrationEdit.tpl"/>
-			<!-- casos de creacion de nuevo usuario -->
-			<forward name="success" path="/Main.php?do=usersByRegistrationLogin&amp;message=user_created" redirect="true" />
-			<forward name="failure" path="UsersByRegistrationEdit.tpl" />
-			<forward name="success_user" path="/Main.php?do=usersByRegistrationDoLogin" redirect="true"/>
-		</action>
+    <action    path = "backupCreateToFile"
+               type = "BackupCreateToFileAction"
+               name = "backupCreateToFile"
+              scope = "request"
+           validate = "true">
+    </action>
 
-		<action    path = "usersByRegistrationEdit"
-						 type = "UsersByRegistrationEditAction"
-						 name = "usersByRegistrationEdit"
-						scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersByRegistrationEdit.tpl"/>
+    <action    path = "backupRestore"
+               type = "BackupRestoreAction"
+               name = "backupRestore"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=backupList&amp;message=restored" redirect="true" />
+    <forward name="failure" path="/Main.php?do=backupList&amp;message=restore_error" redirect="true" />
+    </action>
 
-		</action>
+    <action    path = "backupRestoreFromFile"
+               type = "BackupRestoreFromFileAction"
+               name = "backupRestoreFromFile"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=backupList&amp;message=restored" redirect="true" />
+    <forward name="failure" path="/Main.php?do=backupList&amp;message=restore_error" redirect="true" />
+    </action>
 
-		<action    path = "usersByRegistrationDoDelete"
-							 type = "UsersByRegistrationDoDeleteAction"
-							 name = "usersByRegistrationDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersByRegistrationList&amp;message=deleted" redirect="true" />
-			<forward name="failure" path="/Main.php?do=usersByRegistrationList&amp;message=notdeleted" redirect="true" />
-		</action>
 
-		<action    path = "usersByRegistrationDoLogout"
-							 type = "UsersByRegistrationDoLogoutAction"
-							 name = "usersByRegistrationDoLogout"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersByRegistrationLogin" redirect="true"/>
-		</action>
-		<action    path = "usersByRegistrationList"
-							 type = "UsersByRegistrationListAction"
-							 name = "usersByRegistrationList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersByRegistrationList.tpl"/>
-			<forward name="failure" path="/Main.php?do=usersLogin" redirect="true" />
-						
-		</action>
+    <action    path = "backupDelete"
+               type = "BackupDeleteAction"
+               name = "backupDelete"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=backupList&amp;message=deleted" redirect="true" />
+    <forward name="failure" path="/Main.php?do=backupList&amp;message=delete_error" redirect="true" />
+    </action>
 
-	</action-mappings>
-<!-- End Module register -->
+    <action    path = "backupDownload"
+               type = "BackupDownloadAction"
+               name = "backupDownload"
+              scope = "request"
+           validate = "true">
+    <forward name="failure" path="/Main.php?do=backupList&amp;message=not_exists" redirect="true" />
+    </action>
+
+  </action-mappings>
+<!-- End Module Backup-->
 
 <!-- Module Install -->
 	<action-mappings module="Install">
