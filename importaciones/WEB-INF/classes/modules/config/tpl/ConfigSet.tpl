@@ -1,17 +1,17 @@
 <h2>##40,Configuración del Sistema##</h2>
 <h1>Variables de Configuración del Sistema</h1>
-<!-- Link VOLVER -->
-<!-- /Link VOLVER -->
 <p>A continuación podrá editar las variables de configuración del sistema.</p>
-|-if $message eq "ok"-|<div class='successMessage'>Configuración Guardada!</div>|-/if-|
-|-if $selectedModule ne ""-|Modulo: |-$selectedModule|capitalize-|&nbsp;&nbsp;&nbsp;&nbsp;|-/if-|
+|-if $message eq "ok"-|
+	<div class='successMessage'>Configuración Guardada</div>
+|-/if-|
 <form action="Main.php" method="get">
-	<select name="module" onchange="this.parentNode.submit();">
+<p>|-if $selectedModule ne ""-|Módulo: |-$selectedModule|capitalize-|&nbsp;&nbsp;&nbsp;&nbsp;|-else-|Seleccione el módulo a configurar|-/if-|
+	<select name="module" onchange="this.form.submit();">
 		<option value="">|-if $selectedModule ne ""-|Seleccionar otro|-else-|Seleccionar|-/if-| Módulo</option>
 	|-foreach from=$modules item=blcok name=for_block key=block_name-|
 		<option value="|-$block_name-|">|-$block_name|capitalize-|</option>
 	|-/foreach-|
-	</select>
+	</select></p>
 	<input type="hidden" name="do" value="configSet" />
 </form>
 |-if $selectedModule ne ""-|

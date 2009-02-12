@@ -6,7 +6,8 @@ and $element.element_type ne "TIMEZONE" and $element.element_type ne "LONGTEXT"-
 </li>
 |-else-|
 <li>
-	|-$element_name-|:
+	|-if $element|count_characters:true gt 50-|<span class="configLabel">|-$element_name-|</span>
+	|-else-||-$element_name-||-/if-|
 	|-if $element.element_type eq "Options"-|
 		<select name="config|-$name-|[|-$element_name-|][value]">
 		|-foreach from=$element.element_options item=option name=for_options-|
@@ -30,14 +31,18 @@ and $element.element_type ne "TIMEZONE" and $element.element_type ne "LONGTEXT"-
 			|-/foreach-|
 		</select>
 		<input type="hidden" name="config|-$name-|[|-$element_name-|][element_type]" value="|-$element.element_type-|" />
-	|-elseif $element|count_characters:true gt 90-|
-		<textarea name="config|-$name-|[|-$element_name-|]" cols="60" rows="3" wrap="VIRTUAL">|-$element-|</textarea>
+	|-elseif $element_name|substr:-8|lower eq 'password'-|
+		<input name="config|-$name-|[|-$element_name-|]" type="password" value="|-$element-|" size="15" />
+	|-elseif $element|count_characters:true gt 120-|
+		<textarea name="config|-$name-|[|-$element_name-|]" cols="50" rows="5" wrap="VIRTUAL">|-$element-|</textarea>
+	|-elseif $element|count_characters:true gt 50-|
+		<textarea name="config|-$name-|[|-$element_name-|]" cols="50" rows="3" wrap="VIRTUAL">|-$element-|</textarea>
 	|-elseif $element|count_characters:true gt 30-|
-		<textarea name="config|-$name-|[|-$element_name-|]" cols="60" rows="3" wrap="VIRTUAL">|-$element-|</textarea>
+		<input name="config|-$name-|[|-$element_name-|]" type="text" value="|-$element-|" size="55" />
 	|-elseif $element|count_characters:true lt 5-|
 		<input name="config|-$name-|[|-$element_name-|]" type="text" value="|-$element-|" size="5" />
 	|-else-|
-		<input name="config|-$name-|[|-$element_name-|]" type="text" value="|-$element-|" size="25" />
+		<input name="config|-$name-|[|-$element_name-|]" type="text" value="|-$element-|" size="35" />
 	|-/if-|
 </li>
 |-/if-|

@@ -4,6 +4,6 @@
 	<ul>|-include file=ConfigViewInclude.tpl elements=$element-|</ul>
 </li>
 |-else-|
-<li>|-$element_name-|: |-$element-|</li>
+<li>|-$element_name-|: |-if $element_name|substr:-8|lower eq 'password'-|**********|-else-||-$element-||-/if-|</li>
 |-/if-|
 |-/foreach-|

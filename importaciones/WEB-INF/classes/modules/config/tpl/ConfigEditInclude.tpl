@@ -6,6 +6,7 @@
 	<ul id="config|-$name-|[|-$element_name-|]_ul">|-include file=ConfigEditInclude.tpl elements=$element name="$name[$element_name]"-|</ul>
 </li>
 |-else-|
-<li>|-$element_name-|: <input type="text" name="config|-$name-|[|-$element_name-|]" value="|-$element-|" /> <a class="configLinkImage" href="#" onclick="javascript:deleteConfigAttribute(this.parentNode)"><img src="images/delete-comment-blue.gif" alt="Eliminar" border="0" title="Eliminar" /></a></li>
+<li>|-$element_name-|: <input |-if $element_name|substr:-8|lower eq 'password'-|type="password"|-else-|type="text"|-/if-| name="config|-$name-|[|-$element_name-|]" value="|-$element-|" size="35" /> 
+<a class="configLinkImage" href="#" onclick="javascript:deleteConfigAttribute(this.parentNode)"><img src="images/delete-comment-blue.gif" alt="Eliminar" border="0" title="Eliminar" /></a></li>
 |-/if-|
 |-/foreach-|
