@@ -71,6 +71,8 @@
 	  <column name="status" type="INTEGER" description="Status de Cotizacion" required="true" />
 	  <column name="timestampStatus" type="TIMESTAMP" description="Fecha del ultimo cambio de status" />
 	  <column name="clientQuotationId" type="INTEGER" description="id de cotizacion relacionada" />
+	  <column name="supplierAccessToken" required="true" type="VARCHAR" size="255" description="token de validacion del acceso al proveedor a la orden"/>
+ 	
 	
 		<foreign-key foreignTable="import_clientQuotation" >
 		  <reference local="clientQuotationId" foreign="id" />

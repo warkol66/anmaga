@@ -2,17 +2,26 @@
 //Archivo de configuracion de directorio de phpmvc
 
 //Directorio donde se encuentra phpmvc
-$appServerRootDir	= "/usr/local/lib/php/phpMVCtest";
+$appServerRootDir = "/Users/ak/Work/Proyects/externalsPropel13/";
+
 //Directorio donde se encuentra la aplicacion (sin barra al final)
-$moduleRootDir = "/home/anmagaex/public_html/WEB-INF";
+$moduleRootDir = "/Users/ak/Work/Proyects/importaciones/WEB-INF";
+
 //Directorio donde se encuentra PEAR
-$pearDir = "";
+$pearDir = "/usr/share/php";
 
 //Sistema operativo [UNIX|WINDOWS|MAC]
 $osType = "UNIX";
 
 //Codigo del idioma actual.
-$mluse = "esp";
+$mluse = "";
 
 //Cantidad de licencias de usuarios.
 $licenses = "";
+
+//$timerRun = true;
+
+$noCheckPermissionGlobal = true;
+
+
+?>

@@ -148,6 +148,7 @@ class SupplierQuotationPeer extends BaseSupplierQuotationPeer {
 			$supplierQuotation->setCreatedAt(date('Y-m-d h:m:s'));
 			$supplierQuotation->setStatus(SupplierQuotation::STATUS_NEW);
 			$supplierQuotation->setTimestampStatus(date('Y-m-d h:m:s'));
+			$supplierQuotation->setSupplierAccessToken(SupplierQuotationPeer::generateRandomSupplierAccessCode());
 
 			foreach ($items as $clientQuotationItem) {
 
@@ -162,10 +163,29 @@ class SupplierQuotationPeer extends BaseSupplierQuotationPeer {
 			$supplierQuotation->save();
 			
 		} catch (PropelException $e) {
+			var_dump($e);
 			return false;
 		}
 		
 		return $supplierQuotation;
    }
+
+	/**
+	 * Generador de codigos de Acceso para proveedor
+	 * @return string
+	 */
+	public function generateRandomSupplierAccessCode() {
+		return sha1(date('Y-m-d h:m:s') . 'anmaga');
+	}
+	
+	public function getByAccessToken($token) {
+		
+		$criteria = new Criteria();
+		$criteria->add(SupplierQuotationPeer::SUPPLIERACCESSTOKEN,$token);
+		$result = SupplierQuotationPeer::doSelect($criteria);
+		
+		return $result[0];
+		
+	}
 
 } // SupplierQuotationPeer

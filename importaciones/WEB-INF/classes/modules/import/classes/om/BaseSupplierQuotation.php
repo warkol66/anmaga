@@ -55,6 +55,12 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 	protected $clientquotationid;
 
 	/**
+	 * The value for the supplieraccesstoken field.
+	 * @var        string
+	 */
+	protected $supplieraccesstoken;
+
+	/**
 	 * @var        ClientQuotation
 	 */
 	protected $aClientQuotation;
@@ -232,6 +238,16 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 	public function getClientquotationid()
 	{
 		return $this->clientquotationid;
+	}
+
+	/**
+	 * Get the [supplieraccesstoken] column value.
+	 * token de validacion del acceso al proveedor a la orden
+	 * @return     string
+	 */
+	public function getSupplieraccesstoken()
+	{
+		return $this->supplieraccesstoken;
 	}
 
 	/**
@@ -421,6 +437,26 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 	} // setClientquotationid()
 
 	/**
+	 * Set the value of [supplieraccesstoken] column.
+	 * token de validacion del acceso al proveedor a la orden
+	 * @param      string $v new value
+	 * @return     SupplierQuotation The current object (for fluent API support)
+	 */
+	public function setSupplieraccesstoken($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->supplieraccesstoken !== $v) {
+			$this->supplieraccesstoken = $v;
+			$this->modifiedColumns[] = SupplierQuotationPeer::SUPPLIERACCESSTOKEN;
+		}
+
+		return $this;
+	} // setSupplieraccesstoken()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -463,6 +499,7 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 			$this->status = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
 			$this->timestampstatus = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
 			$this->clientquotationid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->supplieraccesstoken = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -472,7 +509,7 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 6; // 6 = SupplierQuotationPeer::NUM_COLUMNS - SupplierQuotationPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 7; // 7 = SupplierQuotationPeer::NUM_COLUMNS - SupplierQuotationPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating SupplierQuotation object", $e);
@@ -817,6 +854,7 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(SupplierQuotationPeer::STATUS)) $criteria->add(SupplierQuotationPeer::STATUS, $this->status);
 		if ($this->isColumnModified(SupplierQuotationPeer::TIMESTAMPSTATUS)) $criteria->add(SupplierQuotationPeer::TIMESTAMPSTATUS, $this->timestampstatus);
 		if ($this->isColumnModified(SupplierQuotationPeer::CLIENTQUOTATIONID)) $criteria->add(SupplierQuotationPeer::CLIENTQUOTATIONID, $this->clientquotationid);
+		if ($this->isColumnModified(SupplierQuotationPeer::SUPPLIERACCESSTOKEN)) $criteria->add(SupplierQuotationPeer::SUPPLIERACCESSTOKEN, $this->supplieraccesstoken);
 
 		return $criteria;
 	}
@@ -880,6 +918,8 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 		$copyObj->setTimestampstatus($this->timestampstatus);
 
 		$copyObj->setClientquotationid($this->clientquotationid);
+
+		$copyObj->setSupplieraccesstoken($this->supplieraccesstoken);
 
 
 		if ($deepCopy) {

@@ -23,5 +23,32 @@
  * @package    anmaga
  */
 class SupplierQuotationItemPeer extends BaseSupplierQuotationItemPeer {
+	
+  /**
+  * Actualiza la informacion de un supplier quotation item dado.
+  *
+  * @param array $params Array asociativo con los atributos del objeto
+  * @return boolean true si se actualizo la informacion correctamente, false sino
+  */  
+  function update($params) {
+    try {
+      $supplierquotationItemObj = SupplierQuotationItemPeer::retrieveByPK($params["id"]);    
+      if (empty($supplierquotationItemObj))
+        throw new Exception();
+      foreach ($params as $key => $value) {
+        $setMethod = "set".$key;
+        if ( method_exists($supplierquotationItemObj,$setMethod) ) {          
+          if (!empty($value))
+            $supplierquotationItemObj->$setMethod($value);
+          else
+            $supplierquotationItemObj->$setMethod(null);
+        }
+      }
+      $supplierquotationItemObj->save();
+      return $supplierquotationItemObj;
+    } catch (Exception $exp) {
+      return false;
+    }         
+  }	
 
 } // SupplierQuotationItemPeer

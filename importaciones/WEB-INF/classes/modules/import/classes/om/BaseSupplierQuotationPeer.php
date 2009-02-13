@@ -19,7 +19,7 @@ abstract class BaseSupplierQuotationPeer {
 	const CLASS_DEFAULT = 'import.classes.SupplierQuotation';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 6;
+	const NUM_COLUMNS = 7;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -42,6 +42,9 @@ abstract class BaseSupplierQuotationPeer {
 	/** the column name for the CLIENTQUOTATIONID field */
 	const CLIENTQUOTATIONID = 'import_supplierQuotation.CLIENTQUOTATIONID';
 
+	/** the column name for the SUPPLIERACCESSTOKEN field */
+	const SUPPLIERACCESSTOKEN = 'import_supplierQuotation.SUPPLIERACCESSTOKEN';
+
 	/**
 	 * An identiy map to hold any loaded instances of SupplierQuotation objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -63,11 +66,11 @@ abstract class BaseSupplierQuotationPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Createdat', 'Supplierid', 'Status', 'Timestampstatus', 'Clientquotationid', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdat', 'supplierid', 'status', 'timestampstatus', 'clientquotationid', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATEDAT, self::SUPPLIERID, self::STATUS, self::TIMESTAMPSTATUS, self::CLIENTQUOTATIONID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'createdAt', 'supplierId', 'status', 'timestampStatus', 'clientQuotationId', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Createdat', 'Supplierid', 'Status', 'Timestampstatus', 'Clientquotationid', 'Supplieraccesstoken', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdat', 'supplierid', 'status', 'timestampstatus', 'clientquotationid', 'supplieraccesstoken', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATEDAT, self::SUPPLIERID, self::STATUS, self::TIMESTAMPSTATUS, self::CLIENTQUOTATIONID, self::SUPPLIERACCESSTOKEN, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'createdAt', 'supplierId', 'status', 'timestampStatus', 'clientQuotationId', 'supplierAccessToken', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
 	/**
@@ -77,11 +80,11 @@ abstract class BaseSupplierQuotationPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Createdat' => 1, 'Supplierid' => 2, 'Status' => 3, 'Timestampstatus' => 4, 'Clientquotationid' => 5, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdat' => 1, 'supplierid' => 2, 'status' => 3, 'timestampstatus' => 4, 'clientquotationid' => 5, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATEDAT => 1, self::SUPPLIERID => 2, self::STATUS => 3, self::TIMESTAMPSTATUS => 4, self::CLIENTQUOTATIONID => 5, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'createdAt' => 1, 'supplierId' => 2, 'status' => 3, 'timestampStatus' => 4, 'clientQuotationId' => 5, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Createdat' => 1, 'Supplierid' => 2, 'Status' => 3, 'Timestampstatus' => 4, 'Clientquotationid' => 5, 'Supplieraccesstoken' => 6, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdat' => 1, 'supplierid' => 2, 'status' => 3, 'timestampstatus' => 4, 'clientquotationid' => 5, 'supplieraccesstoken' => 6, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATEDAT => 1, self::SUPPLIERID => 2, self::STATUS => 3, self::TIMESTAMPSTATUS => 4, self::CLIENTQUOTATIONID => 5, self::SUPPLIERACCESSTOKEN => 6, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'createdAt' => 1, 'supplierId' => 2, 'status' => 3, 'timestampStatus' => 4, 'clientQuotationId' => 5, 'supplierAccessToken' => 6, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
 	/**
@@ -174,6 +177,8 @@ abstract class BaseSupplierQuotationPeer {
 		$criteria->addSelectColumn(SupplierQuotationPeer::TIMESTAMPSTATUS);
 
 		$criteria->addSelectColumn(SupplierQuotationPeer::CLIENTQUOTATIONID);
+
+		$criteria->addSelectColumn(SupplierQuotationPeer::SUPPLIERACCESSTOKEN);
 
 	}
 

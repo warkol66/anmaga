@@ -74,6 +74,8 @@ class SupplierQuotationMapBuilder implements MapBuilder {
 
 		$tMap->addForeignKey('CLIENTQUOTATIONID', 'Clientquotationid', 'INTEGER', 'import_clientQuotation', 'ID', false, null);
 
+		$tMap->addColumn('SUPPLIERACCESSTOKEN', 'Supplieraccesstoken', 'VARCHAR', true, 255);
+
 	} // doBuild()
 
 } // SupplierQuotationMapBuilder

@@ -119,6 +119,18 @@
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
 			</usersByRegistrationDoPassRecovery>
+			<importSupplierQuoteAccess>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</importSupplierQuoteAccess>
+			<importSupplierQuoteItemAccess>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</importSupplierQuoteItemAccess>
+			<importSupplierQuoteDoEditItem>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</importSupplierQuoteDoEditItem>
 		</noCheckLoginActions>
 		<rowsPerPage>10</rowsPerPage>
 	</system>

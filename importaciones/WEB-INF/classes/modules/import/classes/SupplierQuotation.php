@@ -35,5 +35,22 @@ class SupplierQuotation extends BaseSupplierQuotation {
 		return $this->statusNames[$this->getStatus()];
 	}
 	
+	/**
+	 * Obtiene un cierto elemento de la cotizacion
+	 * @param integer $id id del elemento a obtener
+	 */
+	public function getSupplierQuotationItem($id) {
+
+		require_once('SupplierQuotationItemPeer.php');
+		
+		$criteria = new Criteria();
+		$criteria->add(SupplierQuotationItemPeer::SUPPLIERQUOTATIONID,$this->getId());
+		$criteria->add(SupplierQuotationItemPeer::ID,$id);
+		
+		$result = $this->getSupplierQuotationItems($criteria);
+		return $result[0];
+	}
+	
+	
 
 } // SupplierQuotation

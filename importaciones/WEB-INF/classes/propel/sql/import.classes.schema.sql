@@ -121,6 +121,7 @@ CREATE TABLE `import_supplierQuotation`
 	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
 	`timestampStatus` DATETIME COMMENT 'Fecha del ultimo cambio de status',
 	`clientQuotationId` INTEGER COMMENT 'id de cotizacion relacionada',
+	`supplierAccessToken` VARCHAR(255)  NOT NULL COMMENT 'token de validacion del acceso al proveedor a la orden',
 	PRIMARY KEY (`id`),
 	INDEX `import_supplierQuotation_FI_1` (`clientQuotationId`),
 	CONSTRAINT `import_supplierQuotation_FK_1`

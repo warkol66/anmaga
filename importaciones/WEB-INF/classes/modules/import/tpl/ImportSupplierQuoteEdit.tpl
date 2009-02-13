@@ -16,6 +16,9 @@
 		Proveedor Asignado: |-$supplier->getName()-|
 	</p>
 	<p>
+		Codigo de acceso del Proveedor: |-$supplierQuotation->getSupplierAccessToken()-|
+	</p>	
+	<p>
 		|-assign var=clientQuotation value=$supplierQuotation->getClientQuotation()-|
 		Solicitud de Cotización de Cliente Relacionada: <a href="Main.php?do=importClientQuoteEdit&amp;id=|-$clientQuotation->getId()-|">|-$clientQuotation->getId()-|</a>
 	</p>
@@ -24,5 +27,5 @@
 <h1>Productos a cotizar por el proveedor</h1>
 
 <div id="supplierQuotationItemsHolder">
-		|-include file='ImportSupplierQuoteItemsListInclude.tpl' supplierQuotation=$supplierQuotation-|
+		|-include file='ImportSupplierQuoteItemsAdminListInclude.tpl' supplierQuotation=$supplierQuotation-|
 </div>
