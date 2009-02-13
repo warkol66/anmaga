@@ -12,7 +12,7 @@ function importAddItemToClientQuotationX(form) {
 					insertion: Insertion.Bottom
 				});
 				
-	$('clientQuotationAdderMsgBox').innerHTML = 'agregando item...';
+	$('clientQuotationAdderMsgBox').innerHTML = '<span class="inProgress">... agregando item ... </span>';
 	
 	return true;
 }
