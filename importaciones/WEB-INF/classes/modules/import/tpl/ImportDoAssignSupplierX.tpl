@@ -1,6 +1,6 @@
 <script type="text/javascript" language="javascript" charset="utf-8">
 // <![CDATA[
-	var message = "Se ha realizado la asignacion al Supplier y se ha modificado el estado de la Product Request";
+	var message = "<span class='resultSuccess'>Se ha realizado la asignación al Proveedor y se ha modificado el estado de la solicitud</span>";
 	$('msgBox').innerHTML = message;
 	$('msgBox').show();
 	$('productRequestStatus').innerHTML = '|- $productRequest->getStatus()-|';

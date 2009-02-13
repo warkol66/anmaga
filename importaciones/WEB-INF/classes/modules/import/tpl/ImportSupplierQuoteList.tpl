@@ -1,6 +1,6 @@
 <h2>Importaciones</h2>
 <h1>Cotizaciones de Proveedor</h1>
-<p>A continuación puede ver el listado de sus pedidos de cotizacion a proveedores y sus correspondientes estados.</p>
+<p>A continuación puede ver el listado de sus pedidos de cotización a proveedores y sus correspondientes estados.</p>
 
 <div id="div_messages">
 </div>

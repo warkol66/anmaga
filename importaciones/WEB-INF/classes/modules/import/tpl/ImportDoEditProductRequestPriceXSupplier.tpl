@@ -1,6 +1,6 @@
 <script language="JavaScript" type="text/javascript">
 // <![CDATA[
-	var message = "Precio Actualizado";
+	var message = "<span class='resultSuccess'>Precio Actualizado</span>";
 	$('msgBox').innerHTML = message;
 	$('msgBox').show();
 	$('productRequestStatus').innerHTML = "|-$productRequest->getStatus()-|";

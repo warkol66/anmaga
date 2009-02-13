@@ -4,7 +4,7 @@
 	<table id="clientQuotationItemList" cellpadding="4" cellspacing="0" class="tableTdBorders">
 		<tr>
 			<th></th>
-			<th>Codigo</th>
+			<th>Código</th>
 			<th>Nombre</th>
 			<th>Cantidad</th>
 			<th>Precio Unitario Cliente</th>
@@ -34,7 +34,7 @@
 		</select>
 		<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
 		<input type="hidden" name="do" value="importSupplierQuoteCreate" />
-		<input type="submit" value="Generar Cotizacion a Proveedor con los seleccionados" />
+		<input type="submit" value="Generar Cotización a Proveedor con los seleccionados" />
 	</p>
 </form>
 

@@ -1,11 +1,15 @@
 <h2>Importaciones</h2>
-<h1>Cotizaciones de Cliente</h1>
-<p>A continuación puede ver el listado de sus pedidos de cotizacion y sus correspondientes estados.</p>
+<h1>Cotizaciones de Clientes</h1>
+<p>A continuación puede ver el listado de sus solicitudes de cotización y sus correspondiente estado.</p>
 
 <div id="div_messages">
-	|-if $message eq "created"-|<div class="successMessage">Cotizacion creada correctamente. Puedo agregarle elementos accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuotationId-|" >link</a></div>|-/if-|
-	|-if $message eq "create-failed"-|<div class="successMessage">Se ha producido un error al crear la cotizacion</div>|-/if-|
-	|-if $message eq "confirmed"-|<div class="successMessage">Cotizacion confirmada correctamente. Puedo ver su detalle accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuotationId-|" >link</a></div>|-/if-|
+	|-if $message eq "created"-|
+		<div class="successMessage">Cotización creada correctamente. Puedo agregarle elementos accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuotationId-|" >link</a></div>
+	|-elseif $message eq "create-failed"-|
+		<div class="successMessage">Se ha producido un error al crear la cotización</div>
+	|-elseif $message eq "confirmed"-|
+		<div class="successMessage">Cotización confirmada correctamente. Puedo ver su detalle accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuotationId-|" >link</a></div>
+	|-/if-|
 
 </div>
 
@@ -14,17 +18,16 @@
 		<thead>
 			<tr>
 				<th colspan="7" class="thFillTitle">
-					<div class="rightLink">
 						<form action="Main.php" method="post" >
 							<select name="clientQuotation[userId]">
+									<option value="">Seleccione un cliente</option>
 								|-foreach from=$affiliates item=affiliate name=for_affiliates-|
 									<option value="|-$affiliate->getId()-|">|-$affiliate->getUsername()-|</option>
 								|-/foreach-|
 							</select>
 							<input type="hidden" name="do" value="importClientQuoteCreate" />
-							<input type="submit" value="Crear Nueva Cotizacion" />
+							<input type="submit" value="Crear Nueva Cotización" />
 						</form>
-					</div>
 				</th>
 			</tr>
 			<tr>
@@ -43,7 +46,7 @@
 					|-assign var=client value=$quotation->getAffiliateUser()-|
 					|-$client->getUsername()-|
 				</td>
-				<td>|-$quotation->getCreatedAt()-|</td>
+				<td>|-$quotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
 				<td>|-$quotation->getStatusName()-|</td>
 				<td>
 					<form action="Main.php" method="get">						

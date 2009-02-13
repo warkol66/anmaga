@@ -1,7 +1,7 @@
 <div id="supplierQuotationItemLister">
 	<table id="supplierQuotationItemList" cellpadding="4" cellspacing="0" class="tableTdBorders">
 		<tr>
-			<th>Codigo</th>
+			<th>Código</th>
 			<th>Nombre</th>
 			<th>Cantidad Pedida</th>
 			<th>Precio Unitario del Proveedor</th>			

@@ -1,12 +1,15 @@
 <h2>Importaciones</h2>
 <h1>Cotizaciones</h1>
-<p>A continuación puede ver el listado de sus pedidos de cotizacion y sus correspondientes estados.</p>
+<p>A continuación puede ver el listado de sus pedidos de cotización y sus correspondientes estados.</p>
 
 <div id="div_messages">
-	|-if $message eq "created"-|<div class="successMessage">Cotizacion creada correctamente. Puedo agregarle elementos accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuotationId-|" >link</a></div>|-/if-|
-	|-if $message eq "create-failed"-|<div class="successMessage">Se ha producido un error al crear la cotizacion</div>|-/if-|
-	|-if $message eq "confirmed"-|<div class="successMessage">Cotizacion confirmada correctamente. Puedo ver su detalle accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuotationId-|" >link</a></div>|-/if-|
-
+	|-if $message eq "created"-|
+		<div class="successMessage">Cotización creada correctamente. Puedo agregarle elementos accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuotationId-|" >link</a></div>
+	|-elseif $message eq "create-failed"-|
+		<div class="successMessage">Se ha producido un error al crear la cotización</div>
+	|-elseif $message eq "confirmed"-|
+		<div class="successMessage">Cotización confirmada correctamente. Puedo ver su detalle accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuotationId-|" >link</a></div>
+	|-/if-|
 </div>
 
 <div id="div_newsmedias">
@@ -18,7 +21,7 @@
 						<form action="Main.php" method="post" >
 							<input type="hidden" name="clientQuotation[userId]" value="|-$affiliate->getId()-|" id="userId" />
 							<input type="hidden" name="do" value="importClientQuoteCreate" />
-							<input type="submit" value="Crear Nueva Cotizacion" />
+							<input type="submit" value="Crear Nueva Cotización" />
 						</form>
 					</div>
 				</th>

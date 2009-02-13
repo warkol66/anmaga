@@ -1,7 +1,7 @@
 <div id="clientQuotationItemLister">
 	<table id="clientQuotationItemList" cellpadding="4" cellspacing="0" class="tableTdBorders">
 		<tr>
-			<th>Codigo</th>
+			<th>Código</th>
 			<th>Nombre</th>
 			<th>Cantidad</th>
 			<th>Precio Unitario</th>			

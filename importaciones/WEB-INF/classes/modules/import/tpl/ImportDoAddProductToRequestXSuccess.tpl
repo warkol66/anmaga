@@ -10,7 +10,8 @@
 	|-assign var="product" value=$productPeer->get($productReq->getProductId())-|
 <tr id="productRequest_|-$productReq->getId()-|">	
 	<td class="size2"><div class='titulo2'></div>|-$product->getName()-|</td>
-	<td class="size2">|-$productReq->getQuantity()-|</td>	<td class="size2">|-$productReq->getPriceClient()-|</td>
+	<td class="size2">|-$productReq->getQuantity()-|</td>
+	<td class="size2">|-$productReq->getPriceClient()-|</td>
 	<td class="size2">|-$productReq->getStatus()-|</td>
 
 	<td class='tdSize1 center cellTextOptions' nowrap> 

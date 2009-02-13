@@ -1,6 +1,6 @@
 |- if $item neq '' -|
 <script type="text/javascript">
-	$('clientQuotationAdderMsgBox').innerHTML = 'se ha agregado el producto a la cotizacion.';
+	$('clientQuotationAdderMsgBox').innerHTML = '<span class="resultSuccess">Se ha agregado el producto a la solicitud</span>';
 </script>
 
 |-assign var=product value=$item->getProduct()-|
@@ -13,7 +13,7 @@
 |-else-|
 
 <script type="text/javascript">
-	$('clientQuotationAdderMsgBox').innerHTML = 'ha ocurrido un error al agregar el producto.';
+	$('clientQuotationAdderMsgBox').innerHTML = '<span class="resultFailure">Ha ocurrido un error al agregar el producto</span>';
 </script>
 
 |-/if-|
