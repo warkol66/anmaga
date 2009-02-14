@@ -4,6 +4,9 @@
 	</div>
 
 	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products"> 
+		<COL>
+		<COL>
+		<COL id="description" class="colCollapse">
 		<thead> 
 		<tr>
 			<td colspan="7" class="pages">|-include file="PaginateNumberedInclude.tpl"-|</td>
