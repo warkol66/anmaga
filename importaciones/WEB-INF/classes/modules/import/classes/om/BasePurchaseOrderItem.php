@@ -38,7 +38,7 @@ abstract class BasePurchaseOrderItem extends BaseObject  implements Persistent {
 
 	/**
 	 * The value for the price field.
-	 * @var        int
+	 * @var        double
 	 */
 	protected $price;
 
@@ -125,7 +125,7 @@ abstract class BasePurchaseOrderItem extends BaseObject  implements Persistent {
 	/**
 	 * Get the [price] column value.
 	 * Id producto
-	 * @return     int
+	 * @return     double
 	 */
 	public function getPrice()
 	{
@@ -213,13 +213,13 @@ abstract class BasePurchaseOrderItem extends BaseObject  implements Persistent {
 	/**
 	 * Set the value of [price] column.
 	 * Id producto
-	 * @param      int $v new value
+	 * @param      double $v new value
 	 * @return     PurchaseOrderItem The current object (for fluent API support)
 	 */
 	public function setPrice($v)
 	{
 		if ($v !== null) {
-			$v = (int) $v;
+			$v = (double) $v;
 		}
 
 		if ($this->price !== $v) {
@@ -290,7 +290,7 @@ abstract class BasePurchaseOrderItem extends BaseObject  implements Persistent {
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->productid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->supplierpurchaseorderid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-			$this->price = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+			$this->price = ($row[$startcol + 3] !== null) ? (double) $row[$startcol + 3] : null;
 			$this->quantity = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
 			$this->resetModified();
 

@@ -44,7 +44,7 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 
 	/**
 	 * The value for the price field.
-	 * @var        int
+	 * @var        double
 	 */
 	protected $price;
 
@@ -168,7 +168,7 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	/**
 	 * Get the [price] column value.
 	 * precio de producto
-	 * @return     int
+	 * @return     double
 	 */
 	public function getPrice()
 	{
@@ -300,13 +300,13 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	/**
 	 * Set the value of [price] column.
 	 * precio de producto
-	 * @param      int $v new value
+	 * @param      double $v new value
 	 * @return     SupplierQuotationItem The current object (for fluent API support)
 	 */
 	public function setPrice($v)
 	{
 		if ($v !== null) {
-			$v = (int) $v;
+			$v = (double) $v;
 		}
 
 		if ($this->price !== $v) {
@@ -426,7 +426,7 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 			$this->supplierquotationid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->productid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
 			$this->clientquotationitemid = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-			$this->price = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->price = ($row[$startcol + 4] !== null) ? (double) $row[$startcol + 4] : null;
 			$this->quantity = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
 			$this->portid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
 			$this->incotermid = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;

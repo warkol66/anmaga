@@ -44,7 +44,7 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 
 	/**
 	 * The value for the price field.
-	 * @var        int
+	 * @var        double
 	 */
 	protected $price;
 
@@ -145,8 +145,8 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 
 	/**
 	 * Get the [price] column value.
-	 * Id producto
-	 * @return     int
+	 * Precio del producto
+	 * @return     double
 	 */
 	public function getPrice()
 	{
@@ -257,14 +257,14 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 
 	/**
 	 * Set the value of [price] column.
-	 * Id producto
-	 * @param      int $v new value
+	 * Precio del producto
+	 * @param      double $v new value
 	 * @return     ClientPurchaseOrderItem The current object (for fluent API support)
 	 */
 	public function setPrice($v)
 	{
 		if ($v !== null) {
-			$v = (int) $v;
+			$v = (double) $v;
 		}
 
 		if ($this->price !== $v) {
@@ -336,7 +336,7 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 			$this->clientpurchaseorderid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->clientquotationitemid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
 			$this->productid = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-			$this->price = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->price = ($row[$startcol + 4] !== null) ? (double) $row[$startcol + 4] : null;
 			$this->quantity = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
 			$this->resetModified();
 

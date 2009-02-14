@@ -68,7 +68,7 @@ class PurchaseOrderItemMapBuilder implements MapBuilder {
 
 		$tMap->addForeignKey('SUPPLIERPURCHASEORDERID', 'Supplierpurchaseorderid', 'INTEGER', 'import_supplierPurchaseOrder', 'ID', true, null);
 
-		$tMap->addColumn('PRICE', 'Price', 'INTEGER', false, null);
+		$tMap->addColumn('PRICE', 'Price', 'FLOAT', false, null);
 
 		$tMap->addColumn('QUANTITY', 'Quantity', 'INTEGER', false, null);
 

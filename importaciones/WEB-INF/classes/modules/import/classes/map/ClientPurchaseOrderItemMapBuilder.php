@@ -70,7 +70,7 @@ class ClientPurchaseOrderItemMapBuilder implements MapBuilder {
 
 		$tMap->addForeignPrimaryKey('PRODUCTID', 'Productid', 'INTEGER' , 'import_product', 'ID', true, null);
 
-		$tMap->addColumn('PRICE', 'Price', 'INTEGER', false, null);
+		$tMap->addColumn('PRICE', 'Price', 'FLOAT', false, null);
 
 		$tMap->addColumn('QUANTITY', 'Quantity', 'INTEGER', false, null);
 
