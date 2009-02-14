@@ -6,3 +6,6 @@
 	height: 58px;
 	border-bottom: solid #00008B thin;
 }
+.headText {
+	display: none;
+}

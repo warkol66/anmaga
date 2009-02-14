@@ -5,6 +5,7 @@
 	</tr> 
 	<tr> 
 		<td><!--fin encabezado --> 
+				<center> 
 			<table border='0' cellpadding='0' cellspacing='0' width='520' align='center'> 
 				<tr> 
 					<td>&nbsp;</td> 
@@ -30,7 +31,6 @@
 				</tr> 
 			</table> 
 			<form method='post' action="Main.php?do=usersDoLogin"> 
-				<center> 
 					<table width='520' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'> 
 						<tr> 
 							<td colspan='2' class='tdTitle'>Ingrese su Identificaci&oacute;n de usuario y contrase&ntilde;a para ingresar al sistema</td> 
@@ -60,8 +60,8 @@
 							<td colspan='2' class='buttonCell' align='center'><input type='submit' value='Ingresar' class='button' /></td> 
 						</tr> 
 					</table> 
-				</center> 
 			</form> 
+				</center> 
 			<br /> 
 			<br /> 
 			<br /> 
