@@ -7,21 +7,21 @@
 			<th>Código</th>
 			<th>Nombre</th>
 			<th>Cantidad</th>
-			<th>Precio Unitario Cliente</th>
+			<th>Precio al Cliente</th>
 			<th>Proveedor</th>			
-			<th>Precio Unitario Cotizado por Proveedor</th>			
+			<th>Precio del Proveedor</th>			
 		</tr>
 		|-foreach from=$clientQuotation->getClientQuotationItems() item=item name=for_clientQuotationsItems-|
 		|-assign var=product value=$item->getProduct()-|
 		<tr>
-			<th>|-if not $item->hasASupplierQuotationRelated()-|<input type="checkbox" name="clientQuoteItems[]" value="|-$item->getId()-|" />|-/if-|</th>
+			<th>|-if not $item->hasASupplierQuotationRelated()-|<input type="checkbox" name="clientQuoteItems[]" value="|-$item->getId()-|" />|-else-|<input type="checkbox" name="Quoted" value="" disabled="disabled"/>|-/if-|</th>
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
 			<td>|-$item->getQuantity()-|</td>
-			<td>|-$item->getPrice()-|</td>			
+			<td>|-if $item->getPrice() eq 0-|No se ha cotizado|-else-||-$item->getPrice()|number_format:2:",":"."-||-/if-|</td>			
 			|-assign var=supplierQuotationItem value=$item->getSupplierQuotationItem()-|
 			<td>|-if $supplierQuotationItem neq ''-||-assign var=supplierQuotation value=$supplierQuotationItem->getSupplierQuotation() -||-assign var=supplier value=$supplierQuotation->getSupplier()-||-$supplier->getName()-||-/if-|</td>
-			<td>|-if $supplierQuotationItem neq ''-||-$supplierQuotationItem->getPrice()-||-/if-|</td>			
+			<td>|-if $supplierQuotationItem neq ''-||-if $supplierQuotationItem->getPrice() eq 0-|No se ha cotizado|-else-||-$supplierQuotationItem->getPrice()|number_format:2:",":"."-||-/if-||-/if-|</td>			
 		</tr>
 		|-/foreach-|
 	</table>

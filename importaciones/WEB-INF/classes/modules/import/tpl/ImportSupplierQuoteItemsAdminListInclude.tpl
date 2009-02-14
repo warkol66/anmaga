@@ -1,7 +1,7 @@
 <div id="supplierQuotationItemLister">
 	<table id="supplierQuotationItemList" cellpadding="4" cellspacing="0" class="tableTdBorders">
 		<tr>
-			<th>Codigo</th>
+			<th>Código</th>
 			<th>Nombre</th>
 			<th>Cantidad Pedida</th>
 			<th>Precio Unitario del Proveedor</th>			
@@ -12,7 +12,7 @@
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
 			<td>|-$item->getQuantity()-|</td>
-			<td>|-$item->getPrice()-|</td>			
+			<td>|-if $item->getPrice() eq 0-|No se ha cotizado|-else-||-$item->getPrice()|number_format:2:",":"."-||-/if-|</td>			
 		</tr>
 		|-/foreach-|
 	</table>
