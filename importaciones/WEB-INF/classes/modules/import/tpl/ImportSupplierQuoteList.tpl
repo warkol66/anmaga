@@ -19,6 +19,7 @@
 				<th>Proveedor</th>
 				<th>Fecha</th>
 				<th>Estado</th>
+				<th>Completar</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -32,6 +33,7 @@
 				</td>
 				<td>|-$quotation->getCreatedAt()-|</td>
 				<td>|-$quotation->getStatusName()-|</td>
+				<td><a href="Main.php?do=importSupplierQuoteAccess&token=|-$quotation->getSupplierAccessToken()-|">Completar</a></td>
 				<td>
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importSupplierQuoteEdit" />
