@@ -1,45 +1,33 @@
 <?php
-
+/** 
+ * InstallDoSetupMessagesAction
+ *
+ * @package install 
+ */
 
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
 require_once("ActionLogLabel.php");
 
-
-/**
-* Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
-* compiling PHP template engine within php.MVC.
-*
-* @author John C Wildenauer
-* @version 1.0
-* @public
-*/
 class InstallDoSetupMessagesAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function InstallDoSetupMessagesAction() {
 		;
 	}
 
+	function executeSuccess($mapping) {
+		
+		$myRedirectConfig = $mapping->findForwardConfig('success');
+		$myRedirectPath = $myRedirectConfig->getpath();
+		$queryData = '&moduleName='.$_POST["moduleName"];
+		if (isset($_POST['mode']))
+			$queryData .= '&mode=' . $_POST['mode'];		
+		$myRedirectPath .= $queryData;
+		$fc = new ForwardConfig($myRedirectPath, True);
+		return $fc;
+		
+	}
 
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
 		BaseAction::execute($mapping, $form, $request, $response);
@@ -57,15 +45,20 @@ class InstallDoSetupMessagesAction extends BaseAction {
 		}
 
 		//asigno modulo
-		$modulo = "Install";
-		$smarty->assign("modulo",$modulo);
+		$moduleLabel = "Install";
+		$smarty->assign("moduleLabel",$moduleLabel);
  
 		$modulePeer = new ModulePeer();
 
 		if (!isset($_POST['moduleName'])) {
 			return $mapping->findForwardConfig('failure');			
-		}
+		}		
 
+		//salto de paso
+		if (isset($_POST['skip'])) {
+			return $this->executeSuccess($mapping);
+		}
+		
 		$modulePath = "WEB-INF/classes/modules/" . $_POST['moduleName'] . '/';
 				
 		$fd = fopen($modulePath  . 'messages.sql','w');
@@ -96,14 +89,13 @@ class InstallDoSetupMessagesAction extends BaseAction {
 		}
 
 		fclose($fd);
+		
+		//solamente se ejecuta este paso
+		if (isset($_POST['stepOnly'])) {
+			return $mapping->findForwardConfig('success-step');			
+		}
 	
-		$myRedirectConfig = $mapping->findForwardConfig('success');
-		$myRedirectPath = $myRedirectConfig->getpath();
-		$queryData = '&moduleName='.$_POST["moduleName"];
-		$myRedirectPath .= $queryData;
-		$fc = new ForwardConfig($myRedirectPath, True);
-		return $fc;
+		return $this->executeSuccess($mapping);
 	}
 
 }
-?>

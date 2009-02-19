@@ -1,44 +1,38 @@
 <?php
+/** 
+ * InstallSetupMessagesAction
+ *
+ * @package install 
+ */
 
-require_once('includes/assoc_array2xml.php');
+require_once("includes/assoc_array2xml.php");
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
 
-
-/**
-* Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
-* compiling PHP template engine within php.MVC.
-*
-* @author John C Wildenauer
-* @version 1.0
-* @public
-*/
 class InstallSetupMessagesAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function InstallSetupMessagesAction() {
 		;
 	}
 
+	function filterMessages($module,$messages) {
 
-	// ----- Public Methods ------------------------------------------------- //
+		$path = "WEB-INF/classes/modules/" . $module . "/actions/";
 
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
+		$filteredMessages = array();
+
+		foreach ($messages as $key => $value) {
+			$actionFile = $path . ucfirst($key) . 'Action.php';
+			$actionFileContents = '';
+			$actionFileContents = file_get_contents($actionFile);
+			if (preg_match('(Common::doLog)',$actionFileContents) >= 1) {	
+				$filteredMessages["$key"] = $value;
+			}
+		}
+		
+		return $filteredMessages;
+	}
+
 	function execute($mapping, $form, &$request, &$response) {
 
 		BaseAction::execute($mapping, $form, $request, $response);
@@ -56,8 +50,12 @@ class InstallSetupMessagesAction extends BaseAction {
 		}
 
 		//asigno modulo
-		$modulo = "Install";
-		$smarty->assign("modulo",$modulo);
+		$moduleLabel = "Install";
+		$smarty->assign("moduleLabel",$moduleLabel);
+
+		$languages = array('1' => esp);
+//		$languages = array('1' => esp, '2' => 'eng');
+		$smarty->assign("languages",$languages);
  
 		$modulePeer = new ModulePeer();
 
@@ -93,12 +91,36 @@ class InstallSetupMessagesAction extends BaseAction {
 			}
 		
 		}
+		
+		if (isset($_GET['mode']) && $_GET['mode'] == 'reinstall') {
+			
+			$smarty->assign('mode',$_GET['mode']);
+			
+			require_once('ActionLogLabelPeer.php');
+			
+			$actualMessages = array();
+			
+			foreach ($messages as $action => $forwards) {
+				
+				foreach ($forwards as $forward) {
+					$english = ActionLogLabelPeer::getAllByInfo($action,$forward,'eng');
+					$spanish = ActionLogLabelPeer::getAllByInfo($action,$forward,'esp');
+					if (!empty($english))
+						$actualMessages[$action][$forward]['eng'] = $english->getLabel();
+					if (!empty($spanish))						
+						$actualMessages[$action][$forward]['esp'] = $spanish->getLabel();
+				}
+			}
+			$smarty->assign('actualMessages',$actualMessages);
+		}
+		
+		//filtramos aquellos actions que no tienen acciones de log.
+		$filteredMessages = $this->filterMessages($_GET['moduleName'],$messages);
 
-		$smarty->assign('actions',array_keys($messages));
-		$smarty->assign('messages',$messages);
+		$smarty->assign('actions',array_keys($filteredMessages));
+		$smarty->assign('messages',$filteredMessages);
 		$smarty->assign('moduleName',$_GET['moduleName']);		
 		return $mapping->findForwardConfig('success');
 	}
 
 }
-?>

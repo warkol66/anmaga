@@ -1,44 +1,41 @@
 <?php
+/** 
+ * InstallDoFileCheckAction
+ *
+ * @package install 
+ */
 
-require_once('includes/assoc_array2xml.php');
+require_once("includes/assoc_array2xml.php");
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
 
-
-/**
-* Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
-* compiling PHP template engine within php.MVC.
-*
-* @author John C Wildenauer
-* @version 1.0
-* @public
-*/
 class InstallDoFileCheckAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function InstallDoFileCheckAction() {
 		;
 	}
 
+	function loadSQLtoDatabase($filename) {
 
-	// ----- Public Methods ------------------------------------------------- //
+		$data = file_get_contents($filename);
+		
+		require_once('config/DBConnection.inc.php');
 
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
+		$db = new DBConnection();
+		
+		$sql = str_replace("\r\n","\n",$data);
+		$queries = split(";\n",$data);
+
+		foreach ($queries as $query) {
+			$query = trim($query);
+			if (!empty($query))
+				$db->query($query);
+		}
+		
+		return true;
+
+	}
+
 	function execute($mapping, $form, &$request, &$response) {
 
 		BaseAction::execute($mapping, $form, $request, $response);
@@ -56,25 +53,39 @@ class InstallDoFileCheckAction extends BaseAction {
 		}
 
 		//asigno modulo
-		$modulo = "Install";
-		$smarty->assign("modulo",$modulo);
+		$moduleLabel = "Install";
+		$smarty->assign("moduleLabel",$moduleLabel);
  
 		$modulePeer = new ModulePeer();
 
-		if (!isset($_GET['moduleName'])) {
+		if (!isset($_POST['moduleName'])) {
 			return $mapping->findForwardConfig('failure');			
 		}
 
-		$path = "WEB-INF/classes/modules/" . $_GET['moduleName'] . "/";
+		$path = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/";
+		
+		//mensaje de exito
+		$queryData = '&message='. "success";
 	
+		if (isset($_POST['executeSQL'])) {
+
+			//carga de informacion de los SQL generados			
+			$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/" . 'information.sql';
+	 		$this->loadSQLtoDatabase($filename);
+			$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/" . $_POST['moduleName'] . '-permissions.sql';
+			$this->loadSQLtoDatabase($filename);
+	 		$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/" . 'messages.sql';
+			$this->loadSQLtoDatabase($filename);
+			
+	 		//mensaje de exito si ejecuta con SQL			
+			$queryData = '&message='. "success-sql";
+		}
 
 		$myRedirectConfig = $mapping->findForwardConfig('success');
 		$myRedirectPath = $myRedirectConfig->getpath();
-		$queryData = '&message='. "success";
 		$myRedirectPath .= $queryData;
 		$fc = new ForwardConfig($myRedirectPath, True);
 		return $fc;
 	}
 
 }
-?>

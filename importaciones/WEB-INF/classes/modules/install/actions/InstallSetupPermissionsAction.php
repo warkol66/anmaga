@@ -1,44 +1,102 @@
 <?php
-
+/** 
+ * InstallSetupPermissionsAction
+ *
+ * @package install 
+ */
 
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
 
-
-/**
-* Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
-* compiling PHP template engine within php.MVC.
-*
-* @author John C Wildenauer
-* @version 1.0
-* @public
-*/
 class InstallSetupPermissionsAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function InstallSetupPermissionsAction() {
 		;
 	}
 
+	function evaluateBitlevel($level,$bitlevel) {
+		//si el valor que queda al restarle el nivel a evaluar es mayor o igual a cero, ese
+		//nivel esta seteado
+		
+		if ($level == 1073741823) {
+			return ($bitlevel == $level);
+		}
+		
+		return ((intval($level) & intval($bitlevel)) > 0);
+		
+	}
 
-	// ----- Public Methods ------------------------------------------------- //
+	function getAccessToActions($actions) {
+		
+		$access = array();
+		
+		foreach ($actions as $action) {
+			$lcAction = strtolower(substr($action,0,1)) . substr($action,1,strlen($action)-1);
 
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
+			$securityAction = SecurityActionPeer::getByNameOrPair($lcAction);
+			
+			//evaluacion de bitlevels
+			$bitlevel = $securityAction->getAccess();
+			
+			$access[$action] = array();
+			$access[$action]['permission'] = array();
+			$access[$action]['permission'][1] = $this->evaluateBitlevel(1,$bitlevel);
+			$access[$action]['permission'][2] = $this->evaluateBitlevel(2,$bitlevel);
+			$access[$action]['permission'][4] = $this->evaluateBitlevel(4,$bitlevel);
+			$access[$action]['permission'][all] = $this->evaluateBitlevel(1073741823,$bitlevel);
+
+			$bitLevelAffiliate = $securityAction->getAccessAffiliateUser();
+			
+			$access[$action]['permissionAffiliate'] = array();
+			$access[$action]['permissionAffiliate'][1] = $this->evaluateBitlevel(1,$bitLevelAffiliate);
+			$access[$action]['permissionAffiliate'][2] = $this->evaluateBitlevel(2,$bitLevelAffiliate);
+			$access[$action]['permissionAffiliate'][4] = $this->evaluateBitlevel(4,$bitLevelAffiliate);
+			$access[$action]['permissionAffiliate'][all] = $this->evaluateBitlevel(1073741823,$bitLevelAffiliate);			
+
+			//evaluacion de permisos booleanos
+			
+			$access[$action]['permissionRegistration'] = $securityAction->getAccessRegistrationUser();
+			$access[$action]['noCheckLogin'] = $securityAction->getNoCheckLogin();
+
+		}
+
+		return $access;
+	}
+	
+	function getAccessToModule($module) {
+		
+		$access = array();
+		
+		//evaluacion de bitlevels
+		$securityModule = SecurityModulePeer::getAccessInstanceByModule($module);
+
+		if (!empty($securityModule)) {
+		
+			$bitlevel = $securityModule->getAccess();
+		
+			$access['permissionGeneral'] = array();
+			$access['permissionGeneral'][1] = $this->evaluateBitlevel(1,$bitlevel);
+			$access['permissionGeneral'][2] = $this->evaluateBitlevel(2,$bitlevel);
+			$access['permissionGeneral'][4] = $this->evaluateBitlevel(4,$bitlevel);
+			$access['permissionGeneral'][all] = $this->evaluateBitlevel(1073741823,$bitlevel);
+
+			$bitLevelAffiliate = $securityModule->getAccessAffiliateUser();
+		
+			$access['permissionAffiliateGeneral'] = array();
+			$access['permissionAffiliateGeneral'][1] = $this->evaluateBitlevel(1,$bitLevelAffiliate);
+			$access['permissionAffiliateGeneral'][2] = $this->evaluateBitlevel(2,$bitLevelAffiliate);
+			$access['permissionAffiliateGeneral'][4] = $this->evaluateBitlevel(4,$bitLevelAffiliate);
+			$access['permissionAffiliateGeneral'][all] = $this->evaluateBitlevel(1073741823,$bitLevelAffiliate);			
+
+			//evaluacion de permisos booleanos
+		
+			$access['permissionRegistrationGeneral'] = $securityModule->getAccessRegistrationUser();
+		}
+
+		return $access;
+		
+	}
+	
 	function execute($mapping, $form, &$request, &$response) {
 
 		BaseAction::execute($mapping, $form, $request, $response);
@@ -56,8 +114,8 @@ class InstallSetupPermissionsAction extends BaseAction {
 		}
 
 		//asigno modulo
-		$modulo = "Install";
-		$smarty->assign("modulo",$modulo);
+		$moduleLabel = "Install";
+		$smarty->assign("moduleLabel",$moduleLabel);
  
 		$modulePeer = new ModulePeer();
 
@@ -72,7 +130,7 @@ class InstallSetupPermissionsAction extends BaseAction {
 		$actions = array();
 		
 		while (false !== ($filename = readdir($directoryHandler))) {
-
+			
 			//verifico si es un archivo php
 			if (is_file($modulePath . $filename) && (ereg('(.*)Action.php$',$filename,$regs))) {
 				array_push($actions,$regs[1]);		
@@ -83,7 +141,6 @@ class InstallSetupPermissionsAction extends BaseAction {
 		closedir($directoryHandler);
 		
 		//separacion entre accions con par y acciones sin par
-		
 		
 		foreach ($actions as $action) {
 
@@ -99,10 +156,38 @@ class InstallSetupPermissionsAction extends BaseAction {
 		
 			}
 		}
-		$withPair = array_keys($pairActions);
-		$arrays = array_diff($actions,$withPair);
 		
-		$smarty->assign('actions',$actions);
+		if (!empty($pairActions)) {
+
+			$withPair = array_keys($pairActions);
+			$arrays = array_diff($actions,$withPair);
+
+			$actionsToDelete = array_merge(array_keys($pairActions), array_values($pairActions));
+			$withoutPair = array_diff($actions,$actionsToDelete);
+			
+		}
+		else {
+			$withoutPair = $actions;
+			$withPair = array();
+		}	
+
+		if (isset($_GET['mode']) && $_GET['mode'] == 'reinstall') {
+			
+			//obtenemos los permisos ya creados anteriormente.
+			// TODO
+			$smarty->assign('mode',$_GET['mode']);
+			
+			$generalAccess = $this->getAccessToModule($_GET['moduleName']);
+			$withoutPairAccess = $this->getAccessToActions($withoutPair);
+			$withPairAccess = $this->getAccessToActions($withPair);
+
+			$smarty->assign('withoutPairAccess',$withoutPairAccess);
+			$smarty->assign('withPairAccess',$withPairAccess);
+			$smarty->assign('generalAccess',$generalAccess);			
+			
+		}
+		
+		$smarty->assign('withoutPair',$withoutPair);
 		$smarty->assign('withPair',$withPair);
 		$smarty->assign('pairActions',$pairActions);
 		$smarty->assign('moduleName',$_GET['moduleName']);
@@ -111,4 +196,3 @@ class InstallSetupPermissionsAction extends BaseAction {
 	}
 
 }
-?>

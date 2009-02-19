@@ -1,0 +1,2 @@
+<input type="button" value="Saltar Paso de Instalacion" onClick="javascript:installSkipTheStep(this.form)"/>
+<input type="button" value="Ejecutar Paso y volver al menu principal" onClick="javascript:installExecuteStep(this.form)" />

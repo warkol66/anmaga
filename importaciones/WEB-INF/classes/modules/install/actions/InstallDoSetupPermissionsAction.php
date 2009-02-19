@@ -1,23 +1,30 @@
 <?php
-
+/** 
+ * InstallDoSetupPermissionsAction
+ *
+ * @package install 
+ */
 
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
 require_once("SecurityModule.php");
 
 
-/**
-* Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
-* compiling PHP template engine within php.MVC.
-*
-* @author John C Wildenauer
-* @version 1.0
-* @public
-*/
+if(false === function_exists('lcfirst'))
+{
+	/**
+	 * Make a string's first character lowercase
+	 *
+	 * @param string $str
+	 * @return string the resulting string.
+	 */
+	function lcfirst( $str ) {
+		$str[0] = strtolower($str[0]);
+		return (string)$str;
+	}
+}
+
 class InstallDoSetupPermissionsAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function InstallDoSetupPermissionsAction() {
 		
@@ -41,7 +48,10 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 	 * @param $fd file descriptor del archivo donde se deberan guardar los permisos
 	 *
 	 */
-	function writeActionsPermissionsToOutput($module,$permission,$permissionAffiliate,$fd) {
+	function writeActionsPermissionsToOutput($module,$permission,$permissionAffiliate,$permissionRegistration,$noCheckLoginArray,$fd) {
+		
+		$sql = SecurityActionPeer::getSQLCleanup($module);	
+		fprintf($fd,"%s\n",$sql);
 	
 		foreach (array_keys($permission) as $action) {
 		
@@ -72,6 +82,19 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 				}	
 			
 			}
+			
+			
+			$accessRegistrationUser = 0;
+			
+			if ($permissionRegistration[$action] == '1') {	
+				$accessRegistrationUser = 1;
+			}
+			
+			$noCheckLogin = false;
+			
+			if ($noCheckLoginArray[$action] == '1') {	
+				$noCheckLogin = true;
+			}
 
 			//vemos si la accion tiene definido un pair
 			$pair = "";
@@ -82,16 +105,18 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 			$section = '';
 			
 			$securityAction = new SecurityAction();
-			$securityAction->setAction($action);
+			$lcAction = strtolower(substr($action,0,1)) . substr($action,1,strlen($action)-1);
+			$securityAction->setAction($lcAction);
 			$securityAction->setModule($module);
 			$securityAction->setSection($section);
 			$securityAction->setAccess($bitLevel);
+			$securityAction->setAccessRegistrationUser($accessRegistrationUser);
+			$securityAction->setNoCheckLogin($noCheckLogin);
 			$securityAction->setAccessAffiliateUser($bitLevelAffiliate);
 			$securityAction->setActive(1);
-			$securityAction->setPair($pair);
+			$securityAction->setPair(lcfirst($pair));
 			
-			$sql = $securityAction->getSQLInsert();
-			
+			$sql = $securityAction->getSQLInsert();	
 			fprintf($fd,"%s\n",$sql);
 
 		}
@@ -107,7 +132,7 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 	 * @param $fd file descriptor del archivo donde se deberan guardar los permisos
 	 *
 	 */
-	function writeGeneralPermissionsToOutput($module,$permission,$permissionAffiliate,$fd) {
+	function writeGeneralPermissionsToOutput($module,$permission,$permissionAffiliate,$permissionRegistration,$fd) {
 	
 
 		if (isset($permission['all'])) {
@@ -137,36 +162,41 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 			}	
 		
 		}
+		
+		$accessRegistrationUser = 0;
+		
+		if ($permissionRegistration == '1') {	
+			$accessRegistrationUser = 1;
+		}
 
 		$securityModule = new SecurityModule();
 		$securityModule->setModule($module);
 		$securityModule->setAccess($bitLevel);
+		$securityModule->setAccessRegistrationUser($accessRegistrationUser);
 		$securityModule->setAccessAffiliateUser($bitLevelAffiliate);
-		$sql = $securityModule->getSQLInsert();
-
 		
+		$sql = $securityModule->getSQLCleanup();
+		fprintf($fd,"%s\n",$sql);		
+		$sql = $securityModule->getSQLInsert();
 		fprintf($fd,"%s\n",$sql);
 
 	
 	
 	}
+	
+	function executeSuccess($mapping) {
 
-	// ----- Public Methods ------------------------------------------------- //
+		$myRedirectConfig = $mapping->findForwardConfig('success');
+		$myRedirectPath = $myRedirectConfig->getpath();
+		$queryData = '&moduleName='.$_POST["moduleName"];
+		if (!empty($_POST['mode']))
+			$queryData .= '&mode=' . $_POST['mode'];
+		$myRedirectPath .= $queryData;
+		$fc = new ForwardConfig($myRedirectPath, True);
+		return $fc;
 
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating	/**
-	* @public
-	* @returns ActionForward
-	*/
+	}
+
 	function execute($mapping, $form, &$request, &$response) {
 
 		BaseAction::execute($mapping, $form, $request, $response);
@@ -184,8 +214,8 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 		}
 		
 		//asigno modulo
-		$modulo = "Install";
-		$smarty->assign("modulo",$modulo);
+		$moduleLabel = "Install";
+		$smarty->assign("moduleLabel",$moduleLabel);
  	
 		$modulePeer = new ModulePeer();
 		
@@ -194,10 +224,18 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 			return $mapping->findForwardConfig('failure');
 		}
 
+		//salto de paso
+		if (isset($_POST['skip'])) {
+			return $this->executeSuccess($mapping);
+		}
+
 		$permission = $_POST['permission'];
 		$permissionAffiliate = $_POST['permissionAffiliate'];
 		$permissionGeneral = $_POST['permissionGeneral'];
 		$permissionAffiliateGeneral = $_POST['permissionAffiliateGeneral'];
+		$permissionRegistrationGeneral = $_POST['permissionRegistrationGeneral'];
+		$permissionRegistration = $_POST['permissionRegistration'];
+		$noCheckLogin = $_POST['noCheckLogin'];	
 
 		$modulePath = "WEB-INF/classes/modules/" . $_POST['moduleName'] . '/';
 		
@@ -211,22 +249,18 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 			return $mapping->findForwardConfig('failure');
 		}
 		
-		$this->writeGeneralPermissionsToOutput($module,$permissionGeneral,$permissionAffiliateGeneral,$fd);
-		$this->writeActionsPermissionsToOutput($module,$permission,$permissionAffiliate,$fd);
+		$this->writeGeneralPermissionsToOutput($module,$permissionGeneral,$permissionAffiliateGeneral,$permissionRegistrationGeneral,$fd);
+		$this->writeActionsPermissionsToOutput($module,$permission,$permissionAffiliate,$permissionRegistration,$noCheckLogin,$fd);
 
 		fclose($fd);
 		
-		$myRedirectConfig = $mapping->findForwardConfig('success');
-		$myRedirectPath = $myRedirectConfig->getpath();
-		$queryData = '&moduleName='.$_POST["moduleName"];
-		$myRedirectPath .= $queryData;
-		$fc = new ForwardConfig($myRedirectPath, True);
-		return $fc;
+		//solamente se ejecuta este paso
+		if (isset($_POST['stepOnly'])) {
+			return $mapping->findForwardConfig('success-step');			
+		}
 		
-		
-		
-		
+		return $this->executeSuccess($mapping);
+				
 	}
 
 }
-?>
