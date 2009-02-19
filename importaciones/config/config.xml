@@ -160,4 +160,24 @@
 			</thumbnail>
 		</image>
 	</catalog>
+	<email>
+		<mode>
+			<value>SMTP</value>
+			<element_type>Options</element_type>
+			<element_options>
+				<option_1>PHP</option_1>
+				<option_2>SMTP</option_2>
+			</element_options>
+		</mode>
+		<smtpOptions>
+			<smtpHost>mail.infocivica.grupo-empresarios.com.ar</smtpHost>
+			<smtpPort>587</smtpPort>
+			<smtpUsername>infocivi</smtpUsername>
+			<smtpPassword>PoderCiudadano</smtpPassword>
+			<smtpSsl>
+				<value>NO</value>
+				<element_type>YES/NO</element_type>
+			</smtpSsl>
+		</smtpOptions>
+	</email>
 </config>

@@ -1,9 +1,9 @@
 <?php
 
-require_once("BaseAction.php");
+require_once("ImportBaseAction.php");
 require_once("ClientQuotationPeer.php");
 
-class ImportSupplierQuoteCreateAction extends BaseAction {
+class ImportSupplierQuoteCreateAction extends ImportBaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
@@ -79,6 +79,10 @@ class ImportSupplierQuoteCreateAction extends BaseAction {
 		//generamos la supplierQuotation
 		
 		$supplierQuotation = SupplierQuotationPeer::createFromClientQuotation($supplier,$clientQuotation,$clientQuotationSelectedItems);
+
+		//notificamos al proveedor correspondiente
+		$content = $this->renderSupplierQuotationNotifyEmail($supplierQuotation);
+		$supplierQuotation->notifySupplier($content);
 
 		$params = array();
 		$params['id'] = $clientQuotation->getId();

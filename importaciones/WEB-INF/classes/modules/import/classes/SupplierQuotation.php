@@ -51,6 +51,37 @@ class SupplierQuotation extends BaseSupplierQuotation {
 		return $result[0];
 	}
 	
+	/**
+	 * Notifica a un proveedor de la existencia de un pedido de cotizacion
+	 * 
+	 * @param String $content Contenido del Email (debe ser generado de forma externa. Ver ImportBaseAction.php)
+	 * @param String $subject Asunto del Email Opcional
+	 *
+	 */
+	public function notifySupplier($content,$subject) {
+	
+		require_once('EmailManagement.php');
+		
+		if (empty($subject)) {
+			$subject = 'Notificacion de Creacion de Pedido de Cotizacion';
+		}
+		
+		$manager = new EmailManagement();
+		
+		//creamos el mensaje multipart
+		$message = $manager->createMultipartMessage($subject,$content);
+
+		$supplier = $this->getSupplier();
+		
+		global $system;
+		$mailFrom = $system["config"]["system"]["parameters"]["fromEmail"];
+
+		//realizamos el envio
+		$result = $manager->sendMessage($supplier->getEmail(),$mailFrom,$message);
+		
+		return $result;
+		
+	}
 	
 
 } // SupplierQuotation

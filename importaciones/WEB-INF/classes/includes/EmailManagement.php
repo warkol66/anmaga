@@ -12,6 +12,7 @@ require_once("swift/Swift/Connection/SMTP.php");
 */
 class EmailManagement
 {
+			
 	public function __construct() {
 		
 	}
@@ -102,10 +103,15 @@ class EmailManagement
 	}
 	
 	/**
-	 * Envia un mensaje con las 
-	 *
+	 * Envia un mensaje a un conjunto de destinatarios
+	 * 
+	 * @param Swift_RecipientList o string lista de destinatarios creada usando createMultipleRecipientsList o string con email a enviar
+	 * @param String email desde donde se envia el email
+	 * @param Swift_Message Mensaje a enviar
+	 * @param string direccion de respuesta
+	 * @return boolean true si la operacion fue exitosa, false en caso de error
 	 */
-	public function sendMessage($mailTo,$mailFrom,$message,$mailReplyTo="") {
+	public function sendMessage($recipients,$mailFrom,$message,$mailReplyTo="") {
 		
 		$result = false;
 		
@@ -117,7 +123,7 @@ class EmailManagement
 			$mailer = $this->createMailer();
 			
 			//enviamos el mensaje
-			$result = $mailer->send($message, $mailTo, $mailFrom);
+			$result = $mailer->send($message, $recipients, $mailFrom);
 			$mailer->disconnect();
 			
 		} catch (Exception $e) {
@@ -128,5 +134,37 @@ class EmailManagement
 		
 	}
 	
+	/**
+	 * Crea una lista de multiples destinatarios para enviar un email
+	 *
+	 * @param array array de strings con destinatario para campo to
+	 * @param array array de strings con destinatario para campo cc
+	 * @param array array de strings con destinatario para campo bcc
+	 * @return Swift_RecipientList Instancia de Swift_RecipientList, false en caso de error	 
+	 */
+	public function createMultipleRecipientsList($toRecipients = array(),$ccRecipients = array(),$bccRecipients = array()) {
+		
+		if (empty($toRecipients) && empty($ccRecipients) && empty($bccRecipients)) {
+			//se tiene que dar algun email como minimo para que se envie
+			return false;
+		}
+		
+		$recipients =& new Swift_RecipientList();
+		
+		foreach ($toRecipients as $email) {
+			$recipients->addTo($email);
+		} 
+		
+		foreach ($ccRecipients as $email) {
+			$recipients->addCc($email);
+		}
+		
+		foreach ($bccRecipients as $email) {
+			$recipients->addBcc($email);
+		}
+		
+		return $recipients;
+		
+	}	
 
 }
