@@ -145,9 +145,9 @@ class SupplierQuotationPeer extends BaseSupplierQuotationPeer {
 			$supplierQuotation = new SupplierQuotation();
 			$supplierQuotation->setSupplierId($supplier->getId());
 			$supplierQuotation->setClientQuotationId($clientQuotation->getId());
-			$supplierQuotation->setCreatedAt(date('Y-m-d h:m:s'));
+			$supplierQuotation->setCreatedAt(time());
 			$supplierQuotation->setStatus(SupplierQuotation::STATUS_NEW);
-			$supplierQuotation->setTimestampStatus(date('Y-m-d h:m:s'));
+			$supplierQuotation->setTimestampStatus(time());
 			$supplierQuotation->setSupplierAccessToken(SupplierQuotationPeer::generateRandomSupplierAccessCode());
 
 			foreach ($items as $clientQuotationItem) {
