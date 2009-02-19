@@ -175,7 +175,7 @@ class SupplierQuotationPeer extends BaseSupplierQuotationPeer {
 	 * @return string
 	 */
 	public function generateRandomSupplierAccessCode() {
-		return sha1(date('Y-m-d h:m:s') . 'anmaga');
+		return sha1(time() . 'anmaga');
 	}
 	
 	public function getByAccessToken($token) {

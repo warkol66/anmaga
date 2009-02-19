@@ -54,7 +54,7 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
         }
       }
 
-	  $clientquotationObj->setCreatedAt(date("Y-m-d h:m:s"));
+	  $clientquotationObj->setCreatedAt(time());
 	  $clientquotationObj->setStatus(ClientQuotation::STATUS_NEW);
       $clientquotationObj->save();
       return $clientquotationObj;

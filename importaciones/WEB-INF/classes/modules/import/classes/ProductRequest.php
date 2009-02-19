@@ -43,7 +43,7 @@ class ProductRequest extends BaseProductRequest {
 	 */
 	function setStatus($status) {
 		//agregamos el guardado del timestamp de cambio de status
-		$datetime = date("Y-m-d H:i:s");
+		$datetime = time();
 		$this->setTimestampStatus($datetime);
 		return parent::setStatus($status);
 		
@@ -56,7 +56,7 @@ class ProductRequest extends BaseProductRequest {
 	 */
 	function setPriceSupplier($price) {
 		//agregamos el guardado del timestamp de cambio de precio de supplier
-		$datetime = date("Y-m-d H:i:s");
+		$datetime = time();
 		$this->setTimestampPriceSupplier($datetime);
 		return parent::setPriceSupplier($price);
 	}
@@ -68,7 +68,7 @@ class ProductRequest extends BaseProductRequest {
 	 */
 	function setPriceClient($price) {
 		//agregamos el guardado del timestamp de cambio de precio de client
-		$datetime = date("Y-m-d H:i:s");
+		$datetime = time();
 		$this->setTimestampPriceClient($datetime);
 		return parent::setPriceClient($price);
 

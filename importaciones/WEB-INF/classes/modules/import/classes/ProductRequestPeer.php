@@ -40,7 +40,7 @@ class ProductRequestPeer extends BaseProductRequestPeer {
 		$productRequest->setProductId($productId);
 		$productRequest->setQuantity($quantity);
 		$productRequest->setNewStatus();
-		$datetime = date("Y-m-d H:i:s");
+		$datetime = time();
 		$productRequest->setTimestampStatus($datetime);
 		try {
 			$productRequest->save();
