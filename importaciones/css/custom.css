@@ -918,3 +918,12 @@ a.searchLink:hover, a.searchLink:active {
 #soundsList li, #imagesList li, #videosList li {
 	margin-bottom : 10px;
 }
+
+
+fieldset textarea.readOnly, fieldset input.readOnly {
+	background-color: #EFEFEF;
+	border: none;
+}
+fieldset input.readOnly {
+	text-align: right;
+}

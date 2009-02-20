@@ -1,10 +1,10 @@
-<h2>Pedido de Cotización</h2>
-<h1>Edicion de Item de Pedido de Cotización</h1>
-
 |-assign var=product value=$supplierQuotationItem->getProduct()-|
-
+<h2>Solicitud de Cotización</h2>
+<h1>Cotización de Producto "|-$product->getSupplierProductCode()-|"</h1>
+<p>A continuación podrá ingresar los datos de la cotización del producto |-$product->getSupplierProductCode()-|. Para guardar el precio y confirmar la cotización del producto, haga click en "Cotizar Item". Recuerde que una vez guardado el precio, no podrá modificarlo.
 <form action="Main.php" method="post">
 	<fieldset>
+		<legend>Detalle del producto</legend>
 	<p><input type="hidden" name="supplierQuotationItem[id]" value="|-$supplierQuotationItem->getId()-|" id="supplierQuotationItem[id]" /></p>
 	<p>
 		<label>Código </label>
@@ -19,7 +19,7 @@
 	<p>
 		<input type="hidden" name="token" value="|-$token-|" />
 		<input type="hidden" name="do" value="importSupplierQuoteDoEditItem" id="do" />
-		<input type="submit" value="Enviar Cotizacion de Producto">
+		<input type="submit" value="Cotizar Item">
 	</p>
 	</fieldset>
 </form>

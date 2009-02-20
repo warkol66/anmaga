@@ -8,7 +8,7 @@
 		<div id="importMenu" style="display:|-if $module|lower eq 'import'-|block|-else-|none|-/if-|;">
 			<ul>
 		|- if $loginUser->isAdmin()-|		
-				<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones a Clientes</a></li>
+				<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones de Clientes</a></li>
 				<li class="menuLink"><a href="Main.php?do=importSupplierQuoteList">Cotizaciones de Proveedores</a></li>
 		|-/if-|
 			</ul>
@@ -23,7 +23,7 @@
 				<li class="menuLink"><a href="Main.php?do=importProductsList">Administrar Productos</a></li>
 				<li class="menuLink"><a href="Main.php?do=importIncotermsList">Administrar Incoterms</a></li>
 				<li class="menuLink"><a href="Main.php?do=importPortsList">Administrar Puertos</a></li>
-				<li class="menuLink"><a href="Main.php?do=importSuppliersList">Administrar Suppliers</a></li>
+				<li class="menuLink"><a href="Main.php?do=importSuppliersList">Administrar Proveedores </a></li>
 				<li class="menuLink"><a href="Main.php?do=usersList">Usuarios</a></li>
 				<li class="menuLink"><a href="Main.php?do=usersGroupsList">Grupos de Usuarios</a></li>
 				<li class="menuLink"><a href="Main.php?do=usersLevelsList">Niveles Usuarios</a></li>
@@ -48,8 +48,6 @@
 |-if $loginAffiliateUser neq ""-|
   	<ul>
 		<li class="menuLink"><a href="Main.php?do=affiliatesUsersWelcome">Ir al Inicio</a></li>
-		<li class="menuLink"><a href="Main.php?do=affiliatesUsersList">Usuarios de Distribuidores / Mayoristas</a></li>
-		<li class="menuLink"><a href="Main.php?do=affiliatesBranchsList">Sucursales</a></li>
 		<li class="menuLink"><a href="Main.php?do=importRequestList">Importaciones</a></li>
 	</ul>
 	<ul>
@@ -57,7 +55,7 @@
   	</ul>
 	<div id="importAffiliateMenu">
 		<ul>
-			<li class="menuLink"><a href="		Main.php?do=importClientQuoteList">Cotizaciones</a></li>
+			<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones</a></li>
 		</ul>
 	</div>
 
