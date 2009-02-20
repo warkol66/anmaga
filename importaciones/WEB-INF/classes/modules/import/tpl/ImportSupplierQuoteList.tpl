@@ -3,6 +3,14 @@
 <p>A continuación puede ver el listado de sus pedidos de cotización a proveedores y sus correspondientes estados.</p>
 
 <div id="div_messages">
+	|-if $message eq "resent"-|
+		<div class="successMessage">La cotización <a href="Main.php?do=importSupplierQuoteEdit&id=|-$supplierQuotationId-|" >|-$supplierQuotationId-|</a> ha sido reenviada correctamente al proveedor y se ha regerenado su codigo de acceso.
+		</div>
+	|-/if-|
+	|-if $message eq "resent-failed"-|
+		<div class="successMessage">Ha ocurrido un error al reenviar la cotización <a href="Main.php?do=importSupplierQuoteEdit&id=|-$supplierQuotationId-|" >|-$supplierQuotationId-|</a>
+		</div>
+	|-/if-|
 </div>
 
 <div id="div_newsmedias">
@@ -40,6 +48,11 @@
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
 						<input type="submit" name="submit_go_edit_quotation" value="Editar" class="buttonImageEdit" />
 					</form>
+					<form action="Main.php" method="get">	
+						<input type="hidden" name="do" value="importSupplierQuoteResend" />
+						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
+						<input type="submit" name="submit_go_resend_quotation" value="Reenviar" class="buttonImageEmail" />
+					</form>					
 <!--					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="importSupplierQuoteDelete" />
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />

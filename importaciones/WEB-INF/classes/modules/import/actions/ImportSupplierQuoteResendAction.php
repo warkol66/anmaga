@@ -1,14 +1,14 @@
 <?php
 
-require_once("BaseAction.php");
+require_once("ImportBaseAction.php");
 require_once("SupplierQuotationPeer.php");
 
-class ImportSupplierQuoteListAction extends BaseAction {
+class ImportSupplierQuoteResendAction extends ImportBaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportSupplierQuoteListAction() {
+	function ImportSupplierQuoteResendAction() {
 		;
 	}
 
@@ -44,30 +44,30 @@ class ImportSupplierQuoteListAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
-		$url = "Main.php?do=importSupplierQuoteList";
-		$smarty->assign("url",$url);		
-   
 		$smarty->assign("message",$_GET["message"]);
 		
-		if (!empty($_GET['supplierQuotationId']))
-			$smarty->assign('supplierQuotationId',$_GET['supplierQuotationId']);
-		
 		$supplierQuotationPeer = new SupplierQuotationPeer();
-		
-		if (Common::isAdmin()) {
-			//traemos todas las cotizaciones.
-			$pager = $supplierQuotationPeer->getAllPaginated($_GET["page"]);
-			$suppliers = SupplierPeer::getAll();
-			
-			$smarty->assign("quotations",$pager->getResult());
-			$smarty->assign("pager",$pager);
-			$smarty->assign("suppliers",$suppliers);
-			return $mapping->findForwardConfig('success');
+
+		if (empty($_GET['id'])) {
+			return $mapping->findForwardConfig('failure');		
 		}
 		
-		return $mapping->findForwardConfig('failure');
+		$supplierQuotation = SupplierQuotationPeer::get($_GET['id']);
+
+		//regeneramos el codigo de acceso del proveedor
+		if (!$supplierQuotation->regenerateSupplierAccessToken()) {
+			return $mapping->findForwardConfig('failure');
+		}
+
+		//notificamos al proveedor correspondiente
+		$content = $this->renderSupplierQuotationNotifyEmail($supplierQuotation);
+		$supplierQuotation->notifySupplier($content);
+		
+		$params = array();
+		$params['supplierQuotationId'] = $supplierQuotation->getId();
+		
+		return $this->addParamsToForwards($params,$mapping,'success');			
 		
 	}
 
 }
-?>

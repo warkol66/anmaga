@@ -967,7 +967,7 @@
                type = "ImportIncotermsListAction"
                name = "importIncotermsList"
               scope = "request"
-           validate = "true">2
+           validate = "true">
     <forward name="success" path="ImportIncotermsList.tpl" />
     </action>
 
@@ -1086,6 +1086,16 @@
     <forward name="success" path="/Main.php?do=importSupplierQuoteAccess&amp;message=quoted" redirect='true'/>
     <forward name="failure" path="ImportSupplierQuoteAccessFailure.tpl" />
     </action>
+
+	<action    path = "importSupplierQuoteResend"
+	           type = "ImportSupplierQuoteResendAction"
+	           name = "importSupplierQuoteResend"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="/Main.php?do=importSupplierQuoteList&amp;message=resent" />
+	<forward name="failure" path="/Main.php?do=importSupplierQuoteList&amp;message=resent-failure" />
+	</action>
+
 
 <!-- Fin Modulo ImportSupplierQuote -->
 

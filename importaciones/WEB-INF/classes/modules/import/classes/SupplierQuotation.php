@@ -83,5 +83,22 @@ class SupplierQuotation extends BaseSupplierQuotation {
 		
 	}
 	
+	/**
+	 * Regenera el codigo de acceso para un supplier.
+	 * @return boolean
+	 */
+	public function regenerateSupplierAccessToken() {
+		
+		try {
+			$this->setSupplierAccessToken(SupplierQuotationPeer::generateRandomSupplierAccessCode());
+			$this->save();
+			
+		} catch (PropelException $e) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 
 } // SupplierQuotation
