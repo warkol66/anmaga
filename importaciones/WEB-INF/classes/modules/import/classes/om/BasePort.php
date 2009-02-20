@@ -53,6 +53,16 @@ abstract class BasePort extends BaseObject  implements Persistent {
 	private $lastSupplierQuotationItemCriteria = null;
 
 	/**
+	 * @var        array SupplierPurchaseOrderItem[] Collection to store aggregation of SupplierPurchaseOrderItem objects.
+	 */
+	protected $collSupplierPurchaseOrderItems;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collSupplierPurchaseOrderItems.
+	 */
+	private $lastSupplierPurchaseOrderItemCriteria = null;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -321,6 +331,9 @@ abstract class BasePort extends BaseObject  implements Persistent {
 			$this->collSupplierQuotationItems = null;
 			$this->lastSupplierQuotationItemCriteria = null;
 
+			$this->collSupplierPurchaseOrderItems = null;
+			$this->lastSupplierPurchaseOrderItemCriteria = null;
+
 		} // if (deep)
 	}
 
@@ -436,6 +449,14 @@ abstract class BasePort extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collSupplierPurchaseOrderItems !== null) {
+				foreach ($this->collSupplierPurchaseOrderItems as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 
 		}
@@ -509,6 +530,14 @@ abstract class BasePort extends BaseObject  implements Persistent {
 
 				if ($this->collSupplierQuotationItems !== null) {
 					foreach ($this->collSupplierQuotationItems as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collSupplierPurchaseOrderItems !== null) {
+					foreach ($this->collSupplierPurchaseOrderItems as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -604,6 +633,12 @@ abstract class BasePort extends BaseObject  implements Persistent {
 			foreach ($this->getSupplierQuotationItems() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addSupplierQuotationItem($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getSupplierPurchaseOrderItems() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addSupplierPurchaseOrderItem($relObj->copy($deepCopy));
 				}
 			}
 
@@ -998,6 +1033,302 @@ abstract class BasePort extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Clears out the collSupplierPurchaseOrderItems collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addSupplierPurchaseOrderItems()
+	 */
+	public function clearSupplierPurchaseOrderItems()
+	{
+		$this->collSupplierPurchaseOrderItems = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collSupplierPurchaseOrderItems collection (array).
+	 *
+	 * By default this just sets the collSupplierPurchaseOrderItems collection to an empty array (like clearcollSupplierPurchaseOrderItems());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initSupplierPurchaseOrderItems()
+	{
+		$this->collSupplierPurchaseOrderItems = array();
+	}
+
+	/**
+	 * Gets an array of SupplierPurchaseOrderItem objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this Port has previously been saved, it will retrieve
+	 * related SupplierPurchaseOrderItems from storage. If this Port is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array SupplierPurchaseOrderItem[]
+	 * @throws     PropelException
+	 */
+	public function getSupplierPurchaseOrderItems($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PortPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierPurchaseOrderItems === null) {
+			if ($this->isNew()) {
+			   $this->collSupplierPurchaseOrderItems = array();
+			} else {
+
+				$criteria->add(SupplierPurchaseOrderItemPeer::PORTID, $this->id);
+
+				SupplierPurchaseOrderItemPeer::addSelectColumns($criteria);
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(SupplierPurchaseOrderItemPeer::PORTID, $this->id);
+
+				SupplierPurchaseOrderItemPeer::addSelectColumns($criteria);
+				if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
+					$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
+		return $this->collSupplierPurchaseOrderItems;
+	}
+
+	/**
+	 * Returns the number of related SupplierPurchaseOrderItem objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related SupplierPurchaseOrderItem objects.
+	 * @throws     PropelException
+	 */
+	public function countSupplierPurchaseOrderItems(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PortPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collSupplierPurchaseOrderItems === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(SupplierPurchaseOrderItemPeer::PORTID, $this->id);
+
+				$count = SupplierPurchaseOrderItemPeer::doCount($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(SupplierPurchaseOrderItemPeer::PORTID, $this->id);
+
+				if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
+					$count = SupplierPurchaseOrderItemPeer::doCount($criteria, $con);
+				} else {
+					$count = count($this->collSupplierPurchaseOrderItems);
+				}
+			} else {
+				$count = count($this->collSupplierPurchaseOrderItems);
+			}
+		}
+		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a SupplierPurchaseOrderItem object to this object
+	 * through the SupplierPurchaseOrderItem foreign key attribute.
+	 *
+	 * @param      SupplierPurchaseOrderItem $l SupplierPurchaseOrderItem
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addSupplierPurchaseOrderItem(SupplierPurchaseOrderItem $l)
+	{
+		if ($this->collSupplierPurchaseOrderItems === null) {
+			$this->initSupplierPurchaseOrderItems();
+		}
+		if (!in_array($l, $this->collSupplierPurchaseOrderItems, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collSupplierPurchaseOrderItems, $l);
+			$l->setPort($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Port is new, it will return
+	 * an empty collection; or if this Port has previously
+	 * been saved, it will retrieve related SupplierPurchaseOrderItems from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Port.
+	 */
+	public function getSupplierPurchaseOrderItemsJoinProduct($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PortPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierPurchaseOrderItems === null) {
+			if ($this->isNew()) {
+				$this->collSupplierPurchaseOrderItems = array();
+			} else {
+
+				$criteria->add(SupplierPurchaseOrderItemPeer::PORTID, $this->id);
+
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinProduct($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierPurchaseOrderItemPeer::PORTID, $this->id);
+
+			if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinProduct($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
+
+		return $this->collSupplierPurchaseOrderItems;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Port is new, it will return
+	 * an empty collection; or if this Port has previously
+	 * been saved, it will retrieve related SupplierPurchaseOrderItems from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Port.
+	 */
+	public function getSupplierPurchaseOrderItemsJoinSupplierPurchaseOrder($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PortPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierPurchaseOrderItems === null) {
+			if ($this->isNew()) {
+				$this->collSupplierPurchaseOrderItems = array();
+			} else {
+
+				$criteria->add(SupplierPurchaseOrderItemPeer::PORTID, $this->id);
+
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinSupplierPurchaseOrder($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierPurchaseOrderItemPeer::PORTID, $this->id);
+
+			if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinSupplierPurchaseOrder($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
+
+		return $this->collSupplierPurchaseOrderItems;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Port is new, it will return
+	 * an empty collection; or if this Port has previously
+	 * been saved, it will retrieve related SupplierPurchaseOrderItems from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Port.
+	 */
+	public function getSupplierPurchaseOrderItemsJoinIncoterm($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PortPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierPurchaseOrderItems === null) {
+			if ($this->isNew()) {
+				$this->collSupplierPurchaseOrderItems = array();
+			} else {
+
+				$criteria->add(SupplierPurchaseOrderItemPeer::PORTID, $this->id);
+
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinIncoterm($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierPurchaseOrderItemPeer::PORTID, $this->id);
+
+			if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinIncoterm($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
+
+		return $this->collSupplierPurchaseOrderItems;
+	}
+
+	/**
 	 * Resets all collections of referencing foreign keys.
 	 *
 	 * This method is a user-space workaround for PHP's inability to garbage collect objects
@@ -1014,9 +1345,15 @@ abstract class BasePort extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collSupplierPurchaseOrderItems) {
+				foreach ((array) $this->collSupplierPurchaseOrderItems as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
 		$this->collSupplierQuotationItems = null;
+		$this->collSupplierPurchaseOrderItems = null;
 	}
 
 } // BasePort

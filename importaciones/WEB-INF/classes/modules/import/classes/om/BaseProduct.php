@@ -86,24 +86,14 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	private $lastSupplierQuotationItemCriteria = null;
 
 	/**
-	 * @var        array ClientPurchaseOrderItem[] Collection to store aggregation of ClientPurchaseOrderItem objects.
+	 * @var        array SupplierPurchaseOrderItem[] Collection to store aggregation of SupplierPurchaseOrderItem objects.
 	 */
-	protected $collClientPurchaseOrderItems;
+	protected $collSupplierPurchaseOrderItems;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collClientPurchaseOrderItems.
+	 * @var        Criteria The criteria used to select the current contents of collSupplierPurchaseOrderItems.
 	 */
-	private $lastClientPurchaseOrderItemCriteria = null;
-
-	/**
-	 * @var        array PurchaseOrderItem[] Collection to store aggregation of PurchaseOrderItem objects.
-	 */
-	protected $collPurchaseOrderItems;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collPurchaseOrderItems.
-	 */
-	private $lastPurchaseOrderItemCriteria = null;
+	private $lastSupplierPurchaseOrderItemCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -472,11 +462,8 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			$this->collSupplierQuotationItems = null;
 			$this->lastSupplierQuotationItemCriteria = null;
 
-			$this->collClientPurchaseOrderItems = null;
-			$this->lastClientPurchaseOrderItemCriteria = null;
-
-			$this->collPurchaseOrderItems = null;
-			$this->lastPurchaseOrderItemCriteria = null;
+			$this->collSupplierPurchaseOrderItems = null;
+			$this->lastSupplierPurchaseOrderItemCriteria = null;
 
 		} // if (deep)
 	}
@@ -607,16 +594,8 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collClientPurchaseOrderItems !== null) {
-				foreach ($this->collClientPurchaseOrderItems as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collPurchaseOrderItems !== null) {
-				foreach ($this->collPurchaseOrderItems as $referrerFK) {
+			if ($this->collSupplierPurchaseOrderItems !== null) {
+				foreach ($this->collSupplierPurchaseOrderItems as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -716,16 +695,8 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collClientPurchaseOrderItems !== null) {
-					foreach ($this->collClientPurchaseOrderItems as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collPurchaseOrderItems !== null) {
-					foreach ($this->collPurchaseOrderItems as $referrerFK) {
+				if ($this->collSupplierPurchaseOrderItems !== null) {
+					foreach ($this->collSupplierPurchaseOrderItems as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -844,15 +815,9 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 				}
 			}
 
-			foreach ($this->getClientPurchaseOrderItems() as $relObj) {
+			foreach ($this->getSupplierPurchaseOrderItems() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addClientPurchaseOrderItem($relObj->copy($deepCopy));
-				}
-			}
-
-			foreach ($this->getPurchaseOrderItems() as $relObj) {
-				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addPurchaseOrderItem($relObj->copy($deepCopy));
+					$copyObj->addSupplierPurchaseOrderItem($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1485,47 +1450,47 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collClientPurchaseOrderItems collection (array).
+	 * Clears out the collSupplierPurchaseOrderItems collection (array).
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addClientPurchaseOrderItems()
+	 * @see        addSupplierPurchaseOrderItems()
 	 */
-	public function clearClientPurchaseOrderItems()
+	public function clearSupplierPurchaseOrderItems()
 	{
-		$this->collClientPurchaseOrderItems = null; // important to set this to NULL since that means it is uninitialized
+		$this->collSupplierPurchaseOrderItems = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collClientPurchaseOrderItems collection (array).
+	 * Initializes the collSupplierPurchaseOrderItems collection (array).
 	 *
-	 * By default this just sets the collClientPurchaseOrderItems collection to an empty array (like clearcollClientPurchaseOrderItems());
+	 * By default this just sets the collSupplierPurchaseOrderItems collection to an empty array (like clearcollSupplierPurchaseOrderItems());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
 	 * @return     void
 	 */
-	public function initClientPurchaseOrderItems()
+	public function initSupplierPurchaseOrderItems()
 	{
-		$this->collClientPurchaseOrderItems = array();
+		$this->collSupplierPurchaseOrderItems = array();
 	}
 
 	/**
-	 * Gets an array of ClientPurchaseOrderItem objects which contain a foreign key that references this object.
+	 * Gets an array of SupplierPurchaseOrderItem objects which contain a foreign key that references this object.
 	 *
 	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
 	 * Otherwise if this Product has previously been saved, it will retrieve
-	 * related ClientPurchaseOrderItems from storage. If this Product is new, it will return
+	 * related SupplierPurchaseOrderItems from storage. If this Product is new, it will return
 	 * an empty collection or the current collection, the criteria is ignored on a new object.
 	 *
 	 * @param      PropelPDO $con
 	 * @param      Criteria $criteria
-	 * @return     array ClientPurchaseOrderItem[]
+	 * @return     array SupplierPurchaseOrderItem[]
 	 * @throws     PropelException
 	 */
-	public function getClientPurchaseOrderItems($criteria = null, PropelPDO $con = null)
+	public function getSupplierPurchaseOrderItems($criteria = null, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
@@ -1535,15 +1500,15 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collClientPurchaseOrderItems === null) {
+		if ($this->collSupplierPurchaseOrderItems === null) {
 			if ($this->isNew()) {
-			   $this->collClientPurchaseOrderItems = array();
+			   $this->collSupplierPurchaseOrderItems = array();
 			} else {
 
-				$criteria->add(ClientPurchaseOrderItemPeer::PRODUCTID, $this->id);
+				$criteria->add(SupplierPurchaseOrderItemPeer::PRODUCTID, $this->id);
 
-				ClientPurchaseOrderItemPeer::addSelectColumns($criteria);
-				$this->collClientPurchaseOrderItems = ClientPurchaseOrderItemPeer::doSelect($criteria, $con);
+				SupplierPurchaseOrderItemPeer::addSelectColumns($criteria);
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1553,28 +1518,28 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(ClientPurchaseOrderItemPeer::PRODUCTID, $this->id);
+				$criteria->add(SupplierPurchaseOrderItemPeer::PRODUCTID, $this->id);
 
-				ClientPurchaseOrderItemPeer::addSelectColumns($criteria);
-				if (!isset($this->lastClientPurchaseOrderItemCriteria) || !$this->lastClientPurchaseOrderItemCriteria->equals($criteria)) {
-					$this->collClientPurchaseOrderItems = ClientPurchaseOrderItemPeer::doSelect($criteria, $con);
+				SupplierPurchaseOrderItemPeer::addSelectColumns($criteria);
+				if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
+					$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastClientPurchaseOrderItemCriteria = $criteria;
-		return $this->collClientPurchaseOrderItems;
+		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
+		return $this->collSupplierPurchaseOrderItems;
 	}
 
 	/**
-	 * Returns the number of related ClientPurchaseOrderItem objects.
+	 * Returns the number of related SupplierPurchaseOrderItem objects.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      PropelPDO $con
-	 * @return     int Count of related ClientPurchaseOrderItem objects.
+	 * @return     int Count of related SupplierPurchaseOrderItem objects.
 	 * @throws     PropelException
 	 */
-	public function countClientPurchaseOrderItems(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countSupplierPurchaseOrderItems(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
@@ -1588,14 +1553,14 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 
 		$count = null;
 
-		if ($this->collClientPurchaseOrderItems === null) {
+		if ($this->collSupplierPurchaseOrderItems === null) {
 			if ($this->isNew()) {
 				$count = 0;
 			} else {
 
-				$criteria->add(ClientPurchaseOrderItemPeer::PRODUCTID, $this->id);
+				$criteria->add(SupplierPurchaseOrderItemPeer::PRODUCTID, $this->id);
 
-				$count = ClientPurchaseOrderItemPeer::doCount($criteria, $con);
+				$count = SupplierPurchaseOrderItemPeer::doCount($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1605,36 +1570,36 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(ClientPurchaseOrderItemPeer::PRODUCTID, $this->id);
+				$criteria->add(SupplierPurchaseOrderItemPeer::PRODUCTID, $this->id);
 
-				if (!isset($this->lastClientPurchaseOrderItemCriteria) || !$this->lastClientPurchaseOrderItemCriteria->equals($criteria)) {
-					$count = ClientPurchaseOrderItemPeer::doCount($criteria, $con);
+				if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
+					$count = SupplierPurchaseOrderItemPeer::doCount($criteria, $con);
 				} else {
-					$count = count($this->collClientPurchaseOrderItems);
+					$count = count($this->collSupplierPurchaseOrderItems);
 				}
 			} else {
-				$count = count($this->collClientPurchaseOrderItems);
+				$count = count($this->collSupplierPurchaseOrderItems);
 			}
 		}
-		$this->lastClientPurchaseOrderItemCriteria = $criteria;
+		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
 		return $count;
 	}
 
 	/**
-	 * Method called to associate a ClientPurchaseOrderItem object to this object
-	 * through the ClientPurchaseOrderItem foreign key attribute.
+	 * Method called to associate a SupplierPurchaseOrderItem object to this object
+	 * through the SupplierPurchaseOrderItem foreign key attribute.
 	 *
-	 * @param      ClientPurchaseOrderItem $l ClientPurchaseOrderItem
+	 * @param      SupplierPurchaseOrderItem $l SupplierPurchaseOrderItem
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addClientPurchaseOrderItem(ClientPurchaseOrderItem $l)
+	public function addSupplierPurchaseOrderItem(SupplierPurchaseOrderItem $l)
 	{
-		if ($this->collClientPurchaseOrderItems === null) {
-			$this->initClientPurchaseOrderItems();
+		if ($this->collSupplierPurchaseOrderItems === null) {
+			$this->initSupplierPurchaseOrderItems();
 		}
-		if (!in_array($l, $this->collClientPurchaseOrderItems, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collClientPurchaseOrderItems, $l);
+		if (!in_array($l, $this->collSupplierPurchaseOrderItems, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collSupplierPurchaseOrderItems, $l);
 			$l->setProduct($this);
 		}
 	}
@@ -1645,13 +1610,13 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Product is new, it will return
 	 * an empty collection; or if this Product has previously
-	 * been saved, it will retrieve related ClientPurchaseOrderItems from storage.
+	 * been saved, it will retrieve related SupplierPurchaseOrderItems from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Product.
 	 */
-	public function getClientPurchaseOrderItemsJoinClientPurchaseOrder($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierPurchaseOrderItemsJoinSupplierPurchaseOrder($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
@@ -1661,29 +1626,29 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collClientPurchaseOrderItems === null) {
+		if ($this->collSupplierPurchaseOrderItems === null) {
 			if ($this->isNew()) {
-				$this->collClientPurchaseOrderItems = array();
+				$this->collSupplierPurchaseOrderItems = array();
 			} else {
 
-				$criteria->add(ClientPurchaseOrderItemPeer::PRODUCTID, $this->id);
+				$criteria->add(SupplierPurchaseOrderItemPeer::PRODUCTID, $this->id);
 
-				$this->collClientPurchaseOrderItems = ClientPurchaseOrderItemPeer::doSelectJoinClientPurchaseOrder($criteria, $con, $join_behavior);
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinSupplierPurchaseOrder($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(ClientPurchaseOrderItemPeer::PRODUCTID, $this->id);
+			$criteria->add(SupplierPurchaseOrderItemPeer::PRODUCTID, $this->id);
 
-			if (!isset($this->lastClientPurchaseOrderItemCriteria) || !$this->lastClientPurchaseOrderItemCriteria->equals($criteria)) {
-				$this->collClientPurchaseOrderItems = ClientPurchaseOrderItemPeer::doSelectJoinClientPurchaseOrder($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinSupplierPurchaseOrder($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastClientPurchaseOrderItemCriteria = $criteria;
+		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
 
-		return $this->collClientPurchaseOrderItems;
+		return $this->collSupplierPurchaseOrderItems;
 	}
 
 
@@ -1692,13 +1657,13 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Product is new, it will return
 	 * an empty collection; or if this Product has previously
-	 * been saved, it will retrieve related ClientPurchaseOrderItems from storage.
+	 * been saved, it will retrieve related SupplierPurchaseOrderItems from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Product.
 	 */
-	public function getClientPurchaseOrderItemsJoinClientQuotationItem($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierPurchaseOrderItemsJoinIncoterm($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
@@ -1708,184 +1673,29 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collClientPurchaseOrderItems === null) {
+		if ($this->collSupplierPurchaseOrderItems === null) {
 			if ($this->isNew()) {
-				$this->collClientPurchaseOrderItems = array();
+				$this->collSupplierPurchaseOrderItems = array();
 			} else {
 
-				$criteria->add(ClientPurchaseOrderItemPeer::PRODUCTID, $this->id);
+				$criteria->add(SupplierPurchaseOrderItemPeer::PRODUCTID, $this->id);
 
-				$this->collClientPurchaseOrderItems = ClientPurchaseOrderItemPeer::doSelectJoinClientQuotationItem($criteria, $con, $join_behavior);
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinIncoterm($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(ClientPurchaseOrderItemPeer::PRODUCTID, $this->id);
+			$criteria->add(SupplierPurchaseOrderItemPeer::PRODUCTID, $this->id);
 
-			if (!isset($this->lastClientPurchaseOrderItemCriteria) || !$this->lastClientPurchaseOrderItemCriteria->equals($criteria)) {
-				$this->collClientPurchaseOrderItems = ClientPurchaseOrderItemPeer::doSelectJoinClientQuotationItem($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinIncoterm($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastClientPurchaseOrderItemCriteria = $criteria;
+		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
 
-		return $this->collClientPurchaseOrderItems;
-	}
-
-	/**
-	 * Clears out the collPurchaseOrderItems collection (array).
-	 *
-	 * This does not modify the database; however, it will remove any associated objects, causing
-	 * them to be refetched by subsequent calls to accessor method.
-	 *
-	 * @return     void
-	 * @see        addPurchaseOrderItems()
-	 */
-	public function clearPurchaseOrderItems()
-	{
-		$this->collPurchaseOrderItems = null; // important to set this to NULL since that means it is uninitialized
-	}
-
-	/**
-	 * Initializes the collPurchaseOrderItems collection (array).
-	 *
-	 * By default this just sets the collPurchaseOrderItems collection to an empty array (like clearcollPurchaseOrderItems());
-	 * however, you may wish to override this method in your stub class to provide setting appropriate
-	 * to your application -- for example, setting the initial array to the values stored in database.
-	 *
-	 * @return     void
-	 */
-	public function initPurchaseOrderItems()
-	{
-		$this->collPurchaseOrderItems = array();
-	}
-
-	/**
-	 * Gets an array of PurchaseOrderItem objects which contain a foreign key that references this object.
-	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this Product has previously been saved, it will retrieve
-	 * related PurchaseOrderItems from storage. If this Product is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
-	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array PurchaseOrderItem[]
-	 * @throws     PropelException
-	 */
-	public function getPurchaseOrderItems($criteria = null, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPurchaseOrderItems === null) {
-			if ($this->isNew()) {
-			   $this->collPurchaseOrderItems = array();
-			} else {
-
-				$criteria->add(PurchaseOrderItemPeer::PRODUCTID, $this->id);
-
-				PurchaseOrderItemPeer::addSelectColumns($criteria);
-				$this->collPurchaseOrderItems = PurchaseOrderItemPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(PurchaseOrderItemPeer::PRODUCTID, $this->id);
-
-				PurchaseOrderItemPeer::addSelectColumns($criteria);
-				if (!isset($this->lastPurchaseOrderItemCriteria) || !$this->lastPurchaseOrderItemCriteria->equals($criteria)) {
-					$this->collPurchaseOrderItems = PurchaseOrderItemPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastPurchaseOrderItemCriteria = $criteria;
-		return $this->collPurchaseOrderItems;
-	}
-
-	/**
-	 * Returns the number of related PurchaseOrderItem objects.
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct
-	 * @param      PropelPDO $con
-	 * @return     int Count of related PurchaseOrderItem objects.
-	 * @throws     PropelException
-	 */
-	public function countPurchaseOrderItems(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collPurchaseOrderItems === null) {
-			if ($this->isNew()) {
-				$count = 0;
-			} else {
-
-				$criteria->add(PurchaseOrderItemPeer::PRODUCTID, $this->id);
-
-				$count = PurchaseOrderItemPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(PurchaseOrderItemPeer::PRODUCTID, $this->id);
-
-				if (!isset($this->lastPurchaseOrderItemCriteria) || !$this->lastPurchaseOrderItemCriteria->equals($criteria)) {
-					$count = PurchaseOrderItemPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collPurchaseOrderItems);
-				}
-			} else {
-				$count = count($this->collPurchaseOrderItems);
-			}
-		}
-		$this->lastPurchaseOrderItemCriteria = $criteria;
-		return $count;
-	}
-
-	/**
-	 * Method called to associate a PurchaseOrderItem object to this object
-	 * through the PurchaseOrderItem foreign key attribute.
-	 *
-	 * @param      PurchaseOrderItem $l PurchaseOrderItem
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function addPurchaseOrderItem(PurchaseOrderItem $l)
-	{
-		if ($this->collPurchaseOrderItems === null) {
-			$this->initPurchaseOrderItems();
-		}
-		if (!in_array($l, $this->collPurchaseOrderItems, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collPurchaseOrderItems, $l);
-			$l->setProduct($this);
-		}
+		return $this->collSupplierPurchaseOrderItems;
 	}
 
 
@@ -1894,13 +1704,13 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Product is new, it will return
 	 * an empty collection; or if this Product has previously
-	 * been saved, it will retrieve related PurchaseOrderItems from storage.
+	 * been saved, it will retrieve related SupplierPurchaseOrderItems from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Product.
 	 */
-	public function getPurchaseOrderItemsJoinSupplierPurchaseOrder($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierPurchaseOrderItemsJoinPort($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
@@ -1910,29 +1720,29 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collPurchaseOrderItems === null) {
+		if ($this->collSupplierPurchaseOrderItems === null) {
 			if ($this->isNew()) {
-				$this->collPurchaseOrderItems = array();
+				$this->collSupplierPurchaseOrderItems = array();
 			} else {
 
-				$criteria->add(PurchaseOrderItemPeer::PRODUCTID, $this->id);
+				$criteria->add(SupplierPurchaseOrderItemPeer::PRODUCTID, $this->id);
 
-				$this->collPurchaseOrderItems = PurchaseOrderItemPeer::doSelectJoinSupplierPurchaseOrder($criteria, $con, $join_behavior);
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(PurchaseOrderItemPeer::PRODUCTID, $this->id);
+			$criteria->add(SupplierPurchaseOrderItemPeer::PRODUCTID, $this->id);
 
-			if (!isset($this->lastPurchaseOrderItemCriteria) || !$this->lastPurchaseOrderItemCriteria->equals($criteria)) {
-				$this->collPurchaseOrderItems = PurchaseOrderItemPeer::doSelectJoinSupplierPurchaseOrder($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
+				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastPurchaseOrderItemCriteria = $criteria;
+		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
 
-		return $this->collPurchaseOrderItems;
+		return $this->collSupplierPurchaseOrderItems;
 	}
 
 	/**
@@ -1960,13 +1770,8 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
-			if ($this->collClientPurchaseOrderItems) {
-				foreach ((array) $this->collClientPurchaseOrderItems as $o) {
-					$o->clearAllReferences($deep);
-				}
-			}
-			if ($this->collPurchaseOrderItems) {
-				foreach ((array) $this->collPurchaseOrderItems as $o) {
+			if ($this->collSupplierPurchaseOrderItems) {
+				foreach ((array) $this->collSupplierPurchaseOrderItems as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -1975,8 +1780,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 		$this->singleProductSupplier = null;
 		$this->collClientQuotationItems = null;
 		$this->collSupplierQuotationItems = null;
-		$this->collClientPurchaseOrderItems = null;
-		$this->collPurchaseOrderItems = null;
+		$this->collSupplierPurchaseOrderItems = null;
 	}
 
 } // BaseProduct

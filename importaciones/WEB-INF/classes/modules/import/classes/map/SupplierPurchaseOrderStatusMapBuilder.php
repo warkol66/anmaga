@@ -2,7 +2,7 @@
 
 
 /**
- * This class adds structure of 'import_supplierPurchaseOrder' table to 'application' DatabaseMap object.
+ * This class adds structure of 'import_supplierPurchaseOrderStatus' table to 'application' DatabaseMap object.
  *
  *
  *
@@ -13,12 +13,12 @@
  *
  * @package    import.classes.map
  */
-class SupplierPurchaseOrderMapBuilder implements MapBuilder {
+class SupplierPurchaseOrderStatusMapBuilder implements MapBuilder {
 
 	/**
 	 * The (dot-path) name of this class
 	 */
-	const CLASS_NAME = 'import.classes.map.SupplierPurchaseOrderMapBuilder';
+	const CLASS_NAME = 'import.classes.map.SupplierPurchaseOrderStatusMapBuilder';
 
 	/**
 	 * The database map.
@@ -54,28 +54,22 @@ class SupplierPurchaseOrderMapBuilder implements MapBuilder {
 	 */
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap(SupplierPurchaseOrderPeer::DATABASE_NAME);
+		$this->dbMap = Propel::getDatabaseMap(SupplierPurchaseOrderStatusPeer::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable(SupplierPurchaseOrderPeer::TABLE_NAME);
-		$tMap->setPhpName('SupplierPurchaseOrder');
-		$tMap->setClassname('SupplierPurchaseOrder');
+		$tMap = $this->dbMap->addTable(SupplierPurchaseOrderStatusPeer::TABLE_NAME);
+		$tMap->setPhpName('SupplierPurchaseOrderStatus');
+		$tMap->setClassname('SupplierPurchaseOrderStatus');
 
 		$tMap->setUseIdGenerator(true);
 
 		$tMap->addPrimaryKey('ID', 'Id', 'INTEGER', true, null);
 
+		$tMap->addColumn('SUPPLIERPURCHASEORDERID', 'Supplierpurchaseorderid', 'INTEGER', true, null);
+
+		$tMap->addColumn('STATUSCODE', 'Statuscode', 'INTEGER', true, null);
+
 		$tMap->addColumn('CREATEDAT', 'Createdat', 'TIMESTAMP', true, null);
-
-		$tMap->addForeignKey('SUPPLIERID', 'Supplierid', 'INTEGER', 'import_supplier', 'ID', true, null);
-
-		$tMap->addColumn('STATUS', 'Status', 'INTEGER', true, null);
-
-		$tMap->addColumn('TIMESTAMPSTATUS', 'Timestampstatus', 'TIMESTAMP', false, null);
-
-		$tMap->addForeignKey('SUPPLIERQUOTATIONID', 'Supplierquotationid', 'INTEGER', 'import_supplierQuotation', 'ID', true, null);
-
-		$tMap->addForeignKey('CLIENTQUOTATIONID', 'Clientquotationid', 'INTEGER', 'import_clientQuotation', 'ID', true, null);
 
 	} // doBuild()
 
-} // SupplierPurchaseOrderMapBuilder
+} // SupplierPurchaseOrderStatusMapBuilder
