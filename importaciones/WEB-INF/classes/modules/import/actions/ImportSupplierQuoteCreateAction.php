@@ -53,9 +53,11 @@ class ImportSupplierQuoteCreateAction extends ImportBaseAction {
 
 		//obtenemos la informacion del proveedor
 		$supplier = SupplierPeer::get($_POST['supplierId']);
+		$incoterm = IncotermPeer::get($_POST['incotermId']);
+		$port = PortPeer::get($_POST['portId']);
 
 
-		if (empty($clientQuotation) || empty($supplier)) {
+		if (empty($clientQuotation) || empty($supplier) || empty($incoterm) || empty($port)) {
 			return $mapping->findForwardConfig('failure');
 		}
 
@@ -78,7 +80,7 @@ class ImportSupplierQuoteCreateAction extends ImportBaseAction {
 		
 		//generamos la supplierQuotation
 		
-		$supplierQuotation = SupplierQuotationPeer::createFromClientQuotation($supplier,$clientQuotation,$clientQuotationSelectedItems);
+		$supplierQuotation = SupplierQuotationPeer::createFromClientQuotation($supplier,$incoterm,$port,$clientQuotation,$clientQuotationSelectedItems);
 
 		//notificamos al proveedor correspondiente
 		$content = $this->renderSupplierQuotationNotifyEmail($supplierQuotation);

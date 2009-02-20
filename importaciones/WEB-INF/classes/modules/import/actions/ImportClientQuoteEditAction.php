@@ -4,6 +4,8 @@ require_once("BaseAction.php");
 require_once("ClientQuotationPeer.php");
 require_once("ProductPeer.php");
 require_once("SupplierPeer.php");
+require_once("PortPeer.php");
+require_once("IncotermPeer.php");
 
 class ImportClientQuoteEditAction extends BaseAction {
 
@@ -62,10 +64,14 @@ class ImportClientQuoteEditAction extends BaseAction {
 
 			//traemos todas las cotizaciones.
 			$suppliers = SupplierPeer::getAll();
+			$incoterms = IncotermPeer::getAll();
+			$ports = PortPeer::getAll();
 			$clientQuotation = $clientQuotationPeer->get($_GET["id"]);
 			
 			$smarty->assign("clientQuotation",$clientQuotation);
 			$smarty->assign("suppliers",$suppliers);
+			$smarty->assign("incoterms",$incoterms);
+			$smarty->assign("ports",$ports);
 			return $mapping->findForwardConfig('success-admin');
 		}
 

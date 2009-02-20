@@ -43,12 +43,6 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	protected $clientquotationitemid;
 
 	/**
-	 * The value for the price field.
-	 * @var        double
-	 */
-	protected $price;
-
-	/**
 	 * The value for the quantity field.
 	 * @var        int
 	 */
@@ -65,6 +59,90 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	 * @var        int
 	 */
 	protected $incotermid;
+
+	/**
+	 * The value for the price field.
+	 * @var        double
+	 */
+	protected $price;
+
+	/**
+	 * The value for the suppliercomments field.
+	 * @var        string
+	 */
+	protected $suppliercomments;
+
+	/**
+	 * The value for the delivery field.
+	 * @var        int
+	 */
+	protected $delivery;
+
+	/**
+	 * The value for the package field.
+	 * @var        int
+	 */
+	protected $package;
+
+	/**
+	 * The value for the unitlength field.
+	 * @var        double
+	 */
+	protected $unitlength;
+
+	/**
+	 * The value for the unitwidth field.
+	 * @var        double
+	 */
+	protected $unitwidth;
+
+	/**
+	 * The value for the unitheight field.
+	 * @var        double
+	 */
+	protected $unitheight;
+
+	/**
+	 * The value for the unitgrossweigth field.
+	 * @var        double
+	 */
+	protected $unitgrossweigth;
+
+	/**
+	 * The value for the unitspercarton field.
+	 * @var        int
+	 */
+	protected $unitspercarton;
+
+	/**
+	 * The value for the cartons field.
+	 * @var        int
+	 */
+	protected $cartons;
+
+	/**
+	 * The value for the cartonlength field.
+	 * @var        double
+	 */
+	protected $cartonlength;
+
+	/**
+	 * The value for the cartonwidth field.
+	 * @var        double
+	 */
+	protected $cartonwidth;
+
+	/**
+	 * The value for the cartonheight field.
+	 * @var        double
+	 */
+	protected $cartonheight;
+
+	/**
+	 * The value for the cartongrossweigth field.
+	 * @var        double
+	 */
+	protected $cartongrossweigth;
 
 	/**
 	 * @var        SupplierQuotation
@@ -166,16 +244,6 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	}
 
 	/**
-	 * Get the [price] column value.
-	 * precio de producto
-	 * @return     double
-	 */
-	public function getPrice()
-	{
-		return $this->price;
-	}
-
-	/**
 	 * Get the [quantity] column value.
 	 * cantidad producto
 	 * @return     int
@@ -203,6 +271,146 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	public function getIncotermid()
 	{
 		return $this->incotermid;
+	}
+
+	/**
+	 * Get the [price] column value.
+	 * precio de producto
+	 * @return     double
+	 */
+	public function getPrice()
+	{
+		return $this->price;
+	}
+
+	/**
+	 * Get the [suppliercomments] column value.
+	 * Comentarios del proveedor 
+	 * @return     string
+	 */
+	public function getSuppliercomments()
+	{
+		return $this->suppliercomments;
+	}
+
+	/**
+	 * Get the [delivery] column value.
+	 * Tiempo en dias para la entrega del producto.
+	 * @return     int
+	 */
+	public function getDelivery()
+	{
+		return $this->delivery;
+	}
+
+	/**
+	 * Get the [package] column value.
+	 * A seleccionar entre Unidades o Bultos
+	 * @return     int
+	 */
+	public function getPackage()
+	{
+		return $this->package;
+	}
+
+	/**
+	 * Get the [unitlength] column value.
+	 * Largo del empaque de la unidad 
+	 * @return     double
+	 */
+	public function getUnitlength()
+	{
+		return $this->unitlength;
+	}
+
+	/**
+	 * Get the [unitwidth] column value.
+	 * Ancho del empaque de la unidad 
+	 * @return     double
+	 */
+	public function getUnitwidth()
+	{
+		return $this->unitwidth;
+	}
+
+	/**
+	 * Get the [unitheight] column value.
+	 * Alto del empaque de la unidad 
+	 * @return     double
+	 */
+	public function getUnitheight()
+	{
+		return $this->unitheight;
+	}
+
+	/**
+	 * Get the [unitgrossweigth] column value.
+	 * Peso del empaque de la unidad 
+	 * @return     double
+	 */
+	public function getUnitgrossweigth()
+	{
+		return $this->unitgrossweigth;
+	}
+
+	/**
+	 * Get the [unitspercarton] column value.
+	 * Unidades por bulto
+	 * @return     int
+	 */
+	public function getUnitspercarton()
+	{
+		return $this->unitspercarton;
+	}
+
+	/**
+	 * Get the [cartons] column value.
+	 * Cantidad de bultos
+	 * @return     int
+	 */
+	public function getCartons()
+	{
+		return $this->cartons;
+	}
+
+	/**
+	 * Get the [cartonlength] column value.
+	 * Largo del bulto
+	 * @return     double
+	 */
+	public function getCartonlength()
+	{
+		return $this->cartonlength;
+	}
+
+	/**
+	 * Get the [cartonwidth] column value.
+	 * Ancho del bulto
+	 * @return     double
+	 */
+	public function getCartonwidth()
+	{
+		return $this->cartonwidth;
+	}
+
+	/**
+	 * Get the [cartonheight] column value.
+	 * Alto del bulto
+	 * @return     double
+	 */
+	public function getCartonheight()
+	{
+		return $this->cartonheight;
+	}
+
+	/**
+	 * Get the [cartongrossweigth] column value.
+	 * Peso del bulto
+	 * @return     double
+	 */
+	public function getCartongrossweigth()
+	{
+		return $this->cartongrossweigth;
 	}
 
 	/**
@@ -298,26 +506,6 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	} // setClientquotationitemid()
 
 	/**
-	 * Set the value of [price] column.
-	 * precio de producto
-	 * @param      double $v new value
-	 * @return     SupplierQuotationItem The current object (for fluent API support)
-	 */
-	public function setPrice($v)
-	{
-		if ($v !== null) {
-			$v = (double) $v;
-		}
-
-		if ($this->price !== $v) {
-			$this->price = $v;
-			$this->modifiedColumns[] = SupplierQuotationItemPeer::PRICE;
-		}
-
-		return $this;
-	} // setPrice()
-
-	/**
 	 * Set the value of [quantity] column.
 	 * cantidad producto
 	 * @param      int $v new value
@@ -386,6 +574,286 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	} // setIncotermid()
 
 	/**
+	 * Set the value of [price] column.
+	 * precio de producto
+	 * @param      double $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setPrice($v)
+	{
+		if ($v !== null) {
+			$v = (double) $v;
+		}
+
+		if ($this->price !== $v) {
+			$this->price = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::PRICE;
+		}
+
+		return $this;
+	} // setPrice()
+
+	/**
+	 * Set the value of [suppliercomments] column.
+	 * Comentarios del proveedor 
+	 * @param      string $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setSuppliercomments($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->suppliercomments !== $v) {
+			$this->suppliercomments = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::SUPPLIERCOMMENTS;
+		}
+
+		return $this;
+	} // setSuppliercomments()
+
+	/**
+	 * Set the value of [delivery] column.
+	 * Tiempo en dias para la entrega del producto.
+	 * @param      int $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setDelivery($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->delivery !== $v) {
+			$this->delivery = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::DELIVERY;
+		}
+
+		return $this;
+	} // setDelivery()
+
+	/**
+	 * Set the value of [package] column.
+	 * A seleccionar entre Unidades o Bultos
+	 * @param      int $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setPackage($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->package !== $v) {
+			$this->package = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::PACKAGE;
+		}
+
+		return $this;
+	} // setPackage()
+
+	/**
+	 * Set the value of [unitlength] column.
+	 * Largo del empaque de la unidad 
+	 * @param      double $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setUnitlength($v)
+	{
+		if ($v !== null) {
+			$v = (double) $v;
+		}
+
+		if ($this->unitlength !== $v) {
+			$this->unitlength = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::UNITLENGTH;
+		}
+
+		return $this;
+	} // setUnitlength()
+
+	/**
+	 * Set the value of [unitwidth] column.
+	 * Ancho del empaque de la unidad 
+	 * @param      double $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setUnitwidth($v)
+	{
+		if ($v !== null) {
+			$v = (double) $v;
+		}
+
+		if ($this->unitwidth !== $v) {
+			$this->unitwidth = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::UNITWIDTH;
+		}
+
+		return $this;
+	} // setUnitwidth()
+
+	/**
+	 * Set the value of [unitheight] column.
+	 * Alto del empaque de la unidad 
+	 * @param      double $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setUnitheight($v)
+	{
+		if ($v !== null) {
+			$v = (double) $v;
+		}
+
+		if ($this->unitheight !== $v) {
+			$this->unitheight = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::UNITHEIGHT;
+		}
+
+		return $this;
+	} // setUnitheight()
+
+	/**
+	 * Set the value of [unitgrossweigth] column.
+	 * Peso del empaque de la unidad 
+	 * @param      double $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setUnitgrossweigth($v)
+	{
+		if ($v !== null) {
+			$v = (double) $v;
+		}
+
+		if ($this->unitgrossweigth !== $v) {
+			$this->unitgrossweigth = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::UNITGROSSWEIGTH;
+		}
+
+		return $this;
+	} // setUnitgrossweigth()
+
+	/**
+	 * Set the value of [unitspercarton] column.
+	 * Unidades por bulto
+	 * @param      int $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setUnitspercarton($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->unitspercarton !== $v) {
+			$this->unitspercarton = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::UNITSPERCARTON;
+		}
+
+		return $this;
+	} // setUnitspercarton()
+
+	/**
+	 * Set the value of [cartons] column.
+	 * Cantidad de bultos
+	 * @param      int $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setCartons($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->cartons !== $v) {
+			$this->cartons = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::CARTONS;
+		}
+
+		return $this;
+	} // setCartons()
+
+	/**
+	 * Set the value of [cartonlength] column.
+	 * Largo del bulto
+	 * @param      double $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setCartonlength($v)
+	{
+		if ($v !== null) {
+			$v = (double) $v;
+		}
+
+		if ($this->cartonlength !== $v) {
+			$this->cartonlength = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::CARTONLENGTH;
+		}
+
+		return $this;
+	} // setCartonlength()
+
+	/**
+	 * Set the value of [cartonwidth] column.
+	 * Ancho del bulto
+	 * @param      double $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setCartonwidth($v)
+	{
+		if ($v !== null) {
+			$v = (double) $v;
+		}
+
+		if ($this->cartonwidth !== $v) {
+			$this->cartonwidth = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::CARTONWIDTH;
+		}
+
+		return $this;
+	} // setCartonwidth()
+
+	/**
+	 * Set the value of [cartonheight] column.
+	 * Alto del bulto
+	 * @param      double $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setCartonheight($v)
+	{
+		if ($v !== null) {
+			$v = (double) $v;
+		}
+
+		if ($this->cartonheight !== $v) {
+			$this->cartonheight = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::CARTONHEIGHT;
+		}
+
+		return $this;
+	} // setCartonheight()
+
+	/**
+	 * Set the value of [cartongrossweigth] column.
+	 * Peso del bulto
+	 * @param      double $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setCartongrossweigth($v)
+	{
+		if ($v !== null) {
+			$v = (double) $v;
+		}
+
+		if ($this->cartongrossweigth !== $v) {
+			$this->cartongrossweigth = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::CARTONGROSSWEIGTH;
+		}
+
+		return $this;
+	} // setCartongrossweigth()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -426,10 +894,23 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 			$this->supplierquotationid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->productid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
 			$this->clientquotationitemid = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-			$this->price = ($row[$startcol + 4] !== null) ? (double) $row[$startcol + 4] : null;
-			$this->quantity = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-			$this->portid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-			$this->incotermid = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+			$this->quantity = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->portid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->incotermid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+			$this->price = ($row[$startcol + 7] !== null) ? (double) $row[$startcol + 7] : null;
+			$this->suppliercomments = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->delivery = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+			$this->package = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+			$this->unitlength = ($row[$startcol + 11] !== null) ? (double) $row[$startcol + 11] : null;
+			$this->unitwidth = ($row[$startcol + 12] !== null) ? (double) $row[$startcol + 12] : null;
+			$this->unitheight = ($row[$startcol + 13] !== null) ? (double) $row[$startcol + 13] : null;
+			$this->unitgrossweigth = ($row[$startcol + 14] !== null) ? (double) $row[$startcol + 14] : null;
+			$this->unitspercarton = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+			$this->cartons = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+			$this->cartonlength = ($row[$startcol + 17] !== null) ? (double) $row[$startcol + 17] : null;
+			$this->cartonwidth = ($row[$startcol + 18] !== null) ? (double) $row[$startcol + 18] : null;
+			$this->cartonheight = ($row[$startcol + 19] !== null) ? (double) $row[$startcol + 19] : null;
+			$this->cartongrossweigth = ($row[$startcol + 20] !== null) ? (double) $row[$startcol + 20] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -439,7 +920,7 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 8; // 8 = SupplierQuotationItemPeer::NUM_COLUMNS - SupplierQuotationItemPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 21; // 21 = SupplierQuotationItemPeer::NUM_COLUMNS - SupplierQuotationItemPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating SupplierQuotationItem object", $e);
@@ -795,10 +1276,23 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 		if ($this->isColumnModified(SupplierQuotationItemPeer::SUPPLIERQUOTATIONID)) $criteria->add(SupplierQuotationItemPeer::SUPPLIERQUOTATIONID, $this->supplierquotationid);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::PRODUCTID)) $criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->productid);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::CLIENTQUOTATIONITEMID)) $criteria->add(SupplierQuotationItemPeer::CLIENTQUOTATIONITEMID, $this->clientquotationitemid);
-		if ($this->isColumnModified(SupplierQuotationItemPeer::PRICE)) $criteria->add(SupplierQuotationItemPeer::PRICE, $this->price);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::QUANTITY)) $criteria->add(SupplierQuotationItemPeer::QUANTITY, $this->quantity);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::PORTID)) $criteria->add(SupplierQuotationItemPeer::PORTID, $this->portid);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::INCOTERMID)) $criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->incotermid);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::PRICE)) $criteria->add(SupplierQuotationItemPeer::PRICE, $this->price);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::SUPPLIERCOMMENTS)) $criteria->add(SupplierQuotationItemPeer::SUPPLIERCOMMENTS, $this->suppliercomments);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::DELIVERY)) $criteria->add(SupplierQuotationItemPeer::DELIVERY, $this->delivery);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::PACKAGE)) $criteria->add(SupplierQuotationItemPeer::PACKAGE, $this->package);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::UNITLENGTH)) $criteria->add(SupplierQuotationItemPeer::UNITLENGTH, $this->unitlength);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::UNITWIDTH)) $criteria->add(SupplierQuotationItemPeer::UNITWIDTH, $this->unitwidth);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::UNITHEIGHT)) $criteria->add(SupplierQuotationItemPeer::UNITHEIGHT, $this->unitheight);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::UNITGROSSWEIGTH)) $criteria->add(SupplierQuotationItemPeer::UNITGROSSWEIGTH, $this->unitgrossweigth);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::UNITSPERCARTON)) $criteria->add(SupplierQuotationItemPeer::UNITSPERCARTON, $this->unitspercarton);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::CARTONS)) $criteria->add(SupplierQuotationItemPeer::CARTONS, $this->cartons);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::CARTONLENGTH)) $criteria->add(SupplierQuotationItemPeer::CARTONLENGTH, $this->cartonlength);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::CARTONWIDTH)) $criteria->add(SupplierQuotationItemPeer::CARTONWIDTH, $this->cartonwidth);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::CARTONHEIGHT)) $criteria->add(SupplierQuotationItemPeer::CARTONHEIGHT, $this->cartonheight);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::CARTONGROSSWEIGTH)) $criteria->add(SupplierQuotationItemPeer::CARTONGROSSWEIGTH, $this->cartongrossweigth);
 
 		return $criteria;
 	}
@@ -859,13 +1353,39 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 
 		$copyObj->setClientquotationitemid($this->clientquotationitemid);
 
-		$copyObj->setPrice($this->price);
-
 		$copyObj->setQuantity($this->quantity);
 
 		$copyObj->setPortid($this->portid);
 
 		$copyObj->setIncotermid($this->incotermid);
+
+		$copyObj->setPrice($this->price);
+
+		$copyObj->setSuppliercomments($this->suppliercomments);
+
+		$copyObj->setDelivery($this->delivery);
+
+		$copyObj->setPackage($this->package);
+
+		$copyObj->setUnitlength($this->unitlength);
+
+		$copyObj->setUnitwidth($this->unitwidth);
+
+		$copyObj->setUnitheight($this->unitheight);
+
+		$copyObj->setUnitgrossweigth($this->unitgrossweigth);
+
+		$copyObj->setUnitspercarton($this->unitspercarton);
+
+		$copyObj->setCartons($this->cartons);
+
+		$copyObj->setCartonlength($this->cartonlength);
+
+		$copyObj->setCartonwidth($this->cartonwidth);
+
+		$copyObj->setCartonheight($this->cartonheight);
+
+		$copyObj->setCartongrossweigth($this->cartongrossweigth);
 
 
 		$copyObj->setNew(true);

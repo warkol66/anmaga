@@ -19,5 +19,8 @@ require_once 'import/classes/om/BaseSupplierQuotationItem.php';
  * @package    anmaga
  */
 class SupplierQuotationItem extends BaseSupplierQuotationItem {
+	
+	const PACKAGE_BY_UNIT = 1;
+	const PACKAGE_BY_CARTON = 2;
 
 } // SupplierQuotationItem

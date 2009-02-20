@@ -70,13 +70,39 @@ class SupplierQuotationItemMapBuilder implements MapBuilder {
 
 		$tMap->addForeignKey('CLIENTQUOTATIONITEMID', 'Clientquotationitemid', 'INTEGER', 'import_clientQuotationItem', 'ID', true, null);
 
-		$tMap->addColumn('PRICE', 'Price', 'FLOAT', false, null);
-
 		$tMap->addColumn('QUANTITY', 'Quantity', 'INTEGER', true, null);
 
-		$tMap->addForeignKey('PORTID', 'Portid', 'INTEGER', 'import_port', 'ID', false, null);
+		$tMap->addForeignKey('PORTID', 'Portid', 'INTEGER', 'import_port', 'ID', true, null);
 
-		$tMap->addForeignKey('INCOTERMID', 'Incotermid', 'INTEGER', 'import_incoterm', 'ID', false, null);
+		$tMap->addForeignKey('INCOTERMID', 'Incotermid', 'INTEGER', 'import_incoterm', 'ID', true, null);
+
+		$tMap->addColumn('PRICE', 'Price', 'FLOAT', false, null);
+
+		$tMap->addColumn('SUPPLIERCOMMENTS', 'Suppliercomments', 'VARCHAR', false, 255);
+
+		$tMap->addColumn('DELIVERY', 'Delivery', 'INTEGER', false, null);
+
+		$tMap->addColumn('PACKAGE', 'Package', 'INTEGER', false, null);
+
+		$tMap->addColumn('UNITLENGTH', 'Unitlength', 'FLOAT', false, null);
+
+		$tMap->addColumn('UNITWIDTH', 'Unitwidth', 'FLOAT', false, null);
+
+		$tMap->addColumn('UNITHEIGHT', 'Unitheight', 'FLOAT', false, null);
+
+		$tMap->addColumn('UNITGROSSWEIGTH', 'Unitgrossweigth', 'FLOAT', false, null);
+
+		$tMap->addColumn('UNITSPERCARTON', 'Unitspercarton', 'INTEGER', false, null);
+
+		$tMap->addColumn('CARTONS', 'Cartons', 'INTEGER', false, null);
+
+		$tMap->addColumn('CARTONLENGTH', 'Cartonlength', 'FLOAT', false, null);
+
+		$tMap->addColumn('CARTONWIDTH', 'Cartonwidth', 'FLOAT', false, null);
+
+		$tMap->addColumn('CARTONHEIGHT', 'Cartonheight', 'FLOAT', false, null);
+
+		$tMap->addColumn('CARTONGROSSWEIGTH', 'Cartongrossweigth', 'FLOAT', false, null);
 
 	} // doBuild()
 
