@@ -11,8 +11,27 @@ function importAddItemToClientQuotationX(form) {
 					evalScripts: true,
 					insertion: Insertion.Bottom
 				});
-				
-	$('clientQuotationAdderMsgBox').innerHTML = '<span class="inProgress">... agregando item ... </span>';
+	if ($('productSearchMsgBox'))
+		$('productSearchMsgBox').innerHTML = 'agregando item ...';
 	
 	return true;
+}
+
+function importSearchProductsX(form) {
+	
+	var fields = Form.serialize(form);
+	var myAjax = new Ajax.Updater(
+				{success: 'productAdder'},
+				url,
+				{
+					method: 'post',
+					postBody: fields,
+					evalScripts: true,
+				});
+
+	if ($('productSearchMsgBox'))
+		$('productSearchMsgBox').innerHTML = 'buscando...';
+
+	return true;
+	
 }
