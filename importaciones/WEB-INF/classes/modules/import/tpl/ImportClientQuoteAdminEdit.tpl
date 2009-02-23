@@ -17,6 +17,37 @@
 	<p>
 		Estado: |-$clientQuotation->getStatusName()-|
 	</p>
+</div>
+
+<h1>Busqueda y Agregado de Productos</h1>
+
+|-if not $clientQuotation->isWaitingResponse()-|
+	<div id="productSearch">
+		<form action="Main" method="post">
+			<p>
+				<label for="productSearchLabel">Busqueda de Productos</label>
+				<input type="text" name="productSearch[query]" value="" />
+				<input type="hidden" name="do" value="importProductSearchX" />
+				<input type="button" value="Buscar Productos" name="productSearchButton" onClick="javascript:importSearchProductsX(this.form)"/> <span id="productSearchMsgBox" class="inProgress"></span>
+				<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|">
+			</p>
+		</form>
+	</div>	 
+	<div id="productAdder">
+	</div>
+|-/if-|
+
+<h1>Productos en la cotización</h1>
+
+<div id="clientQuotationItemsHolder">
+	|-if not $clientQuotation->isWaitingResponse()-|
+		|-include file='ImportClientQuoteItemsAffiliateListInclude.tpl' clientQuotation=$clientQuotation-|
+	|-else-|
+		|-include file='ImportClientQuoteItemsAdminListInclude.tpl' clientQuotation=$clientQuotation-|
+	|-/if-|
+</div>
+
+<div id="clientQuotationConfirmation">
 	|-if not $clientQuotation->isWaitingResponse()-|
 	<p>
 
@@ -26,21 +57,5 @@
 			<input type="submit" value="Confirmar Cotización">
 		</form>
 	<p>
-	|-/if-|
-</div>
-
-<h3>Productos de la solicitud</h3>
-
-|-if not $clientQuotation->isWaitingResponse()-|
-	<div id="clientQuotationItemAdder">
-		|-include file='ImportClientQuoteAddItemInclude.tpl' clientQuotation=$clientQuotation affiliate=$affiliate-|
-	</div>
-|-/if-|
-
-<div id="clientQuotationItemsHolder">
-	|-if not $clientQuotation->isWaitingResponse()-|
-		|-include file='ImportClientQuoteItemsAffiliateListInclude.tpl' clientQuotation=$clientQuotation-|
-	|-else-|
-		|-include file='ImportClientQuoteItemsAdminListInclude.tpl' clientQuotation=$clientQuotation-|
 	|-/if-|
 </div>

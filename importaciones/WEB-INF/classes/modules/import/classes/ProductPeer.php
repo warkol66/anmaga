@@ -240,6 +240,33 @@ class ProductPeer extends BaseProductPeer {
 		
 		return true;
 
+	}
+	
+	/**
+	 * Realiza una busqueda de producto por sus campos descriptivos.
+	 * @param String $searchString Cadena de Busqueda
+	 * @return array
+	 */
+	function search($searchString) {
+		
+		$criteria = new Criteria();
+		$words = split(' ',$searchString);
+		
+		foreach ($words as $word) {
+			
+			$criterion = $criteria->getNewCriterion(ProductPeer::NAME,"%" . $word . "%",Criteria::LIKE);
+			$criterion->addOr($criteria->getNewCriterion(ProductPeer::CODE,"%" . $word . "%", Criteria::LIKE));
+			$criterion->addOr($criteria->getNewCriterion(ProductPeer::NAMESPANISH,"%" . $word . "%", Criteria::LIKE));
+			$criterion->addOr($criteria->getNewCriterion(ProductPeer::DESCRIPTION,"%" . $word . "%", Criteria::LIKE));
+			$criterion->addOr($criteria->getNewCriterion(ProductPeer::DESCRIPTIONSPANISH,"%" . $word . "%", Criteria::LIKE));
+		
+			$criteria->addOr($criterion);
+		}
+		
+		$result = ProductPeer::doSelect($criteria);
+		
+		return $result;
+		
 	}	
 
 }

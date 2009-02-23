@@ -1040,6 +1040,14 @@
     <forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=supplier-quotation-created" redirect="true"/>
     </action>
 
+	<action    path = "importProductSearchX"
+	           type = "ImportProductSearchXAction"
+	           name = "importProductSearchX"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="ImportProductSearchX.tpl" />
+	</action>
+
 <!-- Fin Modulo ImportClientQuote -->
 
 <!-- Modulo ImportSupplierQuote -->
