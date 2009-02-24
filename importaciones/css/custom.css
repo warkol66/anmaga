@@ -924,6 +924,3 @@ fieldset textarea.readOnly, fieldset input.readOnly {
 	background-color: #EFEFEF;
 	border: none;
 }
-fieldset input.readOnly {
-	text-align: right;
-}
