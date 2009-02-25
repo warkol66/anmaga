@@ -1048,6 +1048,22 @@
 	<forward name="success" path="ImportProductSearchX.tpl" />
 	</action>
 
+	<action    path = "importClientQuoteItemSetPrice"
+	           type = "ImportClientQuoteItemSetPriceAction"
+	           name = "importClientQuoteItemSetPrice"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="ImportClientQuoteItemSetPrice.tpl" />
+	</action>
+
+	<action    path = "importClientQuoteItemDoSetPrice"
+	           type = "ImportClientQuoteItemDoSetPriceAction"
+	           name = "importClientQuoteItemDoSetPrice"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=price-set" redirect="true"/>
+	</action>
+
 <!-- Fin Modulo ImportClientQuote -->
 
 <!-- Modulo ImportSupplierQuote -->

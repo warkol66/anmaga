@@ -22,5 +22,44 @@ class SupplierQuotationItem extends BaseSupplierQuotationItem {
 	
 	const PACKAGE_BY_UNIT = 1;
 	const PACKAGE_BY_CARTON = 2;
+	
+	/**
+	 * Calcula el volumen segun la informacion ingresada en la cotizacion sobre la unidad
+	 * @return float
+	 */
+	public function getUnitVolume() {
+		return ($this->getUnitWidth() * $this->getUnitHeight() * $this->getUnitLength());
+	}
+
+	/**
+	 * Calcula el volumen segun la informacion ingresada en la cotizacion sobre el bulto
+	 * @return float
+	 */	
+	public function getCartonVolume() {
+		return ($this->getCartonWidth() * $this->getCartonHeight() * $this->getCartonLength());		
+	}
+	
+	/**
+	 * Calcula la densidad segun la informacion ingresada en la cotizacion sobre la unidad
+	 */
+	function getUnitDensity() {
+		
+		if ($this->getUnitVolume() == 0)
+			return 0;
+		
+		return ($this->getUnitGrossWeigth()/ $this->getUnitVolume());
+	}
+	
+	/**
+	 * Calcula la densidad segun la informacion ingresada en la cotizacion sobre la unidad
+	 */
+	function getCartonDensity() {
+
+		if ($this->getCartonVolume() == 0)
+			return 0;
+		
+		return ($this->getCartonGrossWeigth() / $this->getUnitVolume());
+
+	}
 
 } // SupplierQuotationItem

@@ -47,7 +47,44 @@ class ClientQuotationItemPeer extends BaseClientQuotationItemPeer {
     } catch (Exception $exp) {
       return false;
     }         
-  }  
+  }
+
+  /**
+  * Actualiza un client quotation item nuevo.
+  *
+  * @param array $params Array asociativo con los atributos del objeto
+  * @return ClientQuotation creado, false sino
+  */  
+  function update($params) {
+    try {
+      $clientquotationItemObj = ClientQuotationItemPeer::get($params['id']);
+      foreach ($params as $key => $value) {
+        $setMethod = "set".$key;
+        if ( method_exists($clientquotationItemObj,$setMethod) ) {          
+          if (!empty($value))
+            $clientquotationItemObj->$setMethod($value);
+          else
+            $clientquotationItemObj->$setMethod(null);
+        }
+      }
+      $clientquotationItemObj->save();
+      return $clientquotationItemObj;
+    } catch (Exception $exp) {
+      return false;
+    }         
+  }
+
+  /**
+  * Obtiene la informacion de un client quotation item.
+  *
+  * @param int $id id del clientquotation
+  * @return array Informacion del clientquotation
+  */
+  function get($id) {
+		$clientquotationItemObj = ClientQuotationItemPeer::retrieveByPK($id);
+    return $clientquotationItemObj;
+  }
+
 
 
 } // ClientQuotationItemPeer

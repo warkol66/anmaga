@@ -5,7 +5,9 @@
 	|-if $message eq "supplier-quotation-created"-|
 		<div class="successMessage">Cotización de Proveedor creada correctamente. Puede consultarla accediendo a este <a href="Main.php?do=importSupplierQuoteEdit&amp;id=|-$supplierQuotation->getId()-|" >link</a></div>
 	|-/if-|
-
+	|-if $message eq "price-set"-|
+		<div class="successMessage">Se ha fijado un nuevo precio para el cliente.</div>
+	|-/if-|
 </div>
 
 
@@ -19,9 +21,11 @@
 	</p>
 </div>
 
-<h1>Busqueda y Agregado de Productos</h1>
 
 |-if not $clientQuotation->isWaitingResponse()-|
+
+<h1>Busqueda y Agregado de Productos</h1>
+
 	<div id="productSearch">
 		<form action="Main" method="post">
 			<p>

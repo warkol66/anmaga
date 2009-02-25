@@ -42,6 +42,18 @@ class ClientQuotationItem extends BaseClientQuotationItem {
 		$supplierQuotationItem = $this->getSupplierQuotationItem();
 		return (!empty($supplierQuotationItem));
 	}
-
+	
+	/**
+	 * Obtiene las ultimas cotizaciones realizadas al cliente sobre este item
+	 * que hayan tenido fijado un precio
+	 */
+	public function getLastClientQuotationItemsRelated() {
+		$criteria = new Criteria();
+		$criteria->add(ClientQuotationItemPeer::PRODUCTID,$this->getProductId());
+		$criteria->add(ClientQuotationItemPeer::ID,$this->getId(),Criteria::NOT_EQUAL);
+		$criteria->add(ClientQuotationItemPeer::PRICE,'',Criteria::NOT_EQUAL);
+		$result = SupplierQuotationItemPeer::doSelect($criteria);
+		return $result;
+	}
 
 } // ClientQuotationItem
