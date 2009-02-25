@@ -24,19 +24,19 @@ class SupplierQuotationItem extends BaseSupplierQuotationItem {
 	const PACKAGE_BY_CARTON = 2;
 	
 	/**
-	 * Calcula el volumen segun la informacion ingresada en la cotizacion sobre la unidad
+	 * Calcula el volumen en m3 segun la informacion ingresada en la cotizacion sobre la unidad
 	 * @return float
 	 */
 	public function getUnitVolume() {
-		return ($this->getUnitWidth() * $this->getUnitHeight() * $this->getUnitLength());
+		return ($this->getUnitWidth() * $this->getUnitHeight() * $this->getUnitLength() / 1000000);
 	}
 
 	/**
-	 * Calcula el volumen segun la informacion ingresada en la cotizacion sobre el bulto
+	 * Calcula el volumen en m3 segun la informacion ingresada en la cotizacion sobre el bulto
 	 * @return float
 	 */	
 	public function getCartonVolume() {
-		return ($this->getCartonWidth() * $this->getCartonHeight() * $this->getCartonLength());		
+		return ($this->getCartonWidth() * $this->getCartonHeight() * $this->getCartonLength() / 1000000);		
 	}
 	
 	/**
@@ -47,7 +47,7 @@ class SupplierQuotationItem extends BaseSupplierQuotationItem {
 		if ($this->getUnitVolume() == 0)
 			return 0;
 		
-		return ($this->getUnitGrossWeigth()/ $this->getUnitVolume());
+		return ($this->getUnitGrossWeigth() / $this->getUnitVolume());
 	}
 	
 	/**
@@ -58,8 +58,25 @@ class SupplierQuotationItem extends BaseSupplierQuotationItem {
 		if ($this->getCartonVolume() == 0)
 			return 0;
 		
-		return ($this->getCartonGrossWeigth() / $this->getUnitVolume());
+		return ($this->getCartonGrossWeigth() / $this->getCartonVolume());
 
 	}
+
+	/**
+	 * Calcula el volumen segun la informacion ingresada en la cotizacion sobre el bulto
+	 * @return float
+	 */	
+	public function getTotalVolume() {
+		return ($this->getUnitVolume() * $this->getQuantity());		
+	}
+
+	/**
+	 * Calcula el volumen segun la informacion ingresada en la cotizacion sobre el bulto
+	 * @return float
+	 */	
+	public function getTotalWeigth() {
+		return ($this->getUnitGrossWeigth() * $this->getQuantity());		
+	}
+
 
 } // SupplierQuotationItem

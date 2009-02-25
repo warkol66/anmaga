@@ -1,4 +1,4 @@
-<h3>Ultimos Precios Cotizados al Cliente sobre el Item</h3>
+<h3>Últimos Precios Cotizados al Cliente sobre el Item</h3>
 
 |- if $lastClientQuotationItemsRelated|@count neq 0-|
 <table id="clientQuotationItemList" cellpadding="4" cellspacing="0" class="tableTdBorders">
@@ -7,10 +7,10 @@
 		<th>Precio Unitario Cotizado</th>
 	</tr>
 |-foreach from=$lastClientQuotationItemsRelated item=related name=for_relatedQuotations-|
-	<td>
-		<th>|-$related->getPrice()-|</th>
-		<th>|-$related->getCreatedAt()-|</th>
-	</td>
+	<tr>
+		<td>|-$related->getCreatedAt()-|</td>
+		<td>|-$related->getPrice()-|</td>
+	</tr>
 |-/foreach-|
 </table>
 |-else-|

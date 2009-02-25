@@ -12,7 +12,7 @@
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
 			<td>|-$item->getQuantity()-|</td>
-			<td>|-$item->getPrice()-|</td>			
+			<td>|-$item->getPrice()|number_format:2:",":"."-|</td>			
 		</tr>
 		|-/foreach-|
 	</table>
