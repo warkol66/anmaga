@@ -42,54 +42,54 @@
 	</p>
 	<p>
 		<label>El producto se embarcara en</label>
-		<input type="radio" name="supplierQuotationItem[package]" value="1"  checked="checked"> Empaques Unitarios
-		<input type="radio" name="supplierQuotationItem[package]" value="2" > Bultos
+		<input type="radio" name="supplierQuotationItem[package]" value="1"  |-if $supplierQuotationItem->getPackage() eq 1-|checked="checked"|-/if-| > Empaques Unitarios
+		<input type="radio" name="supplierQuotationItem[package]" value="2" |-if $supplierQuotationItem->getPackage() eq 2-|checked="checked"|-/if-|> Bultos
 	</p>
 	<div id="unitFormOptions">
 		<h3>Dimensiones Unidad:</h3> 
-		<p><label for="supplierQuotationItem[unitHeight]">Alto:</label> <input name="supplierQuotationItem[unitHeight]" type="text" value="" size="6" /> 
+		<p><label for="supplierQuotationItem[unitHeight]">Alto:</label> <input name="supplierQuotationItem[unitHeight]" type="text" value="|-$supplierQuotationItem->getUnitHeight()-|" size="6" /> 
 		cm x </p>
-		<p><label for="supplierQuotationItem[unitLength]">Largo:</label> <input name="supplierQuotationItem[unitLength]" type="text" value="" size="6" /> 
+		<p><label for="supplierQuotationItem[unitLength]">Largo:</label> <input name="supplierQuotationItem[unitLength]" type="text" value="|-$supplierQuotationItem->getUnitLength()-|" size="6" /> 
 		cm x </p>
-		<p><label for="supplierQuotationItem[unitWidth]">Ancho:</label> <input name="supplierQuotationItem[unitWidth]" type="text" value="" size="6" />
+		<p><label for="supplierQuotationItem[unitWidth]">Ancho:</label> <input name="supplierQuotationItem[unitWidth]" type="text" value="|-$supplierQuotationItem->getUnitWidth()-|" size="6" />
 		cm.</p>
 		<p>
-			<label for="supplierQuotationItem[unitGrossWeigth]">Peso Bruto Unidad:</label> <input name="supplierQuotationItem[unitGrossWeigth]" type="text" value="" size="6" /> 
+			<label for="supplierQuotationItem[unitGrossWeigth]">Peso Bruto Unidad:</label> <input name="supplierQuotationItem[unitGrossWeigth]" type="text" value="|-$supplierQuotationItem->getUnitGrossWeigth()-|" size="6" /> 
 			kg.
 		</p>
 	</div>
 <div id="cartonFormOptions">
 		<h3>Dimensiones Bulto:</h3> 
 		<p>
-			<label for="supplierQuotationItem[unitsPerCarton]">Unidades por Bulto:</label> <input name="supplierQuotationItem[unitsPerCarton]" type="text" value="" size="8" /> 
+			<label for="supplierQuotationItem[unitsPerCarton]">Unidades por Bulto:</label> <input name="supplierQuotationItem[unitsPerCarton]" type="text" value="|-$supplierQuotationItem->getUnitsPerCarton()-|" size="8" /> 
 			unidades.
 		</p>
 		<p>
-			<label for="supplierQuotationItem[cartonHeight]">Alto: </label> <input name="supplierQuotationItem[cartonHeight]" type="text" value="" size="6" /> 
+			<label for="supplierQuotationItem[cartonHeight]">Alto: </label> <input name="supplierQuotationItem[cartonHeight]" type="text" value="|-$supplierQuotationItem->getCartonHeight()-|" size="6" /> 
 			cm x </p>
 		<p>
-			<label for="supplierQuotationItem[cartonWidth]">Largo: </label> <input name="supplierQuotationItem[cartonWidth]" type="text" value="" size="6" /> 
+			<label for="supplierQuotationItem[cartonWidth]">Largo: </label> <input name="supplierQuotationItem[cartonLength]" type="text" value="|-$supplierQuotationItem->getCartonLength()-|" size="6" /> 
 			cm x </p>
 		<p>
-			<label for="supplierQuotationItem[cartonWidth]">Ancho: </label> <input name="supplierQuotationItem[cartonWidth]" type="text" value="" size="6" />
+			<label for="supplierQuotationItem[cartonWidth]">Ancho: </label> <input name="supplierQuotationItem[cartonWidth]" type="text" value="|-$supplierQuotationItem->getCartonWidth()-|" size="6" />
 			cm.</p>
 		<p>
 			<label for="supplierQuotationItem[cartonGrossWeigth]">Peso Bruto</label>
-			<input name="supplierQuotationItem[cartonGrossWeigth]" type="text" value="" size="6" /> 
+			<input name="supplierQuotationItem[cartonGrossWeigth]" type="text" value="|-$supplierQuotationItem->getCartonGrossWeigth()-|" size="6" /> 
 			kg.		</p>			
 </div>
 	<p>
 |-assign var=incoterm value=$supplierQuotationItem->getIncoterm()-|
 |-assign var=port value=$supplierQuotationItem->getPort()-|
-		<label>Precio: [|-$incoterm->getName()-| |-$port->getName()-|]</label> <input name="supplierQuotationItem[price]" type="text" id="supplierQuotationItem[price]" value="" size="8"> 
+		<label>Precio: [|-$incoterm->getName()-| |-$port->getName()-|]</label> <input name="supplierQuotationItem[price]" type="text" id="supplierQuotationItem[price]" value="|-$supplierQuotationItem->getPrice()-|" size="8"> 
 	US$/u.
 	</p>
 	<p>
-		<label>Entrega: </label> <input name="supplierQuotationItem[delivery]" type="text" value="" size="6" /> 
+		<label>Entrega: </label> <input name="supplierQuotationItem[delivery]" type="text" value="|-$supplierQuotationItem->getDelivery()-|" size="6" /> 
 	dias.</p>
 	<p>
 		<label>Comentarios</label>
-		<textarea name="supplierQuotationItem[supplierComments]" cols="60" rows="8" wrap="virtual"></textarea>
+		<textarea name="supplierQuotationItem[supplierComments]" cols="60" rows="8" wrap="virtual">|-$supplierQuotationItem->getSupplierComments()-|</textarea>
 	</p>
 	<p>
 		<input type="hidden" name="token" value="|-$token-|" />

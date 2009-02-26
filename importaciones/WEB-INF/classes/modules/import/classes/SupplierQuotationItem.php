@@ -61,7 +61,7 @@ class SupplierQuotationItem extends BaseSupplierQuotationItem {
 		return ($this->getCartonGrossWeigth() / $this->getCartonVolume());
 
 	}
-
+	
 	/**
 	 * Calcula el volumen segun la informacion ingresada en la cotizacion sobre el bulto
 	 * @return float

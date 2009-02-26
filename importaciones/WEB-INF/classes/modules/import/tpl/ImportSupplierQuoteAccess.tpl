@@ -5,6 +5,9 @@
 	|-if $message eq "quoted"-|
 	<div class="successMessage">Se ha guardado la cotizacion del item.</div>
 	|-/if-|
+	|-if $message eq "confirmed"-|
+	<div class="successMessage">Se ha confirmado la cotizacion.</div>
+	|-/if-|
 	
 </div>
 
@@ -23,3 +26,14 @@
 <div id="supplierQuotationItemsHolder">
 		|-include file='ImportSupplierQuoteItemsSupplierListInclude.tpl' token=$token supplierQuotation=$supplierQuotation-|
 </div>
+
+|-if not $supplierQuotation->isConfirmed() -|
+	<div id="supplierQuotationConfirmation">
+		<p>A continuzacion podra confirma la cotizacion. Tenga en cuenta que una vez confirmada, no podra hacerle modificaciones.</p>
+		<form action="Main.php" method="post">
+			<p><input type="hidden" name="token" value="|-$token-|" ></p>
+			<p><input type="hidden" name="do" value="importSupplierQuoteConfirm" id="do"></p>
+			<p><input type="submit" value="Confirmar Cotizacion" /></p>
+		</form>
+	</div>
+|-/if-|

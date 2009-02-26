@@ -22,9 +22,11 @@ class SupplierQuotation extends BaseSupplierQuotation {
 	
 	const STATUS_NEW = 1;
 	const STATUS_WAITING_RESPONSE = 2;
+	const STATUS_CONFIRMED = 3;
 	
 	private $statusNames = array(
-								ClientQuotation::STATUS_NEW => 'New'
+								SupplierQuotation::STATUS_NEW => 'New',
+								SupplierQuotation::STATUS_CONFIRMED => 'Confirmed'
 							);	
 	
 	/**
@@ -99,6 +101,31 @@ class SupplierQuotation extends BaseSupplierQuotation {
 		
 		return true;
 	}
+	
+	/**
+	 * Confirma una cotizacion de proveedor
+	 * @return boolean
+	 */
+	public function confirm() {
+
+		try {
+			$this->setStatus(SupplierQuotation::STATUS_CONFIRMED);
+			$this->save();			
+		} catch (PropelException $e) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Indica si la cotizacion se encuentra confirmada
+	 * @return boolean
+	 */
+	public function isConfirmed() {
+		return ($this->getStatus() == SupplierQuotation::STATUS_CONFIRMED);
+	}
+	
 	
 
 } // SupplierQuotation

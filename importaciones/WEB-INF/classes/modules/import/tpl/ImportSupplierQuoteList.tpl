@@ -4,7 +4,7 @@
 
 <div id="div_messages">
 	|-if $message eq "resent"-|
-		<div class="successMessage">La cotización <a href="Main.php?do=importSupplierQuoteEdit&id=|-$supplierQuotationId-|" >|-$supplierQuotationId-|</a> ha sido reenviada correctamente al proveedor y se ha regerenado su codigo de acceso.
+		<div class="successMessage">La cotización <a href="Main.php?do=importSupplierQuoteEdit&id=|-$supplierQuotationId-|" >|-$supplierQuotationId-|</a> ha sido reenviada correctamente al proveedor.
 		</div>
 	|-/if-|
 	|-if $message eq "resent-failed"-|

@@ -1,14 +1,14 @@
 <?php
 
-require_once("ImportBaseAction.php");
+require_once("BaseAction.php");
 require_once("SupplierQuotationPeer.php");
 
-class ImportSupplierQuoteResendAction extends ImportBaseAction {
+class ImportSupplierQuoteConfirmAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportSupplierQuoteResendAction() {
+	function ImportSupplierQuoteConfirmAction	() {
 		;
 	}
 
@@ -48,20 +48,24 @@ class ImportSupplierQuoteResendAction extends ImportBaseAction {
 		
 		$supplierQuotationPeer = new SupplierQuotationPeer();
 
-		if (empty($_GET['id'])) {
+			
+		if (empty($_POST['token'])) {
 			return $mapping->findForwardConfig('failure');		
 		}
-		
-		$supplierQuotation = SupplierQuotationPeer::get($_GET['id']);
 
-		//notificamos al proveedor correspondiente
-		$content = $this->renderSupplierQuotationNotifyEmail($supplierQuotation);
-		$supplierQuotation->notifySupplier($content);
+		$smarty->assign('token',$_POST['token']);
+
+		//traemos todas las cotizaciones.
+		$supplierQuotation = $supplierQuotationPeer->getByAccessToken($_POST["token"]);
 		
+		if (!$supplierQuotation->confirm()) {
+			return $mapping->findForwardConfig('failure');			
+		}
+
 		$params = array();
-		$params['supplierQuotationId'] = $supplierQuotation->getId();
+		$params['token'] = $_POST['token'];
 		
-		return $this->addParamsToForwards($params,$mapping,'success');			
+		return $this->addParamsToForwards($params,$mapping,'success');
 		
 	}
 

@@ -13,7 +13,7 @@
 			<td>|-$product->getName()-|</td>
 			<td>|-$item->getQuantity()-|</td>
 			<td>
-				|-if $item->getPrice() eq ''-|
+				|-if not $supplierQuotation->isConfirmed() -|
 				<form action="Main.php" method="get">						
 					<input type="hidden" name="do" value="importSupplierQuoteItemAccess" />
 					<input type="hidden" name="id" value="|-$item->getid()-|" />
