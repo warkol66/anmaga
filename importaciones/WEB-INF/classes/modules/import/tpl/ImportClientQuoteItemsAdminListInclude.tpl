@@ -24,10 +24,11 @@
 			<td>|-if $supplierQuotationItem neq ''-||-assign var=supplierQuotation value=$supplierQuotationItem->getSupplierQuotation() -||-assign var=supplier value=$supplierQuotation->getSupplier()-||-$supplier->getName()-||-/if-|</td>
 			<td>|-if $supplierQuotationItem neq ''-||-if $supplierQuotationItem->getPrice() eq 0-|No se ha cotizado|-else-||-$supplierQuotationItem->getPrice()|number_format:2:",":"."-||-/if-||-/if-|</td>
 			<td nowrap="nowrap">
-				|-if "importClientQuoteItemSetPrice"|security_user_has_access -|
+				|-if $supplierQuotationItem neq ''-||-if "importClientQuoteItemSetPrice"|security_user_has_access -|
 					|-if $supplierQuotationItem->getPrice() neq 0-|
 						<a href="Main.php?do=importClientQuoteItemSetPrice&amp;clientQuotationItemId=|-$item->getId()-|">Fijar Precio Cliente</a>	
 					|-/if-|
+				|-/if-|
 				|-/if-|
 			</td>			
 		</tr>
