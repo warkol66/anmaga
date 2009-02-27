@@ -45,6 +45,8 @@ class ImportProductsEditAction extends BaseAction {
 
 		$module = "Import";
 		$smarty->assign('module',$module);
+		$section = "Products";
+		$smarty->assign('section',$section);
 
 		$suppliers = SupplierPeer::getAll();		
 		$smarty->assign("suppliers",$suppliers);
@@ -52,9 +54,8 @@ class ImportProductsEditAction extends BaseAction {
     if ( !empty($_GET["id"]) ) {
 			//voy a editar un product
 
-			$product = ProductPeer::get($_GET["id"]);
+			$product = ProductPeer::get($_GET["id"]);
 			$smarty->assign("product",$product);
-
 																		
 	    $smarty->assign("action","edit");
 		}
@@ -69,9 +70,6 @@ class ImportProductsEditAction extends BaseAction {
 		$smarty->assign("message",$_GET["message"]);
 
 		return $mapping->findForwardConfig('success');
-	}
-
-	
+	}	
 
 }
-?>

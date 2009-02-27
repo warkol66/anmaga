@@ -44,6 +44,8 @@ class ImportIncotermsEditAction extends BaseAction {
 
 		$module = "Import";
 		$smarty->assign('module',$module);
+		$section = "Incoterms";
+		$smarty->assign('section',$section);
 
     if ( !empty($_GET["id"]) ) {
 			//voy a editar un incoterm
@@ -51,8 +53,6 @@ class ImportIncotermsEditAction extends BaseAction {
 			$incoterm = IncotermPeer::get($_GET["id"]);
 
 			$smarty->assign("incoterm",$incoterm);
-
-												
 	    $smarty->assign("action","edit");
 		}
 		else {
@@ -69,4 +69,3 @@ class ImportIncotermsEditAction extends BaseAction {
 	}
 
 }
-?>

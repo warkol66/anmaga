@@ -91,7 +91,6 @@ class ModulePaths {
 		$appDirs[]      = 'WEB-INF/classes/modules/import/classes';
 		
 		//install
-
 		$appDirs[]      = 'WEB-INF/classes/modules/install';
 		$appDirs[]      = 'WEB-INF/classes/modules/install/actions';
 		$appDirs[]      = 'WEB-INF/classes/modules/install/classes';
@@ -100,6 +99,11 @@ class ModulePaths {
 		$appDirs[]	= 'WEB-INF/classes/modules/actionLogs';
 		$appDirs[]	= 'WEB-INF/classes/modules/actionLogs/actions';
 		$appDirs[]	= 'WEB-INF/classes/modules/actionLogs/classes';			
+
+		//Backup
+		$appDirs[]      = 'WEB-INF/classes/modules/backup';
+		$appDirs[]      = 'WEB-INF/classes/modules/backup/actions';
+		$appDirs[]      = 'WEB-INF/classes/modules/backup/classes';
 
 		return $appDirs;
 

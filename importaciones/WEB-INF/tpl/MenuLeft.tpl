@@ -5,7 +5,7 @@
 	<ul>
 		<li class="titleMenu"><a href="javascript:switch_vis('importMenu');" class="linkSwitchMenu">Importaciones</a></li>
 	</ul>
-		<div id="importMenu" style="display:|-if $module|lower eq 'import'-|block|-else-|none|-/if-|;">
+		<div id="importMenu" style="display:|-if $module|lower eq 'import' && ($section|lower neq 'products' && $section|lower neq 'suppliers' && $section|lower neq 'ports' && $section|lower neq 'incoterms')-|block|-else-|none|-/if-|;">
 			<ul>
 		|- if $loginUser->isAdmin()-|		
 				<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones de Clientes</a></li>
@@ -17,7 +17,7 @@
 	<ul>
 		<li class="titleMenu"><a href="javascript:switch_vis('adminMenu');" class="linkSwitchMenu">Administración</a></li>
 	</ul>
-		<div id="adminMenu" style="display:|-if $module|lower eq 'users' || $module|lower eq 'security' || $module|lower eq 'backups' || $module|lower eq 'affiliates' || $module|lower eq 'categories'-|block|-else-|none|-/if-|;">
+		<div id="adminMenu" style="display:|-if $module|lower eq 'users' || $module|lower eq 'security' || $module|lower eq 'backups' || $module|lower eq 'affiliates' || $module|lower eq 'categories' || ($module|lower eq 'import' && ($section|lower eq 'products' || $section|lower eq 'suppliers' || $section|lower eq 'ports' || $section|lower eq 'incoterms'))-|block|-else-|none|-/if-|;">
 			<ul>
 				<li class="menuLink"><a href="Main.php?do=affiliatesList">Administrar Clientes</a></li>
 				<li class="menuLink"><a href="Main.php?do=importProductsList">Administrar Productos</a></li>

@@ -44,6 +44,8 @@ class ImportIncotermsListAction extends BaseAction {
 
 		$module = "Import";
 		$smarty->assign('module',$module);
+		$section = "Incoterms";
+		$smarty->assign('section',$section);
  
 		$pager = IncotermPeer::getAllPaginated($_GET["page"]);
 		$smarty->assign("incoterms",$pager->getResult());
@@ -61,4 +63,3 @@ class ImportIncotermsListAction extends BaseAction {
 	}
 
 }
-?>

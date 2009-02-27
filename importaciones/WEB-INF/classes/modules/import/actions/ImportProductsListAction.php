@@ -45,7 +45,10 @@ class ImportProductsListAction extends BaseAction {
 		}
 
 		$module = "Import";
-		$smarty->assign('module',$module);
+		$smarty->assign('module',$module);
+		$section = "Products";
+		$smarty->assign('section',$section);
+
 		$pager = ProductPeer::getAllPaginated($_GET["page"]);
 		$smarty->assign("products",$pager->getResult());
 		$smarty->assign("pager",$pager);
@@ -63,4 +66,3 @@ class ImportProductsListAction extends BaseAction {
 	}
 
 }
-?>

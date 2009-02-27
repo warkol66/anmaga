@@ -44,6 +44,8 @@ class ImportPortsEditAction extends BaseAction {
 
 		$module = "Import";
 		$smarty->assign('module',$module);
+		$section = "Ports";
+		$smarty->assign('section',$section);
 
     if ( !empty($_GET["id"]) ) {
 			//voy a editar un port
@@ -69,4 +71,3 @@ class ImportPortsEditAction extends BaseAction {
 	}
 
 }
-?>

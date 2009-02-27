@@ -44,6 +44,8 @@ class ImportSuppliersEditAction extends BaseAction {
 
 		$module = "Import";
 		$smarty->assign('module',$module);
+		$section = "Suppliers";
+		$smarty->assign('section',$section);
 
     if ( !empty($_GET["id"]) ) {
 			//voy a editar un supplier
@@ -69,4 +71,3 @@ class ImportSuppliersEditAction extends BaseAction {
 	}
 
 }
-?>

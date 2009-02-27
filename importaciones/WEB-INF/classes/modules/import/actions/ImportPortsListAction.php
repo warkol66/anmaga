@@ -44,6 +44,8 @@ class ImportPortsListAction extends BaseAction {
 
 		$module = "Import";
 		$smarty->assign('module',$module);
+		$section = "Ports";
+		$smarty->assign('section',$section);
  
 		$pager = PortPeer::getAllPaginated($_GET["page"]);
 		$smarty->assign("ports",$pager->getResult());
@@ -62,4 +64,3 @@ class ImportPortsListAction extends BaseAction {
 	}
 
 }
-?>

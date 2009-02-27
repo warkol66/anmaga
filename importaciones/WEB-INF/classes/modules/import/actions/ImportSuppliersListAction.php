@@ -44,6 +44,8 @@ class ImportSuppliersListAction extends BaseAction {
 
 		$module = "Import";
 		$smarty->assign('module',$module);
+		$section = "Suppliers";
+		$smarty->assign('section',$section);
  
 		$pager = SupplierPeer::getAllPaginated($_GET["page"]);
 		$smarty->assign("suppliers",$pager->getResult());
@@ -61,4 +63,3 @@ class ImportSuppliersListAction extends BaseAction {
 	}
 
 }
-?>
