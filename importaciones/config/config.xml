@@ -18,6 +18,7 @@
 				<value>NO</value>
 				<element_type>YES/NO</element_type>
 			</underMaintenance>
+			<maintenanceMessage>El sistema permanecerá en mantenimiento por 2 horas, por favor regrese mas tarde.</maintenanceMessage>
 			<affiliateUserLoginUnified>
 				<value>YES</value>
 				<element_type>YES/NO</element_type>		
@@ -26,11 +27,26 @@
 				<value>-3</value>
 				<element_type>TIMEZONE</element_type>
 			</applicationTimeZoneGMT>
+			<dateFormat>
+				<value>d-m-Y</value>
+				<element_type>Options</element_type>
+				<element_options>
+					<option_1>d-m-Y</option_1>
+					<option_2>m-d-Y</option_2>
+					<option_3>d-m-y</option_3>
+					<option_4>m-d-y</option_4>
+				</element_options>
+			</dateFormat>
+			<thousandsSeparator>.</thousandsSeparator>
+			<decimalSeparator>,</decimalSeparator>
+			<numberOfDecimals>2</numberOfDecimals>
 			<siteName>Negociadora Anmaga</siteName>
 			<siteDescription>Sistema de Administración de Pedidos de Negociadora Anmaga</siteDescription>
+			<siteShortName>anmagaexport</siteShortName>
 			<webmasterMail>gflamerich@gmail.com</webmasterMail>
 			<debugMail>gflamerich@gmail.com</debugMail>
 			<fromEmail>gflamerich@gmail.com</fromEmail>
+			<tablePrefix></tablePrefix>
 			<news>Novedades: Bienvenido al sistema Anmaga. En este momento este sistema se encuentra en período de prueba</news>
 			<affiliateNews>Novedades: distinguidos Clientes, Bienvenido al sistema Anmaga. En este momento este sistema se encuentra en período de prueba</affiliateNews>
 		</parameters>

@@ -237,7 +237,7 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 		$permissionRegistration = $_POST['permissionRegistration'];
 		$noCheckLogin = $_POST['noCheckLogin'];	
 
-		$modulePath = "WEB-INF/classes/modules/" . $_POST['moduleName'] . '/';
+		$modulePath = "WEB-INF/classes/modules/" . $_POST['moduleName'] . '/setup/';
 		
 		$module = $_POST['moduleName'];
 

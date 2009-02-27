@@ -78,6 +78,8 @@ class InstallSetupPermissionsAction extends BaseAction {
 			$access['permissionGeneral'][1] = $this->evaluateBitlevel(1,$bitlevel);
 			$access['permissionGeneral'][2] = $this->evaluateBitlevel(2,$bitlevel);
 			$access['permissionGeneral'][4] = $this->evaluateBitlevel(4,$bitlevel);
+			$access['permissionGeneral'][8] = $this->evaluateBitlevel(4,$bitlevel);
+			$access['permissionGeneral'][16] = $this->evaluateBitlevel(4,$bitlevel);
 			$access['permissionGeneral'][all] = $this->evaluateBitlevel(1073741823,$bitlevel);
 
 			$bitLevelAffiliate = $securityModule->getAccessAffiliateUser();

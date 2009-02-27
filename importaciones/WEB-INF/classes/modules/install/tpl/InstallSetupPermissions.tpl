@@ -20,9 +20,11 @@
 		<td>|-$moduleName-|</td>
 		<td nowrap>
 			<input type="hidden" name="permissionGeneral[access][]" value="0" />
-			<input type="checkbox" name="permissionGeneral[access][]" value="1" |-if $generalAccess.permissionGeneral.1-|checked="checked"|-/if-|>supervisor<br>
+			<input type="checkbox" name="permissionGeneral[access][]" value="1" checked="checked" />supervisor<br>
 			<input type="checkbox" name="permissionGeneral[access][]" value="2" |-if $generalAccess.permissionGeneral.2-|checked="checked"|-/if-|>admin<br>
 			<input type="checkbox" name="permissionGeneral[access][]" value="4" |-if $generalAccess.permissionGeneral.4-|checked="checked"|-/if-|>user<br>
+			<input type="checkbox" name="permissionGeneral[access][]" value="8" |-if $generalAccess.permissionGeneral.4-|checked="checked"|-/if-|>Presidente<br>
+			<input type="checkbox" name="permissionGeneral[access][]" value="16" |-if $generalAccess.permissionGeneral.4-|checked="checked"|-/if-|>user.cn<br>
 			<input type="checkbox" name="permissionGeneral[all]" value="true" |-if $generalAccess.permissionGeneral.all-|checked="checked"|-/if-|>todos<br>
 		</td>
 				<td nowrap>
@@ -60,9 +62,11 @@
 		</td>
 		<td nowrap>
 			<input type="hidden" name="permission[|-$action-|][access][]" value="0" />
-			<input type="checkbox" name="permission[|-$action-|][access][]" value="1" |-if $withoutPairAccess.$action.permission.1-|checked="checked"|-/if-|>supervisor<br>
+			<input type="checkbox" name="permission[|-$action-|][access][]" value="1" checked="checked" />supervisor<br>
 			<input type="checkbox" name="permission[|-$action-|][access][]" value="2" |-if $withoutPairAccess.$action.permission.2-|checked="checked"|-/if-|>admin<br>
 			<input type="checkbox" name="permission[|-$action-|][access][]" value="4" |-if $withoutPairAccess.$action.permission.4-|checked="checked"|-/if-|>user<br>
+			<input type="checkbox" name="permission[|-$action-|][access][]" value="8" |-if $withoutPairAccess.$action.permission.4-|checked="checked"|-/if-|>Presidente<br>
+			<input type="checkbox" name="permission[|-$action-|][access][]" value="16" |-if $withoutPairAccess.$action.permission.4-|checked="checked"|-/if-|>user.cn<br>
 			<input type="checkbox" name="permission[|-$action-|][all]" value="true" |-if $withoutPairAccess.$action.permission.all-|checked="checked"|-/if-|>todos<br>
 		</td>
 				<td nowrap>
@@ -88,9 +92,11 @@
 		<td nowrap>
 			<input type="hidden" name="permission[|-$action-|][pair]" value="|-$pairActions[$action]-|" />
 			<input type="hidden" name="permission[|-$action-|][access][]" value="0" />
-			<input type="checkbox" name="permission[|-$action-|][access][]" value="1"|-if $withPairAccess.$action.permission.1-|checked="checked"|-/if-|>supervisor<br>
+			<input type="checkbox" name="permission[|-$action-|][access][]" value="1" checked="checked" />supervisor<br>
 			<input type="checkbox" name="permission[|-$action-|][access][]" value="2" |-if $withPairAccess.$action.permission.2-|checked="checked"|-/if-|>admin<br>
 			<input type="checkbox" name="permission[|-$action-|][access][]" value="4" |-if $withPairAccess.$action.permission.4-|checked="checked"|-/if-|>user<br>
+			<input type="checkbox" name="permission[|-$action-|][access][]" value="8" |-if $withPairAccess.$action.permission.4-|checked="checked"|-/if-|>Presidente<br>
+			<input type="checkbox" name="permission[|-$action-|][access][]" value="16" |-if $withPairAccess.$action.permission.4-|checked="checked"|-/if-|>user.cn<br>
 			<input type="checkbox" name="permission[|-$action-|][all]" value="true" |-if $withPairAccess.$action.permission.all-|checked="checked"|-/if-|>todos<br>
 		</td>
 		<td nowrap>

@@ -51,9 +51,10 @@ class UsersLevelsDoEditAction extends BaseAction {
 		if ( !empty($_POST["id"]) ) {
 			//estoy editando un nivel de usuarios existente
 
-			if ( LevelPeer::update($_POST["id"],$_POST["name"]) )
+			if ( LevelPeer::update($_POST["id"],$_POST["name"]) ) {
 			Common::doLog('success','levelId: ' . $_GET["id"] . ' name: ' .$_POST["name"] . ' action: edit');
   	   		return $mapping->findForwardConfig('success');
+			}
 			else {
 				header("Location: Main.php?do=usersLevelsList&level=".$_POST["id"]."&message=errorUpdate");
 				exit;
@@ -78,4 +79,3 @@ class UsersLevelsDoEditAction extends BaseAction {
 	}
 
 }
-?>

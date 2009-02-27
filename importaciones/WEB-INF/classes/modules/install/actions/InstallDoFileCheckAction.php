@@ -70,11 +70,11 @@ class InstallDoFileCheckAction extends BaseAction {
 		if (isset($_POST['executeSQL'])) {
 
 			//carga de informacion de los SQL generados			
-			$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/" . 'information.sql';
+			$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/setup/" . 'information.sql';
 	 		$this->loadSQLtoDatabase($filename);
-			$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/" . $_POST['moduleName'] . '-permissions.sql';
+			$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/setup/" . $_POST['moduleName'] . '-permissions.sql';
 			$this->loadSQLtoDatabase($filename);
-	 		$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/" . 'messages.sql';
+	 		$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/setup/" . 'messages.sql';
 			$this->loadSQLtoDatabase($filename);
 			
 	 		//mensaje de exito si ejecuta con SQL			

@@ -58,7 +58,7 @@ class InstallDoSetupModuleInformationAction extends BaseAction {
 			return $this->executeSuccess($mapping);
 		}
 		
-		$modulePath = "WEB-INF/classes/modules/" . $_POST['moduleName'] . '/';
+		$modulePath = "WEB-INF/classes/modules/" . $_POST['moduleName'] . '/setup/';
 
 		//guardado de informacion de descripcion del modulo
 

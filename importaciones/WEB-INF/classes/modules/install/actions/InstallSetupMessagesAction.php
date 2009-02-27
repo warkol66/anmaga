@@ -63,7 +63,7 @@ class InstallSetupMessagesAction extends BaseAction {
 			return $mapping->findForwardConfig('failure');			
 		}
 
-		$path = "WEB-INF/classes/modules/" . $_GET['moduleName'] . "/";
+		$path = "WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup";
 
 		$xmlBase = file_get_contents($path . 'phpmvc-config'. '-' . $_GET['moduleName'] . ".xml");
 		$xml = "<root>" . $xmlBase . "</root>";

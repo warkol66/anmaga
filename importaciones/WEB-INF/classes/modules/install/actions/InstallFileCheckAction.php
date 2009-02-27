@@ -41,16 +41,16 @@ class InstallFileCheckAction extends BaseAction {
 			return $mapping->findForwardConfig('failure');			
 		}
 
-		$path = "WEB-INF/classes/modules/" . $_GET['moduleName'] . "/";
+		$path = "WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup/";
 		$phpConfigXMLContent = file_exists($path . "phpmvc-config-" . $_GET['moduleName'] . ".xml");
  		$modulePathsContent = file_exists($path . "ModulePaths-" . $_GET['moduleName'] . ".php");
  		
  		//archivos generados durante la instalacion
  		
- 		$information = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/" . 'information.sql');
- 		$permissions = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/" . $_GET['moduleName'] . '-permissions.sql');
+ 		$information = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup/" . 'information.sql');
+ 		$permissions = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup/" . $_GET['moduleName'] . '-permissions.sql');
  		
- 		$messages = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/" . 'messages.sql');
+ 		$messages = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup/" . 'messages.sql');
  		
 		$smarty->assign('phpConfigXMLContent',$phpConfigXMLContent);
 		$smarty->assign('modulePathsContent',$modulePathsContent);
