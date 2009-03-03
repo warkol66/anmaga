@@ -44,24 +44,49 @@ class ImportSupplierQuoteResendAction extends ImportBaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
-		$smarty->assign("message",$_GET["message"]);
+		$smarty->assign("message",$_POST["message"]);
 		
 		$supplierQuotationPeer = new SupplierQuotationPeer();
 
-		if (empty($_GET['id'])) {
+		if (empty($_POST['id'])) {
 			return $mapping->findForwardConfig('failure');		
 		}
 		
-		$supplierQuotation = SupplierQuotationPeer::get($_GET['id']);
-
-		//notificamos al proveedor correspondiente
-		$content = $this->renderSupplierQuotationNotifyEmail($supplierQuotation);
-		$supplierQuotation->notifySupplier($content);
+		$supplierQuotation = SupplierQuotationPeer::get($_POST['id']);
 		
+		$content = $this->renderSupplierQuotationNotifyEmail($supplierQuotation);
+		
+		if (empty($_POST['destinationEmails']))	{
+			//notificacion de proveedor correspondiente
+			$supplierQuotation->notifySupplier($content);
+
+			$params = array();
+			$params['supplierQuotationId'] = $supplierQuotation->getId();
+
+			return $this->addParamsToForwards($params,$mapping,'success');			
+
+		}
+
+		//notificacion de multiples emails ingresados
+		
+		//procesamiento de los emails
+		$emails = split(',',$_POST['destinationEmails']);
+		$validEmails = array();
+		//validacion de los emails
+		foreach ($emails as $email) {
+			if (Common::validateEmail(trim($email))) {
+				$validEmails[] = trim($email);
+			}
+		}
+
+		foreach ($validEmails as $email) {
+			$supplierQuotation->notifyRecipients($validEmails,$content);
+		}
+
 		$params = array();
 		$params['supplierQuotationId'] = $supplierQuotation->getId();
 		
-		return $this->addParamsToForwards($params,$mapping,'success');			
+		return $this->addParamsToForwards($params,$mapping,'success-multiple');			
 		
 	}
 

@@ -54,14 +54,13 @@ class SupplierQuotation extends BaseSupplierQuotation {
 	}
 	
 	/**
-	 * Notifica a un proveedor de la existencia de un pedido de cotizacion
-	 * 
-	 * @param String $content Contenido del Email (debe ser generado de forma externa. Ver ImportBaseAction.php)
-	 * @param String $subject Asunto del Email Opcional
-	 *
+	 * Crea un mensaje de notificacion a proveedor
+	 * @param String $content Contenido del mensaje
+	 * @param String $subject Asunto del mensaje
+	 * @return Swift_Message
 	 */
-	public function notifySupplier($content,$subject) {
-	
+	private function createNotifyMessage($content,$subject = '') {
+
 		require_once('EmailManagement.php');
 		
 		if (empty($subject)) {
@@ -72,18 +71,72 @@ class SupplierQuotation extends BaseSupplierQuotation {
 		
 		//creamos el mensaje multipart
 		$message = $manager->createMultipartMessage($subject,$content);
-
-		$supplier = $this->getSupplier();
 		
+		return $message;
+	}
+	
+	/** 
+	 * Envia un mensaje de notificacion
+	 * @param String o Swift_RecipientList $destination destinatarios del email
+	 * @param Swift_Message $message mensaje a enviar
+	 * @return boolean
+	 */
+	private function sendMessage($destination,$message) {
+
+		require_once('EmailManagement.php');
+
+		$manager = new EmailManagement();
+
 		global $system;
 		$mailFrom = $system["config"]["system"]["parameters"]["fromEmail"];
 
 		//realizamos el envio
-		$result = $manager->sendMessage($supplier->getEmail(),$mailFrom,$message);
+		$result = $manager->sendMessage($destination,$mailFrom,$message);
 		
 		return $result;
+	}
+	
+	/**
+	 * Notifica a un proveedor de la existencia de un pedido de cotizacion
+	 * 
+	 * @param String $content Contenido del Email (debe ser generado de forma externa. Ver ImportBaseAction.php)
+	 * @param String $subject Asunto del Email Opcional
+	 *
+	 */
+	public function notifySupplier($content,$subject='') {
+		
+		//creamos el mensaje multipart
+		$message = $this->createNotifyMessage($content,$subject);
+
+		$supplier = $this->getSupplier();
+		
+		return $this->sendMessage($supplier->getEmail(),$message);
 		
 	}
+	
+	/**
+	 * Notifica a un proveedor de la existencia de un pedido de cotizacion
+	 * 
+	 * @param String $content Contenido del Email (debe ser generado de forma externa. Ver ImportBaseAction.php)
+	 * @param String $subject Asunto del Email Opcional
+	 *
+	 */
+	public function notifyRecipients($emails,$content,$subject) {
+	
+		//creamos el mensaje multipart
+		$message = $this->createNotifyMessage($content,$subject);
+
+		require_once('EmailManagement.php');
+		
+		$manager = new EmailManagement();
+
+		//creamos una lista de multiples recipientes
+		$recipientList = $manager->createMultipleRecipientsList($emails);
+		
+		return $this->sendMessage($recipientList,$message);
+		
+	}
+	
 	
 	/**
 	 * Regenera el codigo de acceso para un supplier.
@@ -124,8 +177,7 @@ class SupplierQuotation extends BaseSupplierQuotation {
 	 */
 	public function isConfirmed() {
 		return ($this->getStatus() == SupplierQuotation::STATUS_CONFIRMED);
-	}
-	
+	}	
 	
 
 } // SupplierQuotation
