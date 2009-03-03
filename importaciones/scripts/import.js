@@ -35,3 +35,19 @@ function importSearchProductsX(form) {
 	return true;
 	
 }
+
+function importShowDiv(id) {
+	
+	if ($(id)) {
+		$(id).show();
+	}
+	
+}
+
+function importHideDiv(id) {
+	
+	if ($(id)) {
+		$(id).hide();
+	}
+	
+}
