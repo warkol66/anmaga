@@ -17,7 +17,28 @@
 	|-/if-|
 </div>
 
-<div id="div_newsmedias">
+<div id="div_filters">
+	<form action="Main.php" method="get">
+		<fieldset>
+		<p>
+			<label for="filters[supplierId]">Proveedor</label>
+			<select name="filters[supplierId]">
+					<option value="">Seleccione Un Proveedor</option>
+				|-foreach from=$suppliers item=supplier name=for_suppliers-|
+					<option value="|-$supplier->getId()-|" |-if $filters neq '' and $filters.supplierId eq $supplier->getId() -|selected="selected"|-/if-|>|-$supplier->getName()-|</option>
+				|-/foreach-|
+			</select>
+		</p>
+		<p>
+			<input type="hidden" name="do" value="importSupplierQuoteList" />
+			<input type="submit" value="Aplicar Filtro">
+		</p>
+		</fieldset>
+	</form>
+	
+</div>
+
+<div id="div_supplierQuotations">
 	<table cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-newsmedias">
 		<thead>
 			<tr>

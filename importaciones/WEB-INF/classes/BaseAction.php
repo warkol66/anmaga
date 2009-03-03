@@ -184,6 +184,50 @@ class BaseAction extends Action {
 		return new ForwardConfig($myRedirectPath, True);
 			
 	}
+	
+	/**
+	 * Realiza el procesamiento de filtros sobre una clase Peer de Propel
+	 * @param Class $peer instancia de clase peer de propel
+	 * @param array $filterValuer valores de filtro a verificar, los metodos de set en la clase peer deben tener antepuesto a estos nombres, 'set'
+	 * @param $smarty instancia de smarty sobre la cual se esta trabajando (tener en cuenta que al trabajar con una referencia a smarty, no hay problema de pasaje por parametro)
+	 */
+	function processFilters($peer,$filterValues,$smarty) {
+		
+		if (!empty($_GET['filters'])) {
+			
+			$smarty->assign('filters',$_GET['filters']);
+			
+			foreach ($filterValues as $filterField) {
+
+				if (!empty($_GET['filters'][$filterField])) {
+					$setMethod = 'set' . $filterField;
+					if (method_exists($peer,$setMethod)) {
+						$peer->$setMethod($_GET['filters'][$filterField]);
+					}
+				}
+			}
+		}
+		
+		return $peer;
+	}
+	
+	/**
+	 * Agrega a una url los valores de un filtro, utilizado para la url de los paginadores
+	 * @param String $url
+	 * @return String url con los parametros agregados
+	 */
+	function addFiltersToUrl($url) {
+	
+		if (!empty($_GET['filters'])) {
+			foreach ($_GET['filters'] as $key => $value) {
+				$url .= '&filters[' . $key . ']=' . $value; 
+			}
+
+		}
+
+		return $url;
+		
+	}
 
 }
 

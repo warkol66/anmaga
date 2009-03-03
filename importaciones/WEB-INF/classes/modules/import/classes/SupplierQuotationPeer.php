@@ -23,6 +23,16 @@
  * @package    anmaga
  */
 class SupplierQuotationPeer extends BaseSupplierQuotationPeer {
+
+  private $supplierId = '';
+
+  /**
+   * Fija un filtro por supplier
+   * @param Integer $supplierId id de supplier
+   */
+  public function setSupplierId($supplierId) {
+	$this->supplierId = $supplierId;
+  }
 	
   /**
   * Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
@@ -190,5 +200,38 @@ class SupplierQuotationPeer extends BaseSupplierQuotationPeer {
 		return $result[0];
 		
 	}
+
+  /**
+   * Genera una criteria segun la informacion introducida para filtros
+   * @return Criteria instancia de criteria
+   */
+  private function getFilterCriteria() {
+	$criteria = New Criteria();
+	
+	if (!empty($this->supplierId)) {
+		$criteria->add(SupplierQuotationPeer::SUPPLIERID,$this->supplierId);
+	}
+	
+	return $criteria;
+  }
+
+  /**
+  * Obtiene todos los supplier quotations paginados aplicando los filtros.
+  *
+  * @param int $page [optional] Numero de pagina actual
+  * @param int $perPage [optional] Cantidad de filas por pagina
+  *	@return array Informacion sobre todos los supplierquotations
+  */
+  public function getAllPaginatedFiltered($page=1,$perPage=-1) {  
+    if ($perPage == -1)
+      $perPage = 	SupplierQuotationPeer::getRowsPerPage();
+    if (empty($page))
+      $page = 1;
+    require_once("propel/util/PropelPager.php");
+    $cond = $this->getFilterCriteria();   
+    $pager = new PropelPager($cond,"SupplierQuotationPeer", "doSelect",$page,$perPage);
+    return $pager;
+   }    	
+
 
 } // SupplierQuotationPeer

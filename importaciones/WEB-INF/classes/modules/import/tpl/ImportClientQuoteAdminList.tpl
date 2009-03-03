@@ -13,6 +13,26 @@
 
 </div>
 
+<div id="div_filters">
+	<form action="Main.php" method="get">
+		<fieldset>
+		<p>
+			<label for="filters[affiliateId]">Cliente</label>
+			<select name="filters[affiliateId]">
+					<option value="">Seleccione Un Cliente</option>
+				|-foreach from=$affiliates item=client name=for_suppliers-|
+					<option value="|-$client->getId()-|" |-if $filters neq '' and $filters.affiliateId eq $client->getId() -|selected="selected"|-/if-|>|-$client->getUsername()-|</option>
+				|-/foreach-|
+			</select>
+		</p>
+		<p>
+			<input type="hidden" name="do" value="importClientQuoteList" />
+			<input type="submit" value="Aplicar Filtro"/>
+		</p>
+		</fieldset>
+	</form>
+	
+</div>
 <div id="div_newsmedias">
 	<table cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-newsmedias">
 		<thead>

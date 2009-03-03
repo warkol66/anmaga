@@ -45,6 +45,7 @@ class ImportSupplierQuoteListAction extends BaseAction {
 		$smarty->assign('module',$module);
 		
 		$url = "Main.php?do=importSupplierQuoteList";
+		$url = $this->addFiltersToUrl($url);
 		$smarty->assign("url",$url);		
    
 		$smarty->assign("message",$_GET["message"]);
@@ -55,8 +56,13 @@ class ImportSupplierQuoteListAction extends BaseAction {
 		$supplierQuotationPeer = new SupplierQuotationPeer();
 		
 		if (Common::isAdmin()) {
-			//traemos todas las cotizaciones.
-			$pager = $supplierQuotationPeer->getAllPaginated($_GET["page"]);
+			//traemos todas las cotizaciones.	
+			
+			$filterValues = array('supplierId');
+			
+			$supplierQuotationPeer = $this->processFilters($supplierQuotationPeer,$filterValues,$smarty);
+			
+			$pager = $supplierQuotationPeer->getAllPaginatedFiltered($_GET["page"]);
 			$suppliers = SupplierPeer::getAll();
 			
 			$smarty->assign("quotations",$pager->getResult());

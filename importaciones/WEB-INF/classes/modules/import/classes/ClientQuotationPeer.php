@@ -23,7 +23,16 @@
  * @package    anmaga
  */
 class ClientQuotationPeer extends BaseClientQuotationPeer {
-	
+
+  private $affiliateId = '';
+
+  /**
+   * Fija un filtro por supplier
+   * @param Integer $supplierId id de supplier
+   */
+  public function setAffiliateId($affiliateId) {
+	$this->affiliateId = $affiliateId;
+  }	
 
   /**
   * Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
@@ -161,7 +170,39 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
 	$cond->add(ClientQuotationPeer::USERID,$affiliate->getId());
     $pager = new PropelPager($cond,"ClientQuotationPeer", "doSelect",$page,$perPage);
     return $pager;
-   }    
+   }
+
+  /**
+   * Genera una criteria segun la informacion introducida para filtros
+   * @return Criteria instancia de criteria
+   */
+  private function getFilterCriteria() {
+	$criteria = New Criteria();
+
+	if (!empty($this->affiliateId)) {
+		$criteria->add(ClientQuotationPeer::USERID,$this->affiliateId);
+	}
+
+	return $criteria;
+  }    
+
+  /**
+  * Obtiene todos los supplier quotations paginados aplicando los filtros.
+  *
+  * @param int $page [optional] Numero de pagina actual
+  * @param int $perPage [optional] Cantidad de filas por pagina
+  *	@return array Informacion sobre todos los supplierquotations
+  */
+  public function getAllPaginatedFiltered($page=1,$perPage=-1) {  
+    if ($perPage == -1)
+      $perPage = 	SupplierQuotationPeer::getRowsPerPage();
+    if (empty($page))
+      $page = 1;
+    require_once("propel/util/PropelPager.php");
+    $cond = $this->getFilterCriteria();   
+    $pager = new PropelPager($cond,"ClientQuotationPeer","doSelect",$page,$perPage);
+    return $pager;
+   }    	
 
 
 } // ClientQuotationPeer

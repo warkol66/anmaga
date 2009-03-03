@@ -57,8 +57,15 @@ class ImportClientQuoteListAction extends BaseAction {
 		
 		if (Common::isAdmin()) {
 			//traemos todas las cotizaciones.
-			$pager = $clientQuotationPeer->getAllPaginated($_GET["page"]);
+			
+			$filterValues = array('affiliateId');
+			$clientQuotationPeer = $this->processFilters($clientQuotationPeer,$filterValues,$smarty);
+			$pager = $clientQuotationPeer->getAllPaginatedFiltered($_GET["page"]);
 			$affiliates = AffiliateUserPeer::getAll();
+			
+			$url = "Main.php?do=importClientQuoteList";			
+			$url = $this->addFiltersToUrl($url);
+			$smarty->assign("url",$url);
 			
 			$smarty->assign("quotations",$pager->getResult());
 			$smarty->assign("pager",$pager);
