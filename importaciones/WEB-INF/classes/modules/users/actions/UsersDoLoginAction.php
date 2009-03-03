@@ -43,6 +43,11 @@ class UsersDoLoginAction extends BaseAction {
 		}
 
 		$module = "Users";
+		
+		if (Common::hasUnifiedLogin()) {
+			$smarty->assign("unifiedLogin",true);
+			Common::setValueUnifiedLoginCookie($_POST['select']);			
+		}		
 
 		if ( !empty($_POST["username"]) && !empty($_POST["password"]) ) {
 			$user = UserPeer::auth($_POST["username"],$_POST["password"]);
@@ -73,7 +78,6 @@ class UsersDoLoginAction extends BaseAction {
 		if ($unifiedLogin == "YES") {
 			$smarty->assign("unifiedLogin",true);
 		}
-
 
 		Common::doLog('failure','username: ' . $_POST["username"]);
 		return $mapping->findForwardConfig('failure');

@@ -493,9 +493,10 @@
 						 validate = "true">
 				<description value="Modulo de ingreso"/>
 				<forward name="success" path="AffiliatesUsersWelcome.tpl"/>
+				<forward name="failure-unified" path="UsersLogin.tpl"/>
 				<forward name="failure" path="AffiliatesUsersLogin.tpl"/>
 		</action>
-
+		
 		<action      path = "affiliatesUsersWelcome"
 								 type = "AffiliatesUsersWelcomeAction"
 								 name = "affiliatesUsersWelcome"

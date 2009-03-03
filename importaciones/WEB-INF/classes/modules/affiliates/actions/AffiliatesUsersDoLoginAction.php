@@ -43,7 +43,7 @@ class AffiliatesUsersDoLoginAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
-
+		
 		if (Common::hasUnifiedLogin()) {
 			$smarty->assign("unifiedLogin",true);
 			Common::setValueUnifiedLoginCookie($_POST['select']);			
@@ -67,8 +67,9 @@ class AffiliatesUsersDoLoginAction extends BaseAction {
 		if (Common::hasUnifiedLogin()) {
 
 			//si hay unificado, obligamos a la opcion que se intento loguear
-			$smarty->assign('cookieSelection','affiliate');
+			$smarty->assign('cookieSelection','dependency');
 			return $mapping->findForwardConfig('failure-unified');
+
 		}
 		
 		return $mapping->findForwardConfig('failure');

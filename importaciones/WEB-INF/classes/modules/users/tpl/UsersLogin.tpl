@@ -1,5 +1,5 @@
 <script type="text/javascript" language="javascript" src="scripts/login.js"></script>
- <form method='post' action="Main.php?do=usersDoLogin"> 
+ <form method='post' action="Main.php"> 
 	<!-- Begin Login --> 
 	<div id="login"> 
 		 <!-- Begin LoginTop --> 
@@ -35,7 +35,12 @@
 		</div> 
 		 <!-- End LoginContent --> 
 		 <!-- Begin LoginBottom --> 
-		 <div id="loginBottom"> 
+		 <div id="loginBottom">
+			|-if $unifiedLogin neq ''-|
+				<input type="hidden" name="do" value="|-if $cookieSelection eq 'dependency'-|affiliatesUsersDoLogin|-else-|usersDoLogin|-/if-|" id="usersLoginFormDo"/>
+			|-else-|
+				<input type="hidden" name="do" value="usersDoLogin" id="usersLoginFormDo"/>
+			|-/if-| 
 			<input type='submit' value='Ingresar' id="loginButton" /> 
 		</div> 
 		 <!-- End LoginBottom --> 

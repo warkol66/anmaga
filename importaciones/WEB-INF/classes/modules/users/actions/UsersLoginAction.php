@@ -46,6 +46,11 @@ class UsersLoginAction extends BaseAction {
 
 		$module = "Users";
 		
+		if (Common::hasUnifiedLogin()) {
+			$smarty->assign("unifiedLogin",true);
+			Common::setValueUnifiedLoginCookie($_POST['select']);			
+		}		
+		
     	$smarty->assign("message",$_GET["message"]);
 		
 		if (!empty($_SESSION["loginUser"]) || !empty($_SESSION["loginAffiliateUser"]) )
@@ -54,10 +59,15 @@ class UsersLoginAction extends BaseAction {
 		global $system;
 		$unifiedLogin = $system["config"]["system"]["parameters"]["affiliateUserLoginUnified"]["value"];
 		
-		if ($unifiedLogin == "YES") {
-			$smarty->assign("unifiedLogin",true);
+		if (Common::hasUnifiedLogin()) {
+			$smarty->assign("unifiedLogin",true);		
+			
+			$value = Common::getValueUnifiedLoginCookie();
+			
+			if (!empty($value)) {
+				$smarty->assign('cookieSelection',$value);
+			}
 		}
-
 
 		return $mapping->findForwardConfig('success');
 	}

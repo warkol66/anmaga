@@ -705,7 +705,7 @@ function getRegistrationUserLogged() {
 	function getValueUnifiedLoginCookie() {
 
 		global $system;		
-		$cookieName = $system["config"]["system"]["parameters"]['siteName'] . 'LoginOption';
+		$cookieName = $system["config"]["system"]["parameters"]['siteShortName'] . 'LoginOption';
 		return $_COOKIE[$cookieName];
 		
 	}
@@ -713,10 +713,9 @@ function getRegistrationUserLogged() {
 	function setValueUnifiedLoginCookie($value) {
 
 		global $system;
-		$cookieName = $system["config"]["system"]["parameters"]['siteName'] . 'LoginOption';
-		setcookie($cookieName, time() - 3600);
+		$cookieName = $system["config"]["system"]["parameters"]['siteShortName'] . 'LoginOption';
 		setcookie($cookieName,$value);
-		
+
 	}
 
 
