@@ -21,7 +21,7 @@
 			<select name="filters[affiliateId]">
 					<option value="">Seleccione Un Cliente</option>
 				|-foreach from=$affiliates item=client name=for_suppliers-|
-					<option value="|-$client->getId()-|" |-if $filters neq '' and $filters.affiliateId eq $client->getId() -|selected="selected"|-/if-|>|-$client->getUsername()-|</option>
+					<option value="|-$client->getId()-|" |-if $filters neq '' and $filters.affiliateId eq $client->getId() -|selected="selected"|-/if-|>|-$client->getName()-|</option>
 				|-/foreach-|
 			</select>
 		</p>
