@@ -2,6 +2,7 @@
 
 require_once("BaseAction.php");
 require_once("ClientQuotationPeer.php");
+require_once("AffiliatePeer.php");
 require_once("AffiliateUserPeer.php");
 
 class ImportClientQuoteListAction extends BaseAction {
@@ -61,7 +62,8 @@ class ImportClientQuoteListAction extends BaseAction {
 			$filterValues = array('affiliateId');
 			$clientQuotationPeer = $this->processFilters($clientQuotationPeer,$filterValues,$smarty);
 			$pager = $clientQuotationPeer->getAllPaginatedFiltered($_GET["page"]);
-			$affiliates = AffiliateUserPeer::getAll();
+			$affiliates = AffiliatePeer::getAll();
+			$affiliatesUsers = AffiliateUserPeer::getAll();
 			
 			$url = "Main.php?do=importClientQuoteList";			
 			$url = $this->addFiltersToUrl($url);
@@ -70,6 +72,7 @@ class ImportClientQuoteListAction extends BaseAction {
 			$smarty->assign("quotations",$pager->getResult());
 			$smarty->assign("pager",$pager);
 			$smarty->assign("affiliates",$affiliates);
+			$smarty->assign("affiliatesUsers",$affiliatesUsers);
 			return $mapping->findForwardConfig('success-admin');
 		}
 
@@ -89,4 +92,3 @@ class ImportClientQuoteListAction extends BaseAction {
 	}
 
 }
-?>

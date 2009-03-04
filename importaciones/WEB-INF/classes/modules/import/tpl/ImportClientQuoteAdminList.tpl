@@ -42,7 +42,7 @@
 							<select name="clientQuotation[userId]">
 									<option value="">Seleccione un cliente</option>
 								|-foreach from=$affiliates item=affiliate name=for_affiliates-|
-									<option value="|-$affiliate->getId()-|">|-$affiliate->getUsername()-|</option>
+									<option value="|-$affiliate->getOwnerId()-|">|-$affiliate->getName()-|</option>
 								|-/foreach-|
 							</select>
 							<input type="hidden" name="do" value="importClientQuoteCreate" />
