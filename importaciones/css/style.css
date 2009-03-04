@@ -1704,3 +1704,44 @@ fieldset.nestedFieldset fieldset label {
 	font-weight: bold;
 	display: inline;
 }
+
+
+.aqua1, .aqua2, .aqua3, .aqua4, .aqua5,
+.aqua6, .aqua7, .aqua8, .aqua9, .aqua10 {
+	width: 20px;
+	height: 16px;
+	border-width: 0;
+	cursor:pointer;
+}
+.aqua1 {
+	background: url(../images/Aqua1.png) center no-repeat;
+}
+.aqua2 {
+	background: url(../images/Aqua2.png) center no-repeat;
+}
+.aqua3 {
+	background: url(../images/Aqua3.png) center no-repeat;
+}
+.aqua4 {
+	background: url(../images/Aqua4.png) center no-repeat;
+}
+.aqua5 {
+	background: url(../images/Aqua5.png) center no-repeat;
+}
+.aqua6 {
+	background: url(../images/Aqua6.png) center no-repeat;
+}
+.aqua7 {
+	background: url(../images/Aqua7.png) center no-repeat;
+}
+.aqua8 {
+	background: url(../images/Aqua8.png) center no-repeat;
+}
+.aqua9 {
+	background: url(../images/Aqua9.png) center no-repeat;
+}
+.aqua10 {
+	background: url(../images/Aqua10.png) center no-repeat;
+}
+
+

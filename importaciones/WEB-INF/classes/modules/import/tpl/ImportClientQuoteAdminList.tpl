@@ -52,6 +52,7 @@
 			</tr>
 			<tr>
 				<th>Id</th>
+				<th>&nbsp;</th>
 				<th>Cliente</th>
 				<th>Fecha</th>
 				<th>Estado</th>
@@ -62,6 +63,7 @@
 		|-foreach from=$quotations item=quotation name=for_quotations-|
 			<tr>
 				<td>|-$quotation->getId()-|</td>
+				<td><img src="images/clear.gif" class="aqua|-$smarty.foreach.for_quotations.iteration-|"/></td>
 				<td>
 					|-assign var=client value=$quotation->getAffiliateUser()-|
 					|-$client->getUsername()-|
