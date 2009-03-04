@@ -147,6 +147,10 @@
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
 			</importSupplierQuoteDoEditItem>
+			<backupCreate>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</backupCreate>
 		</noCheckLoginActions>
 		<rowsPerPage>10</rowsPerPage>
 	</system>
