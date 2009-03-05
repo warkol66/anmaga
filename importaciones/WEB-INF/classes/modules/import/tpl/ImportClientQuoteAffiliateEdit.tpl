@@ -1,15 +1,21 @@
 <h2>Solicitud de Cotización</h2>
 <h1>Informacion General de la solicitud</h1>
 
+<div id="messages">
+	|-if $message eq "created"-|
+		<div class="successMessage">Cotización creada correctamente.</div>
+	|-/if-|	
+</div>
+
 <div id="div_clientQuotation">
 	<p>Podra modificar la cotización mientras la misma este en estado "New". Una vez que haya confirmado la misma, será procesada por el personal de la empresa y no podra hacer modificaciones.</p>
 	<p>
 		Fecha de Creación: |-$clientQuotation->getCreatedAt()-|
 	</p>
 	<p>
-		Estado: |-$clientQuotation->getStatusName()-|
+		Estado: |-$clientQuotation->getStatusNameClient()-|
 	</p>
-	|-if not $clientQuotation->isWaitingResponse()-|
+	|-if $clientQuotation->isNew()-|
 	<p>
 
 		<form action="Main.php" method="post">
@@ -23,7 +29,7 @@
 
 <h1>Productos de la solicitud</h1>
 
-|-if not $clientQuotation->isWaitingResponse()-|
+|-if $clientQuotation->isNew()-|
 	<div id="clientQuotationItemAdder">
 		|-include file='ImportClientQuoteAddItemInclude.tpl' clientQuotation=$clientQuotation affiliate=$affiliate-|
 	</div>

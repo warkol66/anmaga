@@ -36,24 +36,27 @@
 	</table>
 
 	<p>
-		<select name="supplierId">
-		|-foreach from=$suppliers item=supplier name=for_suppliers-|
-			<option value="|-$supplier->getId()-|">|-$supplier->getName()-|</option>
-		|-/foreach-|
-		</select>
-		<select name="incotermId">
-		|-foreach from=$incoterms item=incoterm name=for_incoterm-|
-			<option value="|-$incoterm->getId()-|">|-$incoterm->getName()-|</option>
-		|-/foreach-|
-		</select>
-		<select name="portId">
-		|-foreach from=$ports item=port name=for_ports-|
-			<option value="|-$port->getId()-|">|-$port->getName()-|</option>
-		|-/foreach-|
-		</select>
-		<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
-		<input type="hidden" name="do" value="importSupplierQuoteCreate" />
-		<input type="submit" value="Generar Cotización a Proveedor con los seleccionados" />
+		|-if not $clientQuotation->isQuoted()-|
+			<select name="supplierId">
+			|-foreach from=$suppliers item=supplier name=for_suppliers-|
+				<option value="|-$supplier->getId()-|">|-$supplier->getName()-|</option>
+			|-/foreach-|
+			</select>
+			<select name="incotermId">
+			|-foreach from=$incoterms item=incoterm name=for_incoterm-|
+				<option value="|-$incoterm->getId()-|">|-$incoterm->getName()-|</option>
+			|-/foreach-|
+			</select>
+			<select name="portId">
+			|-foreach from=$ports item=port name=for_ports-|
+				<option value="|-$port->getId()-|">|-$port->getName()-|</option>
+			|-/foreach-|
+			</select>
+
+			<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
+			<input type="hidden" name="do" value="importSupplierQuoteCreate" />
+			<input type="submit" value="Generar Cotización a Proveedor con los seleccionados" />
+		|-/if-|
 	</p>
 </form>
 

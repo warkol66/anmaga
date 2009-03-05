@@ -54,6 +54,16 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 	protected $aAffiliateUser;
 
 	/**
+	 * @var        array ClientQuotationHistory[] Collection to store aggregation of ClientQuotationHistory objects.
+	 */
+	protected $collClientQuotationHistorys;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collClientQuotationHistorys.
+	 */
+	private $lastClientQuotationHistoryCriteria = null;
+
+	/**
 	 * @var        array ClientQuotationItem[] Collection to store aggregation of ClientQuotationItem objects.
 	 */
 	protected $collClientQuotationItems;
@@ -502,6 +512,9 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->aAffiliateUser = null;
+			$this->collClientQuotationHistorys = null;
+			$this->lastClientQuotationHistoryCriteria = null;
+
 			$this->collClientQuotationItems = null;
 			$this->lastClientQuotationItemCriteria = null;
 
@@ -630,6 +643,14 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
+			if ($this->collClientQuotationHistorys !== null) {
+				foreach ($this->collClientQuotationHistorys as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collClientQuotationItems !== null) {
 				foreach ($this->collClientQuotationItems as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -736,6 +757,14 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
+
+				if ($this->collClientQuotationHistorys !== null) {
+					foreach ($this->collClientQuotationHistorys as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
 
 				if ($this->collClientQuotationItems !== null) {
 					foreach ($this->collClientQuotationItems as $referrerFK) {
@@ -850,6 +879,12 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
+			foreach ($this->getClientQuotationHistorys() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addClientQuotationHistory($relObj->copy($deepCopy));
+				}
+			}
+
 			foreach ($this->getClientQuotationItems() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addClientQuotationItem($relObj->copy($deepCopy));
@@ -962,6 +997,161 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 			 */
 		}
 		return $this->aAffiliateUser;
+	}
+
+	/**
+	 * Clears out the collClientQuotationHistorys collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addClientQuotationHistorys()
+	 */
+	public function clearClientQuotationHistorys()
+	{
+		$this->collClientQuotationHistorys = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collClientQuotationHistorys collection (array).
+	 *
+	 * By default this just sets the collClientQuotationHistorys collection to an empty array (like clearcollClientQuotationHistorys());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initClientQuotationHistorys()
+	{
+		$this->collClientQuotationHistorys = array();
+	}
+
+	/**
+	 * Gets an array of ClientQuotationHistory objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this ClientQuotation has previously been saved, it will retrieve
+	 * related ClientQuotationHistorys from storage. If this ClientQuotation is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array ClientQuotationHistory[]
+	 * @throws     PropelException
+	 */
+	public function getClientQuotationHistorys($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ClientQuotationPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collClientQuotationHistorys === null) {
+			if ($this->isNew()) {
+			   $this->collClientQuotationHistorys = array();
+			} else {
+
+				$criteria->add(ClientQuotationHistoryPeer::CLIENTQUOTATIONID, $this->id);
+
+				ClientQuotationHistoryPeer::addSelectColumns($criteria);
+				$this->collClientQuotationHistorys = ClientQuotationHistoryPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(ClientQuotationHistoryPeer::CLIENTQUOTATIONID, $this->id);
+
+				ClientQuotationHistoryPeer::addSelectColumns($criteria);
+				if (!isset($this->lastClientQuotationHistoryCriteria) || !$this->lastClientQuotationHistoryCriteria->equals($criteria)) {
+					$this->collClientQuotationHistorys = ClientQuotationHistoryPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastClientQuotationHistoryCriteria = $criteria;
+		return $this->collClientQuotationHistorys;
+	}
+
+	/**
+	 * Returns the number of related ClientQuotationHistory objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related ClientQuotationHistory objects.
+	 * @throws     PropelException
+	 */
+	public function countClientQuotationHistorys(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ClientQuotationPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collClientQuotationHistorys === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(ClientQuotationHistoryPeer::CLIENTQUOTATIONID, $this->id);
+
+				$count = ClientQuotationHistoryPeer::doCount($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(ClientQuotationHistoryPeer::CLIENTQUOTATIONID, $this->id);
+
+				if (!isset($this->lastClientQuotationHistoryCriteria) || !$this->lastClientQuotationHistoryCriteria->equals($criteria)) {
+					$count = ClientQuotationHistoryPeer::doCount($criteria, $con);
+				} else {
+					$count = count($this->collClientQuotationHistorys);
+				}
+			} else {
+				$count = count($this->collClientQuotationHistorys);
+			}
+		}
+		$this->lastClientQuotationHistoryCriteria = $criteria;
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a ClientQuotationHistory object to this object
+	 * through the ClientQuotationHistory foreign key attribute.
+	 *
+	 * @param      ClientQuotationHistory $l ClientQuotationHistory
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addClientQuotationHistory(ClientQuotationHistory $l)
+	{
+		if ($this->collClientQuotationHistorys === null) {
+			$this->initClientQuotationHistorys();
+		}
+		if (!in_array($l, $this->collClientQuotationHistorys, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collClientQuotationHistorys, $l);
+			$l->setClientQuotation($this);
+		}
 	}
 
 	/**
@@ -1629,6 +1819,11 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
+			if ($this->collClientQuotationHistorys) {
+				foreach ((array) $this->collClientQuotationHistorys as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 			if ($this->collClientQuotationItems) {
 				foreach ((array) $this->collClientQuotationItems as $o) {
 					$o->clearAllReferences($deep);
@@ -1646,6 +1841,7 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 			}
 		} // if ($deep)
 
+		$this->collClientQuotationHistorys = null;
 		$this->collClientQuotationItems = null;
 		$this->collSupplierQuotations = null;
 		$this->collSupplierPurchaseOrders = null;

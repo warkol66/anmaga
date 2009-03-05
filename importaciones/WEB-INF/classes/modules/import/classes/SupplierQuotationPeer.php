@@ -175,6 +175,8 @@ class SupplierQuotationPeer extends BaseSupplierQuotationPeer {
 			
 			$supplierQuotation->save();
 			
+			$supplierQuotation->saveCurrentStatusOnHistory();
+			
 		} catch (PropelException $e) {
 
 			return false;

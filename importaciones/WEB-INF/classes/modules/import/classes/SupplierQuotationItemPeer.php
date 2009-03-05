@@ -45,6 +45,17 @@ class SupplierQuotationItemPeer extends BaseSupplierQuotationItemPeer {
         }
       }
       $supplierquotationItemObj->save();
+	  
+
+	  $supplierQuotation = $supplierquotationItemObj->getSupplierQuotation();
+	  if ($supplierQuotation->getStatus() == SupplierQuotation::STATUS_QUOTATION_REQUESTED) {
+	  	//al fijarle informacion la cotizacion para a parcialmente cotizada	  	
+	    $supplierQuotation->setStatus(SupplierQuotation::STATUS_PARTIALLY_QUOTED);
+	    $supplierQuotation->save();
+	    $supplierQuotation->saveCurrentStatusOnHistory();
+	
+	  }
+
       return $supplierquotationItemObj;
     } catch (Exception $exp) {
       return false;

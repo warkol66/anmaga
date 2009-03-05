@@ -3,12 +3,12 @@
 require_once("BaseAction.php");
 require_once("ClientQuotationPeer.php");
 
-class ImportClientQuoteCreateAction extends BaseAction {
+class ImportClientQuoteAdminConfirmAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportClientCreateListAction() {
+	function ImportClientQuoteAdminConfirmListAction() {
 		;
 	}
 
@@ -44,22 +44,26 @@ class ImportClientQuoteCreateAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
-		$clientQuotationPeer = new ClientQuotationPeer();
-		
-		if (empty($_POST['clientQuotation']['userId'])) {
-			return $mapping->findForwardConfig('failure');
-		}
+		if (Common::isAdmin()) {
 
-		$clientQuotation = ClientQuotationPeer::create($_POST['clientQuotation']);
+			$clientQuotation = ClientQuotationPeer::get($_POST['clientQuotationId']);
 
-		if (!$clientQuotation) {
-			return $mapping->findForwardConfig('failure');
+			if (empty($clientQuotation)) {
+				return $mapping->findForwardConfig('failure');
+			}
+	
+			if (!$clientQuotation->close()) {
+				return $mapping->findForwardConfig('failure');
+			}
+			
+			$params = array();
+			$params['clientQuotationId'] = $clientQuotation->getId();
+			return $this->addParamsToForwards($params,$mapping,'success');
+
+			
 		}
 		
-		$params = array();
-		$params['id'] = $clientQuotation->getId();
-		
-		return $this->addParamsToForwards($params,$mapping,'success');
+		return $mapping->findForwardConfig('failure');
 		
 	}
 

@@ -67,6 +67,17 @@ class ClientQuotationItemPeer extends BaseClientQuotationItemPeer {
             $clientquotationItemObj->$setMethod(null);
         }
       }
+
+	  if ($params['price'] != '') {
+	  	//se ha fijado un precio de un item
+	    $clientQuotation = $clientquotationItemObj->getClientQuotation();
+		if ($clientQuotation->getStatus() == ClientQuotation::STATUS_WAITING_FOR_PRICING) {
+			$clientQuotation->setStatus(ClientQuotation::STATUS_PARTIALLY_QUOTED);
+			$clientQuotation->save();
+			$clientQuotation->saveCurrentStatusOnHistory();			
+		}
+	  }
+		
       $clientquotationItemObj->save();
       return $clientquotationItemObj;
     } catch (Exception $exp) {

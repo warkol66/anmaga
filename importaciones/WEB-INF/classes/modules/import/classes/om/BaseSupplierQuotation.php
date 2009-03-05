@@ -71,6 +71,16 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 	protected $aSupplier;
 
 	/**
+	 * @var        array SupplierQuotationHistory[] Collection to store aggregation of SupplierQuotationHistory objects.
+	 */
+	protected $collSupplierQuotationHistorys;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collSupplierQuotationHistorys.
+	 */
+	private $lastSupplierQuotationHistoryCriteria = null;
+
+	/**
 	 * @var        array SupplierQuotationItem[] Collection to store aggregation of SupplierQuotationItem objects.
 	 */
 	protected $collSupplierQuotationItems;
@@ -579,6 +589,9 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 
 			$this->aClientQuotation = null;
 			$this->aSupplier = null;
+			$this->collSupplierQuotationHistorys = null;
+			$this->lastSupplierQuotationHistoryCriteria = null;
+
 			$this->collSupplierQuotationItems = null;
 			$this->lastSupplierQuotationItemCriteria = null;
 
@@ -711,6 +724,14 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
+			if ($this->collSupplierQuotationHistorys !== null) {
+				foreach ($this->collSupplierQuotationHistorys as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collSupplierQuotationItems !== null) {
 				foreach ($this->collSupplierQuotationItems as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -815,6 +836,14 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
+
+				if ($this->collSupplierQuotationHistorys !== null) {
+					foreach ($this->collSupplierQuotationHistorys as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
 
 				if ($this->collSupplierQuotationItems !== null) {
 					foreach ($this->collSupplierQuotationItems as $referrerFK) {
@@ -926,6 +955,12 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 			// important: temporarily setNew(false) because this affects the behavior of
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
+
+			foreach ($this->getSupplierQuotationHistorys() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addSupplierQuotationHistory($relObj->copy($deepCopy));
+				}
+			}
 
 			foreach ($this->getSupplierQuotationItems() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -1082,6 +1117,161 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 			 */
 		}
 		return $this->aSupplier;
+	}
+
+	/**
+	 * Clears out the collSupplierQuotationHistorys collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addSupplierQuotationHistorys()
+	 */
+	public function clearSupplierQuotationHistorys()
+	{
+		$this->collSupplierQuotationHistorys = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collSupplierQuotationHistorys collection (array).
+	 *
+	 * By default this just sets the collSupplierQuotationHistorys collection to an empty array (like clearcollSupplierQuotationHistorys());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initSupplierQuotationHistorys()
+	{
+		$this->collSupplierQuotationHistorys = array();
+	}
+
+	/**
+	 * Gets an array of SupplierQuotationHistory objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this SupplierQuotation has previously been saved, it will retrieve
+	 * related SupplierQuotationHistorys from storage. If this SupplierQuotation is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array SupplierQuotationHistory[]
+	 * @throws     PropelException
+	 */
+	public function getSupplierQuotationHistorys($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierQuotationPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierQuotationHistorys === null) {
+			if ($this->isNew()) {
+			   $this->collSupplierQuotationHistorys = array();
+			} else {
+
+				$criteria->add(SupplierQuotationHistoryPeer::SUPPLIERQUOTATIONID, $this->id);
+
+				SupplierQuotationHistoryPeer::addSelectColumns($criteria);
+				$this->collSupplierQuotationHistorys = SupplierQuotationHistoryPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(SupplierQuotationHistoryPeer::SUPPLIERQUOTATIONID, $this->id);
+
+				SupplierQuotationHistoryPeer::addSelectColumns($criteria);
+				if (!isset($this->lastSupplierQuotationHistoryCriteria) || !$this->lastSupplierQuotationHistoryCriteria->equals($criteria)) {
+					$this->collSupplierQuotationHistorys = SupplierQuotationHistoryPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastSupplierQuotationHistoryCriteria = $criteria;
+		return $this->collSupplierQuotationHistorys;
+	}
+
+	/**
+	 * Returns the number of related SupplierQuotationHistory objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related SupplierQuotationHistory objects.
+	 * @throws     PropelException
+	 */
+	public function countSupplierQuotationHistorys(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierQuotationPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collSupplierQuotationHistorys === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(SupplierQuotationHistoryPeer::SUPPLIERQUOTATIONID, $this->id);
+
+				$count = SupplierQuotationHistoryPeer::doCount($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(SupplierQuotationHistoryPeer::SUPPLIERQUOTATIONID, $this->id);
+
+				if (!isset($this->lastSupplierQuotationHistoryCriteria) || !$this->lastSupplierQuotationHistoryCriteria->equals($criteria)) {
+					$count = SupplierQuotationHistoryPeer::doCount($criteria, $con);
+				} else {
+					$count = count($this->collSupplierQuotationHistorys);
+				}
+			} else {
+				$count = count($this->collSupplierQuotationHistorys);
+			}
+		}
+		$this->lastSupplierQuotationHistoryCriteria = $criteria;
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a SupplierQuotationHistory object to this object
+	 * through the SupplierQuotationHistory foreign key attribute.
+	 *
+	 * @param      SupplierQuotationHistory $l SupplierQuotationHistory
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addSupplierQuotationHistory(SupplierQuotationHistory $l)
+	{
+		if ($this->collSupplierQuotationHistorys === null) {
+			$this->initSupplierQuotationHistorys();
+		}
+		if (!in_array($l, $this->collSupplierQuotationHistorys, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collSupplierQuotationHistorys, $l);
+			$l->setSupplierQuotation($this);
+		}
 	}
 
 	/**
@@ -1688,6 +1878,11 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
+			if ($this->collSupplierQuotationHistorys) {
+				foreach ((array) $this->collSupplierQuotationHistorys as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 			if ($this->collSupplierQuotationItems) {
 				foreach ((array) $this->collSupplierQuotationItems as $o) {
 					$o->clearAllReferences($deep);
@@ -1700,6 +1895,7 @@ abstract class BaseSupplierQuotation extends BaseObject  implements Persistent {
 			}
 		} // if ($deep)
 
+		$this->collSupplierQuotationHistorys = null;
 		$this->collSupplierQuotationItems = null;
 		$this->collSupplierPurchaseOrders = null;
 			$this->aClientQuotation = null;

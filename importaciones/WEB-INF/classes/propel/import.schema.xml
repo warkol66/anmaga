@@ -45,7 +45,19 @@
 	  </foreign-key>
 	
 	 </table>
+
+	 <table name="import_clientQuotationHistory" phpName='ClientQuotationHistory' description="Historial de Cotizacion a Cliente">
+	  <column name="id" required="true" primaryKey="true" type="INTEGER" description="Id" autoIncrement="true"/>
+	  <column name="clientQuotationId" required="true"  type="INTEGER"  description="Id de la cotizacion de cliente"/>
+	  <column name="status" type="INTEGER" description="Status de Cotizacion" required="true" />
+	  <column name="createdAt" type="TIMESTAMP" description="Fecha del cambio de status" />
 	
+      <foreign-key foreignTable="import_clientQuotation" >
+	    <reference local="clientQuotationId" foreign="id" />
+	  </foreign-key>
+	
+	 </table>
+
 	 <table name="import_clientQuotationItem" phpName='ClientQuotationItem' description="Elemento de Cotizacion Cliente">
 	
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id elemento de cotizacion de Cliente" autoIncrement="true"/>
@@ -82,6 +94,19 @@
 		  <reference local="supplierId" foreign="id" />
 		</foreign-key>
 	 </table>
+
+	 <table name="import_supplierQuotationHistory" phpName='SupplierQuotationHistory' description="Historial de Cotizacion a Proveedor">
+	  <column name="id" required="true" primaryKey="true" type="INTEGER" description="Id" autoIncrement="true"/>
+	  <column name="supplierQuotationId" required="true"  type="INTEGER"  description="Id de la cotizacion de proveedor"/>
+	  <column name="status" type="INTEGER" description="Status de Cotizacion" required="true" />
+	  <column name="createdAt" type="TIMESTAMP" description="Fecha del cambio de status" />
+	
+      <foreign-key foreignTable="import_supplierQuotation" >
+	    <reference local="supplierQuotationId" foreign="id" />
+	  </foreign-key>
+
+	 </table>
+	
 	
 	 <table name="import_supplierQuotationItem" phpName='SupplierQuotationItem' description="Elemento de Cotizacion de Proveedor">
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id elemento de cotizacion de proveedor" autoIncrement="true"/>

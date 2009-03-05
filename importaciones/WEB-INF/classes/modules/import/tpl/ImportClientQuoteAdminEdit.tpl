@@ -2,6 +2,9 @@
 <h1>Informacion General de la cotización</h1>
 
 <div id="div_messages">
+	|-if $message eq "created"-|
+		<div class="successMessage">Cotización creada correctamente.</div>
+	|-/if-|
 	|-if $message eq "supplier-quotation-created"-|
 		<div class="successMessage">Cotización de Proveedor creada correctamente. Puede consultarla accediendo a este <a href="Main.php?do=importSupplierQuoteEdit&amp;id=|-$supplierQuotation->getId()-|" >link</a></div>
 	|-/if-|
@@ -17,12 +20,12 @@
 		Fecha de Creación: |-$clientQuotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|
 	</p>
 	<p>
-		Estado: |-$clientQuotation->getStatusName()-|
+		Estado: |-$clientQuotation->getStatusNameAdmin()-|
 	</p>
 </div>
 
 
-|-if not $clientQuotation->isWaitingResponse()-|
+|-if not $clientQuotation->isWaitingResponse() and not $clientQuotation->isQuoted()-|
 
 <h1>Busqueda y Agregado de Productos</h1>
 
@@ -44,7 +47,7 @@
 <h1>Productos en la cotización</h1>
 
 <div id="clientQuotationItemsHolder">
-	|-if not $clientQuotation->isWaitingResponse()-|
+	|-if $clientQuotation->isNew()-|
 		|-include file='ImportClientQuoteItemsAffiliateListInclude.tpl' clientQuotation=$clientQuotation-|
 	|-else-|
 		|-include file='ImportClientQuoteItemsAdminListInclude.tpl' clientQuotation=$clientQuotation-|
@@ -52,13 +55,26 @@
 </div>
 
 <div id="clientQuotationConfirmation">
-	|-if not $clientQuotation->isWaitingResponse()-|
+	|-if $clientQuotation->isNew()-|
 	<p>
 
 		<form action="Main.php" method="post">
 			<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
 			<input type="hidden" name="do" value="importClientQuoteConfirm" />
 			<input type="submit" value="Confirmar Cotización">
+		</form>
+	<p>
+	|-/if-|
+</div>
+
+<div id="clientQuotationAdminConfirmation">
+	|-if $clientQuotation->isPartiallyQuoted()-|
+	<p>
+
+		<form action="Main.php" method="post">
+			<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
+			<input type="hidden" name="do" value="importClientQuoteAdminConfirm" />
+			<input type="submit" value="Cerrar Cotización (confirma precios ingresados)">
 		</form>
 	<p>
 	|-/if-|

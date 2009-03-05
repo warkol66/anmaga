@@ -66,6 +66,9 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
 	  $clientquotationObj->setCreatedAt(time());
 	  $clientquotationObj->setStatus(ClientQuotation::STATUS_NEW);
       $clientquotationObj->save();
+  
+	  $clientquotationObj->saveCurrentStatusOnHistory();
+
       return $clientquotationObj;
     } catch (Exception $exp) {
       return false;

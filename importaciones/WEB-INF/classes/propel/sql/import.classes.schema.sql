@@ -82,6 +82,26 @@ CREATE TABLE `import_clientQuotation`
 )Type=MyISAM COMMENT='Cotizacion a Cliente';
 
 #-----------------------------------------------------------------------------
+#-- import_clientQuotationHistory
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `import_clientQuotationHistory`;
+
+
+CREATE TABLE `import_clientQuotationHistory`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id',
+	`clientQuotationId` INTEGER  NOT NULL COMMENT 'Id de la cotizacion de cliente',
+	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
+	`createdAt` DATETIME COMMENT 'Fecha del cambio de status',
+	PRIMARY KEY (`id`),
+	INDEX `import_clientQuotationHistory_FI_1` (`clientQuotationId`),
+	CONSTRAINT `import_clientQuotationHistory_FK_1`
+		FOREIGN KEY (`clientQuotationId`)
+		REFERENCES `import_clientQuotation` (`id`)
+)Type=MyISAM COMMENT='Historial de Cotizacion a Cliente';
+
+#-----------------------------------------------------------------------------
 #-- import_clientQuotationItem
 #-----------------------------------------------------------------------------
 
@@ -132,6 +152,26 @@ CREATE TABLE `import_supplierQuotation`
 		FOREIGN KEY (`supplierId`)
 		REFERENCES `import_supplier` (`id`)
 )Type=MyISAM COMMENT='Cotizacion de Proveedor';
+
+#-----------------------------------------------------------------------------
+#-- import_supplierQuotationHistory
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `import_supplierQuotationHistory`;
+
+
+CREATE TABLE `import_supplierQuotationHistory`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id',
+	`supplierQuotationId` INTEGER  NOT NULL COMMENT 'Id de la cotizacion de proveedor',
+	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
+	`createdAt` DATETIME COMMENT 'Fecha del cambio de status',
+	PRIMARY KEY (`id`),
+	INDEX `import_supplierQuotationHistory_FI_1` (`supplierQuotationId`),
+	CONSTRAINT `import_supplierQuotationHistory_FK_1`
+		FOREIGN KEY (`supplierQuotationId`)
+		REFERENCES `import_supplierQuotation` (`id`)
+)Type=MyISAM COMMENT='Historial de Cotizacion a Proveedor';
 
 #-----------------------------------------------------------------------------
 #-- import_supplierQuotationItem

@@ -1004,7 +1004,7 @@
                name = "importClientQuoteCreate"
               scope = "request"
            validate = "true">
-		<forward name="success" path="/Main.php?do=importClientQuoteList&amp;message=created" redirect="true" />
+		<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=created" redirect="true" />
 		<forward name="failure" path="/Main.php?do=importClientQuoteList&amp;message=create-failed" redirect="true" />
     </action>
 
@@ -1032,6 +1032,15 @@
            validate = "true">
     <forward name="success" path="/Main.php?do=importClientQuoteList&amp;message=confirmed" redirect="true"/>
     </action>
+
+    <action    path = "importClientQuoteAdminConfirm"
+               type = "ImportClientQuoteAdminConfirmAction"
+               name = "importClientQuoteAdminConfirm"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=importClientQuoteList&amp;message=quoted" redirect="true"/>
+    </action>
+
 
     <action    path = "importSupplierQuoteCreate"
                type = "ImportSupplierQuoteCreateAction"

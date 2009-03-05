@@ -20,13 +20,30 @@ require_once 'import/classes/om/BaseClientQuotation.php';
  */
 class ClientQuotation extends BaseClientQuotation {
 
+	//estados internos del objeto
 	const STATUS_NEW = 1;
-	const STATUS_WAITING_RESPONSE = 2;
+	const STATUS_SUPPLIER_QUOTATION_REQUESTED = 2;
+	const STATUS_WAITING_FOR_PRICING = 3;
+	const STATUS_PARTIALLY_QUOTED = 4;
+	const STATUS_QUOTED = 5;
 	
-	private $statusNames = array(
+	//nombre de los estados para los clientes
+	private $statusNamesClient = array(
 								ClientQuotation::STATUS_NEW => 'New',
-								ClientQuotation::STATUS_WAITING_RESPONSE => 'Waiting Response',
+								ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED => 'In Progress',
+								ClientQuotation::STATUS_WAITING_FOR_PRICING => 'In Progress',
+								ClientQuotation::STATUS_PARTIALLY_QUOTED => 'Partially Quoted',
+								ClientQuotation::STATUS_QUOTED => 'Quoted',
 							);
+
+	//nombre de los estados para los administradores
+	private $statusNamesAdmin = array(
+								ClientQuotation::STATUS_NEW => 'New',
+								ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED => 'Quotation Requested',
+								ClientQuotation::STATUS_WAITING_FOR_PRICING => 'Waiting For Pricing',
+								ClientQuotation::STATUS_PARTIALLY_QUOTED => 'Waiting For Pricing',
+								ClientQuotation::STATUS_QUOTED => 'Quoted',
+							);							
 	
 	/**
 	 * El cliente confirma que el contenido de la cotizacion esta listo para ser cotizado por anmaga.
@@ -41,8 +58,36 @@ class ClientQuotation extends BaseClientQuotation {
 				return false;
 			}
 
-			$this->setStatus(ClientQuotation::STATUS_WAITING_RESPONSE);
+			$this->setStatus(ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED);
 			$this->save();
+			
+			$this->saveCurrentStatusOnHistory();
+			
+		} catch (PropelException $e) {
+			return false;
+		}
+		
+		return true;
+		
+	}
+
+	/**
+	 * El cliente cierra la cotizacion, confirmando sus precioas al cliente .
+	 * Internamente la cotizacion pasa al estado QUOTED
+	 * @return boolean
+	 */
+	public function close() {
+		
+		try {
+
+			if ($this->getStatus() != ClientQuotation::STATUS_PARTIALLY_QUOTED) {
+				return false;
+			}
+
+			$this->setStatus(ClientQuotation::STATUS_QUOTED);
+			$this->save();
+			
+			$this->saveCurrentStatusOnHistory();
 			
 		} catch (PropelException $e) {
 			return false;
@@ -57,17 +102,41 @@ class ClientQuotation extends BaseClientQuotation {
 	 * @return boolean
 	 */
 	public function isWaitingResponse() {
-		return ($this->getStatus() == ClientQuotation::STATUS_WAITING_RESPONSE);
+		return (($this->getStatus() == ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED) ||($this->getStatus() == ClientQuotation::STATUS_WAITING_FOR_PRICING) || ($this->getStatus() == ClientQuotation::STATUS_PARTIALLY_QUOTED));
 	}
+
+	/**
+	 * Indica si la cotizacion se encuentra recien creada.
+	 * @return boolean
+	 */
+	public function isNew() {
+		return ($this->getStatus() == ClientQuotation::STATUS_NEW);
+	}
+
+	/**
+	 * Indica si la cotizacion se encuentra contestada parcialmente.
+	 * @return boolean
+	 */
+	public function isPartiallyQuoted() {
+		return ($this->getStatus() == ClientQuotation::STATUS_PARTIALLY_QUOTED);
+	}
+
 	
 	/**
-	 * Devuelve el nombre del status actual de la cotizacion
+	 * Devuelve el nombre del status actual de la cotizacion para un administrador
 	 * @return string
 	 */
-	public function getStatusName() {
-		return $this->statusNames[$this->getStatus()];
+	public function getStatusNameAdmin() {
+		return $this->statusNamesAdmin[$this->getStatus()];
 	}
-	
+
+	/**
+	 * Devuelve el nombre del status actual de la cotizacion para un cliente
+	 * @return string
+	 */
+	public function getStatusNameClient() {
+		return $this->statusNamesClient[$this->getStatus()];
+	}	
 	/**
 	 * Obtiene un cierto elemento de la cotizacion
 	 * @param integer $id id del elemento a obtener
@@ -79,6 +148,37 @@ class ClientQuotation extends BaseClientQuotation {
 		
 		$result = $this->getClientQuotationItems($criteria);
 		return $result[0];
+	}
+	
+	/**
+	 * Saves the current status of the instance in his history
+	 * @return boolean
+	 */
+	public function saveCurrentStatusOnHistory() {
+		
+		require_once('ClientQuotationHistory.php');
+		
+		try {
+
+			$clientQuotationHistory = new ClientQuotationHistory();
+			$clientQuotationHistory->setClientQuotation($this);
+			$clientQuotationHistory->setStatus($this->getStatus());
+			$clientQuotationHistory->setCreatedAt(time());
+			$clientQuotationHistory->save();
+			
+		} catch (Exception $e) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	/**
+	 * Indica si la cotizacion se encuentra cerrada
+	 * @return boolean
+	 */
+	public function isQuoted() {
+		return ($this->getStatus() == ClientQuotation::STATUS_QUOTED);
 	}
 	
 } // ClientQuotation

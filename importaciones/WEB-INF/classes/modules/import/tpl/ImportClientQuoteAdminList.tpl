@@ -3,14 +3,13 @@
 <p>A continuación puede ver el listado de sus solicitudes de cotización y sus correspondiente estado.</p>
 
 <div id="div_messages">
-	|-if $message eq "created"-|
-		<div class="successMessage">Cotización creada correctamente. Puedo agregarle elementos accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuotationId-|" >link</a></div>
-	|-elseif $message eq "create-failed"-|
+	|-if $message eq "create-failed"-|
 		<div class="successMessage">Se ha producido un error al crear la cotización</div>
 	|-elseif $message eq "confirmed"-|
 		<div class="successMessage">Cotización confirmada correctamente. Puedo ver su detalle accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuotationId-|" >link</a></div>
+	|-elseif $message eq "quoted"-|
+		<div class="successMessage">Cotización cerrada. Se han confirmado los precios al cliente. Puedo ver su detalle accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuotationId-|" >link</a></div>
 	|-/if-|
-
 </div>
 
 <div id="div_filters">
@@ -69,7 +68,7 @@
 					|-$client->getUsername()-|
 				</td>
 				<td>|-$quotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
-				<td>|-$quotation->getStatusName()-|</td>
+				<td>|-$quotation->getStatusNameAdmin()-|</td>
 				<td>
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientQuoteEdit" />

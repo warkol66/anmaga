@@ -1,5 +1,6 @@
 <?php
 
+require_once('import/classes/SupplierQuotationHistoryPeer.php');
 require_once 'import/classes/om/BaseSupplierQuotation.php';
 
 
@@ -21,12 +22,15 @@ require_once 'import/classes/om/BaseSupplierQuotation.php';
 class SupplierQuotation extends BaseSupplierQuotation {
 	
 	const STATUS_NEW = 1;
-	const STATUS_WAITING_RESPONSE = 2;
-	const STATUS_CONFIRMED = 3;
+	const STATUS_QUOTATION_REQUESTED = 2;
+	const STATUS_PARTIALLY_QUOTED = 3;
+	const STATUS_QUOTED = 4;
 	
 	private $statusNames = array(
 								SupplierQuotation::STATUS_NEW => 'New',
-								SupplierQuotation::STATUS_CONFIRMED => 'Confirmed'
+								SupplierQuotation::STATUS_QUOTATION_REQUESTED => 'Quotation Requested',
+								SupplierQuotation::STATUS_PARTIALLY_QUOTED => 'Partially Quoted',
+								SupplierQuotation::STATUS_QUOTED => 'Quoted'
 							);	
 	
 	/**
@@ -110,7 +114,24 @@ class SupplierQuotation extends BaseSupplierQuotation {
 
 		$supplier = $this->getSupplier();
 		
-		return $this->sendMessage($supplier->getEmail(),$message);
+		$status = $this->sendMessage($supplier->getEmail(),$message);
+		
+		if ($status) {
+			//se envio el mensaje
+			if ($this->getStatus() == SupplierQuotation::STATUS_NEW) {
+				try {
+					//actualizamos el estado
+					$this->setStatus(SupplierQuotation::STATUS_QUOTATION_REQUESTED);
+					$this->save();
+					$this->saveCurrentStatusOnHistory();
+					
+				} catch (PropelException $e) {
+					return false;
+				}
+			}
+		}
+		
+		return $status;
 		
 	}
 	
@@ -133,7 +154,9 @@ class SupplierQuotation extends BaseSupplierQuotation {
 		//creamos una lista de multiples recipientes
 		$recipientList = $manager->createMultipleRecipientsList($emails);
 		
-		return $this->sendMessage($recipientList,$message);
+		$status = $this->sendMessage($recipientList,$message);
+		
+		return $status;
 		
 	}
 	
@@ -162,8 +185,19 @@ class SupplierQuotation extends BaseSupplierQuotation {
 	public function confirm() {
 
 		try {
-			$this->setStatus(SupplierQuotation::STATUS_CONFIRMED);
-			$this->save();			
+			$this->setStatus(SupplierQuotation::STATUS_QUOTED);
+			$this->save();
+			$this->saveCurrentStatusOnHistory();
+			
+
+			//la cotizacion de cliente relacionada pasa a waiting for pricing			
+			$clientQuotation = $this->getClientQuotation();
+			
+			$clientQuotation->setStatus(ClientQuotation::STATUS_WAITING_FOR_PRICING);
+			$clientQuotation->save();
+			$clientQuotation->saveCurrentStatusOnHistory();
+			
+						
 		} catch (PropelException $e) {
 			return false;
 		}
@@ -176,8 +210,30 @@ class SupplierQuotation extends BaseSupplierQuotation {
 	 * @return boolean
 	 */
 	public function isConfirmed() {
-		return ($this->getStatus() == SupplierQuotation::STATUS_CONFIRMED);
+		return ($this->getStatus() == SupplierQuotation::STATUS_QUOTED);
 	}	
-	
+
+	/**
+	 * Saves the current status of the instance in his history
+	 * @return boolean
+	 */
+	public function saveCurrentStatusOnHistory() {
+		
+		require_once('SupplierQuotationHistory.php');
+		
+		try {
+
+			$supplierQuotationHistory = new SupplierQuotationHistory();
+			$supplierQuotationHistory->setSupplierQuotation($this);
+			$supplierQuotationHistory->setStatus($this->getStatus());
+			$supplierQuotationHistory->setCreatedAt(time());
+			$supplierQuotationHistory->save();
+			
+		} catch (Exception $e) {
+			return false;
+		}
+		
+		return true;
+	}	
 
 } // SupplierQuotation
