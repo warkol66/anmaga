@@ -25,29 +25,14 @@
 </div>
 
 
-|-if not $clientQuotation->isWaitingResponse() and not $clientQuotation->isQuoted()-|
-
-<h1>Busqueda y Agregado de Productos</h1>
-
-	<div id="productSearch">
-		<form action="Main" method="post">
-			<p>
-				<label for="productSearchLabel">Busqueda de Productos</label>
-				<input type="text" name="productSearch[query]" value="" />
-				<input type="hidden" name="do" value="importProductSearchX" />
-				<input type="button" value="Buscar Productos" name="productSearchButton" onClick="javascript:importSearchProductsX(this.form)"/> <span id="productSearchMsgBox" class="inProgress"></span>
-				<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|">
-			</p>
-		</form>
-	</div>	 
-	<div id="productAdder">
-	</div>
+|-if $clientQuotation->isNewStatus()-|
+	|-include file='ImportClientQuoteAddItemInclude.tpl' clientQuotation=$clientQuotation affiliate=$affiliate-|
 |-/if-|
 
 <h1>Productos en la cotización</h1>
 
 <div id="clientQuotationItemsHolder">
-	|-if $clientQuotation->isNew()-|
+	|-if $clientQuotation->isNewStatus()-|
 		|-include file='ImportClientQuoteItemsAffiliateListInclude.tpl' clientQuotation=$clientQuotation-|
 	|-else-|
 		|-include file='ImportClientQuoteItemsAdminListInclude.tpl' clientQuotation=$clientQuotation-|
@@ -55,7 +40,7 @@
 </div>
 
 <div id="clientQuotationConfirmation">
-	|-if $clientQuotation->isNew()-|
+	|-if $clientQuotation->isNewStatus()-|
 	<p>
 
 		<form action="Main.php" method="post">

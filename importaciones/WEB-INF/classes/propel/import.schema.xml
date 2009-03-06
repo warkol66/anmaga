@@ -36,13 +36,24 @@
 	 <table name="import_clientQuotation" phpName='ClientQuotation' description="Cotizacion a Cliente">
 	  <column name="id" required="true" primaryKey="true" type="INTEGER" description="Id de cotizacion de cliente" autoIncrement="true"/>
 	  <column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
-	  <column name="userId" type="INTEGER" description="User" required="true" />
+	  <column name="affiliateId" type="INTEGER" description="Afiliado" required="true" />
+	  <column name="affiliateUserId" type="INTEGER" description="usuario del afiliado si creo la cotizacion" />
+	  <column name="userId" type="INTEGER" description="Usuario de anmaga si creo la cotizacion" />
 	  <column name="status" type="INTEGER" description="Status de Cotizacion" required="true" />
 	  <column name="timestampStatus" type="TIMESTAMP" description="Fecha del ultimo cambio de status" />
 	
-	  <foreign-key foreignTable="affiliates_user" >
+	  <foreign-key foreignTable="users_user" >
 	    <reference local="userId" foreign="id" />
 	  </foreign-key>
+	
+	  <foreign-key foreignTable="affiliates_affiliate" >
+	    <reference local="affiliateId" foreign="id" />
+	  </foreign-key>	
+
+	  <foreign-key foreignTable="affiliates_user" >
+	    <reference local="affiliateUserId" foreign="id" />
+	  </foreign-key>	
+	
 	
 	 </table>
 

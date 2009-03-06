@@ -17,7 +17,7 @@
 				<th colspan="7" class="thFillTitle">
 					<div class="rightLink">
 						<form action="Main.php" method="post" >
-							<input type="hidden" name="clientQuotation[userId]" value="|-$affiliate->getId()-|" id="userId" />
+							<input type="hidden" name="clientQuotation[affiliateId]" value="|-$affiliate->getId()-|"/>
 							<input type="hidden" name="do" value="importClientQuoteCreate" />
 							<input type="submit" value="Crear Nueva Cotización" />
 						</form>

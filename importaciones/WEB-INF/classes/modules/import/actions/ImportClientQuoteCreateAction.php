@@ -45,9 +45,19 @@ class ImportClientQuoteCreateAction extends BaseAction {
 		$smarty->assign('module',$module);
 		
 		$clientQuotationPeer = new ClientQuotationPeer();
-		
-		if (empty($_POST['clientQuotation']['userId'])) {
+
+		if (empty($_POST['clientQuotation']['affiliateId'])) {
 			return $mapping->findForwardConfig('failure');
+		}
+
+		if (Common::isAdmin()) {
+			$adminUser = Common::getAdminLogged();
+			$_POST['clientQuotation']['userId'] = $adminUser->getId();
+		}
+
+		if (Common::isAffiliatedUser()) {
+			$affiliateUser = Common::getAffiliatedLogged();
+			$_POST['clientQuotation']['affiliateUserId'] = $affiliateUser->getId();
 		}
 
 		$clientQuotation = ClientQuotationPeer::create($_POST['clientQuotation']);

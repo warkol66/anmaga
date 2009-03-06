@@ -128,7 +128,7 @@ class ClientQuotation extends BaseClientQuotation {
 	 * Indica si la cotizacion se encuentra recien creada.
 	 * @return boolean
 	 */
-	public function isNew() {
+	public function isNewStatus() {
 		return ($this->getStatus() == ClientQuotation::STATUS_NEW);
 	}
 

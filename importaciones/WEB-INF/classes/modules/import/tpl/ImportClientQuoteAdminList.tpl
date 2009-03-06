@@ -38,10 +38,10 @@
 			<tr>
 				<th colspan="7" class="thFillTitle">
 						<form action="Main.php" method="post" >
-							<select name="clientQuotation[userId]">
+							<select name="clientQuotation[affiliateId]">
 									<option value="">Seleccione un cliente</option>
 								|-foreach from=$affiliates item=affiliate name=for_affiliates-|
-									<option value="|-$affiliate->getOwnerId()-|">|-$affiliate->getName()-|</option>
+									<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|</option>
 								|-/foreach-|
 							</select>
 							<input type="hidden" name="do" value="importClientQuoteCreate" />
@@ -55,6 +55,7 @@
 				<th>Cliente</th>
 				<th>Fecha</th>
 				<th>Estado</th>
+				<th>Productos</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -64,11 +65,20 @@
 				<td>|-$quotation->getId()-|</td>
 				<td><img src="images/clear.gif" class="aqua|-*$smarty.foreach.for_quotations.iteration*-||-php-|echo rand(1,10);|-/php-|" /></td>
 				<td>
-					|-assign var=client value=$quotation->getAffiliateUser()-|
-					|-$client->getUsername()-|
+					|-assign var=client value=$quotation->getAffiliate()-|
+					|-$client->getName()-|
 				</td>
 				<td>|-$quotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
 				<td>|-$quotation->getStatusNameAdmin()-|</td>
+				<td>
+					
+					|- assign var=items value=$quotation->getClientQuotationItems() -|
+					|-$items|@count-|
+					|-foreach from=$items item=item name=for_quotations_item-|
+						|-assign var=product value=$item->getProduct()-|
+						|-$product->getName()-|&nbsp;
+					|-/foreach-|
+				</td>
 				<td>
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientQuoteEdit" />

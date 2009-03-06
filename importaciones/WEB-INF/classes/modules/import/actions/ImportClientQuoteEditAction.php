@@ -67,7 +67,7 @@ class ImportClientQuoteEditAction extends BaseAction {
 			$incoterms = IncotermPeer::getAll();
 			$ports = PortPeer::getAll();
 			$clientQuotation = $clientQuotationPeer->get($_GET["id"]);
-			
+
 			$smarty->assign("clientQuotation",$clientQuotation);
 			$smarty->assign("suppliers",$suppliers);
 			$smarty->assign("incoterms",$incoterms);
@@ -77,7 +77,8 @@ class ImportClientQuoteEditAction extends BaseAction {
 
 		if (Common::isAffiliatedUser()) {
 			//Traemos todas las cotizaciones de ese afiliado.
-			$affiliate = Common::getAffiliatedLogged();
+			$affiliateUser = Common::getAffiliatedLogged();
+			$affiliate = $affiliateUser->getAffiliate();
 			$clientQuotation = $affiliate->getClientQuotation($_GET['id']);
 			
 			if (empty($clientQuotation)) {

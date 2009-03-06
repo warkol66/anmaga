@@ -76,21 +76,5 @@ class AffiliateUser extends BaseAffiliateUser {
 		return $baseLevel;
 	}
 
-	/**
-	 * Obtiene una cotizacion creada por el afiliado.
-	 * @param integer $id id de la cotizacion 
-	 */
-	public function getClientQuotation($id) {
-		
-		require_once('ClientQuotationPeer.php');
-		
-		$criteria = new Criteria();
-		$criteria->add(ClientQuotationPeer::ID,$id);
-		$criteria->add(ClientQuotationPeer::USERID,$this->getId());
-		$result = ClientQuotationPeer::doSelect($criteria);
-	    
-		return $result[0];
-	}
-
 
 } // AffiliateUser

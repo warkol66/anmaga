@@ -15,7 +15,7 @@
 	<p>
 		Estado: |-$clientQuotation->getStatusNameClient()-|
 	</p>
-	|-if $clientQuotation->isNew()-|
+	|-if $clientQuotation->isNewStatus()-|
 	<p>
 
 		<form action="Main.php" method="post">
@@ -29,10 +29,8 @@
 
 <h1>Productos de la solicitud</h1>
 
-|-if $clientQuotation->isNew()-|
-	<div id="clientQuotationItemAdder">
+|-if $clientQuotation->isNewStatus()-|
 		|-include file='ImportClientQuoteAddItemInclude.tpl' clientQuotation=$clientQuotation affiliate=$affiliate-|
-	</div>
 |-/if-|
 
 <div id="clientQuotationItemsHolder">

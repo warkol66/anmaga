@@ -71,13 +71,23 @@ CREATE TABLE `import_clientQuotation`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de cotizacion de cliente',
 	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
-	`userId` INTEGER  NOT NULL COMMENT 'User',
+	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
+	`affiliateUserId` INTEGER COMMENT 'usuario del afiliado si creo la cotizacion',
+	`userId` INTEGER COMMENT 'Usuario de anmaga si creo la cotizacion',
 	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
 	`timestampStatus` DATETIME COMMENT 'Fecha del ultimo cambio de status',
 	PRIMARY KEY (`id`),
 	INDEX `import_clientQuotation_FI_1` (`userId`),
 	CONSTRAINT `import_clientQuotation_FK_1`
 		FOREIGN KEY (`userId`)
+		REFERENCES `users_user` (`id`),
+	INDEX `import_clientQuotation_FI_2` (`affiliateId`),
+	CONSTRAINT `import_clientQuotation_FK_2`
+		FOREIGN KEY (`affiliateId`)
+		REFERENCES `affiliates_affiliate` (`id`),
+	INDEX `import_clientQuotation_FI_3` (`affiliateUserId`),
+	CONSTRAINT `import_clientQuotation_FK_3`
+		FOREIGN KEY (`affiliateUserId`)
 		REFERENCES `affiliates_user` (`id`)
 )Type=MyISAM COMMENT='Cotizacion a Cliente';
 

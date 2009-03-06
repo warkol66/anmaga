@@ -170,7 +170,7 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
       $page = 1;
     require_once("propel/util/PropelPager.php");
     $cond = new Criteria();
-	$cond->add(ClientQuotationPeer::USERID,$affiliate->getId());
+	$cond->add(ClientQuotationPeer::AFFILIATEID,$affiliate->getId());
     $pager = new PropelPager($cond,"ClientQuotationPeer", "doSelect",$page,$perPage);
     return $pager;
    }
@@ -183,7 +183,7 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
 	$criteria = New Criteria();
 
 	if (!empty($this->affiliateId)) {
-		$criteria->add(ClientQuotationPeer::USERID,$this->affiliateId);
+		$criteria->add(ClientQuotationPeer::AFFILIATEID,$this->affiliateId);
 	}
 
 	return $criteria;

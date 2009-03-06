@@ -58,9 +58,10 @@ class ImportClientQuoteListAction extends BaseAction {
 		
 		if (Common::isAdmin()) {
 			//traemos todas las cotizaciones.
-			
+
 			$filterValues = array('affiliateId');
 			$clientQuotationPeer = $this->processFilters($clientQuotationPeer,$filterValues,$smarty);
+
 			$pager = $clientQuotationPeer->getAllPaginatedFiltered($_GET["page"]);
 			$affiliates = AffiliatePeer::getAll();
 			$affiliatesUsers = AffiliateUserPeer::getAll();
@@ -78,11 +79,12 @@ class ImportClientQuoteListAction extends BaseAction {
 
 		if (Common::isAffiliatedUser()) {
 			//Traemos todas las cotizaciones de ese afiliado.
-			$affiliate = Common::getAffiliatedLogged();
+			$affiliateUser = Common::getAffiliatedLogged();
+			$affiliate = $affiliateUser->getAffiliate();
 			$pager = $clientQuotationPeer->getAllPaginatedByAffiliate($affiliate,$_GET["page"]);
 
 			$smarty->assign("quotations",$pager->getResult());
-			$smarty->assign("affiliate",$affiliate);
+			$smarty->assign("affiliate",$affiliateUser->getAffiliate());
 			$smarty->assign("pager",$pager);
 			return $mapping->findForwardConfig('success-affiliate');
 		}

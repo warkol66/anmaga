@@ -1579,7 +1579,7 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent {
 			   $this->collClientQuotations = array();
 			} else {
 
-				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+				$criteria->add(ClientQuotationPeer::AFFILIATEUSERID, $this->id);
 
 				ClientQuotationPeer::addSelectColumns($criteria);
 				$this->collClientQuotations = ClientQuotationPeer::doSelect($criteria, $con);
@@ -1592,7 +1592,7 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+				$criteria->add(ClientQuotationPeer::AFFILIATEUSERID, $this->id);
 
 				ClientQuotationPeer::addSelectColumns($criteria);
 				if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
@@ -1632,7 +1632,7 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent {
 				$count = 0;
 			} else {
 
-				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+				$criteria->add(ClientQuotationPeer::AFFILIATEUSERID, $this->id);
 
 				$count = ClientQuotationPeer::doCount($criteria, $con);
 			}
@@ -1644,7 +1644,7 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+				$criteria->add(ClientQuotationPeer::AFFILIATEUSERID, $this->id);
 
 				if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
 					$count = ClientQuotationPeer::doCount($criteria, $con);
@@ -1676,6 +1676,100 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent {
 			array_push($this->collClientQuotations, $l);
 			$l->setAffiliateUser($this);
 		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this AffiliateUser is new, it will return
+	 * an empty collection; or if this AffiliateUser has previously
+	 * been saved, it will retrieve related ClientQuotations from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in AffiliateUser.
+	 */
+	public function getClientQuotationsJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(AffiliateUserPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collClientQuotations === null) {
+			if ($this->isNew()) {
+				$this->collClientQuotations = array();
+			} else {
+
+				$criteria->add(ClientQuotationPeer::AFFILIATEUSERID, $this->id);
+
+				$this->collClientQuotations = ClientQuotationPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ClientQuotationPeer::AFFILIATEUSERID, $this->id);
+
+			if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
+				$this->collClientQuotations = ClientQuotationPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastClientQuotationCriteria = $criteria;
+
+		return $this->collClientQuotations;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this AffiliateUser is new, it will return
+	 * an empty collection; or if this AffiliateUser has previously
+	 * been saved, it will retrieve related ClientQuotations from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in AffiliateUser.
+	 */
+	public function getClientQuotationsJoinAffiliate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(AffiliateUserPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collClientQuotations === null) {
+			if ($this->isNew()) {
+				$this->collClientQuotations = array();
+			} else {
+
+				$criteria->add(ClientQuotationPeer::AFFILIATEUSERID, $this->id);
+
+				$this->collClientQuotations = ClientQuotationPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ClientQuotationPeer::AFFILIATEUSERID, $this->id);
+
+			if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
+				$this->collClientQuotations = ClientQuotationPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastClientQuotationCriteria = $criteria;
+
+		return $this->collClientQuotations;
 	}
 
 	/**
