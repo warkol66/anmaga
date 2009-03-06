@@ -819,6 +819,20 @@ fieldset {
 .buttonImageEmailDisabled {
 	background: url(../images/linkImageEmailDisabled.png) no-repeat center;
 }
+.buttonImageHistory {
+	background: url(../images/linkImageHistory.png) no-repeat center;
+}
+.buttonImageHistoryDisabled {
+	background: url(../images/linkImageHistoryDisabled.png) no-repeat center;
+}
+.buttonImageSendMultiple {
+	background: url(../images/linkImageSendMultiple.png) no-repeat center;
+}
+.buttonImageSendMultipleDisabled {
+	background: url(../images/linkImageSendMultipleDisabled.png) no-repeat center;
+}
+
+
 .linkImageDelete {
 	background: url(../images/linkImageDelete.png) center no-repeat;
 }
@@ -882,6 +896,20 @@ fieldset {
 .linkImageEmailDisabled {
 	background: url(../images/linkImageEmailDisabled.png) no-repeat center;
 }
+.linkImageHistory {
+	background: url(../images/linkImageHistory.png) no-repeat center;
+}
+.linkImageHistoryDisabled {
+	background: url(../images/linkImageHistoryDisabled.png) no-repeat center;
+}
+.linkImageSendMultiple {
+	background: url(../images/linkImageSendMultiple.png) no-repeat center;
+}
+.linkImageSendMultipleDisabled {
+	background: url(../images/linkImageSendMultipleDisabled.png) no-repeat center;
+}
+
+
 
 fieldset {  
 background-color: #f7f7f8;

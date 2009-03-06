@@ -724,7 +724,8 @@ option{
 .buttonImageAdd, .buttonImageAddDisabled, .buttonImageView, .buttonImageViewDisabled, 
 .buttonImageGoTo, .buttonImageBack, .buttonImageViewGantt, .buttonImageUpload, .buttonImageUploadDisabled,
 .buttonImageDownload ,.buttonImageDownloadDisabled, .buttonImageActivate, .buttonImageActivateDisabled,
-.buttonImageEmail, .buttonImageEmailDisabled {
+.buttonImageEmail, .buttonImageEmailDisabled, .buttonImageHistory, .buttonImageHistoryDisabled,
+.buttonImageSendMultiple, .buttonImageSendMultipleDisabled  {
 	font-size: 0px !Important;
 	width: 16px;
 	height: 16px;
@@ -738,7 +739,8 @@ option{
 .linkImageAdd, .linkImageAddDisabled, .linkImageView, .linkImageViewDisabled, .linkImageGoTo, 
 .linkImageBack, .linkImageViewGantt, .linkImageUpload, .linkImageUploadDisabled, 
 .linkImageDownload, .linkImageDownloadDisabled, .linkImageActivate, .linkImageActivateDisabled,
-.linkImageInfo, .linkImageHelp, .linkImageEmail, .linkImageEmailDisabled {
+.linkImageInfo, .linkImageHelp, .linkImageEmail, .linkImageEmailDisabled,
+.linkImageHistory, .linkImageHistoryDisabled, .linkSendMultiple, .linkImageSendMultipleDisabled {
 	width: 20px;
 	height: 16px;
 	border-width: 0;

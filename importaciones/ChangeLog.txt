@@ -1,0 +1,10 @@
+==============================
+Revisión 372
+------------------------------
+
+ALTER TABLE `import_clientQuotation` ADD COLUMN `affiliateId` int(11) NOT NULL COMMENT 'Afiliado' AFTER `createdAt`;
+ALTER TABLE `import_clientQuotation` ADD COLUMN `affiliateUserId` int(11) COMMENT 'usuario del afiliado si creo la cotizacion' AFTER `affiliateId`;
+ALTER TABLE `import_clientQuotation` MODIFY COLUMN `userId` int(11) COMMENT 'Usuario de anmaga si creo la cotizacion';
+ALTER TABLE `import_clientQuotation` ADD INDEX `import_clientQuotation_FI_2` (`affiliateId`);
+ALTER TABLE `import_clientQuotation` ADD INDEX `import_clientQuotation_FI_3` (`affiliateUserId`);
+
