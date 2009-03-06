@@ -1041,6 +1041,15 @@
     <forward name="success" path="/Main.php?do=importClientQuoteList&amp;message=quoted" redirect="true"/>
     </action>
 
+    <action    path = "importClientQuoteHistory"
+               type = "ImportClientQuoteHistoryAction"
+               name = "importClientQuoteHistoryConfirm"
+              scope = "request"
+           validate = "true">
+    <forward name="success-admin" path="ImportClientQuoteAdminHistory.tpl" />
+    <forward name="success-affiliate" path="ImportClientQuoteAffiliateHistory.tpl" />
+    </action>
+
 
     <action    path = "importSupplierQuoteCreate"
                type = "ImportSupplierQuoteCreateAction"
@@ -1110,6 +1119,14 @@
            validate = "true">
     <forward name="success" path="ImportSupplierQuoteItemAccess.tpl" />
     <forward name="failure" path="ImportSupplierQuoteAccessFailure.tpl" />
+    </action>
+
+	<action  path = "importSupplierQuoteHistory"
+               type = "ImportSupplierQuoteHistoryAction"
+                name = "importSupplierQuoteHistoryConfirm"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportSupplierQuoteHistory.tpl" />
     </action>
 
     <action    path = "importSupplierQuoteConfirm"

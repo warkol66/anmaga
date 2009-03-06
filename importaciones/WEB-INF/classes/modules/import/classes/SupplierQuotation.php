@@ -236,4 +236,12 @@ class SupplierQuotation extends BaseSupplierQuotation {
 		return true;
 	}	
 
+	/**
+	 * Devuelve un array con los nombres de los distintos mensajes de status para el afiliado/cliente
+	 * @return array
+	 */	
+	public function getStatusNames() {
+		return $this->statusNames;
+	}
+
 } // SupplierQuotation

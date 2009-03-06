@@ -26,5 +26,15 @@ class SupplierQuotationHistory extends BaseSupplierQuotationHistory {
 		// is where any default values for this object are set.
 		parent::__construct();
 	}
+	
+	/**
+	 * Devuelve el nombre del status actual de la cotizacion para un cliente
+	 * @return string
+	 */
+	public function getStatusName() {
+		$supplierQuotation = $this->getSupplierQuotation();
+		$statusNames = $supplierQuotation->getStatusNames();
+		return $statusNames[$this->getStatus()];
+	}	
 
 } // SupplierQuotationHistory

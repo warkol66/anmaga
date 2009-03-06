@@ -43,6 +43,11 @@
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
 						<input type="submit" name="submit_go_edit_quotation" value="Editar" class="buttonImageEdit" />
 					</form>
+					<form action="Main.php" method="get">						
+						<input type="hidden" name="do" value="importClientQuoteHistory" />
+						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
+						<input type="submit" name="submit_go_edit_quotation" value="Ver Historial" />
+					</form>
 <!--					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="importClientQuoteDelete" />
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />

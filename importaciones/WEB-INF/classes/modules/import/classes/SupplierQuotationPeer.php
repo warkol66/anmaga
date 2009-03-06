@@ -1,5 +1,7 @@
 <?php
 
+  require_once('import/classes/SupplierQuotationHistory.php');
+
   // include base peer class
   require_once 'import/classes/om/BaseSupplierQuotationPeer.php';
 

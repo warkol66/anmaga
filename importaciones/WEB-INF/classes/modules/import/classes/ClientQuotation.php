@@ -1,5 +1,7 @@
 <?php
 
+require_once('import/classes/ClientQuotationHistory.php');
+require_once('import/classes/ClientQuotationHistoryPeer.php');
 require_once 'import/classes/om/BaseClientQuotation.php';
 
 
@@ -44,6 +46,23 @@ class ClientQuotation extends BaseClientQuotation {
 								ClientQuotation::STATUS_PARTIALLY_QUOTED => 'Waiting For Pricing',
 								ClientQuotation::STATUS_QUOTED => 'Quoted',
 							);							
+
+	/**
+	 * Devuelve un array con los nombres de los distintos mensajes de status para el afiliado/cliente
+	 * @return array
+	 */	
+	public function getStatusNamesClient() {
+		return $this->statusNamesClient;
+	}
+
+	/**
+	 * Devuelve un array con los nombres de los distintos mensajes de status para el adminstrador
+	 * @return array
+	 */
+	public function getStatusNamesAdmin() {
+		return $this->statusNamesAdmin;
+	}
+	
 	
 	/**
 	 * El cliente confirma que el contenido de la cotizacion esta listo para ser cotizado por anmaga.
@@ -137,6 +156,7 @@ class ClientQuotation extends BaseClientQuotation {
 	public function getStatusNameClient() {
 		return $this->statusNamesClient[$this->getStatus()];
 	}	
+
 	/**
 	 * Obtiene un cierto elemento de la cotizacion
 	 * @param integer $id id del elemento a obtener

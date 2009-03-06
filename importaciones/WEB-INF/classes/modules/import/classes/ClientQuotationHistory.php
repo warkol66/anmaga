@@ -28,5 +28,26 @@ class ClientQuotationHistory extends BaseClientQuotationHistory {
 		// is where any default values for this object are set.
 		parent::__construct();
 	}
+	
+	/**
+	 * Devuelve el nombre del status actual de la cotizacion para un administrador
+	 * @return string
+	 */
+	public function getStatusNameAdmin() {
+		
+		$clientQuotation = $this->getClientQuotation();
+		$statusNames = $clientQuotation->getStatusNamesAdmin();
+		return $statusNames[$this->getStatus()];
+	}
+
+	/**
+	 * Devuelve el nombre del status actual de la cotizacion para un cliente
+	 * @return string
+	 */
+	public function getStatusNameClient() {
+		$clientQuotation = $this->getClientQuotation();
+		$statusNames = $clientQuotation->getStatusNamesClient();
+		return $statusNames[$this->getStatus()];
+	}	
 
 } // ClientQuotationHistory
