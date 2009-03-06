@@ -1,34 +1,21 @@
 <?php
+/** 
+ * UsersListAction
+ *
+ * @package users 
+ */
 
 require_once("BaseAction.php");
 require_once("UserPeer.php");
+require_once("UserInfoPeer.php");
+require_once("UserGroupPeer.php");
 
 class UsersDoEditAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function UsersDoEditAction() {
 		;
 	}
 
-
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
@@ -46,7 +33,7 @@ class UsersDoEditAction extends BaseAction {
 
     $userPeer = new UserPeer();
 
-		if ( $_POST["accion"] == "edicion" ) {
+		if ( $_POST["accion"] == "edit" ) {
 			//estoy editando un usuario existente
 
 			if ( $_POST["pass"] == $_POST["pass2"] ) {
@@ -72,8 +59,10 @@ class UsersDoEditAction extends BaseAction {
 		  
 			if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {
 
+				if (empty($_POST["levelId"]))
+					$_POST["levelId"]=3;
 				if ($userPeer->create($_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"],$_POST['timezone'])) {
-					Common::doLog('success','username: ' . $_POST["username"] . ' action: creation');
+					Common::doLog('success','username: ' . $_POST["username"] . ' action: add');
 					return $mapping->findForwardConfig('success');
 				}
 				else {
@@ -86,9 +75,8 @@ class UsersDoEditAction extends BaseAction {
 				exit;
 			}
 		}
-		Common::doLog('success','username: ' . $_POST["username"] . ' action: creation');
+		Common::doLog('success','username: ' . $_POST["username"] . ' action: add');
 		return $mapping->findForwardConfig('success');
 	}
 
 }
-?>

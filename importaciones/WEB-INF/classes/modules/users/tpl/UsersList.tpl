@@ -79,11 +79,11 @@
 		<td class='buttonCell' colspan='5'><input type='submit' value='##173,Nuevo Usuario##' class='button' onClick="return alert('Todas las licencias se encuentran en uso. Si desea dar de alta un nuevo usuario debe eliminar alguno de los existentes.');"/></td>
 	</tr>
 	|-/if-|
-		|-*if $pager->getTotalPages() gt 1*-|
+		|-if $pager->getTotalPages() gt 1-|
 			<tr> 
-				<td colspan="5" class="pages">|-*include file="PaginateInclude.tpl"*-|</td> 
+				<td colspan="5" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
 			</tr>							
-		|-*/if*-|						
+		|-/if-|						
 </table>
 
 </fieldset>

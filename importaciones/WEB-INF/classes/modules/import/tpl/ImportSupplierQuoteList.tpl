@@ -64,7 +64,7 @@
 					|-assign var=supplier value=$quotation->getSupplier()-|
 					|-$supplier->getName()-|
 				</td>
-				<td>|-$quotation->getCreatedAt()-|</td>
+				<td>|-$quotation->getCreatedAt()|change_timezone-|</td>
 				<td>|-$quotation->getStatusName()-|</td>
 				<td><a href="Main.php?do=importSupplierQuoteAccess&token=|-$quotation->getSupplierAccessToken()-|">Completar</a></td>
 				<td>

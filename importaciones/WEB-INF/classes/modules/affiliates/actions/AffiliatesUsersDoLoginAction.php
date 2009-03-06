@@ -46,7 +46,7 @@ class AffiliatesUsersDoLoginAction extends BaseAction {
 		
 		if (Common::hasUnifiedLogin()) {
 			$smarty->assign("unifiedLogin",true);
-			Common::setValueUnifiedLoginCookie($_POST['select']);			
+			Common::setValueUnifiedLoginCookie($_POST['selectLoginMode']);			
 		}
 
 		if ( !empty($_POST["loginUsername"]) && !empty($_POST["loginPassword"]) ) {;

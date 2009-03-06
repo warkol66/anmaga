@@ -1,7 +1,6 @@
-function changeActionToAdminLogin(form) {
-	$('loginFormDo').value = 'usersDoLogin';
-}
-
-function changeActionToAffiliate(form) {
-	$('loginFormDo').value = 'affiliatesUsersDoLogin';
+function selectLoginAction(form) {
+	if ($('selectLoginMode').value != 'affiliateUser')
+		$('loginFormDo').value = 'usersDoLogin';
+	else
+		$('loginFormDo').value = 'affiliatesUsersDoLogin';
 }

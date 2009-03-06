@@ -16,9 +16,9 @@
 			|- if isset($unifiedLogin) -|
 				|-if !$onlyAdmin -|
 				<p>Tipo de Usuario
-					 <select name="select"> 
-						<option value="user" |-if $cookieSelection eq 'user'-|selected="selected"|-/if-| onClick="javascript:changeActionToAdminLogin(this.form)">Administrador</option> 
-						<option value="affiliate" |-if $cookieSelection eq 'affiliateUser'-|selected="selected"|-/if-| onClick="javascript:changeActionToAffiliate(this.form)">Cliente</option> 
+					 <select name="selectLoginMode" id="selectLoginMode" onChange="javascript:selectLoginAction(this.form)"> 
+						<option value="user" |-if $cookieSelection eq 'user'-|selected="selected"|-/if-|>Administrador</option> 
+						<option value="affiliateUser" |-if $cookieSelection eq 'affiliateUser'-|selected="selected"|-/if-|>Cliente</option> 
 					</select> 
 				 </p> 
 				|-/if-|
