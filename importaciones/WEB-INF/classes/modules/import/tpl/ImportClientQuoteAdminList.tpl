@@ -62,7 +62,7 @@
 		|-foreach from=$quotations item=quotation name=for_quotations-|
 			<tr>
 				<td>|-$quotation->getId()-|</td>
-				<td><img src="images/clear.gif" class="aqua|-$smarty.foreach.for_quotations.iteration-|"/></td>
+				<td><img src="images/clear.gif" class="aqua|-*$smarty.foreach.for_quotations.iteration*-||-php-|echo rand(1,10);|-/php-|" /></td>
 				<td>
 					|-assign var=client value=$quotation->getAffiliateUser()-|
 					|-$client->getUsername()-|

@@ -16,10 +16,10 @@
 
 	       <p>Ingrese su Identificación de usuario y contraseña para ingresar al sistema</p>
 	       <h1>Usuario</h1>
-	         <input type='text' name='username' size='35' />
+	         <input type='text' name='loginUusername' size='35' />
 	       </p>
 	       <h1>Password</h1> 
-	         <input type='password' name='password' size='20' /></p>  
+	         <input type='password' name='loginPassword' size='20' /></p>  
 			 </div>
 			<!-- End LoginContent -->
 		       

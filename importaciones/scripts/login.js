@@ -1,7 +1,7 @@
 function changeActionToAdminLogin(form) {
-	$('usersLoginFormDo').value = 'usersDoLogin';
+	$('loginFormDo').value = 'usersDoLogin';
 }
 
 function changeActionToAffiliate(form) {
-	$('usersLoginFormDo').value = 'affiliatesUsersDoLogin';
+	$('loginFormDo').value = 'affiliatesUsersDoLogin';
 }
