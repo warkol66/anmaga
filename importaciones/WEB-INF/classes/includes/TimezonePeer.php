@@ -30,7 +30,8 @@ class TimezonePeer {
 		$this->values['-1'] = new Timezone('-1','Cape Verde/Azores (GMT-1)');
 		$this->values['-2'] = new Timezone('-2','Antarctica (GMT-2)');
 		$this->values['-3'] = new Timezone('-3','Argentina/Uruguay (GMT-3)');
-		$this->values['-4'] = new Timezone('-4','Venezuela/Paraguay/Brazil West/Chile (GMT-4)');
+		$this->values['-4'] = new Timezone('-4','Paraguay/Brazil West/Chile (GMT-4)');
+		$this->values['-4.5'] = new Timezone('-4.5','Venezuela (GMT-4.5)');
 		$this->values['-5'] = new Timezone('-5','Cuba/Ecuador/Colombia (GMT-5)');
 		$this->values['-6'] = new Timezone('-6','USA Central/Mexico/Honduras/Nicaragua (GMT-6)');
 		$this->values['-7'] = new Timezone('-7','USA Arizona/USA Mountain/Mexico Sinaloa/Mexico Sonora (GMT-7)');
@@ -88,7 +89,3 @@ class TimezonePeer {
 	
 
 }
-
-
-
-?>

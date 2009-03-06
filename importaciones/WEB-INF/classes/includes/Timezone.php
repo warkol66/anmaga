@@ -50,11 +50,8 @@ class Timezone {
 		
 		//3600 segundos por hora
 		return 3600 * $this->getCode();
-		
 	
 	}
 
 
 }
-
-?>
