@@ -1,14 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf8"?>
 <protectedWords>
-	<relationReal>Real</relationReal>
-	<relationPotential>Potencial</relationPotential>
-	<orderStates>
-		<new>Emitida</new>
-		<accepted>Aceptada</accepted>
-		<pendingApproval>Pendiente Aprobación</pendingApproval>
-		<inProcess>En Proceso</inProcess>
-		<completed>Completa</completed>
-		<cancelled>Cancelada</cancelled>
-		<toBeVerified>A Verificar</toBeVerified>	
-	</orderStates>
+	<clientQuotesStatus>
+		<esp>
+			<new>Nueva</new>
+			<inProgress>En proceso</inProgress>
+			<partiallyQuoted>Cotizada parcialmente</pendingApproval>
+			<quoted>Cotizada</quoted>
+			<accepted>Aceptada</accepted>
+			<delivered>entregada</delivered>
+			<cancelled>Cancelada</cancelled>
+		</esp>
+		<eng>
+			<new>New</new>
+			<inProgress>In Progress</inProgress>
+			<partiallyQuoted>Partially Quoted</pendingApproval>
+			<quoted>Cotizada</quoted>
+			<accepted>accepted</accepted>
+			<delivered>delivered</delivered>
+			<cancelled>cancelled</cancelled>
+		</eng>
+	</clientQuotesStatus>
 </protectedWords>

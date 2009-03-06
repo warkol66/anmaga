@@ -1,3 +1,4 @@
+|-popup_init src="scripts/overlib.js"-|
 <h2>Importaciones</h2>
 <h1>Cotizaciones de Clientes</h1>
 <p>A continuación puede ver el listado de sus solicitudes de cotización y sus correspondiente estado.</p>
@@ -70,25 +71,29 @@
 				</td>
 				<td>|-$quotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
 				<td>|-$quotation->getStatusNameAdmin()-|</td>
-				<td>
-					
-					|- assign var=items value=$quotation->getClientQuotationItems() -|
-					|-$items|@count-|
+				<td>|-assign var=products value=''-|
+					|-assign var=items value=$quotation->getClientQuotationItems()-|
+					|-if $items|@count eq 0-|
+						|-assign var=products value='No hay productos en la solicitud'-|
+					|-else-|
 					|-foreach from=$items item=item name=for_quotations_item-|
 						|-assign var=product value=$item->getProduct()-|
-						|-$product->getName()-|&nbsp;
+						|-assign var=product value=$product->getName()-|
+						|-assign var=products value=$products$product<br/>-|
 					|-/foreach-|
+					|-/if-|
+ 				Ver detalle <a href="#" |-popup  sticky=true fgcolor="#ffffff" bgcolor="#ffffff" closecolor="#cdcdcd" closetext='Cerrar' closetitle='Cerrar' capcolor='#ffffff' bgcolor='#006699' width=350 caption="Detalle de Productos" trigger="onMouseOver" text="$products"-|  title="Ver Productos" alt="Ver Productos"><img src="images/clear.png" class="linkImageInfo"></a>
 				</td>
-				<td>
+				<td nowrap="nowrap">
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientQuoteEdit" />
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="Editar" class="buttonImageEdit" />
+						<input type="submit" name="submit_go_edit_quotation" value="Editar" class="buttonImageEdit" title="Editar" alt="Editar" />
 					</form>
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientQuoteHistory" />
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="Ver Historial" />
+						<input type="submit" name="submit_go_edit_quotation" value="Ver Historial" class="buttonImageHistory" title="Ver Historial" alt="Ver Historial" />
 					</form>
 <!--					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="importClientQuoteDelete" />

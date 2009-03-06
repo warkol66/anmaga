@@ -21,10 +21,10 @@
 			<maintenanceMessage>El sistema permanecerá en mantenimiento por 2 horas, por favor regrese mas tarde.</maintenanceMessage>
 			<affiliateUserLoginUnified>
 				<value>YES</value>
-				<element_type>YES/NO</element_type>		
+				<element_type>YES/NO</element_type>
 			</affiliateUserLoginUnified>
 			<applicationTimeZoneGMT>
-				<value>-3</value>
+				<value>-4</value>
 				<element_type>TIMEZONE</element_type>
 			</applicationTimeZoneGMT>
 			<dateFormat>
@@ -40,8 +40,8 @@
 			<thousandsSeparator>.</thousandsSeparator>
 			<decimalSeparator>,</decimalSeparator>
 			<numberOfDecimals>2</numberOfDecimals>
-			<siteName>Negociadora Anmaga</siteName>
-			<siteDescription>Sistema de Administración de Pedidos de Negociadora Anmaga</siteDescription>
+			<siteName>Brisway International Limited</siteName>
+			<siteDescription>Sistema de Administración de Exportaciones de Brisway International Limited</siteDescription>
 			<siteShortName>anmagaexport</siteShortName>
 			<webmasterMail>gflamerich@gmail.com</webmasterMail>
 			<debugMail>gflamerich@gmail.com</debugMail>
@@ -152,7 +152,7 @@
 				<element_type>YES/NO</element_type>
 			</backupCreate>
 		</noCheckLoginActions>
-		<rowsPerPage>10</rowsPerPage>
+		<rowsPerPage>15</rowsPerPage>
 	</system>
 	<mluse>
 		<language>esp</language>

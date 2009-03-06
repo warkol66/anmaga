@@ -67,6 +67,6 @@
 				</select>
 		</p>
 </fieldset> 
-		<p> <input name="save" type="submit" value="Agregar Institución"> </p> 
+		<p> <input name="save" type="submit" value="Agregar Cliente"> </p> 
 </fieldset> 
 </form>

@@ -67,7 +67,7 @@
 				<td>|-$quotation->getCreatedAt()|change_timezone-|</td>
 				<td>|-$quotation->getStatusName()-|</td>
 				<td><a href="Main.php?do=importSupplierQuoteAccess&token=|-$quotation->getSupplierAccessToken()-|">Completar</a></td>
-				<td>
+				<td nowrap="nowrap">
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importSupplierQuoteEdit" />
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
@@ -82,10 +82,10 @@
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importSupplierQuoteHistory" />
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="Ver Historial" />
+						<input type="submit" name="submit_go_edit_quotation" value="Ver Historial" class="buttonImageHistory" />
 					</form>
 					
-					<input type="button" value="Reenviar" onClick="javascript:importShowDiv('resendDiv|-$quotation->getId()-|')" class="buttonImageEmail" alt="Enviar a Destinatario otros destinatarios"/>
+					<input type="button" value="Reenviar" onClick="javascript:importShowDiv('resendDiv|-$quotation->getId()-|')" class="buttonImageSendMultiple" alt="Enviar a otros destinatarios"/>
 					<div id="resendDiv|-$quotation->getId()-|" style="display: none;">
 
 					<form action="Main.php" method="post">	

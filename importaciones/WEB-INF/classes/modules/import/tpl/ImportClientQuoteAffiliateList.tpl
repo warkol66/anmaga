@@ -35,9 +35,9 @@
 		|-foreach from=$quotations item=quotation name=for_quotations-|
 			<tr>
 				<td>|-$quotation->getId()-|</td>
-				<td>|-$quotation->getCreatedAt()-|</td>
+				<td>|-$quotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
 				<td>|-$quotation->getStatusNameClient()-|</td>
-				<td>
+				<td nowrap="nowrap">
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientQuoteEdit" />
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
@@ -46,7 +46,7 @@
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientQuoteHistory" />
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="Ver Historial" />
+						<input type="submit" name="submit_go_edit_quotation" value="Ver Historial" class="buttonImageHistory" />
 					</form>
 <!--					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="importClientQuoteDelete" />
@@ -59,7 +59,7 @@
 		|-/foreach-|						
 		|-if $pager->getTotalPages() gt 1-|
 			<tr> 
-				<td colspan="7" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
+				<td colspan="4" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
 			</tr>							
 		|-/if-|						
 		</tbody>
