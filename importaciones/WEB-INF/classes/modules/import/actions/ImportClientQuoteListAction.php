@@ -15,6 +15,7 @@ class ImportClientQuoteListAction extends BaseAction {
 	}
 
 
+
 	// ----- Public Methods ------------------------------------------------- //
 
 	/**
@@ -56,10 +57,13 @@ class ImportClientQuoteListAction extends BaseAction {
 		
 		$clientQuotationPeer = new ClientQuotationPeer();
 		
+		$products = ProductPeer::getAll();
+		$smarty->assign('products',$products);
+		
 		if (Common::isAdmin()) {
 			//traemos todas las cotizaciones.
 
-			$filterValues = array('affiliateId');
+			$filterValues = array('affiliateId','productId','adminStatus');
 			$clientQuotationPeer = $this->processFilters($clientQuotationPeer,$filterValues,$smarty);
 
 			$pager = $clientQuotationPeer->getAllPaginatedFiltered($_GET["page"]);
@@ -69,7 +73,8 @@ class ImportClientQuoteListAction extends BaseAction {
 			$url = "Main.php?do=importClientQuoteList";			
 			$url = $this->addFiltersToUrl($url);
 			$smarty->assign("url",$url);
-			
+
+			$smarty->assign("status",$clientQuotationPeer->getStatusNamesAdmin());
 			$smarty->assign("quotations",$pager->getResult());
 			$smarty->assign("pager",$pager);
 			$smarty->assign("affiliates",$affiliates);
@@ -78,11 +83,16 @@ class ImportClientQuoteListAction extends BaseAction {
 		}
 
 		if (Common::isAffiliatedUser()) {
+
+			$filterValues = array('productId','affiliateStatus');
+			$clientQuotationPeer = $this->processFilters($clientQuotationPeer,$filterValues,$smarty);
+
 			//Traemos todas las cotizaciones de ese afiliado.
 			$affiliateUser = Common::getAffiliatedLogged();
 			$affiliate = $affiliateUser->getAffiliate();
-			$pager = $clientQuotationPeer->getAllPaginatedByAffiliate($affiliate,$_GET["page"]);
+			$pager = $clientQuotationPeer->getAllPaginatedByAffiliateFiltered($affiliate,$_GET["page"]);
 
+			$smarty->assign("status",$clientQuotationPeer->getStatusNamesAffiliate());
 			$smarty->assign("quotations",$pager->getResult());
 			$smarty->assign("affiliate",$affiliateUser->getAffiliate());
 			$smarty->assign("pager",$pager);

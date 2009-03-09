@@ -26,13 +26,31 @@
 			</select>
 		</p>
 		<p>
+			<label for="filters[productId]">Producto</label>
+			<select name="filters[productId]">
+					<option value="">Seleccione Un Producto</option>
+				|-foreach from=$products item=product name=for_products-|
+					<option value="|-$product->getId()-|" |-if $filters neq '' and $filters.productId eq $product->getId() -|selected="selected"|-/if-|>|-$product->getName()-|</option>
+				|-/foreach-|
+			</select>
+		</p>
+		<p>
+			<label for="filters[adminStatus]">Estado</label>
+			<select name="filters[adminStatus]">
+					<option value="">Seleccione Un Estado</option>
+				|-foreach from=$status item=stat name=for_status-|
+					<option value="|-$stat-|" |-if $filters neq '' and $filters.adminStatus eq $stat -|selected="selected"|-/if-|>|-$stat-|</option>
+				|-/foreach-|
+			</select>
+		</p>
+		<p>
 			<input type="hidden" name="do" value="importClientQuoteList" />
 			<input type="submit" value="Aplicar Filtro"/>
 		</p>
 		</fieldset>
 	</form>
-	
 </div>
+
 <div id="div_newsmedias">
 	<table cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-newsmedias">
 		<thead>

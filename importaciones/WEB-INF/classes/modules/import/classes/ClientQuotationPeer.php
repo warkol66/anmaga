@@ -25,6 +25,39 @@
 class ClientQuotationPeer extends BaseClientQuotationPeer {
 
   private $affiliateId = '';
+  private $productId = '';
+  private $adminStatus = '';
+  private $affiliateStatus = '';
+
+  //nombre de los estados para los clientes
+  private $statusNamesAffiliate = array(
+							'New' => array(ClientQuotation::STATUS_NEW),
+							'In Progress' => array(ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED, ClientQuotation::STATUS_WAITING_FOR_PRICING),
+							'Partially Quoted' => array(ClientQuotation::STATUS_PARTIALLY_QUOTED),
+							'Quoted' => array(ClientQuotation::STATUS_QUOTED)
+						);
+
+						//nombre de los estados para los administradores
+	private $statusNamesAdmin = array(
+								'New' => array(ClientQuotation::STATUS_NEW),
+								'Quotation Requested' => array(ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED),
+								'Waiting For Pricing' => array(ClientQuotation::STATUS_WAITING_FOR_PRICING, ClientQuotation::STATUS_PARTIALLY_QUOTED),
+								'Quoted' => array(ClientQuotation::STATUS_QUOTED)
+							);
+  
+  /**
+   * Devuelve los nombres de los estados del cliente
+   */					
+  public function getStatusNamesAffiliate() {
+		return array_keys($this->statusNamesAffiliate);
+  }
+
+  /**
+   * Devuelve los nombres de los estados del cleinte
+   */					
+  public function getStatusNamesAdmin() {
+		return array_keys($this->statusNamesAdmin);
+  }
 
   /**
    * Fija un filtro por supplier
@@ -33,6 +66,31 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
   public function setAffiliateId($affiliateId) {
 	$this->affiliateId = $affiliateId;
   }	
+
+  /**
+   * Fija un filtro por producto
+   * @param Integer $productId id de producto
+   */
+  public function setProductId($productId) {
+	$this->productId = $productId;
+  }
+
+  /**
+   * Fija un filtro por estado de administrador
+   * @param Integer $productId id de producto
+   */
+  public function setAdminStatus($status) {
+	$this->adminStatus = $status;
+  }	
+
+  /**
+   * Fija un filtro por estado de cliente
+   * @param Integer $productId id de producto
+   */
+  public function setAffiliateStatus($status) {
+	$this->affiliateStatus = $status;
+  }	
+
 
   /**
   * Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
@@ -176,16 +234,71 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
    }
 
   /**
+  * Obtiene todos los client quotations paginados.
+  *
+  * @param int $page [optional] Numero de pagina actual
+  * @param int $perPage [optional] Cantidad de filas por pagina
+  *	@return array Informacion sobre todos los clientquotations
+  */
+  function getAllPaginatedByAffiliateFiltered($affiliate,$page=1,$perPage=-1) {
+
+    if ($perPage == -1)
+      $perPage = 	ClientQuotationPeer::getRowsPerPage();
+    if (empty($page))
+      $page = 1;
+    require_once("propel/util/PropelPager.php");
+    $cond = $this->getFilterCriteria();
+	$cond->add(ClientQuotationPeer::AFFILIATEID,$affiliate->getId());
+    $pager = new PropelPager($cond,"ClientQuotationPeer", "doSelect",$page,$perPage);
+    return $pager;
+   }
+
+	/**
+	 * Realiza el procesamiento de un array de status
+	 *
+	 */
+	private function processStatus($criteria,$status) {
+		foreach ($status as $stat) {
+			if (empty($criterion)) {
+				$criterion = $criteria->getNewCriterion(ClientQuotationPeer::STATUS, $stat, Criteria::EQUAL);
+			}
+			else {
+				$criterion->addOr($criteria->getNewCriterion(ClientQuotationPeer::STATUS, $stat, Criteria::EQUAL));
+			}
+		}
+		return $criterion;
+	}
+
+  /**
    * Genera una criteria segun la informacion introducida para filtros
    * @return Criteria instancia de criteria
    */
   private function getFilterCriteria() {
 	$criteria = New Criteria();
+	$criteria->addJoin(ClientQuotationPeer::ID,ClientQuotationItemPeer::CLIENTQUOTATIONID,Criteria::INNER_JOIN);
 
 	if (!empty($this->affiliateId)) {
 		$criteria->add(ClientQuotationPeer::AFFILIATEID,$this->affiliateId);
 	}
+	
+	if (!empty($this->productId)) {
+		$criteria->add(ClientQuotationItemPeer::PRODUCTID,$this->productId);
+	}
 
+	if (!empty($this->affiliateStatus)) {
+
+		$status = $this->statusNamesAffiliate[$this->affiliateStatus];
+		$criteria->add($this->processStatus($criteria,$status));
+
+	}
+
+	if (!empty($this->adminStatus)) {
+		$status = $this->statusNamesAdmin[$this->adminStatus];
+		$criteria->add($this->processStatus($criteria,$status));
+	}
+	
+	$criteria->setDistinct();
+	
 	return $criteria;
   }    
 
