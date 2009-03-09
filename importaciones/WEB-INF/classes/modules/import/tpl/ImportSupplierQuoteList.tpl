@@ -1,4 +1,4 @@
-<h2>Importaciones</h2>
+<h2>Exportaciones</h2>
 <h1>Cotizaciones de Proveedor</h1>
 <p>A continuación puede ver el listado de sus pedidos de cotización a proveedores y sus correspondientes estados.</p>
 

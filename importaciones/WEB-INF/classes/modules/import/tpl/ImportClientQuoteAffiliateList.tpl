@@ -1,4 +1,4 @@
-<h2>Importaciones</h2>
+<h2>Exportaciones</h2>
 <h1>Cotizaciones</h1>
 <p>A continuación puede ver el listado de sus pedidos de cotización y sus correspondientes estados.</p>
 

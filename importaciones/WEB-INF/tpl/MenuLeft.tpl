@@ -3,7 +3,7 @@
 		<li class="menuLink"><a href="Main.php?do=usersWelcome">Ir al Inicio</a></li>
 	</ul>
 	<ul>
-		<li class="titleMenu"><a href="javascript:switch_vis('importMenu');" class="linkSwitchMenu">Importaciones</a></li>
+		<li class="titleMenu"><a href="javascript:switch_vis('importMenu');" class="linkSwitchMenu">Exportaciones</a></li>
 	</ul>
 		<div id="importMenu" style="display:|-if $module|lower eq 'import' && ($section|lower neq 'products' && $section|lower neq 'suppliers' && $section|lower neq 'ports' && $section|lower neq 'incoterms')-|block|-else-|none|-/if-|;">
 			<ul>

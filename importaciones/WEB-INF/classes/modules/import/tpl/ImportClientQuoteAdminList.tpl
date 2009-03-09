@@ -1,5 +1,5 @@
 |-popup_init src="scripts/overlib.js"-|
-<h2>Importaciones</h2>
+<h2>Exportaciones</h2>
 <h1>Cotizaciones de Clientes</h1>
 <p>A continuación puede ver el listado de sus solicitudes de cotización y sus correspondiente estado.</p>
 

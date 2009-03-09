@@ -1,4 +1,4 @@
-<h2>Importaciones</h2>
+<h2>Exportaciones</h2>
 <h1>Informacion General de la cotización</h1>
 
 <div id="div_messages">

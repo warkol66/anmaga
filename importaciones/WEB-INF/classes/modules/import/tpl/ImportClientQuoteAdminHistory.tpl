@@ -1,4 +1,4 @@
-<h2>Importaciones</h2>
+<h2>Exportaciones</h2>
 <h1>Historial Cotizacion de Cliente: |-$clientQuotation->getId()-|</h1>
 
 
