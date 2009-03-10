@@ -28,6 +28,7 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
   private $productId = '';
   private $adminStatus = '';
   private $affiliateStatus = '';
+  private $productName = '';
 
   //nombre de los estados para los clientes
   private $statusNamesAffiliate = array(
@@ -73,6 +74,14 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
    */
   public function setProductId($productId) {
 	$this->productId = $productId;
+  }
+
+  /**
+   * Fija un filtro por nombre de producto
+   * @param Integer $productId id de producto
+   */
+  public function setProductName($name) {
+	$this->productName = $name;
   }
 
   /**
@@ -275,7 +284,8 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
    */
   private function getFilterCriteria() {
 	$criteria = New Criteria();
-	$criteria->addJoin(ClientQuotationPeer::ID,ClientQuotationItemPeer::CLIENTQUOTATIONID,Criteria::INNER_JOIN);
+	$criteria->addJoin(ClientQuotationPeer::ID,ClientQuotationItemPeer::CLIENTQUOTATIONID,Criteria::LEFT_JOIN);
+	$criteria->addJoin(ClientQuotationItemPeer::PRODUCTID,ProductPeer::ID,Criteria::LEFT_JOIN);
 
 	if (!empty($this->affiliateId)) {
 		$criteria->add(ClientQuotationPeer::AFFILIATEID,$this->affiliateId);
@@ -283,6 +293,10 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
 	
 	if (!empty($this->productId)) {
 		$criteria->add(ClientQuotationItemPeer::PRODUCTID,$this->productId);
+	}
+
+	if (!empty($this->productName)) {
+		$criteria->add(ProductPeer::NAME,"%" . $this->productName . "%",Criteria::LIKE);
 	}
 
 	if (!empty($this->affiliateStatus)) {

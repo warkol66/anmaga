@@ -63,7 +63,7 @@ class ImportClientQuoteListAction extends BaseAction {
 		if (Common::isAdmin()) {
 			//traemos todas las cotizaciones.
 
-			$filterValues = array('affiliateId','productId','adminStatus');
+			$filterValues = array('affiliateId','productName','adminStatus');
 			$clientQuotationPeer = $this->processFilters($clientQuotationPeer,$filterValues,$smarty);
 
 			$pager = $clientQuotationPeer->getAllPaginatedFiltered($_GET["page"]);
@@ -84,7 +84,7 @@ class ImportClientQuoteListAction extends BaseAction {
 
 		if (Common::isAffiliatedUser()) {
 
-			$filterValues = array('productId','affiliateStatus');
+			$filterValues = array('productName','affiliateStatus');
 			$clientQuotationPeer = $this->processFilters($clientQuotationPeer,$filterValues,$smarty);
 
 			//Traemos todas las cotizaciones de ese afiliado.

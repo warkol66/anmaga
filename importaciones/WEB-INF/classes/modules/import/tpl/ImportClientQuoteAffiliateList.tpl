@@ -15,13 +15,8 @@
 	<form action="Main.php" method="get">
 		<fieldset>
 		<p>
-			<label for="filters[productId]">Producto</label>
-			<select name="filters[productId]">
-					<option value="">Seleccione Un Producto</option>
-				|-foreach from=$products item=product name=for_products-|
-					<option value="|-$product->getId()-|" |-if $filters neq '' and $filters.productId eq $product->getId() -|selected="selected"|-/if-|>|-$product->getName()-|</option>
-				|-/foreach-|
-			</select>
+			<label for="filters[productName]">Producto</label>
+			<input type="text" name="filters[productName]" value="|-if $filters neq '' and $filters.productName neq '' -||-$filters.productName-||-/if-|" id="filters">
 		</p>
 		<p>
 			<label for="filters[affiliateStatus]">Estado</label>
