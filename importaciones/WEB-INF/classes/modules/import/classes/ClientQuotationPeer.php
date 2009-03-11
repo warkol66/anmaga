@@ -296,8 +296,11 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
 	}
 
 	if (!empty($this->productName)) {
-		$criteria->add(ProductPeer::NAME,"%" . $this->productName . "%",Criteria::LIKE);
-	}
+		$criterionProduct = $criteria->add(ProductPeer::NAME,"%".$this->productName."%",Criteria::LIKE);
+		$criterionProduct->addOr(ProductPeer::DESCRIPTION,"%".$this->productName."%",Criteria::LIKE);
+		$criteria->add($criterionProduct);
+		$criteria->setIgnoreCase(true);
+}
 
 	if (!empty($this->affiliateStatus)) {
 
