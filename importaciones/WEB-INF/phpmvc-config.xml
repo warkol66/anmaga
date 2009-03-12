@@ -997,6 +997,7 @@
            validate = "true">
     <forward name="success-admin" path="ImportClientQuoteAdminList.tpl" />
     <forward name="success-affiliate" path="ImportClientQuoteAffiliateList.tpl" />
+    <forward name="include" path="ImportClientQuoteList.tpl" />
     </action>
 
     <action    path = "importClientQuoteCreate"
