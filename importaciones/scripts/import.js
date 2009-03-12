@@ -12,7 +12,7 @@ function importAddItemToClientQuotationX(form) {
 					insertion: Insertion.Bottom
 				});
 	if ($('productSearchMsgBox'))
-		$('productSearchMsgBox').innerHTML = 'agregando item ...';
+		$('productSearchMsgBox').innerHTML = '<span class="inProgress">... agregando producto ...</span>';
 	
 	return true;
 }
@@ -30,7 +30,7 @@ function importSearchProductsX(form) {
 				});
 
 	if ($('productSearchMsgBox'))
-		$('productSearchMsgBox').innerHTML = 'buscando...';
+		$('productSearchMsgBox').innerHTML = '<span class="inProgress">... buscando ...</span>';
 
 	return true;
 	
@@ -68,7 +68,7 @@ function importUpdateItemsBySupplier(supplierId,clientQuotationId) {
 				});
 
 	if ($('assignmentMsgBox'))
-		$('assignmentMsgBox').innerHTML = 'procesando...';
+		$('assignmentMsgBox').innerHTML = '<span class="inProgress">... procesando ...</span>';
 
 	return true;	
 
