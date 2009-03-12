@@ -51,3 +51,25 @@ function importHideDiv(id) {
 	}
 	
 }
+
+function importUpdateItemsBySupplier(supplierId,clientQuotationId) {
+	if (supplierId == '') {
+		return false;
+	}
+	
+	var fields = 'do=importClientQuoteItemsSupplierX&supplierId=' + supplierId + '&clientQuotationId=' + clientQuotationId;
+	var myAjax = new Ajax.Updater(
+				{success: 'assignmentMsgBox'},
+				url,
+				{
+					method: 'post',
+					postBody: fields,
+					evalScripts: true,
+				});
+
+	if ($('assignmentMsgBox'))
+		$('assignmentMsgBox').innerHTML = 'procesando...';
+
+	return true;	
+
+}
