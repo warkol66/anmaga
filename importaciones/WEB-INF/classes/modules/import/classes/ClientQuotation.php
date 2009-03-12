@@ -201,4 +201,23 @@ class ClientQuotation extends BaseClientQuotation {
 		return ($this->getStatus() == ClientQuotation::STATUS_QUOTED);
 	}
 	
+	/**
+	 * Obtiene aquellos items de la orden
+	 * que un cierto proveedor tiene disponibles
+	 * @param Supplier $supplier instancia de proveedor
+	 * @return array
+	 */
+	public function getClientQuotationItemsBySupplier($supplier) {
+		
+		require_once('ClientQuotationItemPeer.php');
+		
+		$criteria = new Criteria();
+		$criteria->addJoin(ClientQuotationItemPeer::PRODUCTID,ProductSupplierPeer::PRODUCTID,Criteria::INNER_JOIN);
+		$criteria->add(ClientQuotationItemPeer::CLIENTQUOTATIONID,$this->getId());
+		$criteria->add(ProductSupplierPeer::SUPPLIERID,$supplier->getId());
+
+		return ClientQuotationItemPeer::doSelect($criteria);
+		
+	} 
+	
 } // ClientQuotation

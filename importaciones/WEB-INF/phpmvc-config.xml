@@ -1075,6 +1075,14 @@
 	<forward name="success" path="ImportClientQuoteItemSetPrice.tpl" />
 	</action>
 
+	<action    path = "importClientQuoteItemsSupplierX"
+	           type = "ImportClientQuoteItemsSupplierXAction"
+	           name = "importClientQuoteItemsSupplierX"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="ImportClientQuoteItemsSupplierX.tpl" />
+	</action>
+
 	<action    path = "importClientQuoteItemDoSetPrice"
 	           type = "ImportClientQuoteItemDoSetPriceAction"
 	           name = "importClientQuoteItemDoSetPrice"

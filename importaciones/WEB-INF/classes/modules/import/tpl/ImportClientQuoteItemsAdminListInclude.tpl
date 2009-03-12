@@ -15,7 +15,7 @@
 		|-foreach from=$clientQuotation->getClientQuotationItems() item=item name=for_clientQuotationsItems-|
 		|-assign var=product value=$item->getProduct()-|
 		<tr>
-			<th>|-if not $item->hasASupplierQuotationRelated()-|<input type="checkbox" href="../actions/ImportIncotermsDoActivateAction.php" title="ImportIncotermsDoActivateAction" name="clientQuoteItems[]" value="|-$item->getId()-|" />|-else-|<input type="checkbox" name="Quoted" value="" disabled="disabled"/>|-/if-|</th>
+			<th>|-if not $item->hasASupplierQuotationRelated()-|<input type="checkbox" href="../actions/ImportIncotermsDoActivateAction.php" title="ImportIncotermsDoActivateAction" name="clientQuoteItems[]" value="|-$item->getId()-|" id="checkboxItem|-$item->getId()-|" />|-else-|<input type="checkbox" name="Quoted" value="" disabled="disabled" id="checkboxItem|-$item->getId()-|"/>|-/if-|</th>
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
 			<td>|-$item->getQuantity()-|</td>
@@ -37,7 +37,8 @@
 
 	<p>
 		|-if not $clientQuotation->isQuoted()-|
-			<select name="supplierId">
+			<select name="supplierId" onChange="javascript:importUpdateItemsBySupplier(this.value,|-$clientQuotation->getId()-|)">
+				<option value="">Seleccione un Proveedor</option>
 			|-foreach from=$suppliers item=supplier name=for_suppliers-|
 				<option value="|-$supplier->getId()-|">|-$supplier->getName()-|</option>
 			|-/foreach-|
@@ -56,6 +57,7 @@
 			<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
 			<input type="hidden" name="do" value="importSupplierQuoteCreate" />
 			<input type="submit" value="Generar Cotización a Proveedor con los seleccionados" />
+			<span id="assignmentMsgBox"></span>
 		|-/if-|
 	</p>
 </form>
