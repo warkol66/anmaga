@@ -1,1 +1,1 @@
-|-*include_module module=Import action=ClientQuoteList options=""*-|
+|-include_module module=Import action=ClientQuoteList options="template=ImportClientQuoteAdminListInclude.tpl"-|
