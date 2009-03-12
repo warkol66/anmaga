@@ -29,12 +29,13 @@
 	|-include file='ImportClientQuoteAddItemInclude.tpl' clientQuotation=$clientQuotation affiliate=$affiliate-|
 |-/if-|
 
-<h1>Productos en la cotización</h1>
 
 <div id="clientQuotationItemsHolder">
 	|-if $clientQuotation->isNewStatus()-|
+<h1>Detalle de cotización a provedor</h1>
 		|-include file='ImportClientQuoteItemsAffiliateListInclude.tpl' clientQuotation=$clientQuotation-|
 	|-else-|
+<h1>Solicitud de cotización a provedor</h1>
 		|-include file='ImportClientQuoteItemsAdminListInclude.tpl' clientQuotation=$clientQuotation-|
 	|-/if-|
 </div>
