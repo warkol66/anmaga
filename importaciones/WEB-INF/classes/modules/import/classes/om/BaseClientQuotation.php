@@ -106,6 +106,16 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 	private $lastSupplierQuotationCriteria = null;
 
 	/**
+	 * @var        array ClientPurchaseOrder[] Collection to store aggregation of ClientPurchaseOrder objects.
+	 */
+	protected $collClientPurchaseOrders;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collClientPurchaseOrders.
+	 */
+	private $lastClientPurchaseOrderCriteria = null;
+
+	/**
 	 * @var        array SupplierPurchaseOrder[] Collection to store aggregation of SupplierPurchaseOrder objects.
 	 */
 	protected $collSupplierPurchaseOrders;
@@ -621,6 +631,9 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 			$this->collSupplierQuotations = null;
 			$this->lastSupplierQuotationCriteria = null;
 
+			$this->collClientPurchaseOrders = null;
+			$this->lastClientPurchaseOrderCriteria = null;
+
 			$this->collSupplierPurchaseOrders = null;
 			$this->lastSupplierPurchaseOrderCriteria = null;
 
@@ -781,6 +794,14 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collClientPurchaseOrders !== null) {
+				foreach ($this->collClientPurchaseOrders as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collSupplierPurchaseOrders !== null) {
 				foreach ($this->collSupplierPurchaseOrders as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -908,6 +929,14 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 					}
 				}
 
+				if ($this->collClientPurchaseOrders !== null) {
+					foreach ($this->collClientPurchaseOrders as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 				if ($this->collSupplierPurchaseOrders !== null) {
 					foreach ($this->collSupplierPurchaseOrders as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
@@ -1026,6 +1055,12 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 			foreach ($this->getSupplierQuotations() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addSupplierQuotation($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getClientPurchaseOrders() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addClientPurchaseOrder($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1789,6 +1824,302 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Clears out the collClientPurchaseOrders collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addClientPurchaseOrders()
+	 */
+	public function clearClientPurchaseOrders()
+	{
+		$this->collClientPurchaseOrders = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collClientPurchaseOrders collection (array).
+	 *
+	 * By default this just sets the collClientPurchaseOrders collection to an empty array (like clearcollClientPurchaseOrders());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initClientPurchaseOrders()
+	{
+		$this->collClientPurchaseOrders = array();
+	}
+
+	/**
+	 * Gets an array of ClientPurchaseOrder objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this ClientQuotation has previously been saved, it will retrieve
+	 * related ClientPurchaseOrders from storage. If this ClientQuotation is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array ClientPurchaseOrder[]
+	 * @throws     PropelException
+	 */
+	public function getClientPurchaseOrders($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ClientQuotationPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collClientPurchaseOrders === null) {
+			if ($this->isNew()) {
+			   $this->collClientPurchaseOrders = array();
+			} else {
+
+				$criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+				ClientPurchaseOrderPeer::addSelectColumns($criteria);
+				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+				ClientPurchaseOrderPeer::addSelectColumns($criteria);
+				if (!isset($this->lastClientPurchaseOrderCriteria) || !$this->lastClientPurchaseOrderCriteria->equals($criteria)) {
+					$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastClientPurchaseOrderCriteria = $criteria;
+		return $this->collClientPurchaseOrders;
+	}
+
+	/**
+	 * Returns the number of related ClientPurchaseOrder objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related ClientPurchaseOrder objects.
+	 * @throws     PropelException
+	 */
+	public function countClientPurchaseOrders(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ClientQuotationPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collClientPurchaseOrders === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+				$count = ClientPurchaseOrderPeer::doCount($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+				if (!isset($this->lastClientPurchaseOrderCriteria) || !$this->lastClientPurchaseOrderCriteria->equals($criteria)) {
+					$count = ClientPurchaseOrderPeer::doCount($criteria, $con);
+				} else {
+					$count = count($this->collClientPurchaseOrders);
+				}
+			} else {
+				$count = count($this->collClientPurchaseOrders);
+			}
+		}
+		$this->lastClientPurchaseOrderCriteria = $criteria;
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a ClientPurchaseOrder object to this object
+	 * through the ClientPurchaseOrder foreign key attribute.
+	 *
+	 * @param      ClientPurchaseOrder $l ClientPurchaseOrder
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addClientPurchaseOrder(ClientPurchaseOrder $l)
+	{
+		if ($this->collClientPurchaseOrders === null) {
+			$this->initClientPurchaseOrders();
+		}
+		if (!in_array($l, $this->collClientPurchaseOrders, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collClientPurchaseOrders, $l);
+			$l->setClientQuotation($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ClientQuotation is new, it will return
+	 * an empty collection; or if this ClientQuotation has previously
+	 * been saved, it will retrieve related ClientPurchaseOrders from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ClientQuotation.
+	 */
+	public function getClientPurchaseOrdersJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ClientQuotationPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collClientPurchaseOrders === null) {
+			if ($this->isNew()) {
+				$this->collClientPurchaseOrders = array();
+			} else {
+
+				$criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+			if (!isset($this->lastClientPurchaseOrderCriteria) || !$this->lastClientPurchaseOrderCriteria->equals($criteria)) {
+				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastClientPurchaseOrderCriteria = $criteria;
+
+		return $this->collClientPurchaseOrders;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ClientQuotation is new, it will return
+	 * an empty collection; or if this ClientQuotation has previously
+	 * been saved, it will retrieve related ClientPurchaseOrders from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ClientQuotation.
+	 */
+	public function getClientPurchaseOrdersJoinAffiliate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ClientQuotationPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collClientPurchaseOrders === null) {
+			if ($this->isNew()) {
+				$this->collClientPurchaseOrders = array();
+			} else {
+
+				$criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+			if (!isset($this->lastClientPurchaseOrderCriteria) || !$this->lastClientPurchaseOrderCriteria->equals($criteria)) {
+				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastClientPurchaseOrderCriteria = $criteria;
+
+		return $this->collClientPurchaseOrders;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ClientQuotation is new, it will return
+	 * an empty collection; or if this ClientQuotation has previously
+	 * been saved, it will retrieve related ClientPurchaseOrders from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ClientQuotation.
+	 */
+	public function getClientPurchaseOrdersJoinAffiliateUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ClientQuotationPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collClientPurchaseOrders === null) {
+			if ($this->isNew()) {
+				$this->collClientPurchaseOrders = array();
+			} else {
+
+				$criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+			if (!isset($this->lastClientPurchaseOrderCriteria) || !$this->lastClientPurchaseOrderCriteria->equals($criteria)) {
+				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastClientPurchaseOrderCriteria = $criteria;
+
+		return $this->collClientPurchaseOrders;
+	}
+
+	/**
 	 * Clears out the collSupplierPurchaseOrders collection (array).
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
@@ -2037,6 +2368,147 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 		return $this->collSupplierPurchaseOrders;
 	}
 
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ClientQuotation is new, it will return
+	 * an empty collection; or if this ClientQuotation has previously
+	 * been saved, it will retrieve related SupplierPurchaseOrders from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ClientQuotation.
+	 */
+	public function getSupplierPurchaseOrdersJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ClientQuotationPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierPurchaseOrders === null) {
+			if ($this->isNew()) {
+				$this->collSupplierPurchaseOrders = array();
+			} else {
+
+				$criteria->add(SupplierPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierPurchaseOrderCriteria = $criteria;
+
+		return $this->collSupplierPurchaseOrders;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ClientQuotation is new, it will return
+	 * an empty collection; or if this ClientQuotation has previously
+	 * been saved, it will retrieve related SupplierPurchaseOrders from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ClientQuotation.
+	 */
+	public function getSupplierPurchaseOrdersJoinAffiliate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ClientQuotationPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierPurchaseOrders === null) {
+			if ($this->isNew()) {
+				$this->collSupplierPurchaseOrders = array();
+			} else {
+
+				$criteria->add(SupplierPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierPurchaseOrderCriteria = $criteria;
+
+		return $this->collSupplierPurchaseOrders;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ClientQuotation is new, it will return
+	 * an empty collection; or if this ClientQuotation has previously
+	 * been saved, it will retrieve related SupplierPurchaseOrders from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ClientQuotation.
+	 */
+	public function getSupplierPurchaseOrdersJoinAffiliateUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ClientQuotationPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierPurchaseOrders === null) {
+			if ($this->isNew()) {
+				$this->collSupplierPurchaseOrders = array();
+			} else {
+
+				$criteria->add(SupplierPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierPurchaseOrderPeer::CLIENTQUOTATIONID, $this->id);
+
+			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierPurchaseOrderCriteria = $criteria;
+
+		return $this->collSupplierPurchaseOrders;
+	}
+
 	/**
 	 * Resets all collections of referencing foreign keys.
 	 *
@@ -2064,6 +2536,11 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collClientPurchaseOrders) {
+				foreach ((array) $this->collClientPurchaseOrders as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 			if ($this->collSupplierPurchaseOrders) {
 				foreach ((array) $this->collSupplierPurchaseOrders as $o) {
 					$o->clearAllReferences($deep);
@@ -2074,6 +2551,7 @@ abstract class BaseClientQuotation extends BaseObject  implements Persistent {
 		$this->collClientQuotationHistorys = null;
 		$this->collClientQuotationItems = null;
 		$this->collSupplierQuotations = null;
+		$this->collClientPurchaseOrders = null;
 		$this->collSupplierPurchaseOrders = null;
 			$this->aUser = null;
 			$this->aAffiliate = null;

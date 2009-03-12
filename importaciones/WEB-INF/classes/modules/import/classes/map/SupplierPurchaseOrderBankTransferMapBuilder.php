@@ -64,7 +64,7 @@ class SupplierPurchaseOrderBankTransferMapBuilder implements MapBuilder {
 
 		$tMap->addPrimaryKey('ID', 'Id', 'INTEGER', true, null);
 
-		$tMap->addColumn('SUPPLIERPURCHASEORDERID', 'Supplierpurchaseorderid', 'INTEGER', true, null);
+		$tMap->addForeignKey('SUPPLIERPURCHASEORDERID', 'Supplierpurchaseorderid', 'INTEGER', 'import_supplierPurchaseOrder', 'ID', true, null);
 
 		$tMap->addColumn('BANKTRANSFERNUMBER', 'Banktransfernumber', 'VARCHAR', true, 255);
 

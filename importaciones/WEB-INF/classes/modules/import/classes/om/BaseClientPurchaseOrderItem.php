@@ -25,28 +25,16 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 	protected $id;
 
 	/**
-	 * The value for the clientpurchaseorderid field.
-	 * @var        int
-	 */
-	protected $clientpurchaseorderid;
-
-	/**
-	 * The value for the clientquotationitemid field.
-	 * @var        int
-	 */
-	protected $clientquotationitemid;
-
-	/**
 	 * The value for the productid field.
 	 * @var        int
 	 */
 	protected $productid;
 
 	/**
-	 * The value for the price field.
-	 * @var        double
+	 * The value for the clientpurchaseorderid field.
+	 * @var        int
 	 */
-	protected $price;
+	protected $clientpurchaseorderid;
 
 	/**
 	 * The value for the quantity field.
@@ -55,9 +43,10 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 	protected $quantity;
 
 	/**
-	 * @var        ClientPurchaseOrder
+	 * The value for the price field.
+	 * @var        double
 	 */
-	protected $aClientPurchaseOrder;
+	protected $price;
 
 	/**
 	 * @var        Product
@@ -65,9 +54,9 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 	protected $aProduct;
 
 	/**
-	 * @var        ClientQuotationItem
+	 * @var        ClientPurchaseOrder
 	 */
-	protected $aClientQuotationItem;
+	protected $aClientPurchaseOrder;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -114,26 +103,6 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 	}
 
 	/**
-	 * Get the [clientpurchaseorderid] column value.
-	 * Id de item de Orden de Pedido a Cliente
-	 * @return     int
-	 */
-	public function getClientpurchaseorderid()
-	{
-		return $this->clientpurchaseorderid;
-	}
-
-	/**
-	 * Get the [clientquotationitemid] column value.
-	 * Referencia al item cotizado
-	 * @return     int
-	 */
-	public function getClientquotationitemid()
-	{
-		return $this->clientquotationitemid;
-	}
-
-	/**
 	 * Get the [productid] column value.
 	 * Id producto
 	 * @return     int
@@ -144,13 +113,13 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 	}
 
 	/**
-	 * Get the [price] column value.
-	 * Precio del producto
-	 * @return     double
+	 * Get the [clientpurchaseorderid] column value.
+	 * Id producto
+	 * @return     int
 	 */
-	public function getPrice()
+	public function getClientpurchaseorderid()
 	{
-		return $this->price;
+		return $this->clientpurchaseorderid;
 	}
 
 	/**
@@ -161,6 +130,16 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 	public function getQuantity()
 	{
 		return $this->quantity;
+	}
+
+	/**
+	 * Get the [price] column value.
+	 * precio de producto
+	 * @return     double
+	 */
+	public function getPrice()
+	{
+		return $this->price;
 	}
 
 	/**
@@ -182,54 +161,6 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 
 		return $this;
 	} // setId()
-
-	/**
-	 * Set the value of [clientpurchaseorderid] column.
-	 * Id de item de Orden de Pedido a Cliente
-	 * @param      int $v new value
-	 * @return     ClientPurchaseOrderItem The current object (for fluent API support)
-	 */
-	public function setClientpurchaseorderid($v)
-	{
-		if ($v !== null) {
-			$v = (int) $v;
-		}
-
-		if ($this->clientpurchaseorderid !== $v) {
-			$this->clientpurchaseorderid = $v;
-			$this->modifiedColumns[] = ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID;
-		}
-
-		if ($this->aClientPurchaseOrder !== null && $this->aClientPurchaseOrder->getId() !== $v) {
-			$this->aClientPurchaseOrder = null;
-		}
-
-		return $this;
-	} // setClientpurchaseorderid()
-
-	/**
-	 * Set the value of [clientquotationitemid] column.
-	 * Referencia al item cotizado
-	 * @param      int $v new value
-	 * @return     ClientPurchaseOrderItem The current object (for fluent API support)
-	 */
-	public function setClientquotationitemid($v)
-	{
-		if ($v !== null) {
-			$v = (int) $v;
-		}
-
-		if ($this->clientquotationitemid !== $v) {
-			$this->clientquotationitemid = $v;
-			$this->modifiedColumns[] = ClientPurchaseOrderItemPeer::CLIENTQUOTATIONITEMID;
-		}
-
-		if ($this->aClientQuotationItem !== null && $this->aClientQuotationItem->getId() !== $v) {
-			$this->aClientQuotationItem = null;
-		}
-
-		return $this;
-	} // setClientquotationitemid()
 
 	/**
 	 * Set the value of [productid] column.
@@ -256,24 +187,28 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 	} // setProductid()
 
 	/**
-	 * Set the value of [price] column.
-	 * Precio del producto
-	 * @param      double $v new value
+	 * Set the value of [clientpurchaseorderid] column.
+	 * Id producto
+	 * @param      int $v new value
 	 * @return     ClientPurchaseOrderItem The current object (for fluent API support)
 	 */
-	public function setPrice($v)
+	public function setClientpurchaseorderid($v)
 	{
 		if ($v !== null) {
-			$v = (double) $v;
+			$v = (int) $v;
 		}
 
-		if ($this->price !== $v) {
-			$this->price = $v;
-			$this->modifiedColumns[] = ClientPurchaseOrderItemPeer::PRICE;
+		if ($this->clientpurchaseorderid !== $v) {
+			$this->clientpurchaseorderid = $v;
+			$this->modifiedColumns[] = ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID;
+		}
+
+		if ($this->aClientPurchaseOrder !== null && $this->aClientPurchaseOrder->getId() !== $v) {
+			$this->aClientPurchaseOrder = null;
 		}
 
 		return $this;
-	} // setPrice()
+	} // setClientpurchaseorderid()
 
 	/**
 	 * Set the value of [quantity] column.
@@ -294,6 +229,26 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 
 		return $this;
 	} // setQuantity()
+
+	/**
+	 * Set the value of [price] column.
+	 * precio de producto
+	 * @param      double $v new value
+	 * @return     ClientPurchaseOrderItem The current object (for fluent API support)
+	 */
+	public function setPrice($v)
+	{
+		if ($v !== null) {
+			$v = (double) $v;
+		}
+
+		if ($this->price !== $v) {
+			$this->price = $v;
+			$this->modifiedColumns[] = ClientPurchaseOrderItemPeer::PRICE;
+		}
+
+		return $this;
+	} // setPrice()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -333,11 +288,10 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 		try {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-			$this->clientpurchaseorderid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-			$this->clientquotationitemid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-			$this->productid = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+			$this->productid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+			$this->clientpurchaseorderid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->quantity = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
 			$this->price = ($row[$startcol + 4] !== null) ? (double) $row[$startcol + 4] : null;
-			$this->quantity = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -347,7 +301,7 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 6; // 6 = ClientPurchaseOrderItemPeer::NUM_COLUMNS - ClientPurchaseOrderItemPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 5; // 5 = ClientPurchaseOrderItemPeer::NUM_COLUMNS - ClientPurchaseOrderItemPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ClientPurchaseOrderItem object", $e);
@@ -370,14 +324,11 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 	public function ensureConsistency()
 	{
 
-		if ($this->aClientPurchaseOrder !== null && $this->clientpurchaseorderid !== $this->aClientPurchaseOrder->getId()) {
-			$this->aClientPurchaseOrder = null;
-		}
-		if ($this->aClientQuotationItem !== null && $this->clientquotationitemid !== $this->aClientQuotationItem->getId()) {
-			$this->aClientQuotationItem = null;
-		}
 		if ($this->aProduct !== null && $this->productid !== $this->aProduct->getId()) {
 			$this->aProduct = null;
+		}
+		if ($this->aClientPurchaseOrder !== null && $this->clientpurchaseorderid !== $this->aClientPurchaseOrder->getId()) {
+			$this->aClientPurchaseOrder = null;
 		}
 	} // ensureConsistency
 
@@ -418,9 +369,8 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->aClientPurchaseOrder = null;
 			$this->aProduct = null;
-			$this->aClientQuotationItem = null;
+			$this->aClientPurchaseOrder = null;
 		} // if (deep)
 	}
 
@@ -511,13 +461,6 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aClientPurchaseOrder !== null) {
-				if ($this->aClientPurchaseOrder->isModified() || $this->aClientPurchaseOrder->isNew()) {
-					$affectedRows += $this->aClientPurchaseOrder->save($con);
-				}
-				$this->setClientPurchaseOrder($this->aClientPurchaseOrder);
-			}
-
 			if ($this->aProduct !== null) {
 				if ($this->aProduct->isModified() || $this->aProduct->isNew()) {
 					$affectedRows += $this->aProduct->save($con);
@@ -525,11 +468,11 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 				$this->setProduct($this->aProduct);
 			}
 
-			if ($this->aClientQuotationItem !== null) {
-				if ($this->aClientQuotationItem->isModified() || $this->aClientQuotationItem->isNew()) {
-					$affectedRows += $this->aClientQuotationItem->save($con);
+			if ($this->aClientPurchaseOrder !== null) {
+				if ($this->aClientPurchaseOrder->isModified() || $this->aClientPurchaseOrder->isNew()) {
+					$affectedRows += $this->aClientPurchaseOrder->save($con);
 				}
-				$this->setClientQuotationItem($this->aClientQuotationItem);
+				$this->setClientPurchaseOrder($this->aClientPurchaseOrder);
 			}
 
 			if ($this->isNew() ) {
@@ -625,21 +568,15 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aClientPurchaseOrder !== null) {
-				if (!$this->aClientPurchaseOrder->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aClientPurchaseOrder->getValidationFailures());
-				}
-			}
-
 			if ($this->aProduct !== null) {
 				if (!$this->aProduct->validate($columns)) {
 					$failureMap = array_merge($failureMap, $this->aProduct->getValidationFailures());
 				}
 			}
 
-			if ($this->aClientQuotationItem !== null) {
-				if (!$this->aClientQuotationItem->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aClientQuotationItem->getValidationFailures());
+			if ($this->aClientPurchaseOrder !== null) {
+				if (!$this->aClientPurchaseOrder->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aClientPurchaseOrder->getValidationFailures());
 				}
 			}
 
@@ -666,11 +603,10 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 		$criteria = new Criteria(ClientPurchaseOrderItemPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(ClientPurchaseOrderItemPeer::ID)) $criteria->add(ClientPurchaseOrderItemPeer::ID, $this->id);
-		if ($this->isColumnModified(ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID)) $criteria->add(ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID, $this->clientpurchaseorderid);
-		if ($this->isColumnModified(ClientPurchaseOrderItemPeer::CLIENTQUOTATIONITEMID)) $criteria->add(ClientPurchaseOrderItemPeer::CLIENTQUOTATIONITEMID, $this->clientquotationitemid);
 		if ($this->isColumnModified(ClientPurchaseOrderItemPeer::PRODUCTID)) $criteria->add(ClientPurchaseOrderItemPeer::PRODUCTID, $this->productid);
-		if ($this->isColumnModified(ClientPurchaseOrderItemPeer::PRICE)) $criteria->add(ClientPurchaseOrderItemPeer::PRICE, $this->price);
+		if ($this->isColumnModified(ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID)) $criteria->add(ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID, $this->clientpurchaseorderid);
 		if ($this->isColumnModified(ClientPurchaseOrderItemPeer::QUANTITY)) $criteria->add(ClientPurchaseOrderItemPeer::QUANTITY, $this->quantity);
+		if ($this->isColumnModified(ClientPurchaseOrderItemPeer::PRICE)) $criteria->add(ClientPurchaseOrderItemPeer::PRICE, $this->price);
 
 		return $criteria;
 	}
@@ -688,45 +624,28 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 		$criteria = new Criteria(ClientPurchaseOrderItemPeer::DATABASE_NAME);
 
 		$criteria->add(ClientPurchaseOrderItemPeer::ID, $this->id);
-		$criteria->add(ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID, $this->clientpurchaseorderid);
-		$criteria->add(ClientPurchaseOrderItemPeer::PRODUCTID, $this->productid);
 
 		return $criteria;
 	}
 
 	/**
-	 * Returns the composite primary key for this object.
-	 * The array elements will be in same order as specified in XML.
-	 * @return     array
+	 * Returns the primary key for this object (row).
+	 * @return     int
 	 */
 	public function getPrimaryKey()
 	{
-		$pks = array();
-
-		$pks[0] = $this->getId();
-
-		$pks[1] = $this->getClientpurchaseorderid();
-
-		$pks[2] = $this->getProductid();
-
-		return $pks;
+		return $this->getId();
 	}
 
 	/**
-	 * Set the [composite] primary key.
+	 * Generic method to set the primary key (id column).
 	 *
-	 * @param      array $keys The elements of the composite key (order must match the order in XML file).
+	 * @param      int $key Primary key.
 	 * @return     void
 	 */
-	public function setPrimaryKey($keys)
+	public function setPrimaryKey($key)
 	{
-
-		$this->setId($keys[0]);
-
-		$this->setClientpurchaseorderid($keys[1]);
-
-		$this->setProductid($keys[2]);
-
+		$this->setId($key);
 	}
 
 	/**
@@ -742,15 +661,13 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 
-		$copyObj->setClientpurchaseorderid($this->clientpurchaseorderid);
-
-		$copyObj->setClientquotationitemid($this->clientquotationitemid);
-
 		$copyObj->setProductid($this->productid);
 
-		$copyObj->setPrice($this->price);
+		$copyObj->setClientpurchaseorderid($this->clientpurchaseorderid);
 
 		$copyObj->setQuantity($this->quantity);
+
+		$copyObj->setPrice($this->price);
 
 
 		$copyObj->setNew(true);
@@ -795,55 +712,6 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 			self::$peer = new ClientPurchaseOrderItemPeer();
 		}
 		return self::$peer;
-	}
-
-	/**
-	 * Declares an association between this object and a ClientPurchaseOrder object.
-	 *
-	 * @param      ClientPurchaseOrder $v
-	 * @return     ClientPurchaseOrderItem The current object (for fluent API support)
-	 * @throws     PropelException
-	 */
-	public function setClientPurchaseOrder(ClientPurchaseOrder $v = null)
-	{
-		if ($v === null) {
-			$this->setClientpurchaseorderid(NULL);
-		} else {
-			$this->setClientpurchaseorderid($v->getId());
-		}
-
-		$this->aClientPurchaseOrder = $v;
-
-		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the ClientPurchaseOrder object, it will not be re-added.
-		if ($v !== null) {
-			$v->addClientPurchaseOrderItem($this);
-		}
-
-		return $this;
-	}
-
-
-	/**
-	 * Get the associated ClientPurchaseOrder object
-	 *
-	 * @param      PropelPDO Optional Connection object.
-	 * @return     ClientPurchaseOrder The associated ClientPurchaseOrder object.
-	 * @throws     PropelException
-	 */
-	public function getClientPurchaseOrder(PropelPDO $con = null)
-	{
-		if ($this->aClientPurchaseOrder === null && ($this->clientpurchaseorderid !== null)) {
-			$this->aClientPurchaseOrder = ClientPurchaseOrderPeer::retrieveByPK($this->clientpurchaseorderid, $con);
-			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aClientPurchaseOrder->addClientPurchaseOrderItems($this);
-			 */
-		}
-		return $this->aClientPurchaseOrder;
 	}
 
 	/**
@@ -896,24 +764,24 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 	}
 
 	/**
-	 * Declares an association between this object and a ClientQuotationItem object.
+	 * Declares an association between this object and a ClientPurchaseOrder object.
 	 *
-	 * @param      ClientQuotationItem $v
+	 * @param      ClientPurchaseOrder $v
 	 * @return     ClientPurchaseOrderItem The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setClientQuotationItem(ClientQuotationItem $v = null)
+	public function setClientPurchaseOrder(ClientPurchaseOrder $v = null)
 	{
 		if ($v === null) {
-			$this->setClientquotationitemid(NULL);
+			$this->setClientpurchaseorderid(NULL);
 		} else {
-			$this->setClientquotationitemid($v->getId());
+			$this->setClientpurchaseorderid($v->getId());
 		}
 
-		$this->aClientQuotationItem = $v;
+		$this->aClientPurchaseOrder = $v;
 
 		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the ClientQuotationItem object, it will not be re-added.
+		// If this object has already been added to the ClientPurchaseOrder object, it will not be re-added.
 		if ($v !== null) {
 			$v->addClientPurchaseOrderItem($this);
 		}
@@ -923,25 +791,25 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 
 
 	/**
-	 * Get the associated ClientQuotationItem object
+	 * Get the associated ClientPurchaseOrder object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     ClientQuotationItem The associated ClientQuotationItem object.
+	 * @return     ClientPurchaseOrder The associated ClientPurchaseOrder object.
 	 * @throws     PropelException
 	 */
-	public function getClientQuotationItem(PropelPDO $con = null)
+	public function getClientPurchaseOrder(PropelPDO $con = null)
 	{
-		if ($this->aClientQuotationItem === null && ($this->clientquotationitemid !== null)) {
-			$this->aClientQuotationItem = ClientQuotationItemPeer::retrieveByPK($this->clientquotationitemid, $con);
+		if ($this->aClientPurchaseOrder === null && ($this->clientpurchaseorderid !== null)) {
+			$this->aClientPurchaseOrder = ClientPurchaseOrderPeer::retrieveByPK($this->clientpurchaseorderid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
 			   undesirable since it could result in an only partially populated collection
 			   in the referenced object.
-			   $this->aClientQuotationItem->addClientPurchaseOrderItems($this);
+			   $this->aClientPurchaseOrder->addClientPurchaseOrderItems($this);
 			 */
 		}
-		return $this->aClientQuotationItem;
+		return $this->aClientPurchaseOrder;
 	}
 
 	/**
@@ -958,9 +826,8 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 		if ($deep) {
 		} // if ($deep)
 
-			$this->aClientPurchaseOrder = null;
 			$this->aProduct = null;
-			$this->aClientQuotationItem = null;
+			$this->aClientPurchaseOrder = null;
 	}
 
 } // BaseClientPurchaseOrderItem

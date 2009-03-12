@@ -165,7 +165,79 @@
 		</foreign-key>
 		
 	 </table>
-		
+	
+	<table name="import_port" phpName='Port' description="Puerto">
+		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Port Id" autoIncrement="true"/>
+		<column name="code" size="255" type="VARCHAR" description="Codigo del puerto" />
+		<column name="name" size="255" type="VARCHAR" description="Nombre del puerto" />
+		<column type="BOOLEAN" name="active" required="true" description="Is port active?" />
+	</table>
+	
+	<table name="import_incoterm" phpName='Incoterm' description="Incoterm">
+		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Incoterm Id" autoIncrement="true"/>
+		<column name="name" size="255" type="VARCHAR" description="Nombre del Incoterm" />
+		<column name="description" size="255" type="VARCHAR" description="Descripcion del Incoterm" />  
+		<column type="BOOLEAN" name="active" required="true" description="Is incoterm active?" />
+	</table>
+
+	<table name="import_clientPurchaseOrder" phpName='ClientPurchaseOrder' description="Orden de Pedido a Cliente">
+		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id de Orden de Pedido de Cliente" autoIncrement="true"/>
+		<column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
+		<column name="status" type="INTEGER" description="Status de Cotizacion" required="true" />
+		<column name="timestampStatus" type="TIMESTAMP" description="Fecha del ultimo cambio de status" />
+	  	<column name="clientQuotationId" required="true" type="INTEGER" description="id de cotizacion de proveedor relacionada" />
+		<column name="affiliateId" type="INTEGER" description="Afiliado" required="true" />
+		<column name="affiliateUserId" type="INTEGER" description="usuario del afiliado si creo la cotizacion" />
+		<column name="userId" type="INTEGER" description="Usuario de anmaga si creo la cotizacion" />
+
+		<foreign-key foreignTable="import_clientQuotation" >
+		  <reference local="clientQuotationId" foreign="id" />
+		</foreign-key>
+
+		<foreign-key foreignTable="users_user" >
+		  <reference local="userId" foreign="id" />
+		</foreign-key>
+
+		<foreign-key foreignTable="affiliates_affiliate" >
+		  <reference local="affiliateId" foreign="id" />
+		</foreign-key>	
+
+		<foreign-key foreignTable="affiliates_user" >
+		  <reference local="affiliateUserId" foreign="id" />
+		</foreign-key>	
+
+	</table>
+
+	<table name="import_clientPurchaseOrderItem" phpName='ClientPurchaseOrderItem' description="Elemento de Orden de Pedido a Cliente">
+		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id elemento de Orden de Pedido a Cliente" autoIncrement="true"/>
+		<column name="productId" required="true" type="INTEGER" description="Id producto"/>
+		<column name="clientPurchaseOrderId" required="true" type="INTEGER" description="Id producto"/>
+		<column name="quantity" type="INTEGER" require='true' description="Id producto" />
+
+		<column name="price" type="FLOAT" require="true" description="precio de producto"/>
+
+		<foreign-key foreignTable="import_product" >
+		  <reference local="productId" foreign="id" />
+		</foreign-key>
+
+		<foreign-key foreignTable="import_clientPurchaseOrder" >
+		  <reference local="clientPurchaseOrderId" foreign="id" />
+		</foreign-key>
+
+	</table>
+
+	<table name="import_clientPurchaseOrderHistory" phpName='ClientPurchaseOrderHistory' description="Historial de Estados por los que fue pasando la Orden de Pedido a Cliente">
+		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id" autoIncrement="true"/>
+		<column name="clientPurchaseOrderId" required="true" type="INTEGER" description="Id de orden de pedido a proveedor"/>
+	  	<column name="statusCode" type="INTEGER" required="true" description="Codigo del estado guardado." />
+		<column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
+
+		<foreign-key foreignTable="import_clientPurchaseOrder" >
+		  <reference local="clientPurchaseOrderId" foreign="id" />
+		</foreign-key>
+
+	</table>
+
 	<table name="import_supplierPurchaseOrder" phpName='SupplierPurchaseOrder' description="Orden de Pedido a Proveedor">
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id de Orden de Pedido de Cliente" autoIncrement="true"/>
 		<column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
@@ -174,7 +246,10 @@
 		<column name="timestampStatus" type="TIMESTAMP" description="Fecha del ultimo cambio de status" />
 	  	<column name="supplierQuotationId" required="true" type="INTEGER" description="id de cotizacion de proveedor relacionada" />
 		<column name="clientQuotationId" type="INTEGER" required="true" description="id de cotizacion a cliente relacionada" />
-		
+		<column name="affiliateId" type="INTEGER" description="Afiliado" required="true" />
+		<column name="affiliateUserId" type="INTEGER" description="usuario del afiliado si creo la cotizacion" />
+		<column name="userId" type="INTEGER" description="Usuario de anmaga si creo la cotizacion" />
+
 		<foreign-key foreignTable="import_supplierQuotation" >
 		  <reference local="supplierQuotationId" foreign="id" />
 		</foreign-key>
@@ -182,19 +257,31 @@
 		<foreign-key foreignTable="import_clientQuotation" >
 		  <reference local="clientQuotationId" foreign="id" />
 		</foreign-key>	
-	
+
 		<foreign-key foreignTable="import_supplier" >
 		  <reference local="supplierId" foreign="id" />
 		</foreign-key>
-	
+
+		<foreign-key foreignTable="users_user" >
+		  <reference local="userId" foreign="id" />
+		</foreign-key>
+
+		<foreign-key foreignTable="affiliates_affiliate" >
+		  <reference local="affiliateId" foreign="id" />
+		</foreign-key>	
+
+		<foreign-key foreignTable="affiliates_user" >
+		  <reference local="affiliateUserId" foreign="id" />
+		</foreign-key>
+
 	</table>
-	
+
 	<table name="import_supplierPurchaseOrderItem" phpName='SupplierPurchaseOrderItem' description="Elemento de Orden de Pedido a Proveedor">
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id elemento de Orden de Pedido a Cliente" autoIncrement="true"/>
 		<column name="productId" required="true" type="INTEGER" description="Id producto"/>
 		<column name="supplierPurchaseOrderId" required="true" type="INTEGER" description="Id producto"/>
 		<column name="quantity" type="INTEGER" require='true' description="Id producto" />
-		
+
 		<column name="portId" type="INTEGER" description="id de puerto" required="true"/>
 		<column name="incotermId" type="INTEGER" description="id de incoterm" required="true"/>
 
@@ -211,30 +298,36 @@
 		<column name="cartonWidth" type="FLOAT" description="Ancho del bulto"/>
 		<column name="cartonHeight" type="FLOAT" description="Alto del bulto"/>
 		<column name="cartonGrossWeigth" type="FLOAT" description="Peso del bulto"/>
-		
+
 		<foreign-key foreignTable="import_product" >
 		  <reference local="productId" foreign="id" />
 		</foreign-key>
-	
+
 		<foreign-key foreignTable="import_supplierPurchaseOrder" >
 		  <reference local="supplierPurchaseOrderId" foreign="id" />
 		</foreign-key>
-		
+
 		<foreign-key foreignTable="import_incoterm" >
 		  <reference local="incotermId" foreign="id" />
 		</foreign-key>
-	
+
 		<foreign-key foreignTable="import_port" >
 		  <reference local="portId" foreign="id" />
 		</foreign-key>
-	
+
 	</table>
-	
-	<table name="import_supplierPurchaseOrderStatus" phpName='SupplierPurchaseOrderStatus' description="Historial de Estados por los que fue pasando la Orden de Pedido a Proveedor">
+
+	<table name="import_supplierPurchaseOrderHistory" phpName='SupplierPurchaseOrderHistory' description="Historial de Estados por los que fue pasando la Orden de Pedido a Proveedor">
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id" autoIncrement="true"/>
 		<column name="supplierPurchaseOrderId" required="true" type="INTEGER" description="Id de orden de pedido a proveedor"/>
 	  	<column name="statusCode" type="INTEGER" required="true" description="Codigo del estado guardado." />
+		<column name="comments" type="VARCHAR" size="255" description="Comentarios." />
 		<column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
+
+		<foreign-key foreignTable="import_supplierPurchaseOrder" >
+		  <reference local="supplierPurchaseOrderId" foreign="id" />
+		</foreign-key>
+
 	</table>
 
 	<table name="import_supplierPurchaseOrderBankTransfer" phpName='SupplierPurchaseOrderBankTransfer' description="Transferencias bancarias realizadas a esa orden de pedido a proveedor">
@@ -243,21 +336,12 @@
 	  	<column name="bankTransferNumber" required="true" type="VARCHAR" size="255" description="numero de transferencia bancaria." />
 		<column name="amount" type="FLOAT" required="true" description="monto de la transferencia bancaria." />
 		<column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
+
+		<foreign-key foreignTable="import_supplierPurchaseOrder" >
+		  <reference local="supplierPurchaseOrderId" foreign="id" />
+		</foreign-key>
+
 	</table>
 
-	
-	<table name="import_port" phpName='Port' description="Puerto">
-		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Port Id" autoIncrement="true"/>
-		<column name="code" size="255" type="VARCHAR" description="Codigo del puerto" />
-		<column name="name" size="255" type="VARCHAR" description="Nombre del puerto" />
-		<column type="BOOLEAN" name="active" required="true" description="Is port active?" />
-	</table>
-	
-	<table name="import_incoterm" phpName='Incoterm' description="Incoterm">
-		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Incoterm Id" autoIncrement="true"/>
-		<column name="name" size="255" type="VARCHAR" description="Nombre del Incoterm" />
-		<column name="description" size="255" type="VARCHAR" description="Descripcion del Incoterm" />  
-		<column type="BOOLEAN" name="active" required="true" description="Is incoterm active?" />
-	</table>
 
 </database>

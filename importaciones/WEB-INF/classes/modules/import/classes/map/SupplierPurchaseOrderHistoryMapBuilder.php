@@ -2,7 +2,7 @@
 
 
 /**
- * This class adds structure of 'import_clientPurchaseOrder' table to 'application' DatabaseMap object.
+ * This class adds structure of 'import_supplierPurchaseOrderHistory' table to 'application' DatabaseMap object.
  *
  *
  *
@@ -13,12 +13,12 @@
  *
  * @package    import.classes.map
  */
-class ClientPurchaseOrderMapBuilder implements MapBuilder {
+class SupplierPurchaseOrderHistoryMapBuilder implements MapBuilder {
 
 	/**
 	 * The (dot-path) name of this class
 	 */
-	const CLASS_NAME = 'import.classes.map.ClientPurchaseOrderMapBuilder';
+	const CLASS_NAME = 'import.classes.map.SupplierPurchaseOrderHistoryMapBuilder';
 
 	/**
 	 * The database map.
@@ -54,30 +54,24 @@ class ClientPurchaseOrderMapBuilder implements MapBuilder {
 	 */
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap(ClientPurchaseOrderPeer::DATABASE_NAME);
+		$this->dbMap = Propel::getDatabaseMap(SupplierPurchaseOrderHistoryPeer::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable(ClientPurchaseOrderPeer::TABLE_NAME);
-		$tMap->setPhpName('ClientPurchaseOrder');
-		$tMap->setClassname('ClientPurchaseOrder');
+		$tMap = $this->dbMap->addTable(SupplierPurchaseOrderHistoryPeer::TABLE_NAME);
+		$tMap->setPhpName('SupplierPurchaseOrderHistory');
+		$tMap->setClassname('SupplierPurchaseOrderHistory');
 
 		$tMap->setUseIdGenerator(true);
 
 		$tMap->addPrimaryKey('ID', 'Id', 'INTEGER', true, null);
 
+		$tMap->addForeignKey('SUPPLIERPURCHASEORDERID', 'Supplierpurchaseorderid', 'INTEGER', 'import_supplierPurchaseOrder', 'ID', true, null);
+
+		$tMap->addColumn('STATUSCODE', 'Statuscode', 'INTEGER', true, null);
+
+		$tMap->addColumn('COMMENTS', 'Comments', 'VARCHAR', false, 255);
+
 		$tMap->addColumn('CREATEDAT', 'Createdat', 'TIMESTAMP', true, null);
-
-		$tMap->addColumn('STATUS', 'Status', 'INTEGER', true, null);
-
-		$tMap->addColumn('TIMESTAMPSTATUS', 'Timestampstatus', 'TIMESTAMP', false, null);
-
-		$tMap->addForeignKey('CLIENTQUOTATIONID', 'Clientquotationid', 'INTEGER', 'import_clientQuotation', 'ID', true, null);
-
-		$tMap->addForeignKey('AFFILIATEID', 'Affiliateid', 'INTEGER', 'affiliates_affiliate', 'ID', true, null);
-
-		$tMap->addForeignKey('AFFILIATEUSERID', 'Affiliateuserid', 'INTEGER', 'affiliates_user', 'ID', false, null);
-
-		$tMap->addForeignKey('USERID', 'Userid', 'INTEGER', 'users_user', 'ID', false, null);
 
 	} // doBuild()
 
-} // ClientPurchaseOrderMapBuilder
+} // SupplierPurchaseOrderHistoryMapBuilder

@@ -237,6 +237,119 @@ CREATE TABLE `import_supplierQuotationItem`
 )Type=MyISAM COMMENT='Elemento de Cotizacion de Proveedor';
 
 #-----------------------------------------------------------------------------
+#-- import_port
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `import_port`;
+
+
+CREATE TABLE `import_port`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Port Id',
+	`code` VARCHAR(255) COMMENT 'Codigo del puerto',
+	`name` VARCHAR(255) COMMENT 'Nombre del puerto',
+	`active` TINYINT  NOT NULL COMMENT 'Is port active?',
+	PRIMARY KEY (`id`)
+)Type=MyISAM COMMENT='Puerto';
+
+#-----------------------------------------------------------------------------
+#-- import_incoterm
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `import_incoterm`;
+
+
+CREATE TABLE `import_incoterm`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Incoterm Id',
+	`name` VARCHAR(255) COMMENT 'Nombre del Incoterm',
+	`description` VARCHAR(255) COMMENT 'Descripcion del Incoterm',
+	`active` TINYINT  NOT NULL COMMENT 'Is incoterm active?',
+	PRIMARY KEY (`id`)
+)Type=MyISAM COMMENT='Incoterm';
+
+#-----------------------------------------------------------------------------
+#-- import_clientPurchaseOrder
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `import_clientPurchaseOrder`;
+
+
+CREATE TABLE `import_clientPurchaseOrder`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de Orden de Pedido de Cliente',
+	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
+	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
+	`timestampStatus` DATETIME COMMENT 'Fecha del ultimo cambio de status',
+	`clientQuotationId` INTEGER  NOT NULL COMMENT 'id de cotizacion de proveedor relacionada',
+	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
+	`affiliateUserId` INTEGER COMMENT 'usuario del afiliado si creo la cotizacion',
+	`userId` INTEGER COMMENT 'Usuario de anmaga si creo la cotizacion',
+	PRIMARY KEY (`id`),
+	INDEX `import_clientPurchaseOrder_FI_1` (`clientQuotationId`),
+	CONSTRAINT `import_clientPurchaseOrder_FK_1`
+		FOREIGN KEY (`clientQuotationId`)
+		REFERENCES `import_clientQuotation` (`id`),
+	INDEX `import_clientPurchaseOrder_FI_2` (`userId`),
+	CONSTRAINT `import_clientPurchaseOrder_FK_2`
+		FOREIGN KEY (`userId`)
+		REFERENCES `users_user` (`id`),
+	INDEX `import_clientPurchaseOrder_FI_3` (`affiliateId`),
+	CONSTRAINT `import_clientPurchaseOrder_FK_3`
+		FOREIGN KEY (`affiliateId`)
+		REFERENCES `affiliates_affiliate` (`id`),
+	INDEX `import_clientPurchaseOrder_FI_4` (`affiliateUserId`),
+	CONSTRAINT `import_clientPurchaseOrder_FK_4`
+		FOREIGN KEY (`affiliateUserId`)
+		REFERENCES `affiliates_user` (`id`)
+)Type=MyISAM COMMENT='Orden de Pedido a Cliente';
+
+#-----------------------------------------------------------------------------
+#-- import_clientPurchaseOrderItem
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `import_clientPurchaseOrderItem`;
+
+
+CREATE TABLE `import_clientPurchaseOrderItem`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id elemento de Orden de Pedido a Cliente',
+	`productId` INTEGER  NOT NULL COMMENT 'Id producto',
+	`clientPurchaseOrderId` INTEGER  NOT NULL COMMENT 'Id producto',
+	`quantity` INTEGER COMMENT 'Id producto',
+	`price` FLOAT COMMENT 'precio de producto',
+	PRIMARY KEY (`id`),
+	INDEX `import_clientPurchaseOrderItem_FI_1` (`productId`),
+	CONSTRAINT `import_clientPurchaseOrderItem_FK_1`
+		FOREIGN KEY (`productId`)
+		REFERENCES `import_product` (`id`),
+	INDEX `import_clientPurchaseOrderItem_FI_2` (`clientPurchaseOrderId`),
+	CONSTRAINT `import_clientPurchaseOrderItem_FK_2`
+		FOREIGN KEY (`clientPurchaseOrderId`)
+		REFERENCES `import_clientPurchaseOrder` (`id`)
+)Type=MyISAM COMMENT='Elemento de Orden de Pedido a Cliente';
+
+#-----------------------------------------------------------------------------
+#-- import_clientPurchaseOrderHistory
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `import_clientPurchaseOrderHistory`;
+
+
+CREATE TABLE `import_clientPurchaseOrderHistory`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id',
+	`clientPurchaseOrderId` INTEGER  NOT NULL COMMENT 'Id de orden de pedido a proveedor',
+	`statusCode` INTEGER  NOT NULL COMMENT 'Codigo del estado guardado.',
+	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
+	PRIMARY KEY (`id`),
+	INDEX `import_clientPurchaseOrderHistory_FI_1` (`clientPurchaseOrderId`),
+	CONSTRAINT `import_clientPurchaseOrderHistory_FK_1`
+		FOREIGN KEY (`clientPurchaseOrderId`)
+		REFERENCES `import_clientPurchaseOrder` (`id`)
+)Type=MyISAM COMMENT='Historial de Estados por los que fue pasando la Orden de Pedido a Cliente';
+
+#-----------------------------------------------------------------------------
 #-- import_supplierPurchaseOrder
 #-----------------------------------------------------------------------------
 
@@ -252,6 +365,9 @@ CREATE TABLE `import_supplierPurchaseOrder`
 	`timestampStatus` DATETIME COMMENT 'Fecha del ultimo cambio de status',
 	`supplierQuotationId` INTEGER  NOT NULL COMMENT 'id de cotizacion de proveedor relacionada',
 	`clientQuotationId` INTEGER  NOT NULL COMMENT 'id de cotizacion a cliente relacionada',
+	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
+	`affiliateUserId` INTEGER COMMENT 'usuario del afiliado si creo la cotizacion',
+	`userId` INTEGER COMMENT 'Usuario de anmaga si creo la cotizacion',
 	PRIMARY KEY (`id`),
 	INDEX `import_supplierPurchaseOrder_FI_1` (`supplierQuotationId`),
 	CONSTRAINT `import_supplierPurchaseOrder_FK_1`
@@ -264,7 +380,19 @@ CREATE TABLE `import_supplierPurchaseOrder`
 	INDEX `import_supplierPurchaseOrder_FI_3` (`supplierId`),
 	CONSTRAINT `import_supplierPurchaseOrder_FK_3`
 		FOREIGN KEY (`supplierId`)
-		REFERENCES `import_supplier` (`id`)
+		REFERENCES `import_supplier` (`id`),
+	INDEX `import_supplierPurchaseOrder_FI_4` (`userId`),
+	CONSTRAINT `import_supplierPurchaseOrder_FK_4`
+		FOREIGN KEY (`userId`)
+		REFERENCES `users_user` (`id`),
+	INDEX `import_supplierPurchaseOrder_FI_5` (`affiliateId`),
+	CONSTRAINT `import_supplierPurchaseOrder_FK_5`
+		FOREIGN KEY (`affiliateId`)
+		REFERENCES `affiliates_affiliate` (`id`),
+	INDEX `import_supplierPurchaseOrder_FI_6` (`affiliateUserId`),
+	CONSTRAINT `import_supplierPurchaseOrder_FK_6`
+		FOREIGN KEY (`affiliateUserId`)
+		REFERENCES `affiliates_user` (`id`)
 )Type=MyISAM COMMENT='Orden de Pedido a Proveedor';
 
 #-----------------------------------------------------------------------------
@@ -315,19 +443,24 @@ CREATE TABLE `import_supplierPurchaseOrderItem`
 )Type=MyISAM COMMENT='Elemento de Orden de Pedido a Proveedor';
 
 #-----------------------------------------------------------------------------
-#-- import_supplierPurchaseOrderStatus
+#-- import_supplierPurchaseOrderHistory
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `import_supplierPurchaseOrderStatus`;
+DROP TABLE IF EXISTS `import_supplierPurchaseOrderHistory`;
 
 
-CREATE TABLE `import_supplierPurchaseOrderStatus`
+CREATE TABLE `import_supplierPurchaseOrderHistory`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id',
 	`supplierPurchaseOrderId` INTEGER  NOT NULL COMMENT 'Id de orden de pedido a proveedor',
 	`statusCode` INTEGER  NOT NULL COMMENT 'Codigo del estado guardado.',
+	`comments` VARCHAR(255) COMMENT 'Comentarios.',
 	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	INDEX `import_supplierPurchaseOrderHistory_FI_1` (`supplierPurchaseOrderId`),
+	CONSTRAINT `import_supplierPurchaseOrderHistory_FK_1`
+		FOREIGN KEY (`supplierPurchaseOrderId`)
+		REFERENCES `import_supplierPurchaseOrder` (`id`)
 )Type=MyISAM COMMENT='Historial de Estados por los que fue pasando la Orden de Pedido a Proveedor';
 
 #-----------------------------------------------------------------------------
@@ -344,40 +477,12 @@ CREATE TABLE `import_supplierPurchaseOrderBankTransfer`
 	`bankTransferNumber` VARCHAR(255)  NOT NULL COMMENT 'numero de transferencia bancaria.',
 	`amount` FLOAT  NOT NULL COMMENT 'monto de la transferencia bancaria.',
 	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	INDEX `import_supplierPurchaseOrderBankTransfer_FI_1` (`supplierPurchaseOrderId`),
+	CONSTRAINT `import_supplierPurchaseOrderBankTransfer_FK_1`
+		FOREIGN KEY (`supplierPurchaseOrderId`)
+		REFERENCES `import_supplierPurchaseOrder` (`id`)
 )Type=MyISAM COMMENT='Transferencias bancarias realizadas a esa orden de pedido a proveedor';
-
-#-----------------------------------------------------------------------------
-#-- import_port
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `import_port`;
-
-
-CREATE TABLE `import_port`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Port Id',
-	`code` VARCHAR(255) COMMENT 'Codigo del puerto',
-	`name` VARCHAR(255) COMMENT 'Nombre del puerto',
-	`active` TINYINT  NOT NULL COMMENT 'Is port active?',
-	PRIMARY KEY (`id`)
-)Type=MyISAM COMMENT='Puerto';
-
-#-----------------------------------------------------------------------------
-#-- import_incoterm
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `import_incoterm`;
-
-
-CREATE TABLE `import_incoterm`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Incoterm Id',
-	`name` VARCHAR(255) COMMENT 'Nombre del Incoterm',
-	`description` VARCHAR(255) COMMENT 'Descripcion del Incoterm',
-	`active` TINYINT  NOT NULL COMMENT 'Is incoterm active?',
-	PRIMARY KEY (`id`)
-)Type=MyISAM COMMENT='Incoterm';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

@@ -3,7 +3,7 @@
 /**
  * Base class that represents a row from the 'import_clientPurchaseOrder' table.
  *
- * Orden de Pedido de Cliente
+ * Orden de Pedido a Cliente
  *
  * @package    import.classes.om
  */
@@ -31,18 +31,6 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	protected $createdat;
 
 	/**
-	 * The value for the userid field.
-	 * @var        int
-	 */
-	protected $userid;
-
-	/**
-	 * The value for the clientquotationid field.
-	 * @var        int
-	 */
-	protected $clientquotationid;
-
-	/**
 	 * The value for the status field.
 	 * @var        int
 	 */
@@ -55,9 +43,48 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	protected $timestampstatus;
 
 	/**
+	 * The value for the clientquotationid field.
+	 * @var        int
+	 */
+	protected $clientquotationid;
+
+	/**
+	 * The value for the affiliateid field.
+	 * @var        int
+	 */
+	protected $affiliateid;
+
+	/**
+	 * The value for the affiliateuserid field.
+	 * @var        int
+	 */
+	protected $affiliateuserid;
+
+	/**
+	 * The value for the userid field.
+	 * @var        int
+	 */
+	protected $userid;
+
+	/**
 	 * @var        ClientQuotation
 	 */
 	protected $aClientQuotation;
+
+	/**
+	 * @var        User
+	 */
+	protected $aUser;
+
+	/**
+	 * @var        Affiliate
+	 */
+	protected $aAffiliate;
+
+	/**
+	 * @var        AffiliateUser
+	 */
+	protected $aAffiliateUser;
 
 	/**
 	 * @var        array ClientPurchaseOrderItem[] Collection to store aggregation of ClientPurchaseOrderItem objects.
@@ -68,6 +95,16 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	 * @var        Criteria The criteria used to select the current contents of collClientPurchaseOrderItems.
 	 */
 	private $lastClientPurchaseOrderItemCriteria = null;
+
+	/**
+	 * @var        array ClientPurchaseOrderHistory[] Collection to store aggregation of ClientPurchaseOrderHistory objects.
+	 */
+	protected $collClientPurchaseOrderHistorys;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collClientPurchaseOrderHistorys.
+	 */
+	private $lastClientPurchaseOrderHistoryCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -105,7 +142,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 	/**
 	 * Get the [id] column value.
-	 * Id de Orden de Pedido a Cliente
+	 * Id de Orden de Pedido de Cliente
 	 * @return     int
 	 */
 	public function getId()
@@ -149,26 +186,6 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		} else {
 			return $dt->format($format);
 		}
-	}
-
-	/**
-	 * Get the [userid] column value.
-	 * User
-	 * @return     int
-	 */
-	public function getUserid()
-	{
-		return $this->userid;
-	}
-
-	/**
-	 * Get the [clientquotationid] column value.
-	 * Cotizacion a la que hace referencia
-	 * @return     int
-	 */
-	public function getClientquotationid()
-	{
-		return $this->clientquotationid;
 	}
 
 	/**
@@ -220,8 +237,48 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Get the [clientquotationid] column value.
+	 * id de cotizacion de proveedor relacionada
+	 * @return     int
+	 */
+	public function getClientquotationid()
+	{
+		return $this->clientquotationid;
+	}
+
+	/**
+	 * Get the [affiliateid] column value.
+	 * Afiliado
+	 * @return     int
+	 */
+	public function getAffiliateid()
+	{
+		return $this->affiliateid;
+	}
+
+	/**
+	 * Get the [affiliateuserid] column value.
+	 * usuario del afiliado si creo la cotizacion
+	 * @return     int
+	 */
+	public function getAffiliateuserid()
+	{
+		return $this->affiliateuserid;
+	}
+
+	/**
+	 * Get the [userid] column value.
+	 * Usuario de anmaga si creo la cotizacion
+	 * @return     int
+	 */
+	public function getUserid()
+	{
+		return $this->userid;
+	}
+
+	/**
 	 * Set the value of [id] column.
-	 * Id de Orden de Pedido a Cliente
+	 * Id de Orden de Pedido de Cliente
 	 * @param      int $v new value
 	 * @return     ClientPurchaseOrder The current object (for fluent API support)
 	 */
@@ -287,50 +344,6 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 		return $this;
 	} // setCreatedat()
-
-	/**
-	 * Set the value of [userid] column.
-	 * User
-	 * @param      int $v new value
-	 * @return     ClientPurchaseOrder The current object (for fluent API support)
-	 */
-	public function setUserid($v)
-	{
-		if ($v !== null) {
-			$v = (int) $v;
-		}
-
-		if ($this->userid !== $v) {
-			$this->userid = $v;
-			$this->modifiedColumns[] = ClientPurchaseOrderPeer::USERID;
-		}
-
-		return $this;
-	} // setUserid()
-
-	/**
-	 * Set the value of [clientquotationid] column.
-	 * Cotizacion a la que hace referencia
-	 * @param      int $v new value
-	 * @return     ClientPurchaseOrder The current object (for fluent API support)
-	 */
-	public function setClientquotationid($v)
-	{
-		if ($v !== null) {
-			$v = (int) $v;
-		}
-
-		if ($this->clientquotationid !== $v) {
-			$this->clientquotationid = $v;
-			$this->modifiedColumns[] = ClientPurchaseOrderPeer::CLIENTQUOTATIONID;
-		}
-
-		if ($this->aClientQuotation !== null && $this->aClientQuotation->getId() !== $v) {
-			$this->aClientQuotation = null;
-		}
-
-		return $this;
-	} // setClientquotationid()
 
 	/**
 	 * Set the value of [status] column.
@@ -402,6 +415,102 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	} // setTimestampstatus()
 
 	/**
+	 * Set the value of [clientquotationid] column.
+	 * id de cotizacion de proveedor relacionada
+	 * @param      int $v new value
+	 * @return     ClientPurchaseOrder The current object (for fluent API support)
+	 */
+	public function setClientquotationid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->clientquotationid !== $v) {
+			$this->clientquotationid = $v;
+			$this->modifiedColumns[] = ClientPurchaseOrderPeer::CLIENTQUOTATIONID;
+		}
+
+		if ($this->aClientQuotation !== null && $this->aClientQuotation->getId() !== $v) {
+			$this->aClientQuotation = null;
+		}
+
+		return $this;
+	} // setClientquotationid()
+
+	/**
+	 * Set the value of [affiliateid] column.
+	 * Afiliado
+	 * @param      int $v new value
+	 * @return     ClientPurchaseOrder The current object (for fluent API support)
+	 */
+	public function setAffiliateid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->affiliateid !== $v) {
+			$this->affiliateid = $v;
+			$this->modifiedColumns[] = ClientPurchaseOrderPeer::AFFILIATEID;
+		}
+
+		if ($this->aAffiliate !== null && $this->aAffiliate->getId() !== $v) {
+			$this->aAffiliate = null;
+		}
+
+		return $this;
+	} // setAffiliateid()
+
+	/**
+	 * Set the value of [affiliateuserid] column.
+	 * usuario del afiliado si creo la cotizacion
+	 * @param      int $v new value
+	 * @return     ClientPurchaseOrder The current object (for fluent API support)
+	 */
+	public function setAffiliateuserid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->affiliateuserid !== $v) {
+			$this->affiliateuserid = $v;
+			$this->modifiedColumns[] = ClientPurchaseOrderPeer::AFFILIATEUSERID;
+		}
+
+		if ($this->aAffiliateUser !== null && $this->aAffiliateUser->getId() !== $v) {
+			$this->aAffiliateUser = null;
+		}
+
+		return $this;
+	} // setAffiliateuserid()
+
+	/**
+	 * Set the value of [userid] column.
+	 * Usuario de anmaga si creo la cotizacion
+	 * @param      int $v new value
+	 * @return     ClientPurchaseOrder The current object (for fluent API support)
+	 */
+	public function setUserid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->userid !== $v) {
+			$this->userid = $v;
+			$this->modifiedColumns[] = ClientPurchaseOrderPeer::USERID;
+		}
+
+		if ($this->aUser !== null && $this->aUser->getId() !== $v) {
+			$this->aUser = null;
+		}
+
+		return $this;
+	} // setUserid()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -440,10 +549,12 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->createdat = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-			$this->userid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-			$this->clientquotationid = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-			$this->status = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-			$this->timestampstatus = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->status = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->timestampstatus = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->clientquotationid = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->affiliateid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->affiliateuserid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+			$this->userid = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -453,7 +564,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 6; // 6 = ClientPurchaseOrderPeer::NUM_COLUMNS - ClientPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 8; // 8 = ClientPurchaseOrderPeer::NUM_COLUMNS - ClientPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ClientPurchaseOrder object", $e);
@@ -478,6 +589,15 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 		if ($this->aClientQuotation !== null && $this->clientquotationid !== $this->aClientQuotation->getId()) {
 			$this->aClientQuotation = null;
+		}
+		if ($this->aAffiliate !== null && $this->affiliateid !== $this->aAffiliate->getId()) {
+			$this->aAffiliate = null;
+		}
+		if ($this->aAffiliateUser !== null && $this->affiliateuserid !== $this->aAffiliateUser->getId()) {
+			$this->aAffiliateUser = null;
+		}
+		if ($this->aUser !== null && $this->userid !== $this->aUser->getId()) {
+			$this->aUser = null;
 		}
 	} // ensureConsistency
 
@@ -519,8 +639,14 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->aClientQuotation = null;
+			$this->aUser = null;
+			$this->aAffiliate = null;
+			$this->aAffiliateUser = null;
 			$this->collClientPurchaseOrderItems = null;
 			$this->lastClientPurchaseOrderItemCriteria = null;
+
+			$this->collClientPurchaseOrderHistorys = null;
+			$this->lastClientPurchaseOrderHistoryCriteria = null;
 
 		} // if (deep)
 	}
@@ -619,6 +745,27 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 				$this->setClientQuotation($this->aClientQuotation);
 			}
 
+			if ($this->aUser !== null) {
+				if ($this->aUser->isModified() || $this->aUser->isNew()) {
+					$affectedRows += $this->aUser->save($con);
+				}
+				$this->setUser($this->aUser);
+			}
+
+			if ($this->aAffiliate !== null) {
+				if ($this->aAffiliate->isModified() || $this->aAffiliate->isNew()) {
+					$affectedRows += $this->aAffiliate->save($con);
+				}
+				$this->setAffiliate($this->aAffiliate);
+			}
+
+			if ($this->aAffiliateUser !== null) {
+				if ($this->aAffiliateUser->isModified() || $this->aAffiliateUser->isNew()) {
+					$affectedRows += $this->aAffiliateUser->save($con);
+				}
+				$this->setAffiliateUser($this->aAffiliateUser);
+			}
+
 			if ($this->isNew() ) {
 				$this->modifiedColumns[] = ClientPurchaseOrderPeer::ID;
 			}
@@ -643,6 +790,14 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 			if ($this->collClientPurchaseOrderItems !== null) {
 				foreach ($this->collClientPurchaseOrderItems as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collClientPurchaseOrderHistorys !== null) {
+				foreach ($this->collClientPurchaseOrderHistorys as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -726,6 +881,24 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 				}
 			}
 
+			if ($this->aUser !== null) {
+				if (!$this->aUser->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aUser->getValidationFailures());
+				}
+			}
+
+			if ($this->aAffiliate !== null) {
+				if (!$this->aAffiliate->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aAffiliate->getValidationFailures());
+				}
+			}
+
+			if ($this->aAffiliateUser !== null) {
+				if (!$this->aAffiliateUser->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aAffiliateUser->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = ClientPurchaseOrderPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
@@ -734,6 +907,14 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 				if ($this->collClientPurchaseOrderItems !== null) {
 					foreach ($this->collClientPurchaseOrderItems as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collClientPurchaseOrderHistorys !== null) {
+					foreach ($this->collClientPurchaseOrderHistorys as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -758,10 +939,12 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 		if ($this->isColumnModified(ClientPurchaseOrderPeer::ID)) $criteria->add(ClientPurchaseOrderPeer::ID, $this->id);
 		if ($this->isColumnModified(ClientPurchaseOrderPeer::CREATEDAT)) $criteria->add(ClientPurchaseOrderPeer::CREATEDAT, $this->createdat);
-		if ($this->isColumnModified(ClientPurchaseOrderPeer::USERID)) $criteria->add(ClientPurchaseOrderPeer::USERID, $this->userid);
-		if ($this->isColumnModified(ClientPurchaseOrderPeer::CLIENTQUOTATIONID)) $criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTATIONID, $this->clientquotationid);
 		if ($this->isColumnModified(ClientPurchaseOrderPeer::STATUS)) $criteria->add(ClientPurchaseOrderPeer::STATUS, $this->status);
 		if ($this->isColumnModified(ClientPurchaseOrderPeer::TIMESTAMPSTATUS)) $criteria->add(ClientPurchaseOrderPeer::TIMESTAMPSTATUS, $this->timestampstatus);
+		if ($this->isColumnModified(ClientPurchaseOrderPeer::CLIENTQUOTATIONID)) $criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTATIONID, $this->clientquotationid);
+		if ($this->isColumnModified(ClientPurchaseOrderPeer::AFFILIATEID)) $criteria->add(ClientPurchaseOrderPeer::AFFILIATEID, $this->affiliateid);
+		if ($this->isColumnModified(ClientPurchaseOrderPeer::AFFILIATEUSERID)) $criteria->add(ClientPurchaseOrderPeer::AFFILIATEUSERID, $this->affiliateuserid);
+		if ($this->isColumnModified(ClientPurchaseOrderPeer::USERID)) $criteria->add(ClientPurchaseOrderPeer::USERID, $this->userid);
 
 		return $criteria;
 	}
@@ -818,13 +1001,17 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 		$copyObj->setCreatedat($this->createdat);
 
-		$copyObj->setUserid($this->userid);
-
-		$copyObj->setClientquotationid($this->clientquotationid);
-
 		$copyObj->setStatus($this->status);
 
 		$copyObj->setTimestampstatus($this->timestampstatus);
+
+		$copyObj->setClientquotationid($this->clientquotationid);
+
+		$copyObj->setAffiliateid($this->affiliateid);
+
+		$copyObj->setAffiliateuserid($this->affiliateuserid);
+
+		$copyObj->setUserid($this->userid);
 
 
 		if ($deepCopy) {
@@ -835,6 +1022,12 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 			foreach ($this->getClientPurchaseOrderItems() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addClientPurchaseOrderItem($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getClientPurchaseOrderHistorys() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addClientPurchaseOrderHistory($relObj->copy($deepCopy));
 				}
 			}
 
@@ -932,6 +1125,153 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 			 */
 		}
 		return $this->aClientQuotation;
+	}
+
+	/**
+	 * Declares an association between this object and a User object.
+	 *
+	 * @param      User $v
+	 * @return     ClientPurchaseOrder The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setUser(User $v = null)
+	{
+		if ($v === null) {
+			$this->setUserid(NULL);
+		} else {
+			$this->setUserid($v->getId());
+		}
+
+		$this->aUser = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the User object, it will not be re-added.
+		if ($v !== null) {
+			$v->addClientPurchaseOrder($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated User object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     User The associated User object.
+	 * @throws     PropelException
+	 */
+	public function getUser(PropelPDO $con = null)
+	{
+		if ($this->aUser === null && ($this->userid !== null)) {
+			$this->aUser = UserPeer::retrieveByPK($this->userid, $con);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aUser->addClientPurchaseOrders($this);
+			 */
+		}
+		return $this->aUser;
+	}
+
+	/**
+	 * Declares an association between this object and a Affiliate object.
+	 *
+	 * @param      Affiliate $v
+	 * @return     ClientPurchaseOrder The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setAffiliate(Affiliate $v = null)
+	{
+		if ($v === null) {
+			$this->setAffiliateid(NULL);
+		} else {
+			$this->setAffiliateid($v->getId());
+		}
+
+		$this->aAffiliate = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Affiliate object, it will not be re-added.
+		if ($v !== null) {
+			$v->addClientPurchaseOrder($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Affiliate object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Affiliate The associated Affiliate object.
+	 * @throws     PropelException
+	 */
+	public function getAffiliate(PropelPDO $con = null)
+	{
+		if ($this->aAffiliate === null && ($this->affiliateid !== null)) {
+			$this->aAffiliate = AffiliatePeer::retrieveByPK($this->affiliateid, $con);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aAffiliate->addClientPurchaseOrders($this);
+			 */
+		}
+		return $this->aAffiliate;
+	}
+
+	/**
+	 * Declares an association between this object and a AffiliateUser object.
+	 *
+	 * @param      AffiliateUser $v
+	 * @return     ClientPurchaseOrder The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setAffiliateUser(AffiliateUser $v = null)
+	{
+		if ($v === null) {
+			$this->setAffiliateuserid(NULL);
+		} else {
+			$this->setAffiliateuserid($v->getId());
+		}
+
+		$this->aAffiliateUser = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the AffiliateUser object, it will not be re-added.
+		if ($v !== null) {
+			$v->addClientPurchaseOrder($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated AffiliateUser object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     AffiliateUser The associated AffiliateUser object.
+	 * @throws     PropelException
+	 */
+	public function getAffiliateUser(PropelPDO $con = null)
+	{
+		if ($this->aAffiliateUser === null && ($this->affiliateuserid !== null)) {
+			$this->aAffiliateUser = AffiliateUserPeer::retrieveByPK($this->affiliateuserid, $con);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aAffiliateUser->addClientPurchaseOrders($this);
+			 */
+		}
+		return $this->aAffiliateUser;
 	}
 
 	/**
@@ -1136,19 +1476,48 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		return $this->collClientPurchaseOrderItems;
 	}
 
+	/**
+	 * Clears out the collClientPurchaseOrderHistorys collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addClientPurchaseOrderHistorys()
+	 */
+	public function clearClientPurchaseOrderHistorys()
+	{
+		$this->collClientPurchaseOrderHistorys = null; // important to set this to NULL since that means it is uninitialized
+	}
 
 	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this ClientPurchaseOrder is new, it will return
-	 * an empty collection; or if this ClientPurchaseOrder has previously
-	 * been saved, it will retrieve related ClientPurchaseOrderItems from storage.
+	 * Initializes the collClientPurchaseOrderHistorys collection (array).
 	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in ClientPurchaseOrder.
+	 * By default this just sets the collClientPurchaseOrderHistorys collection to an empty array (like clearcollClientPurchaseOrderHistorys());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
 	 */
-	public function getClientPurchaseOrderItemsJoinClientQuotationItem($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function initClientPurchaseOrderHistorys()
+	{
+		$this->collClientPurchaseOrderHistorys = array();
+	}
+
+	/**
+	 * Gets an array of ClientPurchaseOrderHistory objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this ClientPurchaseOrder has previously been saved, it will retrieve
+	 * related ClientPurchaseOrderHistorys from storage. If this ClientPurchaseOrder is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array ClientPurchaseOrderHistory[]
+	 * @throws     PropelException
+	 */
+	public function getClientPurchaseOrderHistorys($criteria = null, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(ClientPurchaseOrderPeer::DATABASE_NAME);
@@ -1158,29 +1527,108 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collClientPurchaseOrderItems === null) {
+		if ($this->collClientPurchaseOrderHistorys === null) {
 			if ($this->isNew()) {
-				$this->collClientPurchaseOrderItems = array();
+			   $this->collClientPurchaseOrderHistorys = array();
 			} else {
 
-				$criteria->add(ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID, $this->id);
+				$criteria->add(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, $this->id);
 
-				$this->collClientPurchaseOrderItems = ClientPurchaseOrderItemPeer::doSelectJoinClientQuotationItem($criteria, $con, $join_behavior);
+				ClientPurchaseOrderHistoryPeer::addSelectColumns($criteria);
+				$this->collClientPurchaseOrderHistorys = ClientPurchaseOrderHistoryPeer::doSelect($criteria, $con);
 			}
 		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
 
-			$criteria->add(ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID, $this->id);
 
-			if (!isset($this->lastClientPurchaseOrderItemCriteria) || !$this->lastClientPurchaseOrderItemCriteria->equals($criteria)) {
-				$this->collClientPurchaseOrderItems = ClientPurchaseOrderItemPeer::doSelectJoinClientQuotationItem($criteria, $con, $join_behavior);
+				$criteria->add(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, $this->id);
+
+				ClientPurchaseOrderHistoryPeer::addSelectColumns($criteria);
+				if (!isset($this->lastClientPurchaseOrderHistoryCriteria) || !$this->lastClientPurchaseOrderHistoryCriteria->equals($criteria)) {
+					$this->collClientPurchaseOrderHistorys = ClientPurchaseOrderHistoryPeer::doSelect($criteria, $con);
+				}
 			}
 		}
-		$this->lastClientPurchaseOrderItemCriteria = $criteria;
+		$this->lastClientPurchaseOrderHistoryCriteria = $criteria;
+		return $this->collClientPurchaseOrderHistorys;
+	}
 
-		return $this->collClientPurchaseOrderItems;
+	/**
+	 * Returns the number of related ClientPurchaseOrderHistory objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related ClientPurchaseOrderHistory objects.
+	 * @throws     PropelException
+	 */
+	public function countClientPurchaseOrderHistorys(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ClientPurchaseOrderPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collClientPurchaseOrderHistorys === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, $this->id);
+
+				$count = ClientPurchaseOrderHistoryPeer::doCount($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, $this->id);
+
+				if (!isset($this->lastClientPurchaseOrderHistoryCriteria) || !$this->lastClientPurchaseOrderHistoryCriteria->equals($criteria)) {
+					$count = ClientPurchaseOrderHistoryPeer::doCount($criteria, $con);
+				} else {
+					$count = count($this->collClientPurchaseOrderHistorys);
+				}
+			} else {
+				$count = count($this->collClientPurchaseOrderHistorys);
+			}
+		}
+		$this->lastClientPurchaseOrderHistoryCriteria = $criteria;
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a ClientPurchaseOrderHistory object to this object
+	 * through the ClientPurchaseOrderHistory foreign key attribute.
+	 *
+	 * @param      ClientPurchaseOrderHistory $l ClientPurchaseOrderHistory
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addClientPurchaseOrderHistory(ClientPurchaseOrderHistory $l)
+	{
+		if ($this->collClientPurchaseOrderHistorys === null) {
+			$this->initClientPurchaseOrderHistorys();
+		}
+		if (!in_array($l, $this->collClientPurchaseOrderHistorys, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collClientPurchaseOrderHistorys, $l);
+			$l->setClientPurchaseOrder($this);
+		}
 	}
 
 	/**
@@ -1200,10 +1648,19 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collClientPurchaseOrderHistorys) {
+				foreach ((array) $this->collClientPurchaseOrderHistorys as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
 		$this->collClientPurchaseOrderItems = null;
+		$this->collClientPurchaseOrderHistorys = null;
 			$this->aClientQuotation = null;
+			$this->aUser = null;
+			$this->aAffiliate = null;
+			$this->aAffiliateUser = null;
 	}
 
 } // BaseClientPurchaseOrder

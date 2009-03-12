@@ -61,6 +61,24 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	protected $clientquotationid;
 
 	/**
+	 * The value for the affiliateid field.
+	 * @var        int
+	 */
+	protected $affiliateid;
+
+	/**
+	 * The value for the affiliateuserid field.
+	 * @var        int
+	 */
+	protected $affiliateuserid;
+
+	/**
+	 * The value for the userid field.
+	 * @var        int
+	 */
+	protected $userid;
+
+	/**
 	 * @var        SupplierQuotation
 	 */
 	protected $aSupplierQuotation;
@@ -76,6 +94,21 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	protected $aSupplier;
 
 	/**
+	 * @var        User
+	 */
+	protected $aUser;
+
+	/**
+	 * @var        Affiliate
+	 */
+	protected $aAffiliate;
+
+	/**
+	 * @var        AffiliateUser
+	 */
+	protected $aAffiliateUser;
+
+	/**
 	 * @var        array SupplierPurchaseOrderItem[] Collection to store aggregation of SupplierPurchaseOrderItem objects.
 	 */
 	protected $collSupplierPurchaseOrderItems;
@@ -84,6 +117,26 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	 * @var        Criteria The criteria used to select the current contents of collSupplierPurchaseOrderItems.
 	 */
 	private $lastSupplierPurchaseOrderItemCriteria = null;
+
+	/**
+	 * @var        array SupplierPurchaseOrderHistory[] Collection to store aggregation of SupplierPurchaseOrderHistory objects.
+	 */
+	protected $collSupplierPurchaseOrderHistorys;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collSupplierPurchaseOrderHistorys.
+	 */
+	private $lastSupplierPurchaseOrderHistoryCriteria = null;
+
+	/**
+	 * @var        array SupplierPurchaseOrderBankTransfer[] Collection to store aggregation of SupplierPurchaseOrderBankTransfer objects.
+	 */
+	protected $collSupplierPurchaseOrderBankTransfers;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collSupplierPurchaseOrderBankTransfers.
+	 */
+	private $lastSupplierPurchaseOrderBankTransferCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -243,6 +296,36 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	public function getClientquotationid()
 	{
 		return $this->clientquotationid;
+	}
+
+	/**
+	 * Get the [affiliateid] column value.
+	 * Afiliado
+	 * @return     int
+	 */
+	public function getAffiliateid()
+	{
+		return $this->affiliateid;
+	}
+
+	/**
+	 * Get the [affiliateuserid] column value.
+	 * usuario del afiliado si creo la cotizacion
+	 * @return     int
+	 */
+	public function getAffiliateuserid()
+	{
+		return $this->affiliateuserid;
+	}
+
+	/**
+	 * Get the [userid] column value.
+	 * Usuario de anmaga si creo la cotizacion
+	 * @return     int
+	 */
+	public function getUserid()
+	{
+		return $this->userid;
 	}
 
 	/**
@@ -456,6 +539,78 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	} // setClientquotationid()
 
 	/**
+	 * Set the value of [affiliateid] column.
+	 * Afiliado
+	 * @param      int $v new value
+	 * @return     SupplierPurchaseOrder The current object (for fluent API support)
+	 */
+	public function setAffiliateid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->affiliateid !== $v) {
+			$this->affiliateid = $v;
+			$this->modifiedColumns[] = SupplierPurchaseOrderPeer::AFFILIATEID;
+		}
+
+		if ($this->aAffiliate !== null && $this->aAffiliate->getId() !== $v) {
+			$this->aAffiliate = null;
+		}
+
+		return $this;
+	} // setAffiliateid()
+
+	/**
+	 * Set the value of [affiliateuserid] column.
+	 * usuario del afiliado si creo la cotizacion
+	 * @param      int $v new value
+	 * @return     SupplierPurchaseOrder The current object (for fluent API support)
+	 */
+	public function setAffiliateuserid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->affiliateuserid !== $v) {
+			$this->affiliateuserid = $v;
+			$this->modifiedColumns[] = SupplierPurchaseOrderPeer::AFFILIATEUSERID;
+		}
+
+		if ($this->aAffiliateUser !== null && $this->aAffiliateUser->getId() !== $v) {
+			$this->aAffiliateUser = null;
+		}
+
+		return $this;
+	} // setAffiliateuserid()
+
+	/**
+	 * Set the value of [userid] column.
+	 * Usuario de anmaga si creo la cotizacion
+	 * @param      int $v new value
+	 * @return     SupplierPurchaseOrder The current object (for fluent API support)
+	 */
+	public function setUserid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->userid !== $v) {
+			$this->userid = $v;
+			$this->modifiedColumns[] = SupplierPurchaseOrderPeer::USERID;
+		}
+
+		if ($this->aUser !== null && $this->aUser->getId() !== $v) {
+			$this->aUser = null;
+		}
+
+		return $this;
+	} // setUserid()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -499,6 +654,9 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 			$this->timestampstatus = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
 			$this->supplierquotationid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
 			$this->clientquotationid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+			$this->affiliateid = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+			$this->affiliateuserid = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+			$this->userid = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -508,7 +666,7 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 7; // 7 = SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 10; // 10 = SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating SupplierPurchaseOrder object", $e);
@@ -539,6 +697,15 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		}
 		if ($this->aClientQuotation !== null && $this->clientquotationid !== $this->aClientQuotation->getId()) {
 			$this->aClientQuotation = null;
+		}
+		if ($this->aAffiliate !== null && $this->affiliateid !== $this->aAffiliate->getId()) {
+			$this->aAffiliate = null;
+		}
+		if ($this->aAffiliateUser !== null && $this->affiliateuserid !== $this->aAffiliateUser->getId()) {
+			$this->aAffiliateUser = null;
+		}
+		if ($this->aUser !== null && $this->userid !== $this->aUser->getId()) {
+			$this->aUser = null;
 		}
 	} // ensureConsistency
 
@@ -582,8 +749,17 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 			$this->aSupplierQuotation = null;
 			$this->aClientQuotation = null;
 			$this->aSupplier = null;
+			$this->aUser = null;
+			$this->aAffiliate = null;
+			$this->aAffiliateUser = null;
 			$this->collSupplierPurchaseOrderItems = null;
 			$this->lastSupplierPurchaseOrderItemCriteria = null;
+
+			$this->collSupplierPurchaseOrderHistorys = null;
+			$this->lastSupplierPurchaseOrderHistoryCriteria = null;
+
+			$this->collSupplierPurchaseOrderBankTransfers = null;
+			$this->lastSupplierPurchaseOrderBankTransferCriteria = null;
 
 		} // if (deep)
 	}
@@ -696,6 +872,27 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 				$this->setSupplier($this->aSupplier);
 			}
 
+			if ($this->aUser !== null) {
+				if ($this->aUser->isModified() || $this->aUser->isNew()) {
+					$affectedRows += $this->aUser->save($con);
+				}
+				$this->setUser($this->aUser);
+			}
+
+			if ($this->aAffiliate !== null) {
+				if ($this->aAffiliate->isModified() || $this->aAffiliate->isNew()) {
+					$affectedRows += $this->aAffiliate->save($con);
+				}
+				$this->setAffiliate($this->aAffiliate);
+			}
+
+			if ($this->aAffiliateUser !== null) {
+				if ($this->aAffiliateUser->isModified() || $this->aAffiliateUser->isNew()) {
+					$affectedRows += $this->aAffiliateUser->save($con);
+				}
+				$this->setAffiliateUser($this->aAffiliateUser);
+			}
+
 			if ($this->isNew() ) {
 				$this->modifiedColumns[] = SupplierPurchaseOrderPeer::ID;
 			}
@@ -720,6 +917,22 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 
 			if ($this->collSupplierPurchaseOrderItems !== null) {
 				foreach ($this->collSupplierPurchaseOrderItems as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collSupplierPurchaseOrderHistorys !== null) {
+				foreach ($this->collSupplierPurchaseOrderHistorys as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collSupplierPurchaseOrderBankTransfers !== null) {
+				foreach ($this->collSupplierPurchaseOrderBankTransfers as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -815,6 +1028,24 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 				}
 			}
 
+			if ($this->aUser !== null) {
+				if (!$this->aUser->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aUser->getValidationFailures());
+				}
+			}
+
+			if ($this->aAffiliate !== null) {
+				if (!$this->aAffiliate->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aAffiliate->getValidationFailures());
+				}
+			}
+
+			if ($this->aAffiliateUser !== null) {
+				if (!$this->aAffiliateUser->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aAffiliateUser->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = SupplierPurchaseOrderPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
@@ -823,6 +1054,22 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 
 				if ($this->collSupplierPurchaseOrderItems !== null) {
 					foreach ($this->collSupplierPurchaseOrderItems as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collSupplierPurchaseOrderHistorys !== null) {
+					foreach ($this->collSupplierPurchaseOrderHistorys as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collSupplierPurchaseOrderBankTransfers !== null) {
+					foreach ($this->collSupplierPurchaseOrderBankTransfers as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -852,6 +1099,9 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::TIMESTAMPSTATUS)) $criteria->add(SupplierPurchaseOrderPeer::TIMESTAMPSTATUS, $this->timestampstatus);
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::SUPPLIERQUOTATIONID)) $criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTATIONID, $this->supplierquotationid);
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::CLIENTQUOTATIONID)) $criteria->add(SupplierPurchaseOrderPeer::CLIENTQUOTATIONID, $this->clientquotationid);
+		if ($this->isColumnModified(SupplierPurchaseOrderPeer::AFFILIATEID)) $criteria->add(SupplierPurchaseOrderPeer::AFFILIATEID, $this->affiliateid);
+		if ($this->isColumnModified(SupplierPurchaseOrderPeer::AFFILIATEUSERID)) $criteria->add(SupplierPurchaseOrderPeer::AFFILIATEUSERID, $this->affiliateuserid);
+		if ($this->isColumnModified(SupplierPurchaseOrderPeer::USERID)) $criteria->add(SupplierPurchaseOrderPeer::USERID, $this->userid);
 
 		return $criteria;
 	}
@@ -918,6 +1168,12 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 
 		$copyObj->setClientquotationid($this->clientquotationid);
 
+		$copyObj->setAffiliateid($this->affiliateid);
+
+		$copyObj->setAffiliateuserid($this->affiliateuserid);
+
+		$copyObj->setUserid($this->userid);
+
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -927,6 +1183,18 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 			foreach ($this->getSupplierPurchaseOrderItems() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addSupplierPurchaseOrderItem($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getSupplierPurchaseOrderHistorys() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addSupplierPurchaseOrderHistory($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getSupplierPurchaseOrderBankTransfers() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addSupplierPurchaseOrderBankTransfer($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1122,6 +1390,153 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 			 */
 		}
 		return $this->aSupplier;
+	}
+
+	/**
+	 * Declares an association between this object and a User object.
+	 *
+	 * @param      User $v
+	 * @return     SupplierPurchaseOrder The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setUser(User $v = null)
+	{
+		if ($v === null) {
+			$this->setUserid(NULL);
+		} else {
+			$this->setUserid($v->getId());
+		}
+
+		$this->aUser = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the User object, it will not be re-added.
+		if ($v !== null) {
+			$v->addSupplierPurchaseOrder($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated User object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     User The associated User object.
+	 * @throws     PropelException
+	 */
+	public function getUser(PropelPDO $con = null)
+	{
+		if ($this->aUser === null && ($this->userid !== null)) {
+			$this->aUser = UserPeer::retrieveByPK($this->userid, $con);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aUser->addSupplierPurchaseOrders($this);
+			 */
+		}
+		return $this->aUser;
+	}
+
+	/**
+	 * Declares an association between this object and a Affiliate object.
+	 *
+	 * @param      Affiliate $v
+	 * @return     SupplierPurchaseOrder The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setAffiliate(Affiliate $v = null)
+	{
+		if ($v === null) {
+			$this->setAffiliateid(NULL);
+		} else {
+			$this->setAffiliateid($v->getId());
+		}
+
+		$this->aAffiliate = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Affiliate object, it will not be re-added.
+		if ($v !== null) {
+			$v->addSupplierPurchaseOrder($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Affiliate object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Affiliate The associated Affiliate object.
+	 * @throws     PropelException
+	 */
+	public function getAffiliate(PropelPDO $con = null)
+	{
+		if ($this->aAffiliate === null && ($this->affiliateid !== null)) {
+			$this->aAffiliate = AffiliatePeer::retrieveByPK($this->affiliateid, $con);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aAffiliate->addSupplierPurchaseOrders($this);
+			 */
+		}
+		return $this->aAffiliate;
+	}
+
+	/**
+	 * Declares an association between this object and a AffiliateUser object.
+	 *
+	 * @param      AffiliateUser $v
+	 * @return     SupplierPurchaseOrder The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setAffiliateUser(AffiliateUser $v = null)
+	{
+		if ($v === null) {
+			$this->setAffiliateuserid(NULL);
+		} else {
+			$this->setAffiliateuserid($v->getId());
+		}
+
+		$this->aAffiliateUser = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the AffiliateUser object, it will not be re-added.
+		if ($v !== null) {
+			$v->addSupplierPurchaseOrder($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated AffiliateUser object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     AffiliateUser The associated AffiliateUser object.
+	 * @throws     PropelException
+	 */
+	public function getAffiliateUser(PropelPDO $con = null)
+	{
+		if ($this->aAffiliateUser === null && ($this->affiliateuserid !== null)) {
+			$this->aAffiliateUser = AffiliateUserPeer::retrieveByPK($this->affiliateuserid, $con);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aAffiliateUser->addSupplierPurchaseOrders($this);
+			 */
+		}
+		return $this->aAffiliateUser;
 	}
 
 	/**
@@ -1421,6 +1836,316 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	}
 
 	/**
+	 * Clears out the collSupplierPurchaseOrderHistorys collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addSupplierPurchaseOrderHistorys()
+	 */
+	public function clearSupplierPurchaseOrderHistorys()
+	{
+		$this->collSupplierPurchaseOrderHistorys = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collSupplierPurchaseOrderHistorys collection (array).
+	 *
+	 * By default this just sets the collSupplierPurchaseOrderHistorys collection to an empty array (like clearcollSupplierPurchaseOrderHistorys());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initSupplierPurchaseOrderHistorys()
+	{
+		$this->collSupplierPurchaseOrderHistorys = array();
+	}
+
+	/**
+	 * Gets an array of SupplierPurchaseOrderHistory objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this SupplierPurchaseOrder has previously been saved, it will retrieve
+	 * related SupplierPurchaseOrderHistorys from storage. If this SupplierPurchaseOrder is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array SupplierPurchaseOrderHistory[]
+	 * @throws     PropelException
+	 */
+	public function getSupplierPurchaseOrderHistorys($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierPurchaseOrderPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierPurchaseOrderHistorys === null) {
+			if ($this->isNew()) {
+			   $this->collSupplierPurchaseOrderHistorys = array();
+			} else {
+
+				$criteria->add(SupplierPurchaseOrderHistoryPeer::SUPPLIERPURCHASEORDERID, $this->id);
+
+				SupplierPurchaseOrderHistoryPeer::addSelectColumns($criteria);
+				$this->collSupplierPurchaseOrderHistorys = SupplierPurchaseOrderHistoryPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(SupplierPurchaseOrderHistoryPeer::SUPPLIERPURCHASEORDERID, $this->id);
+
+				SupplierPurchaseOrderHistoryPeer::addSelectColumns($criteria);
+				if (!isset($this->lastSupplierPurchaseOrderHistoryCriteria) || !$this->lastSupplierPurchaseOrderHistoryCriteria->equals($criteria)) {
+					$this->collSupplierPurchaseOrderHistorys = SupplierPurchaseOrderHistoryPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastSupplierPurchaseOrderHistoryCriteria = $criteria;
+		return $this->collSupplierPurchaseOrderHistorys;
+	}
+
+	/**
+	 * Returns the number of related SupplierPurchaseOrderHistory objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related SupplierPurchaseOrderHistory objects.
+	 * @throws     PropelException
+	 */
+	public function countSupplierPurchaseOrderHistorys(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierPurchaseOrderPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collSupplierPurchaseOrderHistorys === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(SupplierPurchaseOrderHistoryPeer::SUPPLIERPURCHASEORDERID, $this->id);
+
+				$count = SupplierPurchaseOrderHistoryPeer::doCount($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(SupplierPurchaseOrderHistoryPeer::SUPPLIERPURCHASEORDERID, $this->id);
+
+				if (!isset($this->lastSupplierPurchaseOrderHistoryCriteria) || !$this->lastSupplierPurchaseOrderHistoryCriteria->equals($criteria)) {
+					$count = SupplierPurchaseOrderHistoryPeer::doCount($criteria, $con);
+				} else {
+					$count = count($this->collSupplierPurchaseOrderHistorys);
+				}
+			} else {
+				$count = count($this->collSupplierPurchaseOrderHistorys);
+			}
+		}
+		$this->lastSupplierPurchaseOrderHistoryCriteria = $criteria;
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a SupplierPurchaseOrderHistory object to this object
+	 * through the SupplierPurchaseOrderHistory foreign key attribute.
+	 *
+	 * @param      SupplierPurchaseOrderHistory $l SupplierPurchaseOrderHistory
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addSupplierPurchaseOrderHistory(SupplierPurchaseOrderHistory $l)
+	{
+		if ($this->collSupplierPurchaseOrderHistorys === null) {
+			$this->initSupplierPurchaseOrderHistorys();
+		}
+		if (!in_array($l, $this->collSupplierPurchaseOrderHistorys, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collSupplierPurchaseOrderHistorys, $l);
+			$l->setSupplierPurchaseOrder($this);
+		}
+	}
+
+	/**
+	 * Clears out the collSupplierPurchaseOrderBankTransfers collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addSupplierPurchaseOrderBankTransfers()
+	 */
+	public function clearSupplierPurchaseOrderBankTransfers()
+	{
+		$this->collSupplierPurchaseOrderBankTransfers = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collSupplierPurchaseOrderBankTransfers collection (array).
+	 *
+	 * By default this just sets the collSupplierPurchaseOrderBankTransfers collection to an empty array (like clearcollSupplierPurchaseOrderBankTransfers());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initSupplierPurchaseOrderBankTransfers()
+	{
+		$this->collSupplierPurchaseOrderBankTransfers = array();
+	}
+
+	/**
+	 * Gets an array of SupplierPurchaseOrderBankTransfer objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this SupplierPurchaseOrder has previously been saved, it will retrieve
+	 * related SupplierPurchaseOrderBankTransfers from storage. If this SupplierPurchaseOrder is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array SupplierPurchaseOrderBankTransfer[]
+	 * @throws     PropelException
+	 */
+	public function getSupplierPurchaseOrderBankTransfers($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierPurchaseOrderPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierPurchaseOrderBankTransfers === null) {
+			if ($this->isNew()) {
+			   $this->collSupplierPurchaseOrderBankTransfers = array();
+			} else {
+
+				$criteria->add(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, $this->id);
+
+				SupplierPurchaseOrderBankTransferPeer::addSelectColumns($criteria);
+				$this->collSupplierPurchaseOrderBankTransfers = SupplierPurchaseOrderBankTransferPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, $this->id);
+
+				SupplierPurchaseOrderBankTransferPeer::addSelectColumns($criteria);
+				if (!isset($this->lastSupplierPurchaseOrderBankTransferCriteria) || !$this->lastSupplierPurchaseOrderBankTransferCriteria->equals($criteria)) {
+					$this->collSupplierPurchaseOrderBankTransfers = SupplierPurchaseOrderBankTransferPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastSupplierPurchaseOrderBankTransferCriteria = $criteria;
+		return $this->collSupplierPurchaseOrderBankTransfers;
+	}
+
+	/**
+	 * Returns the number of related SupplierPurchaseOrderBankTransfer objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related SupplierPurchaseOrderBankTransfer objects.
+	 * @throws     PropelException
+	 */
+	public function countSupplierPurchaseOrderBankTransfers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierPurchaseOrderPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collSupplierPurchaseOrderBankTransfers === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, $this->id);
+
+				$count = SupplierPurchaseOrderBankTransferPeer::doCount($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, $this->id);
+
+				if (!isset($this->lastSupplierPurchaseOrderBankTransferCriteria) || !$this->lastSupplierPurchaseOrderBankTransferCriteria->equals($criteria)) {
+					$count = SupplierPurchaseOrderBankTransferPeer::doCount($criteria, $con);
+				} else {
+					$count = count($this->collSupplierPurchaseOrderBankTransfers);
+				}
+			} else {
+				$count = count($this->collSupplierPurchaseOrderBankTransfers);
+			}
+		}
+		$this->lastSupplierPurchaseOrderBankTransferCriteria = $criteria;
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a SupplierPurchaseOrderBankTransfer object to this object
+	 * through the SupplierPurchaseOrderBankTransfer foreign key attribute.
+	 *
+	 * @param      SupplierPurchaseOrderBankTransfer $l SupplierPurchaseOrderBankTransfer
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addSupplierPurchaseOrderBankTransfer(SupplierPurchaseOrderBankTransfer $l)
+	{
+		if ($this->collSupplierPurchaseOrderBankTransfers === null) {
+			$this->initSupplierPurchaseOrderBankTransfers();
+		}
+		if (!in_array($l, $this->collSupplierPurchaseOrderBankTransfers, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collSupplierPurchaseOrderBankTransfers, $l);
+			$l->setSupplierPurchaseOrder($this);
+		}
+	}
+
+	/**
 	 * Resets all collections of referencing foreign keys.
 	 *
 	 * This method is a user-space workaround for PHP's inability to garbage collect objects
@@ -1437,12 +2162,27 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collSupplierPurchaseOrderHistorys) {
+				foreach ((array) $this->collSupplierPurchaseOrderHistorys as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collSupplierPurchaseOrderBankTransfers) {
+				foreach ((array) $this->collSupplierPurchaseOrderBankTransfers as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
 		$this->collSupplierPurchaseOrderItems = null;
+		$this->collSupplierPurchaseOrderHistorys = null;
+		$this->collSupplierPurchaseOrderBankTransfers = null;
 			$this->aSupplierQuotation = null;
 			$this->aClientQuotation = null;
 			$this->aSupplier = null;
+			$this->aUser = null;
+			$this->aAffiliate = null;
+			$this->aAffiliateUser = null;
 	}
 
 } // BaseSupplierPurchaseOrder

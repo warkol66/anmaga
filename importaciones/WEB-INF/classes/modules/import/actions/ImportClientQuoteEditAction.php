@@ -63,11 +63,10 @@ class ImportClientQuoteEditAction extends BaseAction {
 			}
 
 			//traemos todas las cotizaciones.
-			$suppliers = SupplierPeer::getAll();
 			$incoterms = IncotermPeer::getAll();
 			$ports = PortPeer::getAll();
 			$clientQuotation = $clientQuotationPeer->get($_GET["id"]);
-
+			$suppliers = $clientQuotation->getProductRelatedSuppliers();
 			$smarty->assign("clientQuotation",$clientQuotation);
 			$smarty->assign("suppliers",$suppliers);
 			$smarty->assign("incoterms",$incoterms);

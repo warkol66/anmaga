@@ -218,6 +218,23 @@ class ClientQuotation extends BaseClientQuotation {
 
 		return ClientQuotationItemPeer::doSelect($criteria);
 		
-	} 
+	}
+	
+	/**
+	 * Obtiene los proveedores que estan relacionados a los productos que tiene la cotizacion
+	 * @return array array de instancias de supplier
+	 */
+	public function getProductRelatedSuppliers() {
+		
+		require_once('SupplierPeer.php');
+		
+		$criteria = new Criteria();
+		$criteria->addJoin(SupplierPeer::ID,ProductSupplierPeer::SUPPLIERID,Criteria::INNER_JOIN);
+		$criteria->addJoin(ProductSupplierPeer::PRODUCTID,ClientQuotationItemPeer::PRODUCTID,Criteria::INNER_JOIN);
+		$criteria->add(ClientQuotationItemPeer::CLIENTQUOTATIONID,$this->getId());
+		$criteria->setDistinct();
+		
+		return SupplierPeer::doSelect($criteria);
+	}
 	
 } // ClientQuotation

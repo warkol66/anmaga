@@ -64,15 +64,13 @@ class ClientPurchaseOrderItemMapBuilder implements MapBuilder {
 
 		$tMap->addPrimaryKey('ID', 'Id', 'INTEGER', true, null);
 
-		$tMap->addForeignPrimaryKey('CLIENTPURCHASEORDERID', 'Clientpurchaseorderid', 'INTEGER' , 'import_clientPurchaseOrder', 'ID', true, null);
+		$tMap->addForeignKey('PRODUCTID', 'Productid', 'INTEGER', 'import_product', 'ID', true, null);
 
-		$tMap->addForeignKey('CLIENTQUOTATIONITEMID', 'Clientquotationitemid', 'INTEGER', 'import_clientQuotationItem', 'ID', true, null);
-
-		$tMap->addForeignPrimaryKey('PRODUCTID', 'Productid', 'INTEGER' , 'import_product', 'ID', true, null);
-
-		$tMap->addColumn('PRICE', 'Price', 'FLOAT', false, null);
+		$tMap->addForeignKey('CLIENTPURCHASEORDERID', 'Clientpurchaseorderid', 'INTEGER', 'import_clientPurchaseOrder', 'ID', true, null);
 
 		$tMap->addColumn('QUANTITY', 'Quantity', 'INTEGER', false, null);
+
+		$tMap->addColumn('PRICE', 'Price', 'FLOAT', false, null);
 
 	} // doBuild()
 

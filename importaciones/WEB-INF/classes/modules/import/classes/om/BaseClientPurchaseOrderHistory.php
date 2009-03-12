@@ -1,20 +1,20 @@
 <?php
 
 /**
- * Base class that represents a row from the 'import_supplierPurchaseOrderBankTransfer' table.
+ * Base class that represents a row from the 'import_clientPurchaseOrderHistory' table.
  *
- * Transferencias bancarias realizadas a esa orden de pedido a proveedor
+ * Historial de Estados por los que fue pasando la Orden de Pedido a Cliente
  *
  * @package    import.classes.om
  */
-abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  implements Persistent {
+abstract class BaseClientPurchaseOrderHistory extends BaseObject  implements Persistent {
 
 
 	/**
 	 * The Peer class.
 	 * Instance provides a convenient way of calling static methods on a class
 	 * that calling code may not be able to identify.
-	 * @var        SupplierPurchaseOrderBankTransferPeer
+	 * @var        ClientPurchaseOrderHistoryPeer
 	 */
 	protected static $peer;
 
@@ -25,22 +25,16 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	protected $id;
 
 	/**
-	 * The value for the supplierpurchaseorderid field.
+	 * The value for the clientpurchaseorderid field.
 	 * @var        int
 	 */
-	protected $supplierpurchaseorderid;
+	protected $clientpurchaseorderid;
 
 	/**
-	 * The value for the banktransfernumber field.
-	 * @var        string
+	 * The value for the statuscode field.
+	 * @var        int
 	 */
-	protected $banktransfernumber;
-
-	/**
-	 * The value for the amount field.
-	 * @var        double
-	 */
-	protected $amount;
+	protected $statuscode;
 
 	/**
 	 * The value for the createdat field.
@@ -49,9 +43,9 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	protected $createdat;
 
 	/**
-	 * @var        SupplierPurchaseOrder
+	 * @var        ClientPurchaseOrder
 	 */
-	protected $aSupplierPurchaseOrder;
+	protected $aClientPurchaseOrder;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -68,7 +62,7 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	protected $alreadyInValidation = false;
 
 	/**
-	 * Initializes internal state of BaseSupplierPurchaseOrderBankTransfer object.
+	 * Initializes internal state of BaseClientPurchaseOrderHistory object.
 	 * @see        applyDefaults()
 	 */
 	public function __construct()
@@ -98,33 +92,23 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	}
 
 	/**
-	 * Get the [supplierpurchaseorderid] column value.
+	 * Get the [clientpurchaseorderid] column value.
 	 * Id de orden de pedido a proveedor
 	 * @return     int
 	 */
-	public function getSupplierpurchaseorderid()
+	public function getClientpurchaseorderid()
 	{
-		return $this->supplierpurchaseorderid;
+		return $this->clientpurchaseorderid;
 	}
 
 	/**
-	 * Get the [banktransfernumber] column value.
-	 * numero de transferencia bancaria.
-	 * @return     string
+	 * Get the [statuscode] column value.
+	 * Codigo del estado guardado.
+	 * @return     int
 	 */
-	public function getBanktransfernumber()
+	public function getStatuscode()
 	{
-		return $this->banktransfernumber;
-	}
-
-	/**
-	 * Get the [amount] column value.
-	 * monto de la transferencia bancaria.
-	 * @return     double
-	 */
-	public function getAmount()
-	{
-		return $this->amount;
+		return $this->statuscode;
 	}
 
 	/**
@@ -169,7 +153,7 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	 * Set the value of [id] column.
 	 * Id
 	 * @param      int $v new value
-	 * @return     SupplierPurchaseOrderBankTransfer The current object (for fluent API support)
+	 * @return     ClientPurchaseOrderHistory The current object (for fluent API support)
 	 */
 	public function setId($v)
 	{
@@ -179,82 +163,62 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 
 		if ($this->id !== $v) {
 			$this->id = $v;
-			$this->modifiedColumns[] = SupplierPurchaseOrderBankTransferPeer::ID;
+			$this->modifiedColumns[] = ClientPurchaseOrderHistoryPeer::ID;
 		}
 
 		return $this;
 	} // setId()
 
 	/**
-	 * Set the value of [supplierpurchaseorderid] column.
+	 * Set the value of [clientpurchaseorderid] column.
 	 * Id de orden de pedido a proveedor
 	 * @param      int $v new value
-	 * @return     SupplierPurchaseOrderBankTransfer The current object (for fluent API support)
+	 * @return     ClientPurchaseOrderHistory The current object (for fluent API support)
 	 */
-	public function setSupplierpurchaseorderid($v)
+	public function setClientpurchaseorderid($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->supplierpurchaseorderid !== $v) {
-			$this->supplierpurchaseorderid = $v;
-			$this->modifiedColumns[] = SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID;
+		if ($this->clientpurchaseorderid !== $v) {
+			$this->clientpurchaseorderid = $v;
+			$this->modifiedColumns[] = ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID;
 		}
 
-		if ($this->aSupplierPurchaseOrder !== null && $this->aSupplierPurchaseOrder->getId() !== $v) {
-			$this->aSupplierPurchaseOrder = null;
+		if ($this->aClientPurchaseOrder !== null && $this->aClientPurchaseOrder->getId() !== $v) {
+			$this->aClientPurchaseOrder = null;
 		}
 
 		return $this;
-	} // setSupplierpurchaseorderid()
+	} // setClientpurchaseorderid()
 
 	/**
-	 * Set the value of [banktransfernumber] column.
-	 * numero de transferencia bancaria.
-	 * @param      string $v new value
-	 * @return     SupplierPurchaseOrderBankTransfer The current object (for fluent API support)
+	 * Set the value of [statuscode] column.
+	 * Codigo del estado guardado.
+	 * @param      int $v new value
+	 * @return     ClientPurchaseOrderHistory The current object (for fluent API support)
 	 */
-	public function setBanktransfernumber($v)
+	public function setStatuscode($v)
 	{
 		if ($v !== null) {
-			$v = (string) $v;
+			$v = (int) $v;
 		}
 
-		if ($this->banktransfernumber !== $v) {
-			$this->banktransfernumber = $v;
-			$this->modifiedColumns[] = SupplierPurchaseOrderBankTransferPeer::BANKTRANSFERNUMBER;
+		if ($this->statuscode !== $v) {
+			$this->statuscode = $v;
+			$this->modifiedColumns[] = ClientPurchaseOrderHistoryPeer::STATUSCODE;
 		}
 
 		return $this;
-	} // setBanktransfernumber()
-
-	/**
-	 * Set the value of [amount] column.
-	 * monto de la transferencia bancaria.
-	 * @param      double $v new value
-	 * @return     SupplierPurchaseOrderBankTransfer The current object (for fluent API support)
-	 */
-	public function setAmount($v)
-	{
-		if ($v !== null) {
-			$v = (double) $v;
-		}
-
-		if ($this->amount !== $v) {
-			$this->amount = $v;
-			$this->modifiedColumns[] = SupplierPurchaseOrderBankTransferPeer::AMOUNT;
-		}
-
-		return $this;
-	} // setAmount()
+	} // setStatuscode()
 
 	/**
 	 * Sets the value of [createdat] column to a normalized version of the date/time value specified.
 	 * Creation date for
 	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
 	 *						be treated as NULL for temporal objects.
-	 * @return     SupplierPurchaseOrderBankTransfer The current object (for fluent API support)
+	 * @return     ClientPurchaseOrderHistory The current object (for fluent API support)
 	 */
 	public function setCreatedat($v)
 	{
@@ -291,7 +255,7 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 					)
 			{
 				$this->createdat = ($dt ? $dt->format('Y-m-d H:i:s') : null);
-				$this->modifiedColumns[] = SupplierPurchaseOrderBankTransferPeer::CREATEDAT;
+				$this->modifiedColumns[] = ClientPurchaseOrderHistoryPeer::CREATEDAT;
 			}
 		} // if either are not null
 
@@ -336,10 +300,9 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 		try {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-			$this->supplierpurchaseorderid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-			$this->banktransfernumber = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-			$this->amount = ($row[$startcol + 3] !== null) ? (double) $row[$startcol + 3] : null;
-			$this->createdat = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->clientpurchaseorderid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+			$this->statuscode = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->createdat = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -349,10 +312,10 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 5; // 5 = SupplierPurchaseOrderBankTransferPeer::NUM_COLUMNS - SupplierPurchaseOrderBankTransferPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 4; // 4 = ClientPurchaseOrderHistoryPeer::NUM_COLUMNS - ClientPurchaseOrderHistoryPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
-			throw new PropelException("Error populating SupplierPurchaseOrderBankTransfer object", $e);
+			throw new PropelException("Error populating ClientPurchaseOrderHistory object", $e);
 		}
 	}
 
@@ -372,8 +335,8 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	public function ensureConsistency()
 	{
 
-		if ($this->aSupplierPurchaseOrder !== null && $this->supplierpurchaseorderid !== $this->aSupplierPurchaseOrder->getId()) {
-			$this->aSupplierPurchaseOrder = null;
+		if ($this->aClientPurchaseOrder !== null && $this->clientpurchaseorderid !== $this->aClientPurchaseOrder->getId()) {
+			$this->aClientPurchaseOrder = null;
 		}
 	} // ensureConsistency
 
@@ -398,13 +361,13 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(SupplierPurchaseOrderBankTransferPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(ClientPurchaseOrderHistoryPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		// We don't need to alter the object instance pool; we're just modifying this instance
 		// already in the pool.
 
-		$stmt = SupplierPurchaseOrderBankTransferPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+		$stmt = ClientPurchaseOrderHistoryPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
 		$row = $stmt->fetch(PDO::FETCH_NUM);
 		$stmt->closeCursor();
 		if (!$row) {
@@ -414,7 +377,7 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->aSupplierPurchaseOrder = null;
+			$this->aClientPurchaseOrder = null;
 		} // if (deep)
 	}
 
@@ -434,12 +397,12 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(SupplierPurchaseOrderBankTransferPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(ClientPurchaseOrderHistoryPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 		
 		$con->beginTransaction();
 		try {
-			SupplierPurchaseOrderBankTransferPeer::doDelete($this, $con);
+			ClientPurchaseOrderHistoryPeer::doDelete($this, $con);
 			$this->setDeleted(true);
 			$con->commit();
 		} catch (PropelException $e) {
@@ -468,14 +431,14 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(SupplierPurchaseOrderBankTransferPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(ClientPurchaseOrderHistoryPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 		
 		$con->beginTransaction();
 		try {
 			$affectedRows = $this->doSave($con);
 			$con->commit();
-			SupplierPurchaseOrderBankTransferPeer::addInstanceToPool($this);
+			ClientPurchaseOrderHistoryPeer::addInstanceToPool($this);
 			return $affectedRows;
 		} catch (PropelException $e) {
 			$con->rollBack();
@@ -505,21 +468,21 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aSupplierPurchaseOrder !== null) {
-				if ($this->aSupplierPurchaseOrder->isModified() || $this->aSupplierPurchaseOrder->isNew()) {
-					$affectedRows += $this->aSupplierPurchaseOrder->save($con);
+			if ($this->aClientPurchaseOrder !== null) {
+				if ($this->aClientPurchaseOrder->isModified() || $this->aClientPurchaseOrder->isNew()) {
+					$affectedRows += $this->aClientPurchaseOrder->save($con);
 				}
-				$this->setSupplierPurchaseOrder($this->aSupplierPurchaseOrder);
+				$this->setClientPurchaseOrder($this->aClientPurchaseOrder);
 			}
 
 			if ($this->isNew() ) {
-				$this->modifiedColumns[] = SupplierPurchaseOrderBankTransferPeer::ID;
+				$this->modifiedColumns[] = ClientPurchaseOrderHistoryPeer::ID;
 			}
 
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = SupplierPurchaseOrderBankTransferPeer::doInsert($this, $con);
+					$pk = ClientPurchaseOrderHistoryPeer::doInsert($this, $con);
 					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
 										 // should always be true here (even though technically
 										 // BasePeer::doInsert() can insert multiple rows).
@@ -528,7 +491,7 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 
 					$this->setNew(false);
 				} else {
-					$affectedRows += SupplierPurchaseOrderBankTransferPeer::doUpdate($this, $con);
+					$affectedRows += ClientPurchaseOrderHistoryPeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
@@ -605,14 +568,14 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aSupplierPurchaseOrder !== null) {
-				if (!$this->aSupplierPurchaseOrder->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aSupplierPurchaseOrder->getValidationFailures());
+			if ($this->aClientPurchaseOrder !== null) {
+				if (!$this->aClientPurchaseOrder->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aClientPurchaseOrder->getValidationFailures());
 				}
 			}
 
 
-			if (($retval = SupplierPurchaseOrderBankTransferPeer::doValidate($this, $columns)) !== true) {
+			if (($retval = ClientPurchaseOrderHistoryPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
@@ -631,13 +594,12 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	 */
 	public function buildCriteria()
 	{
-		$criteria = new Criteria(SupplierPurchaseOrderBankTransferPeer::DATABASE_NAME);
+		$criteria = new Criteria(ClientPurchaseOrderHistoryPeer::DATABASE_NAME);
 
-		if ($this->isColumnModified(SupplierPurchaseOrderBankTransferPeer::ID)) $criteria->add(SupplierPurchaseOrderBankTransferPeer::ID, $this->id);
-		if ($this->isColumnModified(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID)) $criteria->add(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, $this->supplierpurchaseorderid);
-		if ($this->isColumnModified(SupplierPurchaseOrderBankTransferPeer::BANKTRANSFERNUMBER)) $criteria->add(SupplierPurchaseOrderBankTransferPeer::BANKTRANSFERNUMBER, $this->banktransfernumber);
-		if ($this->isColumnModified(SupplierPurchaseOrderBankTransferPeer::AMOUNT)) $criteria->add(SupplierPurchaseOrderBankTransferPeer::AMOUNT, $this->amount);
-		if ($this->isColumnModified(SupplierPurchaseOrderBankTransferPeer::CREATEDAT)) $criteria->add(SupplierPurchaseOrderBankTransferPeer::CREATEDAT, $this->createdat);
+		if ($this->isColumnModified(ClientPurchaseOrderHistoryPeer::ID)) $criteria->add(ClientPurchaseOrderHistoryPeer::ID, $this->id);
+		if ($this->isColumnModified(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID)) $criteria->add(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, $this->clientpurchaseorderid);
+		if ($this->isColumnModified(ClientPurchaseOrderHistoryPeer::STATUSCODE)) $criteria->add(ClientPurchaseOrderHistoryPeer::STATUSCODE, $this->statuscode);
+		if ($this->isColumnModified(ClientPurchaseOrderHistoryPeer::CREATEDAT)) $criteria->add(ClientPurchaseOrderHistoryPeer::CREATEDAT, $this->createdat);
 
 		return $criteria;
 	}
@@ -652,9 +614,9 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	 */
 	public function buildPkeyCriteria()
 	{
-		$criteria = new Criteria(SupplierPurchaseOrderBankTransferPeer::DATABASE_NAME);
+		$criteria = new Criteria(ClientPurchaseOrderHistoryPeer::DATABASE_NAME);
 
-		$criteria->add(SupplierPurchaseOrderBankTransferPeer::ID, $this->id);
+		$criteria->add(ClientPurchaseOrderHistoryPeer::ID, $this->id);
 
 		return $criteria;
 	}
@@ -685,18 +647,16 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	 * If desired, this method can also make copies of all associated (fkey referrers)
 	 * objects.
 	 *
-	 * @param      object $copyObj An object of SupplierPurchaseOrderBankTransfer (or compatible) type.
+	 * @param      object $copyObj An object of ClientPurchaseOrderHistory (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
 	 * @throws     PropelException
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 
-		$copyObj->setSupplierpurchaseorderid($this->supplierpurchaseorderid);
+		$copyObj->setClientpurchaseorderid($this->clientpurchaseorderid);
 
-		$copyObj->setBanktransfernumber($this->banktransfernumber);
-
-		$copyObj->setAmount($this->amount);
+		$copyObj->setStatuscode($this->statuscode);
 
 		$copyObj->setCreatedat($this->createdat);
 
@@ -716,7 +676,7 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	 * objects.
 	 *
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-	 * @return     SupplierPurchaseOrderBankTransfer Clone of current object.
+	 * @return     ClientPurchaseOrderHistory Clone of current object.
 	 * @throws     PropelException
 	 */
 	public function copy($deepCopy = false)
@@ -735,37 +695,37 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	 * same instance for all member of this class. The method could therefore
 	 * be static, but this would prevent one from overriding the behavior.
 	 *
-	 * @return     SupplierPurchaseOrderBankTransferPeer
+	 * @return     ClientPurchaseOrderHistoryPeer
 	 */
 	public function getPeer()
 	{
 		if (self::$peer === null) {
-			self::$peer = new SupplierPurchaseOrderBankTransferPeer();
+			self::$peer = new ClientPurchaseOrderHistoryPeer();
 		}
 		return self::$peer;
 	}
 
 	/**
-	 * Declares an association between this object and a SupplierPurchaseOrder object.
+	 * Declares an association between this object and a ClientPurchaseOrder object.
 	 *
-	 * @param      SupplierPurchaseOrder $v
-	 * @return     SupplierPurchaseOrderBankTransfer The current object (for fluent API support)
+	 * @param      ClientPurchaseOrder $v
+	 * @return     ClientPurchaseOrderHistory The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setSupplierPurchaseOrder(SupplierPurchaseOrder $v = null)
+	public function setClientPurchaseOrder(ClientPurchaseOrder $v = null)
 	{
 		if ($v === null) {
-			$this->setSupplierpurchaseorderid(NULL);
+			$this->setClientpurchaseorderid(NULL);
 		} else {
-			$this->setSupplierpurchaseorderid($v->getId());
+			$this->setClientpurchaseorderid($v->getId());
 		}
 
-		$this->aSupplierPurchaseOrder = $v;
+		$this->aClientPurchaseOrder = $v;
 
 		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the SupplierPurchaseOrder object, it will not be re-added.
+		// If this object has already been added to the ClientPurchaseOrder object, it will not be re-added.
 		if ($v !== null) {
-			$v->addSupplierPurchaseOrderBankTransfer($this);
+			$v->addClientPurchaseOrderHistory($this);
 		}
 
 		return $this;
@@ -773,25 +733,25 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 
 
 	/**
-	 * Get the associated SupplierPurchaseOrder object
+	 * Get the associated ClientPurchaseOrder object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     SupplierPurchaseOrder The associated SupplierPurchaseOrder object.
+	 * @return     ClientPurchaseOrder The associated ClientPurchaseOrder object.
 	 * @throws     PropelException
 	 */
-	public function getSupplierPurchaseOrder(PropelPDO $con = null)
+	public function getClientPurchaseOrder(PropelPDO $con = null)
 	{
-		if ($this->aSupplierPurchaseOrder === null && ($this->supplierpurchaseorderid !== null)) {
-			$this->aSupplierPurchaseOrder = SupplierPurchaseOrderPeer::retrieveByPK($this->supplierpurchaseorderid, $con);
+		if ($this->aClientPurchaseOrder === null && ($this->clientpurchaseorderid !== null)) {
+			$this->aClientPurchaseOrder = ClientPurchaseOrderPeer::retrieveByPK($this->clientpurchaseorderid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
 			   undesirable since it could result in an only partially populated collection
 			   in the referenced object.
-			   $this->aSupplierPurchaseOrder->addSupplierPurchaseOrderBankTransfers($this);
+			   $this->aClientPurchaseOrder->addClientPurchaseOrderHistorys($this);
 			 */
 		}
-		return $this->aSupplierPurchaseOrder;
+		return $this->aClientPurchaseOrder;
 	}
 
 	/**
@@ -808,7 +768,7 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 		if ($deep) {
 		} // if ($deep)
 
-			$this->aSupplierPurchaseOrder = null;
+			$this->aClientPurchaseOrder = null;
 	}
 
-} // BaseSupplierPurchaseOrderBankTransfer
+} // BaseClientPurchaseOrderHistory
