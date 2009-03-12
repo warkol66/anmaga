@@ -19,11 +19,12 @@
 	</ul>
 		<div id="adminMenu" style="display:|-if $module|lower eq 'users' || $module|lower eq 'security' || $module|lower eq 'backups' || $module|lower eq 'affiliates' || $module|lower eq 'categories' || ($module|lower eq 'import' && ($section|lower eq 'products' || $section|lower eq 'suppliers' || $section|lower eq 'ports' || $section|lower eq 'incoterms'))-|block|-else-|none|-/if-|;">
 			<ul>
-				<li class="menuLink"><a href="Main.php?do=affiliatesList">Administrar Clientes</a></li>
-				<li class="menuLink"><a href="Main.php?do=importProductsList">Administrar Productos</a></li>
-				<li class="menuLink"><a href="Main.php?do=importIncotermsList">Administrar Incoterms</a></li>
-				<li class="menuLink"><a href="Main.php?do=importPortsList">Administrar Puertos</a></li>
-				<li class="menuLink"><a href="Main.php?do=importSuppliersList">Administrar Proveedores </a></li>
+				<li class="menuLink"><a href="Main.php?do=affiliatesList">Clientes</a></li>
+				<li class="menuLink"><a href="Main.php?do=affiliatesUserList">Usurios de Clientes</a></li>
+				<li class="menuLink"><a href="Main.php?do=importSuppliersList">Proveedores </a></li>
+				<li class="menuLink"><a href="Main.php?do=importProductsList">Productos</a></li>
+				<li class="menuLink"><a href="Main.php?do=importIncotermsList">Incoterms</a></li>
+				<li class="menuLink"><a href="Main.php?do=importPortsList">Puertos</a></li>
 				<li class="menuLink"><a href="Main.php?do=usersList">Usuarios</a></li>
 				<li class="menuLink"><a href="Main.php?do=usersGroupsList">Grupos de Usuarios</a></li>
 				<li class="menuLink"><a href="Main.php?do=usersLevelsList">Niveles Usuarios</a></li>

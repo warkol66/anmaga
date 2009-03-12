@@ -6,3 +6,4 @@
 <br>|-$parameters.affiliateNews-|
 |-/if-|
 </p>
+|-include file='AffiliatesUsersWelcomeInclude.tpl'-|
