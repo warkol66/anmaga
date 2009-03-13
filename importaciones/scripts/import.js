@@ -73,3 +73,13 @@ function importUpdateItemsBySupplier(supplierId,clientQuotationId) {
 	return true;	
 
 }
+
+function importSelectAllByName(name) {
+	var elements = document.getElementsByName(name);
+	
+	for (var i=0; i < elements.length; i++) {
+		elements[i].checked = 'checked';
+	};
+	
+	return true;
+}
