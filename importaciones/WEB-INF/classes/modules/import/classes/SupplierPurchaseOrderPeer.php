@@ -23,5 +23,7 @@
  * @package    anmaga
  */
 class SupplierPurchaseOrderPeer extends BaseSupplierPurchaseOrderPeer {
+	
+	
 
 } // SupplierPurchaseOrderPeer

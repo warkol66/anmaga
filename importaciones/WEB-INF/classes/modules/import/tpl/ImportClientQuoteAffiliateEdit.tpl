@@ -4,6 +4,9 @@
 <div id="messages">
 	|-if $message eq "created"-|
 		<div class="successMessage">Cotización creada correctamente.</div>
+	|-/if-|
+	|-if $message eq "accepted"-|
+		<div class="successMessage">Se aceptado la cotizacion.</div>
 	|-/if-|	
 </div>
 

@@ -7,12 +7,12 @@ require_once("SupplierPeer.php");
 require_once("PortPeer.php");
 require_once("IncotermPeer.php");
 
-class ImportClientQuoteHistoryAction extends BaseAction {
+class ImportClientQuotationAcceptAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportClientQuoteHistoryAction() {
+	function ImportClientQuotationAcceptAction() {
 		;
 	}
 
@@ -50,32 +50,46 @@ class ImportClientQuoteHistoryAction extends BaseAction {
 		
 		$smarty->assign("message",$_GET["message"]);
 		
+		$products = ProductPeer::getAll();
+		$smarty->assign('products',$products);
+
 		$clientQuotationPeer = new ClientQuotationPeer();
+		$clientQuotation = $clientQuotationPeer->get($_POST['clienQuotationId']);
+		
+		if (empty($clientQuotation)) {
+			return $mapping->findForwardConfig('failure');
+		}
+
+		//procesamos los items seleccionados
+		$items = array();
+		foreach ($_POST['clientQuoteItems'] as $key) {
+			$item = ClientQuotationItemPeer::get($key);
+			if (!empty($item)) {
+				array_push($items,$item);
+			}
+		}
 
 		if (Common::isAdmin()) {
 			
-			//traemos la cotizacion
-			$clientQuotation = $clientQuotationPeer->get($_GET["id"]);
-			
-			$smarty->assign("clientQuotation",$clientQuotation);
-			$smarty->assign("suppliers",$suppliers);
-			$smarty->assign("incoterms",$incoterms);
-			$smarty->assign("ports",$ports);
-			return $mapping->findForwardConfig('success-admin');
+			$params = array();
+			$params['id'] = $clientQuotation->getId();
+			$user = Common::getAdminLogged();
+			$clientPurchaseOrder = $clientQuotation->createClientPurchaseOrder($items,'',$user);
+
+			return $this->addParamsToForwards($params,$mapping,'success');
 		}
 
 		if (Common::isAffiliatedUser()) {
 			//Traemos todas las cotizaciones de ese afiliado.
 			$affiliateUser = Common::getAffiliatedLogged();
 			$affiliate = $affiliateUser->getAffiliate();
-			$clientQuotation = $affiliate->getClientQuotation($_GET['id']);
-			
-			if (empty($clientQuotation)) {
-				return $mapping->findForwardConfig('failure');
-			}
-			
-			$smarty->assign("clientQuotation",$clientQuotation);
-			return $mapping->findForwardConfig('success-affiliate');
+
+			$clientPurchaseOrder = $clientQuotation->createClientPurchaseOrder($items,$affiliateUser);
+
+			$params = array();
+			$params['id'] = $clientQuotation->getId();
+
+			return $this->addParamsToForwards($params,$mapping,'success');
 		}
 		
 		

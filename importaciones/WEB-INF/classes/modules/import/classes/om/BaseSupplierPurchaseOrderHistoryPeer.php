@@ -30,8 +30,8 @@ abstract class BaseSupplierPurchaseOrderHistoryPeer {
 	/** the column name for the SUPPLIERPURCHASEORDERID field */
 	const SUPPLIERPURCHASEORDERID = 'import_supplierPurchaseOrderHistory.SUPPLIERPURCHASEORDERID';
 
-	/** the column name for the STATUSCODE field */
-	const STATUSCODE = 'import_supplierPurchaseOrderHistory.STATUSCODE';
+	/** the column name for the STATUS field */
+	const STATUS = 'import_supplierPurchaseOrderHistory.STATUS';
 
 	/** the column name for the COMMENTS field */
 	const COMMENTS = 'import_supplierPurchaseOrderHistory.COMMENTS';
@@ -60,10 +60,10 @@ abstract class BaseSupplierPurchaseOrderHistoryPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Supplierpurchaseorderid', 'Statuscode', 'Comments', 'Createdat', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'supplierpurchaseorderid', 'statuscode', 'comments', 'createdat', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::SUPPLIERPURCHASEORDERID, self::STATUSCODE, self::COMMENTS, self::CREATEDAT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'supplierPurchaseOrderId', 'statusCode', 'comments', 'createdAt', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Supplierpurchaseorderid', 'Status', 'Comments', 'Createdat', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'supplierpurchaseorderid', 'status', 'comments', 'createdat', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::SUPPLIERPURCHASEORDERID, self::STATUS, self::COMMENTS, self::CREATEDAT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'supplierPurchaseOrderId', 'status', 'comments', 'createdAt', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
@@ -74,10 +74,10 @@ abstract class BaseSupplierPurchaseOrderHistoryPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Supplierpurchaseorderid' => 1, 'Statuscode' => 2, 'Comments' => 3, 'Createdat' => 4, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'supplierpurchaseorderid' => 1, 'statuscode' => 2, 'comments' => 3, 'createdat' => 4, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SUPPLIERPURCHASEORDERID => 1, self::STATUSCODE => 2, self::COMMENTS => 3, self::CREATEDAT => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'supplierPurchaseOrderId' => 1, 'statusCode' => 2, 'comments' => 3, 'createdAt' => 4, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Supplierpurchaseorderid' => 1, 'Status' => 2, 'Comments' => 3, 'Createdat' => 4, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'supplierpurchaseorderid' => 1, 'status' => 2, 'comments' => 3, 'createdat' => 4, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SUPPLIERPURCHASEORDERID => 1, self::STATUS => 2, self::COMMENTS => 3, self::CREATEDAT => 4, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'supplierPurchaseOrderId' => 1, 'status' => 2, 'comments' => 3, 'createdAt' => 4, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
@@ -164,7 +164,7 @@ abstract class BaseSupplierPurchaseOrderHistoryPeer {
 
 		$criteria->addSelectColumn(SupplierPurchaseOrderHistoryPeer::SUPPLIERPURCHASEORDERID);
 
-		$criteria->addSelectColumn(SupplierPurchaseOrderHistoryPeer::STATUSCODE);
+		$criteria->addSelectColumn(SupplierPurchaseOrderHistoryPeer::STATUS);
 
 		$criteria->addSelectColumn(SupplierPurchaseOrderHistoryPeer::COMMENTS);
 

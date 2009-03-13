@@ -1,7 +1,7 @@
 <div id="clientQuotationItemLister">
 	
 <form action="Main.php" method="post" >
-		|-if not $clientQuotation->isQuoted()-|
+		|-if not $clientQuotation->isQuoted() and not $clientQuotation->isAccepted() and not $clientQuotation->isPartiallyAccepted()-|
 		<p>Para generar la solicitud de cotización al proveedor, seleccione un proveedor, al seleccionarlo, se marcaran
 		 automáticamente los productos asociados al mismo. Para generar la solicitud de cotización y haga click en el botón de generar solicitud con el Incoterm y puerto seleccionado. </p>
 			<select name="supplierId" onChange="javascript:importUpdateItemsBySupplier(this.value,|-$clientQuotation->getId()-|)">
@@ -38,7 +38,14 @@
 		|-foreach from=$clientQuotation->getClientQuotationItems() item=item name=for_clientQuotationsItems-|
 		|-assign var=product value=$item->getProduct()-|
 		<tr>
-			<th>|-if not $item->hasASupplierQuotationRelated()-|<input type="checkbox" href="../actions/ImportIncotermsDoActivateAction.php" title="ImportIncotermsDoActivateAction" name="clientQuoteItems[]" value="|-$item->getId()-|" id="checkboxItem|-$item->getId()-|" />|-else-|<input type="checkbox" name="Quoted" value="" disabled="disabled" id="checkboxItem|-$item->getId()-|"/>|-/if-|</th>
+			<th>
+				|-if not $item->hasASupplierQuotationRelated()-|
+					<input type="checkbox" href="../actions/ImportIncotermsDoActivateAction.php" title="ImportIncotermsDoActivateAction" name="clientQuoteItems[]" value="|-$item->getId()-|" id="checkboxItem|-$item->getId()-|" />
+				|-elseif $clientQuotation->isQuoted()-|
+					<input type="checkbox" title="ImportIncotermsDoActivateAction" name="clientQuoteItems[]" value="|-$item->getId()-|" id="checkboxItem|-$item->getId()-|" />
+				|-else-|
+					<input type="checkbox" name="Quoted" value="" disabled="disabled" id="checkboxItem|-$item->getId()-|"/>
+				|-/if-|</th>
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
 			<td>|-$item->getQuantity()-|</td>
@@ -58,9 +65,21 @@
 		|-/foreach-|
 	</table>
 
-		|-if not $clientQuotation->isQuoted()-|
+		|-if not $clientQuotation->isQuoted() and not $clientQuotation->isAccepted() and not $clientQuotation->isPartiallyAccepted()-|
 		<p>	<br /><input type="hidden" name="do" value="importSupplierQuoteCreate" />
-			<input type="submit" value="Generar Solicitud de Cotización a Proveedor con los productos seleccionados" /></p>
+			<input type="submit" value="Generar Solicitud de Cotización a Proveedor con los productos seleccionados" />
+		</p>
+		|-/if-|
+		
+		|-if $clientQuotation->isQuoted()-|
+		<p>
+			<input type="button" name="selectAll" value="Seleccionar Todos" onClick="javascript:importSelectAllByName('clientQuoteItems[]')" />
+		</p>
+		<p>
+			<input type="hidden" name="clienQuotationId" value="|-$clientQuotation->getId()-|" />
+			<input type="hidden" name="do" value="importClientQuotationAccept" id="do" />
+			<input type="submit" value="Aceptar Cotizacion de Elementos Seleccionados" />
+		</p>
 		|-/if-|
 </form>
 

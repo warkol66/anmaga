@@ -28,6 +28,9 @@ class ClientQuotation extends BaseClientQuotation {
 	const STATUS_WAITING_FOR_PRICING = 3;
 	const STATUS_PARTIALLY_QUOTED = 4;
 	const STATUS_QUOTED = 5;
+	const STATUS_ACCEPTED = 6;
+	const STATUS_PARTIALLY_ACCEPTED = 7;
+	const STATUS_REJECTED = 8;
 	
 	//nombre de los estados para los clientes
 	private $statusNamesClient = array(
@@ -36,6 +39,9 @@ class ClientQuotation extends BaseClientQuotation {
 								ClientQuotation::STATUS_WAITING_FOR_PRICING => 'In Progress',
 								ClientQuotation::STATUS_PARTIALLY_QUOTED => 'Partially Quoted',
 								ClientQuotation::STATUS_QUOTED => 'Quoted',
+								ClientQuotation::STATUS_ACCEPTED => 'Accepted',
+								ClientQuotation::STATUS_PARTIALLY_ACCEPTED => 'Partially Accepted',
+								ClientQuotation::STATUS_REJECTED => 'Rejected'								
 							);
 
 	//nombre de los estados para los administradores
@@ -45,6 +51,9 @@ class ClientQuotation extends BaseClientQuotation {
 								ClientQuotation::STATUS_WAITING_FOR_PRICING => 'Waiting For Pricing',
 								ClientQuotation::STATUS_PARTIALLY_QUOTED => 'Waiting For Pricing',
 								ClientQuotation::STATUS_QUOTED => 'Quoted',
+								ClientQuotation::STATUS_ACCEPTED => 'Accepted',
+								ClientQuotation::STATUS_PARTIALLY_ACCEPTED => 'Partially Accepted',
+								ClientQuotation::STATUS_REJECTED => 'Rejected'
 							);							
 
 	/**
@@ -200,6 +209,22 @@ class ClientQuotation extends BaseClientQuotation {
 	public function isQuoted() {
 		return ($this->getStatus() == ClientQuotation::STATUS_QUOTED);
 	}
+
+	/**
+	 * Indica si la cotizacion se encuentra aceptada
+	 * @return boolean
+	 */
+	public function isAccepted() {
+		return ($this->getStatus() == ClientQuotation::STATUS_ACCEPTED);
+	}
+	
+	/**
+	 * Indica si la cotizacion se encuentra parcialmente aceptada
+	 * @return boolean
+	 */
+	public function isPartiallyAccepted() {
+		return ($this->getStatus() == ClientQuotation::STATUS_PARTIALLY_ACCEPTED);
+	}	
 	
 	/**
 	 * Obtiene aquellos items de la orden
@@ -235,6 +260,166 @@ class ClientQuotation extends BaseClientQuotation {
 		$criteria->setDistinct();
 		
 		return SupplierPeer::doSelect($criteria);
+	}
+	
+	/**
+	 * crea una clientPurchaseOrder
+	 * @param array $items array de instancias de ClientQuotationItem
+	 * @param AffiliateUser $affiliateUser usuario afiliado que crea la instancia (si es el caso)
+	 * @param User $user usuario administrador que crea la instancia (si es el caso)
+	 * @return ClientPurchaseOrder
+	 */
+	private function buildClientPurchaseOrder($items,$affiliateUser='',$user='') {
+	
+		require_once('ClientPurchaseOrder.php');
+		require_once('ClientPurchaseOrderItem.php');
+		
+		$clientPurchaseOrder = new ClientPurchaseOrder();
+		$clientPurchaseOrder->setCreatedAt(time());
+		$clientPurchaseOrder->setStatus(ClientPurchaseOrder::STATUS_ORDERED_TO_SUPPLIER);
+		$clientPurchaseOrder->setClientQuotation($this);
+		$clientPurchaseOrder->setAffiliateId($this->getAffiliateId());
+
+		if (!empty($affiliateUser)) {
+			$clientPurchaseOrder->setAffiliateUser($affiliateUser);
+		}
+		
+		if (!empty($user)) {
+			$clientPurchaseOrder->setUser($user);
+		}
+		
+		foreach ($items as $item) {
+			$clientPurchaseOrderItem = new ClientPurchaseOrderItem();
+			$clientPurchaseOrderItem->setProductId($item->getProductId());
+			$clientPurchaseOrderItem->setQuantity($item->getQuantity());
+			$clientPurchaseOrderItem->setPrice($item->getPrice());
+			$clientPurchaseOrder->addClientPurchaseOrderItem($clientPurchaseOrderItem);
+		}
+		
+		return $clientPurchaseOrder;
+	
+	}
+	
+	/**
+	 * crea una supplierPurchaseOrder
+	 * @param array $items array de instancias de ClientQuotationItem
+	 * @param AffiliateUser $affiliateUser usuario afiliado que crea la instancia (si es el caso)
+	 * @param User $user usuario administrador que crea la instancia (si es el caso)
+	 * @return ClientPurchaseOrder
+	 */
+	private function buildSupplierPurchaseOrders($items,$affiliateUser='',$user='') {
+	
+		require_once('SupplierPurchaseOrder.php');
+		require_once('SupplierPurchaseOrderItem.php');
+		require_once('SupplierQuotationPeer.php');
+
+		$supplierItemsSorted = array();
+		foreach ($items as $item) {
+			$supplierItem = $item->getSupplierQuotationItem();
+			if (!isset($supplierItemsSorted[$supplierItem->getSupplierQuotationId()])) {
+				$supplierItemsSorted[$supplierItem->getSupplierQuotationId()] = array();
+			}
+			array_push($supplierItemsSorted[$supplierItem->getSupplierQuotationId()],$supplierItem);
+		}
+		
+		$supplierPurchaseOrders = array();
+		
+		foreach ($supplierItemsSorted as $supplierQuotationId => $supplierItems) {
+
+			$supplierQuotation = SupplierQuotationPeer::get($supplierQuotationId);
+
+			$supplierPurchaseOrder = new SupplierPurchaseOrder();
+			$supplierPurchaseOrder->setCreatedAt(time());
+			$supplierPurchaseOrder->setSupplierId($supplierQuotation->getSupplierId());
+			$supplierPurchaseOrder->setStatus(SupplierPurchaseOrder::STATUS_FABRICATION_NON_INITIATED);
+			$supplierPurchaseOrder->setSupplierQuotationId($supplierQuotation);
+			$supplierPurchaseOrder->setClientQuotationId($this);
+			$supplierPurchaseOrder->setAffiliateId($this->getAffiliateId());
+
+			if (!empty($affiliateUser)) {
+				$supplierPurchaseOrder->setAffiliateUser($affiliateUser);
+			}
+
+			if (!empty($user)) {
+				$supplierPurchaseOrder->setUser($user);
+			}
+
+			foreach ($supplierItems as $supplierItem) {
+
+				$supplierPurchaseOrderItem = new SupplierPurchaseOrderItem();
+				$supplierPurchaseOrderItem->setProductId($supplierItem->getProductId());
+				$supplierPurchaseOrderItem->setQuantity($supplierItem->getQuantity());
+				$supplierPurchaseOrderItem->setPortId($supplierItem->getPortId());
+				$supplierPurchaseOrderItem->setIncotermId($supplierItem->getIncotermId());
+				$supplierPurchaseOrderItem->setPrice($supplierItem->getPrice());
+				$supplierPurchaseOrderItem->setDelivery($supplierItem->getDelivery());
+				$supplierPurchaseOrderItem->setPackage($supplierItem->getPackage());
+				$supplierPurchaseOrderItem->setUnitLength($supplierItem->getUnitLength());
+				$supplierPurchaseOrderItem->setUnitWidth($supplierItem->getUnitWidth());
+				$supplierPurchaseOrderItem->setUnitHeight($supplierItem->getUnitHeight());
+				$supplierPurchaseOrderItem->setUnitGrossWeigth($supplierItem->getUnitGrossWeigth());
+				$supplierPurchaseOrderItem->setUnitsPerCarton($supplierItem->getUnitsPerCarton());
+				$supplierPurchaseOrderItem->setCartons($supplierItem->getCartons());
+				$supplierPurchaseOrderItem->setCartonLength($supplierItem->getCartonLength());
+				$supplierPurchaseOrderItem->setCartonWidth($supplierItem->getCartonWidth());
+				$supplierPurchaseOrderItem->setCartonHeight($supplierItem->getCartonHeight());
+				$supplierPurchaseOrderItem->setCartonGrossWeigth($supplierItem->getCartonGrossWeigth());																																	
+				$supplierPurchaseOrder->addSupplierPurchaseOrderItem($supplierPurchaseOrderItem);
+			}
+			
+			array_push($supplierPurchaseOrders,$supplierPurchaseOrder);
+			
+		}
+	
+		
+		return $supplierPurchaseOrders;
+	
+	}	
+	
+	
+	/**
+	 * Factory Method que genera una ClientPurchaseOrder Relacionada a la Cotizacion
+	 * @param array $items array de instancias de ClientQuotationItem
+	 * @param AffiliateUser $affiliateUser usuario afiliado que crea la instancia (si es el caso)
+	 * @param User $user usuario administrador que crea la instancia (si es el caso)
+	 * @return ClientPurchaseOrder
+	 */
+	public function createClientPurchaseOrder($items,$affiliateUser='',$user='') {
+		
+		try {
+			
+			//generacion de pedido del cliente
+			$clientPurchaseOrder = $this->buildClientPurchaseOrder($items,$affiliateUser,$user);
+			$clientPurchaseOrder->save();
+			$clientPurchaseOrder->saveCurrentStatusOnHistory();
+			
+			$supplierPurchaseOrders = $this->buildSupplierPurchaseOrders($items,$affiliateUser,$user);
+
+			//generacion de los pedidios a los distintos proveedores
+			foreach ($supplierPurchaseOrders as $supplierPurchaseOrder) {
+				$supplierPurchaseOrder->save();
+				$supplierPurchaseOrder->saveCurrentStatusOnHistory();
+			}
+			
+			//cambiamos el status de la clientQuotation
+			
+			if (count($items) == $this->countClientQuotationItems()) {
+				$this->setStatus(ClientQuotation::STATUS_ACCEPTED);
+			}
+			else {
+				$this->setStatus(ClientQuotation::STATUS_PARTIALLY_ACCEPTED);
+			}
+			
+			$this->save();
+			$this->saveCurrentStatusOnHistory();
+
+			
+		} catch (PropelException $e) {
+			return false;
+		}
+
+		return $clientPurchaseOrder;
+		
 	}
 	
 } // ClientQuotation

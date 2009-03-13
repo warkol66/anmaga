@@ -1,5 +1,7 @@
 <?php
 
+require_once 'import/classes/map/SupplierPurchaseOrderItemMapBuilder.php';
+require_once 'import/classes/SupplierPurchaseOrderItemPeer.php';
 require 'import/classes/om/BaseSupplierPurchaseOrderItem.php';
 
 

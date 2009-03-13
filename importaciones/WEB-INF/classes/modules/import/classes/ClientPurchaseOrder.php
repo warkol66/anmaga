@@ -1,5 +1,7 @@
 <?php
 
+require_once 'import/classes/map/ClientPurchaseOrderHistoryMapBuilder.php';
+require_once 'import/classes/ClientPurchaseOrderHistoryPeer.php';
 require_once 'import/classes/om/BaseClientPurchaseOrder.php';
 
 
@@ -19,5 +21,36 @@ require_once 'import/classes/om/BaseClientPurchaseOrder.php';
  * @package    anmaga
  */
 class ClientPurchaseOrder extends BaseClientPurchaseOrder {
+	
+	const STATUS_ORDERED_TO_SUPPLIER = 1;
+	const STATUS_IN_PRODUCTION = 2;
+	const STATUS_WAITING_FOR_TRANSPORT = 3;
+	const STATUS_SHIPPED = 4;
+	const STATUS_ARRIVED = 5;
+	const STATUS_DELIVERED_TO_CLIENT = 6;
+	
+	/**
+	 * Saves the current status of the instance in his history
+	 * @return boolean
+	 */
+	public function saveCurrentStatusOnHistory() {
+		
+		require_once('ClientPurchaseOrderHistory.php');
+		
+		try {
+
+			$clientPurchaseOrderHistory = new ClientPurchaseOrderHistory();
+			$clientPurchaseOrderHistory->setClientPurchaseOrder($this);
+			$clientPurchaseOrderHistory->setStatus($this->getStatus());
+			$clientPurchaseOrderHistory->setCreatedAt(time());
+			$clientPurchaseOrderHistory->save();
+			
+		} catch (Exception $e) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 
 } // ClientPurchaseOrder

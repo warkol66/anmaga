@@ -229,7 +229,7 @@
 	<table name="import_clientPurchaseOrderHistory" phpName='ClientPurchaseOrderHistory' description="Historial de Estados por los que fue pasando la Orden de Pedido a Cliente">
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id" autoIncrement="true"/>
 		<column name="clientPurchaseOrderId" required="true" type="INTEGER" description="Id de orden de pedido a proveedor"/>
-	  	<column name="statusCode" type="INTEGER" required="true" description="Codigo del estado guardado." />
+	  	<column name="status" type="INTEGER" required="true" description="Codigo del estado guardado." />
 		<column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
 
 		<foreign-key foreignTable="import_clientPurchaseOrder" >
@@ -320,7 +320,7 @@
 	<table name="import_supplierPurchaseOrderHistory" phpName='SupplierPurchaseOrderHistory' description="Historial de Estados por los que fue pasando la Orden de Pedido a Proveedor">
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id" autoIncrement="true"/>
 		<column name="supplierPurchaseOrderId" required="true" type="INTEGER" description="Id de orden de pedido a proveedor"/>
-	  	<column name="statusCode" type="INTEGER" required="true" description="Codigo del estado guardado." />
+	  	<column name="status" type="INTEGER" required="true" description="Codigo del estado guardado." />
 		<column name="comments" type="VARCHAR" size="255" description="Comentarios." />
 		<column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
 

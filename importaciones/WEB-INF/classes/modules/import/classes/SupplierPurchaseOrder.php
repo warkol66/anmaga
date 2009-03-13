@@ -1,5 +1,7 @@
 <?php
 
+require_once 'import/classes/map/SupplierPurchaseOrderHistoryMapBuilder.php';
+require_once 'import/classes/SupplierPurchaseOrderHistoryPeer.php';
 require_once 'import/classes/om/BaseSupplierPurchaseOrder.php';
 
 
@@ -19,5 +21,30 @@ require_once 'import/classes/om/BaseSupplierPurchaseOrder.php';
  * @package    anmaga
  */
 class SupplierPurchaseOrder extends BaseSupplierPurchaseOrder {
+	
+	const STATUS_FABRICATION_NON_INITIATED = 1;
+	
+	/**
+	 * Saves the current status of the instance in his history
+	 * @return boolean
+	 */
+	public function saveCurrentStatusOnHistory() {
+		
+		require_once('SupplierPurchaseOrderHistory.php');
+		
+		try {
+
+			$supplierPurchaseOrderHistory = new SupplierPurchaseOrderHistory();
+			$supplierPurchaseOrderHistory->setSupplierPurchaseOrder($this);
+			$supplierPurchaseOrderHistory->setStatus($this->getStatus());
+			$supplierPurchaseOrderHistory->setCreatedAt(time());
+			$supplierPurchaseOrderHistory->save();
+			
+		} catch (Exception $e) {
+			return false;
+		}
+		
+		return true;
+	}	
 
 } // SupplierPurchaseOrder

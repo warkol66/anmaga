@@ -30,8 +30,8 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 	/** the column name for the CLIENTPURCHASEORDERID field */
 	const CLIENTPURCHASEORDERID = 'import_clientPurchaseOrderHistory.CLIENTPURCHASEORDERID';
 
-	/** the column name for the STATUSCODE field */
-	const STATUSCODE = 'import_clientPurchaseOrderHistory.STATUSCODE';
+	/** the column name for the STATUS field */
+	const STATUS = 'import_clientPurchaseOrderHistory.STATUS';
 
 	/** the column name for the CREATEDAT field */
 	const CREATEDAT = 'import_clientPurchaseOrderHistory.CREATEDAT';
@@ -57,10 +57,10 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Clientpurchaseorderid', 'Statuscode', 'Createdat', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'clientpurchaseorderid', 'statuscode', 'createdat', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::CLIENTPURCHASEORDERID, self::STATUSCODE, self::CREATEDAT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'clientPurchaseOrderId', 'statusCode', 'createdAt', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Clientpurchaseorderid', 'Status', 'Createdat', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'clientpurchaseorderid', 'status', 'createdat', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::CLIENTPURCHASEORDERID, self::STATUS, self::CREATEDAT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'clientPurchaseOrderId', 'status', 'createdAt', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
@@ -71,10 +71,10 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Clientpurchaseorderid' => 1, 'Statuscode' => 2, 'Createdat' => 3, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'clientpurchaseorderid' => 1, 'statuscode' => 2, 'createdat' => 3, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CLIENTPURCHASEORDERID => 1, self::STATUSCODE => 2, self::CREATEDAT => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'clientPurchaseOrderId' => 1, 'statusCode' => 2, 'createdAt' => 3, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Clientpurchaseorderid' => 1, 'Status' => 2, 'Createdat' => 3, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'clientpurchaseorderid' => 1, 'status' => 2, 'createdat' => 3, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CLIENTPURCHASEORDERID => 1, self::STATUS => 2, self::CREATEDAT => 3, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'clientPurchaseOrderId' => 1, 'status' => 2, 'createdAt' => 3, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
@@ -161,7 +161,7 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 
 		$criteria->addSelectColumn(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID);
 
-		$criteria->addSelectColumn(ClientPurchaseOrderHistoryPeer::STATUSCODE);
+		$criteria->addSelectColumn(ClientPurchaseOrderHistoryPeer::STATUS);
 
 		$criteria->addSelectColumn(ClientPurchaseOrderHistoryPeer::CREATEDAT);
 

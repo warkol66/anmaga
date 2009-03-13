@@ -31,10 +31,10 @@ abstract class BaseClientPurchaseOrderHistory extends BaseObject  implements Per
 	protected $clientpurchaseorderid;
 
 	/**
-	 * The value for the statuscode field.
+	 * The value for the status field.
 	 * @var        int
 	 */
-	protected $statuscode;
+	protected $status;
 
 	/**
 	 * The value for the createdat field.
@@ -102,13 +102,13 @@ abstract class BaseClientPurchaseOrderHistory extends BaseObject  implements Per
 	}
 
 	/**
-	 * Get the [statuscode] column value.
+	 * Get the [status] column value.
 	 * Codigo del estado guardado.
 	 * @return     int
 	 */
-	public function getStatuscode()
+	public function getStatus()
 	{
-		return $this->statuscode;
+		return $this->status;
 	}
 
 	/**
@@ -194,24 +194,24 @@ abstract class BaseClientPurchaseOrderHistory extends BaseObject  implements Per
 	} // setClientpurchaseorderid()
 
 	/**
-	 * Set the value of [statuscode] column.
+	 * Set the value of [status] column.
 	 * Codigo del estado guardado.
 	 * @param      int $v new value
 	 * @return     ClientPurchaseOrderHistory The current object (for fluent API support)
 	 */
-	public function setStatuscode($v)
+	public function setStatus($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->statuscode !== $v) {
-			$this->statuscode = $v;
-			$this->modifiedColumns[] = ClientPurchaseOrderHistoryPeer::STATUSCODE;
+		if ($this->status !== $v) {
+			$this->status = $v;
+			$this->modifiedColumns[] = ClientPurchaseOrderHistoryPeer::STATUS;
 		}
 
 		return $this;
-	} // setStatuscode()
+	} // setStatus()
 
 	/**
 	 * Sets the value of [createdat] column to a normalized version of the date/time value specified.
@@ -301,7 +301,7 @@ abstract class BaseClientPurchaseOrderHistory extends BaseObject  implements Per
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->clientpurchaseorderid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-			$this->statuscode = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->status = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
 			$this->createdat = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
 			$this->resetModified();
 
@@ -598,7 +598,7 @@ abstract class BaseClientPurchaseOrderHistory extends BaseObject  implements Per
 
 		if ($this->isColumnModified(ClientPurchaseOrderHistoryPeer::ID)) $criteria->add(ClientPurchaseOrderHistoryPeer::ID, $this->id);
 		if ($this->isColumnModified(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID)) $criteria->add(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, $this->clientpurchaseorderid);
-		if ($this->isColumnModified(ClientPurchaseOrderHistoryPeer::STATUSCODE)) $criteria->add(ClientPurchaseOrderHistoryPeer::STATUSCODE, $this->statuscode);
+		if ($this->isColumnModified(ClientPurchaseOrderHistoryPeer::STATUS)) $criteria->add(ClientPurchaseOrderHistoryPeer::STATUS, $this->status);
 		if ($this->isColumnModified(ClientPurchaseOrderHistoryPeer::CREATEDAT)) $criteria->add(ClientPurchaseOrderHistoryPeer::CREATEDAT, $this->createdat);
 
 		return $criteria;
@@ -656,7 +656,7 @@ abstract class BaseClientPurchaseOrderHistory extends BaseObject  implements Per
 
 		$copyObj->setClientpurchaseorderid($this->clientpurchaseorderid);
 
-		$copyObj->setStatuscode($this->statuscode);
+		$copyObj->setStatus($this->status);
 
 		$copyObj->setCreatedat($this->createdat);
 

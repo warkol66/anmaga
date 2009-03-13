@@ -31,10 +31,10 @@ abstract class BaseSupplierPurchaseOrderHistory extends BaseObject  implements P
 	protected $supplierpurchaseorderid;
 
 	/**
-	 * The value for the statuscode field.
+	 * The value for the status field.
 	 * @var        int
 	 */
-	protected $statuscode;
+	protected $status;
 
 	/**
 	 * The value for the comments field.
@@ -108,13 +108,13 @@ abstract class BaseSupplierPurchaseOrderHistory extends BaseObject  implements P
 	}
 
 	/**
-	 * Get the [statuscode] column value.
+	 * Get the [status] column value.
 	 * Codigo del estado guardado.
 	 * @return     int
 	 */
-	public function getStatuscode()
+	public function getStatus()
 	{
-		return $this->statuscode;
+		return $this->status;
 	}
 
 	/**
@@ -210,24 +210,24 @@ abstract class BaseSupplierPurchaseOrderHistory extends BaseObject  implements P
 	} // setSupplierpurchaseorderid()
 
 	/**
-	 * Set the value of [statuscode] column.
+	 * Set the value of [status] column.
 	 * Codigo del estado guardado.
 	 * @param      int $v new value
 	 * @return     SupplierPurchaseOrderHistory The current object (for fluent API support)
 	 */
-	public function setStatuscode($v)
+	public function setStatus($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->statuscode !== $v) {
-			$this->statuscode = $v;
-			$this->modifiedColumns[] = SupplierPurchaseOrderHistoryPeer::STATUSCODE;
+		if ($this->status !== $v) {
+			$this->status = $v;
+			$this->modifiedColumns[] = SupplierPurchaseOrderHistoryPeer::STATUS;
 		}
 
 		return $this;
-	} // setStatuscode()
+	} // setStatus()
 
 	/**
 	 * Set the value of [comments] column.
@@ -337,7 +337,7 @@ abstract class BaseSupplierPurchaseOrderHistory extends BaseObject  implements P
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->supplierpurchaseorderid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-			$this->statuscode = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->status = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
 			$this->comments = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
 			$this->createdat = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
 			$this->resetModified();
@@ -635,7 +635,7 @@ abstract class BaseSupplierPurchaseOrderHistory extends BaseObject  implements P
 
 		if ($this->isColumnModified(SupplierPurchaseOrderHistoryPeer::ID)) $criteria->add(SupplierPurchaseOrderHistoryPeer::ID, $this->id);
 		if ($this->isColumnModified(SupplierPurchaseOrderHistoryPeer::SUPPLIERPURCHASEORDERID)) $criteria->add(SupplierPurchaseOrderHistoryPeer::SUPPLIERPURCHASEORDERID, $this->supplierpurchaseorderid);
-		if ($this->isColumnModified(SupplierPurchaseOrderHistoryPeer::STATUSCODE)) $criteria->add(SupplierPurchaseOrderHistoryPeer::STATUSCODE, $this->statuscode);
+		if ($this->isColumnModified(SupplierPurchaseOrderHistoryPeer::STATUS)) $criteria->add(SupplierPurchaseOrderHistoryPeer::STATUS, $this->status);
 		if ($this->isColumnModified(SupplierPurchaseOrderHistoryPeer::COMMENTS)) $criteria->add(SupplierPurchaseOrderHistoryPeer::COMMENTS, $this->comments);
 		if ($this->isColumnModified(SupplierPurchaseOrderHistoryPeer::CREATEDAT)) $criteria->add(SupplierPurchaseOrderHistoryPeer::CREATEDAT, $this->createdat);
 
@@ -694,7 +694,7 @@ abstract class BaseSupplierPurchaseOrderHistory extends BaseObject  implements P
 
 		$copyObj->setSupplierpurchaseorderid($this->supplierpurchaseorderid);
 
-		$copyObj->setStatuscode($this->statuscode);
+		$copyObj->setStatus($this->status);
 
 		$copyObj->setComments($this->comments);
 

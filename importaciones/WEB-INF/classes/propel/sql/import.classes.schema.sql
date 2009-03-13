@@ -340,7 +340,7 @@ CREATE TABLE `import_clientPurchaseOrderHistory`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id',
 	`clientPurchaseOrderId` INTEGER  NOT NULL COMMENT 'Id de orden de pedido a proveedor',
-	`statusCode` INTEGER  NOT NULL COMMENT 'Codigo del estado guardado.',
+	`status` INTEGER  NOT NULL COMMENT 'Codigo del estado guardado.',
 	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
 	PRIMARY KEY (`id`),
 	INDEX `import_clientPurchaseOrderHistory_FI_1` (`clientPurchaseOrderId`),
@@ -453,7 +453,7 @@ CREATE TABLE `import_supplierPurchaseOrderHistory`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id',
 	`supplierPurchaseOrderId` INTEGER  NOT NULL COMMENT 'Id de orden de pedido a proveedor',
-	`statusCode` INTEGER  NOT NULL COMMENT 'Codigo del estado guardado.',
+	`status` INTEGER  NOT NULL COMMENT 'Codigo del estado guardado.',
 	`comments` VARCHAR(255) COMMENT 'Comentarios.',
 	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
 	PRIMARY KEY (`id`),

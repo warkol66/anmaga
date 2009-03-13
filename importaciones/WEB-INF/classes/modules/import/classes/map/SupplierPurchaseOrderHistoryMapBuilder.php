@@ -66,7 +66,7 @@ class SupplierPurchaseOrderHistoryMapBuilder implements MapBuilder {
 
 		$tMap->addForeignKey('SUPPLIERPURCHASEORDERID', 'Supplierpurchaseorderid', 'INTEGER', 'import_supplierPurchaseOrder', 'ID', true, null);
 
-		$tMap->addColumn('STATUSCODE', 'Statuscode', 'INTEGER', true, null);
+		$tMap->addColumn('STATUS', 'Status', 'INTEGER', true, null);
 
 		$tMap->addColumn('COMMENTS', 'Comments', 'VARCHAR', false, 255);
 

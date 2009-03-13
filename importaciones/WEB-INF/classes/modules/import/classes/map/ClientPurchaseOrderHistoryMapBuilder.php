@@ -66,7 +66,7 @@ class ClientPurchaseOrderHistoryMapBuilder implements MapBuilder {
 
 		$tMap->addForeignKey('CLIENTPURCHASEORDERID', 'Clientpurchaseorderid', 'INTEGER', 'import_clientPurchaseOrder', 'ID', true, null);
 
-		$tMap->addColumn('STATUSCODE', 'Statuscode', 'INTEGER', true, null);
+		$tMap->addColumn('STATUS', 'Status', 'INTEGER', true, null);
 
 		$tMap->addColumn('CREATEDAT', 'Createdat', 'TIMESTAMP', true, null);
 

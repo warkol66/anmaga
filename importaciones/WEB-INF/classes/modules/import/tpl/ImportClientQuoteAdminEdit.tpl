@@ -11,6 +11,9 @@
 	|-if $message eq "price-set"-|
 		<div class="successMessage">Se ha fijado un nuevo precio para el cliente.</div>
 	|-/if-|
+	|-if $message eq "accepted"-|
+		<div class="successMessage">Se aceptado la cotizacion.</div>
+	|-/if-|
 </div>
 
 

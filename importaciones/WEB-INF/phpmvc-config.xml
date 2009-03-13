@@ -1092,6 +1092,14 @@
 	<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=price-set" redirect="true"/>
 	</action>
 
+	<action    path = "importClientQuotationAccept"
+	           type = "ImportClientQuotationAcceptAction"
+	           name = "importClientQuotationAccept"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=accepted" redirect="true"/>
+	</action>
+
 <!-- Fin Modulo ImportClientQuote -->
 
 <!-- Modulo ImportSupplierQuote -->
