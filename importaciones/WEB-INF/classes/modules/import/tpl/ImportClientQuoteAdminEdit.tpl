@@ -14,6 +14,9 @@
 	|-if $message eq "accepted"-|
 		<div class="successMessage">Se aceptado la cotizacion.</div>
 	|-/if-|
+	|-if $message eq "rejected"-|
+		<div class="successMessage">Se rechazado la cotizacion.</div>
+	|-/if-|	
 </div>
 
 
@@ -63,7 +66,19 @@
 		<form action="Main.php" method="post">
 			<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
 			<input type="hidden" name="do" value="importClientQuoteAdminConfirm" />
-			<input type="submit" value="Cerrar Cotización (confirma precios ingresados)">
+			<input type="submit" value="Cerrar Cotización (confirma precios ingresados)" />
+		</form>
+	<p>
+	|-/if-|
+</div>
+
+<div id="clientQuotationReject">
+	|-if $clientQuotation->isQuoted()-|
+	<p>
+		<form action="Main.php" method="post">
+			<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
+			<input type="hidden" name="do" value="importClientQuotationReject" />
+			<input type="submit" value="Rechazar Cotización" />
 		</form>
 	<p>
 	|-/if-|

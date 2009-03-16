@@ -1,7 +1,7 @@
 <div id="clientQuotationItemLister">
 	
 <form action="Main.php" method="post" >
-		|-if not $clientQuotation->isQuoted() and not $clientQuotation->isAccepted() and not $clientQuotation->isPartiallyAccepted()-|
+		|-if not $clientQuotation->isQuoted() and not $clientQuotation->isAccepted() and not $clientQuotation->isPartiallyAccepted() and not $clientQuotation->isRejected()-|
 		<p>Para generar la solicitud de cotización al proveedor, seleccione un proveedor, al seleccionarlo, se marcaran
 		 automáticamente los productos asociados al mismo. Para generar la solicitud de cotización y haga click en el botón de generar solicitud con el Incoterm y puerto seleccionado. </p>
 			<select name="supplierId" onChange="javascript:importUpdateItemsBySupplier(this.value,|-$clientQuotation->getId()-|)">
@@ -65,7 +65,7 @@
 		|-/foreach-|
 	</table>
 
-		|-if not $clientQuotation->isQuoted() and not $clientQuotation->isAccepted() and not $clientQuotation->isPartiallyAccepted()-|
+		|-if not $clientQuotation->isQuoted() and not $clientQuotation->isAccepted() and not $clientQuotation->isPartiallyAccepted() and not $clientQuotation->isRejected()-|
 		<p>	<br /><input type="hidden" name="do" value="importSupplierQuoteCreate" />
 			<input type="submit" value="Generar Solicitud de Cotización a Proveedor con los productos seleccionados" />
 		</p>

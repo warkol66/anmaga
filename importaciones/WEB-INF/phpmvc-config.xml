@@ -1100,6 +1100,14 @@
 	<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=accepted" redirect="true"/>
 	</action>
 
+	<action    path = "importClientQuotationReject"
+	           type = "ImportClientQuotationRejectAction"
+	           name = "importClientQuotationReject"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=rejected" redirect="true"/>
+	</action>
+
 <!-- Fin Modulo ImportClientQuote -->
 
 <!-- Modulo ImportSupplierQuote -->

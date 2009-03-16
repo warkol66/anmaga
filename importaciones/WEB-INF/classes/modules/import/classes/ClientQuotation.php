@@ -211,6 +211,15 @@ class ClientQuotation extends BaseClientQuotation {
 	}
 
 	/**
+	 * Indica si la cotizacion se encuentra rechazada
+	 * @return boolean
+	 */
+	public function isRejected() {
+		return ($this->getStatus() == ClientQuotation::STATUS_REJECTED);
+	}
+
+
+	/**
 	 * Indica si la cotizacion se encuentra aceptada
 	 * @return boolean
 	 */
@@ -420,6 +429,23 @@ class ClientQuotation extends BaseClientQuotation {
 
 		return $clientPurchaseOrder;
 		
+	}
+
+	/**
+	 * Rechaza la totalidad de la cotizacion
+	 * @return boolean
+	 */
+	public function reject() {
+
+		try {
+			$this->setStatus(ClientQuotation::STATUS_REJECTED);
+			$this->save();
+			$this->saveCurrentStatusOnHistory();
+		} catch (PropelException $e) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 } // ClientQuotation

@@ -40,3 +40,14 @@
 	|-include file='ImportClientQuoteItemsAffiliateListInclude.tpl' clientQuotation=$clientQuotation-|
 </div>
 
+<div id="clientQuotationReject">
+	|-if $clientQuotation->isQuoted()-|
+	<p>
+		<form action="Main.php" method="post">
+			<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
+			<input type="hidden" name="do" value="importClientQuotationReject" />
+			<input type="submit" value="Rechazar Cotización" />
+		</form>
+	<p>
+	|-/if-|
+</div>
