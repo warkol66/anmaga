@@ -57,13 +57,15 @@ class AffiliatesUsersListAction extends BaseAction {
 		$smarty->assign("module",$module);
 		$smarty->assign("section",$section);
 
-		$usersPeer = new AffiliateUserPeer();
+		$usersPeer = new AffiliateUserPeer();
 		//Si esta logueado un usuario comun
 		if (!empty($_SESSION["loginUser"])) {
 			$affiliateId = $_GET["affiliateId"];
 			if(!empty($affiliateId)) {
 				if ($affiliateId == -1){
-					$users = $usersPeer->getAll();
+		    	$pager = $usersPeer->getAllPaginated();
+					$users = $pager->getResult();
+					$smarty->assign("pager",$pager);
 					$deletedUsers = $usersPeer->getDeleteds();
 				}
 				else{
@@ -72,15 +74,25 @@ class AffiliatesUsersListAction extends BaseAction {
 				}
 			}
     	else {
-				$users = $usersPeer->getAll();
+
+	    	$pager = $usersPeer->getAllPaginated();
+				$users = $pager->getResult();
+				$smarty->assign("pager",$pager);
+
 				$deletedUsers = $usersPeer->getDeleteds();
 			}
-			$affiliates = AffiliatePeer::getAll();
+			$affiliates = new AffiliatePeer();
 			$smarty->assign("affiliates",$affiliates);
 		}
 		else {
 		  $affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
-			$users = $usersPeer->getAffiliate($affiliateId);
+
+
+				$AffiliateUserPeer->setAffiliateId($affiliateId);
+	    	$pager = $usersPeer->getAllPaginatedFiltered();
+				$users = $pager->getResult();
+				$smarty->assign("pager",$pager);
+
 			$deletedUsers = $usersPeer->getDeletedsByAffiliate($affiliateId);
 		}
 
@@ -131,4 +143,3 @@ class AffiliatesUsersListAction extends BaseAction {
 	}
 
 }
-?>

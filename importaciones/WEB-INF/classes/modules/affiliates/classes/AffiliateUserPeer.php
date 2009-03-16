@@ -31,6 +31,32 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
   }
 
 	/**
+	 * Aplica Id de Affiliate
+	 */	
+	public function setAffiliateId($id) {
+
+		$this->setAffiliateId = $id;
+	
+	}
+
+	/**
+	 * Crea una Criteria a partir de las condiciones de filtro ingresadas al peer.
+	 * @return Criteria instancia de criteria
+	 */
+	private function getCriteria() {
+
+		$criteria = new Criteria();
+
+		if (!empty($this->AffiliateId)) {
+			$criteria->add(AffiliateUserPeer::AFFILIATEID, $this->getAffiliateId);
+		}
+
+		return $criteria;
+	
+	}
+
+
+	/**
 	* Obtiene todos los usuarios por afiliado.
 	*
 	*	@return array Informacion sobre todos los usuarios
@@ -42,6 +68,45 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 		$todosObj = AffiliateUserPeer::doSelect($cond);
 		return $todosObj;
   }
+
+  /**
+  * Obtiene todos los los usuarios por afiliado.
+  *
+  * @param int $page [optional] Numero de pagina actual
+  * @param int $perPage [optional] Cantidad de filas por pagina
+  *	@return array Informacion sobre todos los AffiliateUser
+  */
+  function getAllPaginated($page=1,$perPage=-1) {  
+    if ($perPage == -1)
+      $perPage = Common::getRowsPerPage();
+    if (empty($page))
+      $page = 1;
+    require_once("propel/util/PropelPager.php");
+    $cond = new Criteria();     
+		$cond->addAscendingOrderByColumn(AffiliateUserPeer::ID);
+
+    $pager = new PropelPager($cond,"AffiliateUserPeer", "doSelect",$page,$perPage);
+    return $pager;
+   }
+
+  /**
+  * Obtiene todos los usuarios por afiliado paginados con las opciones de filtro asignadas al peer.
+  *
+  * @param int $page [optional] Numero de pagina actual
+  * @param int $perPage [optional] Cantidad de filas por pagina
+  *	@return array Informacion sobre todos los AffiliateUser
+  */
+  function getAllPaginatedFiltered($page=1,$perPage=-1) {  
+    if ($perPage == -1)
+      $perPage = 	Common::getRowsPerPage();
+    if (empty($page))
+      $page = 1;
+    require_once("propel/util/PropelPager.php");
+    $cond = $this->getCriteria();     
+    $pager = new PropelPager($cond,"AffiliateUserPeer", "doSelect",$page,$perPage);
+    return $pager;
+   }
+
 
   /**
   * Obtiene todos los usuarios desactivados.

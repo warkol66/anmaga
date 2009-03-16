@@ -262,77 +262,15 @@ class Common
 		return true;
 	}
 
-/*
-* Ejemplo: Common::debugger(dirname(__FILE__)."/archivo.sql","Query: ",$query);
-*
-*/
-	function debugger($file,$message,$variable){
-  	$handle = fopen($file, "a");
-		fwrite($handle, $message.$variable."\n");
-  	fclose($handle);
-	}
-
-
-	/**
-	* Devuelve la edad de una persona a partir de una fecha de nacimiento entregada
-	* @param string $birth fecha de nacimiento a calcular, el formato será año-dia-mes
-	* @return int $ageYears edad de la fecha entregada
+	/*
+	* Ejemplo: Common::debugger(dirname(__FILE__)."/archivo.sql","Query: ",$query);
 	*
 	*/
-
-	function getAge($birth){
-	
-	///////////
-	/// el formato va a ser año dia mes
-	///$birth='1985-29-11';
-		$birthday=explode("-",$birth);
-		
-		$ageTime = mktime(0, 0, 0, $birthday[2], $birthday[1], $birthday[0]);
-
-		$time = time(); 
-		$age = ($ageTime < 0) ? ( $time + ($ageTime * -1) ) : $time - $ageTime;
-		$year = 60 * 60 * 24 * 365;
-		$ageYears = $age / $year;
-		$ageYears=floor($ageYears);
-
-		//echo "Edad: $ageYears";
-
-		return ($ageYears);
-	}
-
-		///
-		///////////
-		
-
-
-	/**
-	* Devuelve la fecha minima en la que una persona pudo nacer a partir de una determinada edad
-	* @param string $age edad de la persona
-	* @return int $yearFilter su minima fecha de nacimiento
-	*
-	*/
-
-	function getDateOfBirth($age){
-		$year=date('Y');
-
-		$minYear=$year-$age;
-
-
-		//////////
-		// filtros de fechas usados para concatenar y para comparar
-		$filter=date("m-d");
-		$compareFilter=date("Y-m-d");
-
-		$yearFilter=$minYear."-".$filter;
-		//echo "menor año $minYearFilter,, mayor año $maxYearFilter";	
-
-		//////////
-		// adicionalmente se puede habilitar la comparacion
-		// $comparefilter contiene la fecha actual y $yearFilter la minima fecha de nacimiento de la persona
-
-
-		return $yearFilter;
-	}
+		function debugger($file,$message,$variable){
+	  	$handle = fopen($file, "a");
+			fwrite($handle, $message.$variable."\n");
+	  	fclose($handle);
+		}
 	
 	/**
 	*	Recibe una fecha en formato mm-dd-yyyy y la devuelve yyyy-mm-dd
@@ -366,7 +304,6 @@ class Common
 
 		}
 		else{
-
 			
 			if(is_object($_SESSION["loginAffiliateUser"])){
 				//////////
@@ -383,122 +320,122 @@ class Common
 	}
 
 
-/**
-* Guarda un registro de log.
-* 
-* @param string $user datos del usuario
-* @param string $action nombre del action
-* @param string $forward tipo de forward (success, failure, errorLog, etc)
-* @param string $object objeto sobre el cual se realizó la acción
-* @return void
-*/
-function doLog($forward,$object=null) {
-
-	include_once 'ActionLog.php';	
-
-	/*	@include_once('ActionLogLabelPeer.php');
-	if (class_exists('ActionLogLabelPeer')){
-		$actionLogLabel = new ActionLogLabelPeer();
-		$actionLogLabelObject=$actionLogLabel->getAllByActionLanguageEsp($_REQUEST['do'],$forward);
-	}*/
+	/**
+	* Guarda un registro de log.
+	* 
+	* @param string $user datos del usuario
+	* @param string $action nombre del action
+	* @param string $forward tipo de forward (success, failure, errorLog, etc)
+	* @param string $object objeto sobre el cual se realizó la acción
+	* @return void
+	*/
+	function doLog($forward,$object=null) {
 	
-	//obtengo el action adonde se esta	
-	$action = strtoupper(substr($_REQUEST['do'],0,1)) . substr($_REQUEST['do'],1,strlen($_REQUEST['do']));
-	$userInfo = Common::userInfoToDoLog();
+		include_once 'ActionLog.php';	
 	
-	try{
-		$logs = new ActionLog();
-		$logs->setUserId($userInfo["userId"]);
-		$logs->setAffiliateId($userInfo["affiliateId"]);
-		$logs->setDatetime(time());
-		$logs->setAction($action);
-		$logs->setObject($object);
-		$logs->setForward($forward);
-		$logs->save();
+		/*	@include_once('ActionLogLabelPeer.php');
+		if (class_exists('ActionLogLabelPeer')){
+			$actionLogLabel = new ActionLogLabelPeer();
+			$actionLogLabelObject=$actionLogLabel->getAllByActionLanguageEsp($_REQUEST['do'],$forward);
+		}*/
+		
+		//obtengo el action adonde se esta	
+		$action = strtoupper(substr($_REQUEST['do'],0,1)) . substr($_REQUEST['do'],1,strlen($_REQUEST['do']));
+		$userInfo = Common::userInfoToDoLog();
+		
+		try{
+			$logs = new ActionLog();
+			$logs->setUserId($userInfo["userId"]);
+			$logs->setAffiliateId($userInfo["affiliateId"]);
+			$logs->setDatetime(time());
+			$logs->setAction($action);
+			$logs->setObject($object);
+			$logs->setForward($forward);
+			$logs->save();
+		}
+		catch (PropelException $e) {
+			;	
+		}
 	}
-	catch (PropelException $e) {
-		;	
+	/**
+	 * Indica si un usuario es afiliado.
+	 */
+	function isAffiliatedUser() {
+		
+		if (isset($_SESSION["loginAffiliateUser"]))
+				return true;
+		return false;
+		
 	}
-}
-/**
- * Indica si un usuario es afiliado.
- */
-function isAffiliatedUser() {
 	
-	if (isset($_SESSION["loginAffiliateUser"]))
-			return true;
-	return false;
+	function getAffiliatedId() {
+		
+		$user = $_SESSION["loginAffiliateUser"];
+		return $user->getAffiliateId();
+		
+	}
 	
-}
-
-function getAffiliatedId() {
+	function isAdmin() {
 	
-	$user = $_SESSION["loginAffiliateUser"];
-	return $user->getAffiliateId();
+		if (!isset($_SESSION['loginUser']))
+			return false;
+		
+		$user = $_SESSION['loginUser'];
+		return $user->isAdmin();
 	
-}
-
-function isAdmin() {
-
-	if (!isset($_SESSION['loginUser']))
+	}
+	
+	
+	function getAdminUserId() {
+	
+		$user = $_SESSION["loginUser"];
+		return $user->getId();
+	
+	}
+	
+	function getAffiliatedLogged() {
+	
+		return $_SESSION["loginAffiliateUser"];
+	
+	}
+	
+	function getAdminLogged() {
+	
+		return $_SESSION["loginUser"];
+	
+	}
+	
+	function isSupplier() {
+	
+		if (!isset($_SESSION['loginUser']))
+			return false;
+		
+		$user = $_SESSION['loginUser'];
+		return $user->isSupplier();
+	
+	}
+	
+	function getSupplierUserId() {
+	
+		$user = $_SESSION["loginUser"];
+		return $user->getId();
+	
+	}
+	
+	function isRegistrationUser() {
+		
+		if (isset($_SESSION["loginRegistrationUser"]))
+				return true;
 		return false;
+		
+	}
 	
-	$user = $_SESSION['loginUser'];
-	return $user->isAdmin();
-
-}
-
-
-function getAdminUserId() {
-
-	$user = $_SESSION["loginUser"];
-	return $user->getId();
-
-}
-
-function getAffiliatedLogged() {
-
-	return $_SESSION["loginAffiliateUser"];
-
-}
-
-function getAdminLogged() {
-
-	return $_SESSION["loginUser"];
-
-}
-
-function isSupplier() {
-
-	if (!isset($_SESSION['loginUser']))
-		return false;
+	function getRegistrationUserLogged() {
 	
-	$user = $_SESSION['loginUser'];
-	return $user->isSupplier();
-
-}
-
-function getSupplierUserId() {
-
-	$user = $_SESSION["loginUser"];
-	return $user->getId();
-
-}
-
-function isRegistrationUser() {
+		return $_SESSION["loginRegistrationUser"];
 	
-	if (isset($_SESSION["loginRegistrationUser"]))
-			return true;
-	return false;
+	}
 	
-}
-
-function getRegistrationUserLogged() {
-
-	return $_SESSION["loginRegistrationUser"];
-
-}
-
 
 	/*
 	 * Conversion del numero al formato numerico de mysql
@@ -695,7 +632,6 @@ function getRegistrationUserLogged() {
 		
 		return ($unifiedLogin == "YES");
 		
-		
 	}
 
 	/**
@@ -727,68 +663,80 @@ function getRegistrationUserLogged() {
 	 * @return boolean false si no existe, true si puede llegar a existir
 	 */
 	function verifyMailbox($email,$mailAddress="no-reply@no-mail.com") {
-	    $before = microtime();
-	    $err = false;
-	    if (!preg_match('/([^\@]+)\@(.+)$/', $email, $matches)) {
-	        return false;
-	    }
-	    $user = $matches[1]; $domain = $matches[2];
-	    if(!function_exists('checkdnsrr')) return $err;
-	    if(!function_exists('getmxrr')) return $err;
-	    // Get MX Records to find smtp servers handling this domain
-	    if(getmxrr($domain, $mxhosts, $mxweight)) {
-	        for($i=0;$i<count($mxhosts);$i++){
-	            $mxs[$mxhosts[$i]] = $mxweight[$i];
-	        }
-	        asort($mxs);
-	        $mailers = array_keys($mxs);
-	    }elseif(checkdnsrr($domain, 'A')) {
-	        $mailers[0] = gethostbyname($domain);
-	    }else {
-	        return false;
-	    }
-	    // Try to send to each mailserver
-	    $total = count($mailers);
-	    $ok = 0;
-	    for($n=0; $n < $total; $n++) {
-	        $timeout = 5;
-	        $errno = 0; $errstr = 0;
-	        if(!($sock = fsockopen($mailers[$n], 25, $errno , $errstr, $timeout))) {
-	            continue;
-	        }
-	        $response = fgets($sock);
-	        stream_set_timeout($sock, 5);
-	        $meta = stream_get_meta_data($sock);
-	        $cmds = array(
-	            "HELO ".$_SERVER["SERVER_NAME"],
-	            "MAIL FROM: <$mailAddress>",
-	            "RCPT TO: <$email>",
-	            "QUIT",
-	        );
-	        if(!$meta['timed_out'] && !preg_match('/^2\d\d[ -]/', $response)) {
-	            break;
-	        }
-	        $success_ok = 1;
-	        foreach($cmds as $cmd) {
-	            fputs($sock, "$cmd\r\n");
-	            $response = fgets($sock, 4096);
-	            if(!$meta['timed_out'] && preg_match('/^5\d\d[ -]/', $response)) {
-	                $success_ok = 0;
-	                break;
-	            }
-	        }
-	        fclose($sock);
-	        if($success_ok){
-	            $ok = 1;
-	            break;
-	        }
-	    }
-	    $after = microtime();
-	    // Fail on error
-	    if(!$ok) return false;
-	    // Return a positive value on success
-	    return true;
+    $before = microtime();
+    $err = false;
+    if (!preg_match('/([^\@]+)\@(.+)$/', $email, $matches)) {
+       return false;
+    }
+    $user = $matches[1]; $domain = $matches[2];
+    if(!function_exists('checkdnsrr'))
+    	return $err;
+    if(!function_exists('getmxrr')) 
+    	return $err;
+    // Get MX Records to find smtp servers handling this domain
+    if(getmxrr($domain, $mxhosts, $mxweight)) {
+      for($i=0;$i<count($mxhosts);$i++){
+          $mxs[$mxhosts[$i]] = $mxweight[$i];
+      }
+      asort($mxs);
+      $mailers = array_keys($mxs);
+    }elseif(checkdnsrr($domain, 'A')) {
+      $mailers[0] = gethostbyname($domain);
+    }else {
+      return false;
+    }
+    // Try to send to each mailserver
+    $total = count($mailers);
+    $ok = 0;
+    for($n=0; $n < $total; $n++) {
+      $timeout = 5;
+      $errno = 0; $errstr = 0;
+      if(!($sock = fsockopen($mailers[$n], 25, $errno , $errstr, $timeout))) {
+        continue;
+      }
+      $response = fgets($sock);
+      stream_set_timeout($sock, 5);
+      $meta = stream_get_meta_data($sock);
+      $cmds = array(
+        "HELO ".$_SERVER["SERVER_NAME"],
+        "MAIL FROM: <$mailAddress>",
+        "RCPT TO: <$email>",
+        "QUIT",
+      );
+      if(!$meta['timed_out'] && !preg_match('/^2\d\d[ -]/', $response)) {
+        break;
+      }
+      $success_ok = 1;
+      foreach($cmds as $cmd) {
+        fputs($sock, "$cmd\r\n");
+        $response = fgets($sock, 4096);
+        if(!$meta['timed_out'] && preg_match('/^5\d\d[ -]/', $response)) {
+          $success_ok = 0;
+          break;
+        }
+      }
+      fclose($sock);
+      if($success_ok){
+        $ok = 1;
+        break;
+      }
+    }
+    $after = microtime();
+    // Fail on error
+    if(!$ok) 
+    	return false;
+    // Return a positive value on success
+    return true;
 	}
 
+  /**
+  * Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
+  *
+  * @return int Cantidad de filas por pagina
+  */
+  function getRowsPerPage() {
+    global $system;
+    return $system['config']['system']['rowsPerPage'];
+  }
 
 }

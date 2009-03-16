@@ -22,9 +22,11 @@ class AffiliatePeer extends BaseAffiliatePeer {
 		return $todosObj;
   }
   
-	function getAllPaginated($page=1,$perPage=10) {
+	function getAllPaginated($page,$perPage) {
 		if (empty($page))
 			$page = 1;
+		if (empty($perPage))
+			$perPage = Common::getRowsPerPage();
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->addAscendingOrderByColumn(AffiliatePeer::ID);
@@ -42,9 +44,11 @@ class AffiliatePeer extends BaseAffiliatePeer {
 		return $affs[0];
 	 }	 
 
-	function getByNamePaginated($name,$page=1,$perPage=10) {
+	function getByNamePaginated($name,$page,$perPage) {
 		if (empty($page))
 			$page = 1;
+		if (empty($perPage))
+			$perPage = Common::getRowsPerPage();
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->add(AffiliatePeer::NAME,"%".$name."%",Criteria::LIKE);

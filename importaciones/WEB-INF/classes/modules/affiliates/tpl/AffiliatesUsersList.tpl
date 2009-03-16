@@ -138,20 +138,21 @@
 <h3>Ver Usuarios por Cliente</h3>
 			<form name="affiliateFilter" action="Main.php" method="get">
 <p>			<select name="affiliateId">
-					<option value="0">Seleccione una Cliente</option>
-					<option value="-1">Todas</option>
-				|-foreach from=$affiliates item=affiliate name=for_affiliate-|
+					<option value="0">Seleccione un Cliente</option>
+					<option value="-1">Todos</option>
+				|-foreach from=$affiliates->getAll() item=affiliate name=for_affiliate-|
 					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $affiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
 				|-/foreach-|
 			</select> 
 			<input type="hidden" name="do" value="affiliatesUsersList" />
 			<input name="submit" type="submit" value="Consultar" class="button" />
-		</p>
-		</form>
+	</p>	</form>		
+
 |-/if-|
 
 <table cellpadding='5' cellspacing='1' width='100%' class='tableTdBorders'>
 	<tr>
+		<th>Cliente</th>
 		<th>##162,Identificación de Usuario##</th>
 		<th>Nombre</th>
 		<th>Apellido</th>
@@ -160,17 +161,20 @@
 	</tr>
 	|-foreach from=$users item=user name=for_users-|
 	<tr>
-		<td width="45%">|-$user->getUsername()-|</td>
+	|-assign var=userAffiliateId value=$user->getAffiliateId()-|
+	|-assign var=userAffiliate value=$affiliates->get($userAffiliateId)-|
+		<td width="10%">|-$userAffiliate->getName()|truncate:25:"..."-|</td>
+		<td width="25%">|-$user->getUsername()-|</td>
 			|-assign var="userInfo" value=$user->getAffiliateUserInfo()-|
-		<td width="45%">|-$userInfo->getName()-|</td>
-		<td width="45%">|-$userInfo->getSurname()-|</td>
-		<td width="45%">|-$userInfo->getMailAddress()-|</td>
-		<td width="10%" nowrap><a href='Main.php?do=affiliatesUsersList&user=|-$user->getId()-|' title="##114,Editar##"><img src="images/clear.png" class="linkImageEdit"></a>
+		<td width="20%">|-$userInfo->getName()-|</td>
+		<td width="20%">|-$userInfo->getSurname()-|</td>
+		<td width="15%">|-$userInfo->getMailAddress()|truncate:25:"..."-|</td>
+		<td width="5%" nowrap><a href='Main.php?do=affiliatesUsersList&user=|-$user->getId()-|' title="##114,Editar##"><img src="images/clear.png" class="linkImageEdit"></a>
 		<a href='Main.php?do=affiliatesUsersDoDelete&id=|-$user->getId()-|' title="##115,Eliminar##"><img src="images/clear.png" class="linkImageDelete"></a></td>
 	</tr>
 	|-/foreach-|
 	<tr>
-		<td class='cellboton' colspan='5'><form action='Main.php' method='get'>
+		<td class='cellboton' colspan='6'><form action='Main.php' method='get'>
 				<input type="hidden" name="do" value="affiliatesUsersList" />
 				<input type="hidden" name="user" value="" />
 				<input type="hidden" name="affiliateId" value="|-$affiliateId-|" />
