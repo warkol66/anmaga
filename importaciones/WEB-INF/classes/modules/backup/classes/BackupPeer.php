@@ -1,6 +1,6 @@
 <?php 
 
-require_once("config/DBConnection.inc.php");
+require_once('config/DBConnection.inc.php');
 require_once('includes/mysql_dump.inc.php');
 	/**
 	 * Generacion de Backups de la base
@@ -59,7 +59,14 @@ require_once('includes/mysql_dump.inc.php');
 			while ($file = readdir($dir)) {
 			
 				if (eregi("\.zip",$file)) {
-					array_push($filenames,$file);
+					$filename    = $path . $file;
+          $file_object = array(
+                                  'name' => $file,
+                                  'size' => (filesize($filename) / 1024),
+                                  'time' => filemtime($filename)
+                              );
+
+					array_push($filenames,$file_object);
 				}
 			
 			}

@@ -622,7 +622,7 @@ fieldset fieldset label {
 }
 fieldset fieldset {
 	padding: 5px;
-	width: 40%;
+	/*width: 40%;*/
 	margin-left: 120px;
 }
 fieldset fieldset label {
@@ -719,13 +719,16 @@ fieldset li {
 option{
 	padding-right: 5px;
 }
-/* NEW */
+
+/* Image Buttons and Links */
 .buttonImageDelete, .buttonImageDeleteDisabled, .buttonImageEdit, .buttonImageEditDisabled, 
 .buttonImageAdd, .buttonImageAddDisabled, .buttonImageView, .buttonImageViewDisabled, 
 .buttonImageGoTo, .buttonImageBack, .buttonImageViewGantt, .buttonImageUpload, .buttonImageUploadDisabled,
 .buttonImageDownload ,.buttonImageDownloadDisabled, .buttonImageActivate, .buttonImageActivateDisabled,
 .buttonImageEmail, .buttonImageEmailDisabled, .buttonImageHistory, .buttonImageHistoryDisabled,
-.buttonImageSendMultiple, .buttonImageSendMultipleDisabled  {
+.buttonImageSendMultiple, .buttonImageSendMultipleDisabled, .buttonImageStoreInServer, .buttonImageStoreInDisabled,
+.buttonImageRestore, .buttonImageRestoreDisabled, .buttonImageStoreLocal, .buttonImageStoreLocalDisabled, 
+.buttonImageRestoreFromServer, .buttonImageRestoreFromServerDisabled {
 	font-size: 0px !Important;
 	width: 16px;
 	height: 16px;
@@ -740,11 +743,14 @@ option{
 .linkImageBack, .linkImageViewGantt, .linkImageUpload, .linkImageUploadDisabled, 
 .linkImageDownload, .linkImageDownloadDisabled, .linkImageActivate, .linkImageActivateDisabled,
 .linkImageInfo, .linkImageHelp, .linkImageEmail, .linkImageEmailDisabled,
-.linkImageHistory, .linkImageHistoryDisabled, .linkSendMultiple, .linkImageSendMultipleDisabled {
+.linkImageHistory, .linkImageHistoryDisabled, .linkSendMultiple, .linkImageSendMultipleDisabled,
+.linkImageStoreInServer, .linkImageStoreInServerDisabled, .linkImageStoreLocal, .linkImageStoreLocalDisabled,
+.linkImageRestore, .linkImageRestoreDisabled, 
+.linkImageRestoreFromServer, .linkImageRestoreFromServerDisabled {
 	width: 20px;
 	height: 16px;
 	border-width: 0;
-	cursor:pointer;
+	cursor: pointer;
 }
 
 /* LINK AGREGAR NUEVA ...  */

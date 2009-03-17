@@ -762,154 +762,106 @@ a.detail:hover{
 fieldset {
 }
 
-/* NEW */
-.buttonImageDelete {
+/* Image Buttons and Links */
+.buttonImageDelete, .linkImageDelete {
 	background: url(../images/linkImageDelete.png) center no-repeat;
 }
-.buttonImageDeleteDisabled {
-	background: url(../images/linkImageDeleteDesabled.png) center no-repeat;
-}
-.buttonImageEdit {
-	background: url(../images/linkImageEdit.png) no-repeat center;
-}
-.buttonImageEditDisabled {
-	background: url(../images/linkImageEditDisabled.png) no-repeat center;
-}
-.buttonImageAdd {
-	background: url(../images/linkImageAdd.png) no-repeat center;
-}
-.buttonImageAddDisabled {
-	background: url(../images/linkImageAddDisabled.png) no-repeat center;
-}
-.buttonImageView {
-	background: url(../images/linkImageView.png) no-repeat center;
-}
-.buttonImageViewDisabled {
-	background: url(../images/linkImageViewDisabled.png) no-repeat center;
-}
-.buttonImageGoTo {
-	background: url(../images/linkImageGoTo.png) no-repeat center;
-}
-.buttonImageBack {
-	background: url(../images/linkImageBack.png) no-repeat center;
-}
-.buttonImageViewGantt {
-	background: url(../images/linkImageViewGantt.png) no-repeat center;
-}
-.buttonImageUpload {
-	background: url(../images/linkImageUpload.png) no-repeat center;
-}
-.buttonImageUploadDisabled {
-	background: url(../images/linkImageUploadDisabled.png) no-repeat center;
-}
-.buttonImageDownload {
-	background: url(../images/linkImageDownload.png) no-repeat center;
-}
-.buttonImageDownloadDisabled {
-	background: url(../images/linkImageDownloadDisabled.png) no-repeat center;
-}
-.buttonImageActivate {
-	background: url(../images/linkImageActivate.png) no-repeat center;
-}
-.buttonImageActivateDisabled {
-	background: url(../images/linkImageActivateDisabled.png) no-repeat center;
-}
-.buttonImageEmail {
-	background: url(../images/linkImageEmail.png) no-repeat center;
-}
-.buttonImageEmailDisabled {
-	background: url(../images/linkImageEmailDisabled.png) no-repeat center;
-}
-.buttonImageHistory {
-	background: url(../images/linkImageHistory.png) no-repeat center;
-}
-.buttonImageHistoryDisabled {
-	background: url(../images/linkImageHistoryDisabled.png) no-repeat center;
-}
-.buttonImageSendMultiple {
-	background: url(../images/linkImageSendMultiple.png) no-repeat center;
-}
-.buttonImageSendMultipleDisabled {
-	background: url(../images/linkImageSendMultipleDisabled.png) no-repeat center;
-}
-
-
-.linkImageDelete {
-	background: url(../images/linkImageDelete.png) center no-repeat;
-}
-.linkImageDeleteDisabled {
+.buttonImageDeleteDisabled, .linkImageDeleteDisabled {
 	background: url(../images/linkImageDeleteDisabled.png) center no-repeat;
 }
-.linkImageEdit {
+.buttonImageEdit, .linkImageEdit {
 	background: url(../images/linkImageEdit.png) no-repeat center;
 }
-.linkImageEditDisabled {
+.buttonImageEditDisabled, .linkImageEditDisabled {
 	background: url(../images/linkImageEditDisabled.png) no-repeat center;
 }
-.linkImageAdd {
+.buttonImageAdd, .linkImageAdd {
 	background: url(../images/linkImageAdd.png) no-repeat center;
 }
-.linkImageAddDisabled {
+.buttonImageAddDisabled, .linkImageAddDisabled {
 	background: url(../images/linkImageAddDisabled.png) no-repeat center;
 }
-.linkImageView {
+.buttonImageView, .linkImageView {
 	background: url(../images/linkImageView.png) no-repeat center;
 }
-.linkImageViewDisabled {
+.buttonImageViewDisabled, .linkImageViewDisabled {
 	background: url(../images/linkImageViewDisabled.png) no-repeat center;
 }
-.linkImageGoTo {
+.buttonImageGoTo, .linkImageGoTo {
 	background: url(../images/linkImageGoTo.png) no-repeat center;
 }
-.linkImageBack {
+.buttonImageBack, .linkImageBack {
 	background: url(../images/linkImageBack.png) no-repeat center;
 }
-.linkImageViewGantt {
+.buttonImageViewGantt, .linkImageViewGantt {
 	background: url(../images/linkImageViewGantt.png) no-repeat center;
 }
-.linkImageUpload {
+.buttonImageUpload, .linkImageUpload {
 	background: url(../images/linkImageUpload.png) no-repeat center;
 }
-.linkImageUploadDisabled {
+.buttonImageUploadDisabled, .linkImageUploadDisabled {
 	background: url(../images/linkImageUploadDisabled.png) no-repeat center;
 }
-.linkImageDownload {
+.buttonImageDownload, .linkImageDownload {
 	background: url(../images/linkImageDownload.png) no-repeat center;
 }
-.linkImageDownloadDisabled {
+.buttonImageDownloadDisabled, .linkImageDownloadDisabled {
 	background: url(../images/linkImageDownloadDisabled.png) no-repeat center;
 }
-.linkImageActivate {
+.buttonImageActivate, .linkImageActivate {
 	background: url(../images/linkImageActivate.png) no-repeat center;
 }
-.linkImageActivateDisabled {
+.buttonImageActivateDisabled, .linkImageActivateDisabled {
 	background: url(../images/linkImageActivateDisabled.png) no-repeat center;
 }
-.linkImageInfo {
+.buttonImageInfo, .linkImageInfo {
 	background: url(../images/linkImageInfo.png) no-repeat center;
 }
-.linkImageHelp {
+.buttonImageHelp, .linkImageHelp {
 	background: url(../images/linkImageHelp.png) no-repeat center;
 }
-.linkImageEmail {
+.buttonImageEmail, .linkImageEmail {
 	background: url(../images/linkImageEmail.png) no-repeat center;
 }
-.linkImageEmailDisabled {
+.buttonImageEmailDisabled, .linkImageEmailDisabled {
 	background: url(../images/linkImageEmailDisabled.png) no-repeat center;
 }
-.linkImageHistory {
+.buttonImageHistory, .linkImageHistory {
 	background: url(../images/linkImageHistory.png) no-repeat center;
 }
-.linkImageHistoryDisabled {
+.buttonImageHistoryDisabled, .linkImageHistoryDisabled {
 	background: url(../images/linkImageHistoryDisabled.png) no-repeat center;
 }
-.linkImageSendMultiple {
+.buttonImageSendMultiple, .linkImageSendMultiple {
 	background: url(../images/linkImageSendMultiple.png) no-repeat center;
 }
-.linkImageSendMultipleDisabled {
+.buttonImageSendMultipleDisabled, .linkImageSendMultipleDisabled {
 	background: url(../images/linkImageSendMultipleDisabled.png) no-repeat center;
 }
-
+.buttonImageStoreInServer, .linkImageStoreInServer {
+	background: url(../images/linkImageStoreInServer.png) no-repeat center;
+}
+.buttonImageStoreInServerDisabled, .linkImageStoreInServerDisabled {
+	background: url(../images/linkImageStoreInServerDisabled.png) no-repeat center;
+}
+.buttonImageStoreLocal, .linkImageStoreLocal {
+	background: url(../images/linkImageStoreLocal.png) no-repeat center;
+}
+.buttonImageStoreLocalDisabled, .linkImageStoreLocalDisabled {
+	background: url(../images/linkImageStoreLocalDisabled.png) no-repeat center;
+}
+.buttonImageRestore, .linkImageRestore {
+	background: url(../images/linkImageRestore.png) no-repeat center;
+}
+.buttonImageRestoreDisabled, .linkImageRestoreDisabled {
+	background: url(../images/linkImageRestoreDisabled.png) no-repeat center;
+}
+.buttonImageRestoreFromServer, .linlImageRestoreFromServer {
+	background: url(../images/linkImageRestoreFromServer.png) no-repeat center;
+}
+.buttonImageRestoreFromServerDisabled, .linkImageRestoreFromServerDisabled {
+	background: url(../images/linkImageRestoreFromServerDisabled.png) no-repeat center;
+}
 
 
 fieldset {  

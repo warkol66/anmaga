@@ -43,7 +43,7 @@
 	|-foreach from=$affiliates item=affiliate name=for_affiliate-|
 	<tr>
 		<td width="5%">|-$affiliate->getId()-|</td>
-		<td width="85%">|-$affiliate->getName()-||-if $affiliate->getOwnerId() neq ""-||-assign var=owner value=$affiliate->getOwner()-| [ Usuario Dueño: |-$owner->getUsername()-| ] |-/if-|</td>
+		<td width="85%">|-$affiliate->getName()-||-if $affiliate->getOwnerId() neq ""-||-assign var=owner value=$affiliate->getOwner()-| [ Usuario administrador: |-$owner->getUsername()-| ] |-/if-|</td>
 		<td width="10%" nowrap>
 		<a href='Main.php?do=affiliatesViewAffiliate&id=|-$affiliate->getId()-|' title="Ver"><img src="images/clear.png" class="linkImageView"></a>
 		<a href='Main.php?do=affiliatesEdit&id=|-$affiliate->getId()-|' title="##114,Editar##"><img src="images/clear.png" class="linkImageEdit"></a>
