@@ -49,4 +49,9 @@ class Affiliate extends BaseAffiliate {
 		return $result[0];
 	}        
 
+  function getOwner() {
+          require_once("AffiliateUserPeer.php");
+          return AffiliateUserPeer::get($this->getOwnerId());
+  }
+
 } // Affiliate
