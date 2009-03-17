@@ -2,7 +2,7 @@
 <h1>Administración de Usuarios de Clientes </h1>
 <!-- Link VOLVER -->
 <!-- /Link VOLVER -->
-|-if $accion eq "edicion"-|
+|-if $action eq "edit"-|
 	<p class='paragraphEdit'>##180,Realice los cambios en el usuario y haga click en "Guardar Cambios" para guardar las modificaciones. ##</p>
 |-else-|
 	<p class='paragraphEdit'>A continuación podrá editar la lista de Usuarios de Clientes guardados en el Sistema.</p>
@@ -26,13 +26,13 @@
 |-elseif $message eq "notRemovedFromGroup"-|
 <div class='errorMessage'>##159,Ha ocurrido un error al intentar eliminar el usuario al grupo##</div>
 |-/if-|
-|-if $accion eq "creacion" or $accion eq "edicion"-|
-	|-if $accion eq "creacion"-|
+|-if $action eq "create" or $action eq "edit"-|
+	|-if $action eq "create"-|
 			##160,Ingrese  la Identificación del usuario y la contraseña para el nuevo usuario,  luego haga click en Guardar para generar el nuevo usuario.##
 	|-else-|
 			##161,Realice los cambios en el usuario y haga click en Aceptar para guardar las modificaciones.##|-/if-| <br />
 	<br />
-<form method='post' action='Main.php?do=affiliatesUsersDoEditUser'>
+<form method='post' action='Main.php?do=affiliatesUsersDoEdit'>
 	<input type='hidden' name='id' value='|-$currentAffiliateUser->getId()-|' />
 <fieldset title="Formulario de edición de Usuarios de Clientes">
 <legend>Datos del Usuario</legend>
@@ -56,42 +56,43 @@
 			<input name='affiliateUser[pass2]' type='password' class='textodato' value='' size="20" />
 	</p>
 	<p><label for="affiliateUser[levelId]">Nivel de Usuario</label>
-        <select name='affiliateUser[levelId]'>
-        	<option value="">Seleccionar nivel</option>
-					|-foreach from=$levels item=level name=for_levels-|
-        	<option value="|-$level->getId()-|"|-if $level->getId() eq $currentAffiliateUser->getLevelId()-| selected="selected"|-/if-|>|-$level->getName()-|</option>
-					|-/foreach-|
-       	</select>
-
+			<select name='affiliateUser[levelId]'>
+				<option value="">Seleccionar nivel</option>
+				|-foreach from=$levels item=level name=for_levels-|
+				<option value="|-$level->getId()-|"|-if $level->getId() eq $currentAffiliateUser->getLevelId()-| selected="selected"|-/if-|>|-$level->getName()-|</option>
+				|-/foreach-|
+			</select>
 	</p>
 	<p><label for="affiliateUser[timezone]">Huso Horario (GMT) del Usuario</label>
-				<select name='affiliateUser[timezone]'>
-					<option value="">seleccione una zona horaria (opcional)</option>
-					|-foreach from=$timezones item=timezone name=for_timezones-|
-					<option value="|-$timezone->getCode()-|" |-if $currentAffiliateUser->getTimezone() eq $timezone->getCode()-|selected="selected"|-/if-|>|-$timezone->getDescription()-|</option>
-					|-/foreach-|
-				</select>
-		</p>
+			<select name='affiliateUser[timezone]'>
+				<option value="">seleccione una zona horaria (opcional)</option>
+				|-foreach from=$timezones item=timezone name=for_timezones-|
+				<option value="|-$timezone->getCode()-|" |-if $currentAffiliateUser->getTimezone() eq $timezone->getCode()-|selected="selected"|-/if-|>|-$timezone->getDescription()-|</option>
+				|-/foreach-|
+			</select>
+	</p>
 	|-if $affiliates|@count > 0-|
 	<p><label for="affiliateId">Cliente</label>
-				<select name='affiliateId'>
-					<option value="">Seleccionar Cliente</option>
-					|-foreach from=$affiliates item=affiliate name=for_affiliates-|
-					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $affiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
-					|-/foreach-|
-				</select>
-			</p>
-		|-/if-|
-		<p> |-if $accion eq "edicion"-|
-				<input type="hidden" name="accion" value="edicion" />
-				|-/if-|
-				<input type='submit' name='guardar' value='##97,Guardar##' class='button' />
-				&nbsp;&nbsp;
-				<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##' class='button'  />
-			</p>
+		<select name='affiliateId'>
+			<option value="">Seleccionar Cliente</option>
+				|-foreach from=$affiliates->getAll() item=affiliate name=for_affiliates-|
+			<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $affiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
+				|-/foreach-|
+		</select>
+	</p>
+	|-else-|
+	<input type="hidden" name="affiliateId" value="|-$affiliateId-|" />
+	|-/if-|
+	<p> |-if $action eq "edit"-|
+			<input type="hidden" name="action" value="edit" />
+			|-/if-|
+			<input type='submit' name='save' value='##97,Guardar##' class='button' />
+			&nbsp;&nbsp;
+			<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##' class='button'  />
+	</p>
 </fieldset>
 </form>
-|-if $accion eq "edicion"-|
+|-if $action eq "edit"-|
 <table width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 	<caption>
 	##167,El usuario ## |-$currentAffiliateUser->getUsername()-| ##168,es miembro de los grupos:##
@@ -173,6 +174,9 @@
 		<a href='Main.php?do=affiliatesUsersDoDelete&id=|-$user->getId()-|' title="##115,Eliminar##"><img src="images/clear.png" class="linkImageDelete"></a></td>
 	</tr>
 	|-/foreach-|
+	|-if $pager neq ''-|
+	<tr><td colspan='6' class='pages'>|-include file="PaginateInclude.tpl"-|</td></tr>
+	|-/if-|
 	<tr>
 		<td class='cellboton' colspan='6'><form action='Main.php' method='get'>
 				<input type="hidden" name="do" value="affiliatesUsersList" />

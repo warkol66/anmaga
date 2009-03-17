@@ -1,4 +1,9 @@
 <?php
+/** 
+ * AffiliatesUsersListAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("AffiliateUserPeer.php");
@@ -36,8 +41,7 @@ class AffiliatesUsersListAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
-
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -49,7 +53,7 @@ class AffiliatesUsersListAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
-		$section = "";
+		$section = "Users";
 
 		$timezonePeer = new TimezonePeer();
 		$smarty->assign('timezones',$timezonePeer->getAll());
@@ -63,50 +67,46 @@ class AffiliatesUsersListAction extends BaseAction {
 			$affiliateId = $_GET["affiliateId"];
 			if(!empty($affiliateId)) {
 				if ($affiliateId == -1){
-		    	$pager = $usersPeer->getAllPaginated();
+					$pager = $usersPeer->getAllPaginated();
 					$users = $pager->getResult();
 					$smarty->assign("pager",$pager);
+					$url = "Main.php?do=AffiliatesUsersList";
 					$deletedUsers = $usersPeer->getDeleteds();
 				}
 				else{
 					$users = $usersPeer->getAffiliate($affiliateId);
 					$deletedUsers = $usersPeer->getDeletedsByAffiliate($affiliateId);
+					$url = "Main.php?do=AffiliatesUsersList&affiliateId=".$affiliateId;
 				}
 			}
-    	else {
-
-	    	$pager = $usersPeer->getAllPaginated();
+			else{
+				$pager = $usersPeer->getAllPaginated();
 				$users = $pager->getResult();
 				$smarty->assign("pager",$pager);
-
+				$url = "Main.php?do=AffiliatesUsersList";
 				$deletedUsers = $usersPeer->getDeleteds();
 			}
 			$affiliates = new AffiliatePeer();
 			$smarty->assign("affiliates",$affiliates);
 		}
-		else {
-		  $affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
-
-
-				$AffiliateUserPeer->setAffiliateId($affiliateId);
-	    	$pager = $usersPeer->getAllPaginatedFiltered();
-				$users = $pager->getResult();
-				$smarty->assign("pager",$pager);
-
+		else{
+			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
+			$AffiliateUserPeer->setAffiliateId($affiliateId);
+			$pager = $usersPeer->getAllPaginatedFiltered();
+			$users = $pager->getResult();
+			$smarty->assign("pager",$pager);
+			$url = "Main.php?do=AffiliatesUsersList";
 			$deletedUsers = $usersPeer->getDeletedsByAffiliate($affiliateId);
 		}
 
 		$smarty->assign("deletedUsers",$deletedUsers);
-		
 		$smarty->assign("affiliateId",$affiliateId);
 
-    if ( !empty($_GET["user"]) ) {
+		if ( !empty($_GET["user"]) ) {
 			//voy a editar un usuario
 
 			try {
 				$user = $usersPeer->get($_GET["user"]);
-				//echo "usuario $user ...";
-
 				$smarty->assign("currentAffiliateUser",$user);
 				$smarty->assign("currentAffiliateUserInfo",$user->getAffiliateUserInfo());
 				$groups = $usersPeer->getGroupsByUser($_GET["user"]);
@@ -115,11 +115,11 @@ class AffiliatesUsersListAction extends BaseAction {
 				$smarty->assign("groups",$groups);
 				$levels = AffiliateLevelPeer::getAll();
 				$smarty->assign("levels",$levels);
-	    		$smarty->assign("accion","edicion");
+					$smarty->assign("action","edit");
 				$smarty->assign("affiliateId",$user->getAffiliateId());
-	  	}
+			}
 			catch (PropelException $e) {
-      	$smarty->assign("accion","creacion");
+				$smarty->assign("action","create");
 			}
 		}
 		else if ( isset($_GET["user"]) ) {
@@ -131,13 +131,14 @@ class AffiliatesUsersListAction extends BaseAction {
 			$smarty->assign("currentAffiliateUser",new AffiliateUser());
 			$smarty->assign("currentAffiliateUserInfo",new AffiliateUserInfo());
 
-			$smarty->assign("accion","creacion");
+			$smarty->assign("action","create");
 		}
 
 		$smarty->assign("users",$users);
 		$smarty->assign("affId",$affiliateId);
 		$smarty->assign("message",$_GET["message"]);
 		$smarty->assign("showList",true);
+		$smarty->assign("url",$url);
 
 		return $mapping->findForwardConfig('success');
 	}

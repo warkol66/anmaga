@@ -968,7 +968,7 @@ a.linkAdd:hover, a.linkAdd:active {
 	font-weight:bold;
 	padding-top: 20px;
 	padding-bottom: 5px;
-	margin-bottom:15px;
+	margin-bottom:10px;
 /*	color:     */	
 }
 #rightColumn h4 {
@@ -977,7 +977,7 @@ a.linkAdd:hover, a.linkAdd:active {
 	font-weight:bold;
 	padding-top: 15px;
 	padding-bottom: 5px;
-	margin-bottom:15px;
+	margin-bottom:10px;
 /*	color:     */	
 }
 #rightColumn h2 a:link, #rightColumn h2 a:visited{

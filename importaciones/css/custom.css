@@ -144,6 +144,7 @@ form input{
 }
 .paragraphEdit{
 	background-image:url(../images/icon_write.gif);
+	min-height: 30px; /*Ajusto altura mínima acorde al ícono*/
 	background-repeat:no-repeat;
 	background-position:left top;
 }

@@ -461,12 +461,13 @@
 				<forward name="success" path="AffiliatesUsersList.tpl"/>
 		</action>
 
-		<action      path = "affiliatesUsersDoEditUser"
-								 type = "AffiliatesUsersDoEditUserAction"
-								 name = "affiliatesUsersDoEditUser"
+		<action      path = "affiliatesUsersDoEdit"
+								 type = "AffiliatesUsersDoEditAction"
+								 name = "affiliatesUsersDoEdit"
 								scope = "request"
 						 validate = "true">
 			<forward name="success" path="/Main.php?do=affiliatesUsersList&amp;message=saved" redirect="true" />
+			<forward name="failure" path="/Main.php?do=affiliatesUsersList&amp;message=failure" redirect="true" />
 		</action>
 
 		<action      path = "affiliatesUsersDoDelete"
