@@ -29,7 +29,7 @@
 			<th></th>
 			<th>Código</th>
 			<th>Nombre</th>
-			<th>Cantidad</th>
+<!--			<th>Cantidad</th> -->
 			<th>Precio al Cliente</th>
 			<th>Proveedor</th>			
 			<th>Precio del Proveedor</th>
@@ -48,7 +48,7 @@
 				|-/if-|</th>
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
-			<td>|-$item->getQuantity()-|</td>
+<!--			<td>|-$item->getQuantity()-|</td> -->
 			<td>|-if $item->getPrice() eq 0-|No se ha cotizado|-else-||-$item->getPrice()|number_format:2:",":"."-||-/if-|</td>			
 			|-assign var=supplierQuotationItem value=$item->getSupplierQuotationItem()-|
 			<td>|-if $supplierQuotationItem neq ''-||-assign var=supplierQuotation value=$supplierQuotationItem->getSupplierQuotation() -||-assign var=supplier value=$supplierQuotation->getSupplier()-||-$supplier->getName()-||-/if-|</td>
@@ -59,7 +59,7 @@
 						<a href="Main.php?do=importClientQuoteItemSetPrice&amp;clientQuotationItemId=|-$item->getId()-|">Fijar Precio Cliente</a>	
 							|-/if-|
 				|-/if-|
-</td>			
+			</td>			
 			|-/if-|
 		</tr>
 		|-/foreach-|

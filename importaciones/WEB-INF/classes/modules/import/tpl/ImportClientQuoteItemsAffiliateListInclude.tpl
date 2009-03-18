@@ -10,8 +10,8 @@
 			|-/if-|
 			<th>Código</th>
 			<th>Nombre</th>
-			<th>Cantidad</th>
-			<th>Precio Unitario</th>			
+<!--			<th>Cantidad</th>
+			<th>Precio Unitario</th>		-->	
 		</tr>
 		|-foreach from=$clientQuotation->getClientQuotationItems() item=item name=for_clientQuotationsItems-|
 		|-assign var=product value=$item->getProduct()-|
@@ -21,8 +21,8 @@
 			|-/if-|
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
-			<td>|-$item->getQuantity()-|</td>
-			<td>|-$item->getPrice()-|</td>			
+<!--			<td>|-$item->getQuantity()-|</td>
+			<td>|-$item->getPrice()-|</td>			-->
 		</tr>
 		|-/foreach-|
 	</table>
@@ -35,7 +35,11 @@
 	<p>
 		<input type="hidden" name="clienQuotationId" value="|-$clientQuotation->getId()-|" />
 		<input type="hidden" name="do" value="importClientQuotationAccept" id="do" />
-		<input type="submit" value="Aceptar Cotizacion de Elementos Seleccionados" />
+		<input type="submit" value="Aceptar Cotización de Elementos Seleccionados" />
 	</p>
 </form>
 |-/if-|
+
+|-* NOTA DESARROLLO: Este formulario lo tuve que modificar para eliminar la cantidad y precio unitario cuando se agregan productos a la orden
+Hace flata un "Remover producto de la orden" y sería bueno verificar que no se haya agregado ya el mismo producto.
+También saqué las columnas de ImportClientQuoteAddItemX.tpl *-|

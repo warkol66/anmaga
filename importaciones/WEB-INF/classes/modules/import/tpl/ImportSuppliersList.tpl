@@ -57,7 +57,7 @@
 	</table>
 </div>
 <br />
-|-if $inactivePorts|@count gt 1-|
+|-if $inactiveSuppliers|@count gt 1-|
 <h3>Inactivos</h3>
 <div >
 		<table id="tabla-suppliers" class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>

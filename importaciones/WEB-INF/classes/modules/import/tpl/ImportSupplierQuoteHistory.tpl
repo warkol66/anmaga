@@ -1,7 +1,5 @@
 <h2>Exportaciones</h2>
-<h1>Historial Cotizacion de Cliente: |-$supplierQuotation->getId()-|</h1>
-
-
+<h1>Historial Cotización de Cliente - # |-$supplierQuotation->getId()-|</h1>
 <div id="div_status">
 	<table cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-newsmedias">
 		<thead>

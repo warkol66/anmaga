@@ -34,9 +34,9 @@
 		<label>Descripción</label>
 		<textarea name="description" cols="60" rows="8" readonly="readonly" wrap="virtual" class="readOnly">|-$product->getDescription()-|</textarea>
 	</p>
-	<p>
+<!--	<p>
 		<label>Cantidad</label><input name="quatity" type="text" size="10" readonly="true" class="readOnly right" value="|-$supplierQuotationItem->getQuantity()-|"/> unidades
-	</p>
+	</p>-->
 	<p>
 		<label>Empaque</label>
 	</p>

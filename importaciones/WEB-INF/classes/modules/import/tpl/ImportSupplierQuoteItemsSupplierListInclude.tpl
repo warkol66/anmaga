@@ -3,7 +3,7 @@
 		<tr>
 			<th>Código</th>
 			<th>Producto</th>
-			<th>Cantidad</th>
+<!--			<th>Cantidad</th> -->
 			<th></th>
 		</tr>
 		|-foreach from=$supplierQuotation->getSupplierQuotationItems() item=item name=for_supplierQuotationsItems-|
@@ -11,7 +11,7 @@
 		<tr>
 			<td>|-$product->getSupplierProductCode()-|</td>
 			<td>|-$product->getName()-|</td>
-			<td>|-$item->getQuantity()-|</td>
+<!--			<td>|-$item->getQuantity()-|</td> -->
 			<td>
 				|-if not $supplierQuotation->isConfirmed() -|
 				<form action="Main.php" method="get">						

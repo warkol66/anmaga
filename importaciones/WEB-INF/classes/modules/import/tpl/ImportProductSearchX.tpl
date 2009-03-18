@@ -8,7 +8,7 @@
 	<tr>
 		<th>Código</th>
 		<th>Nombre</th>
-		<th>Descripcion</th>
+		<th>Descripción</th>
 		<th></th>
 	</tr>
 	|-foreach from=$results item=product name=for_searchResults-|
@@ -19,8 +19,8 @@
 		<td>
 			<form action="Main.php" method="post">
 				<input type="hidden" name="clientQuotationItem[productId]" value="|-$product->getId()-|" />
-				<label for="Cantidad">Cantidad</label>
-				<input type="text" name="clientQuotationItem[quantity]" value="" id="clientQuotationItem[quantity]" />
+	<!--			<label for="Cantidad">Cantidad</label> -->
+				<input type="hidden" name="clientQuotationItem[quantity]" value="1" id="clientQuotationItem[quantity]" />
 				<input type="hidden" name="do" value="importClientQuoteAddItemX" id="do">
 				<input type="hidden" name="clientQuotationItem[clientQuotationId]" value="|-$clientQuotation->getId()-|" id="clientQuotationItem[clientQuotationId]"/>
 				<input type="button" value="Agregar producto" onClick="javascript:importAddItemToClientQuotationX(this.form)"> 
@@ -30,5 +30,5 @@
 	|-/foreach-|
 </table>
 |-else-|
-	<p>No se han encontrado resultados, por favor realice una nueva busqueda</p>
+	<p>No se han encontrado resultados, por favor realice una nueva búsqueda</p>
 |-/if-|

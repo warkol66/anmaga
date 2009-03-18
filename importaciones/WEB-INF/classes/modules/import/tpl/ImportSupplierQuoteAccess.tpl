@@ -1,25 +1,24 @@
-<h2>Pedido de Cotizacion</h2>
-<h1>Edicion de Pedido de Cotizacion</h1>
+<h2>Solicitud de Cotización</h2>
+<h1>Edición de Pedido de Cotización</h1>
 
 <div id="div_messages">
 	|-if $message eq "quoted"-|
-	<div class="successMessage">Se ha guardado la cotizacion del item.</div>
+	<div class="successMessage">Se ha guardado la cotización del item.</div>
 	|-/if-|
 	|-if $message eq "confirmed"-|
-	<div class="successMessage">Se ha confirmado la cotizacion.</div>
+	<div class="successMessage">Se ha confirmado la cotización.</div>
 	|-/if-|
 	
 </div>
 
 <div id="div_supplierQuotation">
 	<p>
-		Fecha de Creacion: |-$supplierQuotation->getCreatedAt()-|
+		Fecha de Creación: |-$supplierQuotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|
 	</p>
 	<p>
 		<strong>
-		Sr. Proveedor<br />
+		Sr. Proveedor	</strong><br />
 		Solicitamos al cotización de:
-		</strong>
 	</p>
 </div>
 
@@ -29,11 +28,11 @@
 
 |-if not $supplierQuotation->isConfirmed() -|
 	<div id="supplierQuotationConfirmation">
-		<p>A continuzacion podra confirma la cotizacion. Tenga en cuenta que una vez confirmada, no podra hacerle modificaciones.</p>
+		<p>A continuzación podra confirma la cotización. Tenga en cuenta que una vez confirmada, no podra hacerle modificaciones.</p>
 		<form action="Main.php" method="post">
 			<p><input type="hidden" name="token" value="|-$token-|" ></p>
 			<p><input type="hidden" name="do" value="importSupplierQuoteConfirm" id="do"></p>
-			<p><input type="submit" value="Confirmar Cotizacion" /></p>
+			<p><input type="submit" value="Confirmar Cotización" /></p>
 		</form>
 	</div>
 |-/if-|

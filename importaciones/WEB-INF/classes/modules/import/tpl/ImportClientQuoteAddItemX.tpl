@@ -8,8 +8,8 @@
 <tr>
 	<td>|-$product->getCode()-|</td>
 	<td>|-$product->getName()-|</td>
-	<td>|-$item->getQuantity()-|</td>
-	<td>|-$item->getPrice()-|</td>			
+<!--	<td>|-$item->getQuantity()-|</td> -->
+<!--	<td>|-$item->getPrice()-|</td>		-->	
 </tr>
 |-else-|
 

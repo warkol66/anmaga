@@ -38,10 +38,10 @@
 
 <div id="clientQuotationItemsHolder">
 	|-if $clientQuotation->isNewStatus()-|
-<h1>Detalle de cotización a provedor</h1>
+<h1>Detalle de solicitud de cotización</h1>
 		|-include file='ImportClientQuoteItemsAffiliateListInclude.tpl' clientQuotation=$clientQuotation-|
 	|-else-|
-<h1>Solicitud de cotización a provedor</h1>
+<h1>Solicitud de cotización a proveedor</h1>
 		|-include file='ImportClientQuoteItemsAdminListInclude.tpl' clientQuotation=$clientQuotation-|
 	|-/if-|
 </div>

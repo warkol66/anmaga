@@ -71,21 +71,20 @@
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importSupplierQuoteEdit" />
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="Editar" class="buttonImageEdit" />
+						<input type="submit" name="submit_go_edit_quotation" value="Editar" class="buttonImageEdit" title="Editar Solicitud de Cotización" />
 					</form>
 					<form action="Main.php" method="post">	
 						<input type="hidden" name="do" value="importSupplierQuoteResend" />
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_resend_quotation" value="Reenviar" class="buttonImageEmail" alt="Reenviar a Destinatario Original"/>
+						<input type="submit" name="submit_go_resend_quotation" value="Reenviar" class="buttonImageEmail" title="Reenviar a Destinatario Original" />
 					</form>					
-					
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importSupplierQuoteHistory" />
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="Ver Historial" class="buttonImageHistory" />
+						<input type="submit" name="submit_go_edit_quotation" value="Ver Historial" class="buttonImageHistory" title="Consultar histórico de colicitud" />
 					</form>
 					
-					<input type="button" value="Reenviar" onClick="javascript:importShowDiv('resendDiv|-$quotation->getId()-|')" class="buttonImageSendMultiple" alt="Enviar a otros destinatarios"/>
+					<input type="button" value="Reenviar" onClick="javascript:importShowDiv('resendDiv|-$quotation->getId()-|')" class="buttonImageSendMultiple" title="Enviar a otros destinatarios"/>
 					<div id="resendDiv|-$quotation->getId()-|" style="display: none;">
 
 					<form action="Main.php" method="post">	

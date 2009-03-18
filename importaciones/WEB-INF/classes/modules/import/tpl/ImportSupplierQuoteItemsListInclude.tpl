@@ -3,7 +3,7 @@
 		<tr>
 			<th>Código</th>
 			<th>Nombre</th>
-			<th>Cantidad Pedida</th>
+<!--			<th>Cantidad Pedida</th> -->
 			<th>Precio Unitario del Proveedor</th>			
 		</tr>
 		|-foreach from=$supplierQuotation->getSupplierQuotationItems() item=item name=for_supplierQuotationsItems-|
@@ -11,7 +11,7 @@
 		<tr>
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
-			<td>|-$item->getQuantity()-|</td>
+<!--			<td>|-$item->getQuantity()-|</td> -->
 			<td>|-$item->getPrice()|number_format:2:",":"."-|</td>			
 		</tr>
 		|-/foreach-|

@@ -1,1 +1,1 @@
-<p>El codigo de acceso proporcionado es invalido o ha caducado.</p>
+<p>El código de acceso proporcionado es inválido o ha caducado.</p>
