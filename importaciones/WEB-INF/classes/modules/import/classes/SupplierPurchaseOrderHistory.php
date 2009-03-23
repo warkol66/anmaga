@@ -27,4 +27,16 @@ class SupplierPurchaseOrderHistory extends BaseSupplierPurchaseOrderHistory {
 		parent::__construct();
 	}
 
+	/**
+	 * Devuelve el nombre del status actual de la cotizacion para un administrador
+	 * @return string
+	 */
+	public function getStatusName() {
+		
+		$supplierPurchaseOrder = $this->getSupplierPurchaseOrder();
+		$statusNames = $supplierPurchaseOrder->getStatusNames();
+		return $statusNames[$this->getStatus()];
+	}
+
+
 } // SupplierPurchaseOrderHistory

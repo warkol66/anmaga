@@ -28,6 +28,33 @@ class ClientPurchaseOrder extends BaseClientPurchaseOrder {
 	const STATUS_SHIPPED = 4;
 	const STATUS_ARRIVED = 5;
 	const STATUS_DELIVERED_TO_CLIENT = 6;
+
+	//nombre de los estados para los clientes
+	private $statusNamesClient = array(
+								ClientPurchaseOrder::STATUS_ORDERED_TO_SUPPLIER => 'Ordered',
+							);
+
+	//nombre de los estados para los administradores
+	private $statusNamesAdmin = array(
+								ClientPurchaseOrder::STATUS_ORDERED_TO_SUPPLIER => 'Ordered To Supplier',
+							);
+	
+
+	/**
+	 * Devuelve un array con los nombres de los distintos mensajes de status para el afiliado/cliente
+	 * @return array
+	 */	
+	public function getStatusNamesClient() {
+		return $this->statusNamesClient;
+	}
+
+	/**
+	 * Devuelve un array con los nombres de los distintos mensajes de status para el adminstrador
+	 * @return array
+	 */
+	public function getStatusNamesAdmin() {
+		return $this->statusNamesAdmin;
+	}	
 	
 	/**
 	 * Saves the current status of the instance in his history
@@ -51,6 +78,23 @@ class ClientPurchaseOrder extends BaseClientPurchaseOrder {
 		
 		return true;
 	}
+	
+	/**
+	 * Devuelve el nombre del status actual de la cotizacion para un administrador
+	 * @return string
+	 */
+	public function getStatusNameAdmin() {
+		return $this->statusNamesAdmin[$this->getStatus()];
+	}
+
+	/**
+	 * Devuelve el nombre del status actual de la cotizacion para un cliente
+	 * @return string
+	 */
+	public function getStatusNameClient() {
+		return $this->statusNamesClient[$this->getStatus()];
+	}	
+	
 	
 
 } // ClientPurchaseOrder

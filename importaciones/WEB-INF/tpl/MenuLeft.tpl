@@ -10,6 +10,8 @@
 		|- if $loginUser->isAdmin()-|		
 				<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones de Clientes</a></li>
 				<li class="menuLink"><a href="Main.php?do=importSupplierQuoteList">Cotizaciones de Proveedores</a></li>
+				<li class="menuLink"><a href="Main.php?do=importClientOrderList">Pedidos de Cliente</a></li>
+				<li class="menuLink"><a href="Main.php?do=importSupplierOrderList">Pedidos a Proveedor</a></li>
 		|-/if-|
 			</ul>
 		</div>
@@ -49,7 +51,6 @@
 |-if $loginAffiliateUser neq ""-|
   	<ul>
 		<li class="menuLink"><a href="Main.php?do=affiliatesUsersWelcome">Ir al Inicio</a></li>
-		<li class="menuLink"><a href="Main.php?do=importRequestList">Importaciones</a></li>
 	</ul>
 	<ul>
 		<li class="titleMenu"><a href="javascript:switch_vis('importAffiliateMenu');" class="linkSwitchMenu">Importaciones</a></li>
@@ -57,6 +58,7 @@
 	<div id="importAffiliateMenu">
 		<ul>
 			<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones</a></li>
+			<li class="menuLink"><a href="Main.php?do=importClientOrderList">Pedidos</a></li>
 		</ul>
 	</div>
 

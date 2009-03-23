@@ -1,10 +1,12 @@
 <?php
 
+	// include object class
+	include_once 'import/classes/SupplierPurchaseOrder.php';
+
+
   // include base peer class
   require_once 'import/classes/om/BaseSupplierPurchaseOrderPeer.php';
 
-  // include object class
-  include_once 'import/classes/SupplierPurchaseOrder.php';
 
 
 /**
@@ -24,6 +26,190 @@
  */
 class SupplierPurchaseOrderPeer extends BaseSupplierPurchaseOrderPeer {
 	
+  	private $supplierId = '';
+  	private $status = '';
+
+	//nombre de los estados para los administradores
+	private $statusNames = array(
+									'Fabrication Non Initiated' => array(SupplierPurchaseOrder::STATUS_FABRICATION_NON_INITIATED),
+								);
+
+
+  /**
+   * Devuelve los nombres de los estados del cleinte
+   */					
+  public function getStatusNames() {
+		return array_keys($this->statusNames);
+  }
+
+
+  /**
+   * Fija un filtro por supplier
+   * @param Integer $supplierId id de supplier
+   */
+  public function setSupplierId($supplierId) {
+	$this->supplierId = $supplierId;
+  }
+
+  /**
+   * Fija un filtro por estado de administrador
+   * @param Integer $productId id de producto
+   */
+  public function setStatus($status) {
+	$this->status = $status;
+  }	
+
+
+  /**
+  * Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
+  *
+  * @return int Cantidad de filas por pagina
+  */
+  function getRowsPerPage() {
+    global $system;
+    return $system["config"]["system"]["rowsPerPage"];
+  }
+
+  /**
+  * Crea un supplier purchaseOrder nuevo.
+  *
+  * @param array $params Array asociativo con los atributos del objeto
+  * @return boolean true si se creo correctamente, false sino
+  */  
+  function create($params) {
+    try {
+      $supplierpurchaseOrderObj = new SupplierPurchaseOrder();
+      foreach ($params as $key => $value) {
+        $setMethod = "set".$key;
+        if ( method_exists($supplierpurchaseOrderObj,$setMethod) ) {          
+          if (!empty($value))
+            $supplierpurchaseOrderObj->$setMethod($value);
+          else
+            $supplierpurchaseOrderObj->$setMethod(null);
+        }
+      }
+      $supplierpurchaseOrderObj->save();
+      return true;
+    } catch (Exception $exp) {
+      return false;
+    }         
+  }  
+
+  /**
+  * Actualiza la informacion de un supplier purchaseOrder.
+  *
+  * @param array $params Array asociativo con los atributos del objeto
+  * @return boolean true si se actualizo la informacion correctamente, false sino
+  */  
+  function update($params) {
+    try {
+      $supplierpurchaseOrderObj = SupplierPurchaseOrderPeer::retrieveByPK($params["id"]);    
+      if (empty($supplierpurchaseOrderObj))
+        throw new Exception();
+      foreach ($params as $key => $value) {
+        $setMethod = "set".$key;
+        if ( method_exists($supplierpurchaseOrderObj,$setMethod) ) {          
+          if (!empty($value))
+            $supplierpurchaseOrderObj->$setMethod($value);
+          else
+            $supplierpurchaseOrderObj->$setMethod(null);
+        }
+      }
+      $supplierpurchaseOrderObj->save();
+      return true;
+    } catch (Exception $exp) {
+      return false;
+    }         
+  }    
+
+	/**
+	* Elimina un supplier purchaseOrder a partir de los valores de la clave.
+	*
+  * @param int $id id del supplierpurchaseOrder
+	*	@return boolean true si se elimino correctamente el supplierpurchaseOrder, false sino
+	*/
+  function delete($id) {
+  	$supplierpurchaseOrderObj = SupplierPurchaseOrderPeer::retrieveByPK($id);
+    $supplierpurchaseOrderObj->delete();
+		return true;
+  }
+
+  /**
+  * Obtiene la informacion de un supplier purchaseOrder.
+  *
+  * @param int $id id del supplierpurchaseOrder
+  * @return array Informacion del supplierpurchaseOrder
+  */
+  function get($id) {
+		$supplierpurchaseOrderObj = SupplierPurchaseOrderPeer::retrieveByPK($id);
+    return $supplierpurchaseOrderObj;
+  }
+
+  /**
+  * Obtiene todos los supplier purchaseOrders.
+	*
+	*	@return array Informacion sobre todos los supplierpurchaseOrders
+  */
+	function getAll() {
+		$cond = new Criteria();
+		$alls = SupplierPurchaseOrderPeer::doSelect($cond);
+		return $alls;
+  }
+
+  /**
+  * Obtiene todos los supplier purchaseOrders paginados.
+  *
+  * @param int $page [optional] Numero de pagina actual
+  * @param int $perPage [optional] Cantidad de filas por pagina
+  *	@return array Informacion sobre todos los supplierpurchaseOrders
+  */
+  function getAllPaginated($page=1,$perPage=-1) {  
+    if ($perPage == -1)
+      $perPage = 	SupplierPurchaseOrderPeer::getRowsPerPage();
+    if (empty($page))
+      $page = 1;
+    require_once("propel/util/PropelPager.php");
+    $cond = new Criteria();     
+    $pager = new PropelPager($cond,"SupplierPurchaseOrderPeer", "doSelect",$page,$perPage);
+    return $pager;
+   }    	
+
+  /**
+   * Genera una criteria segun la informacion introducida para filtros
+   * @return Criteria instancia de criteria
+   */
+  private function getFilterCriteria() {
+	$criteria = New Criteria();
+
+	if (!empty($this->supplierId)) {
+		$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERID,$this->supplierId);
+	}
+	
+	if (!empty($this->status)) {
+		$status = $this->statusNames[$this->status];
+		$criteria->add($this->processStatus($criteria,$status));
+	}
+
+	return $criteria;
+  }
+
+  /**
+  * Obtiene todos los supplier purchaseOrders paginados aplicando los filtros.
+  *
+  * @param int $page [optional] Numero de pagina actual
+  * @param int $perPage [optional] Cantidad de filas por pagina
+  *	@return array Informacion sobre todos los supplierpurchaseOrders
+  */
+  public function getAllPaginatedFiltered($page=1,$perPage=-1) {  
+    if ($perPage == -1)
+      $perPage = 	SupplierPurchaseOrderPeer::getRowsPerPage();
+    if (empty($page))
+      $page = 1;
+    require_once("propel/util/PropelPager.php");
+    $cond = $this->getFilterCriteria();   
+    $pager = new PropelPager($cond,"SupplierPurchaseOrderPeer", "doSelect",$page,$perPage);
+    return $pager;
+   }    	
 	
 
 } // SupplierPurchaseOrderPeer

@@ -26,5 +26,26 @@ class ClientPurchaseOrderHistory extends BaseClientPurchaseOrderHistory {
 		// is where any default values for this object are set.
 		parent::__construct();
 	}
+	
+	/**
+	 * Devuelve el nombre del status actual de la cotizacion para un administrador
+	 * @return string
+	 */
+	public function getStatusNameAdmin() {
+		
+		$clientPurchaseOrder = $this->getClientPurchaseOrder();
+		$statusNames = $clientPurchaseOrder->getStatusNamesAdmin();
+		return $statusNames[$this->getStatus()];
+	}
+
+	/**
+	 * Devuelve el nombre del status actual de la cotizacion para un cliente
+	 * @return string
+	 */
+	public function getStatusNameClient() {
+		$clientPurchaseOrder = $this->getClientPurchaseOrder();
+		$statusNames = $clientPurchaseOrder->getStatusNamesClient();
+		return $statusNames[$this->getStatus()];
+	}	
 
 } // ClientPurchaseOrderHistory

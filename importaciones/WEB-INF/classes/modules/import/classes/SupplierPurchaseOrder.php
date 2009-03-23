@@ -1,6 +1,10 @@
 <?php
 
+require_once 'import/classes/SupplierPurchaseOrderItem.php';
+require_once 'import/classes/map/SupplierPurchaseOrderItemMapBuilder.php';
+require_once 'import/classes/SupplierPurchaseOrderItemPeer.php';
 require_once 'import/classes/map/SupplierPurchaseOrderHistoryMapBuilder.php';
+require_once 'import/classes/SupplierPurchaseOrderHistory.php';
 require_once 'import/classes/SupplierPurchaseOrderHistoryPeer.php';
 require_once 'import/classes/om/BaseSupplierPurchaseOrder.php';
 
@@ -24,6 +28,11 @@ class SupplierPurchaseOrder extends BaseSupplierPurchaseOrder {
 	
 	const STATUS_FABRICATION_NON_INITIATED = 1;
 	
+	//nombre de los estados para los clientes
+	private $statusNames = array(
+								SupplierPurchaseOrder::STATUS_FABRICATION_NON_INITIATED => 'Fabrication Non Initiated',
+							);
+	
 	/**
 	 * Saves the current status of the instance in his history
 	 * @return boolean
@@ -45,6 +54,24 @@ class SupplierPurchaseOrder extends BaseSupplierPurchaseOrder {
 		}
 		
 		return true;
+	}
+
+	/**
+	 * Devuelve un array con los nombres de los distintos mensajes de status para el adminstrador
+	 * @return array
+	 */
+	public function getStatusNames() {
+		return $this->statusNames;
 	}	
+
+
+	/**
+	 * Devuelve el nombre del status actual de la cotizacion para un administrador
+	 * @return string
+	 */
+	public function getStatusName() {
+		return $this->statusNames[$this->getStatus()];
+	}
+		
 
 } // SupplierPurchaseOrder

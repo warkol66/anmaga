@@ -2,21 +2,6 @@
 <h1>Cotizaciones de Proveedor</h1>
 <p>A continuación puede ver el listado de sus pedidos de cotización a proveedores y sus correspondientes estados.</p>
 
-<div id="div_messages">
-	|-if $message eq "resent"-|
-		<div class="successMessage">La cotización <a href="Main.php?do=importSupplierQuoteEdit&id=|-$supplierQuotationId-|" >|-$supplierQuotationId-|</a> ha sido reenviada correctamente al proveedor.
-		</div>
-	|-/if-|
-	|-if $message eq "resent-multiple"-|
-		<div class="successMessage">La cotización <a href="Main.php?do=importSupplierQuoteEdit&id=|-$supplierQuotationId-|" >|-$supplierQuotationId-|</a> ha sido reenviada a los mails validos indicados.
-		</div>
-	|-/if-|	
-	|-if $message eq "resent-failed"-|
-		<div class="successMessage">Ha ocurrido un error al reenviar la cotización <a href="Main.php?do=importSupplierQuoteEdit&id=|-$supplierQuotationId-|" >|-$supplierQuotationId-|</a>
-		</div>
-	|-/if-|
-</div>
-
 <div id="div_filters">
 	<form action="Main.php" method="get">
 		<fieldset>
@@ -35,7 +20,6 @@
 		</p>
 		</fieldset>
 	</form>
-	
 </div>
 
 <div id="div_supplierQuotations">

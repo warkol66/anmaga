@@ -1045,7 +1045,7 @@
 
     <action    path = "importClientQuoteHistory"
                type = "ImportClientQuoteHistoryAction"
-               name = "importClientQuoteHistoryConfirm"
+               name = "importClientQuoteHistory"
               scope = "request"
            validate = "true">
     <forward name="success-admin" path="ImportClientQuoteAdminHistory.tpl" />
@@ -1182,10 +1182,77 @@
 	<forward name="failure" path="/Main.php?do=importSupplierQuoteList&amp;message=resent-failure" />
 	</action>
 
+<!-- Modulo ImportSupplierQuote -->
 
-<!-- Fin Modulo ImportSupplierQuote -->
+	<action    path = "importSupplierQuoteResend"
+	           type = "ImportSupplierQuoteResendAction"
+	           name = "importSupplierQuoteResend"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="/Main.php?do=importSupplierQuoteList&amp;message=resent" />
+	<forward name="success-multiple" path="/Main.php?do=importSupplierQuoteList&amp;message=resent-multiple" />
+	<forward name="failure" path="/Main.php?do=importSupplierQuoteList&amp;message=resent-failure" />
+	</action>
 
-<!-- Fin Modulo ImportIncoterms -->
+<!-- Modulo ImportClientOrder -->
+
+	<action    path = "importClientOrderList"
+	           type = "ImportClientOrderListAction"
+	           name = "importClientOrderList"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success-admin" path="ImportClientOrderAdminList.tpl" />
+	<forward name="success-affiliate" path="ImportClientOrderAffiliateList.tpl" />
+	</action>
+
+	<action    path = "importClientOrderEdit"
+	           type = "ImportClientOrderEditAction"
+	           name = "importClientOrderEdit"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success-admin" path="ImportClientOrderAdminEdit.tpl" />
+	<forward name="success-affiliate" path="ImportClientOrderAffiliateEdit.tpl" />
+	</action>
+	
+    <action    path = "importClientOrderHistory"
+               type = "ImportClientOrderHistoryAction"
+               name = "importClientOrderHistory"
+              scope = "request"
+           validate = "true">
+    <forward name="success-admin" path="ImportClientOrderAdminHistory.tpl" />
+    <forward name="success-affiliate" path="ImportClientOrderAffiliateHistory.tpl" />
+    </action>
+	
+
+<!-- Fin Modulo ImportClientOrder -->
+
+<!-- Modulo ImportSupplierOrder -->
+
+	<action    path = "importSupplierOrderList"
+	           type = "ImportSupplierOrderListAction"
+	           name = "importSupplierOrderList"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="ImportSupplierOrderList.tpl" />
+	</action>
+
+	<action    path = "importSupplierOrderEdit"
+	           type = "ImportSupplierOrderEditAction"
+	           name = "importSupplierOrderEdit"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="ImportSupplierOrderEdit.tpl" />
+	</action>
+
+	<action    path = "importSupplierOrderHistory"
+	           type = "ImportSupplierOrderHistoryAction"
+	           name = "importSupplierOrderHistory"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="ImportSupplierOrderHistory.tpl" />
+	</action>
+
+<!-- Fin Modulo ImportSupplierOrder -->
 
 <!-- Module ImportRequest -->
 <!-- Version del sistema anterior

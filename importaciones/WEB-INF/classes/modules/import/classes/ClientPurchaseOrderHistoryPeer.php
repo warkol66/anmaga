@@ -1,5 +1,6 @@
 <?php
 
+require_once 'import/classes/ClientPurchaseOrderHistory.php';
 require 'import/classes/om/BaseClientPurchaseOrderHistoryPeer.php';
 
 

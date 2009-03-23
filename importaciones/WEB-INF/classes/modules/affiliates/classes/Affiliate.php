@@ -49,6 +49,22 @@ class Affiliate extends BaseAffiliate {
 		return $result[0];
 	}        
 
+	/**
+	 * Obtiene un Pedido creado por el afiliado.
+	 * @param integer $id id de la cotizacion 
+	 */
+	public function getClientPurchaseOrder($id) {
+		
+		require_once('ClientPurchaseOrderPeer.php');
+		
+		$criteria = new Criteria();
+		$criteria->add(ClientPurchaseOrderPeer::ID,$id);
+		$criteria->add(ClientPurchaseOrderPeer::AFFILIATEID,$this->getId());
+		$result = ClientPurchaseOrderPeer::doSelect($criteria);
+	    
+		return $result[0];
+	}
+
   function getOwner() {
           require_once("AffiliateUserPeer.php");
           return AffiliateUserPeer::get($this->getOwnerId());
