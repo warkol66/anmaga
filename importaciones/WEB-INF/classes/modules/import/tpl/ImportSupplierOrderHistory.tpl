@@ -1,5 +1,5 @@
 <h2>Exportaciones</h2>
-<h1>Historial Cotizacion de Proveedor: |-$supplierPurchaseOrder->getId()-|</h1>
+<h1>Historial Cotización de Proveedor: |-$supplierPurchaseOrder->getId()-|</h1>
 
 
 <div id="div_status">

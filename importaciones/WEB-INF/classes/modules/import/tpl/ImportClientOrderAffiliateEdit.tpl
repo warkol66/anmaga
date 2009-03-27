@@ -1,5 +1,5 @@
 <h2>Exportaciones</h2>
-<h1>Informacion General del Pedido</h1>
+<h1>Información General del Pedido</h1>
 
 <div id="div_general_information">
 	<p>

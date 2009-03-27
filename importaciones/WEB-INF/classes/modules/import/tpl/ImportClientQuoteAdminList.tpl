@@ -75,7 +75,7 @@
 		</thead>
 		<tbody>
 		|-foreach from=$quotations item=quotation name=for_quotations-|
-			<tr>
+			<tr valign="top">
 				<td>|-$quotation->getId()-|</td>
 				<td><img src="images/clear.gif" class="aqua|-*$smarty.foreach.for_quotations.iteration*-||-php-|echo rand(1,10);|-/php-|" /></td>
 				<td>
@@ -84,18 +84,16 @@
 				</td>
 				<td>|-$quotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
 				<td>|-$quotation->getStatusNameAdmin()-|</td>
-				<td>|-assign var=products value=''-|
-					|-assign var=items value=$quotation->getClientQuotationItems()-|
+				<td>|-assign var=items value=$quotation->getClientQuotationItems()-|
 					|-if $items|@count eq 0-|
-						|-assign var=products value='No hay productos en la solicitud'-|
+						No hay productos en la solicitud
 					|-else-|
-					|-foreach from=$items item=item name=for_quotations_item-|
+					|-foreach from=$items item=item name=for_orders_item-|
 						|-assign var=product value=$item->getProduct()-|
-						|-assign var=product value=$product->getName()-|
-						|-assign var=products value=$products$product<br/>-|
+						|-$product->getName()-|
+						|-if not $smarty.foreach.for_orders_item.last-|<br />|-/if-|
 					|-/foreach-|
 					|-/if-|
- 				Ver detalle <a href="#" |-popup  sticky=true fgcolor="#ffffff" bgcolor="#ffffff" closecolor="#cdcdcd" closetext='Cerrar' closetitle='Cerrar' capcolor='#ffffff' bgcolor='#006699' width=350 caption="Detalle de Productos" trigger="onMouseOver" text="$products"-|  title="Ver Productos" alt="Ver Productos"><img src="images/clear.png" class="linkImageInfo"></a>
 				</td>
 				<td nowrap="nowrap">
 					<form action="Main.php" method="get">						

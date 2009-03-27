@@ -1,5 +1,5 @@
 <h2>Exportaciones</h2>
-<h1>Historial Cotizacion de Cliente: |-$clientPurchaseOrder->getId()-|</h1>
+<h1>Historial Cotización de Cliente: |-$clientPurchaseOrder->getId()-|</h1>
 
 
 <div id="div_status">

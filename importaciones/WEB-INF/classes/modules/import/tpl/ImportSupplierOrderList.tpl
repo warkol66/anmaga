@@ -51,7 +51,7 @@
 		</thead>
 		<tbody>
 		|-foreach from=$orders item=order name=for_orders-|
-			<tr>
+			<tr valign="top">
 				<td>|-$order->getId()-|</td>
 				<td><img src="images/clear.gif" class="aqua|-*$smarty.foreach.for_orders.iteration*-||-php-|echo rand(1,10);|-/php-|" /></td>
 				<td>
@@ -64,18 +64,17 @@
 				</td>
 				<td>|-$order->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
 				<td>|-$order->getStatusName()-|</td>
-				<td>|-assign var=products value=''-|
+				<td>
 					|-assign var=items value=$order->getSupplierPurchaseOrderItems()-|
 					|-if $items|@count eq 0-|
-						|-assign var=products value='No hay productos en la solicitud'-|
+						No hay productos en la solicitud
 					|-else-|
 					|-foreach from=$items item=item name=for_orders_item-|
 						|-assign var=product value=$item->getProduct()-|
-						|-assign var=product value=$product->getName()-|
-						|-assign var=products value=$products$product<br/>-|
+						|-$product->getName()-|
+						|-if not $smarty.foreach.for_orders_item.last-|<br />|-/if-|
 					|-/foreach-|
 					|-/if-|
- 				Ver detalle <a href="#" |-popup  sticky=true fgcolor="#ffffff" bgcolor="#ffffff" closecolor="#cdcdcd" closetext='Cerrar' closetitle='Cerrar' capcolor='#ffffff' bgcolor='#006699' width=350 caption="Detalle de Productos" trigger="onMouseOver" text="$products"-|  title="Ver Productos" alt="Ver Productos"><img src="images/clear.png" class="linkImageInfo"></a>
 				</td>
 				<td nowrap="nowrap">
 					<form action="Main.php" method="get">						
