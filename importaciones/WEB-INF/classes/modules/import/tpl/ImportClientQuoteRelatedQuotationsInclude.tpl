@@ -8,8 +8,9 @@
 	</tr>
 |-foreach from=$lastClientQuotationItemsRelated item=related name=for_relatedQuotations-|
 	<tr>
-		<td>|-*$related->getCreatedAt()*-|</td>
-		<td>|-*$related->getPrice()*-|</td>
+		|-assign var=clientQuotation value=$related->getClientQuotation()-|
+		<td>|-$clientQuotation->getCreatedAt()-|</td>
+		<td>|-$related->getPrice()-|</td>
 	</tr>
 |-/foreach-|
 </table>

@@ -4,6 +4,7 @@
 			<th>Código</th>
 			<th>Producto</th>
 <!--			<th>Cantidad</th> -->
+			<th>Precio Cotizado</th>
 			<th></th>
 		</tr>
 		|-foreach from=$supplierQuotation->getSupplierQuotationItems() item=item name=for_supplierQuotationsItems-|
@@ -12,6 +13,7 @@
 			<td>|-$product->getSupplierProductCode()-|</td>
 			<td>|-$product->getName()-|</td>
 <!--			<td>|-$item->getQuantity()-|</td> -->
+			<td>|-if $item->getPrice() eq ''-|Precio no asignado|-else-|US$ |-$item->getPrice()|number_format:2:",":"."-| /u.|-/if-|</td>
 			<td>
 				|-if not $supplierQuotation->isConfirmed() -|
 				<form action="Main.php" method="get">						
@@ -21,7 +23,6 @@
 					<input type="submit" name="submit_go_edit_quotation" value="Click aquí para cotizar"/>
 				</form>
 				|-else-|
-				[FOB Shanghai] US$ |-$item->getPrice()|number_format:2:",":"."-| /u.
 				|-/if-|
 			</td>
 		</tr>

@@ -52,7 +52,7 @@ class ClientQuotationItem extends BaseClientQuotationItem {
 		$criteria->add(ClientQuotationItemPeer::PRODUCTID,$this->getProductId());
 		$criteria->add(ClientQuotationItemPeer::ID,$this->getId(),Criteria::NOT_EQUAL);
 		$criteria->add(ClientQuotationItemPeer::PRICE,'',Criteria::NOT_EQUAL);
-		$result = SupplierQuotationItemPeer::doSelect($criteria);
+		$result = ClientQuotationItemPeer::doSelect($criteria);
 		return $result;
 	}
 
