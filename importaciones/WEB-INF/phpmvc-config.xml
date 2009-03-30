@@ -1254,6 +1254,35 @@
 
 <!-- Fin Modulo ImportSupplierOrder -->
 
+<!-- Modulo ImportBankTransfer -->
+
+	<action    path = "importBankTransferList"
+	           type = "ImportBankTransferListAction"
+	           name = "importBankTransferList"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="ImportBankTransferList.tpl" />
+	</action>
+
+	<action    path = "importBankTransferEdit"
+	           type = "ImportBankTransferEditAction"
+	           name = "importBankTransferEdit"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="ImportBankTransferEdit.tpl" />
+	</action>
+	
+    <action    path = "importBankTransferDoEdit"
+               type = "ImportBankTransferDoEditAction"
+               name = "importBankTransferDoEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=importBankTransferList&amp;message=ok" redirect="true" />
+    <forward name="failure" path="ImportBankTransferEdit.tpl" />
+	</action>
+
+<!-- Fin Modulo ImportSupplierOrder -->
+
 <!-- Module ImportRequest -->
 <!-- Version del sistema anterior
 
