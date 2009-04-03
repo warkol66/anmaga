@@ -1,15 +1,15 @@
 <?php
 
 require_once("BaseAction.php");
+require_once("ClientQuotationItemPeer.php");
 require_once("ProductPeer.php");
 
-
-class ImportProductSearchXAction extends BaseAction {
+class ImportClientQuoteDeleteItemXAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportProductSearchXAction() {
+	function ImportClientQuoteDeleteItemXAction() {
 		;
 	}
 
@@ -46,20 +46,25 @@ class ImportProductSearchXAction extends BaseAction {
 		$smarty->assign('module',$module);
 
 		$this->template->template = 'TemplateAjax.tpl';
-		
-		
-		if (empty($_POST['clientQuotationId'])) {
-			$clientQuotation = $_SESSION['import']['clientQuotation'];
-		}
-		else {
-			$clientQuotation = ClientQuotationPeer::get($_POST['clientQuotationId']);
-		}
 
-		$results = ProductPeer::search($_POST['productSearch']['query']);
+		//trabajamos con un client quotation sin salvarse
+		$clientQuotation = $_SESSION['import']['clientQuotation'];
 		
-		$smarty->assign('results',$results);
-		$smarty->assign('clientQuotation',$clientQuotation);
-				
+		$items = $clientQuotation->getClientQuotationItems();
+		$clientQuotation->clearClientQuotationItems();
+		
+		foreach ($items as $item) {
+			
+			if ($item->getProductId() == $_POST['productId']) {
+				//hallamos el item a eliminar
+				$item->delete();
+				$smarty->assign('productId',$_POST['productId']);
+			}
+			else {
+				$clientQuotation->addClientQuotationItem($item);
+			}
+		}
+					
 		return $mapping->findForwardConfig('success');
 	
 	}

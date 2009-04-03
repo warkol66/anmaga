@@ -83,3 +83,7 @@
 	<p>
 	|-/if-|
 </div>
+
+<div id="clientQuotationCancel"=>
+	<input type="button" name="cancel" value="Cancelar" onClick="javascript:window.history.go(-1)">
+</div>

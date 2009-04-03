@@ -484,5 +484,20 @@ CREATE TABLE `import_supplierPurchaseOrderBankTransfer`
 		REFERENCES `import_supplierPurchaseOrder` (`id`)
 )Type=MyISAM COMMENT='Transferencias bancarias realizadas a esa orden de pedido a proveedor';
 
+#-----------------------------------------------------------------------------
+#-- import_bankAccount
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `import_bankAccount`;
+
+
+CREATE TABLE `import_bankAccount`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id',
+	`accountNumber` VARCHAR(255)  NOT NULL COMMENT 'Numero de cuenta bancaria',
+	`Bank` VARCHAR(255)  NOT NULL COMMENT 'Banco',
+	PRIMARY KEY (`id`)
+)Type=MyISAM COMMENT='Cuentas bancarias';
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

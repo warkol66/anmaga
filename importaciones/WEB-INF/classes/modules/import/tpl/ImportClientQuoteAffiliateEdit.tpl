@@ -18,16 +18,7 @@
 	<p>
 		Estado: |-$clientQuotation->getStatusNameClient()-|
 	</p>
-	|-if $clientQuotation->isNewStatus()-|
-	<p>
 
-		<form action="Main.php" method="post">
-			<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
-			<input type="hidden" name="do" value="importClientQuoteConfirm" />
-			<input type="submit" value="Confirmar Solicitud de Cotización">
-		</form>
-	<p>
-	|-/if-|
 </div>
 
 <h1>Productos de la solicitud</h1>
@@ -50,4 +41,19 @@
 		</form>
 	<p>
 	|-/if-|
+</div>
+
+|-if $clientQuotation->isNewStatus()-|
+<div id="ClientQuotationConfirm">
+
+	<form action="Main.php" method="post">
+		<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
+		<input type="hidden" name="do" value="importClientQuoteConfirm" />
+		<input type="submit" value="Confirmar Solicitud de Cotización">
+	</form>
+</div>
+|-/if-|
+
+<div id="clientQuotationCancel"=>
+	<input type="button" name="cancel" value="Cancelar" onClick="javascript:window.history.go(-1)">
 </div>

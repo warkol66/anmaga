@@ -4,7 +4,7 @@
 
 <div id="clientQuotationItemLister">
 	<table id="clientQuotationItemList" cellpadding="4" cellspacing="0" class="tableTdBorders">
-		<tr>
+		<thead>
 			|-if $clientQuotation->isQuoted()-|
 				<th></th>
 			|-/if-|
@@ -12,10 +12,12 @@
 			<th>Nombre</th>
 <!--			<th>Cantidad</th>
 			<th>Precio Unitario</th>		-->	
-		</tr>
+			<th></th>
+		</thead>
 		|-foreach from=$clientQuotation->getClientQuotationItems() item=item name=for_clientQuotationsItems-|
 		|-assign var=product value=$item->getProduct()-|
-		<tr>
+		<tbody>
+		<tr id="itemProduct|-$item->getProductId()-|">
 			|-if $clientQuotation->isQuoted()-|
 				<td><input type="checkbox" name="clientQuoteItems[]" value="|-$item->getId()-|" /></td>
 			|-/if-|
@@ -23,7 +25,17 @@
 			<td>|-$product->getName()-|</td>
 <!--			<td>|-$item->getQuantity()-|</td>
 			<td>|-$item->getPrice()-|</td>			-->
+			<td>
+				|-if $clientQuotation->isNew()-|
+				<form action="Main.php" method="post">
+					<input type="hidden" name="do" value="importClientQuoteDeleteItemX" />
+					<input type="hidden" name="productId" value="|-$item->getProductId()-|" />
+					<input type="button" name="submit_go_delete_quotation" value="Borrar" onClick="javascript:importDeleteItemFromClientQuotationX(this.form)" class="buttonImageDelete" />
+				</form>
+				|-/if-|
+			</td>
 		</tr>
+		</tbody>
 		|-/foreach-|
 	</table>
 </div>	
@@ -39,7 +51,3 @@
 	</p>
 </form>
 |-/if-|
-
-|-* NOTA DESARROLLO: Este formulario lo tuve que modificar para eliminar la cantidad y precio unitario cuando se agregan productos a la orden
-Hace flata un "Remover producto de la orden" y sería bueno verificar que no se haya agregado ya el mismo producto.
-También saqué las columnas de ImportClientQuoteAddItemX.tpl *-|

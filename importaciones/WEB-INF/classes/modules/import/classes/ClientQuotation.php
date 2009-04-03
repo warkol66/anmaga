@@ -448,4 +448,21 @@ class ClientQuotation extends BaseClientQuotation {
 		return true;
 	}
 	
+	/**
+	 * Indicates if the quotation has a certain Product
+	 * @param $product Product
+	 * @return boolean
+	 */
+	public function hasProduct($product) {
+		
+		$items = $this->getClientQuotationItems();
+		foreach ($items as $item) {
+			if ($item->getProductId() == $product->getId()) {
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
 } // ClientQuotation

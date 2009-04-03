@@ -47,8 +47,15 @@ class ImportClientQuoteConfirmAction extends BaseAction {
 		if (Common::isAffiliatedUser()) {
 			//Traemos todas las cotizaciones de ese afiliado.
 			$affiliate = Common::getAffiliatedLogged();
-			$clientQuotation = $affiliate->getClientQuotation($_POST['clientQuotationId']);
-
+			
+			if (empty($_GET['id'])) {
+				//se esta editando una clientQuotation recien creada
+				$clientQuotation = $_SESSION['import']['clientQuotation'];
+			}
+			else {
+				$clientQuotation = $affiliate->getClientQuotation($_POST['clientQuotationId']);
+			}
+			
 			if (empty($clientQuotation)) {
 				return $mapping->findForwardConfig('failure');
 			}
@@ -65,7 +72,14 @@ class ImportClientQuoteConfirmAction extends BaseAction {
 		
 		if (Common::isAdmin()) {
 
-			$clientQuotation = ClientQuotationPeer::get($_POST['clientQuotationId']);
+			if (empty($_GET['id'])) {
+				//se esta editando una clientQuotation recien creada
+				$clientQuotation = $_SESSION['import']['clientQuotation'];
+			}
+			else {
+				//se esta editando una clientQuotation existente
+				$clientQuotation = $clientQuotationPeer->get($_POST['clientQuotationId']);
+			}
 
 			if (empty($clientQuotation)) {
 				return $mapping->findForwardConfig('failure');
@@ -74,6 +88,8 @@ class ImportClientQuoteConfirmAction extends BaseAction {
 			if (!$clientQuotation->clientConfirm()) {
 				return $mapping->findForwardConfig('failure');
 			}
+			
+			$_SESSION['import']['clientQuotation'] = '';
 			
 			$params = array();
 			$params['clientQuotationId'] = $clientQuotation->getId();

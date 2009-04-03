@@ -60,17 +60,17 @@ class ImportClientQuoteCreateAction extends BaseAction {
 			$_POST['clientQuotation']['affiliateUserId'] = $affiliateUser->getId();
 		}
 
-		$clientQuotation = ClientQuotationPeer::create($_POST['clientQuotation']);
+		$clientQuotation = ClientQuotationPeer::createInstance($_POST['clientQuotation']);
 
 		if (!$clientQuotation) {
 			return $mapping->findForwardConfig('failure');
 		}
 		
-		$params = array();
-		$params['id'] = $clientQuotation->getId();
+		//guardamos en la sesion el objeto creado
+		$_SESSION['import']['clientQuotation'] = $clientQuotation;
 		
-		return $this->addParamsToForwards($params,$mapping,'success');
-		
+		return $mapping->findForwardConfig('success');
+
 	}
 
 }

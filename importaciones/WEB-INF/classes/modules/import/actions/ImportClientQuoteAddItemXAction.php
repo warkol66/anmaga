@@ -2,7 +2,7 @@
 
 require_once("BaseAction.php");
 require_once("ClientQuotationItemPeer.php");
-
+require_once("ProductPeer.php");
 
 class ImportClientQuoteAddItemXAction extends BaseAction {
 
@@ -48,7 +48,30 @@ class ImportClientQuoteAddItemXAction extends BaseAction {
 		$this->template->template = 'TemplateAjax.tpl';
 
 		if (!empty($_POST['clientQuotationItem']) && !empty($_POST['clientQuotationItem']['quantity'])) {
-			$item = ClientQuotationItemPeer::create($_POST['clientQuotationItem']);
+
+			if (empty($_POST['clientQuotationItem']['clientQuotationId'])) {
+				//trabajamos con un client quotation sin salvarse
+				$clientQuotation = $_SESSION['import']['clientQuotation'];
+			}
+			else { 
+				$clientQuotation = ClientQuotationPeer::get($_POST['clientQuotationItem']['clientQuotationId']);
+			}
+			
+			$product = ProductPeer::get($_POST['clientQuotationItem']['productId']);
+			if ($clientQuotation->hasProduct($product)) {
+				$smarty->assign('message','already-added');
+				return $mapping->findForwardConfig('success');
+			}
+
+
+			if (empty($_POST['clientQuotationItem']['clientQuotationId'])) {
+				//trabajamos con un client quotation sin salvarse
+				$item = ClientQuotationItemPeer::createInstance($_POST['clientQuotationItem']);
+				$clientQuotation->addClientQuotationItem($item);
+			}
+			else { 
+				$item = ClientQuotationItemPeer::create($_POST['clientQuotationItem']);
+			}
 			if (!empty($item)) {
 				$smarty->assign('item',$item);
 			}

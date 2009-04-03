@@ -1027,6 +1027,14 @@
     <forward name="success" path="ImportClientQuoteAddItemX.tpl" />
     </action>
 
+    <action    path = "importClientQuoteDeleteItemX"
+               type = "ImportClientQuoteDeleteItemXAction"
+               name = "importClientQuoteDeleteItemX"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportClientQuoteDeleteItemX.tpl" />
+    </action>
+
     <action    path = "importClientQuoteConfirm"
                type = "ImportClientQuoteConfirmAction"
                name = "importClientQuoteConfirm"

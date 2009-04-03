@@ -65,7 +65,16 @@ class ImportClientQuoteEditAction extends BaseAction {
 			//traemos todas las cotizaciones.
 			$incoterms = IncotermPeer::getAll();
 			$ports = PortPeer::getAll();
-			$clientQuotation = $clientQuotationPeer->get($_GET["id"]);
+
+			if (empty($_GET['id'])) {
+				//se esta editando una clientQuotation recien creada
+				$clientQuotation = $_SESSION['import']['clientQuotation'];
+			}
+			else {
+				//se esta editando una clientQuotation existente
+				$clientQuotation = $clientQuotationPeer->get($_GET["id"]);
+			}
+
 			$suppliers = $clientQuotation->getProductRelatedSuppliers();
 			$smarty->assign("clientQuotation",$clientQuotation);
 			$smarty->assign("suppliers",$suppliers);
@@ -78,7 +87,14 @@ class ImportClientQuoteEditAction extends BaseAction {
 			//Traemos todas las cotizaciones de ese afiliado.
 			$affiliateUser = Common::getAffiliatedLogged();
 			$affiliate = $affiliateUser->getAffiliate();
-			$clientQuotation = $affiliate->getClientQuotation($_GET['id']);
+			
+			if (empty($_GET['id'])) {
+				//se esta editando una clientQuotation recien creada
+				$clientQuotation = $_SESSION['import']['clientQuotation'];
+			}
+			else {
+				$clientQuotation = $affiliate->getClientQuotation($_GET['id']);
+			}
 			
 			if (empty($clientQuotation)) {
 				return $mapping->findForwardConfig('failure');

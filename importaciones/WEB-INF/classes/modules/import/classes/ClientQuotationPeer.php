@@ -111,15 +111,14 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
     return $system["config"]["system"]["rowsPerPage"];
   }
   
+
   /**
-  * Crea un client quotation nuevo.
-  *
+  * Crea una instancia de ClientQuotation. La misma no se persiste en la base de datos.
   * @param array $params Array asociativo con los atributos del objeto
-  * @return boolean true si se creo correctamente, false sino
-  */  
-  function create($params) {
-    try {
-      $clientquotationObj = new ClientQuotation();
+  * @return ClientQuotation instance
+  */
+  function createInstance($params) {
+	  $clientquotationObj = new ClientQuotation();
       foreach ($params as $key => $value) {
         $setMethod = "set".$key;
         if ( method_exists($clientquotationObj,$setMethod) ) {          
@@ -132,7 +131,21 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
 
 	  $clientquotationObj->setCreatedAt(time());
 	  $clientquotationObj->setStatus(ClientQuotation::STATUS_NEW);
-      $clientquotationObj->save();
+      return $clientquotationObj;
+  }
+
+  /**
+  * Crea un client quotation nuevo y lo persiste.
+  *
+  * @param array $params Array asociativo con los atributos del objeto
+  * @return boolean true si se creo correctamente, false sino
+  */  
+  function create($params) {
+    try {
+      
+	  $clientQuotationObject = ClientQuotationPeer::createInstance($params);
+
+	  $clientquotationObj->save();
   
 	  $clientquotationObj->saveCurrentStatusOnHistory();
 
