@@ -346,7 +346,7 @@
 	<table name="import_bankAccount" phpName='BankAccount' description="Cuentas bancarias">
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id" autoIncrement="true"/>
 	  	<column name="accountNumber" required="true" type="VARCHAR" size="255" description="Numero de cuenta bancaria" />
-	  	<column name="Bank" required="true" type="VARCHAR" size="255" description="Banco" />
+	  	<column name="bank" required="true" type="VARCHAR" size="255" description="Banco" />
 	</table>
 	
 </database>
