@@ -1291,6 +1291,42 @@
 
 <!-- Fin Modulo ImportSupplierOrder -->
 
+<!-- Section BankAccounts -->
+    <action    path = "importBankAccountsEdit"
+               type = "importBankAccountsEditAction"
+               name = "importBankAccountsEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportBankAccountsEdit.tpl" />
+    </action>
+
+    <action    path = "importBankAccountsDoEdit"
+               type = "importBankAccountsDoEditAction"
+               name = "importBankAccountsDoEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=importBankAccountsList&amp;message=ok" redirect="true" />
+    <forward name="failure" path="ImportBankAccountsEdit.tpl" />
+    </action>
+
+    <action    path = "importBankAccountsList"
+               type = "importBankAccountsListAction"
+               name = "importBankAccountsList"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportBankAccountsList.tpl" />
+    </action>
+
+    <action    path = "importBankAccountsDoDelete"
+               type = "importBankAccountsDoDeleteAction"
+               name = "importBankAccountsDoDelete"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=importBankAccountsList&amp;message=deleted_ok" redirect="true" />
+    </action>
+
+<!-- End Section BankAccounts -->
+
 <!-- Module ImportRequest -->
 <!-- Version del sistema anterior
 
