@@ -57,7 +57,7 @@ abstract class BaseBankAccountPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Accountnumber', 'Bank', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'accountnumber', 'bank', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::ACCOUNTNUMBER, self::BANK, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'accountNumber', 'Bank', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'accountNumber', 'bank', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
@@ -71,7 +71,7 @@ abstract class BaseBankAccountPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Accountnumber' => 1, 'Bank' => 2, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'accountnumber' => 1, 'bank' => 2, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::ACCOUNTNUMBER => 1, self::BANK => 2, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'accountNumber' => 1, 'Bank' => 2, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'accountNumber' => 1, 'bank' => 2, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
