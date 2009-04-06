@@ -83,3 +83,42 @@ function importSelectAllByName(name) {
 	
 	return true;
 }
+
+function importDeleteItemFromClientQuotationX(form) {
+	
+	var fields = Form.serialize(form);
+	var myAjax = new Ajax.Updater(
+				{success: 'productSearchMsgBox'},
+				url,
+				{
+					method: 'post',
+					postBody: fields,
+					evalScripts: true,
+
+				});
+	if ($('productSearchMsgBox'))
+		$('productSearchMsgBox').innerHTML = '<span class="inProgress">... eliminando producto ...</span>';
+	
+	return true;
+}
+
+function importGetSupplierPurchaseOrdersX(select) {
+	
+	var supplierId = select.value;
+	var query = 'do=importSupplierOrderGetX&id=' + supplierId;
+	
+	var myAjax = new Ajax.Updater(
+				{success: 'bankTransfer[supplierPurchaseOrderId]'},
+				url,
+				{
+					method: 'post',
+					postBody: query,
+					evalScripts: true,
+
+				});
+	if ($('msgBox'))
+		$('msgBox').innerHTML = '<span class="inProgress">... cargando ordenes ...</span>';
+	
+	return true;
+	
+}
