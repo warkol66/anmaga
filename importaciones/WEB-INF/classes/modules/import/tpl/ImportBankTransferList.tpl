@@ -12,10 +12,11 @@
 	<table cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-bank-transfers">
 		<thead>
 			<tr>
-				<th colspan="6" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=importBankTransferEdit" class="addLink">Agregar Transferencia Bancaria</a></div></th>
+				<th colspan="7" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=importBankTransferEdit" class="addLink">Agregar Transferencia Bancaria</a></div></th>
 			</tr>
 			<tr>
 				<th>Id</th>
+				<th>Cuenta Origen</th>
 				<th>Numero de Transferencia</th>
 				<th>Monto</th>
 				<th>Orden de Proveedor Relacionada</th>
@@ -27,6 +28,7 @@
 		|-foreach from=$transfers item=transfer name=for_transfer-|
 			<tr>
 				<td>|-$transfer->getId()-|</td>
+				<td>|-assign var=account value=$transfer->getBankAccount()-||-$account->getDescription()-|</td>
 				<td>|-$transfer->getBankTransferNumber()-|</td>
 				<td>|-$transfer->getAmount()-|</td>
 				<td>|-$transfer->getSupplierPurchaseOrderId()-|</td>

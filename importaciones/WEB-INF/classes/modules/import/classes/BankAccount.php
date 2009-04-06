@@ -26,5 +26,9 @@ class BankAccount extends BaseBankAccount {
 		// is where any default values for this object are set.
 		parent::__construct();
 	}
+	
+	public function getDescription() {
+		return $this->getBank() . " - " . $this->getAccountNumber();
+	}
 
 } // BankAccount

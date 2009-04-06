@@ -1259,6 +1259,14 @@
 	       validate = "true">
 	<forward name="success" path="ImportSupplierOrderHistory.tpl" />
 	</action>
+	
+	<action    path = "importSupplierOrderGetX"
+	           type = "ImportSupplierOrderGetXAction"
+	           name = "importSupplierOrderGetX"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="ImportSupplierOrderGetX.tpl" />
+	</action>	
 
 <!-- Fin Modulo ImportSupplierOrder -->
 
@@ -1288,12 +1296,12 @@
     <forward name="success" path="/Main.php?do=importBankTransferList&amp;message=ok" redirect="true" />
     <forward name="failure" path="ImportBankTransferEdit.tpl" />
 	</action>
-
+	
 <!-- Fin Modulo ImportSupplierOrder -->
 
 <!-- Section BankAccounts -->
     <action    path = "importBankAccountsEdit"
-               type = "importBankAccountsEditAction"
+               type = "ImportBankAccountsEditAction"
                name = "importBankAccountsEdit"
               scope = "request"
            validate = "true">
@@ -1301,7 +1309,7 @@
     </action>
 
     <action    path = "importBankAccountsDoEdit"
-               type = "importBankAccountsDoEditAction"
+               type = "ImportBankAccountsDoEditAction"
                name = "importBankAccountsDoEdit"
               scope = "request"
            validate = "true">
@@ -1310,7 +1318,7 @@
     </action>
 
     <action    path = "importBankAccountsList"
-               type = "importBankAccountsListAction"
+               type = "ImportBankAccountsListAction"
                name = "importBankAccountsList"
               scope = "request"
            validate = "true">
@@ -1318,7 +1326,7 @@
     </action>
 
     <action    path = "importBankAccountsDoDelete"
-               type = "importBankAccountsDoDeleteAction"
+               type = "ImportBankAccountsDoDeleteAction"
                name = "importBankAccountsDoDelete"
               scope = "request"
            validate = "true">
@@ -1326,101 +1334,6 @@
     </action>
 
 <!-- End Section BankAccounts -->
-
-<!-- Module ImportRequest -->
-<!-- Version del sistema anterior
-
-    <action    path = "importRequestList"
-               type = "ImportRequestListAction"
-               name = "importRequestList"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="ImportRequestList.tpl" />
-    </action>
-
-    <action    path = "importRequestEdit"
-               type = "ImportRequestEditAction"
-               name = "importRequestEdit"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="ImportRequestEdit.tpl" />
-    </action>
-
-    <action    path = "importDoAddProductToRequestX"
-               type = "ImportDoAddProductToRequestXAction"
-               name = "importDoAddProductToRequestX"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="ImportDoAddProductToRequestXSuccess.tpl" />
-    <forward name="failure" path="ImportFailure.tpl" />
-    </action>
-
-    <action    path = "importDoDeleteProductFromRequestX"
-               type = "ImportDoDeleteProductFromRequestXAction"
-               name = "importDoDeleteProductFromRequestX"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="ImportDoDeleteProductFromRequestXSuccess.tpl" />
-    <forward name="failure" path="ImportFailure.tpl" />
-    </action>
-
-    <action    path = "importProductRequestDetail"
-               type = "ImportProductRequestDetailAction"
-               name = "importProductRequestDetail"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="ImportProductRequestDetail.tpl" />
-    </action>
-
-    <action    path = "importDoEditProductRequestPriceX"
-               type = "ImportDoEditProductRequestPriceXAction"
-               name = "importDoEditProductRequestPriceX"
-              scope = "request"
-           validate = "true">
-    <forward name="success-supplier" path="ImportDoEditProductRequestPriceXSupplier.tpl" />
-    <forward name="success-admin" path="ImportDoEditProductRequestPriceXAdmin.tpl" />
-    <forward name="failure" path="ImportFailure.tpl" />
-    </action>
-
-    <action    path = "importDoAssignSupplierX"
-               type = "ImportDoAssignSupplierXAction"
-               name = "importDoAssignSupplierX"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="ImportDoAssignSupplierX.tpl" />
-    <forward name="failure" path="ImportFailure.tpl" />
-    </action>
-
-    <action    path = "importUserConfirmationX"
-               type = "ImportUserConfirmationXAction"
-               name = "importUserConfirmationX"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="ImportUserConfirmationX.tpl" />
-    <forward name="failure" path="ImportFailure.tpl" />
-    </action>
-
-    <action    path = "importDoAssignProductRequestTermsX"
-               type = "ImportDoAssignProductRequestTermsXAction"
-               name = "importDoAssignProductRequestTermsX"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="ImportDoAssignProductRequestTermsX.tpl" />
-    <forward name="failure" path="ImportFailure.tpl" />
-    </action>
-
-    <action    path = "importSendMessageX"
-               type = "ImportSendMessageXAction"
-               name = "importSendMessageX"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="ImportSendMessageX.tpl" />
-    <forward name="failure" path="ImportFailure.tpl" />
-    </action>	
-
--->
-<!-- Fin Module ImportRequest -->
-
   </action-mappings>
 
 

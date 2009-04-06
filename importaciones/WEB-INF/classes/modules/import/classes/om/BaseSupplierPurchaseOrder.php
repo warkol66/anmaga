@@ -2145,6 +2145,53 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		}
 	}
 
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this SupplierPurchaseOrder is new, it will return
+	 * an empty collection; or if this SupplierPurchaseOrder has previously
+	 * been saved, it will retrieve related SupplierPurchaseOrderBankTransfers from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in SupplierPurchaseOrder.
+	 */
+	public function getSupplierPurchaseOrderBankTransfersJoinBankAccount($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierPurchaseOrderPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierPurchaseOrderBankTransfers === null) {
+			if ($this->isNew()) {
+				$this->collSupplierPurchaseOrderBankTransfers = array();
+			} else {
+
+				$criteria->add(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, $this->id);
+
+				$this->collSupplierPurchaseOrderBankTransfers = SupplierPurchaseOrderBankTransferPeer::doSelectJoinBankAccount($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, $this->id);
+
+			if (!isset($this->lastSupplierPurchaseOrderBankTransferCriteria) || !$this->lastSupplierPurchaseOrderBankTransferCriteria->equals($criteria)) {
+				$this->collSupplierPurchaseOrderBankTransfers = SupplierPurchaseOrderBankTransferPeer::doSelectJoinBankAccount($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierPurchaseOrderBankTransferCriteria = $criteria;
+
+		return $this->collSupplierPurchaseOrderBankTransfers;
+	}
+
 	/**
 	 * Resets all collections of referencing foreign keys.
 	 *

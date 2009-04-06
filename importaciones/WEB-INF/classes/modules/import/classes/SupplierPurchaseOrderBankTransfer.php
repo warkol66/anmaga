@@ -1,5 +1,6 @@
 <?php
 
+require_once('import/classes/BankAccountPeer.php');
 require 'import/classes/om/BaseSupplierPurchaseOrderBankTransfer.php';
 
 

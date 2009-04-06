@@ -4,6 +4,8 @@ require_once("BaseAction.php");
 require_once("SupplierPurchaseOrderBankTransfer.php");
 require_once("SupplierPurchaseOrderBankTransferPeer.php");
 require_once("SupplierPurchaseOrderPeer.php");
+require_once("BankAccountPeer.php");
+require_once("SupplierPeer.php");
 
 class ImportBankTransferEditAction extends BaseAction {
 
@@ -50,7 +52,11 @@ class ImportBankTransferEditAction extends BaseAction {
 		$smarty->assign('section',$section);
 		
 		$supplierOrders = SupplierPurchaseOrderPeer::getAll();
-		$smarty->assign("supplierOrders",$supplierOrders);			
+		$smarty->assign("supplierOrders",$supplierOrders);
+		$suppliers = SupplierPeer::getAll();
+		$smarty->assign("suppliers",$suppliers);
+		$bankAccounts = BankAccountPeer::getAll();
+		$smarty->assign("bankAccounts",$bankAccounts);
 
 	    if ( !empty($_GET["id"]) ) {
 			$transfer = SupplierPurchaseOrderBankTransferPeer::get($_GET["id"]);

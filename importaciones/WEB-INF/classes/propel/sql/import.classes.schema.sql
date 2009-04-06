@@ -476,12 +476,18 @@ CREATE TABLE `import_supplierPurchaseOrderBankTransfer`
 	`supplierPurchaseOrderId` INTEGER  NOT NULL COMMENT 'Id de orden de pedido a proveedor',
 	`bankTransferNumber` VARCHAR(255)  NOT NULL COMMENT 'numero de transferencia bancaria.',
 	`amount` FLOAT  NOT NULL COMMENT 'monto de la transferencia bancaria.',
+	`accountNumber` VARCHAR(255)  NOT NULL COMMENT 'Numero de cuenta bancaria destino',
+	`bankAccountId` INTEGER  NOT NULL COMMENT 'Cuenta bancaria origen',
 	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
 	PRIMARY KEY (`id`),
 	INDEX `import_supplierPurchaseOrderBankTransfer_FI_1` (`supplierPurchaseOrderId`),
 	CONSTRAINT `import_supplierPurchaseOrderBankTransfer_FK_1`
 		FOREIGN KEY (`supplierPurchaseOrderId`)
-		REFERENCES `import_supplierPurchaseOrder` (`id`)
+		REFERENCES `import_supplierPurchaseOrder` (`id`),
+	INDEX `import_supplierPurchaseOrderBankTransfer_FI_2` (`bankAccountId`),
+	CONSTRAINT `import_supplierPurchaseOrderBankTransfer_FK_2`
+		FOREIGN KEY (`bankAccountId`)
+		REFERENCES `import_bankAccount` (`id`)
 )Type=MyISAM COMMENT='Transferencias bancarias realizadas a esa orden de pedido a proveedor';
 
 #-----------------------------------------------------------------------------
@@ -495,7 +501,7 @@ CREATE TABLE `import_bankAccount`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id',
 	`accountNumber` VARCHAR(255)  NOT NULL COMMENT 'Numero de cuenta bancaria',
-	`Bank` VARCHAR(255)  NOT NULL COMMENT 'Banco',
+	`bank` VARCHAR(255)  NOT NULL COMMENT 'Banco',
 	PRIMARY KEY (`id`)
 )Type=MyISAM COMMENT='Cuentas bancarias';
 

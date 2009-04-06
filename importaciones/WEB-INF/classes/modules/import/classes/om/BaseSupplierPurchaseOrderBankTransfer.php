@@ -43,6 +43,18 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	protected $amount;
 
 	/**
+	 * The value for the accountnumber field.
+	 * @var        string
+	 */
+	protected $accountnumber;
+
+	/**
+	 * The value for the bankaccountid field.
+	 * @var        int
+	 */
+	protected $bankaccountid;
+
+	/**
 	 * The value for the createdat field.
 	 * @var        string
 	 */
@@ -52,6 +64,11 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	 * @var        SupplierPurchaseOrder
 	 */
 	protected $aSupplierPurchaseOrder;
+
+	/**
+	 * @var        BankAccount
+	 */
+	protected $aBankAccount;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -125,6 +142,26 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	public function getAmount()
 	{
 		return $this->amount;
+	}
+
+	/**
+	 * Get the [accountnumber] column value.
+	 * Numero de cuenta bancaria destino
+	 * @return     string
+	 */
+	public function getAccountnumber()
+	{
+		return $this->accountnumber;
+	}
+
+	/**
+	 * Get the [bankaccountid] column value.
+	 * Cuenta bancaria origen
+	 * @return     int
+	 */
+	public function getBankaccountid()
+	{
+		return $this->bankaccountid;
 	}
 
 	/**
@@ -250,6 +287,50 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	} // setAmount()
 
 	/**
+	 * Set the value of [accountnumber] column.
+	 * Numero de cuenta bancaria destino
+	 * @param      string $v new value
+	 * @return     SupplierPurchaseOrderBankTransfer The current object (for fluent API support)
+	 */
+	public function setAccountnumber($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->accountnumber !== $v) {
+			$this->accountnumber = $v;
+			$this->modifiedColumns[] = SupplierPurchaseOrderBankTransferPeer::ACCOUNTNUMBER;
+		}
+
+		return $this;
+	} // setAccountnumber()
+
+	/**
+	 * Set the value of [bankaccountid] column.
+	 * Cuenta bancaria origen
+	 * @param      int $v new value
+	 * @return     SupplierPurchaseOrderBankTransfer The current object (for fluent API support)
+	 */
+	public function setBankaccountid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->bankaccountid !== $v) {
+			$this->bankaccountid = $v;
+			$this->modifiedColumns[] = SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID;
+		}
+
+		if ($this->aBankAccount !== null && $this->aBankAccount->getId() !== $v) {
+			$this->aBankAccount = null;
+		}
+
+		return $this;
+	} // setBankaccountid()
+
+	/**
 	 * Sets the value of [createdat] column to a normalized version of the date/time value specified.
 	 * Creation date for
 	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
@@ -339,7 +420,9 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 			$this->supplierpurchaseorderid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->banktransfernumber = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->amount = ($row[$startcol + 3] !== null) ? (double) $row[$startcol + 3] : null;
-			$this->createdat = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->accountnumber = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->bankaccountid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->createdat = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -349,7 +432,7 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 5; // 5 = SupplierPurchaseOrderBankTransferPeer::NUM_COLUMNS - SupplierPurchaseOrderBankTransferPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 7; // 7 = SupplierPurchaseOrderBankTransferPeer::NUM_COLUMNS - SupplierPurchaseOrderBankTransferPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating SupplierPurchaseOrderBankTransfer object", $e);
@@ -374,6 +457,9 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 
 		if ($this->aSupplierPurchaseOrder !== null && $this->supplierpurchaseorderid !== $this->aSupplierPurchaseOrder->getId()) {
 			$this->aSupplierPurchaseOrder = null;
+		}
+		if ($this->aBankAccount !== null && $this->bankaccountid !== $this->aBankAccount->getId()) {
+			$this->aBankAccount = null;
 		}
 	} // ensureConsistency
 
@@ -415,6 +501,7 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->aSupplierPurchaseOrder = null;
+			$this->aBankAccount = null;
 		} // if (deep)
 	}
 
@@ -510,6 +597,13 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 					$affectedRows += $this->aSupplierPurchaseOrder->save($con);
 				}
 				$this->setSupplierPurchaseOrder($this->aSupplierPurchaseOrder);
+			}
+
+			if ($this->aBankAccount !== null) {
+				if ($this->aBankAccount->isModified() || $this->aBankAccount->isNew()) {
+					$affectedRows += $this->aBankAccount->save($con);
+				}
+				$this->setBankAccount($this->aBankAccount);
 			}
 
 			if ($this->isNew() ) {
@@ -611,6 +705,12 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 				}
 			}
 
+			if ($this->aBankAccount !== null) {
+				if (!$this->aBankAccount->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aBankAccount->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = SupplierPurchaseOrderBankTransferPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
@@ -637,6 +737,8 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 		if ($this->isColumnModified(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID)) $criteria->add(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, $this->supplierpurchaseorderid);
 		if ($this->isColumnModified(SupplierPurchaseOrderBankTransferPeer::BANKTRANSFERNUMBER)) $criteria->add(SupplierPurchaseOrderBankTransferPeer::BANKTRANSFERNUMBER, $this->banktransfernumber);
 		if ($this->isColumnModified(SupplierPurchaseOrderBankTransferPeer::AMOUNT)) $criteria->add(SupplierPurchaseOrderBankTransferPeer::AMOUNT, $this->amount);
+		if ($this->isColumnModified(SupplierPurchaseOrderBankTransferPeer::ACCOUNTNUMBER)) $criteria->add(SupplierPurchaseOrderBankTransferPeer::ACCOUNTNUMBER, $this->accountnumber);
+		if ($this->isColumnModified(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID)) $criteria->add(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID, $this->bankaccountid);
 		if ($this->isColumnModified(SupplierPurchaseOrderBankTransferPeer::CREATEDAT)) $criteria->add(SupplierPurchaseOrderBankTransferPeer::CREATEDAT, $this->createdat);
 
 		return $criteria;
@@ -697,6 +799,10 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 		$copyObj->setBanktransfernumber($this->banktransfernumber);
 
 		$copyObj->setAmount($this->amount);
+
+		$copyObj->setAccountnumber($this->accountnumber);
+
+		$copyObj->setBankaccountid($this->bankaccountid);
 
 		$copyObj->setCreatedat($this->createdat);
 
@@ -795,6 +901,55 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	}
 
 	/**
+	 * Declares an association between this object and a BankAccount object.
+	 *
+	 * @param      BankAccount $v
+	 * @return     SupplierPurchaseOrderBankTransfer The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setBankAccount(BankAccount $v = null)
+	{
+		if ($v === null) {
+			$this->setBankaccountid(NULL);
+		} else {
+			$this->setBankaccountid($v->getId());
+		}
+
+		$this->aBankAccount = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the BankAccount object, it will not be re-added.
+		if ($v !== null) {
+			$v->addSupplierPurchaseOrderBankTransfer($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated BankAccount object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     BankAccount The associated BankAccount object.
+	 * @throws     PropelException
+	 */
+	public function getBankAccount(PropelPDO $con = null)
+	{
+		if ($this->aBankAccount === null && ($this->bankaccountid !== null)) {
+			$this->aBankAccount = BankAccountPeer::retrieveByPK($this->bankaccountid, $con);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aBankAccount->addSupplierPurchaseOrderBankTransfers($this);
+			 */
+		}
+		return $this->aBankAccount;
+	}
+
+	/**
 	 * Resets all collections of referencing foreign keys.
 	 *
 	 * This method is a user-space workaround for PHP's inability to garbage collect objects
@@ -809,6 +964,7 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 		} // if ($deep)
 
 			$this->aSupplierPurchaseOrder = null;
+			$this->aBankAccount = null;
 	}
 
 } // BaseSupplierPurchaseOrderBankTransfer

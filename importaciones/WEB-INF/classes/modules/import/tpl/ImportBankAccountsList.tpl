@@ -3,7 +3,7 @@
 					|-if $message eq "ok"-|<span class="message_ok">Cuentas bancaria guardada correctamente</span>|-/if-|
 					|-if $message eq "deleted_ok"-|<span class="message_ok">Cuentas bancaria eliminada correctamente</span>|-/if-|
 					<h3><a href="Main.php?do=importBankAccountsEdit">Agregar Cuentas bancaria</a></h3>
-					<table id="tabla-bankaccounts">
+					<table id="tabla-bankaccounts" class="tableTdBorders">
 						<thead>
 							<tr>
                 				<th>ID</th>
@@ -37,4 +37,4 @@
 							</tr>													
 						</tbody>
 					</table>
-				</div>
+				</div>

@@ -70,6 +70,10 @@ class SupplierPurchaseOrderBankTransferMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('AMOUNT', 'Amount', 'FLOAT', true, null);
 
+		$tMap->addColumn('ACCOUNTNUMBER', 'Accountnumber', 'VARCHAR', true, 255);
+
+		$tMap->addForeignKey('BANKACCOUNTID', 'Bankaccountid', 'INTEGER', 'import_bankAccount', 'ID', true, null);
+
 		$tMap->addColumn('CREATEDAT', 'Createdat', 'TIMESTAMP', true, null);
 
 	} // doBuild()

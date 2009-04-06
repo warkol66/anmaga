@@ -27,6 +27,7 @@
 				<li class="menuLink"><a href="Main.php?do=importSuppliersList">Proveedores </a></li>
 				<li class="menuLink"><a href="Main.php?do=importProductsList">Productos</a></li>
 				<li class="menuLink"><a href="Main.php?do=importIncotermsList">Incoterms</a></li>
+				<li class="menuLink"><a href="Main.php?do=importBankAccountsList">Cuentas Bancarias</a></li>
 				<li class="menuLink"><a href="Main.php?do=importPortsList">Puertos</a></li>
 				<li class="menuLink"><a href="Main.php?do=usersList">Usuarios</a></li>
 				<li class="menuLink"><a href="Main.php?do=usersGroupsList">Grupos de Usuarios</a></li>

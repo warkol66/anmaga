@@ -335,10 +335,16 @@
 		<column name="supplierPurchaseOrderId" required="true" type="INTEGER" description="Id de orden de pedido a proveedor"/>
 	  	<column name="bankTransferNumber" required="true" type="VARCHAR" size="255" description="numero de transferencia bancaria." />
 		<column name="amount" type="FLOAT" required="true" description="monto de la transferencia bancaria." />
+	  	<column name="accountNumber" required="true" type="VARCHAR" size="255" description="Numero de cuenta bancaria destino" />
+		<column name="bankAccountId" required="true" type="INTEGER" description="Cuenta bancaria origen"/>
 		<column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
 
 		<foreign-key foreignTable="import_supplierPurchaseOrder" >
 		  <reference local="supplierPurchaseOrderId" foreign="id" />
+		</foreign-key>
+
+		<foreign-key foreignTable="import_bankAccount" >
+		  <reference local="bankAccountId" foreign="id" />
 		</foreign-key>
 
 	</table>
