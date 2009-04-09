@@ -1,0 +1,22 @@
+<database defaultIdMethod="native" package="multilang.classes" name="application" >
+
+	<table phpName="MultilangText" name="multilang_text">
+		<column name="id" type="INTEGER" primaryKey="true" required="true" />
+		<column name="moduleName" type="VARCHAR" size="255" primaryKey="true" required="true" />			
+		<column name="languageId" type="INTEGER" primaryKey="true" required="true" />	
+		<column name="text" type="LONGVARCHAR" required="true" />
+		<foreign-key foreignTable="multilang_language" onDelete="cascade" >
+			<reference local="languageId" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="modules_module">
+			<reference local="moduleName" foreign="name" />
+		</foreign-key>
+	</table>
+
+	<table phpName="MultilangLanguage" name="multilang_language">
+		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
+		<column name="name" type="VARCHAR" size="50" required="true" />
+		<column name="code" type="VARCHAR" size="30" required="true" />
+	</table>
+
+</database>
