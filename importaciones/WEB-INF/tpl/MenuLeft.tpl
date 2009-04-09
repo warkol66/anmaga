@@ -34,7 +34,9 @@
 				<li class="menuLink"><a href="Main.php?do=usersLevelsList">Niveles Usuarios</a></li>
 				<li class="menuLink"><a href="Main.php?do=categoriesList">Categorías</a></li>
 				<li class="menuLink"><a href="Main.php?do=backupList">Respaldos</a></li>
-
+				<li class="menuLink"><a href="Main.php?do=multilangLanguagesList">Idiomas</a></li>
+				<li class="menuLink"><a href="Main.php?do=multilangTextsList">Textos</a></li>		
+				<li class="menuLink"><a href="Main.php?do=multilangTextsDump&amp;moduleName=|-$moduleName-|">Textos SQL</a></li>			
 			</ul>
 		</div>
 	<ul>
