@@ -1,6 +1,6 @@
 <h2>##multilang,1,Multi-idioma##</h2>
 <h1>##multilang,20,Administrar Traducciones##</h1>
-|-popup_init src="js/overlib.js"-|
+|-popup_init src="scripts/overlib.js"-|
 <p>##multilang,21,Con esta aplicación puede administrar los textos que mostrará el sistema según el idioma del usuario. Seleccione un módulo y agregue un nuevo texto o edite los valores actuales.##</p>
 <fieldset title="##multilang,22,Formulario para selección de módulo##">
 <legend>##multilang,23,Selección de Módulo##</legend>
@@ -55,7 +55,7 @@
       	|-assign var="textContent" value=$text->getText()-|
       |-/if-|
       <td>|-if $text ne ""-||-$text->gettext()-|<div align="right" style="margin-top:8px;margin-right:8px;">
-			<a href="#" |-popup sticky=true caption="Text Code" trigger="onClick" text="##multilang,43,Código de inserción##: #&#0035;$textId,$textContent#&#0035;" snapx=10 snapy=10-| class="deta"><img src="images/copycode14.png" border="0" /></a></div>
+			<a href="#" |-popup sticky=true caption="Text Code" trigger="onClick" text="##multilang,43,Código de inserción##: #&#0035;$moduleName,$textId,$textContent#&#0035;" snapx=10 snapy=10-| class="deta"><img src="images/copycode14.png" border="0" /></a></div>
       |-/if-|</td>
       |-/foreach-|
       <td align="center" nowrap="nowrap"><form action="Main.php" method="get" name='formTextsEdit|-$textId-|' style="display:inline">

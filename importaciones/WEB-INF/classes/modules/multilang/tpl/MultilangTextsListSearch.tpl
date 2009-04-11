@@ -1,6 +1,6 @@
 <h2>##multilang,1,Multi-idioma##</h2>
 <h1>##multilang,20,Administrar Traducciones##</h1>
-|-popup_init src="js/overlib.js"-|
+|-popup_init src="scripts/overlib.js"-|
 <p>##multilang,42,Resultados de la búsqueda de textos en el módulo:## &quot;|-$moduleName-|&quot;</p>
 <div id="div_texts">
 	|-if $message eq "ok"-|
@@ -32,7 +32,7 @@
       |-assign var="textContent" value=$text->getText()-|
       |-assign var="textId" value=$text->getId()-|
       <td>|-if $text ne ""-||-$text->gettext()-|<div align="right" style="margin-top:8px;margin-right:8px;">
-			<a href="#" |-popup sticky=true caption="Text Code" trigger="onClick" text="##multilang,43,Código de inserción##: #&#0035;$textId,$textContent#&#0035;" snapx=10 snapy=10-| class="deta"><img src="images/copycode14.png" border="0" /></a></div>
+			<a href="#" |-popup sticky=true caption="Text Code" trigger="onClick" text="##multilang,43,Código de inserción##: #&#0035;$moduleName,$textId,$textContent#&#0035;" snapx=10 snapy=10-| class="deta"><img src="images/copycode14.png" border="0" /></a></div>
       |-/if-|</td>
       <td align="center" nowrap="nowrap"><form action="Main.php" method="get" name='formTextsEdit|-$textId-|' style="display:inline">
           <input type="hidden" name="do" value="multilangTextsEdit" />
