@@ -275,6 +275,7 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 
 		$cond->add(MultilangTextPeer::TEXT,"%".$search."%",Criteria::LIKE);
 		$cond->add(MultilangTextPeer::LANGUAGEID,$langId);
+		$cond->setIgnoreCase(true);
 
 		$pager = new PropelPager($cond,"MultilangTextPeer", "doSelect",$page,$perPage);
     	return $pager;
@@ -296,6 +297,7 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 
 		$cond->add(MultilangTextPeer::TEXT,"%".$search."%",Criteria::LIKE);
 		$cond->add(MultilangTextPeer::LANGUAGEID,$langId);
+		$cond->setIgnoreCase(true);
 
 		$alls = MultilangTextPeer::doSelect($cond);
 		return $alls;
