@@ -1,28 +1,36 @@
+<h2>##multilang,1,Multi-idioma##</h2>
+|-if $action eq 'edit'-|
+<h1>##multilang,36,Editar Traducción##</h1>
+<p>##multilang,37,A continuación se muestra el formulario de edición de traducciones. Modifique las traducciones y haga click en "Aceptar" para guardar los cambios.##
+|-else-|
+<h1>##multilang,38,Crear Traducción##</h1>
+<p>##multilang,39,A continuación se muestra el formulario de creación de traducciones. Ingrese las traducciones y haga click en "Aceptar" para crear los textos.##
+|-/if-|
 <div id="div_text">
   <form name="form_edit_text" id="form_edit_text" action="Main.php" method="post">
-    |-if $message eq "error"-|<span class="message_error">Ha ocurrido un error al intentar guardar el text</span>|-/if-|
-    <h3>|-if $action eq "edit"-|Edit|-else-|Create|-/if-| Text |-$moduleName-|</h3>
-    <p> Ingrese los datos del text. </p>
-    <fieldset title="Formulario de edición de datos de un texto">
+    |-if $message eq "error"-|
+			<div class="failureMessage">##multilang,40,Ha ocurrido un error al intentar guardar las traducciones##</div>
+		|-/if-|
+    <fieldset title="##multilang,41,Formulario de edición de datos de traducción##">
+    <p>##multilang,42,Ingrese las traducciones.##</p>
     |-foreach from=$appLanguages item=language name=for_languages-|
     |-assign var="languageId" value=$language->getId()-|
     |-assign var="languageName" value=$language->getName()-|
     |-if $action eq "edit"-||-assign var="text" value=$texts[$languageId]-||-/if-|
     <p>
       <label for="text[|-$languageId-|]">|-$languageName-|</label>
-      <br />
-      <textarea name="text[|-$languageId-|]" cols="60" rows="4" wrap="virtual" />|-if $text ne ""-||-$text->gettext()-||-/if-|</textarea>
+      <textarea name="text[|-$languageId-|]" cols="70" rows="3" wrap="virtual" />|-if $text ne ""-||-$text->gettext()-||-/if-|</textarea>
       |-if $action eq "edit" and $text ne ""-|
       <br />
-			Codigo: #&#0035;|-$textId-|,|-$text->gettext()-|#&#0035;
+			##multilang,43,Código de inserción##: #&#0035;|-$moduleName-|,|-$textId-|,|-$text->gettext()-|#&#0035;
       |-/if-| </p>
     |-/foreach-|
     <p>
-    	<label>Modulo:</label><br/>
+    	<label>##multilang,44,Corresponde a módulo##:</label><br/>
     	<select name="moduleId">
-				<option value="">Sin Modulo Asignado</option>
-		    |-foreach from=$modules item=module name=for_module-|
-	    		<option value="|-$module->getName()-|" |-if (isset($text) and $text->getModuleName() eq $module->getName()) or ($module->getName() eq $moduleName)-|selected="selected"|-/if-|>|-$module->getName()-|</option>
+				<option value="">##multilang,45,Sin Modulo Asignado##</option>
+		    |-foreach from=$modules item=moduleObj name=for_module-|
+	    		<option value="|-$moduleObj->getName()-|" |-if (isset($text) and $text->getModuleName() eq $moduleObj->getName()) or ($moduleObj->getName() eq $moduleName)-|selected="selected"|-/if-|>|-$moduleObj->getName()-|</option>
     		|-/foreach-|
     	</select>
     </p>
@@ -34,7 +42,7 @@
       <input type="hidden" name="do" id="do" value="multilangTextsDoEdit" />
       <input type="hidden" name="moduleName" value="|-$moduleName-|" />
       <input type="hidden" name="currentPage" value="|-$currentPage-|" />
-      <input type="submit" id="button_edit_text" name="button_edit_text" title="Aceptar" value="Aceptar" class="boton" />
+      <input type="submit" id="button_edit_text" name="button_edit_text" title="##common,3,Aceptar##" value="##common,3,Aceptar##" class="button" />
     </p>
     </fieldset>
   </form>

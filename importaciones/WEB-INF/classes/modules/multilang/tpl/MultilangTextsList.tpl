@@ -1,38 +1,37 @@
+<h2>##multilang,1,Multi-idioma##</h2>
+<h1>##multilang,20,Administrar Traducciones##</h1>
 |-popup_init src="js/overlib.js"-|
-
+<p>##multilang,21,Con esta aplicación puede administrar los textos que mostrará el sistema según el idioma del usuario. Seleccione un módulo y agregue un nuevo texto o edite los valores actuales.##</p>
+<fieldset title="##multilang,22,Formulario para selección de módulo##">
+<legend>##multilang,23,Selección de Módulo##</legend>
 <form method="get" action="Main.php"> 
 	<input type="hidden" name="do" value="multilangTextsList" /> 
-	<table class="tablaborde" border="0" cellpadding="3" cellspacing="1" width="100%"> 
-		<tr> 
-			<td class="celltitulo2" nowrap="nowrap" width="35%">Seleccione un módulo</td> 
-			<td class="celldato">
+			<label for="moduleName">##multilang,24,Módulos disponibles##</label> 
 				<select name="moduleName" onchange="if (this.options[this.selectedIndex].value) this.form.submit()" > 
-					<option value="">Seleccione un módulo</option> 
-		    		|-foreach from=$modules item=module name=for_module-|
-	    			<option value="|-$module->getName()-|" |-if $moduleName eq $module->getName()-|selected="selected"|-/if-|>|-$module->getName()-|</option>
+					<option value="">##multilang,25,Seleccione un módulo##</option> 
+		    		|-foreach from=$modules item=moduleObj name=for_module-|
+	    			<option value="|-$moduleObj->getName()-|" |-if $moduleName eq $moduleObj->getName()-|selected="selected"|-/if-|>|-$moduleObj->getName()-|</option>
     				|-/foreach-|					
-				</select> </td> 
-		</tr> 
-		<tr> 
-			<td class="cellboton" colspan="2">
-				<input value="Continuar" class="boton" type="submit" />
-			</td> 
-		</tr> 
-	</table> 
+				</select>
 </form>
-
+	</fieldset> 
 
 |-if $moduleName-|
-
-<h2>Texts &quot;|-$moduleName-|&quot;</h2>
-<div id="div_texts"> |-if $message eq "ok"-|<span class="message_ok">Text guardado correctamente</span>|-/if-|
-  |-if $message eq "deleted_ok"-|<span class="message_ok">Text eliminado correctamente</span>|-/if-|
-  <h3><a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|">Agregar Text</a></h3>
+<h3>##multilang,26,Textos del módulo## &quot;|-$moduleName-|&quot;</h3>
+<div id="div_texts">
+|-if $message eq "ok"-|
+	<div class='successMessage'>##multilang,27,Texto guardado correctamente##</div>
+|-elseif $message eq "deleted_ok"-|
+	<div class='successMessage'>##multilang,28,Texto eliminado correctamente##</div>
+|-/if-|
   |-include file="MultilangTextsIncludeSearch.tpl"-|
-	<table width="100%" border="0" cellpadding="3" cellspacing="1" id="tabla-texts" class="tablaborde">
+	<table width="100%" border="0" cellpadding="5" cellspacing="0" id="tabla-texts" class="tableTdBorders">
     <thead>
-      <tr>
-        <th width="5%">id</th>
+			<tr>
+				 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a></div></th>
+			</tr>
+      <tr class="thFillTitle">
+        <th width="5%">##multilang,7,Id##</th>
 				|-math equation = "90 / lang" lang=$appLanguages|@count assign="colwidth" format="%.0f"-|		
         |-foreach from=$appLanguages item=language name=for_languages-|
         <th width="|-$colwidth-|%">|-$language->getName()-|</th>
@@ -41,38 +40,51 @@
       </tr>
     </thead>
     <tbody>   
+    |-if $texts|@count lt 1-|
+		<tr>
+			<td colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|">##multilang,30,No hay textos disponibles para el módulo seleccionado##
+			</td>
+		</tr>|-else-|
     |-foreach from=$texts item=textLanguages key=textId name=for_texts-|
     <tr>
-      <td class="celldato">|-$textId-|</td>
+      <td>|-$textId-|</td>
       |-foreach from=$appLanguages item=language name=for_languages-|
       |-assign var="languageId" value=$language->getId()-|
       |-assign var="text" value=$textLanguages[$languageId]-|
       |-if $text ne ""-|
       	|-assign var="textContent" value=$text->getText()-|
       |-/if-|
-      <td class="celldato">|-if $text ne ""-||-$text->gettext()-|<div align="right" style="margin-top:8px;margin-right:8px;">
-			<a href="#" |-popup sticky=true caption="Text Code" trigger="onClick" text="Codigo: #&#0035;$textId,$textContent#&#0035;" snapx=10 snapy=10-| class="deta"><img src="images/copycode14.png" border="0" /></a></div>
+      <td>|-if $text ne ""-||-$text->gettext()-|<div align="right" style="margin-top:8px;margin-right:8px;">
+			<a href="#" |-popup sticky=true caption="Text Code" trigger="onClick" text="##multilang,43,Código de inserción##: #&#0035;$textId,$textContent#&#0035;" snapx=10 snapy=10-| class="deta"><img src="images/copycode14.png" border="0" /></a></div>
       |-/if-|</td>
       |-/foreach-|
-      <td align="center" nowrap="nowrap" class="celldato"><form action="Main.php" method="get" name='formTextsEdit|-$textId-|' style="display:inline">
+      <td align="center" nowrap="nowrap"><form action="Main.php" method="get" name='formTextsEdit|-$textId-|' style="display:inline">
           <input type="hidden" name="do" value="multilangTextsEdit" />
           <input type="hidden" name="id" value="|-$textId-|" />
           <input type="hidden" name="moduleName" value="|-$moduleName-|" />
           <input type="hidden" name="currentPage" value="|-$pager->getPage()-|" />
-					[&nbsp; <a href="javascript:document.formTextsEdit|-$textId-|.submit();" class='edit'>Editar</a> &nbsp;]</form><br />
+					<a href="javascript:document.formTextsEdit|-$textId-|.submit();" title="##common,1,Editar##"><img src="images/clear.png" class="linkImageEdit" /></a>
+				</form>
         <form action="Main.php" method="post" name='formTextsDoDelete|-$textId-|' style="display:inline">
           <input type="hidden" name="do" value="multilangTextsDoDelete" />
           <input type="hidden" name="id" value="|-$textId-|" />
           <input type="hidden" name="moduleName" value="|-$moduleName-|" />
           <input type="hidden" name="currentPage" value="|-$pager->getPage()-|" />
-					[ <a href="javascript:document.formTextsDoDelete|-$textId-|.submit();" class='elim' onclick="return confirm('Are you sure you want to delete this text?')">Eliminar</a> ]</form></td>
+					<a href="javascript:document.formTextsDoDelete|-$textId-|.submit();" onclick="return confirm('##multilang,31,¿Está seguro que desea eliminar estas traducciones?##')" title="##common,2,Eliminar##"><img src="images/clear.png" class='linkImageDelete' /></a>
+				</form></td>
     </tr>
     |-/foreach-|
+		|-/if-|
     </tbody>
-    
+	<tr>
+		<td colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="pages">|-include file="PaginateInclude.tpl"-|</td>
+	</tr>
+			<tr>
+				 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a></div></th>
+			</tr>
   </table>
 
-				|-include file="include_paginate.tpl"-|
+				|-*include file="include_paginate.tpl"*-|
 </div>
 
 |-/if-|

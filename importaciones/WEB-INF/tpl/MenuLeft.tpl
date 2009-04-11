@@ -34,19 +34,19 @@
 				<li class="menuLink"><a href="Main.php?do=usersLevelsList">Niveles Usuarios</a></li>
 				<li class="menuLink"><a href="Main.php?do=categoriesList">Categorías</a></li>
 				<li class="menuLink"><a href="Main.php?do=backupList">Respaldos</a></li>
-				<li class="menuLink"><a href="Main.php?do=multilangLanguagesList">Idiomas</a></li>
-				<li class="menuLink"><a href="Main.php?do=multilangTextsList">Textos</a></li>		
-				<li class="menuLink"><a href="Main.php?do=multilangTextsDump&amp;moduleName=|-$moduleName-|">Textos SQL</a></li>			
 			</ul>
 		</div>
 	<ul>
 		<li class="titleMenu"><a href="javascript:switch_vis('configMenu');" class="linkSwitchMenu">Configuración</a></li>
 	</ul>
-		<div id="configMenu" style="display:|-if $module|lower eq 'config'-|block|-else-|none|-/if-|;">
+		<div id="configMenu" style="display:|-if $module|lower eq 'config' || $module|lower eq 'multilang'-|block|-else-|none|-/if-|;">
 			<ul>
 				<li class="menuLink"><a href="Main.php?do=configView">Ver Configuración</a></li>
 				<li class="menuLink"><a href="Main.php?do=configSet">Configurar Sistema</a></li>
 				<li class="menuLink"><a href="Main.php?do=configEdit">Editar Configuración</a></li>
+				<li class="menuLink"><a href="Main.php?do=multilangLanguagesList">Idiomas</a></li>
+				<li class="menuLink"><a href="Main.php?do=multilangTextsList">Textos</a></li>		
+				<li class="menuLink"><a href="Main.php?do=multilangTextsDump&amp;moduleName=|-$moduleName-|">Textos SQL</a></li>			
 			</ul>
 		</div>
 |-/if-|

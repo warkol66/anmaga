@@ -42,7 +42,8 @@ class MultilangTextsEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Multilang";
+		$module = "Multilang";
+		$smarty->assign('module',$module);
 		
 		//asigno todo los modulos posibles para que se pueda seleccionar
 		$modules = ModulePeer::getAll();

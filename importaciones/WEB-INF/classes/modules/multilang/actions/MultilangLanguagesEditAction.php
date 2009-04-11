@@ -42,7 +42,8 @@ class MultilangLanguagesEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Multilang";
+		$module = "Multilang";
+		$smarty->assign('module',$module);
 
 		if ( !empty($_GET["id"]) ) {
 			//voy a editar un language

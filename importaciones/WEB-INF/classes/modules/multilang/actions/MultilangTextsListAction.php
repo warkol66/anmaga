@@ -42,8 +42,9 @@ class MultilangTextsListAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Multilang";
-		
+		$module = "Multilang";
+		$smarty->assign('module',$module);
+
 		$smarty->assign('modulePeer',new ModulePeer());		
 				
 		$textsPerPage = MAX_ROWS_PER_PAGE;

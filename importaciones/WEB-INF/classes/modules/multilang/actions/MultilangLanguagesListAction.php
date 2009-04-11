@@ -42,7 +42,8 @@ class MultilangLanguagesListAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$modulo = "Multilang";
+		$module = "Multilang";
+		$smarty->assign('module',$module);
 
 		$languages = MultilangLanguagePeer::getAll();
 
