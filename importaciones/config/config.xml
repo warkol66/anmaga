@@ -160,26 +160,6 @@
 	<users>
 		<licenses>5</licenses>
 	</users>
-	<catalog>
-		<image>
-			<maxSize>100000</maxSize>
-			<formats>
-				<jpeg>
-					<value>YES</value>
-					<element_type>YES/NO</element_type>
-				</jpeg>
-				<png>
-					<value>YES</value>
-					<element_type>YES/NO</element_type>
-				</png>
-			</formats>
-			<thumbnail>
-				<resizeFormat>3</resizeFormat>
-				<width>50</width>
-				<height>70</height>
-			</thumbnail>
-		</image>
-	</catalog>
 	<email>
 		<mode>
 			<value>SMTP</value>
@@ -190,14 +170,43 @@
 			</element_options>
 		</mode>
 		<smtpOptions>
-			<smtpHost>mail.infocivica.grupo-empresarios.com.ar</smtpHost>
+			<smtpHost>mail.anmagaexport.modulserver.com.ar</smtpHost>
 			<smtpPort>587</smtpPort>
-			<smtpUsername>infocivi</smtpUsername>
-			<smtpPassword>PoderCiudadano</smtpPassword>
+			<smtpUsername>anmagaex</smtpUsername>
+			<smtpPassword>Anmaga</smtpPassword>
 			<smtpSsl>
 				<value>NO</value>
 				<element_type>YES/NO</element_type>
 			</smtpSsl>
 		</smtpOptions>
 	</email>
+	<import>
+		<clientQuotationRequest>
+			<colorCodes>
+				<onTime>1</onTime>
+				<delayed>2</delayed>
+				<stopped>3</stopped>
+				<critical>4</critical>
+				<cancelled>5</cancelled>
+			</colorCodes>
+		</clientQuotationRequest>
+		<supplierQuotationRequest>
+			<colorCodes>
+				<onTime>1</onTime>
+				<delayed>2</delayed>
+				<stopped>3</stopped>
+				<critical>4</critical>
+				<cancelled>5</cancelled>
+			</colorCodes>
+		</supplierQuotationRequest>
+		<supplierManufactureRequest>
+			<colorCodes>
+				<onTime>1</onTime>
+				<delayed>2</delayed>
+				<stopped>3</stopped>
+				<critical>4</critical>
+				<cancelled>5</cancelled>
+			</colorCodes>
+		</supplierManufactureRequest>
+	</import>
 </config>

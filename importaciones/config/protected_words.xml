@@ -1,23 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf8"?>
 <protectedWords>
 	<clientQuotesStatus>
-		<esp>
-			<new>Nueva</new>
-			<inProgress>En proceso</inProgress>
-			<partiallyQuoted>Cotizada parcialmente</pendingApproval>
-			<quoted>Cotizada</quoted>
-			<accepted>Aceptada</accepted>
-			<delivered>entregada</delivered>
-			<cancelled>Cancelada</cancelled>
-		</esp>
-		<eng>
-			<new>New</new>
-			<inProgress>In Progress</inProgress>
-			<partiallyQuoted>Partially Quoted</pendingApproval>
-			<quoted>Cotizada</quoted>
-			<accepted>accepted</accepted>
-			<delivered>delivered</delivered>
-			<cancelled>cancelled</cancelled>
-		</eng>
+		<new>
+			<esp>Nueva</esp>
+			<eng>New</eng>
+		</new>
+		<inProgress>En proceso
+			<esp>En proceso</esp>
+			<eng>In progress</eng>
+		</inProgress>
+		<partiallyQuoted>
+			<esp>Cotizada parcialmente</esp>
+			<eng>Partially Quoted</eng>
+		</partiallyQuoted>
+		<quoted>
+			<esp>Cotizada</esp>
+			<eng>Quoted</eng>
+		</quoted>
+		<accepted>
+			<esp>Aceptada</esp>
+			<eng>accepted</eng>
+		</accepted>
+		<delivered>
+			<esp>Entregada</esp>
+			<eng>Delivered</eng>
+		</delivered>
+		<cancelled>
+			<esp>Cancelada</esp>
+			<eng>Cancelled</eng>
+		</cancelled>
 	</clientQuotesStatus>
 </protectedWords>
