@@ -26,13 +26,22 @@
 		|-include file='ImportSupplierQuoteItemsSupplierListInclude.tpl' token=$token supplierQuotation=$supplierQuotation-|
 </div>
 
-|-if not $supplierQuotation->isConfirmed() -|
-	<div id="supplierQuotationConfirmation">
-		<p>A continuzación podra confirma la cotización. Tenga en cuenta que una vez confirmada, no podra hacerle modificaciones.</p>
-		<form action="Main.php" method="post">
-			<p><input type="hidden" name="token" value="|-$token-|" ></p>
-			<p><input type="hidden" name="do" value="importSupplierQuoteConfirm" id="do"></p>
-			<p><input type="submit" value="Confirmar Cotización" /></p>
-		</form>
-	</div>
+
+
+|-if not $supplierQuotation->isConfirmed()-|
+		
+	|-if $supplierQuotation->hasItemsOnFeedback() -|
+		<div id="supplierQuotationConfirmation">
+			<p>Antes de poder confirmar nuevamente la cotizacion, debera responder a todos los items que se encuentran esperando feedback.</p>
+		</div>
+	|-else-|
+		<div id="supplierQuotationConfirmation">
+			<p>A continuación podra confirma la cotización. Tenga en cuenta que una vez confirmada, no podra hacerle modificaciones.</p>
+			<form action="Main.php" method="post">
+				<p><input type="hidden" name="token" value="|-$token-|" ></p>
+				<p><input type="hidden" name="do" value="importSupplierQuoteConfirm" id="do"></p>
+				<p><input type="submit" value="Confirmar Cotización" /></p>
+			</form>
+		</div>
+	|-/if-|
 |-/if-|

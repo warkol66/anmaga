@@ -66,6 +66,7 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 	 */
 	public function __construct()
 	{
+		parent::__construct();
 		$this->applyDefaultValues();
 	}
 
@@ -304,14 +305,14 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 		if ($con === null) {
 			$con = Propel::getConnection(MultilangLanguagePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-
+		
+		$con->beginTransaction();
 		try {
-			$con->beginTransaction();
 			MultilangLanguagePeer::doDelete($this, $con);
 			$this->setDeleted(true);
 			$con->commit();
 		} catch (PropelException $e) {
-			$con->rollback();
+			$con->rollBack();
 			throw $e;
 		}
 	}
@@ -338,15 +339,15 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 		if ($con === null) {
 			$con = Propel::getConnection(MultilangLanguagePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-
+		
+		$con->beginTransaction();
 		try {
-			$con->beginTransaction();
 			$affectedRows = $this->doSave($con);
 			$con->commit();
 			MultilangLanguagePeer::addInstanceToPool($this);
 			return $affectedRows;
 		} catch (PropelException $e) {
-			$con->rollback();
+			$con->rollBack();
 			throw $e;
 		}
 	}

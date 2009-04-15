@@ -44,8 +44,27 @@ class SupplierQuotationItemPeer extends BaseSupplierQuotationItemPeer {
             $supplierquotationItemObj->$setMethod(null);
         }
       }
-      $supplierquotationItemObj->save();
+	  $supplierquotationItemObj->setStatus(SupplierQuotationItem::STATUS_QUOTED);
+
+	  require_once('SupplierQuotationItemCommentPeer.php');
+
+	  //creamos el comentario relacionado a la actualizacion
+	  $commentParams = array();
+	  $commentParams['supplierQuotationItemComment']['price'] = $supplierquotationItemObj->getPrice();
+	  $commentParams['supplierQuotationItemComment']['delivery'] = $supplierquotationItemObj->getDelivery();
+	  $commentParams['supplierQuotationItemComment']['comments'] = $params['comments'];
+	  if (!empty($params['supplierId'])) {
+	  	$commentParams['supplierQuotationItemComment']['supplierId'] = $params['supplierId'];
+	  }
+	
+	  if (!empty($params['userId'])) {
+	  	$commentParams['supplierQuotationItemComment']['userId'] = $params['userId'];
+	  }
+		
+	  $comment = SupplierQuotationItemCommentPeer::createComment($commentParams['supplierQuotationItemComment']);
+	  $supplierquotationItemObj->addSupplierQuotationItemComment($comment);
 	  
+      $supplierquotationItemObj->save();
 
 	  $supplierQuotation = $supplierquotationItemObj->getSupplierQuotation();
 	  if ($supplierQuotation->getStatus() == SupplierQuotation::STATUS_QUOTATION_REQUESTED) {
@@ -60,6 +79,18 @@ class SupplierQuotationItemPeer extends BaseSupplierQuotationItemPeer {
     } catch (Exception $exp) {
       return false;
     }         
-  }	
+  }
+
+  /**
+  * Obtiene la informacion de un supplier quotation item.
+  *
+  * @param int $id id del supplierquotationitem
+  * @return array Informacion del supplierquotationitem
+  */
+  function get($id) {
+		$supplierquotationItemObj = SupplierQuotationItemPeer::retrieveByPK($id);
+    return $supplierquotationItemObj;
+  }
+
 
 } // SupplierQuotationItemPeer

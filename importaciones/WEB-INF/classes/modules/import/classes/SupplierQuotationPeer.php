@@ -170,6 +170,7 @@ class SupplierQuotationPeer extends BaseSupplierQuotationPeer {
 				$supplierQuotationItem->setQuantity($clientQuotationItem->getQuantity());
 				$supplierQuotationItem->setIncoterm($incoterm);
 				$supplierQuotationItem->setPort($port);
+				$supplierQuotationItem->setStatus(SupplierQuotationItem::STATUS_NEW);
 				
 				$supplierQuotation->addSupplierQuotationItem($supplierQuotationItem);
 				

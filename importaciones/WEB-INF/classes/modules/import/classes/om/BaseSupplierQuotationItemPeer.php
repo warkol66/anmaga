@@ -19,7 +19,7 @@ abstract class BaseSupplierQuotationItemPeer {
 	const CLASS_DEFAULT = 'import.classes.SupplierQuotationItem';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 21;
+	const NUM_COLUMNS = 22;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -35,6 +35,9 @@ abstract class BaseSupplierQuotationItemPeer {
 
 	/** the column name for the CLIENTQUOTATIONITEMID field */
 	const CLIENTQUOTATIONITEMID = 'import_supplierQuotationItem.CLIENTQUOTATIONITEMID';
+
+	/** the column name for the STATUS field */
+	const STATUS = 'import_supplierQuotationItem.STATUS';
 
 	/** the column name for the QUANTITY field */
 	const QUANTITY = 'import_supplierQuotationItem.QUANTITY';
@@ -108,11 +111,11 @@ abstract class BaseSupplierQuotationItemPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Supplierquotationid', 'Productid', 'Clientquotationitemid', 'Quantity', 'Portid', 'Incotermid', 'Price', 'Suppliercomments', 'Delivery', 'Package', 'Unitlength', 'Unitwidth', 'Unitheight', 'Unitgrossweigth', 'Unitspercarton', 'Cartons', 'Cartonlength', 'Cartonwidth', 'Cartonheight', 'Cartongrossweigth', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'supplierquotationid', 'productid', 'clientquotationitemid', 'quantity', 'portid', 'incotermid', 'price', 'suppliercomments', 'delivery', 'package', 'unitlength', 'unitwidth', 'unitheight', 'unitgrossweigth', 'unitspercarton', 'cartons', 'cartonlength', 'cartonwidth', 'cartonheight', 'cartongrossweigth', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::SUPPLIERQUOTATIONID, self::PRODUCTID, self::CLIENTQUOTATIONITEMID, self::QUANTITY, self::PORTID, self::INCOTERMID, self::PRICE, self::SUPPLIERCOMMENTS, self::DELIVERY, self::PACKAGE, self::UNITLENGTH, self::UNITWIDTH, self::UNITHEIGHT, self::UNITGROSSWEIGTH, self::UNITSPERCARTON, self::CARTONS, self::CARTONLENGTH, self::CARTONWIDTH, self::CARTONHEIGHT, self::CARTONGROSSWEIGTH, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'supplierQuotationId', 'productId', 'clientQuotationItemId', 'quantity', 'portId', 'incotermId', 'price', 'supplierComments', 'delivery', 'package', 'unitLength', 'unitWidth', 'unitHeight', 'unitGrossWeigth', 'unitsPerCarton', 'cartons', 'cartonLength', 'cartonWidth', 'cartonHeight', 'cartonGrossWeigth', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Supplierquotationid', 'Productid', 'Clientquotationitemid', 'Status', 'Quantity', 'Portid', 'Incotermid', 'Price', 'Suppliercomments', 'Delivery', 'Package', 'Unitlength', 'Unitwidth', 'Unitheight', 'Unitgrossweigth', 'Unitspercarton', 'Cartons', 'Cartonlength', 'Cartonwidth', 'Cartonheight', 'Cartongrossweigth', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'supplierquotationid', 'productid', 'clientquotationitemid', 'status', 'quantity', 'portid', 'incotermid', 'price', 'suppliercomments', 'delivery', 'package', 'unitlength', 'unitwidth', 'unitheight', 'unitgrossweigth', 'unitspercarton', 'cartons', 'cartonlength', 'cartonwidth', 'cartonheight', 'cartongrossweigth', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::SUPPLIERQUOTATIONID, self::PRODUCTID, self::CLIENTQUOTATIONITEMID, self::STATUS, self::QUANTITY, self::PORTID, self::INCOTERMID, self::PRICE, self::SUPPLIERCOMMENTS, self::DELIVERY, self::PACKAGE, self::UNITLENGTH, self::UNITWIDTH, self::UNITHEIGHT, self::UNITGROSSWEIGTH, self::UNITSPERCARTON, self::CARTONS, self::CARTONLENGTH, self::CARTONWIDTH, self::CARTONHEIGHT, self::CARTONGROSSWEIGTH, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'supplierQuotationId', 'productId', 'clientQuotationItemId', 'status', 'quantity', 'portId', 'incotermId', 'price', 'supplierComments', 'delivery', 'package', 'unitLength', 'unitWidth', 'unitHeight', 'unitGrossWeigth', 'unitsPerCarton', 'cartons', 'cartonLength', 'cartonWidth', 'cartonHeight', 'cartonGrossWeigth', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
 	);
 
 	/**
@@ -122,11 +125,11 @@ abstract class BaseSupplierQuotationItemPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Supplierquotationid' => 1, 'Productid' => 2, 'Clientquotationitemid' => 3, 'Quantity' => 4, 'Portid' => 5, 'Incotermid' => 6, 'Price' => 7, 'Suppliercomments' => 8, 'Delivery' => 9, 'Package' => 10, 'Unitlength' => 11, 'Unitwidth' => 12, 'Unitheight' => 13, 'Unitgrossweigth' => 14, 'Unitspercarton' => 15, 'Cartons' => 16, 'Cartonlength' => 17, 'Cartonwidth' => 18, 'Cartonheight' => 19, 'Cartongrossweigth' => 20, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'supplierquotationid' => 1, 'productid' => 2, 'clientquotationitemid' => 3, 'quantity' => 4, 'portid' => 5, 'incotermid' => 6, 'price' => 7, 'suppliercomments' => 8, 'delivery' => 9, 'package' => 10, 'unitlength' => 11, 'unitwidth' => 12, 'unitheight' => 13, 'unitgrossweigth' => 14, 'unitspercarton' => 15, 'cartons' => 16, 'cartonlength' => 17, 'cartonwidth' => 18, 'cartonheight' => 19, 'cartongrossweigth' => 20, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SUPPLIERQUOTATIONID => 1, self::PRODUCTID => 2, self::CLIENTQUOTATIONITEMID => 3, self::QUANTITY => 4, self::PORTID => 5, self::INCOTERMID => 6, self::PRICE => 7, self::SUPPLIERCOMMENTS => 8, self::DELIVERY => 9, self::PACKAGE => 10, self::UNITLENGTH => 11, self::UNITWIDTH => 12, self::UNITHEIGHT => 13, self::UNITGROSSWEIGTH => 14, self::UNITSPERCARTON => 15, self::CARTONS => 16, self::CARTONLENGTH => 17, self::CARTONWIDTH => 18, self::CARTONHEIGHT => 19, self::CARTONGROSSWEIGTH => 20, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'supplierQuotationId' => 1, 'productId' => 2, 'clientQuotationItemId' => 3, 'quantity' => 4, 'portId' => 5, 'incotermId' => 6, 'price' => 7, 'supplierComments' => 8, 'delivery' => 9, 'package' => 10, 'unitLength' => 11, 'unitWidth' => 12, 'unitHeight' => 13, 'unitGrossWeigth' => 14, 'unitsPerCarton' => 15, 'cartons' => 16, 'cartonLength' => 17, 'cartonWidth' => 18, 'cartonHeight' => 19, 'cartonGrossWeigth' => 20, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Supplierquotationid' => 1, 'Productid' => 2, 'Clientquotationitemid' => 3, 'Status' => 4, 'Quantity' => 5, 'Portid' => 6, 'Incotermid' => 7, 'Price' => 8, 'Suppliercomments' => 9, 'Delivery' => 10, 'Package' => 11, 'Unitlength' => 12, 'Unitwidth' => 13, 'Unitheight' => 14, 'Unitgrossweigth' => 15, 'Unitspercarton' => 16, 'Cartons' => 17, 'Cartonlength' => 18, 'Cartonwidth' => 19, 'Cartonheight' => 20, 'Cartongrossweigth' => 21, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'supplierquotationid' => 1, 'productid' => 2, 'clientquotationitemid' => 3, 'status' => 4, 'quantity' => 5, 'portid' => 6, 'incotermid' => 7, 'price' => 8, 'suppliercomments' => 9, 'delivery' => 10, 'package' => 11, 'unitlength' => 12, 'unitwidth' => 13, 'unitheight' => 14, 'unitgrossweigth' => 15, 'unitspercarton' => 16, 'cartons' => 17, 'cartonlength' => 18, 'cartonwidth' => 19, 'cartonheight' => 20, 'cartongrossweigth' => 21, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SUPPLIERQUOTATIONID => 1, self::PRODUCTID => 2, self::CLIENTQUOTATIONITEMID => 3, self::STATUS => 4, self::QUANTITY => 5, self::PORTID => 6, self::INCOTERMID => 7, self::PRICE => 8, self::SUPPLIERCOMMENTS => 9, self::DELIVERY => 10, self::PACKAGE => 11, self::UNITLENGTH => 12, self::UNITWIDTH => 13, self::UNITHEIGHT => 14, self::UNITGROSSWEIGTH => 15, self::UNITSPERCARTON => 16, self::CARTONS => 17, self::CARTONLENGTH => 18, self::CARTONWIDTH => 19, self::CARTONHEIGHT => 20, self::CARTONGROSSWEIGTH => 21, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'supplierQuotationId' => 1, 'productId' => 2, 'clientQuotationItemId' => 3, 'status' => 4, 'quantity' => 5, 'portId' => 6, 'incotermId' => 7, 'price' => 8, 'supplierComments' => 9, 'delivery' => 10, 'package' => 11, 'unitLength' => 12, 'unitWidth' => 13, 'unitHeight' => 14, 'unitGrossWeigth' => 15, 'unitsPerCarton' => 16, 'cartons' => 17, 'cartonLength' => 18, 'cartonWidth' => 19, 'cartonHeight' => 20, 'cartonGrossWeigth' => 21, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
 	);
 
 	/**
@@ -215,6 +218,8 @@ abstract class BaseSupplierQuotationItemPeer {
 		$criteria->addSelectColumn(SupplierQuotationItemPeer::PRODUCTID);
 
 		$criteria->addSelectColumn(SupplierQuotationItemPeer::CLIENTQUOTATIONITEMID);
+
+		$criteria->addSelectColumn(SupplierQuotationItemPeer::STATUS);
 
 		$criteria->addSelectColumn(SupplierQuotationItemPeer::QUANTITY);
 

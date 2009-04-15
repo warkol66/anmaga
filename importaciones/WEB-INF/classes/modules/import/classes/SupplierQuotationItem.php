@@ -1,5 +1,6 @@
 <?php
 
+require_once 'import/classes/SupplierQuotationItemCommentPeer.php';
 require_once 'import/classes/om/BaseSupplierQuotationItem.php';
 
 
@@ -19,6 +20,16 @@ require_once 'import/classes/om/BaseSupplierQuotationItem.php';
  * @package    anmaga
  */
 class SupplierQuotationItem extends BaseSupplierQuotationItem {
+
+	const STATUS_NEW = 1;
+	const STATUS_QUOTED = 2;
+	const STATUS_FEEDBACK = 3;
+	
+	private $statusNames = array(
+								SupplierQuotationItem::STATUS_NEW => 'New',
+								SupplierQuotationItem::STATUS_QUOTED => 'Quoted',
+								SupplierQuotationItem::STATUS_FEEDBACK => 'Feedback'								
+							);	
 	
 	const PACKAGE_BY_UNIT = 1;
 	const PACKAGE_BY_CARTON = 2;
@@ -78,5 +89,67 @@ class SupplierQuotationItem extends BaseSupplierQuotationItem {
 		return ($this->getUnitGrossWeigth() * $this->getQuantity());		
 	}
 
+	/**
+	 * Devuelve el nombre del status actual del item de la cotizacion
+	 * @return string
+	 */
+	public function getStatusName() {
+		return $this->statusNames[$this->getStatus()];
+	}
+	
+	/**
+	 * Indica si la cotizacion del item se encuentra contestada
+	 * @return boolean
+	 */
+	public function isQuoted() {
+		return ($this->getStatus() == SupplierQuotationItem::STATUS_QUOTED);
+	}
+	
+	/**
+	 * Indica si la cotizacion del item se encuentra en espera de respuesta por negociacion
+	 * @return boolean
+	 */
+	public function isOnFeedback() {
+		return ($this->getStatus() == SupplierQuotationItem::STATUS_FEEDBACK);
+	}
+	
+	/**
+	 * Realiza una peticion de Feedback sobre un item
+	 * @param $user User instancia de usuario que pide el feedback
+	 * @param $comment String comentario del usuario que pide el feedback donde indica la razon del mismo
+	 */
+	public function askFeedback($user,$comment) {
+		
+		try {
+
+			$this->setStatus(SupplierQuotationITem::STATUS_FEEDBACK);
+
+			require_once('SupplierQuotationItemCommentPeer.php');
+			//creamos el comentario relacionado a la actualizacion
+			$commentParams = array();
+			$commentParams['supplierQuotationItemComment']['price'] = $this->getPrice();
+			$commentParams['supplierQuotationItemComment']['delivery'] = $this->getDelivery();
+			$commentParams['supplierQuotationItemComment']['comments'] = $comment;
+			$commentParams['supplierQuotationItemComment']['userId'] = $user->getId();
+
+			$comment = SupplierQuotationItemCommentPeer::createComment($commentParams['supplierQuotationItemComment']);
+			$this->addSupplierQuotationItemComment($comment);
+
+			$this->save();
+
+			//actualizamos el estado general de la cotizacion
+			$supplierQuotation = $this->getSupplierQuotation();
+
+			if (!$supplierQuotation->isOnFeedback()) {
+				$supplierQuotation->setStatus(SupplierQuotation::STATUS_FEEDBACK);
+				$supplierQuotation->save();
+				$supplierQuotation->saveCurrentStatusOnHistory();
+			}
+	
+		} catch (PropelException $e) {
+			return false;
+		}
+		
+	}
 
 } // SupplierQuotationItem

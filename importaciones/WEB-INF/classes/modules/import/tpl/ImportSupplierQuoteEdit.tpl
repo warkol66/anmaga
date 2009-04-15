@@ -2,6 +2,10 @@
 <h1>Informacion General de la cotización de proveedor</h1>
 
 <div id="div_messages">
+	|-if $message eq "negociate"-|
+		<div class="successMessage">Se ha pedido la negociacion del item y se ha notificado al proveedor.</div>
+	|-/if-|
+	
 </div>
 
 <div id="div_supplierQuotation">

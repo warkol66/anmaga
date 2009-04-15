@@ -794,6 +794,11 @@ abstract class BaseMultilangTextPeer {
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
 
+		// We need to set the primary table name, since in the case that there are no WHERE columns
+		// it will be impossible for the BasePeer::createSelectSql() method to determine which
+		// tables go into the FROM clause.
+		$criteria->setPrimaryTableName(MultilangTextPeer::TABLE_NAME);
+		
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
@@ -802,7 +807,7 @@ abstract class BaseMultilangTextPeer {
 			MultilangTextPeer::addSelectColumns($criteria);
 		}
 		
-		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
 		
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
@@ -838,6 +843,11 @@ abstract class BaseMultilangTextPeer {
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
 
+		// We need to set the primary table name, since in the case that there are no WHERE columns
+		// it will be impossible for the BasePeer::createSelectSql() method to determine which
+		// tables go into the FROM clause.
+		$criteria->setPrimaryTableName(MultilangTextPeer::TABLE_NAME);
+		
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
@@ -846,7 +856,7 @@ abstract class BaseMultilangTextPeer {
 			MultilangTextPeer::addSelectColumns($criteria);
 		}
 		
-		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
 		
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
@@ -1075,7 +1085,7 @@ abstract class BaseMultilangTextPeer {
 			$pk = BasePeer::doInsert($criteria, $con);
 			$con->commit();
 		} catch(PropelException $e) {
-			$con->rollback();
+			$con->rollBack();
 			throw $e;
 		}
 
@@ -1141,7 +1151,7 @@ abstract class BaseMultilangTextPeer {
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
-			$con->rollback();
+			$con->rollBack();
 			throw $e;
 		}
 	}
@@ -1217,7 +1227,7 @@ abstract class BaseMultilangTextPeer {
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
-			$con->rollback();
+			$con->rollBack();
 			throw $e;
 		}
 	}

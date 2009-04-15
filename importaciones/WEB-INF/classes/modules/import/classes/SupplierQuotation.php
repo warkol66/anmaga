@@ -25,12 +25,14 @@ class SupplierQuotation extends BaseSupplierQuotation {
 	const STATUS_QUOTATION_REQUESTED = 2;
 	const STATUS_PARTIALLY_QUOTED = 3;
 	const STATUS_QUOTED = 4;
+	const STATUS_FEEDBACK = 5;
 	
 	private $statusNames = array(
 								SupplierQuotation::STATUS_NEW => 'New',
 								SupplierQuotation::STATUS_QUOTATION_REQUESTED => 'Quotation Requested',
 								SupplierQuotation::STATUS_PARTIALLY_QUOTED => 'Partially Quoted',
-								SupplierQuotation::STATUS_QUOTED => 'Quoted'
+								SupplierQuotation::STATUS_QUOTED => 'Quoted',
+								SupplierQuotation::STATUS_FEEDBACK => 'Feedback'
 							);	
 	
 	/**
@@ -134,6 +136,26 @@ class SupplierQuotation extends BaseSupplierQuotation {
 		return $status;
 		
 	}
+	
+	/**
+	 * Notifica a un proveedor la necesidad de feedback sobre un item
+	 * 
+	 * @param String $content Contenido del Email (debe ser generado de forma externa. Ver ImportBaseAction.php)
+	 * @param String $subject Asunto del Email Opcional
+	 *
+	 */
+	public function notifyFeedbackToSupplier($content,$subject='Notificacion de Pedido de Feedback') {
+		
+		//creamos el mensaje multipart
+		$message = $this->createNotifyMessage($content,$subject);
+
+		$supplier = $this->getSupplier();
+		
+		$status = $this->sendMessage($supplier->getEmail(),$message);
+				
+		return $status;
+		
+	}	
 	
 	/**
 	 * Notifica a un proveedor de la existencia de un pedido de cotizacion
@@ -243,5 +265,24 @@ class SupplierQuotation extends BaseSupplierQuotation {
 	public function getStatusNames() {
 		return $this->statusNames;
 	}
+	
+	/**
+	 * Indica si la cotizacion se encuentra en espera de respuesta por negociacion
+	 * @return boolean
+	 */
+	public function isOnFeedback() {
+		return ($this->getStatus() == SupplierQuotation::STATUS_FEEDBACK);
+	}
+	
+	public function hasItemsOnFeedback() {
+		$items = $this->getSupplierQuotationItems();
+		foreach ($items as $item) {
+			if ($item->isOnFeedback()) {
+				return true;
+			}
+		}
+		
+		return false;
+	}	
 
 } // SupplierQuotation

@@ -87,9 +87,14 @@
 	<p>
 		<label>Entrega: </label> <input name="supplierQuotationItem[delivery]" type="text" value="|-$supplierQuotationItem->getDelivery()-|" size="6" /> 
 	dias.</p>
+	<p><strong>Comentarios:</strong></p>
+	<p>Historial de comentarios:</p>
+	<p>|-include file="ImportSupplierQuotationItemCommentsInclude.tpl" supplierQuotationItem=$supplierQuotationItem-|</p>
+	<p></p>
+	<p>A continuacion podra dejar un comentario en el historial de esta cotizacion respecto a los cambios que realice en la cotizacion de este item</p>
 	<p>
-		<label>Comentarios</label>
-		<textarea name="supplierQuotationItem[supplierComments]" cols="60" rows="8" wrap="virtual">|-$supplierQuotationItem->getSupplierComments()-|</textarea>
+		<label>Nuevo Comentario.</label>
+		<textarea name="supplierQuotationItem[comments]" cols="60" rows="8" wrap="virtual">|-$supplierQuotationItem->getSupplierComments()-|</textarea>
 	</p>
 	<p>
 		<input type="hidden" name="token" value="|-$token-|" />

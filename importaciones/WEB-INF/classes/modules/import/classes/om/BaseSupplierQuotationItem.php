@@ -43,6 +43,12 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	protected $clientquotationitemid;
 
 	/**
+	 * The value for the status field.
+	 * @var        int
+	 */
+	protected $status;
+
+	/**
 	 * The value for the quantity field.
 	 * @var        int
 	 */
@@ -170,6 +176,16 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	protected $aPort;
 
 	/**
+	 * @var        array SupplierQuotationItemComment[] Collection to store aggregation of SupplierQuotationItemComment objects.
+	 */
+	protected $collSupplierQuotationItemComments;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collSupplierQuotationItemComments.
+	 */
+	private $lastSupplierQuotationItemCommentCriteria = null;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -241,6 +257,16 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	public function getClientquotationitemid()
 	{
 		return $this->clientquotationitemid;
+	}
+
+	/**
+	 * Get the [status] column value.
+	 * Status de Cotizacion
+	 * @return     int
+	 */
+	public function getStatus()
+	{
+		return $this->status;
 	}
 
 	/**
@@ -504,6 +530,26 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 
 		return $this;
 	} // setClientquotationitemid()
+
+	/**
+	 * Set the value of [status] column.
+	 * Status de Cotizacion
+	 * @param      int $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setStatus($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->status !== $v) {
+			$this->status = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::STATUS;
+		}
+
+		return $this;
+	} // setStatus()
 
 	/**
 	 * Set the value of [quantity] column.
@@ -894,23 +940,24 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 			$this->supplierquotationid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->productid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
 			$this->clientquotationitemid = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-			$this->quantity = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-			$this->portid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-			$this->incotermid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-			$this->price = ($row[$startcol + 7] !== null) ? (double) $row[$startcol + 7] : null;
-			$this->suppliercomments = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-			$this->delivery = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
-			$this->package = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-			$this->unitlength = ($row[$startcol + 11] !== null) ? (double) $row[$startcol + 11] : null;
-			$this->unitwidth = ($row[$startcol + 12] !== null) ? (double) $row[$startcol + 12] : null;
-			$this->unitheight = ($row[$startcol + 13] !== null) ? (double) $row[$startcol + 13] : null;
-			$this->unitgrossweigth = ($row[$startcol + 14] !== null) ? (double) $row[$startcol + 14] : null;
-			$this->unitspercarton = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
-			$this->cartons = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
-			$this->cartonlength = ($row[$startcol + 17] !== null) ? (double) $row[$startcol + 17] : null;
-			$this->cartonwidth = ($row[$startcol + 18] !== null) ? (double) $row[$startcol + 18] : null;
-			$this->cartonheight = ($row[$startcol + 19] !== null) ? (double) $row[$startcol + 19] : null;
-			$this->cartongrossweigth = ($row[$startcol + 20] !== null) ? (double) $row[$startcol + 20] : null;
+			$this->status = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->quantity = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->portid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+			$this->incotermid = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+			$this->price = ($row[$startcol + 8] !== null) ? (double) $row[$startcol + 8] : null;
+			$this->suppliercomments = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->delivery = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+			$this->package = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
+			$this->unitlength = ($row[$startcol + 12] !== null) ? (double) $row[$startcol + 12] : null;
+			$this->unitwidth = ($row[$startcol + 13] !== null) ? (double) $row[$startcol + 13] : null;
+			$this->unitheight = ($row[$startcol + 14] !== null) ? (double) $row[$startcol + 14] : null;
+			$this->unitgrossweigth = ($row[$startcol + 15] !== null) ? (double) $row[$startcol + 15] : null;
+			$this->unitspercarton = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+			$this->cartons = ($row[$startcol + 17] !== null) ? (int) $row[$startcol + 17] : null;
+			$this->cartonlength = ($row[$startcol + 18] !== null) ? (double) $row[$startcol + 18] : null;
+			$this->cartonwidth = ($row[$startcol + 19] !== null) ? (double) $row[$startcol + 19] : null;
+			$this->cartonheight = ($row[$startcol + 20] !== null) ? (double) $row[$startcol + 20] : null;
+			$this->cartongrossweigth = ($row[$startcol + 21] !== null) ? (double) $row[$startcol + 21] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -920,7 +967,7 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 21; // 21 = SupplierQuotationItemPeer::NUM_COLUMNS - SupplierQuotationItemPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 22; // 22 = SupplierQuotationItemPeer::NUM_COLUMNS - SupplierQuotationItemPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating SupplierQuotationItem object", $e);
@@ -1002,6 +1049,9 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 			$this->aProduct = null;
 			$this->aIncoterm = null;
 			$this->aPort = null;
+			$this->collSupplierQuotationItemComments = null;
+			$this->lastSupplierQuotationItemCommentCriteria = null;
+
 		} // if (deep)
 	}
 
@@ -1149,6 +1199,14 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
+			if ($this->collSupplierQuotationItemComments !== null) {
+				foreach ($this->collSupplierQuotationItemComments as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 
 		}
@@ -1256,6 +1314,14 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 			}
 
 
+				if ($this->collSupplierQuotationItemComments !== null) {
+					foreach ($this->collSupplierQuotationItemComments as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 
 			$this->alreadyInValidation = false;
 		}
@@ -1276,6 +1342,7 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 		if ($this->isColumnModified(SupplierQuotationItemPeer::SUPPLIERQUOTATIONID)) $criteria->add(SupplierQuotationItemPeer::SUPPLIERQUOTATIONID, $this->supplierquotationid);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::PRODUCTID)) $criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->productid);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::CLIENTQUOTATIONITEMID)) $criteria->add(SupplierQuotationItemPeer::CLIENTQUOTATIONITEMID, $this->clientquotationitemid);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::STATUS)) $criteria->add(SupplierQuotationItemPeer::STATUS, $this->status);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::QUANTITY)) $criteria->add(SupplierQuotationItemPeer::QUANTITY, $this->quantity);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::PORTID)) $criteria->add(SupplierQuotationItemPeer::PORTID, $this->portid);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::INCOTERMID)) $criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->incotermid);
@@ -1353,6 +1420,8 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 
 		$copyObj->setClientquotationitemid($this->clientquotationitemid);
 
+		$copyObj->setStatus($this->status);
+
 		$copyObj->setQuantity($this->quantity);
 
 		$copyObj->setPortid($this->portid);
@@ -1386,6 +1455,20 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 		$copyObj->setCartonheight($this->cartonheight);
 
 		$copyObj->setCartongrossweigth($this->cartongrossweigth);
+
+
+		if ($deepCopy) {
+			// important: temporarily setNew(false) because this affects the behavior of
+			// the getter/setter methods for fkey referrer objects.
+			$copyObj->setNew(false);
+
+			foreach ($this->getSupplierQuotationItemComments() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addSupplierQuotationItemComment($relObj->copy($deepCopy));
+				}
+			}
+
+		} // if ($deepCopy)
 
 
 		$copyObj->setNew(true);
@@ -1678,6 +1761,255 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	}
 
 	/**
+	 * Clears out the collSupplierQuotationItemComments collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addSupplierQuotationItemComments()
+	 */
+	public function clearSupplierQuotationItemComments()
+	{
+		$this->collSupplierQuotationItemComments = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collSupplierQuotationItemComments collection (array).
+	 *
+	 * By default this just sets the collSupplierQuotationItemComments collection to an empty array (like clearcollSupplierQuotationItemComments());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initSupplierQuotationItemComments()
+	{
+		$this->collSupplierQuotationItemComments = array();
+	}
+
+	/**
+	 * Gets an array of SupplierQuotationItemComment objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this SupplierQuotationItem has previously been saved, it will retrieve
+	 * related SupplierQuotationItemComments from storage. If this SupplierQuotationItem is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array SupplierQuotationItemComment[]
+	 * @throws     PropelException
+	 */
+	public function getSupplierQuotationItemComments($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierQuotationItemPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierQuotationItemComments === null) {
+			if ($this->isNew()) {
+			   $this->collSupplierQuotationItemComments = array();
+			} else {
+
+				$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERQUOTATIONITEMID, $this->id);
+
+				SupplierQuotationItemCommentPeer::addSelectColumns($criteria);
+				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERQUOTATIONITEMID, $this->id);
+
+				SupplierQuotationItemCommentPeer::addSelectColumns($criteria);
+				if (!isset($this->lastSupplierQuotationItemCommentCriteria) || !$this->lastSupplierQuotationItemCommentCriteria->equals($criteria)) {
+					$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastSupplierQuotationItemCommentCriteria = $criteria;
+		return $this->collSupplierQuotationItemComments;
+	}
+
+	/**
+	 * Returns the number of related SupplierQuotationItemComment objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related SupplierQuotationItemComment objects.
+	 * @throws     PropelException
+	 */
+	public function countSupplierQuotationItemComments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierQuotationItemPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collSupplierQuotationItemComments === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERQUOTATIONITEMID, $this->id);
+
+				$count = SupplierQuotationItemCommentPeer::doCount($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERQUOTATIONITEMID, $this->id);
+
+				if (!isset($this->lastSupplierQuotationItemCommentCriteria) || !$this->lastSupplierQuotationItemCommentCriteria->equals($criteria)) {
+					$count = SupplierQuotationItemCommentPeer::doCount($criteria, $con);
+				} else {
+					$count = count($this->collSupplierQuotationItemComments);
+				}
+			} else {
+				$count = count($this->collSupplierQuotationItemComments);
+			}
+		}
+		$this->lastSupplierQuotationItemCommentCriteria = $criteria;
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a SupplierQuotationItemComment object to this object
+	 * through the SupplierQuotationItemComment foreign key attribute.
+	 *
+	 * @param      SupplierQuotationItemComment $l SupplierQuotationItemComment
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addSupplierQuotationItemComment(SupplierQuotationItemComment $l)
+	{
+		if ($this->collSupplierQuotationItemComments === null) {
+			$this->initSupplierQuotationItemComments();
+		}
+		if (!in_array($l, $this->collSupplierQuotationItemComments, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collSupplierQuotationItemComments, $l);
+			$l->setSupplierQuotationItem($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this SupplierQuotationItem is new, it will return
+	 * an empty collection; or if this SupplierQuotationItem has previously
+	 * been saved, it will retrieve related SupplierQuotationItemComments from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in SupplierQuotationItem.
+	 */
+	public function getSupplierQuotationItemCommentsJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierQuotationItemPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierQuotationItemComments === null) {
+			if ($this->isNew()) {
+				$this->collSupplierQuotationItemComments = array();
+			} else {
+
+				$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERQUOTATIONITEMID, $this->id);
+
+				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERQUOTATIONITEMID, $this->id);
+
+			if (!isset($this->lastSupplierQuotationItemCommentCriteria) || !$this->lastSupplierQuotationItemCommentCriteria->equals($criteria)) {
+				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierQuotationItemCommentCriteria = $criteria;
+
+		return $this->collSupplierQuotationItemComments;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this SupplierQuotationItem is new, it will return
+	 * an empty collection; or if this SupplierQuotationItem has previously
+	 * been saved, it will retrieve related SupplierQuotationItemComments from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in SupplierQuotationItem.
+	 */
+	public function getSupplierQuotationItemCommentsJoinSupplier($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierQuotationItemPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierQuotationItemComments === null) {
+			if ($this->isNew()) {
+				$this->collSupplierQuotationItemComments = array();
+			} else {
+
+				$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERQUOTATIONITEMID, $this->id);
+
+				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERQUOTATIONITEMID, $this->id);
+
+			if (!isset($this->lastSupplierQuotationItemCommentCriteria) || !$this->lastSupplierQuotationItemCommentCriteria->equals($criteria)) {
+				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierQuotationItemCommentCriteria = $criteria;
+
+		return $this->collSupplierQuotationItemComments;
+	}
+
+	/**
 	 * Resets all collections of referencing foreign keys.
 	 *
 	 * This method is a user-space workaround for PHP's inability to garbage collect objects
@@ -1689,8 +2021,14 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
+			if ($this->collSupplierQuotationItemComments) {
+				foreach ((array) $this->collSupplierQuotationItemComments as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
+		$this->collSupplierQuotationItemComments = null;
 			$this->aSupplierQuotation = null;
 			$this->aClientQuotationItem = null;
 			$this->aProduct = null;

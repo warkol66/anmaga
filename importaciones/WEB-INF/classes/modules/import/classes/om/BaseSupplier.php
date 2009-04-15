@@ -63,6 +63,16 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 	private $lastSupplierQuotationCriteria = null;
 
 	/**
+	 * @var        array SupplierQuotationItemComment[] Collection to store aggregation of SupplierQuotationItemComment objects.
+	 */
+	protected $collSupplierQuotationItemComments;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collSupplierQuotationItemComments.
+	 */
+	private $lastSupplierQuotationItemCommentCriteria = null;
+
+	/**
 	 * @var        array SupplierPurchaseOrder[] Collection to store aggregation of SupplierPurchaseOrder objects.
 	 */
 	protected $collSupplierPurchaseOrders;
@@ -344,6 +354,9 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 			$this->collSupplierQuotations = null;
 			$this->lastSupplierQuotationCriteria = null;
 
+			$this->collSupplierQuotationItemComments = null;
+			$this->lastSupplierQuotationItemCommentCriteria = null;
+
 			$this->collSupplierPurchaseOrders = null;
 			$this->lastSupplierPurchaseOrderCriteria = null;
 
@@ -470,6 +483,14 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collSupplierQuotationItemComments !== null) {
+				foreach ($this->collSupplierQuotationItemComments as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collSupplierPurchaseOrders !== null) {
 				foreach ($this->collSupplierPurchaseOrders as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -559,6 +580,14 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 
 				if ($this->collSupplierQuotations !== null) {
 					foreach ($this->collSupplierQuotations as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collSupplierQuotationItemComments !== null) {
+					foreach ($this->collSupplierQuotationItemComments as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -668,6 +697,12 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 			foreach ($this->getSupplierQuotations() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addSupplierQuotation($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getSupplierQuotationItemComments() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addSupplierQuotationItemComment($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1129,6 +1164,255 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Clears out the collSupplierQuotationItemComments collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addSupplierQuotationItemComments()
+	 */
+	public function clearSupplierQuotationItemComments()
+	{
+		$this->collSupplierQuotationItemComments = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collSupplierQuotationItemComments collection (array).
+	 *
+	 * By default this just sets the collSupplierQuotationItemComments collection to an empty array (like clearcollSupplierQuotationItemComments());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initSupplierQuotationItemComments()
+	{
+		$this->collSupplierQuotationItemComments = array();
+	}
+
+	/**
+	 * Gets an array of SupplierQuotationItemComment objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this Supplier has previously been saved, it will retrieve
+	 * related SupplierQuotationItemComments from storage. If this Supplier is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array SupplierQuotationItemComment[]
+	 * @throws     PropelException
+	 */
+	public function getSupplierQuotationItemComments($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierQuotationItemComments === null) {
+			if ($this->isNew()) {
+			   $this->collSupplierQuotationItemComments = array();
+			} else {
+
+				$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERID, $this->id);
+
+				SupplierQuotationItemCommentPeer::addSelectColumns($criteria);
+				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERID, $this->id);
+
+				SupplierQuotationItemCommentPeer::addSelectColumns($criteria);
+				if (!isset($this->lastSupplierQuotationItemCommentCriteria) || !$this->lastSupplierQuotationItemCommentCriteria->equals($criteria)) {
+					$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastSupplierQuotationItemCommentCriteria = $criteria;
+		return $this->collSupplierQuotationItemComments;
+	}
+
+	/**
+	 * Returns the number of related SupplierQuotationItemComment objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related SupplierQuotationItemComment objects.
+	 * @throws     PropelException
+	 */
+	public function countSupplierQuotationItemComments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collSupplierQuotationItemComments === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERID, $this->id);
+
+				$count = SupplierQuotationItemCommentPeer::doCount($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERID, $this->id);
+
+				if (!isset($this->lastSupplierQuotationItemCommentCriteria) || !$this->lastSupplierQuotationItemCommentCriteria->equals($criteria)) {
+					$count = SupplierQuotationItemCommentPeer::doCount($criteria, $con);
+				} else {
+					$count = count($this->collSupplierQuotationItemComments);
+				}
+			} else {
+				$count = count($this->collSupplierQuotationItemComments);
+			}
+		}
+		$this->lastSupplierQuotationItemCommentCriteria = $criteria;
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a SupplierQuotationItemComment object to this object
+	 * through the SupplierQuotationItemComment foreign key attribute.
+	 *
+	 * @param      SupplierQuotationItemComment $l SupplierQuotationItemComment
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addSupplierQuotationItemComment(SupplierQuotationItemComment $l)
+	{
+		if ($this->collSupplierQuotationItemComments === null) {
+			$this->initSupplierQuotationItemComments();
+		}
+		if (!in_array($l, $this->collSupplierQuotationItemComments, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collSupplierQuotationItemComments, $l);
+			$l->setSupplier($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Supplier is new, it will return
+	 * an empty collection; or if this Supplier has previously
+	 * been saved, it will retrieve related SupplierQuotationItemComments from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Supplier.
+	 */
+	public function getSupplierQuotationItemCommentsJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierQuotationItemComments === null) {
+			if ($this->isNew()) {
+				$this->collSupplierQuotationItemComments = array();
+			} else {
+
+				$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERID, $this->id);
+
+				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERID, $this->id);
+
+			if (!isset($this->lastSupplierQuotationItemCommentCriteria) || !$this->lastSupplierQuotationItemCommentCriteria->equals($criteria)) {
+				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierQuotationItemCommentCriteria = $criteria;
+
+		return $this->collSupplierQuotationItemComments;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Supplier is new, it will return
+	 * an empty collection; or if this Supplier has previously
+	 * been saved, it will retrieve related SupplierQuotationItemComments from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Supplier.
+	 */
+	public function getSupplierQuotationItemCommentsJoinSupplierQuotationItem($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(SupplierPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierQuotationItemComments === null) {
+			if ($this->isNew()) {
+				$this->collSupplierQuotationItemComments = array();
+			} else {
+
+				$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERID, $this->id);
+
+				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelectJoinSupplierQuotationItem($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierQuotationItemCommentPeer::SUPPLIERID, $this->id);
+
+			if (!isset($this->lastSupplierQuotationItemCommentCriteria) || !$this->lastSupplierQuotationItemCommentCriteria->equals($criteria)) {
+				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelectJoinSupplierQuotationItem($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierQuotationItemCommentCriteria = $criteria;
+
+		return $this->collSupplierQuotationItemComments;
+	}
+
+	/**
 	 * Clears out the collSupplierPurchaseOrders collection (array).
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
@@ -1540,6 +1824,11 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collSupplierQuotationItemComments) {
+				foreach ((array) $this->collSupplierQuotationItemComments as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 			if ($this->collSupplierPurchaseOrders) {
 				foreach ((array) $this->collSupplierPurchaseOrders as $o) {
 					$o->clearAllReferences($deep);
@@ -1549,6 +1838,7 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 
 		$this->collProductSuppliers = null;
 		$this->collSupplierQuotations = null;
+		$this->collSupplierQuotationItemComments = null;
 		$this->collSupplierPurchaseOrders = null;
 	}
 

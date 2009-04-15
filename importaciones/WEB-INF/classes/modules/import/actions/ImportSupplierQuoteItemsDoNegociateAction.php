@@ -1,14 +1,14 @@
 <?php
 
-require_once("BaseAction.php");
+require_once("ImportBaseAction.php");
 require_once("SupplierQuotationPeer.php");
 
-class ImportSupplierQuoteDoEditItemAction extends BaseAction {
+class ImportSupplierQuoteItemsDoNegociateAction extends ImportBaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportSupplierQuoteDoEditItemAction() {
+	function ImportSupplierQuoteItemsDoNegociateAction() {
 		;
 	}
 
@@ -44,35 +44,30 @@ class ImportSupplierQuoteDoEditItemAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
-		$supplierQuotationPeer = new SupplierQuotationPeer();
+		$supplierQuotationItemPeer = new SupplierQuotationItemPeer();
+			
+		$supplierQuotationItem = $supplierQuotationItemPeer->get($_POST['supplierQuotationItemId']);
 
-		if (empty($_POST['token']) && (empty($_POST['id']))) {
-			return $mapping->findForwardConfig('failure');		
-		}
-
-
-		//traemos todas las cotizaciones.
-		$supplierQuotation = $supplierQuotationPeer->getByAccessToken($_POST["token"]);
-		
-		//indicamos quien esta haciendo la actualizacion para que se indique en el comentario.
-		$supplier = $supplierQuotation->getSupplier();
-		$_POST["supplierQuotationItem"]['supplierId'] = $supplier->getId();
-		
-		if (empty($supplierQuotation)) {
+		if (empty($supplierQuotationItem)) {
 			return $mapping->findForwardConfig('failure');			
-		}
-		
-		$smarty->assign("supplierQuotation",$supplierQuotation);
-		
-
-		if (!SupplierQuotationItemPeer::update($_POST["supplierQuotationItem"])) {
-  			return $mapping->findForwardConfig('failure');
 		}		
-
-		$params = array();
-		$params['token'] = $_POST['token'];
 		
+ 		$user = Common::getAdminLogged();
+		$comment = $_POST['comments'];
+
+		$supplierQuotationItem->askFeedback($user,$comment);
+
+		//notificamos al proveedor correspondiente
+		$supplierQuotation = $supplierQuotationItem->getSupplierQuotation();
+		$content = $this->renderSupplierQuotationFeedbackNotifyEmail($supplierQuotation);
+		$supplierQuotation->notifyFeedbackToSupplier($content);
+		
+		$params = array();
+		$params['id'] = $supplierQuotationItem->getSupplierQuotationId();
+
 		return $this->addParamsToForwards($params,$mapping,'success');
+		
+		return $mapping->findForwardConfig('success');			
 		
 	}
 

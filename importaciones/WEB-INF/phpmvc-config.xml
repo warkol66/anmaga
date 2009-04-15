@@ -1189,6 +1189,31 @@
 	<forward name="success-multiple" path="/Main.php?do=importSupplierQuoteList&amp;message=resent-multiple" />
 	<forward name="failure" path="/Main.php?do=importSupplierQuoteList&amp;message=resent-failure" />
 	</action>
+	
+    <action    path = "importSupplierQuoteItemsNegociate"
+               type = "ImportSupplierQuoteItemsNegociateAction"
+               name = "importSupplierQuoteItemsNegociate"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportSupplierQuoteItemsNegociate.tpl" />
+    </action>	
+
+    <action    path = "importSupplierQuoteItemsDoNegociate"
+               type = "ImportSupplierQuoteItemsDoNegociateAction"
+               name = "importSupplierQuoteItemsDoNegociate"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=importSupplierQuoteEdit&amp;message=negociate" redirect="true" />
+    </action>
+
+    <action    path = "importSupplierQuoteEdit"
+               type = "ImportSupplierQuoteEditAction"
+               name = "importSupplierQuoteEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportSupplierQuoteEdit.tpl" />
+    </action>	
+	
 
 <!-- Modulo ImportSupplierQuote -->
 

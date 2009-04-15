@@ -196,6 +196,7 @@ CREATE TABLE `import_supplierQuotationItem`
 	`supplierQuotationId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de proveedor',
 	`productId` INTEGER  NOT NULL COMMENT 'Id producto',
 	`clientQuotationItemId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de proveedor',
+	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
 	`quantity` INTEGER  NOT NULL COMMENT 'cantidad producto',
 	`portId` INTEGER  NOT NULL COMMENT 'id de puerto',
 	`incotermId` INTEGER  NOT NULL COMMENT 'id de incoterm',
@@ -235,6 +236,38 @@ CREATE TABLE `import_supplierQuotationItem`
 		FOREIGN KEY (`portId`)
 		REFERENCES `import_port` (`id`)
 )Type=MyISAM COMMENT='Elemento de Cotizacion de Proveedor';
+
+#-----------------------------------------------------------------------------
+#-- import_supplierQuotationItemComment
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `import_supplierQuotationItemComment`;
+
+
+CREATE TABLE `import_supplierQuotationItemComment`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id',
+	`supplierQuotationItemId` INTEGER  NOT NULL COMMENT 'Id del item de la cotizacion de proveedor',
+	`supplierId` INTEGER  NOT NULL COMMENT 'Supplier que comento',
+	`userId` INTEGER COMMENT 'Usuario de anmaga que comento',
+	`price` FLOAT COMMENT 'precio de producto',
+	`comments` VARCHAR(255) COMMENT 'Comentarios',
+	`delivery` INTEGER COMMENT 'Tiempo en dias para la entrega del producto.',
+	`createdAt` DATETIME COMMENT 'Fecha del cambio de status',
+	PRIMARY KEY (`id`),
+	INDEX `import_supplierQuotationItemComment_FI_1` (`userId`),
+	CONSTRAINT `import_supplierQuotationItemComment_FK_1`
+		FOREIGN KEY (`userId`)
+		REFERENCES `users_user` (`id`),
+	INDEX `import_supplierQuotationItemComment_FI_2` (`supplierId`),
+	CONSTRAINT `import_supplierQuotationItemComment_FK_2`
+		FOREIGN KEY (`supplierId`)
+		REFERENCES `import_supplier` (`id`),
+	INDEX `import_supplierQuotationItemComment_FI_3` (`supplierQuotationItemId`),
+	CONSTRAINT `import_supplierQuotationItemComment_FK_3`
+		FOREIGN KEY (`supplierQuotationItemId`)
+		REFERENCES `import_supplierQuotationItem` (`id`)
+)Type=MyISAM COMMENT='Feedback entre supplier y usuario admin de anmaga sobre un Item';
 
 #-----------------------------------------------------------------------------
 #-- import_port
