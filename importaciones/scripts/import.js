@@ -68,7 +68,7 @@ function importUpdateItemsBySupplier(supplierId,clientQuotationId) {
 				});
 
 	if ($('assignmentMsgBox'))
-		$('assignmentMsgBox').innerHTML = '<span class="inProgress">... procesando ...</span>';
+		$('assignmentMsgBox').innerHTML = '<span class="inProgress">... procesando, cargando valores por default de incoterm y puerto para el proveedor ...</span>';
 
 	return true;	
 
