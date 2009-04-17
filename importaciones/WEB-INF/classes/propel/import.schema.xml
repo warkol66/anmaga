@@ -7,6 +7,8 @@
 	 <column name="nameSpanish" size="255" type="VARCHAR" description="Nombre del producto en espaniol" />
 	 <column name="description" type="LONGVARCHAR" description="Descripcion del producto en ingles" />
 	 <column name="descriptionSpanish" type="LONGVARCHAR" description="Descripcion del producto en espaniol" />
+	 <column name="nameChinese" size="255" type="VARCHAR" description="Nombre del producto en chino" />
+	 <column name="descriptionChinese" type="LONGVARCHAR" description="Descripcion del producto en chino" />
 	 <column type="BOOLEAN" name="active" required="true" description="Is product active?" />
 	
 	</table>

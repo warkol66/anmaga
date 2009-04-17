@@ -55,6 +55,18 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	protected $descriptionspanish;
 
 	/**
+	 * The value for the namechinese field.
+	 * @var        string
+	 */
+	protected $namechinese;
+
+	/**
+	 * The value for the descriptionchinese field.
+	 * @var        string
+	 */
+	protected $descriptionchinese;
+
+	/**
 	 * The value for the active field.
 	 * @var        boolean
 	 */
@@ -200,6 +212,26 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [namechinese] column value.
+	 * Nombre del producto en chino
+	 * @return     string
+	 */
+	public function getNamechinese()
+	{
+		return $this->namechinese;
+	}
+
+	/**
+	 * Get the [descriptionchinese] column value.
+	 * Descripcion del producto en chino
+	 * @return     string
+	 */
+	public function getDescriptionchinese()
+	{
+		return $this->descriptionchinese;
+	}
+
+	/**
 	 * Get the [active] column value.
 	 * Is product active?
 	 * @return     boolean
@@ -330,6 +362,46 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	} // setDescriptionspanish()
 
 	/**
+	 * Set the value of [namechinese] column.
+	 * Nombre del producto en chino
+	 * @param      string $v new value
+	 * @return     Product The current object (for fluent API support)
+	 */
+	public function setNamechinese($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->namechinese !== $v) {
+			$this->namechinese = $v;
+			$this->modifiedColumns[] = ProductPeer::NAMECHINESE;
+		}
+
+		return $this;
+	} // setNamechinese()
+
+	/**
+	 * Set the value of [descriptionchinese] column.
+	 * Descripcion del producto en chino
+	 * @param      string $v new value
+	 * @return     Product The current object (for fluent API support)
+	 */
+	public function setDescriptionchinese($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->descriptionchinese !== $v) {
+			$this->descriptionchinese = $v;
+			$this->modifiedColumns[] = ProductPeer::DESCRIPTIONCHINESE;
+		}
+
+		return $this;
+	} // setDescriptionchinese()
+
+	/**
 	 * Set the value of [active] column.
 	 * Is product active?
 	 * @param      boolean $v new value
@@ -392,7 +464,9 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			$this->namespanish = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
 			$this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
 			$this->descriptionspanish = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-			$this->active = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
+			$this->namechinese = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->descriptionchinese = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->active = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -402,7 +476,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 7; // 7 = ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 9; // 9 = ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Product object", $e);
@@ -754,6 +828,8 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ProductPeer::NAMESPANISH)) $criteria->add(ProductPeer::NAMESPANISH, $this->namespanish);
 		if ($this->isColumnModified(ProductPeer::DESCRIPTION)) $criteria->add(ProductPeer::DESCRIPTION, $this->description);
 		if ($this->isColumnModified(ProductPeer::DESCRIPTIONSPANISH)) $criteria->add(ProductPeer::DESCRIPTIONSPANISH, $this->descriptionspanish);
+		if ($this->isColumnModified(ProductPeer::NAMECHINESE)) $criteria->add(ProductPeer::NAMECHINESE, $this->namechinese);
+		if ($this->isColumnModified(ProductPeer::DESCRIPTIONCHINESE)) $criteria->add(ProductPeer::DESCRIPTIONCHINESE, $this->descriptionchinese);
 		if ($this->isColumnModified(ProductPeer::ACTIVE)) $criteria->add(ProductPeer::ACTIVE, $this->active);
 
 		return $criteria;
@@ -818,6 +894,10 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 		$copyObj->setDescription($this->description);
 
 		$copyObj->setDescriptionspanish($this->descriptionspanish);
+
+		$copyObj->setNamechinese($this->namechinese);
+
+		$copyObj->setDescriptionchinese($this->descriptionchinese);
 
 		$copyObj->setActive($this->active);
 

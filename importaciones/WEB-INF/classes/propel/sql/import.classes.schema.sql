@@ -18,6 +18,8 @@ CREATE TABLE `import_product`
 	`nameSpanish` VARCHAR(255) COMMENT 'Nombre del producto en espaniol',
 	`description` TEXT COMMENT 'Descripcion del producto en ingles',
 	`descriptionSpanish` TEXT COMMENT 'Descripcion del producto en espaniol',
+	`nameChinese` VARCHAR(255) COMMENT 'Nombre del producto en chino',
+	`descriptionChinese` TEXT COMMENT 'Descripcion del producto en chino',
 	`active` TINYINT  NOT NULL COMMENT 'Is product active?',
 	PRIMARY KEY (`id`)
 )Type=MyISAM COMMENT='Productos';
