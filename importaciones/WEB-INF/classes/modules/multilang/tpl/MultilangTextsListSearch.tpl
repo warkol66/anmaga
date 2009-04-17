@@ -1,7 +1,7 @@
 <h2>##multilang,1,Multi-idioma##</h2>
 <h1>##multilang,20,Administrar Traducciones##</h1>
 |-popup_init src="scripts/overlib.js"-|
-<p>##multilang,42,Resultados de la búsqueda de textos en el módulo:## &quot;|-$moduleName-|&quot;</p>
+<p>##multilang,46,Resultados de la búsqueda de textos en el módulo:## &quot;|-$moduleName-|&quot;</p>
 <div id="div_texts">
 	|-if $message eq "ok"-|
 	<div class='successMessage'>##multilang,27,Texto guardado correctamente##</div>
@@ -9,9 +9,9 @@
 	<div class='successMessage'>##multilang,28,Texto eliminado correctamente##</div>
 	|-/if-|
 	|-include file="MultilangTextsIncludeSearch.tpl"-|
-	<p>##multilang,43,Idioma##: <span>|-$actualLanguage->getName()-|</span> - ##multilang,44,Texto buscado##: <span>|-$search-|</span> <a href="Main.php?do=multilangTextsList&moduleName=|-$moduleName-|">##multilang,45,Ver todos##</a></p>
+	<p>##multilang,47,Idioma##: <span>|-$actualLanguage->getName()-|</span> - ##multilang,48,Texto buscado##: <span>|-$search-|</span> <a href="Main.php?do=multilangTextsList&moduleName=|-$moduleName-|">##multilang,49,Ver todos##</a></p>
 	|-if $texts|@count eq 0-|
-	<h4>##multilang,46,Su búsqueda no obtuvo resultados##</h4>
+	<h4>##multilang,50,Su búsqueda no obtuvo resultados##</h4>
 	|-else-|
  	<table width="100%" border="0" cellpadding="5" cellspacing="0" id="tabla-texts" class="tableTdBorders">
     <thead>
