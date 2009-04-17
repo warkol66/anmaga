@@ -31,6 +31,17 @@
 	  <column size="255" type="VARCHAR" name="name" required="true" description="Nombre" />
 	  <column size="255" type="VARCHAR" name="email" description="email" />
 	  <column type="BOOLEAN" name="active" required="true" description="Is supplier active?" />
+	  <column name="defaultIncotermId" type="INTEGER" description="id de incoterm por default del proveedor"/>
+	  <column name="defaultPortId" type="INTEGER" description="id de puerto por default del proveedor"/>
+
+	  <foreign-key foreignTable="import_incoterm" >
+	  	<reference local="defaultIncotermId" foreign="id" />
+	  </foreign-key>
+
+	  <foreign-key foreignTable="import_port" >
+	    <reference local="defaultPortId" foreign="id" />
+	  </foreign-key>
+	
 	</table>
 	
 	 <table name="import_clientQuotation" phpName='ClientQuotation' description="Cotizacion a Cliente">
@@ -38,6 +49,7 @@
 	  <column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
 	  <column name="affiliateId" type="INTEGER" description="Afiliado" required="true" />
 	  <column name="affiliateUserId" type="INTEGER" description="usuario del afiliado si creo la cotizacion" />
+	
 	  <column name="userId" type="INTEGER" description="Usuario de anmaga si creo la cotizacion" />
 	  <column name="status" type="INTEGER" description="Status de Cotizacion" required="true" />
 	  <column name="timestampStatus" type="TIMESTAMP" description="Fecha del ultimo cambio de status" />

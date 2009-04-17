@@ -43,6 +43,28 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 	protected $active;
 
 	/**
+	 * The value for the defaultincotermid field.
+	 * @var        int
+	 */
+	protected $defaultincotermid;
+
+	/**
+	 * The value for the defaultportid field.
+	 * @var        int
+	 */
+	protected $defaultportid;
+
+	/**
+	 * @var        Incoterm
+	 */
+	protected $aIncoterm;
+
+	/**
+	 * @var        Port
+	 */
+	protected $aPort;
+
+	/**
 	 * @var        array ProductSupplier[] Collection to store aggregation of ProductSupplier objects.
 	 */
 	protected $collProductSuppliers;
@@ -157,6 +179,26 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [defaultincotermid] column value.
+	 * id de incoterm por default del proveedor
+	 * @return     int
+	 */
+	public function getDefaultincotermid()
+	{
+		return $this->defaultincotermid;
+	}
+
+	/**
+	 * Get the [defaultportid] column value.
+	 * id de puerto por default del proveedor
+	 * @return     int
+	 */
+	public function getDefaultportid()
+	{
+		return $this->defaultportid;
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
@@ -237,6 +279,54 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 	} // setActive()
 
 	/**
+	 * Set the value of [defaultincotermid] column.
+	 * id de incoterm por default del proveedor
+	 * @param      int $v new value
+	 * @return     Supplier The current object (for fluent API support)
+	 */
+	public function setDefaultincotermid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->defaultincotermid !== $v) {
+			$this->defaultincotermid = $v;
+			$this->modifiedColumns[] = SupplierPeer::DEFAULTINCOTERMID;
+		}
+
+		if ($this->aIncoterm !== null && $this->aIncoterm->getId() !== $v) {
+			$this->aIncoterm = null;
+		}
+
+		return $this;
+	} // setDefaultincotermid()
+
+	/**
+	 * Set the value of [defaultportid] column.
+	 * id de puerto por default del proveedor
+	 * @param      int $v new value
+	 * @return     Supplier The current object (for fluent API support)
+	 */
+	public function setDefaultportid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->defaultportid !== $v) {
+			$this->defaultportid = $v;
+			$this->modifiedColumns[] = SupplierPeer::DEFAULTPORTID;
+		}
+
+		if ($this->aPort !== null && $this->aPort->getId() !== $v) {
+			$this->aPort = null;
+		}
+
+		return $this;
+	} // setDefaultportid()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -277,6 +367,8 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->email = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->active = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
+			$this->defaultincotermid = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->defaultportid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -286,7 +378,7 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 4; // 4 = SupplierPeer::NUM_COLUMNS - SupplierPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 6; // 6 = SupplierPeer::NUM_COLUMNS - SupplierPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Supplier object", $e);
@@ -309,6 +401,12 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 	public function ensureConsistency()
 	{
 
+		if ($this->aIncoterm !== null && $this->defaultincotermid !== $this->aIncoterm->getId()) {
+			$this->aIncoterm = null;
+		}
+		if ($this->aPort !== null && $this->defaultportid !== $this->aPort->getId()) {
+			$this->aPort = null;
+		}
 	} // ensureConsistency
 
 	/**
@@ -348,6 +446,8 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 
 		if ($deep) {  // also de-associate any related objects?
 
+			$this->aIncoterm = null;
+			$this->aPort = null;
 			$this->collProductSuppliers = null;
 			$this->lastProductSupplierCriteria = null;
 
@@ -444,6 +544,25 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 		$affectedRows = 0; // initialize var to track total num of affected rows
 		if (!$this->alreadyInSave) {
 			$this->alreadyInSave = true;
+
+			// We call the save method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->aIncoterm !== null) {
+				if ($this->aIncoterm->isModified() || $this->aIncoterm->isNew()) {
+					$affectedRows += $this->aIncoterm->save($con);
+				}
+				$this->setIncoterm($this->aIncoterm);
+			}
+
+			if ($this->aPort !== null) {
+				if ($this->aPort->isModified() || $this->aPort->isNew()) {
+					$affectedRows += $this->aPort->save($con);
+				}
+				$this->setPort($this->aPort);
+			}
 
 			if ($this->isNew() ) {
 				$this->modifiedColumns[] = SupplierPeer::ID;
@@ -565,6 +684,24 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 			$failureMap = array();
 
 
+			// We call the validate method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->aIncoterm !== null) {
+				if (!$this->aIncoterm->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aIncoterm->getValidationFailures());
+				}
+			}
+
+			if ($this->aPort !== null) {
+				if (!$this->aPort->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aPort->getValidationFailures());
+				}
+			}
+
+
 			if (($retval = SupplierPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
@@ -622,6 +759,8 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(SupplierPeer::NAME)) $criteria->add(SupplierPeer::NAME, $this->name);
 		if ($this->isColumnModified(SupplierPeer::EMAIL)) $criteria->add(SupplierPeer::EMAIL, $this->email);
 		if ($this->isColumnModified(SupplierPeer::ACTIVE)) $criteria->add(SupplierPeer::ACTIVE, $this->active);
+		if ($this->isColumnModified(SupplierPeer::DEFAULTINCOTERMID)) $criteria->add(SupplierPeer::DEFAULTINCOTERMID, $this->defaultincotermid);
+		if ($this->isColumnModified(SupplierPeer::DEFAULTPORTID)) $criteria->add(SupplierPeer::DEFAULTPORTID, $this->defaultportid);
 
 		return $criteria;
 	}
@@ -681,6 +820,10 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 		$copyObj->setEmail($this->email);
 
 		$copyObj->setActive($this->active);
+
+		$copyObj->setDefaultincotermid($this->defaultincotermid);
+
+		$copyObj->setDefaultportid($this->defaultportid);
 
 
 		if ($deepCopy) {
@@ -757,6 +900,104 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 			self::$peer = new SupplierPeer();
 		}
 		return self::$peer;
+	}
+
+	/**
+	 * Declares an association between this object and a Incoterm object.
+	 *
+	 * @param      Incoterm $v
+	 * @return     Supplier The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setIncoterm(Incoterm $v = null)
+	{
+		if ($v === null) {
+			$this->setDefaultincotermid(NULL);
+		} else {
+			$this->setDefaultincotermid($v->getId());
+		}
+
+		$this->aIncoterm = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Incoterm object, it will not be re-added.
+		if ($v !== null) {
+			$v->addSupplier($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Incoterm object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Incoterm The associated Incoterm object.
+	 * @throws     PropelException
+	 */
+	public function getIncoterm(PropelPDO $con = null)
+	{
+		if ($this->aIncoterm === null && ($this->defaultincotermid !== null)) {
+			$this->aIncoterm = IncotermPeer::retrieveByPK($this->defaultincotermid, $con);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aIncoterm->addSuppliers($this);
+			 */
+		}
+		return $this->aIncoterm;
+	}
+
+	/**
+	 * Declares an association between this object and a Port object.
+	 *
+	 * @param      Port $v
+	 * @return     Supplier The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setPort(Port $v = null)
+	{
+		if ($v === null) {
+			$this->setDefaultportid(NULL);
+		} else {
+			$this->setDefaultportid($v->getId());
+		}
+
+		$this->aPort = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Port object, it will not be re-added.
+		if ($v !== null) {
+			$v->addSupplier($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Port object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Port The associated Port object.
+	 * @throws     PropelException
+	 */
+	public function getPort(PropelPDO $con = null)
+	{
+		if ($this->aPort === null && ($this->defaultportid !== null)) {
+			$this->aPort = PortPeer::retrieveByPK($this->defaultportid, $con);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aPort->addSuppliers($this);
+			 */
+		}
+		return $this->aPort;
 	}
 
 	/**
@@ -1840,6 +2081,8 @@ abstract class BaseSupplier extends BaseObject  implements Persistent {
 		$this->collSupplierQuotations = null;
 		$this->collSupplierQuotationItemComments = null;
 		$this->collSupplierPurchaseOrders = null;
+			$this->aIncoterm = null;
+			$this->aPort = null;
 	}
 
 } // BaseSupplier

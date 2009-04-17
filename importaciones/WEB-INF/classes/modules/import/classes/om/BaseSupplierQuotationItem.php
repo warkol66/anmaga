@@ -261,7 +261,7 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 
 	/**
 	 * Get the [status] column value.
-	 * Status de Cotizacion
+	 * Status de Item de Cotizacion
 	 * @return     int
 	 */
 	public function getStatus()
@@ -533,7 +533,7 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 
 	/**
 	 * Set the value of [status] column.
-	 * Status de Cotizacion
+	 * Status de Item de Cotizacion
 	 * @param      int $v new value
 	 * @return     SupplierQuotationItem The current object (for fluent API support)
 	 */

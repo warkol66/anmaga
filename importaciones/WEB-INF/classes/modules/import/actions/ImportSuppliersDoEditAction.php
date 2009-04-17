@@ -48,20 +48,22 @@ class ImportSuppliersDoEditAction extends BaseAction {
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un supplier existente
 
-			if ( SupplierPeer::update($_POST["id"],$_POST["name"],$_POST["email"]) )
+			if ( SupplierPeer::update($_POST["supplier"]))
       			return $mapping->findForwardConfig('success');
 
 		}
 		else {
 		  //estoy creando un nuevo supplier
 
-			if ( !SupplierPeer::create($_POST["name"],$_POST['email']) ) {
+			if ( !SupplierPeer::create($_POST["supplier"]) ) {
 				$supplier = new Supplier();
-			$supplier->setid($_POST["id"]);
-						$supplier->setname($_POST["name"]);
-						$supplier->setEmail($_POST["email"]);
-						$supplier->setactive($_POST["active"]);
-							$smarty->assign("supplier",$supplier);	
+				$supplier->setid($_POST['supplier']["id"]);
+				$supplier->setname($_POST['supplier']["name"]);
+				$supplier->setEmail($_POST['supplier']["email"]);
+				$supplier->setactive($_POST['supplier']["active"]);
+				$supplier->setDefaultIncotermId($_POST['supplier']['defaultIncotermId'])
+				$supplier->setDefaultPortId($_POST['supplier']['defaultPortId'])
+				$smarty->assign("supplier",$supplier);	
 				$smarty->assign("action","create");
 				$smarty->assign("message","error");
 				return $mapping->findForwardConfig('failure');

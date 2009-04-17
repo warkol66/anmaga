@@ -59,6 +59,7 @@ class ImportClientQuoteItemsSupplierXAction extends BaseAction {
 		}
 
 		$result = $clientQuotation->getClientQuotationItemsBySupplier($supplier);
+		$smarty->assign('supplier',$supplier);
 		$smarty->assign('items',$result);
 		return $mapping->findForwardConfig('success');
 	

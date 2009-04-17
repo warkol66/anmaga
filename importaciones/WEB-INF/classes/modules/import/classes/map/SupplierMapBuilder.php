@@ -70,6 +70,10 @@ class SupplierMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null);
 
+		$tMap->addForeignKey('DEFAULTINCOTERMID', 'Defaultincotermid', 'INTEGER', 'import_incoterm', 'ID', false, null);
+
+		$tMap->addForeignKey('DEFAULTPORTID', 'Defaultportid', 'INTEGER', 'import_port', 'ID', false, null);
+
 	} // doBuild()
 
 } // SupplierMapBuilder

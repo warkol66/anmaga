@@ -57,7 +57,17 @@ CREATE TABLE `import_supplier`
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Nombre',
 	`email` VARCHAR(255) COMMENT 'email',
 	`active` TINYINT  NOT NULL COMMENT 'Is supplier active?',
-	PRIMARY KEY (`id`)
+	`defaultIncotermId` INTEGER COMMENT 'id de incoterm por default del proveedor',
+	`defaultPortId` INTEGER COMMENT 'id de puerto por default del proveedor',
+	PRIMARY KEY (`id`),
+	INDEX `import_supplier_FI_1` (`defaultIncotermId`),
+	CONSTRAINT `import_supplier_FK_1`
+		FOREIGN KEY (`defaultIncotermId`)
+		REFERENCES `import_incoterm` (`id`),
+	INDEX `import_supplier_FI_2` (`defaultPortId`),
+	CONSTRAINT `import_supplier_FK_2`
+		FOREIGN KEY (`defaultPortId`)
+		REFERENCES `import_port` (`id`)
 )Type=MyISAM COMMENT='Proveedores';
 
 #-----------------------------------------------------------------------------
@@ -196,7 +206,7 @@ CREATE TABLE `import_supplierQuotationItem`
 	`supplierQuotationId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de proveedor',
 	`productId` INTEGER  NOT NULL COMMENT 'Id producto',
 	`clientQuotationItemId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de proveedor',
-	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
+	`status` INTEGER  NOT NULL COMMENT 'Status de Item de Cotizacion',
 	`quantity` INTEGER  NOT NULL COMMENT 'cantidad producto',
 	`portId` INTEGER  NOT NULL COMMENT 'id de puerto',
 	`incotermId` INTEGER  NOT NULL COMMENT 'id de incoterm',

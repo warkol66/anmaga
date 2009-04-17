@@ -2,6 +2,9 @@
 
 require_once("BaseAction.php");
 require_once("SupplierPeer.php");
+require_once("IncotermPeer.php");
+require_once("PortPeer.php");
+
 
 class ImportSuppliersEditAction extends BaseAction {
 
@@ -65,6 +68,11 @@ class ImportSuppliersEditAction extends BaseAction {
 			$smarty->assign("action","create");
 		}
 
+		$incoterms = IncotermPeer::getAll();
+		$ports = PortPeer::getAll();
+
+		$smarty->assign('incoterms',$incoterms);
+		$smarty->assign('ports',$ports);
 		$smarty->assign("message",$_GET["message"]);
 
 		return $mapping->findForwardConfig('success');

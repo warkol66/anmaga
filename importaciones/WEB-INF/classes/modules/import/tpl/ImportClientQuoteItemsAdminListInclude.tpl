@@ -12,12 +12,12 @@
 			</select>
 			<select name="incotermId">
 			|-foreach from=$incoterms item=incoterm name=for_incoterm-|
-				<option value="|-$incoterm->getId()-|">|-$incoterm->getName()-|</option>
+				<option id='incotermIdOption|-$incoterm->getId()-|' value="|-$incoterm->getId()-|">|-$incoterm->getName()-|</option>
 			|-/foreach-|
 			</select>
 			<select name="portId">
 			|-foreach from=$ports item=port name=for_ports-|
-				<option value="|-$port->getId()-|">|-$port->getName()-|</option>
+				<option id='portIdOption|-$port->getId()-|' value="|-$port->getId()-|">|-$port->getName()-|</option>
 			|-/foreach-|
 			</select>
 			<span id="assignmentMsgBox"></span>
