@@ -1,4 +1,20 @@
 ==============================
+Revisión 423
+------------------------------
+
+ALTER TABLE `import_product` ADD `nameChinese` VARCHAR(255) NULL COMMENT 'Nombre del producto en chino';
+ALTER TABLE `import_product` ADD `descriptionChinese` TEXT NULL COMMENT 'Descripcion del producto en chino';
+
+
+==============================
+Revisión 422
+------------------------------
+
+ALTER TABLE `import_supplier` ADD `defaultIncotermId` INT NULL COMMENT 'id de incoterm por default del proveedor',
+ADD `defaultPortId` INT NOT NULL COMMENT 'id de puerto por default del proveedor';
+
+
+==============================
 Revisión 372
 ------------------------------
 
