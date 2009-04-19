@@ -226,3 +226,16 @@ function ordersSendOrdersDelete(form) {
 
 	return true;
 } // End of ordersSendOrdersExport
+
+
+
+//Multilang Module
+
+function addTraduction(a) {
+	var div = $$("#textsBulkEdit div:first")[0];
+	$(a).insert({
+		before: "<div>"+div.innerHTML+"</div>"
+	});
+
+	return false;
+}

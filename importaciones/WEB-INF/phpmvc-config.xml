@@ -1657,6 +1657,23 @@
     <forward name="success" path="/Main.php?do=multilangTextsList&amp;message=ok" redirect="true" />
     <forward name="failure" path="MultilangTextsEdit.tpl" />
     </action>
+	
+    <action    path = "multilangTextsEditBulk"
+               type = "MultilangTextsEditBulkAction"
+               name = "multilangTextsEditBulk"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="MultilangTextsEditBulk.tpl" />
+    </action>
+
+    <action    path = "multilangTextsDoEditBulk"
+               type = "MultilangTextsDoEditBulkAction"
+               name = "multilangTextsDoEditBulk"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=multilangTextsList&amp;message=ok" redirect="true" />
+    <forward name="failure" path="MultilangTextsEditBulk.tpl" />
+    </action>	
 
     <action    path = "multilangTextsList"
                type = "MultilangTextsListAction"

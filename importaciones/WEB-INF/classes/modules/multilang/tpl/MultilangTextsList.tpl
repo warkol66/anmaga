@@ -28,7 +28,7 @@
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" id="tabla-texts" class="tableTdBorders">
     <thead>
 			<tr>
-				 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a></div></th>
+				 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangTextsEditBulk&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,1000,Agregar Traducción Bulk##">##multilang,1000,Agregar Traducción Bulk##</a> <a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a></div></th>
 			</tr>
       <tr class="thFillTitle">
         <th width="5%">##multilang,7,Id##</th>
@@ -80,7 +80,7 @@
 		<td colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="pages">|-include file="PaginateInclude.tpl"-|</td>
 	</tr>
 			<tr>
-				 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a></div></th>
+				 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangTextsEditBulk&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,1000,Agregar Traducción Bulk##">##multilang,1000,Agregar Traducción Bulk##</a> <a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a></div></th>
 			</tr>
   </table>
 
