@@ -1,5 +1,5 @@
 <div id="clientQuotationItemLister">
-
+	
 <form action="Main.php" method="post" >
 		|-if not $clientQuotation->isQuoted() and not $clientQuotation->isAccepted() and not $clientQuotation->isPartiallyAccepted() and not $clientQuotation->isRejected()-|
 		<p>Para generar la solicitud de cotización al proveedor, seleccione un proveedor, al seleccionarlo, se marcaran
@@ -29,11 +29,13 @@
 			<th></th>
 			<th>Código</th>
 			<th>Nombre</th>
-<!--			<th>Cantidad</th> -->
 			<th>Precio al Cliente</th>
 			<th>Proveedor</th>			
 			<th>Precio del Proveedor</th>
 			|-*if "importClientQuoteItemSetPrice"|security_user_has_access *-|<th>Cotizar</th>|-*/if*-|
+			|-if $clientQuotation->isQuoted()-|
+				<th>Cantidad</th>
+			|-/if-|
 			<th></th>	
 		</tr>
 		|-foreach from=$clientQuotation->getClientQuotationItems() item=item name=for_clientQuotationsItems-|
@@ -62,6 +64,9 @@
 				|-/if-|
 			</td>			
 			|-*/if*-|
+			|-if $clientQuotation->isQuoted()-|
+			<td><input type="text" size="5" name="clientQuoteItemsQuantity[|-$item->getId()-|]" value="" id="clientQuoteItemsQuantity[|-$item->getId()-|]" /></td>
+			|-/if-|
 			<td></td>
 		</tr>
 		|-/foreach-|

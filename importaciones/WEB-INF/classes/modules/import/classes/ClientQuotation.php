@@ -323,8 +323,10 @@ class ClientQuotation extends BaseClientQuotation {
 		require_once('SupplierQuotationPeer.php');
 
 		$supplierItemsSorted = array();
+		
 		foreach ($items as $item) {
 			$supplierItem = $item->getSupplierQuotationItem();
+			$supplierItem->setQuantity($item->getQuantity());
 			if (!isset($supplierItemsSorted[$supplierItem->getSupplierQuotationId()])) {
 				$supplierItemsSorted[$supplierItem->getSupplierQuotationId()] = array();
 			}

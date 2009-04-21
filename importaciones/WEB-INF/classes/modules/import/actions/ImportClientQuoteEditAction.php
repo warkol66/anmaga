@@ -50,6 +50,10 @@ class ImportClientQuoteEditAction extends BaseAction {
 		
 		$smarty->assign("message",$_GET["message"]);
 		
+		if (!empty($_GET['notProcessed'])) {
+			$smarty->assign('notProcessed',$_GET['notProcessed']);
+		}
+		
 		$products = ProductPeer::getAll();
 		$smarty->assign('products',$products);
 		

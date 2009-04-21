@@ -60,21 +60,46 @@ class ImportClientQuotationAcceptAction extends BaseAction {
 			return $mapping->findForwardConfig('failure');
 		}
 
+
 		//procesamos los items seleccionados
 		$items = array();
+		$itemsNotProcessed = array();
+		$quantities = $_POST['clientQuoteItemsQuantity'];
 		foreach ($_POST['clientQuoteItems'] as $key) {
 			$item = ClientQuotationItemPeer::get($key);
+			
 			if (!empty($item)) {
-				array_push($items,$item);
+				if (empty($quantities[$key])) {
+					//no se indico una cantidad, no se procesa
+					array_push($itemsNotProcessed,$item);
+				}
+				else {
+					//se indico una cantidad
+					if (!empty($quantities)) {
+						$item->setQuantity($quantities[$key]);
+					}
+					array_push($items,$item);
+				}
+
 			}
+
+
 		}
 
+
 		if (Common::isAdmin()) {
-			
+		
+			$user = Common::getAdminLogged();
+			if (!empty($items)) {
+				$clientPurchaseOrder = $clientQuotation->createClientPurchaseOrder($items,'',$user);
+			}
+
 			$params = array();
 			$params['id'] = $clientQuotation->getId();
-			$user = Common::getAdminLogged();
-			$clientPurchaseOrder = $clientQuotation->createClientPurchaseOrder($items,'',$user);
+
+			if (!empty($itemsNotProcessed)) {
+				$params['notProcessed'] = count($itemsNotProcessed);
+			}
 
 			return $this->addParamsToForwards($params,$mapping,'success');
 		}
@@ -84,15 +109,20 @@ class ImportClientQuotationAcceptAction extends BaseAction {
 			$affiliateUser = Common::getAffiliatedLogged();
 			$affiliate = $affiliateUser->getAffiliate();
 
-			$clientPurchaseOrder = $clientQuotation->createClientPurchaseOrder($items,$affiliateUser);
-
+			if (!empty($items)) {
+				$clientPurchaseOrder = $clientQuotation->createClientPurchaseOrder($items,$affiliateUser);
+			}
+			
 			$params = array();
 			$params['id'] = $clientQuotation->getId();
+			if (!empty($itemsNotProcessed)) {
+				$params['notProcessed'] = count($itemsNotProcessed);
+			}
 
 			return $this->addParamsToForwards($params,$mapping,'success');
 		}
-		
-		
+
+
 		return $mapping->findForwardConfig('failure');
 		
 	}

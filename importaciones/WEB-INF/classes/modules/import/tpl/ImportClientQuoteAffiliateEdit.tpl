@@ -6,7 +6,7 @@
 		<div class="successMessage">Cotización creada correctamente.</div>
 	|-/if-|
 	|-if $message eq "accepted"-|
-		<div class="successMessage">Se aceptado la cotizacion.</div>
+		<div class="successMessage">Se aceptado la cotizacion.|-if isset($notProcessed)-| No se han procesado |-$notProcessed-| items por falta de cantidad.|-/if-|</div>
 	|-/if-|	
 </div>
 

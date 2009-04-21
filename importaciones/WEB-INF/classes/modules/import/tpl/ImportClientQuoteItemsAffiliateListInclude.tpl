@@ -10,8 +10,10 @@
 			|-/if-|
 			<th>Código</th>
 			<th>Nombre</th>
-<!--			<th>Cantidad</th>
-			<th>Precio Unitario</th>		-->	
+			<th>Precio Unitario</th>			
+			|-if $clientQuotation->isQuoted()-|
+				<th>Cantidad</th>
+			|-/if-|			
 			<th></th>
 		</thead>
 		|-foreach from=$clientQuotation->getClientQuotationItems() item=item name=for_clientQuotationsItems-|
@@ -23,8 +25,10 @@
 			|-/if-|
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
-<!--			<td>|-$item->getQuantity()-|</td>
-			<td>|-$item->getPrice()-|</td>			-->
+			<td>|-$item->getPrice()-|</td>
+			|-if $clientQuotation->isQuoted()-|
+			<td><input type="text" size="5" name="clientQuoteItemsQuantity[|-$item->getId()-|]" value="" id="clientQuoteItemsQuantity[|-$item->getId()-|]" /></td>
+			|-/if-|
 			<td>
 				|-if $clientQuotation->isNew()-|
 				<form action="Main.php" method="post">

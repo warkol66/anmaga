@@ -12,7 +12,7 @@
 		<div class="successMessage">Se ha fijado un nuevo precio para el cliente.</div>
 	|-/if-|
 	|-if $message eq "accepted"-|
-		<div class="successMessage">Se aceptado la cotizacion.</div>
+		<div class="successMessage">Se aceptado la cotizacion.|-if isset($notProcessed)-| No se han procesado |-$notProcessed-| items por falta de cantidad.|-/if-|</div>
 	|-/if-|
 	|-if $message eq "rejected"-|
 		<div class="successMessage">Se rechazado la cotizacion.</div>
