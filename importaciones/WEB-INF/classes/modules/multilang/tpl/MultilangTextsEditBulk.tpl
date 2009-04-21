@@ -1,10 +1,10 @@
 <h2>##multilang,1,Multi-idioma##</h2>
 |-if $action eq 'edit'-|
-<h1>##multilang,1000,Editar Traducción Bulk##</h1>
+<h1>##multilang,1000,Editar Múltiples Traducciones##</h1>
 <p>##multilang,1000,A continuación se muestra el formulario de edición de traducciones bulk. Modifique las traducciones y haga click en "Aceptar" para guardar los cambios.##
 |-else-|
-<h1>##multilang,1000,Crear Traducción Bulk##</h1>
-<p>##multilang,1000,A continuación se muestra el formulario de creación de traducciones bulk. Ingrese las traducciones y haga click en "Aceptar" para crear los textos.##
+<h1>##multilang,51,Crear Múltples Traducciones##</h1>
+<p>##multilang,52,A continuación se muestra el formulario de creación de traducciones múltiples. Para agregar una nueva fila de traducciones, haga click en "Agregar traducción" y una nueva fila aparecerá. Ingrese las traducciones y haga click en "Aceptar" para crear los textos.##
 |-/if-|
 <div id="div_text">
   <form name="form_edit_text" id="form_edit_text" action="Main.php" method="post">
@@ -26,14 +26,15 @@
     <p>##multilang,42,Ingrese las traducciones.##</p>
     
     <div id="textsBulkEdit">
-    
+    |-math equation="x / y" x=100 y=$appLanguagesCount format="%.0f" assign=textareaCols-|
+    |-math equation="x / y" x=90 y=$appLanguagesCount  format="%.0f" assign=labelsWidth-|
 	    <div style="display:none;">
 		    |-foreach from=$appLanguages item=language name=for_languages-|
 		    |-assign var="languageId" value=$language->getId()-|
 		    |-assign var="languageName" value=$language->getName()-|
-		    <p style="float:left;width:|-math equation="x / y" x=90 y=$appLanguagesCount -|%;clear:none;">
+		    <p style="float:left;width:|-$labelsWidth-|%;clear:none;">
 		      <label for="text[][|-$languageId-|]">|-$languageName-|</label>
-		      <textarea name="text[][|-$languageId-|]" cols="|-math equation="x / y" x=60 y=$appLanguagesCount -|" rows="3" wrap="virtual" /></textarea>
+		      <textarea name="text[][|-$languageId-|]" cols="|-$textareaCols-|" rows="3" wrap="virtual" /></textarea>
 		    </p>
 		    |-/foreach-|    
 	    </div>
@@ -43,9 +44,9 @@
 		    |-assign var="languageId" value=$language->getId()-|
 		    |-assign var="languageName" value=$language->getName()-|
 		    |-if $action eq "edit"-||-assign var="text" value=$texts[$languageId]-||-/if-|
-		    <p style="float:left;width:|-math equation="x / y" x=90 y=$appLanguagesCount -|%;clear:none;">
+		    <p style="float:left;width:|-$labelsWidth-|%;clear:none;">
 		      <label for="text[][|-$languageId-|]">|-$languageName-|</label>
-		      <textarea name="text[][|-$languageId-|]" cols="|-math equation="x / y" x=60 y=$appLanguagesCount -|" rows="3" wrap="virtual" />|-if $text ne ""-||-$text->gettext()-||-/if-|</textarea>
+		      <textarea name="text[][|-$languageId-|]" cols="|-$textareaCols-|" rows="3" wrap="virtual" />|-if $text ne ""-||-$text->gettext()-||-/if-|</textarea>
 		      |-if $action eq "edit" and $text ne ""-|
 		      <br />
 					##multilang,43,Código de inserción##: #&#0035;|-$moduleName-|,|-$textId-|,|-$text->gettext()-|#&#0035;
@@ -54,7 +55,7 @@
 		    |-/foreach-|
 	    </div>
 
-		<a href="#" onclick="return addTraduction(this)" class="addLink">Agregar Traducción</a>
+		<a href="#" onclick="return addTraduction(this)" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a>
 
 	</div>
     

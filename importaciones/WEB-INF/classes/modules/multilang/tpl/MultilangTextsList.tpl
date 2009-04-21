@@ -14,7 +14,7 @@
     				|-/foreach-|					
 				</select>
 </form>
-	</fieldset> 
+</fieldset> 
 
 |-if $moduleName-|
 <h3>##multilang,26,Textos del módulo## &quot;|-$moduleName-|&quot;</h3>
@@ -28,7 +28,7 @@
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" id="tabla-texts" class="tableTdBorders">
     <thead>
 			<tr>
-				 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangTextsEditBulk&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,1000,Agregar Traducción Bulk##">##multilang,1000,Agregar Traducción Bulk##</a> <a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a></div></th>
+				 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a>&nbsp;<a href="Main.php?do=multilangTextsEditBulk&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,53,Agregar Múltiples Traducciones##">##multilang,53,Agregar Múltiples Traducciones##</a></div></th>
 			</tr>
       <tr class="thFillTitle">
         <th width="5%">##multilang,7,Id##</th>
@@ -58,7 +58,8 @@
 			<a href="#" |-popup sticky=true caption="Text Code" trigger="onClick" text="##multilang,43,Código de inserción##: #&#0035;$moduleName,$textId,$textContent#&#0035;" snapx=10 snapy=10-| class="deta"><img src="images/copycode14.png" border="0" /></a></div>
       |-/if-|</td>
       |-/foreach-|
-      <td align="center" nowrap="nowrap"><form action="Main.php" method="get" name='formTextsEdit|-$textId-|' style="display:inline">
+      <td align="center" nowrap="nowrap">
+				<form action="Main.php" method="get" name='formTextsEdit|-$textId-|' style="display:inline">
           <input type="hidden" name="do" value="multilangTextsEdit" />
           <input type="hidden" name="id" value="|-$textId-|" />
           <input type="hidden" name="moduleName" value="|-$moduleName-|" />
@@ -71,20 +72,18 @@
           <input type="hidden" name="moduleName" value="|-$moduleName-|" />
           <input type="hidden" name="currentPage" value="|-$pager->getPage()-|" />
 					<a href="javascript:document.formTextsDoDelete|-$textId-|.submit();" onclick="return confirm('##multilang,31,¿Está seguro que desea eliminar estas traducciones?##')" title="##common,2,Eliminar##"><img src="images/clear.png" class='linkImageDelete' /></a>
-				</form></td>
+				</form>
+			</td>
     </tr>
     |-/foreach-|
 		|-/if-|
     </tbody>
-	<tr>
-		<td colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="pages">|-include file="PaginateInclude.tpl"-|</td>
-	</tr>
-			<tr>
-				 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangTextsEditBulk&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,1000,Agregar Traducción Bulk##">##multilang,1000,Agregar Traducción Bulk##</a> <a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a></div></th>
-			</tr>
+		<tr>
+			<td colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="pages">|-include file="PaginateInclude.tpl"-|</td>
+		</tr>
+		<tr>
+			 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a>&nbsp;<a href="Main.php?do=multilangTextsEditBulk&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,53,Agregar Múltiples Traducciones##">##multilang,53,Agregar Múltiples Traducciones##</a></div></th>
+		</tr>
   </table>
-
-				|-*include file="include_paginate.tpl"*-|
 </div>
-
 |-/if-|
