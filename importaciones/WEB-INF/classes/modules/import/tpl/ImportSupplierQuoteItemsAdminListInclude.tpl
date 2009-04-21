@@ -1,12 +1,12 @@
 <div id="supplierQuotationItemLister">
 	<table id="supplierQuotationItemList" cellpadding="4" cellspacing="0" class="tableTdBorders">
 		<tr>
-			<th>Código</th>
-			<th>Nombre</th>
-			<th>Estado</th>
-			<th>Plazo de Entrega</th>
-<!--			<th>Cantidad Pedida</th>  -->
-			<th>Precio Unitario del Proveedor</th>
+			<th>##import,30,Código##</th>
+			<th>##import,31,Nombre##</th>
+			<th>##import,11,Estado##</th>
+			<th>##import,32,Plazo de Entrega##</th>
+<!--			<th>##import,33,Cantidad##</th>  -->
+			<th>##import,34,Precio Unitario del Proveedor##</th>
 			<th></th>		
 		</tr>
 		|-foreach from=$supplierQuotation->getSupplierQuotationItems() item=item name=for_supplierQuotationsItems-|
@@ -15,14 +15,14 @@
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
 			<td>|-$item->getStatusName()-|</td>
-			<td>|-$item->getDelivery()-| Dias.</td>
+			<td>|-$item->getDelivery()-| ##import,35,Dias##.</td>
 <!--			<td>|-$item->getQuantity()-|</td>  -->
-			<td>|-if $item->getPrice() eq 0-|No se ha cotizado|-else-||-$item->getPrice()|number_format:2:",":"."-||-/if-|</td>
+			<td>|-if $item->getPrice() eq 0-|##import,36,No se ha cotizado##|-else-||-$item->getPrice()|number_format:2:",":"."-||-/if-|</td>
 			<td>|-if $item->isQuoted()-|
 				<form action="Main.php" method="post">
 					<input type="hidden" name="supplierQuotationItemId" value="|-$item->getId()-|" />
 					<input type="hidden" name="do" value="importSupplierQuoteItemsNegociate" />
-					<input type="submit" value="Negociar" />
+					<input type="submit" value="##import,37,Negociar##" />
 				</form>
 				|-/if-|
 			</td>
