@@ -739,4 +739,15 @@ class Common
     return $system['config']['system']['rowsPerPage'];
   }
 
+  /**
+  * Obtiene los idiomas disponibles en el sistema.
+  *
+  * @return Idiomas del sistema
+  */
+  function getAllLanguages() {
+		require_once("MultilangLanguagePeer.php");
+		$languages = MultilangLanguagePeer::getAll();
+    return $languages;
+  }
+
 }

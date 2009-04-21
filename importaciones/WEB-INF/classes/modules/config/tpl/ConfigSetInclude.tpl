@@ -1,6 +1,6 @@
 |-foreach from=$elements item=element key=element_name-|
 |-if $element|is_array and $element.element_type ne "Text" and $element.element_type ne "Options" and 
-		 $element.element_type ne "YES/NO" and $element.element_type ne "TIMEZONE"-|
+		 $element.element_type ne "YES/NO" and $element.element_type ne "TIMEZONE" and $element.element_type ne "COLORCODE"-|
 <li id="config|-$name-|[|-$element_name-|]">|-$element_name-|
 	<ul id="config|-$name-|[|-$element_name-|]_ul">|-include file=ConfigSetInclude.tpl elements=$element name="$name[$element_name]"-|</ul>
 </li>
@@ -30,6 +30,17 @@
 			|-/foreach-|
 		</select>
 		<input type="hidden" name="config|-$name-|[|-$element_name-|][element_type]" value="|-$element.element_type-|" />
+	|-elseif $element.element_type eq "COLORCODE"-|
+		|-foreach from=$colorCodes item=colorCode name=for_colorCode-|
+		<img src="images/clear.png" class="aqua|-$colorCode-|" /><input name="config|-$name-|[|-$element_name-|][value]" type="radio" value="|-$colorCode-|" |-if $element.value eq $colorCode-|checked="checked"|-/if-| />
+			|-/foreach-|
+		<input type="hidden" name="config|-$name-|[|-$element_name-|][element_type]" value="|-$element.element_type-|" />
+	|-elseif $element_name eq "language"-|
+		<select name="config|-$name-|[|-$element_name-|]">
+			|-foreach from=$languages item=language name=for_languages-|
+				<option value="|-$language->getCode()-|" |-if $element eq $language->getCode()-|selected="selected"|-/if-|>|-$language->getname()-|</option>
+			|-/foreach-|
+		</select>
 	|-elseif $element_name|substr:-8|lower eq 'password'-|
 		<input name="config|-$name-|[|-$element_name-|]" type="password" value="|-$element-|" size="15" />
 	|-elseif $element|count_characters:true gt 120-|

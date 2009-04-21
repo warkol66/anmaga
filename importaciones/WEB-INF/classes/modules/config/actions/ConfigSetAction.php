@@ -27,12 +27,18 @@ class ConfigSetAction extends BaseAction {
 		}
 
 		$module = "Config";
+		$smarty->assign("module",$module);
 
 		//timezone
 		$timezonePeer = new TimezonePeer();
 		$smarty->assign("timezones",$timezonePeer->getAll());
 
-		$smarty->assign("module",$module);
+		$colorCodes = array(1,2,3,4,5,6,7,8,9,10);		
+		$smarty->assign("colorCodes",$colorCodes);
+
+		$languages = common::getAllLanguages();
+		$smarty->assign("languages",$languages);
+
 		global $system;
 		$smarty->assign("selectedModule",$_GET["module"]);
 		if (!empty($_GET["module"])) {
