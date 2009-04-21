@@ -42,40 +42,40 @@
 	</p>
 	<p>
 		<label>El producto se embarcara en</label>
-		<input type="radio" name="supplierQuotationItem[package]" value="1"  |-if $supplierQuotationItem->getPackage() eq 1-|checked="checked"|-/if-| > Empaques Unitarios
-		<input type="radio" name="supplierQuotationItem[package]" value="2" |-if $supplierQuotationItem->getPackage() eq 2-|checked="checked"|-/if-|> Bultos
+		<input type="radio" name="supplierQuotationItem[package]" value="1"  |-if $supplierQuotationItem->isNew() and $supplierQuotationItemRelated neq ''-||-if $supplierQuotationItemRelated->getPackage() eq 1-|checked="checked"|-/if-||-else-||-if $supplierQuotationItem->getPackage() eq 1-|checked="checked"|-/if-||-/if-| > Empaques Unitarios
+		<input type="radio" name="supplierQuotationItem[package]" value="2" |-if $supplierQuotationItem->isNew() and $supplierQuotationItemRelated neq ''-||-if $supplierQuotationItemRelated->getPackage() eq 2-|checked="checked"|-/if-||-else-||-if $supplierQuotationItem->getPackage() eq 2-|checked="checked"|-/if-||-/if-|> Bultos
 	</p>
 	<div id="unitFormOptions">
 		<h3>Dimensiones Unidad:</h3> 
-		<p><label for="supplierQuotationItem[unitHeight]">Alto:</label> <input name="supplierQuotationItem[unitHeight]" type="text" value="|-$supplierQuotationItem->getUnitHeight()-|" size="6" /> 
+		<p><label for="supplierQuotationItem[unitHeight]">Alto:</label> <input name="supplierQuotationItem[unitHeight]" type="text" value="|-if $supplierQuotationItem->isNew() and $supplierQuotationItemRelated neq ''-||-$supplierQuotationItemRelated->getUnitHeight()-||-else-||-$supplierQuotationItem->getUnitHeight()-||-/if-|" size="6" /> 
 		cm x </p>
-		<p><label for="supplierQuotationItem[unitLength]">Largo:</label> <input name="supplierQuotationItem[unitLength]" type="text" value="|-$supplierQuotationItem->getUnitLength()-|" size="6" /> 
+		<p><label for="supplierQuotationItem[unitLength]">Largo:</label> <input name="supplierQuotationItem[unitLength]" type="text" value="|-if $supplierQuotationItem->isNew() and $supplierQuotationItemRelated neq ''-||-$supplierQuotationItemRelated->getUnitLength()-||-else-||-$supplierQuotationItem->getUnitLength()-||-/if-|" size="6" /> 
 		cm x </p>
-		<p><label for="supplierQuotationItem[unitWidth]">Ancho:</label> <input name="supplierQuotationItem[unitWidth]" type="text" value="|-$supplierQuotationItem->getUnitWidth()-|" size="6" />
+		<p><label for="supplierQuotationItem[unitWidth]">Ancho:</label> <input name="supplierQuotationItem[unitWidth]" type="text" value="|-if $supplierQuotationItem->isNew() and $supplierQuotationItemRelated neq ''-||-$supplierQuotationItemRelated->getUnitWidth()-||-else-||-$supplierQuotationItem->getUnitWidth()-||-/if-|" size="6" />
 		cm.</p>
 		<p>
-			<label for="supplierQuotationItem[unitGrossWeigth]">Peso Bruto Unidad:</label> <input name="supplierQuotationItem[unitGrossWeigth]" type="text" value="|-$supplierQuotationItem->getUnitGrossWeigth()-|" size="6" /> 
+			<label for="supplierQuotationItem[unitGrossWeigth]">Peso Bruto Unidad:</label> <input name="supplierQuotationItem[unitGrossWeigth]" type="text" value="|-if $supplierQuotationItem->isNew() and $supplierQuotationItemRelated neq ''-||-$supplierQuotationItemRelated->getUnitGrossWeigth()-||-else-||-$supplierQuotationItem->getUnitGrossWeigth()-||-/if-|" size="6" /> 
 			kg.
 		</p>
 	</div>
 <div id="cartonFormOptions">
 		<h3>Dimensiones Bulto:</h3> 
 		<p>
-			<label for="supplierQuotationItem[unitsPerCarton]">Unidades por Bulto:</label> <input name="supplierQuotationItem[unitsPerCarton]" type="text" value="|-$supplierQuotationItem->getUnitsPerCarton()-|" size="8" /> 
+			<label for="supplierQuotationItem[unitsPerCarton]">Unidades por Bulto:</label> <input name="supplierQuotationItem[unitsPerCarton]" type="text" value="|-if $supplierQuotationItem->isNew() and $supplierQuotationItemRelated neq ''-||-$supplierQuotationItemRelated->getUnitsPerCarton()-||-else-||-$supplierQuotationItem->getUnitsPerCarton()-||-/if-|" size="8" /> 
 			unidades.
 		</p>
 		<p>
-			<label for="supplierQuotationItem[cartonHeight]">Alto: </label> <input name="supplierQuotationItem[cartonHeight]" type="text" value="|-$supplierQuotationItem->getCartonHeight()-|" size="6" /> 
+			<label for="supplierQuotationItem[cartonHeight]">Alto: </label> <input name="supplierQuotationItem[cartonHeight]" type="text" value="|-if $supplierQuotationItem->isNew() and $supplierQuotationItemRelated neq ''-||-$supplierQuotationItemRelated->getCartonHeight()-||-else-||-$supplierQuotationItem->getCartonHeight()-||-/if-|" size="6" /> 
 			cm x </p>
 		<p>
-			<label for="supplierQuotationItem[cartonWidth]">Largo: </label> <input name="supplierQuotationItem[cartonLength]" type="text" value="|-$supplierQuotationItem->getCartonLength()-|" size="6" /> 
+			<label for="supplierQuotationItem[cartonWidth]">Largo: </label> <input name="supplierQuotationItem[cartonLength]" type="text" value="|-if $supplierQuotationItem->isNew() and $supplierQuotationItemRelated neq ''-||-$supplierQuotationItemRelated->getCartonLength()-||-else-||-$supplierQuotationItem->getCartonLength()-||-/if-|" size="6" /> 
 			cm x </p>
 		<p>
-			<label for="supplierQuotationItem[cartonWidth]">Ancho: </label> <input name="supplierQuotationItem[cartonWidth]" type="text" value="|-$supplierQuotationItem->getCartonWidth()-|" size="6" />
+			<label for="supplierQuotationItem[cartonWidth]">Ancho: </label> <input name="supplierQuotationItem[cartonWidth]" type="text" value="|-if $supplierQuotationItem->isNew() and $supplierQuotationItemRelated neq ''-||-$supplierQuotationItemRelated->getCartonWidth()-||-else-||-$supplierQuotationItem->getCartonWidth()-||-/if-|" size="6" />
 			cm.</p>
 		<p>
 			<label for="supplierQuotationItem[cartonGrossWeigth]">Peso Bruto</label>
-			<input name="supplierQuotationItem[cartonGrossWeigth]" type="text" value="|-$supplierQuotationItem->getCartonGrossWeigth()-|" size="6" /> 
+			<input name="supplierQuotationItem[cartonGrossWeigth]" type="text" value="|-if $supplierQuotationItem->isNew() and $supplierQuotationItemRelated neq ''-||-$supplierQuotationItemRelated->getCartonGrossWeigth()-||-else-||-$supplierQuotationItem->getCartonGrossWeigth()-||-/if-|" size="6" /> 
 			kg.		</p>			
 </div>
 	<p>

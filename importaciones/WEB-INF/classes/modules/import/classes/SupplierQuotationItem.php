@@ -96,6 +96,14 @@ class SupplierQuotationItem extends BaseSupplierQuotationItem {
 	public function getStatusName() {
 		return $this->statusNames[$this->getStatus()];
 	}
+
+	/**
+	 * Indica si la cotizacion del item se encuentra en estado nuevo
+	 * @return boolean
+	 */
+	public function isNew() {
+		return ($this->getStatus() == SupplierQuotationItem::STATUS_NEW);
+	}
 	
 	/**
 	 * Indica si la cotizacion del item se encuentra contestada
@@ -149,6 +157,29 @@ class SupplierQuotationItem extends BaseSupplierQuotationItem {
 		} catch (PropelException $e) {
 			return false;
 		}
+		
+	}
+
+	/**
+	 * Obtiene la ultimo item de cotizacion de proveedor similar al actual, de tal
+	 * forma de permitir en la vista, rellenar campos que el proveedor ya haya ingresado.
+	 * @return SupplierQuotationItem
+	 */
+	public function getLastSupplierQuotationItemRelated() {
+		
+		$supplierQuotation = $this->getSupplierQuotation();
+		
+		$criteria = new Criteria();
+		$criteria->addJoin(SupplierQuotationItemPeer::SUPPLIERQUOTATIONID,SupplierQuotationPeer::ID,Criteria::INNER_JOIN);
+		$criteria->add(SupplierQuotationPeer::SUPPLIERID,$supplierQuotation->getSupplierId());
+		$criteria->add(SupplierQuotationItemPeer::PRODUCTID,$this->getProductId());
+		//solo se consideran items que hayan sido cotizados
+		$criteria->add(SupplierQuotationItemPeer::STATUS,SupplierQuotationItem::STATUS_QUOTED);
+		$criteria->addDescendingOrderByColumn(SupplierQuotationItemPeer::ID);
+		$criteria->setLimit(1);
+		
+		$result = SupplierQuotationItemPeer::doSelect($criteria);
+		return $result[0];
 		
 	}
 

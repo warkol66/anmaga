@@ -70,6 +70,13 @@ class ImportSupplierQuoteItemAccessAction extends BaseAction {
 			return $mapping->findForwardConfig('failure');			
 		}
 
+		//No se han hecho modificaciones sobre la misma
+		if ($supplierQuotationItem->isNew()) {
+			//Obtengo el ultimo item cotizado relacionado
+			$supplierQuotationItemRelated = $supplierQuotationItem->getLastSupplierQuotationItemRelated();
+			$smarty->assign('supplierQuotationItemRelated',$supplierQuotationItemRelated);
+		}
+
 		$smarty->assign("supplierQuotationItem",$supplierQuotationItem);
 		
 		return $mapping->findForwardConfig('success');			
