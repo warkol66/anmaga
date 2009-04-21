@@ -50,7 +50,7 @@
 		|-/foreach-|						
 		|-if $pager->getTotalPages() gt 1-|
 		<tr> 
-				<td colspan="5">|-include file="PaginateInclude.tpl"-|</td> 
+				<td colspan="5" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
 			</tr>			
 			|-/if-|				
 			<tr>

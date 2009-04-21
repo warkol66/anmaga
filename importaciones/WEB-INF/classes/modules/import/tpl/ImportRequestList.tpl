@@ -45,10 +45,11 @@
 								</td>
 							</tr>
 						|-/foreach-|						
-							<tr> 
-								<td colspan="9">|-include file="PaginateInclude.tpl"-|</td> 
-							</tr>							
-						
+					|-if $pager->getTotalPages() gt 1-|
+						<tr> 
+							<td colspan="9" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
+						</tr>							
+					|-/if-|				
 						</tbody>
 					</table>
 				</div>
