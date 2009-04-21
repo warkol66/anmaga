@@ -182,31 +182,70 @@
 	</email>
 	<import>
 		<clientQuotationRequest>
-			<colorCodes>
-				<onTime>1</onTime>
-				<delayed>2</delayed>
-				<stopped>3</stopped>
-				<critical>4</critical>
-				<cancelled>5</cancelled>
-			</colorCodes>
+			<onTime>
+				<value>9</value>
+				<element_type>COLORCODE</element_type>
+			</onTime>
+			<delayed>
+				<value>5</value>
+				<element_type>COLORCODE</element_type>
+			</delayed>
+			<stopped>
+				<value>4</value>
+				<element_type>COLORCODE</element_type>
+			</stopped>
+			<critical>
+				<value>2</value>
+				<element_type>COLORCODE</element_type>
+			</critical>
+			<cancelled>
+				<value>1</value>
+				<element_type>COLORCODE</element_type>
+			</cancelled>
 		</clientQuotationRequest>
 		<supplierQuotationRequest>
-			<colorCodes>
-				<onTime>1</onTime>
-				<delayed>2</delayed>
-				<stopped>3</stopped>
-				<critical>4</critical>
-				<cancelled>5</cancelled>
-			</colorCodes>
+			<onTime>
+				<value>9</value>
+				<element_type>COLORCODE</element_type>
+			</onTime>
+			<delayed>
+				<value>5</value>
+				<element_type>COLORCODE</element_type>
+			</delayed>
+			<stopped>
+				<value>4</value>
+				<element_type>COLORCODE</element_type>
+			</stopped>
+			<critical>
+				<value>2</value>
+				<element_type>COLORCODE</element_type>
+			</critical>
+			<cancelled>
+				<value>1</value>
+				<element_type>COLORCODE</element_type>
+			</cancelled>
 		</supplierQuotationRequest>
 		<supplierManufactureRequest>
-			<colorCodes>
-				<onTime>1</onTime>
-				<delayed>2</delayed>
-				<stopped>3</stopped>
-				<critical>4</critical>
-				<cancelled>5</cancelled>
-			</colorCodes>
+			<onTime>
+				<value>9</value>
+				<element_type>COLORCODE</element_type>
+			</onTime>
+			<delayed>
+				<value>5</value>
+				<element_type>COLORCODE</element_type>
+			</delayed>
+			<stopped>
+				<value>4</value>
+				<element_type>COLORCODE</element_type>
+			</stopped>
+			<critical>
+				<value>2</value>
+				<element_type>COLORCODE</element_type>
+			</critical>
+			<cancelled>
+				<value>1</value>
+				<element_type>COLORCODE</element_type>
+			</cancelled>
 		</supplierManufactureRequest>
 	</import>
 </config>
