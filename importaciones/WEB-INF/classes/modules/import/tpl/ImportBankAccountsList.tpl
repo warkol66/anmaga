@@ -6,7 +6,7 @@
 	|-elseif $message eq "deleted_ok"-|
 		<div class="successMessage">Cuentas bancaria eliminada correctamente</div>
 	|-/if-|
-<p>A continuación se muestra el listado de cuentas bancarias que están disponibles en el sistema, estas información se utiliza para relacionar las transferencias de pago a lso proveedores. Puede agregar un nueva cuenta, o modificar o eliminar una existe.
+<p>A continuación se muestra el listado de cuentas bancarias que están disponibles en el sistema, estas información se utiliza para relacionar las transferencias de pago a proveedores. Puede agregar un nueva cuenta, o modificar o eliminar una existe.
 	<table id="tabla-bankaccounts" class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 		<thead>
 			<tr>
