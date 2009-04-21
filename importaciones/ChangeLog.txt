@@ -1,4 +1,13 @@
 ==============================
+Revisión 432
+------------------------------
+
+ALTER TABLE `import_bankAccount` ADD `active` TINYINT  NOT NULL COMMENT 'Is product active?';
+UPDATE `import_bankAccount` SET `active` = 1;
+
+
+
+==============================
 Revisión 423
 ------------------------------
 
