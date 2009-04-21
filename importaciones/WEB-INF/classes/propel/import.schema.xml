@@ -393,6 +393,7 @@
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id" autoIncrement="true"/>
 	  	<column name="accountNumber" required="true" type="VARCHAR" size="255" description="Numero de cuenta bancaria" />
 	  	<column name="bank" required="true" type="VARCHAR" size="255" description="Banco" />
+		 <column type="BOOLEAN" name="active" required="true" description="Is product active?" />
 	</table>
 	
 </database>

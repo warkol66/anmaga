@@ -46,6 +46,7 @@ class BankAccountPeer extends BaseBankAccountPeer {
             $bankaccountObj->$setMethod(null);
         }
       }
+	  $bankaccountObj->setActive(1);
       $bankaccountObj->save();
       return true;
     } catch (Exception $exp) {
@@ -87,8 +88,9 @@ class BankAccountPeer extends BaseBankAccountPeer {
 	*	@return boolean true si se elimino correctamente el bankaccount, false sino
 	*/
   function delete($id) {
-  	$bankaccountObj = BankAccountPeer::retrieveByPK($id);
-    $bankaccountObj->delete();
+	  	$bankaccountObj = BankAccountPeer::retrieveByPK($id);
+	    $bankaccountObj->setActive(0);
+	 	$bankaccountObj->save();
 		return true;
   }
 
@@ -110,6 +112,7 @@ class BankAccountPeer extends BaseBankAccountPeer {
   */
 	function getAll() {
 		$cond = new Criteria();
+		$cond->add(BankAccountPeer::ACTIVE,1);
 		$alls = BankAccountPeer::doSelect($cond);
 		return $alls;
   }
@@ -128,6 +131,7 @@ class BankAccountPeer extends BaseBankAccountPeer {
       $page = 1;
     require_once("propel/util/PropelPager.php");
     $cond = new Criteria();     
+	$cond->add(BankAccountPeer::ACTIVE,1);
     $pager = new PropelPager($cond,"BankAccountPeer", "doSelect",$page,$perPage);
     return $pager;
    }  

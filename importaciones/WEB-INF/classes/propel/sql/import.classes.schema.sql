@@ -547,6 +547,7 @@ CREATE TABLE `import_bankAccount`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id',
 	`accountNumber` VARCHAR(255)  NOT NULL COMMENT 'Numero de cuenta bancaria',
 	`bank` VARCHAR(255)  NOT NULL COMMENT 'Banco',
+	`active` TINYINT  NOT NULL COMMENT 'Is product active?',
 	PRIMARY KEY (`id`)
 )Type=MyISAM COMMENT='Cuentas bancarias';
 

@@ -19,7 +19,7 @@ abstract class BaseBankAccountPeer {
 	const CLASS_DEFAULT = 'import.classes.BankAccount';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 3;
+	const NUM_COLUMNS = 4;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -32,6 +32,9 @@ abstract class BaseBankAccountPeer {
 
 	/** the column name for the BANK field */
 	const BANK = 'import_bankAccount.BANK';
+
+	/** the column name for the ACTIVE field */
+	const ACTIVE = 'import_bankAccount.ACTIVE';
 
 	/**
 	 * An identiy map to hold any loaded instances of BankAccount objects.
@@ -54,11 +57,11 @@ abstract class BaseBankAccountPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Accountnumber', 'Bank', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'accountnumber', 'bank', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::ACCOUNTNUMBER, self::BANK, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'accountNumber', 'bank', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Accountnumber', 'Bank', 'Active', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'accountnumber', 'bank', 'active', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::ACCOUNTNUMBER, self::BANK, self::ACTIVE, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'accountNumber', 'bank', 'active', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -68,11 +71,11 @@ abstract class BaseBankAccountPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Accountnumber' => 1, 'Bank' => 2, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'accountnumber' => 1, 'bank' => 2, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::ACCOUNTNUMBER => 1, self::BANK => 2, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'accountNumber' => 1, 'bank' => 2, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Accountnumber' => 1, 'Bank' => 2, 'Active' => 3, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'accountnumber' => 1, 'bank' => 2, 'active' => 3, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::ACCOUNTNUMBER => 1, self::BANK => 2, self::ACTIVE => 3, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'accountNumber' => 1, 'bank' => 2, 'active' => 3, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -159,6 +162,8 @@ abstract class BaseBankAccountPeer {
 		$criteria->addSelectColumn(BankAccountPeer::ACCOUNTNUMBER);
 
 		$criteria->addSelectColumn(BankAccountPeer::BANK);
+
+		$criteria->addSelectColumn(BankAccountPeer::ACTIVE);
 
 	}
 

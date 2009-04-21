@@ -68,6 +68,8 @@ class BankAccountMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('BANK', 'Bank', 'VARCHAR', true, 255);
 
+		$tMap->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null);
+
 	} // doBuild()
 
 } // BankAccountMapBuilder

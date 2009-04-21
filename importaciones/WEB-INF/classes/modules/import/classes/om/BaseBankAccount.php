@@ -37,6 +37,12 @@ abstract class BaseBankAccount extends BaseObject  implements Persistent {
 	protected $bank;
 
 	/**
+	 * The value for the active field.
+	 * @var        boolean
+	 */
+	protected $active;
+
+	/**
 	 * @var        array SupplierPurchaseOrderBankTransfer[] Collection to store aggregation of SupplierPurchaseOrderBankTransfer objects.
 	 */
 	protected $collSupplierPurchaseOrderBankTransfers;
@@ -111,6 +117,16 @@ abstract class BaseBankAccount extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [active] column value.
+	 * Is product active?
+	 * @return     boolean
+	 */
+	public function getActive()
+	{
+		return $this->active;
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * Id
 	 * @param      int $v new value
@@ -171,6 +187,26 @@ abstract class BaseBankAccount extends BaseObject  implements Persistent {
 	} // setBank()
 
 	/**
+	 * Set the value of [active] column.
+	 * Is product active?
+	 * @param      boolean $v new value
+	 * @return     BankAccount The current object (for fluent API support)
+	 */
+	public function setActive($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->active !== $v) {
+			$this->active = $v;
+			$this->modifiedColumns[] = BankAccountPeer::ACTIVE;
+		}
+
+		return $this;
+	} // setActive()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -210,6 +246,7 @@ abstract class BaseBankAccount extends BaseObject  implements Persistent {
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->accountnumber = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->bank = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->active = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -219,7 +256,7 @@ abstract class BaseBankAccount extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 3; // 3 = BankAccountPeer::NUM_COLUMNS - BankAccountPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 4; // 4 = BankAccountPeer::NUM_COLUMNS - BankAccountPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating BankAccount object", $e);
@@ -497,6 +534,7 @@ abstract class BaseBankAccount extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(BankAccountPeer::ID)) $criteria->add(BankAccountPeer::ID, $this->id);
 		if ($this->isColumnModified(BankAccountPeer::ACCOUNTNUMBER)) $criteria->add(BankAccountPeer::ACCOUNTNUMBER, $this->accountnumber);
 		if ($this->isColumnModified(BankAccountPeer::BANK)) $criteria->add(BankAccountPeer::BANK, $this->bank);
+		if ($this->isColumnModified(BankAccountPeer::ACTIVE)) $criteria->add(BankAccountPeer::ACTIVE, $this->active);
 
 		return $criteria;
 	}
@@ -554,6 +592,8 @@ abstract class BaseBankAccount extends BaseObject  implements Persistent {
 		$copyObj->setAccountnumber($this->accountnumber);
 
 		$copyObj->setBank($this->bank);
+
+		$copyObj->setActive($this->active);
 
 
 		if ($deepCopy) {
