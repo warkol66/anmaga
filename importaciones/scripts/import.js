@@ -84,6 +84,16 @@ function importSelectAllByName(name) {
 	return true;
 }
 
+function importSelectAllByTagName(name) {
+	var elements = document.getElementsByTagName(name);
+	
+	for (var i=0; i < elements.length; i++) {
+		elements[i].checked = 'checked';
+	};
+	
+	return true;
+}
+
 function importDeleteItemFromClientQuotationX(form) {
 	
 	var fields = Form.serialize(form);
