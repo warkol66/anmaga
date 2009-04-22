@@ -21,6 +21,10 @@
 				<input type="text" name="priceTo" value="|-$priceTo-|" /> 
 			</p> 
 			<p> 
+				<label>Código: </label>
+				<input type="text" name="productCode" value="|-$productCode-|" /> 
+			</p> 
+			<p> 
 				<input type="hidden" name="do" value="catalogProductsList" /> 
 				<input type="submit" class="button" value="Buscar" /> <a href="Main.php?do=catalogProductsList">Eliminar Filtros</a>
 			</p> 

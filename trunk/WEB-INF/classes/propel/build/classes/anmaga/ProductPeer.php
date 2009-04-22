@@ -16,6 +16,7 @@ class ProductPeer extends BaseProductPeer {
 	private $searchParentNodeId;
 	private $searchPriceFrom;
 	private $searchPriceTo;
+	private $searchByCode;
 
 	/**
 	* Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
@@ -436,6 +437,11 @@ class ProductPeer extends BaseProductPeer {
   	$this->searchPriceTo = $priceTo;
   }
 
+  function setSearchByCode($productCode) {
+  	$this->searchByCode = $productCode;
+  }
+
+
   /**
   * Obtiene todos los productos paginados.
 	*
@@ -454,6 +460,9 @@ class ProductPeer extends BaseProductPeer {
 		
     if (!empty($this->searchParentNodeId))
 			$cond->add(NodePeer::PARENTID, $this->searchParentNodeId);
+
+    if (!empty($this->searchByCode))
+			$cond->add(ProductPeer::CODE,"%".$this->searchByCode."%",Criteria::LIKE);
 
     if ( !empty($this->searchPriceFrom) || !empty($this->searchPriceTo) ) {    	
     	if ( !empty($this->searchPriceFrom) ) {

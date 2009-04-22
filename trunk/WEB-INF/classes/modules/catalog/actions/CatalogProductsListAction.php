@@ -52,6 +52,7 @@ class CatalogProductsListAction extends BaseAction {
 		$smarty->assign("parentNodeId",$_GET["parentNodeId"]);	
 		$smarty->assign("priceFrom",$_GET["priceFrom"]);
 		$smarty->assign("priceTo",$_GET["priceTo"]);
+		$smarty->assign("productCode",$_GET["productCode"]);
 
 		$productCategories = TreePeer::getAllOnlyKind("ProductCategory");
     $smarty->assign("productCategories",$productCategories);
@@ -74,6 +75,8 @@ class CatalogProductsListAction extends BaseAction {
 			$productPeer->setSearchPriceTo($_GET["priceTo"]);
 		if (!empty($_GET["parentNodeId"]))
 			$productPeer->setSearchParentNodeId($_GET["parentNodeId"]);
+		if (!empty($_GET["productCode"]))
+			$productPeer->setSearchByCode($_GET["productCode"]);
 
     $pager = $productPeer->getAllNodesPaginated($_GET["page"]);
 
