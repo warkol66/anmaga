@@ -74,7 +74,7 @@ class UsersDoLoginAction extends BaseAction {
 		}
 
 
-		Common::doLog('failure','username: ' . $_POST["username"]);
+		Common::doLog('failure','username: ' . $_POST["loginUsername"]);
 		return $mapping->findForwardConfig('failure');
 	}
 
