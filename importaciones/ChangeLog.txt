@@ -1,10 +1,16 @@
 ==============================
+Revisión 440
+------------------------------
+
+ALTER TABLE `import_product` CHANGE `active` `status` INT( 11 ) NOT NULL COMMENT 'product status';
+ALTER TABLE `import_supplierQuotationItem` ADD `replacedProductId` INTEGER COMMENT 'Id producto que fue reemplazado por el actual';
+
+==============================
 Revisión 432
 ------------------------------
 
 ALTER TABLE `import_bankAccount` ADD `active` TINYINT  NOT NULL COMMENT 'Is product active?';
 UPDATE `import_bankAccount` SET `active` = 1;
-
 
 
 ==============================
