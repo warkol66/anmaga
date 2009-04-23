@@ -1187,7 +1187,7 @@ abstract class BasePort extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Port.
 	 */
-	public function getSupplierQuotationItemsJoinProduct($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierQuotationItemsJoinProductRelatedByProductid($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(PortPeer::DATABASE_NAME);
@@ -1204,7 +1204,7 @@ abstract class BasePort extends BaseObject  implements Persistent {
 
 				$criteria->add(SupplierQuotationItemPeer::PORTID, $this->id);
 
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinProduct($criteria, $con, $join_behavior);
+				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinProductRelatedByProductid($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -1214,7 +1214,54 @@ abstract class BasePort extends BaseObject  implements Persistent {
 			$criteria->add(SupplierQuotationItemPeer::PORTID, $this->id);
 
 			if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinProduct($criteria, $con, $join_behavior);
+				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinProductRelatedByProductid($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierQuotationItemCriteria = $criteria;
+
+		return $this->collSupplierQuotationItems;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Port is new, it will return
+	 * an empty collection; or if this Port has previously
+	 * been saved, it will retrieve related SupplierQuotationItems from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Port.
+	 */
+	public function getSupplierQuotationItemsJoinProductRelatedByReplacedproductid($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PortPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierQuotationItems === null) {
+			if ($this->isNew()) {
+				$this->collSupplierQuotationItems = array();
+			} else {
+
+				$criteria->add(SupplierQuotationItemPeer::PORTID, $this->id);
+
+				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinProductRelatedByReplacedproductid($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierQuotationItemPeer::PORTID, $this->id);
+
+			if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
+				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinProductRelatedByReplacedproductid($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastSupplierQuotationItemCriteria = $criteria;

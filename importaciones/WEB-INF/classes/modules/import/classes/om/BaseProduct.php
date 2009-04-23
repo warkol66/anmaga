@@ -67,10 +67,10 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	protected $descriptionchinese;
 
 	/**
-	 * The value for the active field.
-	 * @var        boolean
+	 * The value for the status field.
+	 * @var        int
 	 */
-	protected $active;
+	protected $status;
 
 	/**
 	 * @var        ProductSupplier one-to-one related ProductSupplier object
@@ -90,12 +90,22 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	/**
 	 * @var        array SupplierQuotationItem[] Collection to store aggregation of SupplierQuotationItem objects.
 	 */
-	protected $collSupplierQuotationItems;
+	protected $collSupplierQuotationItemsRelatedByProductid;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collSupplierQuotationItems.
+	 * @var        Criteria The criteria used to select the current contents of collSupplierQuotationItemsRelatedByProductid.
 	 */
-	private $lastSupplierQuotationItemCriteria = null;
+	private $lastSupplierQuotationItemRelatedByProductidCriteria = null;
+
+	/**
+	 * @var        array SupplierQuotationItem[] Collection to store aggregation of SupplierQuotationItem objects.
+	 */
+	protected $collSupplierQuotationItemsRelatedByReplacedproductid;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collSupplierQuotationItemsRelatedByReplacedproductid.
+	 */
+	private $lastSupplierQuotationItemRelatedByReplacedproductidCriteria = null;
 
 	/**
 	 * @var        array ClientPurchaseOrderItem[] Collection to store aggregation of ClientPurchaseOrderItem objects.
@@ -232,13 +242,13 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Get the [active] column value.
-	 * Is product active?
-	 * @return     boolean
+	 * Get the [status] column value.
+	 * product status
+	 * @return     int
 	 */
-	public function getActive()
+	public function getStatus()
 	{
-		return $this->active;
+		return $this->status;
 	}
 
 	/**
@@ -402,24 +412,24 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	} // setDescriptionchinese()
 
 	/**
-	 * Set the value of [active] column.
-	 * Is product active?
-	 * @param      boolean $v new value
+	 * Set the value of [status] column.
+	 * product status
+	 * @param      int $v new value
 	 * @return     Product The current object (for fluent API support)
 	 */
-	public function setActive($v)
+	public function setStatus($v)
 	{
 		if ($v !== null) {
-			$v = (boolean) $v;
+			$v = (int) $v;
 		}
 
-		if ($this->active !== $v) {
-			$this->active = $v;
-			$this->modifiedColumns[] = ProductPeer::ACTIVE;
+		if ($this->status !== $v) {
+			$this->status = $v;
+			$this->modifiedColumns[] = ProductPeer::STATUS;
 		}
 
 		return $this;
-	} // setActive()
+	} // setStatus()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -466,7 +476,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			$this->descriptionspanish = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
 			$this->namechinese = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
 			$this->descriptionchinese = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-			$this->active = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
+			$this->status = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -543,8 +553,11 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			$this->collClientQuotationItems = null;
 			$this->lastClientQuotationItemCriteria = null;
 
-			$this->collSupplierQuotationItems = null;
-			$this->lastSupplierQuotationItemCriteria = null;
+			$this->collSupplierQuotationItemsRelatedByProductid = null;
+			$this->lastSupplierQuotationItemRelatedByProductidCriteria = null;
+
+			$this->collSupplierQuotationItemsRelatedByReplacedproductid = null;
+			$this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria = null;
 
 			$this->collClientPurchaseOrderItems = null;
 			$this->lastClientPurchaseOrderItemCriteria = null;
@@ -673,8 +686,16 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collSupplierQuotationItems !== null) {
-				foreach ($this->collSupplierQuotationItems as $referrerFK) {
+			if ($this->collSupplierQuotationItemsRelatedByProductid !== null) {
+				foreach ($this->collSupplierQuotationItemsRelatedByProductid as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collSupplierQuotationItemsRelatedByReplacedproductid !== null) {
+				foreach ($this->collSupplierQuotationItemsRelatedByReplacedproductid as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -782,8 +803,16 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collSupplierQuotationItems !== null) {
-					foreach ($this->collSupplierQuotationItems as $referrerFK) {
+				if ($this->collSupplierQuotationItemsRelatedByProductid !== null) {
+					foreach ($this->collSupplierQuotationItemsRelatedByProductid as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collSupplierQuotationItemsRelatedByReplacedproductid !== null) {
+					foreach ($this->collSupplierQuotationItemsRelatedByReplacedproductid as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -830,7 +859,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ProductPeer::DESCRIPTIONSPANISH)) $criteria->add(ProductPeer::DESCRIPTIONSPANISH, $this->descriptionspanish);
 		if ($this->isColumnModified(ProductPeer::NAMECHINESE)) $criteria->add(ProductPeer::NAMECHINESE, $this->namechinese);
 		if ($this->isColumnModified(ProductPeer::DESCRIPTIONCHINESE)) $criteria->add(ProductPeer::DESCRIPTIONCHINESE, $this->descriptionchinese);
-		if ($this->isColumnModified(ProductPeer::ACTIVE)) $criteria->add(ProductPeer::ACTIVE, $this->active);
+		if ($this->isColumnModified(ProductPeer::STATUS)) $criteria->add(ProductPeer::STATUS, $this->status);
 
 		return $criteria;
 	}
@@ -899,7 +928,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 
 		$copyObj->setDescriptionchinese($this->descriptionchinese);
 
-		$copyObj->setActive($this->active);
+		$copyObj->setStatus($this->status);
 
 
 		if ($deepCopy) {
@@ -918,9 +947,15 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 				}
 			}
 
-			foreach ($this->getSupplierQuotationItems() as $relObj) {
+			foreach ($this->getSupplierQuotationItemsRelatedByProductid() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addSupplierQuotationItem($relObj->copy($deepCopy));
+					$copyObj->addSupplierQuotationItemRelatedByProductid($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getSupplierQuotationItemsRelatedByReplacedproductid() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addSupplierQuotationItemRelatedByReplacedproductid($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1222,31 +1257,31 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collSupplierQuotationItems collection (array).
+	 * Clears out the collSupplierQuotationItemsRelatedByProductid collection (array).
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addSupplierQuotationItems()
+	 * @see        addSupplierQuotationItemsRelatedByProductid()
 	 */
-	public function clearSupplierQuotationItems()
+	public function clearSupplierQuotationItemsRelatedByProductid()
 	{
-		$this->collSupplierQuotationItems = null; // important to set this to NULL since that means it is uninitialized
+		$this->collSupplierQuotationItemsRelatedByProductid = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collSupplierQuotationItems collection (array).
+	 * Initializes the collSupplierQuotationItemsRelatedByProductid collection (array).
 	 *
-	 * By default this just sets the collSupplierQuotationItems collection to an empty array (like clearcollSupplierQuotationItems());
+	 * By default this just sets the collSupplierQuotationItemsRelatedByProductid collection to an empty array (like clearcollSupplierQuotationItemsRelatedByProductid());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
 	 * @return     void
 	 */
-	public function initSupplierQuotationItems()
+	public function initSupplierQuotationItemsRelatedByProductid()
 	{
-		$this->collSupplierQuotationItems = array();
+		$this->collSupplierQuotationItemsRelatedByProductid = array();
 	}
 
 	/**
@@ -1254,7 +1289,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	 *
 	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
 	 * Otherwise if this Product has previously been saved, it will retrieve
-	 * related SupplierQuotationItems from storage. If this Product is new, it will return
+	 * related SupplierQuotationItemsRelatedByProductid from storage. If this Product is new, it will return
 	 * an empty collection or the current collection, the criteria is ignored on a new object.
 	 *
 	 * @param      PropelPDO $con
@@ -1262,7 +1297,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	 * @return     array SupplierQuotationItem[]
 	 * @throws     PropelException
 	 */
-	public function getSupplierQuotationItems($criteria = null, PropelPDO $con = null)
+	public function getSupplierQuotationItemsRelatedByProductid($criteria = null, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
@@ -1272,15 +1307,15 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItems === null) {
+		if ($this->collSupplierQuotationItemsRelatedByProductid === null) {
 			if ($this->isNew()) {
-			   $this->collSupplierQuotationItems = array();
+			   $this->collSupplierQuotationItemsRelatedByProductid = array();
 			} else {
 
 				$criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->id);
 
 				SupplierQuotationItemPeer::addSelectColumns($criteria);
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelect($criteria, $con);
+				$this->collSupplierQuotationItemsRelatedByProductid = SupplierQuotationItemPeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1293,13 +1328,13 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 				$criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->id);
 
 				SupplierQuotationItemPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
-					$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelect($criteria, $con);
+				if (!isset($this->lastSupplierQuotationItemRelatedByProductidCriteria) || !$this->lastSupplierQuotationItemRelatedByProductidCriteria->equals($criteria)) {
+					$this->collSupplierQuotationItemsRelatedByProductid = SupplierQuotationItemPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastSupplierQuotationItemCriteria = $criteria;
-		return $this->collSupplierQuotationItems;
+		$this->lastSupplierQuotationItemRelatedByProductidCriteria = $criteria;
+		return $this->collSupplierQuotationItemsRelatedByProductid;
 	}
 
 	/**
@@ -1311,7 +1346,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	 * @return     int Count of related SupplierQuotationItem objects.
 	 * @throws     PropelException
 	 */
-	public function countSupplierQuotationItems(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countSupplierQuotationItemsRelatedByProductid(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
@@ -1325,7 +1360,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 
 		$count = null;
 
-		if ($this->collSupplierQuotationItems === null) {
+		if ($this->collSupplierQuotationItemsRelatedByProductid === null) {
 			if ($this->isNew()) {
 				$count = 0;
 			} else {
@@ -1344,16 +1379,16 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 
 				$criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->id);
 
-				if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
+				if (!isset($this->lastSupplierQuotationItemRelatedByProductidCriteria) || !$this->lastSupplierQuotationItemRelatedByProductidCriteria->equals($criteria)) {
 					$count = SupplierQuotationItemPeer::doCount($criteria, $con);
 				} else {
-					$count = count($this->collSupplierQuotationItems);
+					$count = count($this->collSupplierQuotationItemsRelatedByProductid);
 				}
 			} else {
-				$count = count($this->collSupplierQuotationItems);
+				$count = count($this->collSupplierQuotationItemsRelatedByProductid);
 			}
 		}
-		$this->lastSupplierQuotationItemCriteria = $criteria;
+		$this->lastSupplierQuotationItemRelatedByProductidCriteria = $criteria;
 		return $count;
 	}
 
@@ -1365,14 +1400,14 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addSupplierQuotationItem(SupplierQuotationItem $l)
+	public function addSupplierQuotationItemRelatedByProductid(SupplierQuotationItem $l)
 	{
-		if ($this->collSupplierQuotationItems === null) {
-			$this->initSupplierQuotationItems();
+		if ($this->collSupplierQuotationItemsRelatedByProductid === null) {
+			$this->initSupplierQuotationItemsRelatedByProductid();
 		}
-		if (!in_array($l, $this->collSupplierQuotationItems, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collSupplierQuotationItems, $l);
-			$l->setProduct($this);
+		if (!in_array($l, $this->collSupplierQuotationItemsRelatedByProductid, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collSupplierQuotationItemsRelatedByProductid, $l);
+			$l->setProductRelatedByProductid($this);
 		}
 	}
 
@@ -1382,13 +1417,13 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Product is new, it will return
 	 * an empty collection; or if this Product has previously
-	 * been saved, it will retrieve related SupplierQuotationItems from storage.
+	 * been saved, it will retrieve related SupplierQuotationItemsRelatedByProductid from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Product.
 	 */
-	public function getSupplierQuotationItemsJoinSupplierQuotation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierQuotationItemsRelatedByProductidJoinSupplierQuotation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
@@ -1398,14 +1433,14 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItems === null) {
+		if ($this->collSupplierQuotationItemsRelatedByProductid === null) {
 			if ($this->isNew()) {
-				$this->collSupplierQuotationItems = array();
+				$this->collSupplierQuotationItemsRelatedByProductid = array();
 			} else {
 
 				$criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->id);
 
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinSupplierQuotation($criteria, $con, $join_behavior);
+				$this->collSupplierQuotationItemsRelatedByProductid = SupplierQuotationItemPeer::doSelectJoinSupplierQuotation($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -1414,13 +1449,13 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 
 			$criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->id);
 
-			if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinSupplierQuotation($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierQuotationItemRelatedByProductidCriteria) || !$this->lastSupplierQuotationItemRelatedByProductidCriteria->equals($criteria)) {
+				$this->collSupplierQuotationItemsRelatedByProductid = SupplierQuotationItemPeer::doSelectJoinSupplierQuotation($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastSupplierQuotationItemCriteria = $criteria;
+		$this->lastSupplierQuotationItemRelatedByProductidCriteria = $criteria;
 
-		return $this->collSupplierQuotationItems;
+		return $this->collSupplierQuotationItemsRelatedByProductid;
 	}
 
 
@@ -1429,13 +1464,13 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Product is new, it will return
 	 * an empty collection; or if this Product has previously
-	 * been saved, it will retrieve related SupplierQuotationItems from storage.
+	 * been saved, it will retrieve related SupplierQuotationItemsRelatedByProductid from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Product.
 	 */
-	public function getSupplierQuotationItemsJoinClientQuotationItem($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierQuotationItemsRelatedByProductidJoinClientQuotationItem($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
@@ -1445,14 +1480,14 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItems === null) {
+		if ($this->collSupplierQuotationItemsRelatedByProductid === null) {
 			if ($this->isNew()) {
-				$this->collSupplierQuotationItems = array();
+				$this->collSupplierQuotationItemsRelatedByProductid = array();
 			} else {
 
 				$criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->id);
 
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinClientQuotationItem($criteria, $con, $join_behavior);
+				$this->collSupplierQuotationItemsRelatedByProductid = SupplierQuotationItemPeer::doSelectJoinClientQuotationItem($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -1461,13 +1496,13 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 
 			$criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->id);
 
-			if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinClientQuotationItem($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierQuotationItemRelatedByProductidCriteria) || !$this->lastSupplierQuotationItemRelatedByProductidCriteria->equals($criteria)) {
+				$this->collSupplierQuotationItemsRelatedByProductid = SupplierQuotationItemPeer::doSelectJoinClientQuotationItem($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastSupplierQuotationItemCriteria = $criteria;
+		$this->lastSupplierQuotationItemRelatedByProductidCriteria = $criteria;
 
-		return $this->collSupplierQuotationItems;
+		return $this->collSupplierQuotationItemsRelatedByProductid;
 	}
 
 
@@ -1476,13 +1511,13 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Product is new, it will return
 	 * an empty collection; or if this Product has previously
-	 * been saved, it will retrieve related SupplierQuotationItems from storage.
+	 * been saved, it will retrieve related SupplierQuotationItemsRelatedByProductid from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Product.
 	 */
-	public function getSupplierQuotationItemsJoinIncoterm($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierQuotationItemsRelatedByProductidJoinIncoterm($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
@@ -1492,14 +1527,14 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItems === null) {
+		if ($this->collSupplierQuotationItemsRelatedByProductid === null) {
 			if ($this->isNew()) {
-				$this->collSupplierQuotationItems = array();
+				$this->collSupplierQuotationItemsRelatedByProductid = array();
 			} else {
 
 				$criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->id);
 
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinIncoterm($criteria, $con, $join_behavior);
+				$this->collSupplierQuotationItemsRelatedByProductid = SupplierQuotationItemPeer::doSelectJoinIncoterm($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -1508,13 +1543,13 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 
 			$criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->id);
 
-			if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinIncoterm($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierQuotationItemRelatedByProductidCriteria) || !$this->lastSupplierQuotationItemRelatedByProductidCriteria->equals($criteria)) {
+				$this->collSupplierQuotationItemsRelatedByProductid = SupplierQuotationItemPeer::doSelectJoinIncoterm($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastSupplierQuotationItemCriteria = $criteria;
+		$this->lastSupplierQuotationItemRelatedByProductidCriteria = $criteria;
 
-		return $this->collSupplierQuotationItems;
+		return $this->collSupplierQuotationItemsRelatedByProductid;
 	}
 
 
@@ -1523,13 +1558,13 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Product is new, it will return
 	 * an empty collection; or if this Product has previously
-	 * been saved, it will retrieve related SupplierQuotationItems from storage.
+	 * been saved, it will retrieve related SupplierQuotationItemsRelatedByProductid from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Product.
 	 */
-	public function getSupplierQuotationItemsJoinPort($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierQuotationItemsRelatedByProductidJoinPort($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
@@ -1539,14 +1574,14 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItems === null) {
+		if ($this->collSupplierQuotationItemsRelatedByProductid === null) {
 			if ($this->isNew()) {
-				$this->collSupplierQuotationItems = array();
+				$this->collSupplierQuotationItemsRelatedByProductid = array();
 			} else {
 
 				$criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->id);
 
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
+				$this->collSupplierQuotationItemsRelatedByProductid = SupplierQuotationItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -1555,13 +1590,356 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 
 			$criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->id);
 
-			if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierQuotationItemRelatedByProductidCriteria) || !$this->lastSupplierQuotationItemRelatedByProductidCriteria->equals($criteria)) {
+				$this->collSupplierQuotationItemsRelatedByProductid = SupplierQuotationItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastSupplierQuotationItemCriteria = $criteria;
+		$this->lastSupplierQuotationItemRelatedByProductidCriteria = $criteria;
 
-		return $this->collSupplierQuotationItems;
+		return $this->collSupplierQuotationItemsRelatedByProductid;
+	}
+
+	/**
+	 * Clears out the collSupplierQuotationItemsRelatedByReplacedproductid collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addSupplierQuotationItemsRelatedByReplacedproductid()
+	 */
+	public function clearSupplierQuotationItemsRelatedByReplacedproductid()
+	{
+		$this->collSupplierQuotationItemsRelatedByReplacedproductid = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collSupplierQuotationItemsRelatedByReplacedproductid collection (array).
+	 *
+	 * By default this just sets the collSupplierQuotationItemsRelatedByReplacedproductid collection to an empty array (like clearcollSupplierQuotationItemsRelatedByReplacedproductid());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initSupplierQuotationItemsRelatedByReplacedproductid()
+	{
+		$this->collSupplierQuotationItemsRelatedByReplacedproductid = array();
+	}
+
+	/**
+	 * Gets an array of SupplierQuotationItem objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this Product has previously been saved, it will retrieve
+	 * related SupplierQuotationItemsRelatedByReplacedproductid from storage. If this Product is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array SupplierQuotationItem[]
+	 * @throws     PropelException
+	 */
+	public function getSupplierQuotationItemsRelatedByReplacedproductid($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierQuotationItemsRelatedByReplacedproductid === null) {
+			if ($this->isNew()) {
+			   $this->collSupplierQuotationItemsRelatedByReplacedproductid = array();
+			} else {
+
+				$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID, $this->id);
+
+				SupplierQuotationItemPeer::addSelectColumns($criteria);
+				$this->collSupplierQuotationItemsRelatedByReplacedproductid = SupplierQuotationItemPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID, $this->id);
+
+				SupplierQuotationItemPeer::addSelectColumns($criteria);
+				if (!isset($this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria) || !$this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria->equals($criteria)) {
+					$this->collSupplierQuotationItemsRelatedByReplacedproductid = SupplierQuotationItemPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria = $criteria;
+		return $this->collSupplierQuotationItemsRelatedByReplacedproductid;
+	}
+
+	/**
+	 * Returns the number of related SupplierQuotationItem objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related SupplierQuotationItem objects.
+	 * @throws     PropelException
+	 */
+	public function countSupplierQuotationItemsRelatedByReplacedproductid(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collSupplierQuotationItemsRelatedByReplacedproductid === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID, $this->id);
+
+				$count = SupplierQuotationItemPeer::doCount($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID, $this->id);
+
+				if (!isset($this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria) || !$this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria->equals($criteria)) {
+					$count = SupplierQuotationItemPeer::doCount($criteria, $con);
+				} else {
+					$count = count($this->collSupplierQuotationItemsRelatedByReplacedproductid);
+				}
+			} else {
+				$count = count($this->collSupplierQuotationItemsRelatedByReplacedproductid);
+			}
+		}
+		$this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria = $criteria;
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a SupplierQuotationItem object to this object
+	 * through the SupplierQuotationItem foreign key attribute.
+	 *
+	 * @param      SupplierQuotationItem $l SupplierQuotationItem
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addSupplierQuotationItemRelatedByReplacedproductid(SupplierQuotationItem $l)
+	{
+		if ($this->collSupplierQuotationItemsRelatedByReplacedproductid === null) {
+			$this->initSupplierQuotationItemsRelatedByReplacedproductid();
+		}
+		if (!in_array($l, $this->collSupplierQuotationItemsRelatedByReplacedproductid, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collSupplierQuotationItemsRelatedByReplacedproductid, $l);
+			$l->setProductRelatedByReplacedproductid($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Product is new, it will return
+	 * an empty collection; or if this Product has previously
+	 * been saved, it will retrieve related SupplierQuotationItemsRelatedByReplacedproductid from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Product.
+	 */
+	public function getSupplierQuotationItemsRelatedByReplacedproductidJoinSupplierQuotation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierQuotationItemsRelatedByReplacedproductid === null) {
+			if ($this->isNew()) {
+				$this->collSupplierQuotationItemsRelatedByReplacedproductid = array();
+			} else {
+
+				$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID, $this->id);
+
+				$this->collSupplierQuotationItemsRelatedByReplacedproductid = SupplierQuotationItemPeer::doSelectJoinSupplierQuotation($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID, $this->id);
+
+			if (!isset($this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria) || !$this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria->equals($criteria)) {
+				$this->collSupplierQuotationItemsRelatedByReplacedproductid = SupplierQuotationItemPeer::doSelectJoinSupplierQuotation($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria = $criteria;
+
+		return $this->collSupplierQuotationItemsRelatedByReplacedproductid;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Product is new, it will return
+	 * an empty collection; or if this Product has previously
+	 * been saved, it will retrieve related SupplierQuotationItemsRelatedByReplacedproductid from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Product.
+	 */
+	public function getSupplierQuotationItemsRelatedByReplacedproductidJoinClientQuotationItem($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierQuotationItemsRelatedByReplacedproductid === null) {
+			if ($this->isNew()) {
+				$this->collSupplierQuotationItemsRelatedByReplacedproductid = array();
+			} else {
+
+				$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID, $this->id);
+
+				$this->collSupplierQuotationItemsRelatedByReplacedproductid = SupplierQuotationItemPeer::doSelectJoinClientQuotationItem($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID, $this->id);
+
+			if (!isset($this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria) || !$this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria->equals($criteria)) {
+				$this->collSupplierQuotationItemsRelatedByReplacedproductid = SupplierQuotationItemPeer::doSelectJoinClientQuotationItem($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria = $criteria;
+
+		return $this->collSupplierQuotationItemsRelatedByReplacedproductid;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Product is new, it will return
+	 * an empty collection; or if this Product has previously
+	 * been saved, it will retrieve related SupplierQuotationItemsRelatedByReplacedproductid from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Product.
+	 */
+	public function getSupplierQuotationItemsRelatedByReplacedproductidJoinIncoterm($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierQuotationItemsRelatedByReplacedproductid === null) {
+			if ($this->isNew()) {
+				$this->collSupplierQuotationItemsRelatedByReplacedproductid = array();
+			} else {
+
+				$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID, $this->id);
+
+				$this->collSupplierQuotationItemsRelatedByReplacedproductid = SupplierQuotationItemPeer::doSelectJoinIncoterm($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID, $this->id);
+
+			if (!isset($this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria) || !$this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria->equals($criteria)) {
+				$this->collSupplierQuotationItemsRelatedByReplacedproductid = SupplierQuotationItemPeer::doSelectJoinIncoterm($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria = $criteria;
+
+		return $this->collSupplierQuotationItemsRelatedByReplacedproductid;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Product is new, it will return
+	 * an empty collection; or if this Product has previously
+	 * been saved, it will retrieve related SupplierQuotationItemsRelatedByReplacedproductid from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Product.
+	 */
+	public function getSupplierQuotationItemsRelatedByReplacedproductidJoinPort($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ProductPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collSupplierQuotationItemsRelatedByReplacedproductid === null) {
+			if ($this->isNew()) {
+				$this->collSupplierQuotationItemsRelatedByReplacedproductid = array();
+			} else {
+
+				$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID, $this->id);
+
+				$this->collSupplierQuotationItemsRelatedByReplacedproductid = SupplierQuotationItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID, $this->id);
+
+			if (!isset($this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria) || !$this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria->equals($criteria)) {
+				$this->collSupplierQuotationItemsRelatedByReplacedproductid = SupplierQuotationItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastSupplierQuotationItemRelatedByReplacedproductidCriteria = $criteria;
+
+		return $this->collSupplierQuotationItemsRelatedByReplacedproductid;
 	}
 
 	/**
@@ -2082,8 +2460,13 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
-			if ($this->collSupplierQuotationItems) {
-				foreach ((array) $this->collSupplierQuotationItems as $o) {
+			if ($this->collSupplierQuotationItemsRelatedByProductid) {
+				foreach ((array) $this->collSupplierQuotationItemsRelatedByProductid as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collSupplierQuotationItemsRelatedByReplacedproductid) {
+				foreach ((array) $this->collSupplierQuotationItemsRelatedByReplacedproductid as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -2101,7 +2484,8 @@ abstract class BaseProduct extends BaseObject  implements Persistent {
 
 		$this->singleProductSupplier = null;
 		$this->collClientQuotationItems = null;
-		$this->collSupplierQuotationItems = null;
+		$this->collSupplierQuotationItemsRelatedByProductid = null;
+		$this->collSupplierQuotationItemsRelatedByReplacedproductid = null;
 		$this->collClientPurchaseOrderItems = null;
 		$this->collSupplierPurchaseOrderItems = null;
 	}

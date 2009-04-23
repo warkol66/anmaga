@@ -5,6 +5,9 @@
 	|-if $message eq "quoted"-|
 	<div class="successMessage">Se ha guardado la cotización del item.</div>
 	|-/if-|
+	|-if $message eq "replaced"-|
+	<div class="successMessage">Se ha reemplazado el producto del item correctamente.</div>
+	|-/if-|
 	|-if $message eq "confirmed"-|
 	<div class="successMessage">Se ha confirmado la cotización.</div>
 	|-/if-|

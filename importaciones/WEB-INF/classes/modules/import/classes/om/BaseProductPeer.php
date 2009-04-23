@@ -48,8 +48,8 @@ abstract class BaseProductPeer {
 	/** the column name for the DESCRIPTIONCHINESE field */
 	const DESCRIPTIONCHINESE = 'import_product.DESCRIPTIONCHINESE';
 
-	/** the column name for the ACTIVE field */
-	const ACTIVE = 'import_product.ACTIVE';
+	/** the column name for the STATUS field */
+	const STATUS = 'import_product.STATUS';
 
 	/**
 	 * An identiy map to hold any loaded instances of Product objects.
@@ -72,10 +72,10 @@ abstract class BaseProductPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Code', 'Name', 'Namespanish', 'Description', 'Descriptionspanish', 'Namechinese', 'Descriptionchinese', 'Active', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'code', 'name', 'namespanish', 'description', 'descriptionspanish', 'namechinese', 'descriptionchinese', 'active', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::CODE, self::NAME, self::NAMESPANISH, self::DESCRIPTION, self::DESCRIPTIONSPANISH, self::NAMECHINESE, self::DESCRIPTIONCHINESE, self::ACTIVE, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'code', 'name', 'nameSpanish', 'description', 'descriptionSpanish', 'nameChinese', 'descriptionChinese', 'active', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Code', 'Name', 'Namespanish', 'Description', 'Descriptionspanish', 'Namechinese', 'Descriptionchinese', 'Status', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'code', 'name', 'namespanish', 'description', 'descriptionspanish', 'namechinese', 'descriptionchinese', 'status', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::CODE, self::NAME, self::NAMESPANISH, self::DESCRIPTION, self::DESCRIPTIONSPANISH, self::NAMECHINESE, self::DESCRIPTIONCHINESE, self::STATUS, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'code', 'name', 'nameSpanish', 'description', 'descriptionSpanish', 'nameChinese', 'descriptionChinese', 'status', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
@@ -86,10 +86,10 @@ abstract class BaseProductPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Code' => 1, 'Name' => 2, 'Namespanish' => 3, 'Description' => 4, 'Descriptionspanish' => 5, 'Namechinese' => 6, 'Descriptionchinese' => 7, 'Active' => 8, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'namespanish' => 3, 'description' => 4, 'descriptionspanish' => 5, 'namechinese' => 6, 'descriptionchinese' => 7, 'active' => 8, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CODE => 1, self::NAME => 2, self::NAMESPANISH => 3, self::DESCRIPTION => 4, self::DESCRIPTIONSPANISH => 5, self::NAMECHINESE => 6, self::DESCRIPTIONCHINESE => 7, self::ACTIVE => 8, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'nameSpanish' => 3, 'description' => 4, 'descriptionSpanish' => 5, 'nameChinese' => 6, 'descriptionChinese' => 7, 'active' => 8, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Code' => 1, 'Name' => 2, 'Namespanish' => 3, 'Description' => 4, 'Descriptionspanish' => 5, 'Namechinese' => 6, 'Descriptionchinese' => 7, 'Status' => 8, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'namespanish' => 3, 'description' => 4, 'descriptionspanish' => 5, 'namechinese' => 6, 'descriptionchinese' => 7, 'status' => 8, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CODE => 1, self::NAME => 2, self::NAMESPANISH => 3, self::DESCRIPTION => 4, self::DESCRIPTIONSPANISH => 5, self::NAMECHINESE => 6, self::DESCRIPTIONCHINESE => 7, self::STATUS => 8, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'nameSpanish' => 3, 'description' => 4, 'descriptionSpanish' => 5, 'nameChinese' => 6, 'descriptionChinese' => 7, 'status' => 8, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
@@ -188,7 +188,7 @@ abstract class BaseProductPeer {
 
 		$criteria->addSelectColumn(ProductPeer::DESCRIPTIONCHINESE);
 
-		$criteria->addSelectColumn(ProductPeer::ACTIVE);
+		$criteria->addSelectColumn(ProductPeer::STATUS);
 
 	}
 

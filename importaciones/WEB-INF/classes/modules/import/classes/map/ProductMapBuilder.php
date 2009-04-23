@@ -78,7 +78,7 @@ class ProductMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('DESCRIPTIONCHINESE', 'Descriptionchinese', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null);
+		$tMap->addColumn('STATUS', 'Status', 'INTEGER', true, null);
 
 	} // doBuild()
 

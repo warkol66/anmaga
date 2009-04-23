@@ -37,6 +37,12 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	protected $productid;
 
 	/**
+	 * The value for the replacedproductid field.
+	 * @var        int
+	 */
+	protected $replacedproductid;
+
+	/**
 	 * The value for the clientquotationitemid field.
 	 * @var        int
 	 */
@@ -163,7 +169,12 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	/**
 	 * @var        Product
 	 */
-	protected $aProduct;
+	protected $aProductRelatedByProductid;
+
+	/**
+	 * @var        Product
+	 */
+	protected $aProductRelatedByReplacedproductid;
 
 	/**
 	 * @var        Incoterm
@@ -247,6 +258,16 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	public function getProductid()
 	{
 		return $this->productid;
+	}
+
+	/**
+	 * Get the [replacedproductid] column value.
+	 * Id producto que fue reemplazado por el actual
+	 * @return     int
+	 */
+	public function getReplacedproductid()
+	{
+		return $this->replacedproductid;
 	}
 
 	/**
@@ -500,12 +521,36 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 			$this->modifiedColumns[] = SupplierQuotationItemPeer::PRODUCTID;
 		}
 
-		if ($this->aProduct !== null && $this->aProduct->getId() !== $v) {
-			$this->aProduct = null;
+		if ($this->aProductRelatedByProductid !== null && $this->aProductRelatedByProductid->getId() !== $v) {
+			$this->aProductRelatedByProductid = null;
 		}
 
 		return $this;
 	} // setProductid()
+
+	/**
+	 * Set the value of [replacedproductid] column.
+	 * Id producto que fue reemplazado por el actual
+	 * @param      int $v new value
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 */
+	public function setReplacedproductid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->replacedproductid !== $v) {
+			$this->replacedproductid = $v;
+			$this->modifiedColumns[] = SupplierQuotationItemPeer::REPLACEDPRODUCTID;
+		}
+
+		if ($this->aProductRelatedByReplacedproductid !== null && $this->aProductRelatedByReplacedproductid->getId() !== $v) {
+			$this->aProductRelatedByReplacedproductid = null;
+		}
+
+		return $this;
+	} // setReplacedproductid()
 
 	/**
 	 * Set the value of [clientquotationitemid] column.
@@ -939,25 +984,26 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->supplierquotationid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->productid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-			$this->clientquotationitemid = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-			$this->status = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-			$this->quantity = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-			$this->portid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-			$this->incotermid = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-			$this->price = ($row[$startcol + 8] !== null) ? (double) $row[$startcol + 8] : null;
-			$this->suppliercomments = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-			$this->delivery = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-			$this->package = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
-			$this->unitlength = ($row[$startcol + 12] !== null) ? (double) $row[$startcol + 12] : null;
-			$this->unitwidth = ($row[$startcol + 13] !== null) ? (double) $row[$startcol + 13] : null;
-			$this->unitheight = ($row[$startcol + 14] !== null) ? (double) $row[$startcol + 14] : null;
-			$this->unitgrossweigth = ($row[$startcol + 15] !== null) ? (double) $row[$startcol + 15] : null;
-			$this->unitspercarton = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
-			$this->cartons = ($row[$startcol + 17] !== null) ? (int) $row[$startcol + 17] : null;
-			$this->cartonlength = ($row[$startcol + 18] !== null) ? (double) $row[$startcol + 18] : null;
-			$this->cartonwidth = ($row[$startcol + 19] !== null) ? (double) $row[$startcol + 19] : null;
-			$this->cartonheight = ($row[$startcol + 20] !== null) ? (double) $row[$startcol + 20] : null;
-			$this->cartongrossweigth = ($row[$startcol + 21] !== null) ? (double) $row[$startcol + 21] : null;
+			$this->replacedproductid = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+			$this->clientquotationitemid = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->status = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->quantity = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+			$this->portid = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+			$this->incotermid = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+			$this->price = ($row[$startcol + 9] !== null) ? (double) $row[$startcol + 9] : null;
+			$this->suppliercomments = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+			$this->delivery = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
+			$this->package = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
+			$this->unitlength = ($row[$startcol + 13] !== null) ? (double) $row[$startcol + 13] : null;
+			$this->unitwidth = ($row[$startcol + 14] !== null) ? (double) $row[$startcol + 14] : null;
+			$this->unitheight = ($row[$startcol + 15] !== null) ? (double) $row[$startcol + 15] : null;
+			$this->unitgrossweigth = ($row[$startcol + 16] !== null) ? (double) $row[$startcol + 16] : null;
+			$this->unitspercarton = ($row[$startcol + 17] !== null) ? (int) $row[$startcol + 17] : null;
+			$this->cartons = ($row[$startcol + 18] !== null) ? (int) $row[$startcol + 18] : null;
+			$this->cartonlength = ($row[$startcol + 19] !== null) ? (double) $row[$startcol + 19] : null;
+			$this->cartonwidth = ($row[$startcol + 20] !== null) ? (double) $row[$startcol + 20] : null;
+			$this->cartonheight = ($row[$startcol + 21] !== null) ? (double) $row[$startcol + 21] : null;
+			$this->cartongrossweigth = ($row[$startcol + 22] !== null) ? (double) $row[$startcol + 22] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -967,7 +1013,7 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 22; // 22 = SupplierQuotationItemPeer::NUM_COLUMNS - SupplierQuotationItemPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 23; // 23 = SupplierQuotationItemPeer::NUM_COLUMNS - SupplierQuotationItemPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating SupplierQuotationItem object", $e);
@@ -993,8 +1039,11 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 		if ($this->aSupplierQuotation !== null && $this->supplierquotationid !== $this->aSupplierQuotation->getId()) {
 			$this->aSupplierQuotation = null;
 		}
-		if ($this->aProduct !== null && $this->productid !== $this->aProduct->getId()) {
-			$this->aProduct = null;
+		if ($this->aProductRelatedByProductid !== null && $this->productid !== $this->aProductRelatedByProductid->getId()) {
+			$this->aProductRelatedByProductid = null;
+		}
+		if ($this->aProductRelatedByReplacedproductid !== null && $this->replacedproductid !== $this->aProductRelatedByReplacedproductid->getId()) {
+			$this->aProductRelatedByReplacedproductid = null;
 		}
 		if ($this->aClientQuotationItem !== null && $this->clientquotationitemid !== $this->aClientQuotationItem->getId()) {
 			$this->aClientQuotationItem = null;
@@ -1046,7 +1095,8 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 
 			$this->aSupplierQuotation = null;
 			$this->aClientQuotationItem = null;
-			$this->aProduct = null;
+			$this->aProductRelatedByProductid = null;
+			$this->aProductRelatedByReplacedproductid = null;
 			$this->aIncoterm = null;
 			$this->aPort = null;
 			$this->collSupplierQuotationItemComments = null;
@@ -1156,11 +1206,18 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 				$this->setClientQuotationItem($this->aClientQuotationItem);
 			}
 
-			if ($this->aProduct !== null) {
-				if ($this->aProduct->isModified() || $this->aProduct->isNew()) {
-					$affectedRows += $this->aProduct->save($con);
+			if ($this->aProductRelatedByProductid !== null) {
+				if ($this->aProductRelatedByProductid->isModified() || $this->aProductRelatedByProductid->isNew()) {
+					$affectedRows += $this->aProductRelatedByProductid->save($con);
 				}
-				$this->setProduct($this->aProduct);
+				$this->setProductRelatedByProductid($this->aProductRelatedByProductid);
+			}
+
+			if ($this->aProductRelatedByReplacedproductid !== null) {
+				if ($this->aProductRelatedByReplacedproductid->isModified() || $this->aProductRelatedByReplacedproductid->isNew()) {
+					$affectedRows += $this->aProductRelatedByReplacedproductid->save($con);
+				}
+				$this->setProductRelatedByReplacedproductid($this->aProductRelatedByReplacedproductid);
 			}
 
 			if ($this->aIncoterm !== null) {
@@ -1290,9 +1347,15 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 				}
 			}
 
-			if ($this->aProduct !== null) {
-				if (!$this->aProduct->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aProduct->getValidationFailures());
+			if ($this->aProductRelatedByProductid !== null) {
+				if (!$this->aProductRelatedByProductid->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aProductRelatedByProductid->getValidationFailures());
+				}
+			}
+
+			if ($this->aProductRelatedByReplacedproductid !== null) {
+				if (!$this->aProductRelatedByReplacedproductid->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aProductRelatedByReplacedproductid->getValidationFailures());
 				}
 			}
 
@@ -1341,6 +1404,7 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 		if ($this->isColumnModified(SupplierQuotationItemPeer::ID)) $criteria->add(SupplierQuotationItemPeer::ID, $this->id);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::SUPPLIERQUOTATIONID)) $criteria->add(SupplierQuotationItemPeer::SUPPLIERQUOTATIONID, $this->supplierquotationid);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::PRODUCTID)) $criteria->add(SupplierQuotationItemPeer::PRODUCTID, $this->productid);
+		if ($this->isColumnModified(SupplierQuotationItemPeer::REPLACEDPRODUCTID)) $criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID, $this->replacedproductid);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::CLIENTQUOTATIONITEMID)) $criteria->add(SupplierQuotationItemPeer::CLIENTQUOTATIONITEMID, $this->clientquotationitemid);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::STATUS)) $criteria->add(SupplierQuotationItemPeer::STATUS, $this->status);
 		if ($this->isColumnModified(SupplierQuotationItemPeer::QUANTITY)) $criteria->add(SupplierQuotationItemPeer::QUANTITY, $this->quantity);
@@ -1417,6 +1481,8 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 		$copyObj->setSupplierquotationid($this->supplierquotationid);
 
 		$copyObj->setProductid($this->productid);
+
+		$copyObj->setReplacedproductid($this->replacedproductid);
 
 		$copyObj->setClientquotationitemid($this->clientquotationitemid);
 
@@ -1620,7 +1686,7 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	 * @return     SupplierQuotationItem The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setProduct(Product $v = null)
+	public function setProductRelatedByProductid(Product $v = null)
 	{
 		if ($v === null) {
 			$this->setProductid(NULL);
@@ -1628,12 +1694,12 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 			$this->setProductid($v->getId());
 		}
 
-		$this->aProduct = $v;
+		$this->aProductRelatedByProductid = $v;
 
 		// Add binding for other direction of this n:n relationship.
 		// If this object has already been added to the Product object, it will not be re-added.
 		if ($v !== null) {
-			$v->addSupplierQuotationItem($this);
+			$v->addSupplierQuotationItemRelatedByProductid($this);
 		}
 
 		return $this;
@@ -1647,19 +1713,68 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 	 * @return     Product The associated Product object.
 	 * @throws     PropelException
 	 */
-	public function getProduct(PropelPDO $con = null)
+	public function getProductRelatedByProductid(PropelPDO $con = null)
 	{
-		if ($this->aProduct === null && ($this->productid !== null)) {
-			$this->aProduct = ProductPeer::retrieveByPK($this->productid, $con);
+		if ($this->aProductRelatedByProductid === null && ($this->productid !== null)) {
+			$this->aProductRelatedByProductid = ProductPeer::retrieveByPK($this->productid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
 			   undesirable since it could result in an only partially populated collection
 			   in the referenced object.
-			   $this->aProduct->addSupplierQuotationItems($this);
+			   $this->aProductRelatedByProductid->addSupplierQuotationItemsRelatedByProductid($this);
 			 */
 		}
-		return $this->aProduct;
+		return $this->aProductRelatedByProductid;
+	}
+
+	/**
+	 * Declares an association between this object and a Product object.
+	 *
+	 * @param      Product $v
+	 * @return     SupplierQuotationItem The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setProductRelatedByReplacedproductid(Product $v = null)
+	{
+		if ($v === null) {
+			$this->setReplacedproductid(NULL);
+		} else {
+			$this->setReplacedproductid($v->getId());
+		}
+
+		$this->aProductRelatedByReplacedproductid = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Product object, it will not be re-added.
+		if ($v !== null) {
+			$v->addSupplierQuotationItemRelatedByReplacedproductid($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Product object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Product The associated Product object.
+	 * @throws     PropelException
+	 */
+	public function getProductRelatedByReplacedproductid(PropelPDO $con = null)
+	{
+		if ($this->aProductRelatedByReplacedproductid === null && ($this->replacedproductid !== null)) {
+			$this->aProductRelatedByReplacedproductid = ProductPeer::retrieveByPK($this->replacedproductid, $con);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aProductRelatedByReplacedproductid->addSupplierQuotationItemsRelatedByReplacedproductid($this);
+			 */
+		}
+		return $this->aProductRelatedByReplacedproductid;
 	}
 
 	/**
@@ -2031,7 +2146,8 @@ abstract class BaseSupplierQuotationItem extends BaseObject  implements Persiste
 		$this->collSupplierQuotationItemComments = null;
 			$this->aSupplierQuotation = null;
 			$this->aClientQuotationItem = null;
-			$this->aProduct = null;
+			$this->aProductRelatedByProductid = null;
+			$this->aProductRelatedByReplacedproductid = null;
 			$this->aIncoterm = null;
 			$this->aPort = null;
 	}

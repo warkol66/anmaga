@@ -37,17 +37,26 @@ class ProductPeer extends BaseProductPeer {
   }
 
   /**
-  * Crea un product nueva.
+   * Valida los parametros necesarios para la creacion de un producto en el caso de proveedor
+   *
+   */
+  private function validateParamsSupplierCreation($params,$productSupplierParams) {
+
+  	$productVal = (!empty($params['name']));
+  	$productSupplierVal = (!empty($productSupplierParams['supplierId']) && !empty($productSupplierParams['code']));
+
+	return ($productVal && $productSupplierVal);
+
+  }  
+
+  /**
+  * Proceso de creacion de un producto nuevo.
   *
   * @param array $params Array asociativo con los atributos del objeto product
   * @param array $productSupplierParams Array asociativo con los atributos del objeto productSupplier
   * @return boolean true si se creo correctamente, false sino
-  */  
-  function create($params,$productSupplierParams) {
-
-	if (!ProductPeer::validateParams($params,$productSupplierParams)) {
-		return false;
-	}
+  */
+   private function createProcess($params,$productSupplierParams) {
 
 	try {
       $productObj = new Product();
@@ -61,7 +70,9 @@ class ProductPeer extends BaseProductPeer {
         }
       }
 
-	  $productObj->setActive(1);
+	  if ($productObj->getStatus() == 0) {
+	  	$productObj->setStatus(Product::STATUS_ACTIVE);
+	  }
 
       $productObj->save();
 	
@@ -81,11 +92,47 @@ class ProductPeer extends BaseProductPeer {
       }
 
 	  $productSupplierObj->save();
-      return true;
+      return $productObj;
 
     } catch (Exception $exp) {
       return false;
     }         
+  }
+
+
+  /**
+  * Crea un product nueva en casos normales de sistema.
+  *
+  * @param array $params Array asociativo con los atributos del objeto product
+  * @param array $productSupplierParams Array asociativo con los atributos del objeto productSupplier
+  * @return boolean true si se creo correctamente, false sino
+  */  
+  function create($params,$productSupplierParams) {
+
+	if (!ProductPeer::validateParams($params,$productSupplierParams)) {
+		return false;
+	}
+	return ProductPeer::createProcess($params,$productSupplierParams);
+	
+  }
+
+  /**
+  * Crea un product nueva por un proveedor
+  *
+  * @param array $params Array asociativo con los atributos del objeto product
+  * @param array $productSupplierParams Array asociativo con los atributos del objeto productSupplier
+  * @return boolean true si se creo correctamente, false sino
+  */  
+  function createBySupplier($params,$productSupplierParams) {
+
+	if (!ProductPeer::validateParamsSupplierCreation($params,$productSupplierParams)) {
+		return false;
+	}
+	
+	$params['status'] = Product::STATUS_SUPPLIER_ACTIVE;
+	
+	return ProductPeer::createProcess($params,$productSupplierParams);
+	
   }
 	
 	/**
@@ -113,8 +160,6 @@ class ProductPeer extends BaseProductPeer {
 	            $productObj->$setMethod(null);
 	        }
 	      }
-
-		  $productObj->setActive(1);
 
 	      $productObj->save();
 
@@ -186,7 +231,7 @@ class ProductPeer extends BaseProductPeer {
   */
 	function getAll() {
 		$cond = new Criteria();
-		$cond->add(ProductPeer::ACTIVE,'1');
+		$cond->add(ProductPeer::STATUS,'1');
 		$alls = ProductPeer::doSelect($cond);
 		return $alls;
   }
@@ -205,7 +250,7 @@ class ProductPeer extends BaseProductPeer {
       $page = 1;
     require_once("propel/util/PropelPager.php");
     $cond = new Criteria();     
-    $cond->add(ProductPeer::ACTIVE,'1');
+    $cond->add(ProductPeer::STATUS,'1');
     $pager = new PropelPager($cond,"ProductPeer", "doSelect",$page,$perPage);
     return $pager;
    }    
@@ -217,7 +262,7 @@ class ProductPeer extends BaseProductPeer {
 	*/
 	function getAllInactive() {
 		$cond = new Criteria();
-		$cond->add(ProductPeer::ACTIVE,'0');
+		$cond->add(ProductPeer::STATUS,'0');
 		$alls = ProductPeer::doSelect($cond);
 		return $alls;
 	}
@@ -230,7 +275,7 @@ class ProductPeer extends BaseProductPeer {
 	*/
 	function activate($id) {
 		$product = ProductPeer::retrieveByPK($id);
-		$product->setActive('1');
+		$product->setStatus(Product::STATUS_ACTIVE);
 		try {
 			$product->save();
 		}

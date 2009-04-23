@@ -20,12 +20,17 @@ require_once 'import/classes/om/BaseProduct.php';
  */
 class Product extends BaseProduct {
 
+	const STATUS_INACTIVE = 0;
+	const STATUS_ACTIVE = 1;
+	const STATUS_SUPPLIER_ACTIVE = 2;
+
+
 	/**
 	 * Redefinimos delete para evitar que se haga borrado real cuando 
 	 * se elimina desde el objeto. sin usar la clase peer.
 	 */
 	function delete (PropelPDO $con = null) {
-		$this->setactive('0');
+		$this->setStatus(Product::STATUS_INACTIVE);
 		$this->save();
 	}
 	

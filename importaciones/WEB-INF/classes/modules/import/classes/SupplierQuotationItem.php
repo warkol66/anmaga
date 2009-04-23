@@ -182,5 +182,43 @@ class SupplierQuotationItem extends BaseSupplierQuotationItem {
 		return $result[0];
 		
 	}
+	
+	/**
+	 * Obtiene el producto relacionado de la cotizacion.
+	 * @return Product Product Instance
+	 */
+	public function getProduct() {
+		$criteria = new Criteria();
+		
+		$criteria->add(ProductPeer::ID,$this->getProductId());
+		$criteria->setLimit(1);
+		
+		$result = ProductPeer::doSelect($criteria);
+		return $result[0];
+	}
+
+	/**
+	 * Obtiene el producto relacionado de la cotizacion que fue reemplazado si fue el caso
+	 * @return Product Product Instance
+	 */	
+	public function getReplacedProduct() {
+
+		$criteria = new Criteria();
+
+		$criteria->add(ProductPeer::ID,$this->getReplacedProductId());
+		$criteria->setLimit(1);
+
+		$result = ProductPeer::doSelect($criteria);
+		return $result[0];
+	}
+	
+	/**
+	 * Indica si el producto del item ha sido reemplazado por el proveedor
+	 * @return Boolean
+	 */
+	public function hasProductBeingReplaced() {
+		$replacedProduct = $this->getReplacedProduct();
+		return (!empty($replacedProduct));
+	}
 
 } // SupplierQuotationItem

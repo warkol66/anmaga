@@ -20,7 +20,7 @@ CREATE TABLE `import_product`
 	`descriptionSpanish` TEXT COMMENT 'Descripcion del producto en espaniol',
 	`nameChinese` VARCHAR(255) COMMENT 'Nombre del producto en chino',
 	`descriptionChinese` TEXT COMMENT 'Descripcion del producto en chino',
-	`active` TINYINT  NOT NULL COMMENT 'Is product active?',
+	`status` INTEGER  NOT NULL COMMENT 'product status',
 	PRIMARY KEY (`id`)
 )Type=MyISAM COMMENT='Productos';
 
@@ -207,6 +207,7 @@ CREATE TABLE `import_supplierQuotationItem`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id elemento de cotizacion de proveedor',
 	`supplierQuotationId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de proveedor',
 	`productId` INTEGER  NOT NULL COMMENT 'Id producto',
+	`replacedProductId` INTEGER COMMENT 'Id producto que fue reemplazado por el actual',
 	`clientQuotationItemId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de proveedor',
 	`status` INTEGER  NOT NULL COMMENT 'Status de Item de Cotizacion',
 	`quantity` INTEGER  NOT NULL COMMENT 'cantidad producto',
@@ -239,12 +240,16 @@ CREATE TABLE `import_supplierQuotationItem`
 	CONSTRAINT `import_supplierQuotationItem_FK_3`
 		FOREIGN KEY (`productId`)
 		REFERENCES `import_product` (`id`),
-	INDEX `import_supplierQuotationItem_FI_4` (`incotermId`),
+	INDEX `import_supplierQuotationItem_FI_4` (`replacedProductId`),
 	CONSTRAINT `import_supplierQuotationItem_FK_4`
+		FOREIGN KEY (`replacedProductId`)
+		REFERENCES `import_product` (`id`),
+	INDEX `import_supplierQuotationItem_FI_5` (`incotermId`),
+	CONSTRAINT `import_supplierQuotationItem_FK_5`
 		FOREIGN KEY (`incotermId`)
 		REFERENCES `import_incoterm` (`id`),
-	INDEX `import_supplierQuotationItem_FI_5` (`portId`),
-	CONSTRAINT `import_supplierQuotationItem_FK_5`
+	INDEX `import_supplierQuotationItem_FI_6` (`portId`),
+	CONSTRAINT `import_supplierQuotationItem_FK_6`
 		FOREIGN KEY (`portId`)
 		REFERENCES `import_port` (`id`)
 )Type=MyISAM COMMENT='Elemento de Cotizacion de Proveedor';

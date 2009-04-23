@@ -1155,6 +1155,15 @@
     <forward name="failure" path="ImportSupplierQuoteAccessFailure.tpl" />
     </action>
 
+    <action    path = "importSupplierQuoteItemReplace"
+               type = "ImportSupplierQuoteItemReplaceAction"
+               name = "importSupplierQuoteItemReplace"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportSupplierQuoteItemReplace.tpl" />
+    <forward name="failure" path="ImportSupplierQuoteAccessFailure.tpl" />
+    </action>
+
 	<action  path = "importSupplierQuoteHistory"
                type = "ImportSupplierQuoteHistoryAction"
                 name = "importSupplierQuoteHistoryConfirm"
@@ -1179,6 +1188,16 @@
     <forward name="success" path="/Main.php?do=importSupplierQuoteAccess&amp;message=quoted" redirect='true'/>
     <forward name="failure" path="ImportSupplierQuoteAccessFailure.tpl" />
     </action>
+
+    <action    path = "importSupplierQuoteDoReplaceItem"
+               type = "ImportSupplierQuoteDoReplaceItemAction"
+               name = "importSupplierQuoteDoReplaceItem"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=importSupplierQuoteAccess&amp;message=replaced" redirect='true'/>
+    <forward name="failure" path="ImportSupplierQuoteAccessFailure.tpl" />
+    </action>
+
 
 	<action    path = "importSupplierQuoteResend"
 	           type = "ImportSupplierQuoteResendAction"

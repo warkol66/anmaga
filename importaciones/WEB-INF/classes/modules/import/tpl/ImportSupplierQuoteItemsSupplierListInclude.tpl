@@ -15,7 +15,7 @@
 <!--			<td>|-$item->getQuantity()-|</td> -->
 			<td>|-if $item->getPrice() eq ''-|Precio no asignado|-else-|US$ |-$item->getPrice()|number_format:2:",":"."-| /u.|-/if-|</td>
 			<td>
-				|-if not $supplierQuotation->isConfirmed() and not $supplierQuotation->isOnFeedback() and not $item->isOnFeedback() -|
+				|-if not $supplierQuotation->isConfirmed() and not $supplierQuotation->isOnFeedback()-|
 				<form action="Main.php" method="get">						
 					<input type="hidden" name="do" value="importSupplierQuoteItemAccess" />
 					<input type="hidden" name="id" value="|-$item->getid()-|" />
@@ -30,6 +30,14 @@
 					<input type="hidden" name="token" value="|-$token-|" >
 					<input type="submit" name="submit_go_edit_quotation" value="Click aquí para dar Feedback"/>
 				</form>
+				|-/if-|
+				|-if not $item->hasProductBeingReplaced()-|
+					<form action="Main.php" method="get">						
+						<input type="hidden" name="do" value="importSupplierQuoteItemReplace" />
+						<input type="hidden" name="id" value="|-$item->getid()-|" />
+						<input type="hidden" name="token" value="|-$token-|" >
+						<input type="submit" name="submit_go_edit_quotation" value="Proponer un reemplazo de producto"/>
+					</form>
 				|-/if-|
 			</td>
 		</tr>
