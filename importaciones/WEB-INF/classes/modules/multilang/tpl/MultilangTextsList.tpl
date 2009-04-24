@@ -59,14 +59,8 @@
       |-/if-|</td>
       |-/foreach-|
       <td align="center" nowrap="nowrap">
-				<form action="Main.php" method="get" name='formTextsEdit|-$textId-|' style="display:inline">
-          <input type="hidden" name="do" value="multilangTextsEdit" />
-          <input type="hidden" name="id" value="|-$textId-|" />
-          <input type="hidden" name="moduleName" value="|-$moduleName-|" />
-          <input type="hidden" name="currentPage" value="|-$pager->getPage()-|" />
-					<a href="javascript:document.formTextsEdit|-$textId-|.submit();" title="##common,1,Editar##"><img src="images/clear.png" class="linkImageEdit" /></a>
-				</form>
-        <form action="Main.php" method="post" name='formTextsDoDelete|-$textId-|' style="display:inline">
+					<a href="Main.php?do=multilangTextsEdit&id=|-$textId-|&moduleName=|-$moduleName-|&currentPage=|-$pager->getPage()-|" title="##common,1,Editar##"><img src="images/clear.png" class="linkImageEdit" /></a>
+					<form action="Main.php" method="post" name='formTextsDoDelete|-$textId-|' style="display:inline">
           <input type="hidden" name="do" value="multilangTextsDoDelete" />
           <input type="hidden" name="id" value="|-$textId-|" />
           <input type="hidden" name="moduleName" value="|-$moduleName-|" />
