@@ -157,6 +157,9 @@ class BaseAction extends Action {
 		$smarty->assign("SESION", $_SESSION);
 		$smarty->assign('BROWSER',getBrowser());
 
+		//Esta línea será reemplazada por un método dinámico para obtener el idioma activo		
+		$smarty->assign("activeLanguage",$system["config"]["mluse"]["language"]);		
+
 		$this->template = new SmartyOutputFilter();
 		$smarty->register_outputfilter(array($this->template,"smarty_add_template"));
 		

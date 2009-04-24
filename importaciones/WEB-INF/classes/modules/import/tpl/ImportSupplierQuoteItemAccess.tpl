@@ -27,12 +27,12 @@
 	</p>
 	<p>
 		<label>##import,31,Nombre##</label>
-		<input name="name" type="text" size="45" readonly="true" value="|-$product->getName()-|" class="readOnly" />
+		<input name="name" type="text" size="45" readonly="true" value="|-if $activeLanguage == 'eng'-||-$product->getName()-||-elseif $activeLanguage == 'cn'-||-$product->getNameChinese()-||-elseif $activeLanguage == 'esp'-||-$product->getNameSpanish()-||-else-||-$product->getName()-||-/if-|" class="readOnly" />
 		
 	</p>		
 	<p>
 		<label>##import,44,Descripción##</label>
-		<textarea name="description" cols="70" rows="8" readonly="readonly" wrap="virtual" class="readOnly">|-$product->getDescription()-|</textarea>
+		<textarea name="description" cols="70" rows="8" readonly="readonly" wrap="virtual" class="readOnly">|-if $activeLanguage == 'eng'-||-$product->getDescription()-||-elseif $activeLanguage == 'cn'-||-$product->getDescriptionChinese()-||-elseif $activeLanguage == 'esp'-||-$product->getDescriptionSpanish()-||-else-||-$product->getDescription()-||-/if-|</textarea>
 	</p>
 <!--	<p>
 		<label>##import,33,Cantidad##</label><input name="quatity" type="text" size="10" readonly="true" class="readOnly right" value="|-$supplierQuotationItem->getQuantity()-|"/> unidades
