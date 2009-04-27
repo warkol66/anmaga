@@ -850,9 +850,30 @@
     <forward name="success" path="/Main.php?do=importProductsList&amp;message=activated_ok" redirect="true" />
     </action>
 
+    <action    path = "importProductsReassign"
+               type = "ImportProductsReassignAction"
+               name = "importProductsReassign"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportProductsReassign.tpl" />
+    </action>
 
+    <action    path = "importProductsDoReassign"
+               type = "ImportProductsDoReassignAction"
+               name = "importProductsDoReassign"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=importProductsList&amp;message=reassigned_ok" redirect="true" />
+    </action>
 
-    
+    <action    path = "importProductsDoAssignCode"
+               type = "ImportProductsDoAssignCodeAction"
+               name = "importProductsDoAssignCode"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="ImportProductsDoAssignCode.tpl" />
+    </action>    
+
   </action-mappings>
 <!-- Fin Modulo ImportProducts -->
 <!-- Modulo ImportSuppliers -->
@@ -897,7 +918,6 @@
            validate = "true">
     <forward name="success" path="/Main.php?do=importSuppliersList&amp;message=activated_ok" redirect="true" />
     </action>
-
     
   </action-mappings>
 <!-- Fin Modulo ImportSuppliers -->

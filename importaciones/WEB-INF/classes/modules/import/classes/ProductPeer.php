@@ -250,7 +250,7 @@ class ProductPeer extends BaseProductPeer {
       $page = 1;
     require_once("propel/util/PropelPager.php");
     $cond = new Criteria();     
-    $cond->add(ProductPeer::STATUS,'1');
+    $cond->add(ProductPeer::STATUS,Product::STATUS_ACTIVE);
     $pager = new PropelPager($cond,"ProductPeer", "doSelect",$page,$perPage);
     return $pager;
    }    
@@ -262,10 +262,23 @@ class ProductPeer extends BaseProductPeer {
 	*/
 	function getAllInactive() {
 		$cond = new Criteria();
-		$cond->add(ProductPeer::STATUS,'0');
+		$cond->add(ProductPeer::STATUS,Product::STATUS_INACTIVE);
 		$alls = ProductPeer::doSelect($cond);
 		return $alls;
 	}
+
+	/**
+	* Obtiene todos los products inactivos.
+	*
+	*	@return array Informacion sobre todos los products
+	*/
+	function getAllActivatedBySupplier() {
+		$cond = new Criteria();
+		$cond->add(ProductPeer::STATUS,Product::STATUS_SUPPLIER_ACTIVE);
+		$alls = ProductPeer::doSelect($cond);
+		return $alls;
+	}
+
 	
 	/**
 	* Activa un product.
@@ -308,11 +321,34 @@ class ProductPeer extends BaseProductPeer {
 			$criteria->addOr($criterion);
 		}
 		
+		$criteria->add(ProductPeer::STATUS,Product::STATUS_ACTIVE);
 		$result = ProductPeer::doSelect($criteria);
 		
 		return $result;
 		
-	}	
+	}
+	
+	/**
+	 * Asigna el codigo de operacion de un producto a otro, reemplazandolo.
+	 * el producto reasignado pasa a estado inactivo mientras que el otro producto pasa a estado activo.
+	 * A su vez se actualizan las 
+	 */
+	function reassign($productReassign,$product) {
+
+		try {
+			$product->setCode($productReassign->getCode());
+			$product->setStatus(Product::STATUS_ACTIVE);
+			$productReassign->setStatus(Product::STATUS_INACTIVE);
+			
+			$product->save();
+			$productReassign->save();
+			
+		} catch (PropelException $e) {
+			return false;
+		}
+		
+		return true;		
+	}
 
 }
 ?>

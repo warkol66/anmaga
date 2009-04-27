@@ -7,7 +7,10 @@
 		<span class="successMessage">Product eliminado correctamente</span>
 	|-elseif $message eq "activated_ok"-|
 		<span class="successMessage">Product activado correctamente</span>
+	|-elseif $message eq "reassigned_ok"-|
+		<span class="successMessage">Product reasignado correctamente</span>
 	|-/if-|
+	
 	<p>A continuación tiene el listado de los Productos disponibles en el sistema. Si desea agregar uno nuevo, haga click en "Agregar Productos", puede eliminar o agregar nuevos Productos. Si elimina un Producto, puede reactivarlo nuevamente.</p>
 	<table id="tabla-products" class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 	<col width="5%">
@@ -59,10 +62,64 @@
 		</tbody>
 	</table>
 </div>
-|-if $inactiveProducts|@count gt 1-|
 
+|-if $supplierAddedProducts|@count gt 0-|
+
+<br />
 <div >
-<table id="tabla-products" class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
+
+<h1>Administracion de Productos dados de Alta por Proveedor</h1>
+
+<p>A continuación tiene el listado de los Productos disponibles en el sistema que han sido dado de alta por los proveedores. Si desea activarlo como un producto normal, puede asignarle un codigo de producto de anmaga. Si desea que este producto reemplace a otro producto, siga la opcion del menu correspondiente.</p>	
+<table id="tabla-products-supplier" class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
+	<col width="5%">
+	<col width="20%">
+	<col width="60%">
+	<col width="15%">
+	<col width="5%">
+		<thead>
+			<tr>
+				<th class="thFillTitle">Código</th>
+				<th class="thFillTitle">Nombre</th>
+				<th class="thFillTitle">Descripción</th>
+				<th class="thFillTitle">Proveedor</th>
+				<th class="thFillTitle">&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+		|-foreach from=$supplierAddedProducts item=product name=for_products-|
+			<tr>
+				<td>|-if $product->getcode() neq ''-||-$product->getcode()-||-else-|<div id="productCodeEditor|-$product->getId()-|"> Asignar un Codigo</div>
+				<script type="text/javascript">
+				 new Ajax.InPlaceEditor('productCodeEditor|-$product->getId()-|', 'Main.php?do=importProductsDoAssignCode',{ 
+					callback: function(form, value) { return 'id=|-$product->getId()-|&value='+escape(value) }
+				});
+				</script>
+				|-/if-|</td>
+				<td>|-$product->getname()-|</td>
+				<td>|-$product->getdescription()-|</td>
+				<td>|-assign var=supplier value=$supplierPeer->get($product->getsupplierId())-||-if $supplier neq ''-||- $supplier->getName() -||-/if-|</td>
+				<td>
+					<form action="Main.php" method="get">
+						<input type="hidden" name="do" value="importProductsReassign" />
+						<input type="hidden" name="id" value="|-$product->getid()-|" />
+						<input type="submit" name="submit_go_delete_product" value="Asignar como reemplazo de Producto" />
+					</form>
+				</td>
+			</tr>
+		|-/foreach-|						
+		
+		</tbody>
+	</table>
+
+</div>
+|-/if-|
+
+|-if $inactiveProducts|@count gt 0-|
+<br />
+<h1>Productos Inactivos</h1>
+<div >
+<table id="tabla-inactive-products" class='tableTdBorders' cellpadding='5' cellspacing='1' width='100%'>
 	<col width="5%">
 	<col width="20%">
 	<col width="60%">

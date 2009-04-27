@@ -4,13 +4,12 @@ require_once("BaseAction.php");
 require_once("ProductPeer.php");
 require_once("SupplierPeer.php");
 
-
-class ImportProductsListAction extends BaseAction {
+class ImportProductsReassignAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportProductsListAction() {
+	function ImportProductsReassignAction() {
 		;
 	}
 
@@ -32,8 +31,8 @@ class ImportProductsListAction extends BaseAction {
 	* @returns ActionForward
 	*/
 	function execute($mapping, $form, &$request, &$response) {
-	
-    		BaseAction::execute($mapping, $form, $request, $response);
+
+    BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -49,23 +48,19 @@ class ImportProductsListAction extends BaseAction {
 		$section = "Products";
 		$smarty->assign('section',$section);
 
-		$pager = ProductPeer::getAllPaginated($_GET["page"]);
-		$smarty->assign("products",$pager->getResult());
-		$smarty->assign("pager",$pager);
-		
-		$inactiveProducts = ProductPeer::getAllInactive();
-		$smarty->assign("inactiveProducts",$inactiveProducts);
-		
-		$supplierAddedProducts = ProductPeer::getAllActivatedBySupplier();
-		$smarty->assign("supplierAddedProducts",$supplierAddedProducts);		
-		
-		$url = "Main.php?do=productsList";
-		$smarty->assign("url",$url);		
-   
-		$smarty->assign("message",$_GET["message"]);
+		$suppliers = SupplierPeer::getAll();		
+		$smarty->assign("suppliers",$suppliers);
 		$smarty->assign("supplierPeer",new SupplierPeer());
 
+    	if ( !empty($_GET["id"]) ) {
+			$product = ProductPeer::get($_GET["id"]);
+			$replacedProducts = $product->getProductsThatHasReplaced();
+			$smarty->assign("product",$product);
+			$smarty->assign("replacedProducts",$replacedProducts);		
+		}
+	
 		return $mapping->findForwardConfig('success');
-	}
+
+	}	
 
 }

@@ -4,13 +4,12 @@ require_once("BaseAction.php");
 require_once("ProductPeer.php");
 require_once("SupplierPeer.php");
 
-
-class ImportProductsListAction extends BaseAction {
+class ImportProductsDoAssignCodeAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportProductsListAction() {
+	function ImportProductsDoAssignCodeAction() {
 		;
 	}
 
@@ -32,8 +31,8 @@ class ImportProductsListAction extends BaseAction {
 	* @returns ActionForward
 	*/
 	function execute($mapping, $form, &$request, &$response) {
-	
-    		BaseAction::execute($mapping, $form, $request, $response);
+
+    BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -43,29 +42,22 @@ class ImportProductsListAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
+		
+		$this->template->template = 'TemplateAjax.tpl';
 
 		$module = "Import";
 		$smarty->assign('module',$module);
 		$section = "Products";
 		$smarty->assign('section',$section);
-
-		$pager = ProductPeer::getAllPaginated($_GET["page"]);
-		$smarty->assign("products",$pager->getResult());
-		$smarty->assign("pager",$pager);
 		
-		$inactiveProducts = ProductPeer::getAllInactive();
-		$smarty->assign("inactiveProducts",$inactiveProducts);
-		
-		$supplierAddedProducts = ProductPeer::getAllActivatedBySupplier();
-		$smarty->assign("supplierAddedProducts",$supplierAddedProducts);		
-		
-		$url = "Main.php?do=productsList";
-		$smarty->assign("url",$url);		
-   
-		$smarty->assign("message",$_GET["message"]);
-		$smarty->assign("supplierPeer",new SupplierPeer());
-
+    	if ( !empty($_POST["id"]) ) {
+			$product = ProductPeer::get($_POST["id"]);
+			$product->updateCode($_POST['value']);
+			$smarty->assign("product",$product);
+		}
+	
 		return $mapping->findForwardConfig('success');
-	}
+
+	}	
 
 }

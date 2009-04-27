@@ -81,5 +81,45 @@ class Product extends BaseProduct {
 		return $code;
 		
 	}
+	
+	/**
+	 * Obtiene aquellos productos que este producto ha reemplazado en 
+	 * ordenes de proveedor
+	 */
+	public function getProductsThatHasReplaced() {
+		
+		$criteria = New Criteria();
+		$criteria->add(SupplierQuotationItemPeer::PRODUCTID,$this->getId());
+		$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID,0,Criteria::GREATER_THAN);
+		
+		$items = SupplierQuotationItemPeer::doSelect($criteria);
+		
+		$products = array();
+		foreach ($items as $item) {
+			$products[] = $item->getReplacedProduct();
+		}
+		
+		return $products;
+		
+	}
+	
+	/**
+	 * Realiza una actualizacion del codigo de un producto.
+	 * Si llegara a ser un producto dado de alta por un proveedor, el mismo lo pasa a activo en el sistema.
+	 * @param $code string codigo de producto a actualizar sobre la instancia
+	 * @return boolean
+	 */
+	public function updateCode($code) {
+
+		try {
+			$this->setCode($code);
+			$this->setStatus(Product::STATUS_ACTIVE);
+			$this->save();
+		} catch (PropelException $e) {
+			return false;
+		}
+		
+		return true;
+	}
 
 } // Product
