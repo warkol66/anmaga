@@ -34,10 +34,10 @@ class SupplierPurchaseOrder extends BaseSupplierPurchaseOrder {
 	
 	//nombre de los estados para los clientes
 	private $statusNames = array(
-								SupplierPurchaseOrder::STATUS_FABRICATION_NON_INITIATED => 'Fabrication Non Initiated',
-								SupplierPurchaseOrder::STATUS_FABRICATION_ON_TIME => 'Fabrication On-Time',
-								SupplierPurchaseOrder::STATUS_FABRICATION_DELAYED => 'Fabrication Delayed',
-								SupplierPurchaseOrder::STATUS_FABRICATION_STOPPED => 'Fabrication Stopped',
+								SupplierPurchaseOrder::STATUS_FABRICATION_NON_INITIATED => 'Fabrication requested',
+								SupplierPurchaseOrder::STATUS_FABRICATION_ON_TIME => 'On-Time',
+								SupplierPurchaseOrder::STATUS_FABRICATION_DELAYED => 'Delayed',
+								SupplierPurchaseOrder::STATUS_FABRICATION_STOPPED => 'Stopped',
 								SupplierPurchaseOrder::STATUS_WAITING_FOR_TRANSPORT => 'Waiting for Transport'																											
 							);
 	

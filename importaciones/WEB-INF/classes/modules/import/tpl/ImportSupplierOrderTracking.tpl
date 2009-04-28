@@ -1,5 +1,7 @@
 <h2>Exportaciones</h2>
 <h1>Seguimiento de Pedido</h1>
+<p>En el siguiente formulario puede guardar información referente al reporte de seguimiento de fabricación del pedido <strong>"|-$supplierPurchaseOrder->getId()-|"</strong>.<br />
+Seleccione un estado para el pedido y agregue un comentario. Para guardar, haga click en "Guardar Reporte de Seguimiento".</p>
 
 <div id="div_general_information">
 	<p>
@@ -15,7 +17,7 @@
 		<fieldset>
 		<legend>Seguimiento</legend>
 		<p>
-			<label for="status">Proximo Estado</label>
+			<label for="status">Seleccione Estado</label>
 			<select name="status" id="status">
 				|-foreach from=$status key=key item=stat name=for_possible_status-|
 				<option value="|-$key-|">|-$stat-|</option>
@@ -23,13 +25,13 @@
 			</select>
 		</p>
 		<p>
-			<label for="comment">Informacion sobre el Cambio de Estado</label>
-			<textarea name="comment" rows="8" cols="40"></textarea>
+			<label for="comment">Información sobre el Cambio de Estado</label>
+			<textarea name="comment" rows="8" cols="60" wrap="virtual"></textarea>
 		</p>
 		<p>
 			<input type="hidden" name="id" value="|-$supplierPurchaseOrder->getId()-|" />
 			<input type="hidden" name="do" value="importSupplierOrderDoTracking" />
-			<input type="submit" value="Realizar Seguimiento" />
+			<input type="submit" value="Guardar Reporte de Seguimiento" />
 		</p>
 		</fieldset>
 	</form>

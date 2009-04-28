@@ -4,7 +4,7 @@
 
 <div id="div_messages">
 	|-if $message eq "tracked"-|
-		<div class="successMessage">Se ha realizado el seguimiento exitosamente.</div>
+		<div class="successMessage">Se ha guardado el comentario de seguimiento exitosamente.</div>
 	|-/if-|
 </div>
 
@@ -87,7 +87,7 @@
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importSupplierOrderTracking" />
 						<input type="hidden" name="id" value="|-$order->getid()-|" />
-						<input type="submit" name="submit_go_edit_order" value="Efectuar Seguimiento de Fabricacion" title="Editar" alt="Editar" />
+						<input type="submit" name="submit_go_edit_order" value="Seguimiento de Fabricación" title="Seguimiento de Fabricación" alt="Seguimiento de Fabricación" />
 					</form>
 					|-/if-|
 					<form action="Main.php" method="get">						
