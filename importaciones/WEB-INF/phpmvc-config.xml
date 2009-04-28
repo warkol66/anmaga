@@ -1332,6 +1332,22 @@
 	<forward name="success" path="ImportSupplierOrderGetX.tpl" />
 	</action>	
 
+	<action    path = "importSupplierOrderTracking"
+	           type = "ImportSupplierOrderTrackingAction"
+	           name = "importSupplierOrderTracking"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="ImportSupplierOrderTracking.tpl" />
+	</action>	
+
+	<action    path = "importSupplierOrderDoTracking"
+	           type = "ImportSupplierOrderDoTrackingAction"
+	           name = "importSupplierOrderDoTracking"
+	          scope = "request"
+	       validate = "true">
+	<forward name="success" path="/Main.php?do=importSupplierOrderList&amp;message=tracked" redirect="true" />
+	</action>
+
 <!-- Fin Modulo ImportSupplierOrder -->
 
 <!-- Modulo ImportBankTransfer -->

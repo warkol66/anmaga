@@ -29,6 +29,13 @@ class SupplierQuotationPeer extends BaseSupplierQuotationPeer {
   private $supplierId = '';
 
   /**
+   * Devuelve los nombres de los estados del cleinte
+   */					
+  public function getStatusNamesAdmin() {
+		return array_keys($this->statusNamesAdmin);
+  }
+
+  /**
    * Fija un filtro por supplier
    * @param Integer $supplierId id de supplier
    */

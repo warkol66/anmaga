@@ -27,17 +27,25 @@ require_once 'import/classes/om/BaseSupplierPurchaseOrder.php';
 class SupplierPurchaseOrder extends BaseSupplierPurchaseOrder {
 	
 	const STATUS_FABRICATION_NON_INITIATED = 1;
+	const STATUS_FABRICATION_ON_TIME = 2;
+	const STATUS_FABRICATION_DELAYED = 3;
+	const STATUS_FABRICATION_STOPPED = 4;
+	const STATUS_WAITING_FOR_TRANSPORT = 5;
 	
 	//nombre de los estados para los clientes
 	private $statusNames = array(
 								SupplierPurchaseOrder::STATUS_FABRICATION_NON_INITIATED => 'Fabrication Non Initiated',
+								SupplierPurchaseOrder::STATUS_FABRICATION_ON_TIME => 'Fabrication On-Time',
+								SupplierPurchaseOrder::STATUS_FABRICATION_DELAYED => 'Fabrication Delayed',
+								SupplierPurchaseOrder::STATUS_FABRICATION_STOPPED => 'Fabrication Stopped',
+								SupplierPurchaseOrder::STATUS_WAITING_FOR_TRANSPORT => 'Waiting for Transport'																											
 							);
 	
 	/**
 	 * Saves the current status of the instance in his history
 	 * @return boolean
 	 */
-	public function saveCurrentStatusOnHistory() {
+	public function saveCurrentStatusOnHistory($comment='') {
 		
 		require_once('SupplierPurchaseOrderHistory.php');
 		
@@ -47,6 +55,9 @@ class SupplierPurchaseOrder extends BaseSupplierPurchaseOrder {
 			$supplierPurchaseOrderHistory->setSupplierPurchaseOrder($this);
 			$supplierPurchaseOrderHistory->setStatus($this->getStatus());
 			$supplierPurchaseOrderHistory->setCreatedAt(time());
+			if (!empty($comment)) {
+				$supplierPurchaseOrderHistory->setComments($comment);
+			}
 			$supplierPurchaseOrderHistory->save();
 			
 		} catch (Exception $e) {
@@ -72,6 +83,40 @@ class SupplierPurchaseOrder extends BaseSupplierPurchaseOrder {
 	public function getStatusName() {
 		return $this->statusNames[$this->getStatus()];
 	}
+	
+	
+	/**
+	 * Realiza un seguimiento sobre la orden de compra a proveedor
+	 * 
+	 * @param $status integer Codigo de Status
+	 * @param $comment string Comentario sobre cambio de estado
+	 * @return boolean
+	 */
+	public function performTracking($status,$comment) {
 		
+		try {
+			
+			$this->setStatus($status);
+			$this->save();
+			$this->saveCurrentStatusOnHistory($comment);
+			
+		} catch (PropelException $e) {
+			return false;
+		}
+		
+		return true;
+		
+	}
+	
+	/**
+	 * Indica si la orden esta en alguno de los estados posibles de fabricacion
+	 *
+	 * @return boolean
+	 */
+	public function isOnFabrication() {
+		$status = $this->getStatus();
+		$result = ($status == SupplierPurchaseOrder::STATUS_FABRICATION_NON_INITIATED || $status == SupplierPurchaseOrder::STATUS_FABRICATION_ON_TIME || $status == SupplierPurchaseOrder::STATUS_FABRICATION_DELAYED || $status == SupplierPurchaseOrder::STATUS_FABRICATION_STOPPED);
+		return $result;
+	}	
 
 } // SupplierPurchaseOrder

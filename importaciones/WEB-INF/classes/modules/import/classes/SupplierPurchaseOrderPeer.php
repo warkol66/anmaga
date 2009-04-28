@@ -29,17 +29,20 @@ class SupplierPurchaseOrderPeer extends BaseSupplierPurchaseOrderPeer {
   	private $supplierId = '';
   	private $status = '';
 
-	//nombre de los estados para los administradores
 	private $statusNames = array(
-									'Fabrication Non Initiated' => array(SupplierPurchaseOrder::STATUS_FABRICATION_NON_INITIATED),
-								);
-
+								SupplierPurchaseOrder::STATUS_FABRICATION_NON_INITIATED => 'Fabrication Non Initiated',
+								SupplierPurchaseOrder::STATUS_FABRICATION_ON_TIME => 'Fabrication On-Time',
+								SupplierPurchaseOrder::STATUS_FABRICATION_DELAYED => 'Fabrication Delayed',
+								SupplierPurchaseOrder::STATUS_FABRICATION_STOPPED => 'Fabrication Stopped',
+								SupplierPurchaseOrder::STATUS_WAITING_FOR_TRANSPORT => 'Waiting for Transport'																											
+							);
+											
 
   /**
    * Devuelve los nombres de los estados del cleinte
    */					
   public function getStatusNames() {
-		return array_keys($this->statusNames);
+		return $this->statusNames;
   }
 
 

@@ -2,6 +2,12 @@
 <h1>Pedidos a Proveedores</h1>
 <p>A continuación puede ver el listado de sus pedidos realizados a los proveedores y sus correspondiente estado.</p>
 
+<div id="div_messages">
+	|-if $message eq "tracked"-|
+		<div class="successMessage">Se ha realizado el seguimiento exitosamente.</div>
+	|-/if-|
+</div>
+
 <div id="div_filters">
 	<form action="Main.php" method="get">
 		<fieldset>
@@ -77,6 +83,13 @@
 					|-/if-|
 				</td>
 				<td nowrap="nowrap">
+					|-if $order->isOnFabrication()-|
+					<form action="Main.php" method="get">						
+						<input type="hidden" name="do" value="importSupplierOrderTracking" />
+						<input type="hidden" name="id" value="|-$order->getid()-|" />
+						<input type="submit" name="submit_go_edit_order" value="Efectuar Seguimiento de Fabricacion" title="Editar" alt="Editar" />
+					</form>
+					|-/if-|
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importSupplierOrderEdit" />
 						<input type="hidden" name="id" value="|-$order->getid()-|" />
@@ -87,12 +100,6 @@
 						<input type="hidden" name="id" value="|-$order->getid()-|" />
 						<input type="submit" name="submit_go_edit_order" value="Ver Historial" class="buttonImageHistory" title="Ver Historial" alt="Ver Historial" />
 					</form>
-<!--					<form action="Main.php" method="post">
-						<input type="hidden" name="do" value="importSupplierQuoteDelete" />
-						<input type="hidden" name="id" value="|-$order->getid()-|" />
-						<input type="submit" name="submit_go_delete_order" value="Borrar" onclick="return confirm('Seguro que desea eliminar la cotizacion?')" class="buttonImageDelete" />
-					</form>
--->
 				</td>
 			</tr>
 		|-/foreach-|						

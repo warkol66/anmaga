@@ -8,7 +8,7 @@
 			<tr>
 				<th>Fecha</th>
 				<th>Estado</th>
-
+				<th>Comentarios</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -16,6 +16,7 @@
 			<tr>
 				<td>|-$history->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
 				<td>|-$history->getStatusName()-|</td>
+				<td>|-$history->getComments()-|</td>
 			</tr>
 		|-/foreach-|						
 		</tbody>
