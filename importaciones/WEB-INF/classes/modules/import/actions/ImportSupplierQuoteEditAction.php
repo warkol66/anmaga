@@ -48,6 +48,9 @@ class ImportSupplierQuoteEditAction extends BaseAction {
 		
 		$smarty->assign("message",$_GET["message"]);
 		
+		//flag de utilizacion de cantidades en cotizaciones
+		$smarty->assign("quantitiesOnQuotationsFlag",Common::importQuotationsHasQuantities());
+		
 		$supplierQuotationPeer = new SupplierQuotationPeer();
 
 		if (Common::isAdmin()) {

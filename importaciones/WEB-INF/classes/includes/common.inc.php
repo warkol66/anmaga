@@ -750,4 +750,15 @@ class Common
     return $languages;
   }
 
+  /**
+   * Indica si el los pedidos de cotizaciones manejan cantidades en el modulo import
+   * @return boolean
+   */
+  function importQuotationsHasQuantities() {
+
+    global $system;
+    return ($system['config']['import']['quantityOnQuotation']['value'] == 'YES');
+
+  }
+
 }

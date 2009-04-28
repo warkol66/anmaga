@@ -8,6 +8,9 @@
 <tr id="itemProduct|-$item->getProductId()-|">
 	<td>|-$product->getCode()-|</td>
 	<td>|-$product->getName()-|</td>
+	|-if $quantitiesOnQuotationsFlag -|
+		<td>|-$item->getQuantity()-|</td>
+	|-/if-|
 	<td>
 		<form action="Main.php" method="post">
 			<input type="hidden" name="do" value="importClientQuoteDeleteItemX" />

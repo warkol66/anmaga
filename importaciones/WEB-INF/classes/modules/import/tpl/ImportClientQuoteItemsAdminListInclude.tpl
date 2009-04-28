@@ -33,7 +33,7 @@
 			<th>Proveedor</th>			
 			<th>Precio del Proveedor</th>
 			|-*if "importClientQuoteItemSetPrice"|security_user_has_access *-|<th>Cotizar</th>|-*/if*-|
-			|-if $clientQuotation->isQuoted()-|
+			|-if $quantitiesOnQuotationsFlag or $clientQuotation->isQuoted()-|
 				<th>Cantidad</th>
 			|-/if-|
 			<th></th>	
@@ -51,7 +51,6 @@
 				|-/if-|</th>
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
-<!--			<td>|-$item->getQuantity()-|</td> -->
 			<td>|-if $item->getPrice() eq 0-|No se ha cotizado|-else-||-$item->getPrice()|number_format:2:",":"."-||-/if-|</td>			
 			|-assign var=supplierQuotationItem value=$item->getSupplierQuotationItem()-|
 			<td>|-if $supplierQuotationItem neq ''-||-assign var=supplierQuotation value=$supplierQuotationItem->getSupplierQuotation() -||-assign var=supplier value=$supplierQuotation->getSupplier()-||-$supplier->getName()-||-/if-|</td>
@@ -64,8 +63,15 @@
 				|-/if-|
 			</td>			
 			|-*/if*-|
-			|-if $clientQuotation->isQuoted()-|
-			<td><input type="text" size="5" name="clientQuoteItemsQuantity[|-$item->getId()-|]" value="" id="clientQuoteItemsQuantity[|-$item->getId()-|]" /></td>
+			|-if $quantitiesOnQuotationsFlag -|
+				<td>|-$item->getQuantity()-|
+					|-if $clientQuotation->isQuoted()-|
+						<input type="hidden" name="clientQuoteItemsQuantity[|-$item->getId()-|]" value="|-$item->getQuantity()-|" id="clientQuoteItemsQuantity[|-$item->getId()-|]" />
+					|-/if-|					
+				</td>
+			|-/if-|
+			|-if not $quantitiesOnQuotationsFlag and $clientQuotation->isQuoted()-|
+				<td><input type="text" size="5" name="clientQuoteItemsQuantity[|-$item->getId()-|]" value="" id="clientQuoteItemsQuantity[|-$item->getId()-|]" /></td>
 			|-/if-|
 			<td></td>
 		</tr>

@@ -19,8 +19,12 @@
 		<td>
 			<form action="Main.php" method="post">
 				<input type="hidden" name="clientQuotationItem[productId]" value="|-$product->getId()-|" />
-	<!--			<label for="Cantidad">Cantidad</label> -->
+				|-if $quantitiesOnQuotationsFlag -|
+					<label for="Cantidad">Cantidad</label>
+					<input type="input" name="clientQuotationItem[quantity]" value="" id="clientQuotationItem[quantity]" />
+				|-else-|
 				<input type="hidden" name="clientQuotationItem[quantity]" value="1" id="clientQuotationItem[quantity]" />
+				|-/if-|
 				<input type="hidden" name="do" value="importClientQuoteAddItemX" id="do">
 				<input type="hidden" name="clientQuotationItem[clientQuotationId]" value="|-$clientQuotation->getId()-|" id="clientQuotationItem[clientQuotationId]"/>
 				<input type="button" value="Agregar producto" onClick="javascript:importAddItemToClientQuotationX(this.form)"> 

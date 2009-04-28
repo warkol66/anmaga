@@ -44,6 +44,8 @@ class ImportProductSearchXAction extends BaseAction {
 
 		$module = "Import";
 		$smarty->assign('module',$module);
+		//flag de utilizacion de cantidades en cotizaciones
+		$smarty->assign("quantitiesOnQuotationsFlag",Common::importQuotationsHasQuantities());
 
 		$this->template->template = 'TemplateAjax.tpl';
 		

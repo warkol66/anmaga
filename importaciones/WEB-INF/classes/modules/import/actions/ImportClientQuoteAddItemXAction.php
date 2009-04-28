@@ -45,6 +45,9 @@ class ImportClientQuoteAddItemXAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 
+		//flag de utilizacion de cantidades en cotizaciones
+		$smarty->assign("quantitiesOnQuotationsFlag",Common::importQuotationsHasQuantities());
+
 		$this->template->template = 'TemplateAjax.tpl';
 
 		if (!empty($_POST['clientQuotationItem']) && !empty($_POST['clientQuotationItem']['quantity'])) {

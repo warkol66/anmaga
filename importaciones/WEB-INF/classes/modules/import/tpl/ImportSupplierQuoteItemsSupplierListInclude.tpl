@@ -31,7 +31,7 @@
 					<input type="submit" name="submit_go_edit_quotation" value="Click aquí para dar Feedback"/>
 				</form>
 				|-/if-|
-				|-if not $item->hasProductBeingReplaced()-|
+				|-if not $supplierQuotation->isConfirmed() and not $item->hasProductBeingReplaced()-|
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importSupplierQuoteItemReplace" />
 						<input type="hidden" name="id" value="|-$item->getid()-|" />

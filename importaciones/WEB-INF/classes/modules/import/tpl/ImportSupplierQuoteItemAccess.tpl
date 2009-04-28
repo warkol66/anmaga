@@ -76,6 +76,12 @@
 			<input name="supplierQuotationItem[cartonGrossWeigth]" type="text" value="|-if $supplierQuotationItem->isNew() and $supplierQuotationItemRelated neq ''-||-$supplierQuotationItemRelated->getCartonGrossWeigth()-||-else-||-$supplierQuotationItem->getCartonGrossWeigth()-||-/if-|" size="6" /> 
 			##import,55,kg.##</p>			
 </div>
+	|-if $quantitiesOnQuotationsFlag -|
+	<p>
+		<label>Cantidad</label>
+		|-$supplierQuotationItem->getQuantity()-| Unidades
+	</p>
+	|-/if-|
 	<p>
 |-assign var=incoterm value=$supplierQuotationItem->getIncoterm()-|
 |-assign var=port value=$supplierQuotationItem->getPort()-|

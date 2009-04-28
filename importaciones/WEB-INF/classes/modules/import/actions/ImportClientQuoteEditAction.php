@@ -47,8 +47,8 @@ class ImportClientQuoteEditAction extends BaseAction {
 
 		$module = "Import";
 		$smarty->assign('module',$module);
-		
 		$smarty->assign("message",$_GET["message"]);
+		$smarty->assign("quantitiesOnQuotationsFlag",Common::importQuotationsHasQuantities());
 		
 		if (!empty($_GET['notProcessed'])) {
 			$smarty->assign('notProcessed',$_GET['notProcessed']);

@@ -7,6 +7,9 @@
 			<th>##import,32,Plazo de Entrega##</th>
 <!--			<th>##import,33,Cantidad##</th>  -->
 			<th>##import,34,Precio Unitario del Proveedor##</th>
+			|-if $quantitiesOnQuotationsFlag -|
+				<th>Cantidad</th>
+			|-/if-|
 			<th></th>		
 		</tr>
 		|-foreach from=$supplierQuotation->getSupplierQuotationItems() item=item name=for_supplierQuotationsItems-|
@@ -18,6 +21,9 @@
 			<td>|-$item->getDelivery()-| ##import,35,Dias##.</td>
 <!--			<td>|-$item->getQuantity()-|</td>  -->
 			<td>|-if $item->getPrice() eq 0-|##import,36,No se ha cotizado##|-else-||-$item->getPrice()|number_format:2:",":"."-||-/if-|</td>
+			|-if $quantitiesOnQuotationsFlag -|
+				<td>|-$item->getQuantity()-|</td>
+			|-/if-|
 			<td>|-if $item->isQuoted()-|
 				<form action="Main.php" method="post">
 					<input type="hidden" name="supplierQuotationItemId" value="|-$item->getId()-|" />

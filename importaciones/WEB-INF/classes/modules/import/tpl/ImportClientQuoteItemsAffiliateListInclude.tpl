@@ -10,8 +10,10 @@
 			|-/if-|
 			<th>Código</th>
 			<th>Nombre</th>
-			<th>Precio Unitario</th>			
 			|-if $clientQuotation->isQuoted()-|
+			<th>Precio Unitario</th>
+			|-/if-|	
+			|-if $quantitiesOnQuotationsFlag or $clientQuotation->isQuoted()-|
 				<th>Cantidad</th>
 			|-/if-|			
 			<th></th>
@@ -25,8 +27,18 @@
 			|-/if-|
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
-			<td>|-$item->getPrice()-|</td>
 			|-if $clientQuotation->isQuoted()-|
+			<td>|-$item->getPrice()-|</td>
+			|-/if-|
+			|-if $quantitiesOnQuotationsFlag-|
+			<td>
+				|-$item->getQuantity()-|
+				|-if $clientQuotation->isQuoted()-|
+					<input type="hidden" name="clientQuoteItemsQuantity[|-$item->getId()-|]" value="|-$item->getQuantity()-|" id="clientQuoteItemsQuantity[|-$item->getId()-|]" />
+				|-/if-|
+			</td>
+			|-/if-|
+			|-if not $quantitiesOnQuotationsFlag and $clientQuotation->isQuoted()-|
 			<td><input type="text" size="5" name="clientQuoteItemsQuantity[|-$item->getId()-|]" value="" id="clientQuoteItemsQuantity[|-$item->getId()-|]" /></td>
 			|-/if-|
 			<td>
