@@ -247,7 +247,6 @@
 				<element_type>COLORCODE</element_type>
 			</cancelled>
 		</supplierManufactureRequest>
-		<!-- indica si se debe trabajar con cantidades en las quotations o directamente en la generacion de ordenes -->
 		<quantityOnQuotation>
 			<value>NO</value>
 			<element_type>YES/NO</element_type>
