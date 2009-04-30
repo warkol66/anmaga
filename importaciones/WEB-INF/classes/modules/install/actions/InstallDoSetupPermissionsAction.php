@@ -191,6 +191,8 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 		$queryData = '&moduleName='.$_POST["moduleName"];
 		if (!empty($_POST['mode']))
 			$queryData .= '&mode=' . $_POST['mode'];
+		foreach ($_POST["languages"] as $languageId) 
+			$queryData .= '&languages[]=' . $languageId;		
 		$myRedirectPath .= $queryData;
 		$fc = new ForwardConfig($myRedirectPath, True);
 		return $fc;

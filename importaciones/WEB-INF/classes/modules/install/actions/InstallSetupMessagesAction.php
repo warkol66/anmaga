@@ -51,11 +51,7 @@ class InstallSetupMessagesAction extends BaseAction {
 
 		//asigno modulo
 		$moduleLabel = "Install";
-		$smarty->assign("moduleLabel",$moduleLabel);
-
-		$languages = array('1' => esp);
-//		$languages = array('1' => esp, '2' => 'eng');
-		$smarty->assign("languages",$languages);
+		$smarty->assign("moduleLabel",$moduleLabel);		
  
 		$modulePeer = new ModulePeer();
 
@@ -63,7 +59,13 @@ class InstallSetupMessagesAction extends BaseAction {
 			return $mapping->findForwardConfig('failure');			
 		}
 
-		$path = "WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup";
+		$languages = Array();
+		foreach ($_GET["languages"] as $languageId) {
+			$language = MultilangLanguagePeer::get($languageId);
+			$languages[] = $language;
+		}
+
+		$path = "WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup/";
 
 		$xmlBase = file_get_contents($path . 'phpmvc-config'. '-' . $_GET['moduleName'] . ".xml");
 		$xml = "<root>" . $xmlBase . "</root>";
@@ -103,12 +105,12 @@ class InstallSetupMessagesAction extends BaseAction {
 			foreach ($messages as $action => $forwards) {
 				
 				foreach ($forwards as $forward) {
-					$english = ActionLogLabelPeer::getAllByInfo($action,$forward,'eng');
-					$spanish = ActionLogLabelPeer::getAllByInfo($action,$forward,'esp');
-					if (!empty($english))
-						$actualMessages[$action][$forward]['eng'] = $english->getLabel();
-					if (!empty($spanish))						
-						$actualMessages[$action][$forward]['esp'] = $spanish->getLabel();
+					
+					foreach ($languages as $language) {
+						$actionLogLabel = ActionLogLabelPeer::getAllByInfo($action,$forward,$language->getCode());
+						if (!empty($actionLogLabel))
+							$actualMessages[$action][$forward][$language->getCode()] = $actionLogLabel->getLabel();
+					}
 				}
 			}
 			$smarty->assign('actualMessages',$actualMessages);
@@ -116,6 +118,8 @@ class InstallSetupMessagesAction extends BaseAction {
 		
 		//filtramos aquellos actions que no tienen acciones de log.
 		$filteredMessages = $this->filterMessages($_GET['moduleName'],$messages);
+
+		$smarty->assign("languages",$languages);
 
 		$smarty->assign('actions',array_keys($filteredMessages));
 		$smarty->assign('messages',$filteredMessages);

@@ -45,6 +45,22 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
 								'Waiting For Pricing' => array(ClientQuotation::STATUS_WAITING_FOR_PRICING, ClientQuotation::STATUS_PARTIALLY_QUOTED),
 								'Quoted' => array(ClientQuotation::STATUS_QUOTED)
 							);
+
+	public static function getStatusNamesAdmin2() {
+		//nombre de los estados para los administradores
+		$statusNamesAdmin = array();
+		$statusNamesAdmin[ClientQuotation::STATUS_NEW] = Common::getTranslation("New","import");
+		$statusNamesAdmin[ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED] = Common::getTranslation('Quotation Requested',"import");
+		$statusNamesAdmin[ClientQuotation::STATUS_WAITING_FOR_PRICING] = Common::getTranslation('Waiting For Pricing',"import");
+		$statusNamesAdmin[ClientQuotation::STATUS_PARTIALLY_QUOTED] = Common::getTranslation('Waiting For Pricing',"import");
+		$statusNamesAdmin[ClientQuotation::STATUS_QUOTED] = Common::getTranslation('Quoted',"import");
+		$statusNamesAdmin[ClientQuotation::STATUS_ACCEPTED] = Common::getTranslation('Accepted',"import");
+		$statusNamesAdmin[ClientQuotation::STATUS_PARTIALLY_ACCEPTED] = Common::getTranslation('Partially Accepted',"import");
+		$statusNamesAdmin[ClientQuotation::STATUS_REJECTED] = Common::getTranslation("Rejected","import");
+		return $statusNamesAdmin;		
+	} 
+
+	 
   
   /**
    * Devuelve los nombres de los estados del cliente

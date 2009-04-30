@@ -59,7 +59,7 @@ class InstallDoSetupMessagesAction extends BaseAction {
 			return $this->executeSuccess($mapping);
 		}
 		
-		$modulePath = "WEB-INF/classes/modules/" . $_POST['moduleName'] . '/';
+		$modulePath = "WEB-INF/classes/modules/" . $_POST['moduleName'] . '/setup/';
 				
 		$fd = fopen($modulePath  . 'messages.sql','w');
 		if (!$fd) {

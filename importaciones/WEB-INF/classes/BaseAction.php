@@ -12,6 +12,7 @@ include_once("common.inc.php");
 include_once("Paginado.class.php");
 require_once("SecurityActionPeer.php");
 require_once("GroupPeer.php");
+require_once("MultilangLanguagePeer.php");
 
 /**
 * Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
@@ -158,7 +159,7 @@ class BaseAction extends Action {
 		$smarty->assign('BROWSER',getBrowser());
 
 		//Esta línea será reemplazada por un método dinámico para obtener el idioma activo		
-		$smarty->assign("activeLanguage",$system["config"]["mluse"]["language"]);		
+		$smarty->assign("currentLanguageCode",Common::getCurrentLanguageCode());		
 
 		$this->template = new SmartyOutputFilter();
 		$smarty->register_outputfilter(array($this->template,"smarty_add_template"));

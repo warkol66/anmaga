@@ -68,7 +68,7 @@ class InstallSetupPermissionsAction extends BaseAction {
 		$access = array();
 		
 		//evaluacion de bitlevels
-		$securityModule = SecurityModulePeer::getAccessInstanceByModule($module);
+		$securityModule = SecurityModulePeer::getAccess($module);
 
 		if (!empty($securityModule)) {
 		
@@ -124,6 +124,12 @@ class InstallSetupPermissionsAction extends BaseAction {
 		if (!isset($_GET['moduleName'])) {
 			return $mapping->findForwardConfig('failure');			
 		}
+
+		$languages = Array();
+		foreach ($_GET["languages"] as $languageId) {
+			$language = MultilangLanguagePeer::get($languageId);
+			$languages[] = $language;
+		}
 		
 		//buscamos todos los modulos sin instalar.
 
@@ -173,6 +179,9 @@ class InstallSetupPermissionsAction extends BaseAction {
 			$withPair = array();
 		}	
 
+		$moduleSelected = new SecurityModule();
+		$smarty->assign('moduleSelected',$moduleSelected);	
+
 		if (isset($_GET['mode']) && $_GET['mode'] == 'reinstall') {
 			
 			//obtenemos los permisos ya creados anteriormente.
@@ -182,6 +191,9 @@ class InstallSetupPermissionsAction extends BaseAction {
 			$generalAccess = $this->getAccessToModule($_GET['moduleName']);
 			$withoutPairAccess = $this->getAccessToActions($withoutPair);
 			$withPairAccess = $this->getAccessToActions($withPair);
+			
+			$moduleSelected = SecurityModulePeer::getAccess($_GET['moduleName']);
+			$smarty->assign('moduleSelected',$moduleSelected);
 
 			$smarty->assign('withoutPairAccess',$withoutPairAccess);
 			$smarty->assign('withPairAccess',$withPairAccess);
@@ -189,10 +201,20 @@ class InstallSetupPermissionsAction extends BaseAction {
 			
 		}
 		
+    	$levels = LevelPeer::getAll();
+		$smarty->assign('levels',$levels);
+		
+		$affiliateLevels = AffiliateLevelPeer::getAll();
+		$smarty->assign('affiliateLevels',$affiliateLevels);	
+		
+		$levelSave = 1073741823;
+		$smarty->assign("levelsave",$levelSave);	
+		
 		$smarty->assign('withoutPair',$withoutPair);
 		$smarty->assign('withPair',$withPair);
 		$smarty->assign('pairActions',$pairActions);
 		$smarty->assign('moduleName',$_GET['moduleName']);
+		$smarty->assign('languages',$languages);
 		
 		return $mapping->findForwardConfig('success');
 	}

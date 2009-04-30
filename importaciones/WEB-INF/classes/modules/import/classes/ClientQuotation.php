@@ -155,7 +155,8 @@ class ClientQuotation extends BaseClientQuotation {
 	 * @return string
 	 */
 	public function getStatusNameAdmin() {
-		return $this->statusNamesAdmin[$this->getStatus()];
+		$statusArray = ClientQuotationPeer::getStatusNamesAdmin2();
+		return $statusArray[$this->getStatus()];
 	}
 
 	/**

@@ -12,7 +12,7 @@ function importAddItemToClientQuotationX(form) {
 					insertion: Insertion.Bottom
 				});
 	if ($('productSearchMsgBox'))
-		$('productSearchMsgBox').innerHTML = 'agregando item ...';
+		$('productSearchMsgBox').innerHTML = '##import,7,agregando item ...##';
 	
 	return true;
 }

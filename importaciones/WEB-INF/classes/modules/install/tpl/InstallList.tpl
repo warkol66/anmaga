@@ -24,8 +24,8 @@
 	<tr> 
 		<td>|-$module-|</td> 
 		<td nowrap>
-			<form method="post">
-				<input type="hidden" name="do" value="installSetupModuleInformation" />
+			<form method="get">
+				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module-|" />
 				<input type="submit" value="Instalar" />
 			</form>		
@@ -61,8 +61,8 @@
 	<tr> 
 		<td>|-$module->getName()-|</td> 
 		<td nowrap>
-			<form method="post">
-				<input type="hidden" name="do" value="installSetupModuleInformation" />
+			<form method="get">
+				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module->getName()-|" />
 				<input type="hidden" name="mode" value="reinstall">
 				<input type="submit" value="Reinstalar" />

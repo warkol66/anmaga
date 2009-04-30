@@ -37,20 +37,36 @@ class InstallSetupModuleInformationAction extends BaseAction {
  
 		$modulePeer = new ModulePeer();
 
-		if (!isset($_POST['moduleName'])) {
+		if (!isset($_GET['moduleName'])) {
 			return $mapping->findForwardConfig('failure');			
 		}
+
+		$languages = Array();
+		foreach ($_GET["languages"] as $languageId) {
+			$language = MultilangLanguagePeer::get($languageId);
+			$languages[] = $language;
+		}
+		
+		//Por defecto si no existen idiomas, se carga el español
+		if (empty($languages)) {
+			$language = new MultilangLanguage();
+			$language->setCode("esp");
+			$language->setName("Español");
+			$languages[] = $language;		
+		}
+		
+		$smarty->assign('languages',$languages);
 
 		//obtengo todos los modulos para analizar sus dependencias
 		$modules = $modulePeer->getAll();
 
-		if (isset($_POST['mode']) && ($_POST['mode'] == 'reinstall')) {
+		if (isset($_GET['mode']) && ($_GET['mode'] == 'reinstall')) {
 
-			$smarty->assign('mode',$_POST['mode']);
+			$smarty->assign('mode',$_GET['mode']);
 			
 			//tengo que obtener la informacion del modulo
 			
-			$module = $modulePeer->get($_POST['moduleName']);			
+			$module = $modulePeer->get($_GET['moduleName']);			
 			
 			if (empty($module))
 				return $mapping->findForwardConfig('failure');	
@@ -60,21 +76,24 @@ class InstallSetupModuleInformationAction extends BaseAction {
 			require_once('ModuleLabelPeer.php');
 			
 			$moduleLabelPeer = new ModuleLabelPeer();
-			$englishLabels = $moduleLabelPeer->getByModuleAndLanguage($_POST['moduleName'],'eng');
-			$spanishLabels = $moduleLabelPeer->getByModuleAndLanguage($_POST['moduleName'],'esp');
+			
+			$labels = Array();
+			foreach ($languages as $language) {
+				$label = $moduleLabelPeer->getByModuleAndLanguage($_GET['moduleName'],$language->getCode());
+				$labels[$language->getCode()] = $label;
+			}
 			
 			// y sus dependencias
 			
 			require_once('ModuleDependencyPeer.php');
 			
 			$moduleDependencyPeer = new ModuleDependencyPeer();
-			$dependencies = $moduleDependencyPeer->get($_POST['moduleName']); 
+			$dependencies = $moduleDependencyPeer->get($_GET['moduleName']); 
 			
 			// y los asignamos a smarty
 			
 			$smarty->assign('module',$module);
-			$smarty->assign('englishLabel',$englishLabels);
-			$smarty->assign('spanishLabel',$spanishLabels);
+			$smarty->assign('labels',$labels);
 
 			if (!empty($dependencies)) {
 				
@@ -98,7 +117,7 @@ class InstallSetupModuleInformationAction extends BaseAction {
 		
 		$smarty->assign('dependencyModules',$modules);
 		
-		$smarty->assign('moduleName',$_POST['moduleName']);
+		$smarty->assign('moduleName',$_GET['moduleName']);
 		
 		return $mapping->findForwardConfig('success');
 	}

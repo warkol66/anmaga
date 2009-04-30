@@ -27,4 +27,17 @@ class ActionLogLabel extends BaseActionLogLabel {
 		parent::__construct();
 	}
 
+	/*
+	 * Nos da una insert de SQL a partir de los datos de la instancia
+	 *
+	 */
+	function getSQLInsert() {
+		$action = $this->getAction();
+		$label = $this->getLabel();
+		$lang = $this->getlanguage();
+		$forward = $this->getForward();
+		$sql = "INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( '$action', '$label','$lang','$forward');";
+		return $sql;
+	}
+
 } // ActionLogLabel

@@ -200,6 +200,43 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 		}
 		return $allsOrdered;
 	}
+	
+	/**
+	* Obtiene la informacion de un text con un id, modulo e idioma especifico.
+	*
+	* @param int $id id del text
+	* @param int $moduleName Nombre del modulo
+	* @param string $languageCode Codigo del idioma
+	* @return array Informacion de los texts
+	*/
+	function getByIdAndModuleNameAndCode($id,$moduleName,$languageCode) {
+		$cond = new Criteria();
+		$cond->add(MultilangTextPeer::ID,$id);
+		$cond->add(MultilangTextPeer::MODULENAME,$moduleName);
+		$cond->addJoin(MultilangTextPeer::LANGUAGEID,MultilangLanguagePeer::ID);
+		$cond->add(MultilangLanguagePeer::CODE,$languageCode);
+		$text = MultilangTextPeer::doSelectOne($cond);
+		return $text;
+	}	
+	
+	/**
+	* Obtiene la informacion de un text con un texto, modulo e idioma especifico.
+	*
+	* @param string $text Text original
+	* @param int $moduleName Nombre del modulo
+	* @param string $languageCode Codigo del idioma
+	* @return array Informacion de los texts
+	*/
+	function getByTextAndModuleNameAndCode($text,$moduleName,$languageCode) {
+		$cond = new Criteria();
+		$cond->add(MultilangTextPeer::TEXT,$text);
+		$cond->add(MultilangTextPeer::MODULENAME,$moduleName);
+		$text = MultilangTextPeer::doSelectOne($cond);
+		if (!empty($text)) {
+			$traduction = MultilangTextPeer::getByIdAndModuleNameAndCode($text->getId(),$moduleName,$languageCode);	
+		}
+		return $traduction;
+	}		
 
 
 	/**
@@ -308,9 +345,12 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 		$cond->add(MultilangLanguagePeer::CODE, $language);
 		$languages = MultilangLanguagePeer::doSelect($cond);
 		$languageObj = $languages[0];
-		$cond = new Criteria();
-		$cond->add(MultilangTextPeer::LANGUAGEID, $languageObj->getId());
-		$texts = MultilangTextPeer::doSelect($cond);
+		$texts = Array();
+		if (!empty($languageObj)) {
+			$cond = new Criteria();
+			$cond->add(MultilangTextPeer::LANGUAGEID, $languageObj->getId());
+			$texts = MultilangTextPeer::doSelect($cond);
+		}
 		return $texts;
 	}
 

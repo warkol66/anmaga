@@ -22,6 +22,8 @@ class InstallDoSetupModuleInformationAction extends BaseAction {
 		$queryData = '&moduleName='.$_POST["moduleName"];
 		if (isset($_POST['mode']))
 			$queryData .= '&mode=' . $_POST['mode'];
+		foreach ($_POST["languages"] as $languageId) 
+			$queryData .= '&languages[]=' . $languageId;
 		$myRedirectPath .= $queryData;
 		$fc = new ForwardConfig($myRedirectPath, True);
 		return $fc;
@@ -67,22 +69,18 @@ class InstallDoSetupModuleInformationAction extends BaseAction {
 		if ($fd == false)
 			return $mapping->findForwardConfig('failure');
 
-		$moduleLabelPeer = new ModuleLabelPeer();
-		$moduleLabel = new ModuleLabel();
-		$moduleLabel->setName($_POST['moduleName']);
-
-		fprintf($fd,"%s\n",$moduleLabel->getSQLCleanup());		
+		$moduleLabelPeer = new ModuleLabelPeer();	
 		
-		$moduleLabel->setLabel($_POST['labelsEnglish']);
-		$moduleLabel->setDescription($_POST['descriptionEnglish']);
-		$sqlEng = $moduleLabel->getSQLInsertEnglish();
-
-		$moduleLabel->setLabel($_POST['labelsSpanish']);
-		$moduleLabel->setDescription($_POST['descriptionSpanish']);
-		$sqlSpa = $moduleLabel->getSQLInsertSpanish();
-
-		fprintf($fd,"%s\n",$sqlSpa);
-		fprintf($fd,"%s\n",$sqlEng);
+		fprintf($fd,"%s\n",ModuleLabelPeer::getSQLCleanup($_POST['moduleName']));	
+		
+		foreach ($_POST["labels"] as $languageCode => $label) {
+			$moduleLabel = new ModuleLabel();
+			$moduleLabel->setName($_POST['moduleName']);			
+			$moduleLabel->setLabel($label);
+			$moduleLabel->setDescription($_POST['descriptions'][$languageCode]);
+			$sql = $moduleLabel->getSQLInsert($languageCode);
+			fprintf($fd,"%s\n",$sql);			
+		}
 		
 		//generacion de sql de las dependencias
 		$moduleDependency = new ModuleDependency();

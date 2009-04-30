@@ -750,6 +750,22 @@ class Common
     return $languages;
   }
 
+	function getTranslation($text,$moduleName) {
+		$languageCode = Common::getCurrentLanguageCode();
+		$translationObject = MultilangTextPeer::getByTextAndModuleNameAndCode($text,$moduleName,$languageCode);
+		if (empty($translationObject))
+			$translation = $text;
+		else
+			$translation = $translationObject->getText();
+		return $translation;
+	}
+
+
+	function getCurrentLanguageCode() {
+		global $system;
+		return $system["config"]["mluse"]["language"];
+	}
+
   /**
    * Indica si el los pedidos de cotizaciones manejan cantidades en el modulo import
    * @return boolean

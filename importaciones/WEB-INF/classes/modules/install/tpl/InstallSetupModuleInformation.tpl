@@ -11,34 +11,26 @@
 				<input name="name_disabled" type="text" value="|-$moduleName-|" disabled="disabled" />
 				<input name="name" type="hidden" value="|-$moduleName-|" />
 			</p>
-			|-if ($englishLabel)-|
-				|-assign var=labelEnglish value=$englishLabel->getLabel() -|
-				|-assign var=descriptionEnglish value=$englishLabel->getDescription() -|
-			|-/if-|
-			|-if ($spanishLabel)-|
-				|-assign var=labelSpanish value=$spanishLabel->getLabel() -|
-				|-assign var=descriptionSpanish value=$spanishLabel->getDescription() -|				
-			|-/if-|
 			<h4>Etiquetas</h4>	
 			<p>Ingrese el nombre que aparecerá cuando se consulte el módulo <strong>|-$moduleName-|</strong></p>
+			|-foreach from=$languages item=language-|
+				|-assign var=languageCode value=$language->getCode()-|
+				|-assign var=label value=$labels.$languageCode-|
 			<p>
-				<label>Castellano:</label>
-				<input name="labelsSpanish" type="text" value="|-$labelSpanish-|" size="35"/>
+				<label>|-$language->getName()-|:</label>
+				<input name="labels[|-$language->getCode()-|]" type="text" value="|-if $label-||-$label->getLabel()-||-/if-|" size="35"/>
 			</p>
-			<p>
-				<label>Ingles:</label>
-				<input name="labelsEnglish" type="text" value="|-$labelEnglish-|" size="35"/>
-			</p>
+			|-/foreach-|
 			<h4>Descripción</h4>
 			<p>Ingrese un texto que describa al módulo <strong>|-$moduleName-|</strong></p>
+			|-foreach from=$languages item=language-|
+				|-assign var=languageCode value=$language->getCode()-|
+				|-assign var=label value=$labels.$languageCode-|			
 			<p>	
-				<label>Castellano:</label>
-				<input name="descriptionSpanish" type="text" value="|-$descriptionSpanish-|" size="65"/>
+				<label>|-$language->getName()-|:</label>
+				<input name="descriptions[|-$language->getCode()-|]" type="text" value="|-if $label-||-$label->getDescription()-||-/if-|" size="65"/>
 			</p>
-			<p>
-				<label>Ingles:</label>
-				<input name="descriptionEnglish" type="text" value="|-$descriptionEnglish-|" size="65"/>
-			</p>	
+			|-/foreach-|
 			<h4>
 				Always Active</h4>
 			<p>
@@ -80,6 +72,9 @@
 				
 		<input type="hidden" name="moduleName" value="|-$moduleName-|" />
 		<input type="hidden" name="do" value="installDoSetupModuleInformation" />
+		|-foreach from=$languages item=language-|
+		<input type="hidden" name="languages[]" value="|-$language->getId()-|" />
+		|-/foreach-|
 		|-if isset($mode)-|
 		<input type="hidden" name="mode" value="|-$mode-|" id="mode">
 		|-/if-|	

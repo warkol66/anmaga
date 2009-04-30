@@ -28,6 +28,11 @@ class ModulePaths {
 		$appDirs[]	= 'WEB-INF/scripts';
 		$appDirs[]	= 'WEB-INF/classes/includes';
 		$appDirs[]	= 'WEB-INF/classes/modules';
+		
+		//Common
+		$appDirs[]      = 'WEB-INF/classes/modules/common';
+		$appDirs[]      = 'WEB-INF/classes/modules/common/actions';
+		$appDirs[]      = 'WEB-INF/classes/modules/common/classes';				
 
 		// Users module
 		$appDirs[]	= 'WEB-INF/classes/modules/users';

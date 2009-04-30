@@ -64,7 +64,7 @@ class MultilangLanguagesDoEditAction extends BaseAction {
 				$smarty->assign("message","error");
 				return $mapping->findForwardConfig('failure');
       		}
-
+			Common::doLog("success",$_POST["name"]);
 			return $mapping->findForwardConfig('success');
 		}
 

@@ -16,12 +16,14 @@
 		|-foreach from=$actionMessages item=message-|
 		
 			<h4>|-$message|capitalize-|</h4>
-		|-foreach from=$languages item=language-|
-			<p><label for="message[|-$action-|][|-$message-|][|-$language-|]">|-$language-|</label>
-			<input name="message[|-$action-|][|-$message-|][|-$language-|]" type="text" value="|-if isset($actualMessages)-||-$actualMessages.$action.$message.$language-||-/if-|" size="65">
-			</p>
-
-		|-/foreach-|
+			|-foreach from=$languages item=language-|
+				|-assign var=languageCode value=$language->getCode()-|
+				<p>
+					<label for="message[|-$action-|][|-$message-|][|-$languageCode-|]">|-$language->getName()-|</label>
+					<input name="message[|-$action-|][|-$message-|][|-$languageCode-|]" type="text" value="|-if isset($actualMessages)-||-$actualMessages.$action.$message.$languageCode-||-/if-|" size="65">
+				</p>
+			|-/foreach-|
+			
 		|-/foreach-|
 	</fieldset>
 	|-/foreach-|
