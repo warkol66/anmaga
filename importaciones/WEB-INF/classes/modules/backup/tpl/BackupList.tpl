@@ -14,7 +14,7 @@
 </script>
 
 <h2>Respaldos del Sistema</h2>
-<h1>Administrción de Respaldos</h1>
+<h1>Administración de Respaldos</h1>
 <div id="div_addresses">
 	|-if $message eq "created"-|
 		<div class="successMessage">Backup creado correctamente.</div>
@@ -35,8 +35,10 @@
 	<p>Recuerde que al resutaurar un respaldo toda la información existente se reemplazará por la información que está en el respaldo</p>
 	<fieldset class='nestedFieldset' title='Administrador de Respaldos'>
 	<legend>Administrar Respaldos</legend>
-	<p>Generar respaldo almacenado en el servidor <a href='Main.php?do=backupCreate' title='Generar respaldo en servidor'><img src="images/clear.png"  class='linkImageStoreInServer' /></a></p>
-	<p>Generar respaldo para descargar <a href='Main.php?do=backupCreateToFile' title='Generar respaldo para descargar'><img src="images/clear.png"  class='linkImageStoreLocal' /></a></p>
+	<p>Generar respaldo de datos almacenado en el servidor <a href='Main.php?do=backupCreate&amp;mode=data' title='Generar respaldo en servidor'><img src="images/clear.png"  class='linkImageStoreInServer' /></a></p>
+	<p>Generar respaldo completo almacenado en el servidor <a href='Main.php?do=backupCreate&amp;mode=complete' title='Generar respaldo en servidor'><img src="images/clear.png"  class='linkImageStoreInServer' /></a></p>
+	<p>Generar respaldo de datos para descargar <a href='Main.php?do=backupCreateToFile&amp;mode=data' title='Generar respaldo para descargar'><img src="images/clear.png"  class='linkImageStoreLocal' /></a></p>
+	<p>Generar respaldo completo para descargar <a href='Main.php?do=backupCreateToFile&amp;mode=complete' title='Generar respaldo para descargar'><img src="images/clear.png"  class='linkImageStoreLocal' /></a></p>
 	<p>Restaurar respaldo desde una copia local <a href='javascript:showBackupLoader()' title='Seleccionar archivo local para restaurar'><img src="images/clear.png"  class='linkImageRestore' /></a></p>
 		<div id="backupLoader" style="display: none;">
 		<br />

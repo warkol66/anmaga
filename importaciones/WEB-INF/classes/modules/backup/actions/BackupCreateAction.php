@@ -56,16 +56,37 @@ class BackupCreateAction extends BaseAction {
 		$modulo = "Backup";
 		$smarty->assign("modulo",$modulo);
 
+		if (empty($_GET['mode'])) {
+			return $mapping->findForwardConfig('failure');
+			Common::doLog('failure');			
+		}
+
 		$backupPeer = new BackupPeer();
 		
-		if ($backupPeer->createBackup()) {
-			Common::doLog('success');
-			return $mapping->findForwardConfig('success');
+		if ($_GET['mode'] == 'data') {
+		
+			if ($backupPeer->createDataBackup()) {
+				Common::doLog('success');
+				return $mapping->findForwardConfig('success');
+			}
+			else {
+				return $mapping->findForwardConfig('failure');
+				Common::doLog('failure');
+			}
 		}
-		else {
-			return $mapping->findForwardConfig('failure');
-			Common::doLog('failure');
-		}
+
+		if ($_GET['mode'] == 'complete') {
+		
+			if ($backupPeer->createCompleteBackup()) {
+				Common::doLog('success');
+				return $mapping->findForwardConfig('success');
+			}
+			else {
+				return $mapping->findForwardConfig('failure');
+				Common::doLog('failure');
+			}
+		}		
+		
 	}
 
 }

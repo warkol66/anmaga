@@ -13,6 +13,7 @@ require_once('includes/mysql_dump.inc.php');
 	class BackupPeer {
 		
 		var $header = '';
+		var $pathIgnoreList = array('backups/','WEB-INF','WEB-INF/smarty_tpl/templates_c');
 		
 		/**
 		 * Verifica actualemente si la configuracion de la base tiene prefijo
@@ -77,26 +78,17 @@ require_once('includes/mysql_dump.inc.php');
 		}
 		
 		/**
-		 * Crea un backup en el servidor
-		 *
-		 * @todo Ver de donde obtener nombre de sistema
-		 * @todo Ver como separar los casos con prefijo solamente
-		 * @return true si fue exitoso, false sino
+		 * Generacion del SQL con los datos del sistema
+		 * @param $path String Ruta donde se guardaran los backups en el servidor
+		 * @return $filecontents String SQL
 		 */
-		function createBackup($path = 'WEB-INF/../backups/') {
-			
+		function buildDataBackup($filename,$path = 'WEB-INF/../backups/') {
+
 			$db = new DBConnection();
 
 			$connection = @mysql_connect($db->Host,$db->User,$db->Password);
 
 			require_once('TimezonePeer.php');
-			
-			$timezonePeer = new TimezonePeer();
-			$timestamp = $timezonePeer->getServerTimeOnGMT0();
-			$datetime = date('Y-m-d  H:i:s',$timestamp);
-			$currentDatetime = Common::getDatetimeOnTimezone($datetime);
-
-			$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . '.zip';
 			
 			$dumper = new MySQLDump($db->Database,$path . $filename,false,false);
 			
@@ -108,9 +100,42 @@ require_once('includes/mysql_dump.inc.php');
 
 			mysql_close($connection);
 			
-			BackupPeer::writeToBackupLog('Se ha creado un backup en el servidor');
+			return $filecontents;
+			
+		}
+		
+		/**
+		 * Devuelve el datetime actual
+		 * @return String
+		 */
+		function getCurrentDatetime() {
+
+			$timezonePeer = new TimezonePeer();
+			$timestamp = $timezonePeer->getServerTimeOnGMT0();
+			$datetime = date('Y-m-d  H:i:s',$timestamp);
+			$currentDatetime = Common::getDatetimeOnTimezone($datetime);
+			
+			return $currentDatetime;
+		}
+		
+		/**
+		 * Crea un backup de datos en el servidor
+		 *
+		 * @todo Ver de donde obtener nombre de sistema
+		 * @todo Ver como separar los casos con prefijo solamente
+		 * @return true si fue exitoso, false sino
+		 */
+		function createDataBackup($path = 'WEB-INF/../backups/') {
+			
+			$currentDatetime = BackupPeer::getCurrentDatetime();
 						
-			$zipContents = BackupPeer::getZipFromFile($filecontents);	
+			$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . '.zip';
+			
+			$filecontents = BackupPeer::buildDataBackup($filename,$path);
+			
+			BackupPeer::writeToBackupLog('Se ha creado un backup de datos en el servidor');
+						
+			$zipContents = BackupPeer::getZipFromDataFile($filecontents);	
 			
 			if ($fp = fopen($path . $filename, 'a')) {
     			fwrite($fp, $zipContents);
@@ -125,31 +150,52 @@ require_once('includes/mysql_dump.inc.php');
 		}
 
 		/**
-		 * Restaura un backup en del servidor
+		 * Crea un backup en el servidor
 		 *
+		 * @todo Ver de donde obtener nombre de sistema
+		 * @todo Ver como separar los casos con prefijo solamente
 		 * @return true si fue exitoso, false sino
-		 */		
-		function restoreBackup($zipFilename) {
-			require_once("zip.class.php"); 
-			$zipfile = new zipfile; 
-			$zipfile->read_zip($zipFilename);
+		 */
+		function createCompleteBackup($path = 'WEB-INF/../backups/') {
 			
-			foreach($zipfile->files as $filea)
-			{
-				if ($filea["name"] == "dump.sql")
-					$sql = $filea["data"];
-			} 			
+			$currentDatetime = BackupPeer::getCurrentDatetime();
+
+			$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . '.zip';
+			
+			$filecontents = BackupPeer::buildDataBackup($filename,$path);
+			
+			BackupPeer::writeToBackupLog('Se ha creado un backup completo en el servidor');
+						
+			$zipContents = BackupPeer::getCompleteBackupZipFromDataFile($filecontents);	
+			
+			if ($fp = fopen($path . $filename, 'a')) {
+    			fwrite($fp, $zipContents);
+
+    			fclose($fp);
+			}
+			else 
+				return false;
+			
+			return true;;
+					
+		}
+
+		/**
+		 * Restauracion de Backup de sql
+		 * @param $sqlQuery string query a ejecutar
+		 */
+		function restoreSQL($sqlQuery) {
 
 			//$sql = str_replace("\n","",$sql);
 			$db = new DBConnection();
 			$connection = @mysql_connect($db->Host,$db->User,$db->Password);
-			$queries = split(";\n",$sql);
-			
+			$queries = split(";\n",$sqlQuery);
+		
 			//guardamos una copia actual del contenido de la base de datos en el servidor en /backups/restore		
 			$this->setTableHeader('actionLogs_');
-			$this->createBackup('WEB-INF/../backups/restore/');
+			$this->createDataBackup('WEB-INF/../backups/restore/');
 			$this->writeToBackupLog('Se ha guardado una copia de resguardo en la base actual en /backups/restore/: ');
-			
+		
 			foreach ($queries as $query) {
 				$query = trim($query);
 				if (!empty($query))
@@ -158,68 +204,185 @@ require_once('includes/mysql_dump.inc.php');
 
 			mysql_close($connection);
 			
+		}
+		
+
+		/**
+		 * Restaura un backup en del servidor
+		 *
+		 * @return true si fue exitoso, false sino
+		 */		
+		function restoreBackup($zipFilename) {
+			require_once("zip.class.php"); 
+			
+			$zipfile = new zipfile; 
+			$zipfile->read_zip($zipFilename);
+
+			$sql = '';
+
+			foreach($zipfile->files as $filea)
+			{
+				// condicion de busqueda del archivo SQL
+				if ($filea["name"] == "dump.sql" && $filea["dir"] == './db' ) {
+					$sql = $filea["data"];
+				}
+				
+				//condicion para detectar archivos a reemplazar
+				if (strpos($filea["dir"],'./files') !== false) {
+
+					if ($filea['dir'] === './files') {
+						$path = '';
+					}
+					else {
+						$clearRoute = split('\.\/files\/',$filea['dir']);
+						$path = $clearRoute[1] . '/';
+					}
+					//guardamos el archivo en su ubicacion
+					file_put_contents('WEB-INF/../' . $path . $filea["name"] , $filea['data']);
+				}
+			} 			
+
+			//hay procesamiento de SQL
+			if (!empty($sql)) {
+				BackupPeer::restoreSQL($sql);
+			}
+			
+			//obtencion de filename sin ruta
+			$parts = split('/',$zipFilename);
+			$filename = $parts[count($parts)-1];
+			
 			$text = 'Se ha restaurado el backup en el servidor de nombre de archivo: ' . $filename;
-			
 			$this->writeToBackupLog($text);
+
 			//mail a administrador
-			require_once('libmail.inc.php');
-			
-			$mail = new Mail();
-			
+			require_once('EmailManagement.php');
+
 			global $system;
-			
-			$mail->From($system["config"]["system"]["parameters"]["fromEmail"]);
-			$mail->To($system["config"]["system"]["parameters"]["webmasterMail"]);
-			$mail->Subject('Restauracion de Backup');
-            $mail->Body($text);
-            $mail->Send();
+
+			$subject = 'Notificacion de Restauracion usando Modulo de Backup';
+			$destination = $system["config"]["system"]["parameters"]["webmasterMail"];
+			$mailFrom = $system["config"]["system"]["parameters"]["fromEmail"];
+			$manager = new EmailManagement();
+
+			//creamos el mensaje multipart
+			$message = $manager->createMultipartMessage($subject,$text);
+
+			//realizamos el envio
+			$result = $manager->sendMessage($destination,$mailFrom,$message);
 			
 			return true;
 			
 		}
 
 		/**
-		 * Devuelve el contenido de un backup de archivo
+		 * Devuelve el contenido de un backup de datos de archivo
 		 *
 		 * @return string contenido del backup en SQL
 		 */		
-		function createFileBackup() {
+		function createDataBackupFile() {
 			
-			$db = new DBConnection();
+			$currentDatetime = BackupPeer::getCurrentDatetime();
+						
+			$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . 'zip';
 
-			$connection = @mysql_connect($db->Host,$db->User,$db->Password);
-			
-			require_once('TimezonePeer.php');
-			
-			$timezonePeer = new TimezonePeer();
-			$timestamp = $timezonePeer->getServerTimeOnGMT0();
-			$datetime = date('Y-m-d  H:i:s',$timestamp);
-			$currentDatetime = Common::getDatetimeOnTimezone($datetime);
-			
-			$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . '.sql';
-			
-			$dumper = new MySQLDump($db->Database,false,false,false);
-			
-			//verificamos si tiene table prefix
-			if (($tablePrefix = BackupPeer::configHasPrefix()) != false)
-				$dumper->setTablePrefix($tablePrefix);
-				
-			$filecontents = $dumper->doDumpToString();
-
-			mysql_close($connection);
+			$filecontents = BackupPeer::buildDataBackup($filename);
 			
 			BackupPeer::writeToBackupLog('Se ha creado un backup para descarga');
 						
-			return BackupPeer::getZipFromFile($filecontents);				
+			return BackupPeer::getZipFromDataFile($filecontents);				
+		}
+
+		/**
+		 * Devuelve el contenido de un backup de datos de archivo
+		 *
+		 * @return string contenido del backup en SQL
+		 */		
+		function createCompleteBackupFile() {
+			
+			$currentDatetime = BackupPeer::getCurrentDatetime();
+						
+			$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . '.zip';
+
+			$filecontents = BackupPeer::buildDataBackup($filename);
+			
+			BackupPeer::writeToBackupLog('Se ha creado un backup para descarga');
+						
+			return BackupPeer::getCompleteBackupZipFromDataFile($filecontents);				
 		}
 		
-		function getZipFromFile($file) {
+		/**
+		 * Genera un zip de un archivo de datos
+		 * @param $datafile contenido del data file
+		 */
+		function getZipFromDataFile($datafile) {
 			require_once("zip.class.php");  
 			$zipfile = new zipfile; 
-			$zipfile->create_dir("."); 
-			$zipfile->create_file($file, "dump.sql"); 
+			$zipfile->create_dir(".");
+			$zipfile->create_dir("./db/");
+			$zipfile->create_file($datafile, "./db/dump.sql"); 
 
 			return $zipfile->zipped_file(); 			
+		}
+		
+		/**
+		 * Indica si una ruta debe ser ignorada o no
+		 * @param $route string 
+		 * @return boolean
+		 */
+		function routeHasToBeIgnored($route) {
+			foreach ($this->pathIgnoreList as $toIgnore) {
+				if (strpos($route,$toIgnore) !== false) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		function getCompleteBackupZipFromDataFile($datafile) {
+			require_once("zip.class.php");  
+			$zipfile = new zipfile; 
+			$zipfile->create_dir(".");
+			$zipfile->create_dir("./db/");
+			$zipfile->create_file($datafile, "./db/dump.sql");
+			$zipfile->create_dir("./files/");
+			$listing = array();
+			$dirHandler = @opendir('WEB-INF/../');
+			BackupPeer::directoryList(&$listing,$dirHandler,'WEB-INF/../');
+			
+			foreach ($listing as $route) {				
+				
+				$clearRoute = split('WEB-INF/../',$route);
+
+				if (!BackupPeer::routeHasToBeIgnored($clearRoute[1])) {
+				
+					if (is_dir($route)) {
+						$zipfile->create_dir("./files/" . $clearRoute[1]);
+					}
+				
+					if (is_file($route)) {
+						$zipfile->create_file(file_get_contents($route),'./files/' . $clearRoute[1]);
+					}
+				}
+			}
+
+			return $zipfile->zipped_file(); 			
+		}
+		
+		function directoryList($listing,$dirHandler,$path) {
+			while (false !== ($file = readdir($dirHandler))) {
+				$dir = $path . $file;
+		        if(is_dir($dir) && $file != '.' && $file !='..' )
+		        {
+		            $handle = @opendir($dir);
+					array_push($listing, $dir . '/');
+		            BackupPeer::directoryList(&$listing,$handle, $dir . '/');
+		        }elseif($file != '.' && $file !='..')
+		        {
+					array_push($listing,$dir);
+		        }
+		    }
+
+		    closedir($dirHandle);
 		}
 		
 		/**
@@ -264,11 +427,8 @@ require_once('includes/mysql_dump.inc.php');
 			$fd = fopen('WEB-INF/logs/backupActivity.log','a+');
 			require_once('TimezonePeer.php');
 			
-			$timezonePeer = new TimezonePeer();
-			$timestamp = $timezonePeer->getServerTimeOnGMT0();
-			$datetime = date('Y-m-d  H:i:s',$timestamp);
-			$currentDatetime = Common::getDatetimeOnTimezone($datetime);
-			
+			$currentDatetime = BackupPeer::getCurrentDatetime();
+						
 			fprintf($fd,"%s\n", $currentDatetime . ' - ' . $message);
 			fclose($fd);
 			

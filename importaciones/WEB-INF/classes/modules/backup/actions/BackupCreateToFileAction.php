@@ -56,9 +56,22 @@ class BackupCreateToFileAction extends BaseAction {
 		$modulo = "Backup";
 		$smarty->assign("modulo",$modulo);
 
-		$backupPeer = new BackupPeer();
+		if (empty($_GET['mode'])) {
+			return $mapping->findForwardConfig('failure');
+			Common::doLog('failure');			
+		}
 
-		$content = $backupPeer->createFileBackup();
+		$backupPeer = new BackupPeer();
+		
+		if ($_GET['mode'] == 'data') {
+		
+			$content = $backupPeer->createDataBackupFile();
+		}
+
+		if ($_GET['mode'] == 'complete') {
+		
+			$content = $backupPeer->createCompleteBackupFile();
+		}		
 
 		require_once('TimezonePeer.php');
 		
