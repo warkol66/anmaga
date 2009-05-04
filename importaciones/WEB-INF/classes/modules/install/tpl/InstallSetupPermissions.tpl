@@ -30,7 +30,7 @@
 				<input type="checkbox" name="permissionAffiliateGeneral[access][]" value="|-$groupbit->getBitLevel()-|" |-checked_if_has_access first=$groupbit->getBitLevel() second=$moduleSelected->getAccessAffiliateUser()-| />
 				|-$groupbit->getName()-|<br />
 			|-/foreach-|					
-			<input type="checkbox" name="permissionAffiliateGeneral[all]" value="true" |-if $levelsave eq $moduleSelected->getAccessAffiliateUser()-| checked="checked"|-/if-| />todos<br>
+			<input type="checkbox" name="permissionAffiliateGeneral[all]" value="true" |-if $levelsave eq $moduleSelected->getAccessAffiliateUser()-| checked="checked"|-/if-| /> Todos<br>
 		</td> 
 		<td>
 			<input type="checkbox" name="permissionRegistrationGeneral" value="1" |-if $generalAccess.permissionRegistrationGeneral-|checked="checked"|-/if-|/>
@@ -63,14 +63,14 @@
 				<input type="checkbox" name="permission[|-$action-|][access][]" value="|-$groupbit->getBitLevel()-|" |-checked_if_has_access first=$groupbit->getBitLevel() second=$action-| />
 				|-$groupbit->getName()-|<br />
 			|-/foreach-|		
-			<input type="checkbox" name="permission[|-$action-|][all]" value="true" |-if $withoutPairAccess.$action.permission.all-|checked="checked"|-/if-|>todos<br>
+			<input type="checkbox" name="permission[|-$action-|][all]" value="true" |-if $withoutPairAccess.$action.permission.all-|checked="checked"|-/if-|> Todos<br>
 		</td>
 		<td nowrap>
 			|-foreach from=$affiliateLevels item=groupbit name=bitlevelgroup-|
 				<input type="checkbox" name="permissionAffiliate[|-$action-|][access][]" value="|-$groupbit->getBitLevel()-|" |-checked_if_has_access first=$groupbit->getBitLevel() second=$action-| />
-				s|-$groupbit->getName()-| <br />
+				|-$groupbit->getName()-| <br />
 			|-/foreach-|		
-			<input type="checkbox" name="permissionAffiliate[|-$action-|][all]" value="true" |-if $withoutPairAccess.$action.permissionAffiliate.all-|checked="checked"|-/if-|>todos<br>
+			<input type="checkbox" name="permissionAffiliate[|-$action-|][all]" value="true" |-if $withoutPairAccess.$action.permissionAffiliate.all-|checked="checked"|-/if-|> Todos<br>
 		</td> 
 		<td>
 			<input type="checkbox" name="permissionRegistration[|-$action-|]" value="1" |-if $withoutPairAccess.$action.permissionRegistration-|checked="checked"|-/if-|/><br>

@@ -39,7 +39,7 @@
     </action>
     <action    path = "installGenerateConfig"
                type = "InstallGenerateConfigAction"
-               name = "nstallGenerateConfig"
+               name = "installGenerateConfig"
               scope = "request"
            validate = "true">
     <forward name="success" path="InstallGenerateConfig.tpl" />

@@ -14,11 +14,11 @@
 |-/if-|
 	<h4>Módulos disponibles para instalar</h4>
 	<p>
-<table cellpadding="5" cellspacing="0" class="tableTdBorders"> 
+<table width="100%" cellpadding="5" cellspacing="0" class="tableTdBorders"> 
 	<tr> 
-		<th width="50%" scope="col" class="thFillTitle">Nombre del Nuevo Módulo</th> 
-		<th width="10%" scope="col" class="thFillTitle">Acción</th>
-		<th width="40%" scope="col" class="thFillTitle">Pasos Especificos del proceso de instalacion</th> 
+		<th width="20%" scope="col" class="thFillTitle">Nombre del  Módulo</th> 
+		<th width="20%" scope="col" class="thFillTitle">Acción</th>
+		<th width="60%" scope="col" class="thFillTitle">Pasos Específicos del proceso de instalación</th> 
 	</tr> 
 	|-foreach from=$modulesToInstall item=module name=modulef-|
 	<tr> 
@@ -34,28 +34,28 @@
 			<form method="post">
 				<input type="hidden" name="do" value="installSetupModuleInformation" />
 				<input type="hidden" name="moduleName" value="|-$module-|" />
-				<input type="submit" value="Setup de Informacion del Modulo" />
+				<input type="submit" value="Información" />
 			</form>
 			<form method="get">
 				<input type="hidden" name="do" value="installSetupPermissions" />
 				<input type="hidden" name="moduleName" value="|-$module-|" />
-				<input type="submit" value="Setup de Permisos del Modulo" />
+				<input type="submit" value="Permisos" />
 			</form>
 			<form method="get">
 				<input type="hidden" name="do" value="installSetupMessages" />
 				<input type="hidden" name="moduleName" value="|-$module-|" />
-				<input type="submit" value="Setup de Mensajes de Log del Modulo" />
+				<input type="submit" value="Mensajes de Log" />
 			</form>
 		</td> 
 	</tr> 
 	|-/foreach-|
 </table>
 <h4>Módulos Instalados</h4> 
-<table cellpadding="5" cellspacing="0" class="tableTdBorders"> 
+<table width="100%" cellpadding="5" cellspacing="0" class="tableTdBorders"> 
 	<tr> 
-		<th width="50%" scope="col" class="thFillTitle">Nombre del Módulo</th> 
-		<th width="10%" scope="col" class="thFillTitle">Acción</th>
-		<th width="40%" scope="col" class="thFillTitle">Pasos Especificos del proceso de instalacion</th>		 
+		<th width="20%" class="thFillTitle" scope="col">Nombre del Módulo</th> 
+		<th width="20%" class="thFillTitle" scope="col">Acción</th>
+		<th width="60%" class="thFillTitle" scope="col">Pasos Específicos del proceso de instalación</th>		 
 	</tr> 
 	|-foreach from=$modulesInstalled item=module name=modulef-|
 	<tr> 
@@ -73,19 +73,19 @@
 				<input type="hidden" name="do" value="installSetupModuleInformation" />
 				<input type="hidden" name="moduleName" value="|-$module->getName()-|" />
 				<input type="hidden" name="mode" value="reinstall">
-				<input type="submit" value="Setup de Informacion del Modulo" />
+				<input type="submit" value="Información" />
 			</form>
 			<form method="get">
 				<input type="hidden" name="do" value="installSetupPermissions" />
 				<input type="hidden" name="moduleName" value="|-$module->getName()-|" />
 				<input type="hidden" name="mode" value="reinstall">
-				<input type="submit" value="Setup de Permisos del Modulo" />
+				<input type="submit" value="Permisos" />
 			</form>
 			<form method="get">
 				<input type="hidden" name="do" value="installSetupMessages" />
 				<input type="hidden" name="moduleName" value="|-$module->getName()-|" />
 				<input type="hidden" name="mode" value="reinstall">
-				<input type="submit" value="Setup de Mensajes de Log del Modulo" />
+				<input type="submit" value="Mensajes de Log" />
 			</form>
 		</td> 
 	</tr> 

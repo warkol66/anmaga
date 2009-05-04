@@ -1,7 +1,7 @@
 <script type="text/javascript" src="scripts/install.js"></script>
 
 <h2>Configuración del Sistema</h2>
-<h1>Instalación de Módulos del Sistema: Módulo <strong>|-$moduleName-|</strong>.</h1>
+<h1>Instalación de Módulos: Módulo <strong>|-$moduleName|capitalize-|</strong>.</h1>
 <fieldset>
 	<legend>Tercer Paso - Configuracion de mensajes de log</legend>
 	<p>Asigne los mensajes del log correspondientes</p> 

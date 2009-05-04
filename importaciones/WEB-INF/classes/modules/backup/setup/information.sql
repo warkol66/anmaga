@@ -1,3 +1,6 @@
-INSERT INTO `modules_label` ( `name` , `label` , `description` , `language` ) VALUES ('backup', 'backup', 'Modulo de Backup', 'esp');
-INSERT INTO `modules_label` ( `name` , `label` , `description` , `language` ) VALUES ('backup', 'backup', 'Backup Module', 'eng');
-INSERT INTO `modules_module` ( `name` , `active` , `alwaysActive` ) VALUES ('backup', '1', '0');
+DELETE FROM `modules_label` WHERE `name` = 'backup';
+INSERT INTO `modules_label` ( `name` , `label` , `description` , `language` ) VALUES ('backup', 'Respaldo', 'Módulo para creación y administración de copias de seguridad', 'esp');
+INSERT INTO `modules_label` ( `name` , `label` , `description` , `language` ) VALUES ('backup', 'Backup', 'Manage system and information backups', 'eng');
+DELETE FROM `modules_dependency` WHERE `moduleName` = 'backup';
+DELETE FROM `modules_module` WHERE `name` = 'backup';
+INSERT INTO `modules_module` ( `name` , `active` , `alwaysActive`, `hasCategories` ) VALUES ('backup', '1', '','');
