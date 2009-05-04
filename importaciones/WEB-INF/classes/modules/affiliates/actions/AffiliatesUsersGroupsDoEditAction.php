@@ -1,17 +1,18 @@
 <?php
+/** 
+ * AffiliatesBranchsDoEditAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("AffiliateGroupPeer.php");
 
 class AffiliatesUsersGroupsDoEditAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesUsersGroupsDoEditAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -31,7 +32,7 @@ class AffiliatesUsersGroupsDoEditAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -43,21 +44,25 @@ class AffiliatesUsersGroupsDoEditAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
+		$section = "Groups";
 
-    $groupPeer = new AffiliateGroupPeer();
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
+
+		$groupPeer = new AffiliateGroupPeer();
 
 		if ( !empty($_POST["id"]) ) {
 			//estoy editando un grupo de usuarios existente
 
 			if ( $groupPeer->update($_POST["id"],$_POST["name"]) )
-  	   	return $mapping->findForwardConfig('success');
+				return $mapping->findForwardConfig('success');
 			else {
 				header("Location: Main.php?do=usersByAffiliateGroupsList&group=".$_POST["id"]."&message=errorUpdate");
 				exit;
 			}
 		}
 		else {
-		  //estoy creando un nuevo grupo de usuarios
+			//estoy creando un nuevo grupo de usuarios
 
 			if ( !empty($_POST["name"]) ) {
 
@@ -73,4 +78,3 @@ class AffiliatesUsersGroupsDoEditAction extends BaseAction {
 	}
 
 }
-?>

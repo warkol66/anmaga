@@ -1,12 +1,11 @@
 <?php
+/** 
+ * AffiliatesAddAffiliateAction
+ *
+ * @package affiliates 
+ */
 
-/**
-* AffiliatesAddAffiliateAction
-*
-* Action para agregar un nuevo afiliado.
-*/
-
-require_once 'BaseAction.php';
+require_once("BaseAction.php");
 require_once("AffiliatePeer.php");
 require_once("AffiliateInfoPeer.php");
 
@@ -16,34 +15,29 @@ class AffiliatesAddAffiliateAction extends BaseAction {
 		;
 	}
 
+	// ----- Public Methods ------------------------------------------------- //
+
 	/**
-	* execute
+	* Process the specified HTTP request, and create the corresponding HTTP
+	* response (or forward to another web component that will create it).
+	* Return an <code>ActionForward</code> instance describing where and how
+	* control should be forwarded, or <code>NULL</code> if the response has
+	* already been completed.
 	*
-	* Procesa la solicitud HTTP solicitada, y crea su respectiva respuesta HTTP o
-	* bien lo manda hacia otra web en donde aqui la crea. Devuelve un 
-	* "ActionForward" describiendo donde y como se debe mandar la solicitud o
-	* NULL si la respuesta ha sido completada. 
-	* 
-	* 
-	* //@param ActionConfig		El ActionConfig (mapping) usado para seleccionar los sucesos
-	* //@param ActionForm			El opcional ActionForm con los contenidos de las peticiones
-	* //@param HttpRequestBase	El HTTP request de lo que se esta  procesando
-	* //@param HttpRequestBase	La respuesta HTTP de lo que estan creando
-	* //@public
-	* 
-	* 
-	* @param string $mapping una variable que muestra los sucesos
-	* @param array $form con todo el contenido a ejecutar
-	* @param pointer &$request puntero a un string de lo que se esta solicitando
-	* @param pointer &$response puntero a un string de la respuesta que ha dado el servidor
-	* @return ActionForward string $mapping con la cadena "sucess" o "failure"
-	*
+	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
+	* @param ActionForm			The optional ActionForm bean for this request (if any)
+	* @param HttpRequestBase	The HTTP request we are processing
+	* @param HttpRequestBase	The HTTP response we are creating
+	* @public
+	* @returns ActionForward
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
-
+		//////////
+		// Access the Smarty PlugIn instance
+		// Note the reference "=&"
 		$plugInKey = 'SMARTY_PLUGIN';
 		$smarty =& $this->actionServer->getPlugIn($plugInKey);
 		if($smarty == NULL) {

@@ -2,25 +2,25 @@
 <h1>Administración de Clientes</h1>
 <!-- Link VOLVER -->
 <!-- /Link VOLVER -->
-|-if $accion eq "edicion"-|
+|-if $action eq "edit"-|
 	<p class='paragraphEdit'>##180,Realice los cambios en la cliente y haga click en "Aceptar" para guardar las modificaciones.##</p>
 |-else-|
 	<p>A continuación podrá editar la lista de Clientes del sistema.</p>
 |-/if-|
 |-if $message eq "deleted"-|
-<div class='successMessage'>Cliente eliminada</div>
+ <div class='successMessage'>Cliente eliminada</div>
 |-elseif $message eq "errorUpdate"-|
-<div class='errorMessage'>Ha ocurrido un error al intentar guardar la información. Intente nuevamente.</div>
+ <div class='errorMessage'>Ha ocurrido un error al intentar guardar la información. Intente nuevamente.</div>
 |-elseif $message eq "saved"-|
-<div class='successMessage'>Cliente guardada</div>
+ <div class='successMessage'>Cliente guardada</div>
 |-elseif $message eq "edited"-|
-<div class='successMessage'>##183,Cliente guardada##</div>
+ <div class='successMessage'>##183,Cliente guardada##</div>
 |-elseif $message eq "blankName"-|
-<div class='errorMessage'>##184,La cliente debe tener un Nombre##</div>
+ <div class='errorMessage'>##184,La cliente debe tener un Nombre##</div>
 |-elseif $message eq "notAddedToGroup"-|
-<div class='errorMessage'>##185,Ha ocurrido un error al intentar agregar la categoría al grupo##</div>
+ <div class='errorMessage'>##185,Ha ocurrido un error al intentar agregar la categoría al grupo##</div>
 |-elseif $message eq "notRemovedFromGroup"-|
-<div class='errorMessage'>##186,Ha ocurrido un error al intentar eliminar la categoría del grupo##</div>
+ <div class='errorMessage'>##186,Ha ocurrido un error al intentar eliminar la categoría del grupo##</div>
 |-/if-|
 <table class='tableTdBorders' cellpadding='5' cellspacing='0' width='100%'>
 	<tr>

@@ -3,16 +3,13 @@
 <!-- Link VOLVER --> 
 <!-- /Link VOLVER --> 
 |-if $message eq "wrongPassword"-|
-<div class='errorMessage'>##185,Las contraseñas no coinciden##</div>
-|-/if-|
-|-if $message eq "emptyUsername"-|
-<div class='errorMessage'>##185,Debe completar el nombre de usuario##</div>
-|-/if-|
-|-if $message eq "emptyAffiliateName"-|
-<div class='errorMessage'>##185,El nombre del Cliente es obligatorio##</div>
-|-/if-|
-|-if $message eq "error"-|
-<div class='errorMessage'>##185,Ha ocurrido un error##</div>
+	<div class='errorMessage'>##185,Las contraseñas no coinciden##</div>
+|-elseif $message eq "emptyUsername"-|
+	<div class='errorMessage'>##185,Debe completar el nombre de usuario##</div>
+|-elseif $message eq "emptyAffiliateName"-|
+	<div class='errorMessage'>##185,El nombre del Cliente es obligatorio##</div>
+|-elseif $message eq "error"-|
+	<div class='errorMessage'>##185,Ha ocurrido un error##</div>
 |-/if-|
 <p>A continuación podrá editar la información de las Clientes.</p>
 <form method="post" action="Main.php?do=affiliatesDoAddAffiliate"> 

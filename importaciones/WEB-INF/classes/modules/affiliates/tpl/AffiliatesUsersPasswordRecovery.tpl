@@ -16,7 +16,7 @@
 				</tr> 
 				|-if $message eq "wrongUser"-|
 				<tr> 
-					<td><div align='center' class='errorMessage'>Usuario desconocido o email incorrecto!. Intente nuevamente.</div></td>
+					<td><div class='errorMessage'>Usuario desconocido o email incorrecto!. Intente nuevamente.</div></td>
 				</tr> 
 				|-/if-|
 				<tr> 
@@ -27,10 +27,10 @@
 				<center> 
 					<table width='520' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'> 
 						<tr> 
-							<td colspan='2' class='tdTitle'>Ingrese su Identificaci&oacute;n de usuario y su email para recibir una nueva contrase�a en su casilla de correo electr&oacute;nico</td>
+							<td colspan='2' class='tdTitle'>Ingrese su Identificación de usuario y su email para recibir una nueva contraseña en su casilla de correo electrónico</td>
 						</tr>
 						<tr> 
-							<td width='20%' nowrap class='tdTitle'>Identificaci&oacute;n de Usuario</td> 
+							<td width='20%' nowrap class='tdTitle'>Identificación de Usuario</td> 
 							<td class='tdData'><input type='text' name='username' size='35' /></td> 
 						</tr> 
 						<tr> 

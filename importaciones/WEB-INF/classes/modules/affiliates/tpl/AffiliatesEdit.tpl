@@ -1,9 +1,9 @@
 <h2>##40,Configuración del Sistema##</h2>
 <h1>Administración de Clientes </h1>
 |-if $message eq "emptyAffiliateName"-|
-<div class='errorMessage'>##185,El nombre del Cliente es obligatorio##</div>
+	<div class='errorMessage'>##185,El nombre del Cliente es obligatorio##</div>
 |-elseif $message eq "error"-|
-<div class='errorMessage'>##185,Ha ocurrido un error##</div>
+	<div class='errorMessage'>##185,Ha ocurrido un error##</div>
 |-/if-|
 <p class='paragraphEdit'>##180,Realice los cambios enl Cliente y haga click en "Guardar Cambios" para guardar las modificaciones. ##</p>
 <form method="post" action="Main.php?do=affiliatesDoEdit">

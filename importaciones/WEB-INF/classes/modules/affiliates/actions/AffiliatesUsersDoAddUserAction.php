@@ -1,5 +1,11 @@
 <?php
-require_once 'BaseAction.php';
+/** 
+ * AffiliatesUsersDoAddUserAction
+ *
+ * @package affiliates 
+ */
+
+require_once("BaseAction.php");
 require_once("AffiliateUserPeer.php");
 
 class AffiliatesUsersDoAddUserAction extends BaseAction {
@@ -13,37 +19,32 @@ class AffiliatesUsersDoAddUserAction extends BaseAction {
 		$smarty->assign("currentAffiliateUser",AffiliateUserPeer::getFromArray($_POST["affiliateUser"]));
 		$smarty->assign("currentAffiliateUserInfo",AffiliateUserInfoPeer::getFromArray($_POST["affiliateUserInfo"]));
 		$timezonePeer = new TimezonePeer();
-		$smarty->assign('timezones',$timezonePeer->getAll());		
+		$smarty->assign('timezones',$timezonePeer->getAll());
 	}
 
+	// ----- Public Methods ------------------------------------------------- //
+
 	/**
-	* execute
+	* Process the specified HTTP request, and create the corresponding HTTP
+	* response (or forward to another web component that will create it).
+	* Return an <code>ActionForward</code> instance describing where and how
+	* control should be forwarded, or <code>NULL</code> if the response has
+	* already been completed.
 	*
-	* Procesa la solicitud HTTP solicitada, y crea su respectiva respuesta HTTP o
-	* bien lo manda hacia otra web en donde aqui la crea. Devuelve un 
-	* "ActionForward" describiendo donde y como se debe mandar la solicitud o
-	* NULL si la respuesta ha sido completada. 
-	* 
-	* 
-	* //@param ActionConfig		El ActionConfig (mapping) usado para seleccionar los sucesos
-	* //@param ActionForm			El opcional ActionForm con los contenidos de las peticiones
-	* //@param HttpRequestBase	El HTTP request de lo que se esta  procesando
-	* //@param HttpRequestBase	La respuesta HTTP de lo que estan creando
-	* //@public
-	* 
-	* 
-	* @param string $mapping una variable que muestra los sucesos
-	* @param array $form con todo el contenido a ejecutar
-	* @param pointer &$request puntero a un string de lo que se esta solicitando
-	* @param pointer &$response puntero a un string de la respuesta que ha dado el servidor
-	* @return ActionForward string $mapping con la cadena "sucess" o "failure"
-	*
+	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
+	* @param ActionForm			The optional ActionForm bean for this request (if any)
+	* @param HttpRequestBase	The HTTP request we are processing
+	* @param HttpRequestBase	The HTTP response we are creating
+	* @public
+	* @returns ActionForward
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
-
+		//////////
+		// Access the Smarty PlugIn instance
+		// Note the reference "=&"
 		$plugInKey = 'SMARTY_PLUGIN';
 		$smarty =& $this->actionServer->getPlugIn($plugInKey);
 		if($smarty == NULL) {
@@ -51,12 +52,14 @@ class AffiliatesUsersDoAddUserAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
+		$section = "Users";
 		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
 		$usersPeer= new AffiliateUserPeer();
-		
+
 		$affiliateUserParams = $_POST["affiliateUser"];
-		$affiliateUserInfoParams = $_POST["affiliateUserInfo"];		
+		$affiliateUserInfoParams = $_POST["affiliateUserInfo"];
 
 		if ( !empty($_SESSION["loginUser"]) )
 			$affiliateId = $_POST["affiliateId"];
@@ -65,9 +68,9 @@ class AffiliatesUsersDoAddUserAction extends BaseAction {
 
 		if ( empty($affiliateUserParams["username"]) ) {
 			$this->assignObjects($smarty);
-			$smarty->assign("message","emptyUsername");			
+			$smarty->assign("message","emptyUsername");
 			return $mapping->findForwardConfig('failure');
-		}	
+		}
 
 		if ( empty($affiliateUserParams["password"]) || ($affiliateUserParams["password"] != $affiliateUserParams["pass2"]) ) {
 			$this->assignObjects($smarty);
@@ -76,7 +79,7 @@ class AffiliatesUsersDoAddUserAction extends BaseAction {
 		}
 
 		AffiliateUserPeer::create($affiliateId,$paramsUser["username"],$paramsUser["pass"],1,$paramsUserInfo["name"],$paramsUserInfo["surname"],$paramsUserInfo["mailAddress"],$paramsUser["timezone"]);
-		
+
 		$myRedirectConfig = $mapping->findForwardConfig('success');
 		$myRedirectPath = $myRedirectConfig->getpath();
 		$myReqQueryString = "&affiliateId=".$affiliateId;

@@ -1,16 +1,17 @@
 <?php
+/** 
+ * AffiliatesUsersPasswordRecoveryAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 
 class AffiliatesUsersPasswordRecoveryAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesUsersPasswordRecoveryAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -30,11 +31,12 @@ class AffiliatesUsersPasswordRecoveryAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
-    	/**
-     	* Use a different template
-     	*/
+		BaseAction::execute($mapping, $form, $request, $response);
+
+		//////////
+		// Use a different template
 		$this->template->template = "TemplateLogin.tpl";
+
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
@@ -45,9 +47,9 @@ class AffiliatesUsersPasswordRecoveryAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
+		$smarty->assign("module",$module);
 
 		return $mapping->findForwardConfig('success');
 	}
 
 }
-?>

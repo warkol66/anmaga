@@ -2,7 +2,7 @@
 <h1>|-if $action eq "edit"-|Editar|-else-|Crear|-/if-| Oficinas|-if $action eq "edit"-| - |-$branch->getname()-||-/if-|</h1>
 <!-- Link VOLVER -->
 <!-- /Link VOLVER -->
-|-if $accion eq "edicion"-|
+|-if $accion eq "edit"-|
 	<p class='paragraphEdit'>##180,Realice los cambios en la oficina y haga click en "Guardar Cambios" para guardar las modificaciones. ##</p>
 |-else-|
 	<p>A continuación podrá editar la información de las oficinas de las dependencias.</p>

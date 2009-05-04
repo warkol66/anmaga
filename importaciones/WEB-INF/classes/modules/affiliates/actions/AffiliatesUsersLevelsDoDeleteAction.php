@@ -1,17 +1,18 @@
 <?php
+/** 
+ * AffiliatesUsersLevelsDoDeleteAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("AffiliateLevelPeer.php");
 
 class AffiliatesUsersLevelsDoDeleteAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesUsersLevelsDoDeleteAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -31,7 +32,7 @@ class AffiliatesUsersLevelsDoDeleteAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -44,12 +45,12 @@ class AffiliatesUsersLevelsDoDeleteAction extends BaseAction {
 
 		$module = "Affiliates";
 		$section = "Levels";
-		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
 
-    if ( AffiliateLevelPeer::delete($_GET["level"]) )
+		if ( AffiliateLevelPeer::delete($_GET["level"]) )
 			return $mapping->findForwardConfig('success');
 		else
 			return $mapping->findForwardConfig('failure');
@@ -58,4 +59,3 @@ class AffiliatesUsersLevelsDoDeleteAction extends BaseAction {
 	}
 
 }
-?>

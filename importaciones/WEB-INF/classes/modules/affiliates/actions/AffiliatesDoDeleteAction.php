@@ -1,12 +1,14 @@
 <?php
+/** 
+ * AffiliatesDoDeleteAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("AffiliatePeer.php");
 
 class AffiliatesDoDeleteAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function AffiliatesDoDeleteAction() {
 		;
@@ -31,7 +33,7 @@ class AffiliatesDoDeleteAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -44,9 +46,11 @@ class AffiliatesDoDeleteAction extends BaseAction {
 
 		$module = "Affiliates";
 
-    $affiliatesPeer = new AffiliatePeer();
+		$smarty->assign("module",$module);
 
-    if ( $affiliatesPeer->delete($_GET["affiliate"]) )
+		$affiliatesPeer = new AffiliatePeer();
+
+		if ( $affiliatesPeer->delete($_GET["affiliate"]) )
 			return $mapping->findForwardConfig('success');
 		else
 			return $mapping->findForwardConfig('failure');
@@ -55,4 +59,3 @@ class AffiliatesDoDeleteAction extends BaseAction {
 	}
 
 }
-?>

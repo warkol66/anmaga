@@ -1,17 +1,18 @@
 <?php
+/** 
+ * AffiliatesBranchsDoDeleteAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("BranchPeer.php");
 
 class AffiliatesBranchsDoDeleteAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesBranchsDoDeleteAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -31,7 +32,7 @@ class AffiliatesBranchsDoDeleteAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -44,12 +45,13 @@ class AffiliatesBranchsDoDeleteAction extends BaseAction {
 
 		$module = "Affiliates";
 		$section = "Branchs";
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
-    BranchPeer::delete($_POST["id"]);
+		BranchPeer::delete($_POST["id"]);
 
 		return $mapping->findForwardConfig('success');
 
 	}
 
 }
-?>

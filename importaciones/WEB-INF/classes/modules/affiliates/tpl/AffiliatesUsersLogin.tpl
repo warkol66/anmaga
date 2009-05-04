@@ -8,12 +8,11 @@
 		   <!-- Begin LoginContent -->
 		   <div id="loginContent">
 				|-if $message eq "wrongUser"-|
-					<div align='center' class='errorMessage'>Usuario desconocido o contraseña incorrecta!. Intente nuevamente.</div>
+					<div class='errorMessage'>Usuario desconocido o contraseña incorrecta!. Intente nuevamente.</div>
 				|-/if-|
 				|-if $message eq "passwordSent"-|
-					<div align='center' class='successMessage'>Se envio una nueva contraseña a su casilla de correo.</div>
+					<div class='successMessage'>Se envio una nueva contraseña a su casilla de correo.</div>
 				|-/if-|
-
 	       <p>Ingrese su Identificación de usuario y contraseña para ingresar al sistema</p>
 	       <h1>Usuario</h1>
 	         <input type='text' name='loginUusername' size='35' />

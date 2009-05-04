@@ -1,19 +1,18 @@
 <?php
+/** 
+ * AffiliatesListAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("AffiliatePeer.php");
 
-
-
 class AffiliatesListAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function AffiliatesListAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -33,7 +32,7 @@ class AffiliatesListAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -45,12 +44,9 @@ class AffiliatesListAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
-		$section = "";
-		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+		$smarty->assign("module",$module);
 
-    $smarty->assign("message",$_GET["message"]);
+		$smarty->assign("message",$_GET["message"]);
 
 		$name = $_GET["name"];
 
@@ -59,7 +55,7 @@ class AffiliatesListAction extends BaseAction {
 			$smarty->assign("allFlag",1);
 		}
 		else
-    	$pager = AffiliatePeer::getAllPaginated($_GET["page"]);
+			$pager = AffiliatePeer::getAllPaginated($_GET["page"]);
 
 		$smarty->assign("affiliates",$pager->getResult());
 		$smarty->assign("pager",$pager);
@@ -69,4 +65,3 @@ class AffiliatesListAction extends BaseAction {
 	}
 
 }
-?>

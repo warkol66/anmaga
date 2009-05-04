@@ -1,4 +1,9 @@
 <?php
+/** 
+ * AffiliatesBranchsDoEditAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("BranchPeer.php");
@@ -6,13 +11,9 @@ require_once("AffiliatePeer.php");
 
 class AffiliatesBranchsDoEditAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesBranchsDoEditAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -32,7 +33,7 @@ class AffiliatesBranchsDoEditAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -44,32 +45,35 @@ class AffiliatesBranchsDoEditAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
-		$section = "Branchs";
+		$section = "Branches";
 
-		if (!empty($_SESSION["loginUser"])) {		
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
+
+		if (!empty($_SESSION["loginUser"])) {
 			$affiliates = AffiliatePeer::getAll();
-			$smarty->assign("affiliates",$affiliates);			
+			$smarty->assign("affiliates",$affiliates);
 			$smarty->assign("all",1);
 			$affiliateId = $_POST["affiliateId"];
 		}
 		else {
 			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
 			$smarty->assign("all",0);
-		}		
+		}
 
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un branch existente
 
 			if ( BranchPeer::update($_POST["id"],$_POST["affiliateId"],$_POST["number"],$_POST["name"],$_POST["phone"],$_POST["contact"],$_POST["contactEmail"],$_POST["memo"],$_POST["code"]) )
-      			return $mapping->findForwardConfig('success');
+				return $mapping->findForwardConfig('success');
 			else
 				return $mapping->findForwardConfig('success');
 
 		}
 		else {
-		  //estoy creando un nuevo branch
+			//estoy creando un nuevo branch
 
-      if ( !BranchPeer::create($_POST["affiliateId"],$_POST["number"],$_POST["name"],$_POST["phone"],$_POST["contact"],$_POST["contactEmail"],$_POST["memo"],$_POST["code"]) ) {
+			if ( !BranchPeer::create($_POST["affiliateId"],$_POST["number"],$_POST["name"],$_POST["phone"],$_POST["contact"],$_POST["contactEmail"],$_POST["memo"],$_POST["code"]) ) {
 			$smarty->assign("id",$_POST["id"]);
 						$smarty->assign("affiliateId",$_POST["affiliateId"]);
 						$smarty->assign("number",$_POST["number"]);
@@ -82,7 +86,7 @@ class AffiliatesBranchsDoEditAction extends BaseAction {
 							$smarty->assign("action","create");
 				$smarty->assign("message","error");
 				return $mapping->findForwardConfig('failure');
-      }
+			}
 
 			return $mapping->findForwardConfig('success');
 		}
@@ -90,4 +94,3 @@ class AffiliatesBranchsDoEditAction extends BaseAction {
 	}
 
 }
-?>

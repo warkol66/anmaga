@@ -1,17 +1,18 @@
 <?php
+/** 
+ * AffiliatesUsersDoLoginAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("AffiliateUserPeer.php");
 
 class AffiliatesUsersDoLoginAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesUsersDoLoginAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -31,7 +32,7 @@ class AffiliatesUsersDoLoginAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -43,10 +44,11 @@ class AffiliatesUsersDoLoginAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
-		
+		$smarty->assign("module",$module);
+
 		if (Common::hasUnifiedLogin()) {
 			$smarty->assign("unifiedLogin",true);
-			Common::setValueUnifiedLoginCookie($_POST['selectLoginMode']);			
+			Common::setValueUnifiedLoginCookie($_POST['selectLoginMode']);
 		}
 
 		if ( !empty($_POST["loginUsername"]) && !empty($_POST["loginPassword"]) ) {;
@@ -63,7 +65,7 @@ class AffiliatesUsersDoLoginAction extends BaseAction {
 		}
 
 		$this->template->template = "TemplateLogin.tpl";
-		
+
 		$smarty->assign("message","wrongUser");
 
 
@@ -74,7 +76,7 @@ class AffiliatesUsersDoLoginAction extends BaseAction {
 			return $mapping->findForwardConfig('failure-unified');
 
 		}
-		
+
 		return $mapping->findForwardConfig('failure');
 	}
 

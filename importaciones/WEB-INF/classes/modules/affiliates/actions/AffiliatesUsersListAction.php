@@ -15,13 +15,9 @@ require_once("TimezonePeer.php");
 
 class AffiliatesUsersListAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesUsersListAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -55,11 +51,11 @@ class AffiliatesUsersListAction extends BaseAction {
 		$module = "Affiliates";
 		$section = "Users";
 
-		$timezonePeer = new TimezonePeer();
-		$smarty->assign('timezones',$timezonePeer->getAll());
-
 		$smarty->assign("module",$module);
 		$smarty->assign("section",$section);
+
+		$timezonePeer = new TimezonePeer();
+		$smarty->assign('timezones',$timezonePeer->getAll());
 
 		$usersPeer = new AffiliateUserPeer();
 		//Si esta logueado un usuario comun

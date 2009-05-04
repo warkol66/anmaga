@@ -8,27 +8,27 @@
 	<p class='paragraphEdit'>A continuación podrá editar la lista de Usuarios de Clientes guardados en el Sistema.</p>
 |-/if-|
 |-if $message eq "deleted"-|
-<div class='successMessage'>##153,Usuario eliminado##</div>
+	<div class='successMessage'>##153,Usuario eliminado##</div>
 |-elseif $message eq "activated"-|
-<div class='successMessage'>##154,Usuario reactivado##</div>
+	<div class='successMessage'>##154,Usuario reactivado##</div>
 |-elseif $message eq "wrongPassword"-|
-<div class='errorMessage'>##155,Las contraseñas deben coincidir##</div>
+	<div class='errorMessage'>##155,Las contraseñas deben coincidir##</div>
 |-elseif $message eq "emptyAffiliate"-|
-<div class='errorMessage'>##155,Debe selecccionar un afiliado##</div>
+	<div class='errorMessage'>##155,Debe selecccionar un afiliado##</div>
 |-elseif $message eq "emptyUsername"-|
-<div class='errorMessage'>##155,Debe completar el nombre de usuario##</div>
+	<div class='errorMessage'>##155,Debe completar el nombre de usuario##</div>
 |-elseif $message eq "errorUpdate"-|
-<div class='errorMessage'>##156,Ha ocurrido un error al intentar guardar la información del usuario##</div>
+	<div class='errorMessage'>##156,Ha ocurrido un error al intentar guardar la información del usuario##</div>
 |-elseif $message eq "saved"-|
-<div class='successMessage'>##157,Usuario guardado##</div>
+	<div class='successMessage'>##157,Usuario guardado##</div>
 |-elseif $message eq "notAddedToGroup"-|
-<div class='errorMessage'>##158,Ha ocurrido un error al intentar agregar el usuario al grupo##</div>
+	<div class='errorMessage'>##158,Ha ocurrido un error al intentar agregar el usuario al grupo##</div>
 |-elseif $message eq "notRemovedFromGroup"-|
-<div class='errorMessage'>##159,Ha ocurrido un error al intentar eliminar el usuario al grupo##</div>
+	<div class='errorMessage'>##159,Ha ocurrido un error al intentar eliminar el usuario al grupo##</div>
 |-/if-|
 |-if $action eq "create" or $action eq "edit"-|
 	|-if $action eq "create"-|
-			##160,Ingrese  la Identificación del usuario y la contraseña para el nuevo usuario,  luego haga click en Guardar para generar el nuevo usuario.##
+			##160,Ingrese la Identificación del usuario y la contraseña para el nuevo usuario, luego haga click en Guardar para generar el nuevo usuario.##
 	|-else-|
 			##161,Realice los cambios en el usuario y haga click en Aceptar para guardar las modificaciones.##|-/if-| <br />
 	<br />

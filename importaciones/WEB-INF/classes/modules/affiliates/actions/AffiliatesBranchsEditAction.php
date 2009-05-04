@@ -1,4 +1,9 @@
 <?php
+/** 
+ * AffiliatesBranchsEditAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("BranchPeer.php");
@@ -6,13 +11,9 @@ require_once("AffiliatePeer.php");
 
 class AffiliatesBranchsEditAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesBranchsEditAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -32,7 +33,7 @@ class AffiliatesBranchsEditAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -44,36 +45,31 @@ class AffiliatesBranchsEditAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
-		$section = "Branchs";
-		
-		if (!empty($_SESSION["loginUser"])) {		
+		$section = "Branches";
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
+
+		if (!empty($_SESSION["loginUser"])) {
 			$affiliates = AffiliatePeer::getAll();
-			$smarty->assign("affiliates",$affiliates);			
+			$smarty->assign("affiliates",$affiliates);
 			$smarty->assign("all",1);
 		}
-		else {
+		else
 			$smarty->assign("all",0);
-		}		
 
 		if ( !empty($_GET["id"]) ) {
 			//voy a editar un branch
-
 			$branch = BranchPeer::get($_GET["id"]);
-
 			$smarty->assign("branch",$branch);
-																				
-	    	$smarty->assign("action","edit");
+			$smarty->assign("action","edit");
 		}
 		else {
 			//voy a crear un branch nuevo
-																								
 			$smarty->assign("action","create");
 		}
-
 		$smarty->assign("message",$_GET["message"]);
-
 		return $mapping->findForwardConfig('success');
 	}
 
 }
-?>
+
