@@ -1,17 +1,17 @@
 <?php
 /** 
- * AffiliatesBranchsDoEditAction
+ * AffiliatesBranchesEditAction
  *
  * @package affiliates 
  */
 
 require_once("BaseAction.php");
-require_once("BranchPeer.php");
+require_once("AffiliateBranchPeer.php");
 require_once("AffiliatePeer.php");
 
-class AffiliatesBranchsDoEditAction extends BaseAction {
+class AffiliatesBranchesEditAction extends BaseAction {
 
-	function AffiliatesBranchsDoEditAction() {
+	function AffiliatesBranchesEditAction() {
 		;
 	}
 
@@ -46,7 +46,6 @@ class AffiliatesBranchsDoEditAction extends BaseAction {
 
 		$module = "Affiliates";
 		$section = "Branches";
-
 		$smarty->assign("module",$module);
 		$smarty->assign("section",$section);
 
@@ -54,43 +53,23 @@ class AffiliatesBranchsDoEditAction extends BaseAction {
 			$affiliates = AffiliatePeer::getAll();
 			$smarty->assign("affiliates",$affiliates);
 			$smarty->assign("all",1);
-			$affiliateId = $_POST["affiliateId"];
 		}
-		else {
-			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
+		else
 			$smarty->assign("all",0);
-		}
 
-		if ( $_POST["action"] == "edit" ) {
-			//estoy editando un branch existente
-
-			if ( BranchPeer::update($_POST["id"],$_POST["affiliateId"],$_POST["number"],$_POST["name"],$_POST["phone"],$_POST["contact"],$_POST["contactEmail"],$_POST["memo"],$_POST["code"]) )
-				return $mapping->findForwardConfig('success');
-			else
-				return $mapping->findForwardConfig('success');
-
+		if ( !empty($_GET["id"]) ) {
+			//voy a editar un branch
+			$branch = AffiliateBranchPeer::get($_GET["id"]);
+			$smarty->assign("branch",$branch);
+			$smarty->assign("action","edit");
 		}
 		else {
-			//estoy creando un nuevo branch
-
-			if ( !BranchPeer::create($_POST["affiliateId"],$_POST["number"],$_POST["name"],$_POST["phone"],$_POST["contact"],$_POST["contactEmail"],$_POST["memo"],$_POST["code"]) ) {
-			$smarty->assign("id",$_POST["id"]);
-						$smarty->assign("affiliateId",$_POST["affiliateId"]);
-						$smarty->assign("number",$_POST["number"]);
-						$smarty->assign("name",$_POST["name"]);
-						$smarty->assign("phone",$_POST["phone"]);
-						$smarty->assign("contact",$_POST["contact"]);
-						$smarty->assign("contactEmail",$_POST["contactEmail"]);
-						$smarty->assign("memo",$_POST["memo"]);
-						$smarty->assign("code",$_POST["code"]);
-							$smarty->assign("action","create");
-				$smarty->assign("message","error");
-				return $mapping->findForwardConfig('failure');
-			}
-
-			return $mapping->findForwardConfig('success');
+			//voy a crear un branch nuevo
+			$smarty->assign("action","create");
 		}
-
+		$smarty->assign("message",$_GET["message"]);
+		return $mapping->findForwardConfig('success');
 	}
 
 }
+

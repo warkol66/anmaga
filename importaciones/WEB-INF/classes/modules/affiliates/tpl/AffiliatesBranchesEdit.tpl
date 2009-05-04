@@ -13,7 +13,7 @@
 			<input type="hidden" name="id" id="id" value="|-if $action eq 'edit'-||-$branch->getid()-||-/if-|" />
 		|-/if-|
 		<input type="hidden" name="action" id="action" value="|-$action-|" /> 
-		<input type="hidden" name="do" id="do" value="affiliatesBranchsDoEdit" /> 
+		<input type="hidden" name="do" id="do" value="affiliatesBranchesDoEdit" /> 
  		|-if $message eq "error"-|<span class="errorMessage">Ha ocurrido un error al intentar guardar la sucursal</span>|-/if-|
 		<p> Ingrese los datos de la Oficina.</p> 
 	<table width="100%" border="0" cellspacing="0" cellpadding="5" class="tableTdBorders">
@@ -22,9 +22,9 @@
 		<td class="tdTitle">Dependencia</td>
 		<td class="tdSize1"><select id="affiliateId" name="affiliateId"> 
 				<option value="">Seleccionar Dependencia</option> 
-									|-foreach from=$affiliates item=affiliate-|
+				|-foreach from=$affiliates item=affiliate-|
 				<option value="|-$affiliate->getId()-|"|-if $action eq "edit" and $branch->getAffiliateId() eq $affiliate->getId()-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option> 
-									|-/foreach-|									
+				|-/foreach-|									
 			</select> 
 </td>
 	</tr>

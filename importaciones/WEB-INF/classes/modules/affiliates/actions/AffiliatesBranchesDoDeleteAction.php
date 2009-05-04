@@ -1,16 +1,16 @@
 <?php
 /** 
- * AffiliatesBranchsDoDeleteAction
+ * AffiliatesBranchesDoDeleteAction
  *
  * @package affiliates 
  */
 
 require_once("BaseAction.php");
-require_once("BranchPeer.php");
+require_once("AffiliateBranchPeer.php");
 
-class AffiliatesBranchsDoDeleteAction extends BaseAction {
+class AffiliatesBranchesDoDeleteAction extends BaseAction {
 
-	function AffiliatesBranchsDoDeleteAction() {
+	function AffiliatesBranchesDoDeleteAction() {
 		;
 	}
 
@@ -48,7 +48,7 @@ class AffiliatesBranchsDoDeleteAction extends BaseAction {
 		$smarty->assign("module",$module);
 		$smarty->assign("section",$section);
 
-		BranchPeer::delete($_POST["id"]);
+		AffiliateBranchPeer::delete($_POST["id"]);
 
 		return $mapping->findForwardConfig('success');
 

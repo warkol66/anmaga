@@ -1,17 +1,17 @@
 <?php
 /** 
- * AffiliatesBranchsListAction
+ * AffiliatesBranchesListAction
  *
  * @package affiliates 
  */
 
 require_once("BaseAction.php");
-require_once("BranchPeer.php");
+require_once("AffiliateBranchPeer.php");
 require_once("AffiliatePeer.php");
 
-class AffiliatesBranchsListAction extends BaseAction {
+class AffiliatesBranchesListAction extends BaseAction {
 
-	function AffiliatesBranchsListAction() {
+	function AffiliatesBranchesListAction() {
 		;
 	}
 
@@ -50,9 +50,9 @@ class AffiliatesBranchsListAction extends BaseAction {
 		$smarty->assign("module",$module);
 		$smarty->assign("section",$section);
 
-		$branchPeer = new BranchPeer();
+		$branchPeer = new AffiliateBranchPeer();
 
-		$url = "Main.php?do=affiliatesBranchsList";
+		$url = "Main.php?do=affiliatesBranchesList";
 
 		if (!empty($_SESSION["loginUser"])) {
 			if (!empty($_GET["affiliateId"])) {
@@ -70,7 +70,7 @@ class AffiliatesBranchsListAction extends BaseAction {
 
 		$pager = $branchPeer->getSearchPaginated($_GET["page"]);
 
-		$smarty->assign("branchs",$pager->getResult());
+		$smarty->assign("branches",$pager->getResult());
 		$smarty->assign("pager",$pager);
 
 		$smarty->assign("url",$url);

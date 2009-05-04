@@ -146,5 +146,30 @@ CREATE TABLE `affiliates_group`
 	UNIQUE KEY `affiliates_group_U_1` (`name`)
 )Type=MyISAM COMMENT='Groups';
 
+#-----------------------------------------------------------------------------
+#-- affiliates_branch
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `affiliates_branch`;
+
+
+CREATE TABLE `affiliates_branch`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de la sucursal',
+	`affiliateId` INTEGER  NOT NULL COMMENT 'Id del afiliado',
+	`number` INTEGER  NOT NULL COMMENT 'Numero de la sucursal',
+	`code` VARCHAR(20) COMMENT 'Codigo de la sucursal',
+	`name` VARCHAR(255) COMMENT 'Nombre de la sucursal',
+	`phone` VARCHAR(100) COMMENT 'Telefono de la sucursal',
+	`contact` VARCHAR(50) COMMENT 'Nombre de persona de contacto',
+	`contactEmail` VARCHAR(100) COMMENT 'Email de persona de contacto',
+	`memo` TEXT COMMENT 'Informacion adicional de la sucursal',
+	PRIMARY KEY (`id`),
+	INDEX `affiliates_branch_FI_1` (`affiliateId`),
+	CONSTRAINT `affiliates_branch_FK_1`
+		FOREIGN KEY (`affiliateId`)
+		REFERENCES `affiliates_affiliate` (`id`)
+)Type=MyISAM COMMENT='Affiliates branches information';
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
