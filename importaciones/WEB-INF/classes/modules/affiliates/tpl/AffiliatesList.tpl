@@ -51,9 +51,11 @@
 		</td>
 	</tr>
 	|-/foreach-|
-	<tr>
-		<td colspan="3" class="pages">|-include file="PaginateInclude.tpl"-|</td>
-	</tr>
+		|-if $pager->getTotalPages() gt 1-|
+			<tr> 
+				<td colspan="3" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
+			</tr>							
+		|-/if-|						
 	<tr>
 		 <th colspan="3" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=affiliatesAddAffiliate" class="addLink">Agregar Cliente</a></div></th>
 	</tr>

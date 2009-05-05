@@ -1,18 +1,19 @@
 <?php
+/** 
+ * BackupListAction
+ *
+ * @package backup 
+ */
 
 require_once("BaseAction.php");
 require_once("BackupPeer.php");
 
 class BackupListAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function BackupListAction() {
 		;
 	}
 	
-
 	// ----- Public Methods ------------------------------------------------- //
 
 	/**

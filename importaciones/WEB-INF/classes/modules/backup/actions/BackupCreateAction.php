@@ -1,25 +1,18 @@
 <?php
+/** 
+ * BackupCreateAction
+ *
+ * @package backup 
+ */
 
 require_once("BaseAction.php");
 require_once("BackupPeer.php");
 
-/**
-* Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
-* compiling PHP template engine within php.MVC.
-*
-* @author John C Wildenauer
-* @version 1.0
-* @public
-*/
 class BackupCreateAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function BackupCreateAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -40,8 +33,6 @@ class BackupCreateAction extends BaseAction {
 	function execute($mapping, $form, &$request, &$response) {
 
 		BaseAction::execute($mapping, $form, $request, $response);
-		//////////
-		// Call our business logic from here
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -52,9 +43,8 @@ class BackupCreateAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		//asigno modulo
-		$modulo = "Backup";
-		$smarty->assign("modulo",$modulo);
+		$module = "Backup";
+		$smarty->assign("module",$module);
 
 		if (empty($_GET['mode'])) {
 			return $mapping->findForwardConfig('failure');
@@ -90,4 +80,3 @@ class BackupCreateAction extends BaseAction {
 	}
 
 }
-?>
