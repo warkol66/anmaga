@@ -12,7 +12,7 @@
 <!--[if gte IE 7]> <link href="css/styles-ie7.css" rel="stylesheet" type="text/css"> <![endif]-->
 <link rel="shortcut icon" href="images/favicon.ico">
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/functions.js"></script>
+<script type="text/javascript" src="Main.php?do=js&name=js&module=common&code=|-$currentLanguageCode-|"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/datePicker.js"></script>
 <script language="JavaScript" src="scripts/scriptaculous.js" type="text/javascript"></script>
 <script type="text/javascript" src="scripts/behaviour.js"></script>
