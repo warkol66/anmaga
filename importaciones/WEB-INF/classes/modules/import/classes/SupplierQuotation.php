@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 require_once('import/classes/SupplierQuotationHistoryPeer.php');
 require_once 'import/classes/om/BaseSupplierQuotation.php';
@@ -29,18 +29,30 @@ class SupplierQuotation extends BaseSupplierQuotation {
 	
 	private $statusNames = array(
 								SupplierQuotation::STATUS_NEW => 'New',
-								SupplierQuotation::STATUS_QUOTATION_REQUESTED => 'Quotation Requested',
+								SupplierQuotation::STATUS_QUOTATION_REQUESTED => 'Quote Requested',
 								SupplierQuotation::STATUS_PARTIALLY_QUOTED => 'Partially Quoted',
 								SupplierQuotation::STATUS_QUOTED => 'Quoted',
 								SupplierQuotation::STATUS_FEEDBACK => 'Feedback'
 							);	
+
+	public static function getStatusNames2() {
+		//nombre de los estados para los administradores
+		$statusNames = array();
+		$statusNames[SupplierQuotation::STATUS_NEW] = Common::getTranslation('New','import');
+		$statusNames[SupplierQuotation::STATUS_QUOTATION_REQUESTED] = Common::getTranslation('Quote Requested','import');
+		$statusNames[SupplierQuotation::STATUS_PARTIALLY_QUOTED] = Common::getTranslation('Partially Quoted','import');
+		$statusNames[SupplierQuotation::STATUS_QUOTED] = Common::getTranslation('Quoted','import');
+		$statusNames[SupplierQuotation::STATUS_FEEDBACK] = Common::getTranslation('Under negotiation','import');
+		return $statusNames;		
+	} 
 	
 	/**
 	 * Devuelve el nombre del status actual de la cotizacion
 	 * @return string
 	 */
 	public function getStatusName() {
-		return $this->statusNames[$this->getStatus()];
+		$statusArray = SupplierQuotation::getStatusNames2();
+		return $statusArray[$this->getStatus()];
 	}
 	
 	/**
@@ -70,7 +82,8 @@ class SupplierQuotation extends BaseSupplierQuotation {
 		require_once('EmailManagement.php');
 		
 		if (empty($subject)) {
-			$subject = 'Notificacion de Creacion de Pedido de Cotizacion';
+			$subject = Common::getTranslationByLanguageCode('Quote Request','import','cn');
+			$subject .= " / ".Common::getTranslationByLanguageCode('Quote Request','import','eng');
 		}
 		
 		$manager = new EmailManagement();
@@ -263,7 +276,7 @@ class SupplierQuotation extends BaseSupplierQuotation {
 	 * @return array
 	 */	
 	public function getStatusNames() {
-		return $this->statusNames;
+		return $this->statusNames2;
 	}
 	
 	/**

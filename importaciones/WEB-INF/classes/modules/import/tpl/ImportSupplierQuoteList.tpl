@@ -24,7 +24,7 @@
 </div>
 
 <div id="div_supplierQuotations">
-	<table cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-newsmedias">
+	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-newsmedias">
 		<thead>
 			<tr>
 				<th colspan="7" class="thFillTitle">
@@ -70,16 +70,17 @@
 					</form>
 					
 					<input type="button" value="##import,20,Reenviar a otros destinatarios##" onClick="javascript:importShowDiv('resendDiv|-$quotation->getId()-|')" class="buttonImageSendMultiple" title="##import,21,Enviar la solicitud a otros destinatarios##"/>
-					<div id="resendDiv|-$quotation->getId()-|" style="display: none;">
+					<div id="resendDiv|-$quotation->getId()-|" style="display: none;z-index: 1000; width: 350px; position:absolute; margin-left: -185px; margin-top: -80px; clear:both; background-color:#FFFFFF;">
 
-					<form action="Main.php" method="post">	
+					<form action="Main.php" method="post">	<fieldset>
+					<legend>Destinatarios</legend>
 						<input type="hidden" name="do" value="importSupplierQuoteResend" />
 						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
 						<label for="destinationEmails">##import,22,Destinatarios (separados por coma):##</label><br /><input type="text" name="destinationEmails" value="" />
-						
-						<input type="submit" name="submit_go_resend_quotation" value="##import,16,Reenviar##" />
-						<input type="button" name="hide_resend_div" value="Cancelar" onClick="javascript:importHideDiv('resendDiv|-$quotation->getId()-|')" />
-					</form>
+						<br />
+						<input type="submit" name="submit_go_resend_quotation" value="##import,16,Reenviar##" class="button" />
+						<input type="button" name="hide_resend_div" value="Cancelar" onClick="javascript:importHideDiv('resendDiv|-$quotation->getId()-|')" class="button" />
+					</fieldset></form>
 						
 					</div>
 <!--					<form action="Main.php" method="post">

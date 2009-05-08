@@ -47,7 +47,7 @@ class ClientQuotation extends BaseClientQuotation {
 	//nombre de los estados para los administradores
 	private $statusNamesAdmin = array(
 								ClientQuotation::STATUS_NEW => 'New',
-								ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED => 'Quotation Requested',
+								ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED => 'Quote Requested',
 								ClientQuotation::STATUS_WAITING_FOR_PRICING => 'Waiting For Pricing',
 								ClientQuotation::STATUS_PARTIALLY_QUOTED => 'Waiting For Pricing',
 								ClientQuotation::STATUS_QUOTED => 'Quoted',
@@ -164,7 +164,8 @@ class ClientQuotation extends BaseClientQuotation {
 	 * @return string
 	 */
 	public function getStatusNameClient() {
-		return $this->statusNamesClient[$this->getStatus()];
+		$statusArray = ClientQuotationPeer::getStatusNamesAffiliate2();
+		return $statusArray[$this->getStatus()];
 	}	
 
 	/**

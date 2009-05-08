@@ -41,7 +41,7 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
 						//nombre de los estados para los administradores
 	private $statusNamesAdmin = array(
 								'New' => array(ClientQuotation::STATUS_NEW),
-								'Quotation Requested' => array(ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED),
+								'Quote Requested' => array(ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED),
 								'Waiting For Pricing' => array(ClientQuotation::STATUS_WAITING_FOR_PRICING, ClientQuotation::STATUS_PARTIALLY_QUOTED),
 								'Quoted' => array(ClientQuotation::STATUS_QUOTED)
 							);
@@ -49,17 +49,30 @@ class ClientQuotationPeer extends BaseClientQuotationPeer {
 	public static function getStatusNamesAdmin2() {
 		//nombre de los estados para los administradores
 		$statusNamesAdmin = array();
-		$statusNamesAdmin[ClientQuotation::STATUS_NEW] = Common::getTranslation("New","import");
-		$statusNamesAdmin[ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED] = Common::getTranslation('Quotation Requested',"import");
-		$statusNamesAdmin[ClientQuotation::STATUS_WAITING_FOR_PRICING] = Common::getTranslation('Waiting For Pricing',"import");
-		$statusNamesAdmin[ClientQuotation::STATUS_PARTIALLY_QUOTED] = Common::getTranslation('Waiting For Pricing',"import");
-		$statusNamesAdmin[ClientQuotation::STATUS_QUOTED] = Common::getTranslation('Quoted',"import");
-		$statusNamesAdmin[ClientQuotation::STATUS_ACCEPTED] = Common::getTranslation('Accepted',"import");
-		$statusNamesAdmin[ClientQuotation::STATUS_PARTIALLY_ACCEPTED] = Common::getTranslation('Partially Accepted',"import");
-		$statusNamesAdmin[ClientQuotation::STATUS_REJECTED] = Common::getTranslation("Rejected","import");
+		$statusNamesAdmin[ClientQuotation::STATUS_NEW] = Common::getTranslation('New','import');
+		$statusNamesAdmin[ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED] = Common::getTranslation('Quote Requested','import');
+		$statusNamesAdmin[ClientQuotation::STATUS_WAITING_FOR_PRICING] = Common::getTranslation('Waiting For Pricing','import');
+		$statusNamesAdmin[ClientQuotation::STATUS_PARTIALLY_QUOTED] = Common::getTranslation('Waiting For Pricing','import');
+		$statusNamesAdmin[ClientQuotation::STATUS_QUOTED] = Common::getTranslation('Quoted','import');
+		$statusNamesAdmin[ClientQuotation::STATUS_ACCEPTED] = Common::getTranslation('Accepted','import');
+		$statusNamesAdmin[ClientQuotation::STATUS_PARTIALLY_ACCEPTED] = Common::getTranslation('Partially Accepted','import');
+		$statusNamesAdmin[ClientQuotation::STATUS_REJECTED] = Common::getTranslation('Rejected','import');
 		return $statusNamesAdmin;		
 	} 
 
+	public static function getStatusNamesAffiliate2() {
+		//nombre de los estados para los administradores
+		$statusNamesAffiliate = array();
+		$statusNamesAffiliate[ClientQuotation::STATUS_NEW] = Common::getTranslation('New','import');
+		$statusNamesAffiliate[ClientQuotation::STATUS_SUPPLIER_QUOTATION_REQUESTED] = Common::getTranslation('In Progress','import');
+		$statusNamesAffiliate[ClientQuotation::STATUS_WAITING_FOR_PRICING] = Common::getTranslation('In Progress','import');
+		$statusNamesAffiliate[ClientQuotation::STATUS_PARTIALLY_QUOTED] = Common::getTranslation('Partially Quoted','import');
+		$statusNamesAffiliate[ClientQuotation::STATUS_QUOTED] = Common::getTranslation('Quoted','import');
+		$statusNamesAffiliate[ClientQuotation::STATUS_ACCEPTED] = Common::getTranslation('Accepted','import');
+		$statusNamesAffiliate[ClientQuotation::STATUS_PARTIALLY_ACCEPTED] = Common::getTranslation('Partially Accepted','import');
+		$statusNamesAffiliate[ClientQuotation::STATUS_REJECTED] = Common::getTranslation('Rejected','import');
+		return $statusNamesAffiliate;		
+	} 
 	 
   
   /**

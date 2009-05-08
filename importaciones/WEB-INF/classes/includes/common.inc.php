@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
  * Funciones y variables comunes al sistema
  *
@@ -326,7 +326,7 @@ class Common
 	* @param string $user datos del usuario
 	* @param string $action nombre del action
 	* @param string $forward tipo de forward (success, failure, errorLog, etc)
-	* @param string $object objeto sobre el cual se realizó la acción
+	* @param string $object objeto sobre el cual se realizÃ³ la acciÃ³n
 	* @return void
 	*/
 	function doLog($forward,$object=null) {
@@ -760,6 +760,14 @@ class Common
 		return $translation;
 	}
 
+	function getTranslationByLanguageCode($text,$moduleName,$languageCode) {
+		$translationObject = MultilangTextPeer::getByTextAndModuleNameAndCode($text,$moduleName,$languageCode);
+		if (empty($translationObject))
+			$translation = $text;
+		else
+			$translation = $translationObject->getText();
+		return $translation;
+	}
 
 	function getCurrentLanguageCode() {
 		global $system;
