@@ -5,18 +5,18 @@ require_once("BaseAction.php");
 class ImportBaseAction extends BaseAction {
 
 	/**
-	 * Crea el contenido del email para notificar a un supplier quotation
+	 * Crea el contenido del email para notificar a un supplier quote
 	 *
 	 */
-	public function renderSupplierQuotationNotifyEmail($supplierQuotation) {
+	public function renderSupplierQuoteNotifyEmail($supplierQuote) {
 		
 		$plugInKey = 'SMARTY_PLUGIN';
 		$smarty =& $this->actionServer->getPlugIn($plugInKey);
 		
 		$this->template->template = 'TemplateMail.tpl';
 		
-		$smarty->assign('supplierQuotation',$supplierQuotation);
-		$smarty->assign('supplier',$supplierQuotation->getSupplier());
+		$smarty->assign('supplierQuote',$supplierQuote);
+		$smarty->assign('supplier',$supplierQuote->getSupplier());
 		
 		$content = $smarty->fetch("ImportSupplierQuoteNotifyEmail.tpl");
 		
@@ -25,18 +25,18 @@ class ImportBaseAction extends BaseAction {
 	}
 
 	/**
-	 * Crea el contenido del email para notificar a un supplier quotation de feedback
+	 * Crea el contenido del email para notificar a un supplier quote de feedback
 	 *
 	 */
-	public function renderSupplierQuotationFeedbackNotifyEmail($supplierQuotation) {
+	public function renderSupplierQuoteFeedbackNotifyEmail($supplierQuote) {
 		
 		$plugInKey = 'SMARTY_PLUGIN';
 		$smarty =& $this->actionServer->getPlugIn($plugInKey);
 		
 		$this->template->template = 'TemplateMail.tpl';
 		
-		$smarty->assign('supplierQuotation',$supplierQuotation);
-		$smarty->assign('supplier',$supplierQuotation->getSupplier());
+		$smarty->assign('supplierQuote',$supplierQuote);
+		$smarty->assign('supplier',$supplierQuote->getSupplier());
 		
 		$content = $smarty->fetch("ImportSupplierQuoteFeedbackNotifyEmail.tpl");
 		

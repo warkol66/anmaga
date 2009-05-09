@@ -1,7 +1,7 @@
 <?php
 
 require_once("ImportBaseAction.php");
-require_once("SupplierQuotationPeer.php");
+require_once("SupplierQuotePeer.php");
 
 class ImportSupplierQuoteResendAction extends ImportBaseAction {
 
@@ -46,22 +46,22 @@ class ImportSupplierQuoteResendAction extends ImportBaseAction {
 		
 		$smarty->assign("message",$_POST["message"]);
 		
-		$supplierQuotationPeer = new SupplierQuotationPeer();
+		$supplierQuotePeer = new SupplierQuotePeer();
 
 		if (empty($_POST['id'])) {
 			return $mapping->findForwardConfig('failure');		
 		}
 		
-		$supplierQuotation = SupplierQuotationPeer::get($_POST['id']);
+		$supplierQuote = SupplierQuotePeer::get($_POST['id']);
 		
-		$content = $this->renderSupplierQuotationNotifyEmail($supplierQuotation);
+		$content = $this->renderSupplierQuoteNotifyEmail($supplierQuote);
 		
 		if (empty($_POST['destinationEmails']))	{
 			//notificacion de proveedor correspondiente
-			$supplierQuotation->notifySupplier($content);
+			$supplierQuote->notifySupplier($content);
 
 			$params = array();
-			$params['supplierQuotationId'] = $supplierQuotation->getId();
+			$params['supplierQuoteId'] = $supplierQuote->getId();
 
 			return $this->addParamsToForwards($params,$mapping,'success');			
 
@@ -80,11 +80,11 @@ class ImportSupplierQuoteResendAction extends ImportBaseAction {
 		}
 
 		foreach ($validEmails as $email) {
-			$supplierQuotation->notifyRecipients($validEmails,$content);
+			$supplierQuote->notifyRecipients($validEmails,$content);
 		}
 
 		$params = array();
-		$params['supplierQuotationId'] = $supplierQuotation->getId();
+		$params['supplierQuoteId'] = $supplierQuote->getId();
 		
 		return $this->addParamsToForwards($params,$mapping,'success-multiple');			
 		

@@ -45,22 +45,22 @@ class ImportProductSearchXAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		//flag de utilizacion de cantidades en cotizaciones
-		$smarty->assign("quantitiesOnQuotationsFlag",Common::importQuotationsHasQuantities());
+		$smarty->assign("quantitiesOnQuotesFlag",Common::importQuotesHasQuantities());
 
 		$this->template->template = 'TemplateAjax.tpl';
 		
 		
-		if (empty($_POST['clientQuotationId'])) {
-			$clientQuotation = $_SESSION['import']['clientQuotation'];
+		if (empty($_POST['clientQuoteId'])) {
+			$clientQuote = $_SESSION['import']['clientQuote'];
 		}
 		else {
-			$clientQuotation = ClientQuotationPeer::get($_POST['clientQuotationId']);
+			$clientQuote = ClientQuotePeer::get($_POST['clientQuoteId']);
 		}
 
 		$results = ProductPeer::search($_POST['productSearch']['query']);
 		
 		$smarty->assign('results',$results);
-		$smarty->assign('clientQuotation',$clientQuotation);
+		$smarty->assign('clientQuote',$clientQuote);
 				
 		return $mapping->findForwardConfig('success');
 	

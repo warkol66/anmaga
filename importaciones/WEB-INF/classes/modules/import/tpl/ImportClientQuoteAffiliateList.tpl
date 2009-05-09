@@ -6,7 +6,7 @@
 	|-if $message eq "create-failed"-|
 		<div class="successMessage">Se ha producido un error al crear la cotización</div>
 	|-elseif $message eq "confirmed"-|
-		<div class="successMessage">Cotización confirmada correctamente. Puedo ver su detalle accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuotationId-|" >link</a></div>
+		<div class="successMessage">Cotización confirmada correctamente. Puedo ver su detalle accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuoteId-|" >link</a></div>
 	|-/if-|
 </div>
 
@@ -43,7 +43,7 @@
 				<th colspan="7" class="thFillTitle">
 					<div class="rightLink">
 						<form action="Main.php" method="post" >
-							<input type="hidden" name="clientQuotation[affiliateId]" value="|-$affiliate->getId()-|"/>
+							<input type="hidden" name="clientQuote[affiliateId]" value="|-$affiliate->getId()-|"/>
 							<input type="hidden" name="do" value="importClientQuoteCreate" />
 							<input type="submit" value="Crear Nueva Cotización" />
 						</form>
@@ -58,26 +58,26 @@
 			</tr>
 		</thead>
 		<tbody>
-		|-foreach from=$quotations item=quotation name=for_quotations-|
+		|-foreach from=$quotes item=quote name=for_quotes-|
 			<tr>
-				<td>|-$quotation->getId()-|</td>
-				<td>|-$quotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
-				<td>|-$quotation->getStatusNameClient()-|</td>
+				<td>|-$quote->getId()-|</td>
+				<td>|-$quote->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
+				<td>|-$quote->getStatusNameClient()-|</td>
 				<td nowrap="nowrap">
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientQuoteEdit" />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="Editar" class="buttonImageEdit" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
+						<input type="submit" name="submit_go_edit_quote" value="Editar" class="buttonImageEdit" />
 					</form>
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientQuoteHistory" />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="Ver Historial" class="buttonImageHistory" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
+						<input type="submit" name="submit_go_edit_quote" value="Ver Historial" class="buttonImageHistory" />
 					</form>
 <!--					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="importClientQuoteDelete" />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_delete_quotation" value="Borrar" onclick="return confirm('Seguro que desea eliminar la cotizacion?')" class="buttonImageDelete" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
+						<input type="submit" name="submit_go_delete_quote" value="Borrar" onclick="return confirm('Seguro que desea eliminar la cotizacion?')" class="buttonImageDelete" />
 					</form>
 -->
 				</td>

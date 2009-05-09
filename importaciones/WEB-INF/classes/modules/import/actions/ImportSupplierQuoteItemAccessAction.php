@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("SupplierQuotationPeer.php");
+require_once("SupplierQuotePeer.php");
 
 class ImportSupplierQuoteItemAccessAction extends BaseAction {
 
@@ -47,9 +47,9 @@ class ImportSupplierQuoteItemAccessAction extends BaseAction {
 		$smarty->assign("message",$_GET["message"]);
 		
 		//flag de utilizacion de cantidades en cotizaciones
-		$smarty->assign("quantitiesOnQuotationsFlag",Common::importQuotationsHasQuantities());
+		$smarty->assign("quantitiesOnQuotesFlag",Common::importQuotesHasQuantities());
 		
-		$supplierQuotationPeer = new SupplierQuotationPeer();
+		$supplierQuotePeer = new SupplierQuotePeer();
 
 			
 		if (empty($_GET['token']) && (empty($_GET['id']))) {
@@ -59,28 +59,28 @@ class ImportSupplierQuoteItemAccessAction extends BaseAction {
 		$smarty->assign('token',$_GET['token']);
 
 		//traemos todas las cotizaciones.
-		$supplierQuotation = $supplierQuotationPeer->getByAccessToken($_GET["token"]);
+		$supplierQuote = $supplierQuotePeer->getByAccessToken($_GET["token"]);
 		
-		if (empty($supplierQuotation)) {
+		if (empty($supplierQuote)) {
 			return $mapping->findForwardConfig('failure');			
 		}
 		
-		$smarty->assign("supplierQuotation",$supplierQuotation);
+		$smarty->assign("supplierQuote",$supplierQuote);
 		
-		$supplierQuotationItem = $supplierQuotation->getSupplierQuotationItem($_GET['id']);
+		$supplierQuoteItem = $supplierQuote->getSupplierQuoteItem($_GET['id']);
 
-		if (empty($supplierQuotationItem)) {
+		if (empty($supplierQuoteItem)) {
 			return $mapping->findForwardConfig('failure');			
 		}
 
 		//No se han hecho modificaciones sobre la misma
-		if ($supplierQuotationItem->isNew()) {
+		if ($supplierQuoteItem->isNew()) {
 			//Obtengo el ultimo item cotizado relacionado
-			$supplierQuotationItemRelated = $supplierQuotationItem->getLastSupplierQuotationItemRelated();
-			$smarty->assign('supplierQuotationItemRelated',$supplierQuotationItemRelated);
+			$supplierQuoteItemRelated = $supplierQuoteItem->getLastSupplierQuoteItemRelated();
+			$smarty->assign('supplierQuoteItemRelated',$supplierQuoteItemRelated);
 		}
 
-		$smarty->assign("supplierQuotationItem",$supplierQuotationItem);
+		$smarty->assign("supplierQuoteItem",$supplierQuoteItem);
 		
 		return $mapping->findForwardConfig('success');			
 		

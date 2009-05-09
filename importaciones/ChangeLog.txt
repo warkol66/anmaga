@@ -1,6 +1,12 @@
 ==============================
 Revisión 440
 ------------------------------
+Se renombran tablas y campos de Quotation a Quote
+Se suministra una base con datos de prueba en sql-scripts
+
+==============================
+Revisión 440
+------------------------------
 
 ALTER TABLE `import_product` CHANGE `active` `status` INT( 11 ) NOT NULL COMMENT 'product status';
 ALTER TABLE `import_supplierQuotationItem` ADD `replacedProductId` INTEGER COMMENT 'Id producto que fue reemplazado por el actual';

@@ -72,9 +72,9 @@ class SupplierPurchaseOrderMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('TIMESTAMPSTATUS', 'Timestampstatus', 'TIMESTAMP', false, null);
 
-		$tMap->addForeignKey('SUPPLIERQUOTATIONID', 'Supplierquotationid', 'INTEGER', 'import_supplierQuotation', 'ID', true, null);
+		$tMap->addForeignKey('SUPPLIERQUOTEID', 'Supplierquoteid', 'INTEGER', 'import_supplierQuote', 'ID', true, null);
 
-		$tMap->addForeignKey('CLIENTQUOTATIONID', 'Clientquotationid', 'INTEGER', 'import_clientQuotation', 'ID', true, null);
+		$tMap->addForeignKey('CLIENTQUOTEID', 'Clientquoteid', 'INTEGER', 'import_clientQuote', 'ID', true, null);
 
 		$tMap->addForeignKey('AFFILIATEID', 'Affiliateid', 'INTEGER', 'affiliates_affiliate', 'ID', true, null);
 

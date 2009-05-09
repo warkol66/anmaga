@@ -1,23 +1,23 @@
 <?php
 
-require_once('import/classes/ClientQuotation.php');
+require_once('import/classes/ClientQuote.php');
 
 /**
  *
  *
  * @package    import
  */
-class ImportInclude extends ClientQuotation {
+class ImportInclude extends ClientQuote {
 
 	function getClientQuoteList($options) {
 
-		require_once("ClientQuotationPeer.php");
+		require_once("ClientQuotePeer.php");
 
-		$result = ClientQuotationPeer::getAll();
+		$result = ClientQuotePeer::getAll();
 
 		return $result;
 
 	}
 
 
-} // ClientQuotationInclude
+} // ClientQuoteInclude

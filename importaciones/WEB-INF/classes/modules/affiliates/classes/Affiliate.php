@@ -37,14 +37,14 @@ class Affiliate extends BaseAffiliate {
 	 * Obtiene una cotizacion creada por el afiliado.
 	 * @param integer $id id de la cotizacion 
 	 */
-	public function getClientQuotation($id) {
+	public function getClientQuote($id) {
 		
-		require_once('ClientQuotationPeer.php');
+		require_once('ClientQuotePeer.php');
 		
 		$criteria = new Criteria();
-		$criteria->add(ClientQuotationPeer::ID,$id);
-		$criteria->add(ClientQuotationPeer::AFFILIATEID,$this->getId());
-		$result = ClientQuotationPeer::doSelect($criteria);
+		$criteria->add(ClientQuotePeer::ID,$id);
+		$criteria->add(ClientQuotePeer::AFFILIATEID,$this->getId());
+		$result = ClientQuotePeer::doSelect($criteria);
 	    
 		return $result[0];
 	}        

@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("SupplierQuotationPeer.php");
+require_once("SupplierQuotePeer.php");
 require_once("ProductPeer.php");
 require_once("SupplierPeer.php");
 
@@ -49,21 +49,21 @@ class ImportSupplierQuoteEditAction extends BaseAction {
 		$smarty->assign("message",$_GET["message"]);
 		
 		//flag de utilizacion de cantidades en cotizaciones
-		$smarty->assign("quantitiesOnQuotationsFlag",Common::importQuotationsHasQuantities());
+		$smarty->assign("quantitiesOnQuotesFlag",Common::importQuotesHasQuantities());
 		
-		$supplierQuotationPeer = new SupplierQuotationPeer();
+		$supplierQuotePeer = new SupplierQuotePeer();
 
 		if (Common::isAdmin()) {
 			
-			if (!empty($_GET['supplierQuotationId'])) {
-				$supplierQuotation = SupplierQuotationPeer::get($_GET["supplierQuotationId"]);
-				$smarty->assign("supplierQuotation",$supplierQuotation);
+			if (!empty($_GET['supplierQuoteId'])) {
+				$supplierQuote = SupplierQuotePeer::get($_GET["supplierQuoteId"]);
+				$smarty->assign("supplierQuote",$supplierQuote);
 			}
 
 			//traemos todas las cotizaciones.
-			$supplierQuotation = $supplierQuotationPeer->get($_GET["id"]);
+			$supplierQuote = $supplierQuotePeer->get($_GET["id"]);
 			
-			$smarty->assign("supplierQuotation",$supplierQuotation);
+			$smarty->assign("supplierQuote",$supplierQuote);
 			
 			return $mapping->findForwardConfig('success');
 		}		

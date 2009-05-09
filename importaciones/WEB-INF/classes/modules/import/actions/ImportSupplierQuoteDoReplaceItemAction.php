@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("SupplierQuotationPeer.php");
+require_once("SupplierQuotePeer.php");
 
 class ImportSupplierQuoteDoReplaceItemAction extends BaseAction {
 
@@ -44,33 +44,33 @@ class ImportSupplierQuoteDoReplaceItemAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
-		$supplierQuotationPeer = new SupplierQuotationPeer();
+		$supplierQuotePeer = new SupplierQuotePeer();
 
 		if (empty($_POST['token']) && (empty($_POST['id']))) {
 			return $mapping->findForwardConfig('failure');		
 		}
 
 		//validamos
-		$supplierQuotation = $supplierQuotationPeer->getByAccessToken($_POST["token"]);
+		$supplierQuote = $supplierQuotePeer->getByAccessToken($_POST["token"]);
 
-		if (empty($supplierQuotation)) {
+		if (empty($supplierQuote)) {
 			return $mapping->findForwardConfig('failure');			
 		}
 
 		$newProduct = ProductPeer::createBySupplier($_POST["product"],$_POST['productSupplier']);
-		$supplierQuotationItem = $supplierQuotation->getSupplierQuotationItem($_POST['supplierQuotationItem']['id']);
-		$replacedProduct = $supplierQuotationItem->getProduct();
+		$supplierQuoteItem = $supplierQuote->getSupplierQuoteItem($_POST['supplierQuoteItem']['id']);
+		$replacedProduct = $supplierQuoteItem->getProduct();
 		
 		//indicamos las actualizacion sobre el item segun el reemplazo
-		$_POST["supplierQuotationItem"]['productId'] = $newProduct->getId();
-		$_POST["supplierQuotationItem"]['replacedProductId'] = $replacedProduct->getId();
+		$_POST["supplierQuoteItem"]['productId'] = $newProduct->getId();
+		$_POST["supplierQuoteItem"]['replacedProductId'] = $replacedProduct->getId();
 		
 		//indicamos quien esta haciendo la actualizacion para que se indique en el comentario.
-		$supplier = $supplierQuotation->getSupplier();
-		$_POST["supplierQuotationItem"]['supplierId'] = $supplier->getId();
-		$smarty->assign("supplierQuotation",$supplierQuotation);		
+		$supplier = $supplierQuote->getSupplier();
+		$_POST["supplierQuoteItem"]['supplierId'] = $supplier->getId();
+		$smarty->assign("supplierQuote",$supplierQuote);		
 
-		if (!SupplierQuotationItemPeer::update($_POST["supplierQuotationItem"])) {
+		if (!SupplierQuoteItemPeer::update($_POST["supplierQuoteItem"])) {
   			return $mapping->findForwardConfig('failure');
 		}		
 

@@ -36,8 +36,8 @@ abstract class BaseClientPurchaseOrderPeer {
 	/** the column name for the TIMESTAMPSTATUS field */
 	const TIMESTAMPSTATUS = 'import_clientPurchaseOrder.TIMESTAMPSTATUS';
 
-	/** the column name for the CLIENTQUOTATIONID field */
-	const CLIENTQUOTATIONID = 'import_clientPurchaseOrder.CLIENTQUOTATIONID';
+	/** the column name for the CLIENTQUOTEID field */
+	const CLIENTQUOTEID = 'import_clientPurchaseOrder.CLIENTQUOTEID';
 
 	/** the column name for the AFFILIATEID field */
 	const AFFILIATEID = 'import_clientPurchaseOrder.AFFILIATEID';
@@ -69,10 +69,10 @@ abstract class BaseClientPurchaseOrderPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Createdat', 'Status', 'Timestampstatus', 'Clientquotationid', 'Affiliateid', 'Affiliateuserid', 'Userid', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdat', 'status', 'timestampstatus', 'clientquotationid', 'affiliateid', 'affiliateuserid', 'userid', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATEDAT, self::STATUS, self::TIMESTAMPSTATUS, self::CLIENTQUOTATIONID, self::AFFILIATEID, self::AFFILIATEUSERID, self::USERID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'createdAt', 'status', 'timestampStatus', 'clientQuotationId', 'affiliateId', 'affiliateUserId', 'userId', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Createdat', 'Status', 'Timestampstatus', 'Clientquoteid', 'Affiliateid', 'Affiliateuserid', 'Userid', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdat', 'status', 'timestampstatus', 'clientquoteid', 'affiliateid', 'affiliateuserid', 'userid', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATEDAT, self::STATUS, self::TIMESTAMPSTATUS, self::CLIENTQUOTEID, self::AFFILIATEID, self::AFFILIATEUSERID, self::USERID, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'createdAt', 'status', 'timestampStatus', 'clientQuoteId', 'affiliateId', 'affiliateUserId', 'userId', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
 
@@ -83,10 +83,10 @@ abstract class BaseClientPurchaseOrderPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Createdat' => 1, 'Status' => 2, 'Timestampstatus' => 3, 'Clientquotationid' => 4, 'Affiliateid' => 5, 'Affiliateuserid' => 6, 'Userid' => 7, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdat' => 1, 'status' => 2, 'timestampstatus' => 3, 'clientquotationid' => 4, 'affiliateid' => 5, 'affiliateuserid' => 6, 'userid' => 7, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATEDAT => 1, self::STATUS => 2, self::TIMESTAMPSTATUS => 3, self::CLIENTQUOTATIONID => 4, self::AFFILIATEID => 5, self::AFFILIATEUSERID => 6, self::USERID => 7, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'createdAt' => 1, 'status' => 2, 'timestampStatus' => 3, 'clientQuotationId' => 4, 'affiliateId' => 5, 'affiliateUserId' => 6, 'userId' => 7, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Createdat' => 1, 'Status' => 2, 'Timestampstatus' => 3, 'Clientquoteid' => 4, 'Affiliateid' => 5, 'Affiliateuserid' => 6, 'Userid' => 7, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdat' => 1, 'status' => 2, 'timestampstatus' => 3, 'clientquoteid' => 4, 'affiliateid' => 5, 'affiliateuserid' => 6, 'userid' => 7, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATEDAT => 1, self::STATUS => 2, self::TIMESTAMPSTATUS => 3, self::CLIENTQUOTEID => 4, self::AFFILIATEID => 5, self::AFFILIATEUSERID => 6, self::USERID => 7, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'createdAt' => 1, 'status' => 2, 'timestampStatus' => 3, 'clientQuoteId' => 4, 'affiliateId' => 5, 'affiliateUserId' => 6, 'userId' => 7, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
 
@@ -177,7 +177,7 @@ abstract class BaseClientPurchaseOrderPeer {
 
 		$criteria->addSelectColumn(ClientPurchaseOrderPeer::TIMESTAMPSTATUS);
 
-		$criteria->addSelectColumn(ClientPurchaseOrderPeer::CLIENTQUOTATIONID);
+		$criteria->addSelectColumn(ClientPurchaseOrderPeer::CLIENTQUOTEID);
 
 		$criteria->addSelectColumn(ClientPurchaseOrderPeer::AFFILIATEID);
 
@@ -425,7 +425,7 @@ abstract class BaseClientPurchaseOrderPeer {
 	}
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related ClientQuotation table
+	 * Returns the number of rows matching criteria, joining the related ClientQuote table
 	 *
 	 * @param      Criteria $c
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -433,7 +433,7 @@ abstract class BaseClientPurchaseOrderPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinClientQuotation(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinClientQuote(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -460,7 +460,7 @@ abstract class BaseClientPurchaseOrderPeer {
 			$con = Propel::getConnection(ClientPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTATIONID,), array(ClientQuotationPeer::ID,), $join_behavior);
+		$criteria->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -621,7 +621,7 @@ abstract class BaseClientPurchaseOrderPeer {
 
 
 	/**
-	 * Selects a collection of ClientPurchaseOrder objects pre-filled with their ClientQuotation objects.
+	 * Selects a collection of ClientPurchaseOrder objects pre-filled with their ClientQuote objects.
 	 * @param      Criteria  $c
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -629,7 +629,7 @@ abstract class BaseClientPurchaseOrderPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinClientQuotation(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinClientQuote(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$c = clone $c;
 
@@ -640,9 +640,9 @@ abstract class BaseClientPurchaseOrderPeer {
 
 		ClientPurchaseOrderPeer::addSelectColumns($c);
 		$startcol = (ClientPurchaseOrderPeer::NUM_COLUMNS - ClientPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
-		ClientQuotationPeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($c);
 
-		$c->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTATIONID,), array(ClientQuotationPeer::ID,), $join_behavior);
+		$c->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
 		$stmt = BasePeer::doSelect($c, $con);
 		$results = array();
 
@@ -662,20 +662,20 @@ abstract class BaseClientPurchaseOrderPeer {
 				ClientPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
 			} // if $obj1 already loaded
 
-			$key2 = ClientQuotationPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			$key2 = ClientQuotePeer::getPrimaryKeyHashFromRow($row, $startcol);
 			if ($key2 !== null) {
-				$obj2 = ClientQuotationPeer::getInstanceFromPool($key2);
+				$obj2 = ClientQuotePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = ClientQuotationPeer::getOMClass();
+					$omClass = ClientQuotePeer::getOMClass();
 
 					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
-					ClientQuotationPeer::addInstanceToPool($obj2, $key2);
+					ClientQuotePeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 
-				// Add the $obj1 (ClientPurchaseOrder) to $obj2 (ClientQuotation)
+				// Add the $obj1 (ClientPurchaseOrder) to $obj2 (ClientQuote)
 				$obj2->addClientPurchaseOrder($obj1);
 
 			} // if joined row was not null
@@ -924,7 +924,7 @@ abstract class BaseClientPurchaseOrderPeer {
 			$con = Propel::getConnection(ClientPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTATIONID,), array(ClientQuotationPeer::ID,), $join_behavior);
+		$criteria->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
 		$criteria->addJoin(array(ClientPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
 		$criteria->addJoin(array(ClientPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
 		$criteria->addJoin(array(ClientPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
@@ -961,8 +961,8 @@ abstract class BaseClientPurchaseOrderPeer {
 		ClientPurchaseOrderPeer::addSelectColumns($c);
 		$startcol2 = (ClientPurchaseOrderPeer::NUM_COLUMNS - ClientPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuotationPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + (ClientQuotationPeer::NUM_COLUMNS - ClientQuotationPeer::NUM_LAZY_LOAD_COLUMNS);
+		ClientQuotePeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
 		UserPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
@@ -973,7 +973,7 @@ abstract class BaseClientPurchaseOrderPeer {
 		AffiliateUserPeer::addSelectColumns($c);
 		$startcol6 = $startcol5 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTATIONID,), array(ClientQuotationPeer::ID,), $join_behavior);
+		$c->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
 		$c->addJoin(array(ClientPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
 		$c->addJoin(array(ClientPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
 		$c->addJoin(array(ClientPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
@@ -995,23 +995,23 @@ abstract class BaseClientPurchaseOrderPeer {
 				ClientPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-			// Add objects for joined ClientQuotation rows
+			// Add objects for joined ClientQuote rows
 
-			$key2 = ClientQuotationPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+			$key2 = ClientQuotePeer::getPrimaryKeyHashFromRow($row, $startcol2);
 			if ($key2 !== null) {
-				$obj2 = ClientQuotationPeer::getInstanceFromPool($key2);
+				$obj2 = ClientQuotePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = ClientQuotationPeer::getOMClass();
+					$omClass = ClientQuotePeer::getOMClass();
 
 
 					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					ClientQuotationPeer::addInstanceToPool($obj2, $key2);
+					ClientQuotePeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 loaded
 
-				// Add the $obj1 (ClientPurchaseOrder) to the collection in $obj2 (ClientQuotation)
+				// Add the $obj1 (ClientPurchaseOrder) to the collection in $obj2 (ClientQuote)
 				$obj2->addClientPurchaseOrder($obj1);
 			} // if joined row not null
 
@@ -1083,7 +1083,7 @@ abstract class BaseClientPurchaseOrderPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related ClientQuotation table
+	 * Returns the number of rows matching criteria, joining the related ClientQuote table
 	 *
 	 * @param      Criteria $c
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -1091,7 +1091,7 @@ abstract class BaseClientPurchaseOrderPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptClientQuotation(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptClientQuote(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -1169,7 +1169,7 @@ abstract class BaseClientPurchaseOrderPeer {
 			$con = Propel::getConnection(ClientPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTATIONID,), array(ClientQuotationPeer::ID,), $join_behavior);
+				$criteria->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
 				$criteria->addJoin(array(ClientPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
 				$criteria->addJoin(array(ClientPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -1220,7 +1220,7 @@ abstract class BaseClientPurchaseOrderPeer {
 			$con = Propel::getConnection(ClientPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTATIONID,), array(ClientQuotationPeer::ID,), $join_behavior);
+				$criteria->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
 				$criteria->addJoin(array(ClientPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
 				$criteria->addJoin(array(ClientPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -1271,7 +1271,7 @@ abstract class BaseClientPurchaseOrderPeer {
 			$con = Propel::getConnection(ClientPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTATIONID,), array(ClientQuotationPeer::ID,), $join_behavior);
+				$criteria->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
 				$criteria->addJoin(array(ClientPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
 				$criteria->addJoin(array(ClientPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -1287,7 +1287,7 @@ abstract class BaseClientPurchaseOrderPeer {
 
 
 	/**
-	 * Selects a collection of ClientPurchaseOrder objects pre-filled with all related objects except ClientQuotation.
+	 * Selects a collection of ClientPurchaseOrder objects pre-filled with all related objects except ClientQuote.
 	 *
 	 * @param      Criteria  $c
 	 * @param      PropelPDO $con
@@ -1296,7 +1296,7 @@ abstract class BaseClientPurchaseOrderPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptClientQuotation(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptClientQuote(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$c = clone $c;
 
@@ -1435,8 +1435,8 @@ abstract class BaseClientPurchaseOrderPeer {
 		ClientPurchaseOrderPeer::addSelectColumns($c);
 		$startcol2 = (ClientPurchaseOrderPeer::NUM_COLUMNS - ClientPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuotationPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + (ClientQuotationPeer::NUM_COLUMNS - ClientQuotationPeer::NUM_LAZY_LOAD_COLUMNS);
+		ClientQuotePeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
 		AffiliatePeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
@@ -1444,7 +1444,7 @@ abstract class BaseClientPurchaseOrderPeer {
 		AffiliateUserPeer::addSelectColumns($c);
 		$startcol5 = $startcol4 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTATIONID,), array(ClientQuotationPeer::ID,), $join_behavior);
+				$c->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
 				$c->addJoin(array(ClientPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
 				$c->addJoin(array(ClientPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
 
@@ -1466,23 +1466,23 @@ abstract class BaseClientPurchaseOrderPeer {
 				ClientPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-				// Add objects for joined ClientQuotation rows
+				// Add objects for joined ClientQuote rows
 
-				$key2 = ClientQuotationPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				$key2 = ClientQuotePeer::getPrimaryKeyHashFromRow($row, $startcol2);
 				if ($key2 !== null) {
-					$obj2 = ClientQuotationPeer::getInstanceFromPool($key2);
+					$obj2 = ClientQuotePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = ClientQuotationPeer::getOMClass();
+						$omClass = ClientQuotePeer::getOMClass();
 
 
 					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					ClientQuotationPeer::addInstanceToPool($obj2, $key2);
+					ClientQuotePeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
-				// Add the $obj1 (ClientPurchaseOrder) to the collection in $obj2 (ClientQuotation)
+				// Add the $obj1 (ClientPurchaseOrder) to the collection in $obj2 (ClientQuote)
 				$obj2->addClientPurchaseOrder($obj1);
 
 			} // if joined row is not null
@@ -1560,8 +1560,8 @@ abstract class BaseClientPurchaseOrderPeer {
 		ClientPurchaseOrderPeer::addSelectColumns($c);
 		$startcol2 = (ClientPurchaseOrderPeer::NUM_COLUMNS - ClientPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuotationPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + (ClientQuotationPeer::NUM_COLUMNS - ClientQuotationPeer::NUM_LAZY_LOAD_COLUMNS);
+		ClientQuotePeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
 		UserPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
@@ -1569,7 +1569,7 @@ abstract class BaseClientPurchaseOrderPeer {
 		AffiliateUserPeer::addSelectColumns($c);
 		$startcol5 = $startcol4 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTATIONID,), array(ClientQuotationPeer::ID,), $join_behavior);
+				$c->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
 				$c->addJoin(array(ClientPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
 				$c->addJoin(array(ClientPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
 
@@ -1591,23 +1591,23 @@ abstract class BaseClientPurchaseOrderPeer {
 				ClientPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-				// Add objects for joined ClientQuotation rows
+				// Add objects for joined ClientQuote rows
 
-				$key2 = ClientQuotationPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				$key2 = ClientQuotePeer::getPrimaryKeyHashFromRow($row, $startcol2);
 				if ($key2 !== null) {
-					$obj2 = ClientQuotationPeer::getInstanceFromPool($key2);
+					$obj2 = ClientQuotePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = ClientQuotationPeer::getOMClass();
+						$omClass = ClientQuotePeer::getOMClass();
 
 
 					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					ClientQuotationPeer::addInstanceToPool($obj2, $key2);
+					ClientQuotePeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
-				// Add the $obj1 (ClientPurchaseOrder) to the collection in $obj2 (ClientQuotation)
+				// Add the $obj1 (ClientPurchaseOrder) to the collection in $obj2 (ClientQuote)
 				$obj2->addClientPurchaseOrder($obj1);
 
 			} // if joined row is not null
@@ -1685,8 +1685,8 @@ abstract class BaseClientPurchaseOrderPeer {
 		ClientPurchaseOrderPeer::addSelectColumns($c);
 		$startcol2 = (ClientPurchaseOrderPeer::NUM_COLUMNS - ClientPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuotationPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + (ClientQuotationPeer::NUM_COLUMNS - ClientQuotationPeer::NUM_LAZY_LOAD_COLUMNS);
+		ClientQuotePeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
 		UserPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
@@ -1694,7 +1694,7 @@ abstract class BaseClientPurchaseOrderPeer {
 		AffiliatePeer::addSelectColumns($c);
 		$startcol5 = $startcol4 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTATIONID,), array(ClientQuotationPeer::ID,), $join_behavior);
+				$c->addJoin(array(ClientPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
 				$c->addJoin(array(ClientPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
 				$c->addJoin(array(ClientPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
 
@@ -1716,23 +1716,23 @@ abstract class BaseClientPurchaseOrderPeer {
 				ClientPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-				// Add objects for joined ClientQuotation rows
+				// Add objects for joined ClientQuote rows
 
-				$key2 = ClientQuotationPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				$key2 = ClientQuotePeer::getPrimaryKeyHashFromRow($row, $startcol2);
 				if ($key2 !== null) {
-					$obj2 = ClientQuotationPeer::getInstanceFromPool($key2);
+					$obj2 = ClientQuotePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = ClientQuotationPeer::getOMClass();
+						$omClass = ClientQuotePeer::getOMClass();
 
 
 					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					ClientQuotationPeer::addInstanceToPool($obj2, $key2);
+					ClientQuotePeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
-				// Add the $obj1 (ClientPurchaseOrder) to the collection in $obj2 (ClientQuotation)
+				// Add the $obj1 (ClientPurchaseOrder) to the collection in $obj2 (ClientQuote)
 				$obj2->addClientPurchaseOrder($obj1);
 
 			} // if joined row is not null

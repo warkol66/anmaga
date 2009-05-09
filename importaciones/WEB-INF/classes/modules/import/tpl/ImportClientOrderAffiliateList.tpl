@@ -6,7 +6,7 @@
 	|-if $message eq "create-failed"-|
 		<div class="successMessage">Se ha producido un error al crear la cotización</div>
 	|-elseif $message eq "confirmed"-|
-		<div class="successMessage">Cotización confirmada correctamente. Puedo ver su detalle accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuotationId-|" >link</a></div>
+		<div class="successMessage">Cotización confirmada correctamente. Puedo ver su detalle accediendo a este <a href="Main.php?do=importClientQuoteEdit&id=|-$clientQuoteId-|" >link</a></div>
 	|-/if-|
 </div>
 

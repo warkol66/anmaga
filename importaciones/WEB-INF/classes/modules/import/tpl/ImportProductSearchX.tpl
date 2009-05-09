@@ -18,16 +18,16 @@
 		<td>|-$product->getDescription()-|</td>
 		<td>
 			<form action="Main.php" method="post">
-				<input type="hidden" name="clientQuotationItem[productId]" value="|-$product->getId()-|" />
-				|-if $quantitiesOnQuotationsFlag -|
+				<input type="hidden" name="clientQuoteItem[productId]" value="|-$product->getId()-|" />
+				|-if $quantitiesOnQuotesFlag -|
 					<label for="Cantidad">Cantidad</label>
-					<input type="input" name="clientQuotationItem[quantity]" value="" id="clientQuotationItem[quantity]" />
+					<input type="input" name="clientQuoteItem[quantity]" value="" id="clientQuoteItem[quantity]" />
 				|-else-|
-				<input type="hidden" name="clientQuotationItem[quantity]" value="1" id="clientQuotationItem[quantity]" />
+				<input type="hidden" name="clientQuoteItem[quantity]" value="1" id="clientQuoteItem[quantity]" />
 				|-/if-|
 				<input type="hidden" name="do" value="importClientQuoteAddItemX" id="do">
-				<input type="hidden" name="clientQuotationItem[clientQuotationId]" value="|-$clientQuotation->getId()-|" id="clientQuotationItem[clientQuotationId]"/>
-				<input type="button" value="Agregar producto" onClick="javascript:importAddItemToClientQuotationX(this.form)"> 
+				<input type="hidden" name="clientQuoteItem[clientQuoteId]" value="|-$clientQuote->getId()-|" id="clientQuoteItem[clientQuoteId]"/>
+				<input type="button" value="Agregar producto" onClick="javascript:importAddItemToClientQuoteX(this.form)"> 
 			</form>
 		</td>
 	</tr>

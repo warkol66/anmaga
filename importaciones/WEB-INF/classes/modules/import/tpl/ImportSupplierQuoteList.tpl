@@ -23,7 +23,7 @@
 	</form>
 </div>
 
-<div id="div_supplierQuotations">
+<div id="div_supplierQuotes">
 	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-newsmedias">
 		<thead>
 			<tr>
@@ -42,51 +42,51 @@
 			</tr>
 		</thead>
 		<tbody>
-		|-foreach from=$quotations item=quotation name=for_quotations-|
+		|-foreach from=$quotes item=quote name=for_quotes-|
 			<tr>
-				<td>|-$quotation->getId()-|</td>
+				<td>|-$quote->getId()-|</td>
 				<td>
-					|-assign var=supplier value=$quotation->getSupplier()-|
+					|-assign var=supplier value=$quote->getSupplier()-|
 					|-$supplier->getName()-|
 				</td>
-				<td>|-$quotation->getCreatedAt()|change_timezone-|</td>
-				<td>|-$quotation->getStatusName()-|</td>
-				<td><a href="Main.php?do=importSupplierQuoteAccess&token=|-$quotation->getSupplierAccessToken()-|" title="##import,13,Completar la solicitud con los datos suministrados por el proveedor##">##import,12,Completar##</a></td>
+				<td>|-$quote->getCreatedAt()|change_timezone-|</td>
+				<td>|-$quote->getStatusName()-|</td>
+				<td><a href="Main.php?do=importSupplierQuoteAccess&token=|-$quote->getSupplierAccessToken()-|" title="##import,13,Completar la solicitud con los datos suministrados por el proveedor##">##import,12,Completar##</a></td>
 				<td nowrap="nowrap">
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importSupplierQuoteEdit" />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="##import,14,Editar##" class="buttonImageEdit" title="##import,15,Editar Solicitud de Cotización##" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
+						<input type="submit" name="submit_go_edit_quote" value="##import,14,Editar##" class="buttonImageEdit" title="##import,15,Editar Solicitud de Cotización##" />
 					</form>
 					<form action="Main.php" method="post">	
 						<input type="hidden" name="do" value="importSupplierQuoteResend" />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_resend_quotation" value="##import,16,Reenviar##" class="buttonImageEmail" title="##import,17,Reenviar a Destinatario Original##" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
+						<input type="submit" name="submit_go_resend_quote" value="##import,16,Reenviar##" class="buttonImageEmail" title="##import,17,Reenviar a Destinatario Original##" />
 					</form>					
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importSupplierQuoteHistory" />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="##import,18,Ver Historial##" class="buttonImageHistory" title="##import,19,Consultar histórico de solicitud##" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
+						<input type="submit" name="submit_go_edit_quote" value="##import,18,Ver Historial##" class="buttonImageHistory" title="##import,19,Consultar histórico de solicitud##" />
 					</form>
 					
-					<input type="button" value="##import,20,Reenviar a otros destinatarios##" onClick="javascript:importShowDiv('resendDiv|-$quotation->getId()-|')" class="buttonImageSendMultiple" title="##import,21,Enviar la solicitud a otros destinatarios##"/>
-					<div id="resendDiv|-$quotation->getId()-|" style="display: none;z-index: 1000; width: 350px; position:absolute; margin-left: -185px; margin-top: -80px; clear:both; background-color:#FFFFFF;">
+					<input type="button" value="##import,20,Reenviar a otros destinatarios##" onClick="javascript:importShowDiv('resendDiv|-$quote->getId()-|')" class="buttonImageSendMultiple" title="##import,21,Enviar la solicitud a otros destinatarios##"/>
+					<div id="resendDiv|-$quote->getId()-|" style="display: none;z-index: 1000; width: 350px; position:absolute; margin-left: -185px; margin-top: -80px; clear:both; background-color:#FFFFFF;">
 
 					<form action="Main.php" method="post">	<fieldset>
 					<legend>Destinatarios</legend>
 						<input type="hidden" name="do" value="importSupplierQuoteResend" />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
 						<label for="destinationEmails">##import,22,Destinatarios (separados por coma):##</label><br /><input type="text" name="destinationEmails" value="" />
 						<br />
-						<input type="submit" name="submit_go_resend_quotation" value="##import,16,Reenviar##" class="button" />
-						<input type="button" name="hide_resend_div" value="Cancelar" onClick="javascript:importHideDiv('resendDiv|-$quotation->getId()-|')" class="button" />
+						<input type="submit" name="submit_go_resend_quote" value="##import,16,Reenviar##" class="button" />
+						<input type="button" name="hide_resend_div" value="Cancelar" onClick="javascript:importHideDiv('resendDiv|-$quote->getId()-|')" class="button" />
 					</fieldset></form>
 						
 					</div>
 <!--					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="importSupplierQuoteDelete"  />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_delete_quotation" value="##import,23,Eliminar##" title="##import,24,Eliminar solicitud de cotización##" onclick="return confirm('##import,25,¿Está seguro que desea eliminar la cotizacion?##')" class="buttonImageDelete" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
+						<input type="submit" name="submit_go_delete_quote" value="##import,23,Eliminar##" title="##import,24,Eliminar solicitud de cotización##" onclick="return confirm('##import,25,¿Está seguro que desea eliminar la cotizacion?##')" class="buttonImageDelete" />
 					</form>
 -->
 				</td>

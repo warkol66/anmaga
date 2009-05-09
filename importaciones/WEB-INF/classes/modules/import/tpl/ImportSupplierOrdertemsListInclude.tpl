@@ -7,7 +7,7 @@
 			<th>Cantidad</th>
 			<th>Precio Unitario</th>
 		</tr>
-		|-foreach from=$supplierPurchaseOrder->getSupplierPurchaseOrderItems() item=item name=for_supplierQuotationsItems-|
+		|-foreach from=$supplierPurchaseOrder->getSupplierPurchaseOrderItems() item=item name=for_supplierQuotesItems-|
 		|-assign var=product value=$item->getProduct()-|
 		<tr>
 			<td>|-$product->getCode()-|</td>

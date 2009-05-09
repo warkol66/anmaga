@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ClientQuotationPeer.php");
+require_once("ClientQuotePeer.php");
 require_once("SupplierPeer.php");
 
 class ImportClientQuoteItemsSupplierXAction extends BaseAction {
@@ -47,18 +47,18 @@ class ImportClientQuoteItemsSupplierXAction extends BaseAction {
 
 		$this->template->template = 'TemplateAjax.tpl';
 
-		if (empty($_POST['supplierId']) || empty($_POST['clientQuotationId'])) {
+		if (empty($_POST['supplierId']) || empty($_POST['clientQuoteId'])) {
 			return $mapping->findForwardConfig('failure');
 		}
 
 		$supplier = SupplierPeer::get($_POST['supplierId']);
-		$clientQuotation = ClientQuotationPeer::get($_POST['clientQuotationId']);
+		$clientQuote = ClientQuotePeer::get($_POST['clientQuoteId']);
 		
-		if (empty($supplier) || empty($clientQuotation)) {
+		if (empty($supplier) || empty($clientQuote)) {
 			return $mapping->findForwardConfig('failure');
 		}
 
-		$result = $clientQuotation->getClientQuotationItemsBySupplier($supplier);
+		$result = $clientQuote->getClientQuoteItemsBySupplier($supplier);
 		$smarty->assign('supplier',$supplier);
 		$smarty->assign('items',$result);
 		return $mapping->findForwardConfig('success');

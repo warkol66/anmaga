@@ -73,13 +73,13 @@ CREATE TABLE `import_supplier`
 )Type=MyISAM COMMENT='Proveedores';
 
 #-----------------------------------------------------------------------------
-#-- import_clientQuotation
+#-- import_clientQuote
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `import_clientQuotation`;
+DROP TABLE IF EXISTS `import_clientQuote`;
 
 
-CREATE TABLE `import_clientQuotation`
+CREATE TABLE `import_clientQuote`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de cotizacion de cliente',
 	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
@@ -89,126 +89,126 @@ CREATE TABLE `import_clientQuotation`
 	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
 	`timestampStatus` DATETIME COMMENT 'Fecha del ultimo cambio de status',
 	PRIMARY KEY (`id`),
-	INDEX `import_clientQuotation_FI_1` (`userId`),
-	CONSTRAINT `import_clientQuotation_FK_1`
+	INDEX `import_clientQuote_FI_1` (`userId`),
+	CONSTRAINT `import_clientQuote_FK_1`
 		FOREIGN KEY (`userId`)
 		REFERENCES `users_user` (`id`),
-	INDEX `import_clientQuotation_FI_2` (`affiliateId`),
-	CONSTRAINT `import_clientQuotation_FK_2`
+	INDEX `import_clientQuote_FI_2` (`affiliateId`),
+	CONSTRAINT `import_clientQuote_FK_2`
 		FOREIGN KEY (`affiliateId`)
 		REFERENCES `affiliates_affiliate` (`id`),
-	INDEX `import_clientQuotation_FI_3` (`affiliateUserId`),
-	CONSTRAINT `import_clientQuotation_FK_3`
+	INDEX `import_clientQuote_FI_3` (`affiliateUserId`),
+	CONSTRAINT `import_clientQuote_FK_3`
 		FOREIGN KEY (`affiliateUserId`)
 		REFERENCES `affiliates_user` (`id`)
 )Type=MyISAM COMMENT='Cotizacion a Cliente';
 
 #-----------------------------------------------------------------------------
-#-- import_clientQuotationHistory
+#-- import_clientQuoteHistory
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `import_clientQuotationHistory`;
+DROP TABLE IF EXISTS `import_clientQuoteHistory`;
 
 
-CREATE TABLE `import_clientQuotationHistory`
+CREATE TABLE `import_clientQuoteHistory`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id',
-	`clientQuotationId` INTEGER  NOT NULL COMMENT 'Id de la cotizacion de cliente',
+	`clientQuoteId` INTEGER  NOT NULL COMMENT 'Id de la cotizacion de cliente',
 	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
 	`createdAt` DATETIME COMMENT 'Fecha del cambio de status',
 	PRIMARY KEY (`id`),
-	INDEX `import_clientQuotationHistory_FI_1` (`clientQuotationId`),
-	CONSTRAINT `import_clientQuotationHistory_FK_1`
-		FOREIGN KEY (`clientQuotationId`)
-		REFERENCES `import_clientQuotation` (`id`)
+	INDEX `import_clientQuoteHistory_FI_1` (`clientQuoteId`),
+	CONSTRAINT `import_clientQuoteHistory_FK_1`
+		FOREIGN KEY (`clientQuoteId`)
+		REFERENCES `import_clientQuote` (`id`)
 )Type=MyISAM COMMENT='Historial de Cotizacion a Cliente';
 
 #-----------------------------------------------------------------------------
-#-- import_clientQuotationItem
+#-- import_clientQuoteItem
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `import_clientQuotationItem`;
+DROP TABLE IF EXISTS `import_clientQuoteItem`;
 
 
-CREATE TABLE `import_clientQuotationItem`
+CREATE TABLE `import_clientQuoteItem`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id elemento de cotizacion de Cliente',
-	`clientQuotationId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de cliente',
+	`clientQuoteId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de cliente',
 	`productId` INTEGER  NOT NULL COMMENT 'Id producto',
 	`price` FLOAT COMMENT 'precio de producto',
 	`quantity` INTEGER COMMENT 'cantidad de producto',
 	PRIMARY KEY (`id`),
-	INDEX `import_clientQuotationItem_FI_1` (`clientQuotationId`),
-	CONSTRAINT `import_clientQuotationItem_FK_1`
-		FOREIGN KEY (`clientQuotationId`)
-		REFERENCES `import_clientQuotation` (`id`),
-	INDEX `import_clientQuotationItem_FI_2` (`productId`),
-	CONSTRAINT `import_clientQuotationItem_FK_2`
+	INDEX `import_clientQuoteItem_FI_1` (`clientQuoteId`),
+	CONSTRAINT `import_clientQuoteItem_FK_1`
+		FOREIGN KEY (`clientQuoteId`)
+		REFERENCES `import_clientQuote` (`id`),
+	INDEX `import_clientQuoteItem_FI_2` (`productId`),
+	CONSTRAINT `import_clientQuoteItem_FK_2`
 		FOREIGN KEY (`productId`)
 		REFERENCES `import_product` (`id`)
 )Type=MyISAM COMMENT='Elemento de Cotizacion Cliente';
 
 #-----------------------------------------------------------------------------
-#-- import_supplierQuotation
+#-- import_supplierQuote
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `import_supplierQuotation`;
+DROP TABLE IF EXISTS `import_supplierQuote`;
 
 
-CREATE TABLE `import_supplierQuotation`
+CREATE TABLE `import_supplierQuote`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de cotizacion de proveedor',
 	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
 	`supplierId` INTEGER  NOT NULL COMMENT 'Supplier',
 	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
 	`timestampStatus` DATETIME COMMENT 'Fecha del ultimo cambio de status',
-	`clientQuotationId` INTEGER COMMENT 'id de cotizacion relacionada',
+	`clientQuoteId` INTEGER COMMENT 'id de cotizacion relacionada',
 	`supplierAccessToken` VARCHAR(255)  NOT NULL COMMENT 'token de validacion del acceso al proveedor a la orden',
 	PRIMARY KEY (`id`),
-	INDEX `import_supplierQuotation_FI_1` (`clientQuotationId`),
-	CONSTRAINT `import_supplierQuotation_FK_1`
-		FOREIGN KEY (`clientQuotationId`)
-		REFERENCES `import_clientQuotation` (`id`),
-	INDEX `import_supplierQuotation_FI_2` (`supplierId`),
-	CONSTRAINT `import_supplierQuotation_FK_2`
+	INDEX `import_supplierQuote_FI_1` (`clientQuoteId`),
+	CONSTRAINT `import_supplierQuote_FK_1`
+		FOREIGN KEY (`clientQuoteId`)
+		REFERENCES `import_clientQuote` (`id`),
+	INDEX `import_supplierQuote_FI_2` (`supplierId`),
+	CONSTRAINT `import_supplierQuote_FK_2`
 		FOREIGN KEY (`supplierId`)
 		REFERENCES `import_supplier` (`id`)
 )Type=MyISAM COMMENT='Cotizacion de Proveedor';
 
 #-----------------------------------------------------------------------------
-#-- import_supplierQuotationHistory
+#-- import_supplierQuoteHistory
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `import_supplierQuotationHistory`;
+DROP TABLE IF EXISTS `import_supplierQuoteHistory`;
 
 
-CREATE TABLE `import_supplierQuotationHistory`
+CREATE TABLE `import_supplierQuoteHistory`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id',
-	`supplierQuotationId` INTEGER  NOT NULL COMMENT 'Id de la cotizacion de proveedor',
+	`supplierQuoteId` INTEGER  NOT NULL COMMENT 'Id de la cotizacion de proveedor',
 	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
 	`createdAt` DATETIME COMMENT 'Fecha del cambio de status',
 	PRIMARY KEY (`id`),
-	INDEX `import_supplierQuotationHistory_FI_1` (`supplierQuotationId`),
-	CONSTRAINT `import_supplierQuotationHistory_FK_1`
-		FOREIGN KEY (`supplierQuotationId`)
-		REFERENCES `import_supplierQuotation` (`id`)
+	INDEX `import_supplierQuoteHistory_FI_1` (`supplierQuoteId`),
+	CONSTRAINT `import_supplierQuoteHistory_FK_1`
+		FOREIGN KEY (`supplierQuoteId`)
+		REFERENCES `import_supplierQuote` (`id`)
 )Type=MyISAM COMMENT='Historial de Cotizacion a Proveedor';
 
 #-----------------------------------------------------------------------------
-#-- import_supplierQuotationItem
+#-- import_supplierQuoteItem
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `import_supplierQuotationItem`;
+DROP TABLE IF EXISTS `import_supplierQuoteItem`;
 
 
-CREATE TABLE `import_supplierQuotationItem`
+CREATE TABLE `import_supplierQuoteItem`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id elemento de cotizacion de proveedor',
-	`supplierQuotationId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de proveedor',
+	`supplierQuoteId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de proveedor',
 	`productId` INTEGER  NOT NULL COMMENT 'Id producto',
 	`replacedProductId` INTEGER COMMENT 'Id producto que fue reemplazado por el actual',
-	`clientQuotationItemId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de proveedor',
+	`clientQuoteItemId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de proveedor',
 	`status` INTEGER  NOT NULL COMMENT 'Status de Item de Cotizacion',
 	`quantity` INTEGER  NOT NULL COMMENT 'cantidad producto',
 	`portId` INTEGER  NOT NULL COMMENT 'id de puerto',
@@ -228,43 +228,43 @@ CREATE TABLE `import_supplierQuotationItem`
 	`cartonHeight` FLOAT COMMENT 'Alto del bulto',
 	`cartonGrossWeigth` FLOAT COMMENT 'Peso del bulto',
 	PRIMARY KEY (`id`),
-	INDEX `import_supplierQuotationItem_FI_1` (`supplierQuotationId`),
-	CONSTRAINT `import_supplierQuotationItem_FK_1`
-		FOREIGN KEY (`supplierQuotationId`)
-		REFERENCES `import_supplierQuotation` (`id`),
-	INDEX `import_supplierQuotationItem_FI_2` (`clientQuotationItemId`),
-	CONSTRAINT `import_supplierQuotationItem_FK_2`
-		FOREIGN KEY (`clientQuotationItemId`)
-		REFERENCES `import_clientQuotationItem` (`id`),
-	INDEX `import_supplierQuotationItem_FI_3` (`productId`),
-	CONSTRAINT `import_supplierQuotationItem_FK_3`
+	INDEX `import_supplierQuoteItem_FI_1` (`supplierQuoteId`),
+	CONSTRAINT `import_supplierQuoteItem_FK_1`
+		FOREIGN KEY (`supplierQuoteId`)
+		REFERENCES `import_supplierQuote` (`id`),
+	INDEX `import_supplierQuoteItem_FI_2` (`clientQuoteItemId`),
+	CONSTRAINT `import_supplierQuoteItem_FK_2`
+		FOREIGN KEY (`clientQuoteItemId`)
+		REFERENCES `import_clientQuoteItem` (`id`),
+	INDEX `import_supplierQuoteItem_FI_3` (`productId`),
+	CONSTRAINT `import_supplierQuoteItem_FK_3`
 		FOREIGN KEY (`productId`)
 		REFERENCES `import_product` (`id`),
-	INDEX `import_supplierQuotationItem_FI_4` (`replacedProductId`),
-	CONSTRAINT `import_supplierQuotationItem_FK_4`
+	INDEX `import_supplierQuoteItem_FI_4` (`replacedProductId`),
+	CONSTRAINT `import_supplierQuoteItem_FK_4`
 		FOREIGN KEY (`replacedProductId`)
 		REFERENCES `import_product` (`id`),
-	INDEX `import_supplierQuotationItem_FI_5` (`incotermId`),
-	CONSTRAINT `import_supplierQuotationItem_FK_5`
+	INDEX `import_supplierQuoteItem_FI_5` (`incotermId`),
+	CONSTRAINT `import_supplierQuoteItem_FK_5`
 		FOREIGN KEY (`incotermId`)
 		REFERENCES `import_incoterm` (`id`),
-	INDEX `import_supplierQuotationItem_FI_6` (`portId`),
-	CONSTRAINT `import_supplierQuotationItem_FK_6`
+	INDEX `import_supplierQuoteItem_FI_6` (`portId`),
+	CONSTRAINT `import_supplierQuoteItem_FK_6`
 		FOREIGN KEY (`portId`)
 		REFERENCES `import_port` (`id`)
 )Type=MyISAM COMMENT='Elemento de Cotizacion de Proveedor';
 
 #-----------------------------------------------------------------------------
-#-- import_supplierQuotationItemComment
+#-- import_supplierQuoteItemComment
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `import_supplierQuotationItemComment`;
+DROP TABLE IF EXISTS `import_supplierQuoteItemComment`;
 
 
-CREATE TABLE `import_supplierQuotationItemComment`
+CREATE TABLE `import_supplierQuoteItemComment`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id',
-	`supplierQuotationItemId` INTEGER  NOT NULL COMMENT 'Id del item de la cotizacion de proveedor',
+	`supplierQuoteItemId` INTEGER  NOT NULL COMMENT 'Id del item de la cotizacion de proveedor',
 	`supplierId` INTEGER  NOT NULL COMMENT 'Supplier que comento',
 	`userId` INTEGER COMMENT 'Usuario de anmaga que comento',
 	`price` FLOAT COMMENT 'precio de producto',
@@ -272,18 +272,18 @@ CREATE TABLE `import_supplierQuotationItemComment`
 	`delivery` INTEGER COMMENT 'Tiempo en dias para la entrega del producto.',
 	`createdAt` DATETIME COMMENT 'Fecha del cambio de status',
 	PRIMARY KEY (`id`),
-	INDEX `import_supplierQuotationItemComment_FI_1` (`userId`),
-	CONSTRAINT `import_supplierQuotationItemComment_FK_1`
+	INDEX `import_supplierQuoteItemComment_FI_1` (`userId`),
+	CONSTRAINT `import_supplierQuoteItemComment_FK_1`
 		FOREIGN KEY (`userId`)
 		REFERENCES `users_user` (`id`),
-	INDEX `import_supplierQuotationItemComment_FI_2` (`supplierId`),
-	CONSTRAINT `import_supplierQuotationItemComment_FK_2`
+	INDEX `import_supplierQuoteItemComment_FI_2` (`supplierId`),
+	CONSTRAINT `import_supplierQuoteItemComment_FK_2`
 		FOREIGN KEY (`supplierId`)
 		REFERENCES `import_supplier` (`id`),
-	INDEX `import_supplierQuotationItemComment_FI_3` (`supplierQuotationItemId`),
-	CONSTRAINT `import_supplierQuotationItemComment_FK_3`
-		FOREIGN KEY (`supplierQuotationItemId`)
-		REFERENCES `import_supplierQuotationItem` (`id`)
+	INDEX `import_supplierQuoteItemComment_FI_3` (`supplierQuoteItemId`),
+	CONSTRAINT `import_supplierQuoteItemComment_FK_3`
+		FOREIGN KEY (`supplierQuoteItemId`)
+		REFERENCES `import_supplierQuoteItem` (`id`)
 )Type=MyISAM COMMENT='Feedback entre supplier y usuario admin de anmaga sobre un Item';
 
 #-----------------------------------------------------------------------------
@@ -331,15 +331,15 @@ CREATE TABLE `import_clientPurchaseOrder`
 	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
 	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
 	`timestampStatus` DATETIME COMMENT 'Fecha del ultimo cambio de status',
-	`clientQuotationId` INTEGER  NOT NULL COMMENT 'id de cotizacion de proveedor relacionada',
+	`clientQuoteId` INTEGER  NOT NULL COMMENT 'id de cotizacion de proveedor relacionada',
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
 	`affiliateUserId` INTEGER COMMENT 'usuario del afiliado si creo la cotizacion',
 	`userId` INTEGER COMMENT 'Usuario de anmaga si creo la cotizacion',
 	PRIMARY KEY (`id`),
-	INDEX `import_clientPurchaseOrder_FI_1` (`clientQuotationId`),
+	INDEX `import_clientPurchaseOrder_FI_1` (`clientQuoteId`),
 	CONSTRAINT `import_clientPurchaseOrder_FK_1`
-		FOREIGN KEY (`clientQuotationId`)
-		REFERENCES `import_clientQuotation` (`id`),
+		FOREIGN KEY (`clientQuoteId`)
+		REFERENCES `import_clientQuote` (`id`),
 	INDEX `import_clientPurchaseOrder_FI_2` (`userId`),
 	CONSTRAINT `import_clientPurchaseOrder_FK_2`
 		FOREIGN KEY (`userId`)
@@ -413,20 +413,20 @@ CREATE TABLE `import_supplierPurchaseOrder`
 	`supplierId` INTEGER  NOT NULL COMMENT 'Supplier',
 	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
 	`timestampStatus` DATETIME COMMENT 'Fecha del ultimo cambio de status',
-	`supplierQuotationId` INTEGER  NOT NULL COMMENT 'id de cotizacion de proveedor relacionada',
-	`clientQuotationId` INTEGER  NOT NULL COMMENT 'id de cotizacion a cliente relacionada',
+	`supplierQuoteId` INTEGER  NOT NULL COMMENT 'id de cotizacion de proveedor relacionada',
+	`clientQuoteId` INTEGER  NOT NULL COMMENT 'id de cotizacion a cliente relacionada',
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
 	`affiliateUserId` INTEGER COMMENT 'usuario del afiliado si creo la cotizacion',
 	`userId` INTEGER COMMENT 'Usuario de anmaga si creo la cotizacion',
 	PRIMARY KEY (`id`),
-	INDEX `import_supplierPurchaseOrder_FI_1` (`supplierQuotationId`),
+	INDEX `import_supplierPurchaseOrder_FI_1` (`supplierQuoteId`),
 	CONSTRAINT `import_supplierPurchaseOrder_FK_1`
-		FOREIGN KEY (`supplierQuotationId`)
-		REFERENCES `import_supplierQuotation` (`id`),
-	INDEX `import_supplierPurchaseOrder_FI_2` (`clientQuotationId`),
+		FOREIGN KEY (`supplierQuoteId`)
+		REFERENCES `import_supplierQuote` (`id`),
+	INDEX `import_supplierPurchaseOrder_FI_2` (`clientQuoteId`),
 	CONSTRAINT `import_supplierPurchaseOrder_FK_2`
-		FOREIGN KEY (`clientQuotationId`)
-		REFERENCES `import_clientQuotation` (`id`),
+		FOREIGN KEY (`clientQuoteId`)
+		REFERENCES `import_clientQuote` (`id`),
 	INDEX `import_supplierPurchaseOrder_FI_3` (`supplierId`),
 	CONSTRAINT `import_supplierPurchaseOrder_FK_3`
 		FOREIGN KEY (`supplierId`)

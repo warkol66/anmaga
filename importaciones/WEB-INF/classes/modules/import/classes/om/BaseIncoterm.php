@@ -53,14 +53,14 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	private $lastSupplierCriteria = null;
 
 	/**
-	 * @var        array SupplierQuotationItem[] Collection to store aggregation of SupplierQuotationItem objects.
+	 * @var        array SupplierQuoteItem[] Collection to store aggregation of SupplierQuoteItem objects.
 	 */
-	protected $collSupplierQuotationItems;
+	protected $collSupplierQuoteItems;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collSupplierQuotationItems.
+	 * @var        Criteria The criteria used to select the current contents of collSupplierQuoteItems.
 	 */
-	private $lastSupplierQuotationItemCriteria = null;
+	private $lastSupplierQuoteItemCriteria = null;
 
 	/**
 	 * @var        array SupplierPurchaseOrderItem[] Collection to store aggregation of SupplierPurchaseOrderItem objects.
@@ -341,8 +341,8 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 			$this->collSuppliers = null;
 			$this->lastSupplierCriteria = null;
 
-			$this->collSupplierQuotationItems = null;
-			$this->lastSupplierQuotationItemCriteria = null;
+			$this->collSupplierQuoteItems = null;
+			$this->lastSupplierQuoteItemCriteria = null;
 
 			$this->collSupplierPurchaseOrderItems = null;
 			$this->lastSupplierPurchaseOrderItemCriteria = null;
@@ -462,8 +462,8 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collSupplierQuotationItems !== null) {
-				foreach ($this->collSupplierQuotationItems as $referrerFK) {
+			if ($this->collSupplierQuoteItems !== null) {
+				foreach ($this->collSupplierQuoteItems as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -557,8 +557,8 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collSupplierQuotationItems !== null) {
-					foreach ($this->collSupplierQuotationItems as $referrerFK) {
+				if ($this->collSupplierQuoteItems !== null) {
+					foreach ($this->collSupplierQuoteItems as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -665,9 +665,9 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 				}
 			}
 
-			foreach ($this->getSupplierQuotationItems() as $relObj) {
+			foreach ($this->getSupplierQuoteItems() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addSupplierQuotationItem($relObj->copy($deepCopy));
+					$copyObj->addSupplierQuoteItem($relObj->copy($deepCopy));
 				}
 			}
 
@@ -927,47 +927,47 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collSupplierQuotationItems collection (array).
+	 * Clears out the collSupplierQuoteItems collection (array).
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addSupplierQuotationItems()
+	 * @see        addSupplierQuoteItems()
 	 */
-	public function clearSupplierQuotationItems()
+	public function clearSupplierQuoteItems()
 	{
-		$this->collSupplierQuotationItems = null; // important to set this to NULL since that means it is uninitialized
+		$this->collSupplierQuoteItems = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collSupplierQuotationItems collection (array).
+	 * Initializes the collSupplierQuoteItems collection (array).
 	 *
-	 * By default this just sets the collSupplierQuotationItems collection to an empty array (like clearcollSupplierQuotationItems());
+	 * By default this just sets the collSupplierQuoteItems collection to an empty array (like clearcollSupplierQuoteItems());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
 	 * @return     void
 	 */
-	public function initSupplierQuotationItems()
+	public function initSupplierQuoteItems()
 	{
-		$this->collSupplierQuotationItems = array();
+		$this->collSupplierQuoteItems = array();
 	}
 
 	/**
-	 * Gets an array of SupplierQuotationItem objects which contain a foreign key that references this object.
+	 * Gets an array of SupplierQuoteItem objects which contain a foreign key that references this object.
 	 *
 	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
 	 * Otherwise if this Incoterm has previously been saved, it will retrieve
-	 * related SupplierQuotationItems from storage. If this Incoterm is new, it will return
+	 * related SupplierQuoteItems from storage. If this Incoterm is new, it will return
 	 * an empty collection or the current collection, the criteria is ignored on a new object.
 	 *
 	 * @param      PropelPDO $con
 	 * @param      Criteria $criteria
-	 * @return     array SupplierQuotationItem[]
+	 * @return     array SupplierQuoteItem[]
 	 * @throws     PropelException
 	 */
-	public function getSupplierQuotationItems($criteria = null, PropelPDO $con = null)
+	public function getSupplierQuoteItems($criteria = null, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
@@ -977,15 +977,15 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItems === null) {
+		if ($this->collSupplierQuoteItems === null) {
 			if ($this->isNew()) {
-			   $this->collSupplierQuotationItems = array();
+			   $this->collSupplierQuoteItems = array();
 			} else {
 
-				$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-				SupplierQuotationItemPeer::addSelectColumns($criteria);
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelect($criteria, $con);
+				SupplierQuoteItemPeer::addSelectColumns($criteria);
+				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -995,28 +995,28 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-				SupplierQuotationItemPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
-					$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelect($criteria, $con);
+				SupplierQuoteItemPeer::addSelectColumns($criteria);
+				if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
+					$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastSupplierQuotationItemCriteria = $criteria;
-		return $this->collSupplierQuotationItems;
+		$this->lastSupplierQuoteItemCriteria = $criteria;
+		return $this->collSupplierQuoteItems;
 	}
 
 	/**
-	 * Returns the number of related SupplierQuotationItem objects.
+	 * Returns the number of related SupplierQuoteItem objects.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      PropelPDO $con
-	 * @return     int Count of related SupplierQuotationItem objects.
+	 * @return     int Count of related SupplierQuoteItem objects.
 	 * @throws     PropelException
 	 */
-	public function countSupplierQuotationItems(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countSupplierQuoteItems(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
@@ -1030,14 +1030,14 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 
 		$count = null;
 
-		if ($this->collSupplierQuotationItems === null) {
+		if ($this->collSupplierQuoteItems === null) {
 			if ($this->isNew()) {
 				$count = 0;
 			} else {
 
-				$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-				$count = SupplierQuotationItemPeer::doCount($criteria, $con);
+				$count = SupplierQuoteItemPeer::doCount($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1047,36 +1047,36 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-				if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
-					$count = SupplierQuotationItemPeer::doCount($criteria, $con);
+				if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
+					$count = SupplierQuoteItemPeer::doCount($criteria, $con);
 				} else {
-					$count = count($this->collSupplierQuotationItems);
+					$count = count($this->collSupplierQuoteItems);
 				}
 			} else {
-				$count = count($this->collSupplierQuotationItems);
+				$count = count($this->collSupplierQuoteItems);
 			}
 		}
-		$this->lastSupplierQuotationItemCriteria = $criteria;
+		$this->lastSupplierQuoteItemCriteria = $criteria;
 		return $count;
 	}
 
 	/**
-	 * Method called to associate a SupplierQuotationItem object to this object
-	 * through the SupplierQuotationItem foreign key attribute.
+	 * Method called to associate a SupplierQuoteItem object to this object
+	 * through the SupplierQuoteItem foreign key attribute.
 	 *
-	 * @param      SupplierQuotationItem $l SupplierQuotationItem
+	 * @param      SupplierQuoteItem $l SupplierQuoteItem
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addSupplierQuotationItem(SupplierQuotationItem $l)
+	public function addSupplierQuoteItem(SupplierQuoteItem $l)
 	{
-		if ($this->collSupplierQuotationItems === null) {
-			$this->initSupplierQuotationItems();
+		if ($this->collSupplierQuoteItems === null) {
+			$this->initSupplierQuoteItems();
 		}
-		if (!in_array($l, $this->collSupplierQuotationItems, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collSupplierQuotationItems, $l);
+		if (!in_array($l, $this->collSupplierQuoteItems, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collSupplierQuoteItems, $l);
 			$l->setIncoterm($this);
 		}
 	}
@@ -1087,13 +1087,13 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Incoterm is new, it will return
 	 * an empty collection; or if this Incoterm has previously
-	 * been saved, it will retrieve related SupplierQuotationItems from storage.
+	 * been saved, it will retrieve related SupplierQuoteItems from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
 	 */
-	public function getSupplierQuotationItemsJoinSupplierQuotation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierQuoteItemsJoinSupplierQuote($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
@@ -1103,29 +1103,29 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItems === null) {
+		if ($this->collSupplierQuoteItems === null) {
 			if ($this->isNew()) {
-				$this->collSupplierQuotationItems = array();
+				$this->collSupplierQuoteItems = array();
 			} else {
 
-				$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinSupplierQuotation($criteria, $con, $join_behavior);
+				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinSupplierQuote($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+			$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-			if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinSupplierQuotation($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
+				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinSupplierQuote($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastSupplierQuotationItemCriteria = $criteria;
+		$this->lastSupplierQuoteItemCriteria = $criteria;
 
-		return $this->collSupplierQuotationItems;
+		return $this->collSupplierQuoteItems;
 	}
 
 
@@ -1134,13 +1134,13 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Incoterm is new, it will return
 	 * an empty collection; or if this Incoterm has previously
-	 * been saved, it will retrieve related SupplierQuotationItems from storage.
+	 * been saved, it will retrieve related SupplierQuoteItems from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
 	 */
-	public function getSupplierQuotationItemsJoinClientQuotationItem($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierQuoteItemsJoinClientQuoteItem($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
@@ -1150,29 +1150,29 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItems === null) {
+		if ($this->collSupplierQuoteItems === null) {
 			if ($this->isNew()) {
-				$this->collSupplierQuotationItems = array();
+				$this->collSupplierQuoteItems = array();
 			} else {
 
-				$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinClientQuotationItem($criteria, $con, $join_behavior);
+				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinClientQuoteItem($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+			$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-			if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinClientQuotationItem($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
+				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinClientQuoteItem($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastSupplierQuotationItemCriteria = $criteria;
+		$this->lastSupplierQuoteItemCriteria = $criteria;
 
-		return $this->collSupplierQuotationItems;
+		return $this->collSupplierQuoteItems;
 	}
 
 
@@ -1181,13 +1181,13 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Incoterm is new, it will return
 	 * an empty collection; or if this Incoterm has previously
-	 * been saved, it will retrieve related SupplierQuotationItems from storage.
+	 * been saved, it will retrieve related SupplierQuoteItems from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
 	 */
-	public function getSupplierQuotationItemsJoinProductRelatedByProductid($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierQuoteItemsJoinProductRelatedByProductid($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
@@ -1197,29 +1197,29 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItems === null) {
+		if ($this->collSupplierQuoteItems === null) {
 			if ($this->isNew()) {
-				$this->collSupplierQuotationItems = array();
+				$this->collSupplierQuoteItems = array();
 			} else {
 
-				$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinProductRelatedByProductid($criteria, $con, $join_behavior);
+				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinProductRelatedByProductid($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+			$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-			if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinProductRelatedByProductid($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
+				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinProductRelatedByProductid($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastSupplierQuotationItemCriteria = $criteria;
+		$this->lastSupplierQuoteItemCriteria = $criteria;
 
-		return $this->collSupplierQuotationItems;
+		return $this->collSupplierQuoteItems;
 	}
 
 
@@ -1228,13 +1228,13 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Incoterm is new, it will return
 	 * an empty collection; or if this Incoterm has previously
-	 * been saved, it will retrieve related SupplierQuotationItems from storage.
+	 * been saved, it will retrieve related SupplierQuoteItems from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
 	 */
-	public function getSupplierQuotationItemsJoinProductRelatedByReplacedproductid($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierQuoteItemsJoinProductRelatedByReplacedproductid($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
@@ -1244,29 +1244,29 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItems === null) {
+		if ($this->collSupplierQuoteItems === null) {
 			if ($this->isNew()) {
-				$this->collSupplierQuotationItems = array();
+				$this->collSupplierQuoteItems = array();
 			} else {
 
-				$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinProductRelatedByReplacedproductid($criteria, $con, $join_behavior);
+				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinProductRelatedByReplacedproductid($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+			$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-			if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinProductRelatedByReplacedproductid($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
+				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinProductRelatedByReplacedproductid($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastSupplierQuotationItemCriteria = $criteria;
+		$this->lastSupplierQuoteItemCriteria = $criteria;
 
-		return $this->collSupplierQuotationItems;
+		return $this->collSupplierQuoteItems;
 	}
 
 
@@ -1275,13 +1275,13 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Incoterm is new, it will return
 	 * an empty collection; or if this Incoterm has previously
-	 * been saved, it will retrieve related SupplierQuotationItems from storage.
+	 * been saved, it will retrieve related SupplierQuoteItems from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
 	 */
-	public function getSupplierQuotationItemsJoinPort($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierQuoteItemsJoinPort($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
@@ -1291,29 +1291,29 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItems === null) {
+		if ($this->collSupplierQuoteItems === null) {
 			if ($this->isNew()) {
-				$this->collSupplierQuotationItems = array();
+				$this->collSupplierQuoteItems = array();
 			} else {
 
-				$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
+				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(SupplierQuotationItemPeer::INCOTERMID, $this->id);
+			$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
 
-			if (!isset($this->lastSupplierQuotationItemCriteria) || !$this->lastSupplierQuotationItemCriteria->equals($criteria)) {
-				$this->collSupplierQuotationItems = SupplierQuotationItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
+				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastSupplierQuotationItemCriteria = $criteria;
+		$this->lastSupplierQuoteItemCriteria = $criteria;
 
-		return $this->collSupplierQuotationItems;
+		return $this->collSupplierQuoteItems;
 	}
 
 	/**
@@ -1629,8 +1629,8 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
-			if ($this->collSupplierQuotationItems) {
-				foreach ((array) $this->collSupplierQuotationItems as $o) {
+			if ($this->collSupplierQuoteItems) {
+				foreach ((array) $this->collSupplierQuoteItems as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -1642,7 +1642,7 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 		} // if ($deep)
 
 		$this->collSuppliers = null;
-		$this->collSupplierQuotationItems = null;
+		$this->collSupplierQuoteItems = null;
 		$this->collSupplierPurchaseOrderItems = null;
 	}
 

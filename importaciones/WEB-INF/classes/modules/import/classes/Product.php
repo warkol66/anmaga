@@ -89,10 +89,10 @@ class Product extends BaseProduct {
 	public function getProductsThatHasReplaced() {
 		
 		$criteria = New Criteria();
-		$criteria->add(SupplierQuotationItemPeer::PRODUCTID,$this->getId());
-		$criteria->add(SupplierQuotationItemPeer::REPLACEDPRODUCTID,0,Criteria::GREATER_THAN);
+		$criteria->add(SupplierQuoteItemPeer::PRODUCTID,$this->getId());
+		$criteria->add(SupplierQuoteItemPeer::REPLACEDPRODUCTID,0,Criteria::GREATER_THAN);
 		
-		$items = SupplierQuotationItemPeer::doSelect($criteria);
+		$items = SupplierQuoteItemPeer::doSelect($criteria);
 		
 		$products = array();
 		foreach ($items as $item) {

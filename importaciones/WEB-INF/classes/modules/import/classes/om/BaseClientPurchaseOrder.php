@@ -43,10 +43,10 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	protected $timestampstatus;
 
 	/**
-	 * The value for the clientquotationid field.
+	 * The value for the clientquoteid field.
 	 * @var        int
 	 */
-	protected $clientquotationid;
+	protected $clientquoteid;
 
 	/**
 	 * The value for the affiliateid field.
@@ -67,9 +67,9 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	protected $userid;
 
 	/**
-	 * @var        ClientQuotation
+	 * @var        ClientQuote
 	 */
-	protected $aClientQuotation;
+	protected $aClientQuote;
 
 	/**
 	 * @var        User
@@ -237,13 +237,13 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [clientquotationid] column value.
+	 * Get the [clientquoteid] column value.
 	 * id de cotizacion de proveedor relacionada
 	 * @return     int
 	 */
-	public function getClientquotationid()
+	public function getClientquoteid()
 	{
-		return $this->clientquotationid;
+		return $this->clientquoteid;
 	}
 
 	/**
@@ -415,28 +415,28 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	} // setTimestampstatus()
 
 	/**
-	 * Set the value of [clientquotationid] column.
+	 * Set the value of [clientquoteid] column.
 	 * id de cotizacion de proveedor relacionada
 	 * @param      int $v new value
 	 * @return     ClientPurchaseOrder The current object (for fluent API support)
 	 */
-	public function setClientquotationid($v)
+	public function setClientquoteid($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->clientquotationid !== $v) {
-			$this->clientquotationid = $v;
-			$this->modifiedColumns[] = ClientPurchaseOrderPeer::CLIENTQUOTATIONID;
+		if ($this->clientquoteid !== $v) {
+			$this->clientquoteid = $v;
+			$this->modifiedColumns[] = ClientPurchaseOrderPeer::CLIENTQUOTEID;
 		}
 
-		if ($this->aClientQuotation !== null && $this->aClientQuotation->getId() !== $v) {
-			$this->aClientQuotation = null;
+		if ($this->aClientQuote !== null && $this->aClientQuote->getId() !== $v) {
+			$this->aClientQuote = null;
 		}
 
 		return $this;
-	} // setClientquotationid()
+	} // setClientquoteid()
 
 	/**
 	 * Set the value of [affiliateid] column.
@@ -551,7 +551,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 			$this->createdat = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->status = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
 			$this->timestampstatus = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-			$this->clientquotationid = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->clientquoteid = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
 			$this->affiliateid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
 			$this->affiliateuserid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
 			$this->userid = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
@@ -587,8 +587,8 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	public function ensureConsistency()
 	{
 
-		if ($this->aClientQuotation !== null && $this->clientquotationid !== $this->aClientQuotation->getId()) {
-			$this->aClientQuotation = null;
+		if ($this->aClientQuote !== null && $this->clientquoteid !== $this->aClientQuote->getId()) {
+			$this->aClientQuote = null;
 		}
 		if ($this->aAffiliate !== null && $this->affiliateid !== $this->aAffiliate->getId()) {
 			$this->aAffiliate = null;
@@ -638,7 +638,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->aClientQuotation = null;
+			$this->aClientQuote = null;
 			$this->aUser = null;
 			$this->aAffiliate = null;
 			$this->aAffiliateUser = null;
@@ -738,11 +738,11 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aClientQuotation !== null) {
-				if ($this->aClientQuotation->isModified() || $this->aClientQuotation->isNew()) {
-					$affectedRows += $this->aClientQuotation->save($con);
+			if ($this->aClientQuote !== null) {
+				if ($this->aClientQuote->isModified() || $this->aClientQuote->isNew()) {
+					$affectedRows += $this->aClientQuote->save($con);
 				}
-				$this->setClientQuotation($this->aClientQuotation);
+				$this->setClientQuote($this->aClientQuote);
 			}
 
 			if ($this->aUser !== null) {
@@ -875,9 +875,9 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aClientQuotation !== null) {
-				if (!$this->aClientQuotation->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aClientQuotation->getValidationFailures());
+			if ($this->aClientQuote !== null) {
+				if (!$this->aClientQuote->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aClientQuote->getValidationFailures());
 				}
 			}
 
@@ -941,7 +941,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ClientPurchaseOrderPeer::CREATEDAT)) $criteria->add(ClientPurchaseOrderPeer::CREATEDAT, $this->createdat);
 		if ($this->isColumnModified(ClientPurchaseOrderPeer::STATUS)) $criteria->add(ClientPurchaseOrderPeer::STATUS, $this->status);
 		if ($this->isColumnModified(ClientPurchaseOrderPeer::TIMESTAMPSTATUS)) $criteria->add(ClientPurchaseOrderPeer::TIMESTAMPSTATUS, $this->timestampstatus);
-		if ($this->isColumnModified(ClientPurchaseOrderPeer::CLIENTQUOTATIONID)) $criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTATIONID, $this->clientquotationid);
+		if ($this->isColumnModified(ClientPurchaseOrderPeer::CLIENTQUOTEID)) $criteria->add(ClientPurchaseOrderPeer::CLIENTQUOTEID, $this->clientquoteid);
 		if ($this->isColumnModified(ClientPurchaseOrderPeer::AFFILIATEID)) $criteria->add(ClientPurchaseOrderPeer::AFFILIATEID, $this->affiliateid);
 		if ($this->isColumnModified(ClientPurchaseOrderPeer::AFFILIATEUSERID)) $criteria->add(ClientPurchaseOrderPeer::AFFILIATEUSERID, $this->affiliateuserid);
 		if ($this->isColumnModified(ClientPurchaseOrderPeer::USERID)) $criteria->add(ClientPurchaseOrderPeer::USERID, $this->userid);
@@ -1005,7 +1005,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 		$copyObj->setTimestampstatus($this->timestampstatus);
 
-		$copyObj->setClientquotationid($this->clientquotationid);
+		$copyObj->setClientquoteid($this->clientquoteid);
 
 		$copyObj->setAffiliateid($this->affiliateid);
 
@@ -1079,24 +1079,24 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Declares an association between this object and a ClientQuotation object.
+	 * Declares an association between this object and a ClientQuote object.
 	 *
-	 * @param      ClientQuotation $v
+	 * @param      ClientQuote $v
 	 * @return     ClientPurchaseOrder The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setClientQuotation(ClientQuotation $v = null)
+	public function setClientQuote(ClientQuote $v = null)
 	{
 		if ($v === null) {
-			$this->setClientquotationid(NULL);
+			$this->setClientquoteid(NULL);
 		} else {
-			$this->setClientquotationid($v->getId());
+			$this->setClientquoteid($v->getId());
 		}
 
-		$this->aClientQuotation = $v;
+		$this->aClientQuote = $v;
 
 		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the ClientQuotation object, it will not be re-added.
+		// If this object has already been added to the ClientQuote object, it will not be re-added.
 		if ($v !== null) {
 			$v->addClientPurchaseOrder($this);
 		}
@@ -1106,25 +1106,25 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 
 	/**
-	 * Get the associated ClientQuotation object
+	 * Get the associated ClientQuote object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     ClientQuotation The associated ClientQuotation object.
+	 * @return     ClientQuote The associated ClientQuote object.
 	 * @throws     PropelException
 	 */
-	public function getClientQuotation(PropelPDO $con = null)
+	public function getClientQuote(PropelPDO $con = null)
 	{
-		if ($this->aClientQuotation === null && ($this->clientquotationid !== null)) {
-			$this->aClientQuotation = ClientQuotationPeer::retrieveByPK($this->clientquotationid, $con);
+		if ($this->aClientQuote === null && ($this->clientquoteid !== null)) {
+			$this->aClientQuote = ClientQuotePeer::retrieveByPK($this->clientquoteid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
 			   undesirable since it could result in an only partially populated collection
 			   in the referenced object.
-			   $this->aClientQuotation->addClientPurchaseOrders($this);
+			   $this->aClientQuote->addClientPurchaseOrders($this);
 			 */
 		}
-		return $this->aClientQuotation;
+		return $this->aClientQuote;
 	}
 
 	/**
@@ -1657,7 +1657,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 		$this->collClientPurchaseOrderItems = null;
 		$this->collClientPurchaseOrderHistorys = null;
-			$this->aClientQuotation = null;
+			$this->aClientQuote = null;
 			$this->aUser = null;
 			$this->aAffiliate = null;
 			$this->aAffiliateUser = null;

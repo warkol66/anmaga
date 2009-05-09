@@ -1,1 +1,1 @@
-|-*include_module module=ClientQuotation action=QuotationsStatus*-|
+|-*include_module module=ClientQuote action=QuotesStatus*-|

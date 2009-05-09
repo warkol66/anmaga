@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ClientQuotationItemPeer.php");
+require_once("ClientQuoteItemPeer.php");
 require_once("ProductPeer.php");
 
 class ImportClientQuoteAddItemXAction extends BaseAction {
@@ -46,34 +46,34 @@ class ImportClientQuoteAddItemXAction extends BaseAction {
 		$smarty->assign('module',$module);
 
 		//flag de utilizacion de cantidades en cotizaciones
-		$smarty->assign("quantitiesOnQuotationsFlag",Common::importQuotationsHasQuantities());
+		$smarty->assign("quantitiesOnQuotesFlag",Common::importQuotesHasQuantities());
 
 		$this->template->template = 'TemplateAjax.tpl';
 
-		if (!empty($_POST['clientQuotationItem']) && !empty($_POST['clientQuotationItem']['quantity'])) {
+		if (!empty($_POST['clientQuoteItem']) && !empty($_POST['clientQuoteItem']['quantity'])) {
 
-			if (empty($_POST['clientQuotationItem']['clientQuotationId'])) {
-				//trabajamos con un client quotation sin salvarse
-				$clientQuotation = $_SESSION['import']['clientQuotation'];
+			if (empty($_POST['clientQuoteItem']['clientQuoteId'])) {
+				//trabajamos con un client quote sin salvarse
+				$clientQuote = $_SESSION['import']['clientQuote'];
 			}
 			else { 
-				$clientQuotation = ClientQuotationPeer::get($_POST['clientQuotationItem']['clientQuotationId']);
+				$clientQuote = ClientQuotePeer::get($_POST['clientQuoteItem']['clientQuoteId']);
 			}
 			
-			$product = ProductPeer::get($_POST['clientQuotationItem']['productId']);
-			if ($clientQuotation->hasProduct($product)) {
+			$product = ProductPeer::get($_POST['clientQuoteItem']['productId']);
+			if ($clientQuote->hasProduct($product)) {
 				$smarty->assign('message','already-added');
 				return $mapping->findForwardConfig('success');
 			}
 
 
-			if (empty($_POST['clientQuotationItem']['clientQuotationId'])) {
-				//trabajamos con un client quotation sin salvarse
-				$item = ClientQuotationItemPeer::createInstance($_POST['clientQuotationItem']);
-				$clientQuotation->addClientQuotationItem($item);
+			if (empty($_POST['clientQuoteItem']['clientQuoteId'])) {
+				//trabajamos con un client quote sin salvarse
+				$item = ClientQuoteItemPeer::createInstance($_POST['clientQuoteItem']);
+				$clientQuote->addClientQuoteItem($item);
 			}
 			else { 
-				$item = ClientQuotationItemPeer::create($_POST['clientQuotationItem']);
+				$item = ClientQuoteItemPeer::create($_POST['clientQuoteItem']);
 			}
 			if (!empty($item)) {
 				$smarty->assign('item',$item);

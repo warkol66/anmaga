@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("SupplierQuotationPeer.php");
+require_once("SupplierQuotePeer.php");
 
 class ImportSupplierQuoteItemsNegociateAction extends BaseAction {
 
@@ -44,15 +44,15 @@ class ImportSupplierQuoteItemsNegociateAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
-		$supplierQuotationItemPeer = new SupplierQuotationItemPeer();
+		$supplierQuoteItemPeer = new SupplierQuoteItemPeer();
 			
-		$supplierQuotationItem = $supplierQuotationItemPeer->get($_POST['supplierQuotationItemId']);
+		$supplierQuoteItem = $supplierQuoteItemPeer->get($_POST['supplierQuoteItemId']);
 
-		if (empty($supplierQuotationItem)) {
+		if (empty($supplierQuoteItem)) {
 			return $mapping->findForwardConfig('failure');			
 		}
 
-		$smarty->assign("supplierQuotationItem",$supplierQuotationItem);
+		$smarty->assign("supplierQuoteItem",$supplierQuoteItem);
 		
 		return $mapping->findForwardConfig('success');			
 		

@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ClientQuotationPeer.php");
+require_once("ClientQuotePeer.php");
 
 class ImportClientQuoteConfirmAction extends BaseAction {
 
@@ -49,23 +49,23 @@ class ImportClientQuoteConfirmAction extends BaseAction {
 			$affiliate = Common::getAffiliatedLogged();
 			
 			if (empty($_GET['id'])) {
-				//se esta editando una clientQuotation recien creada
-				$clientQuotation = $_SESSION['import']['clientQuotation'];
+				//se esta editando una clientQuote recien creada
+				$clientQuote = $_SESSION['import']['clientQuote'];
 			}
 			else {
-				$clientQuotation = $affiliate->getClientQuotation($_POST['clientQuotationId']);
+				$clientQuote = $affiliate->getClientQuote($_POST['clientQuoteId']);
 			}
 			
-			if (empty($clientQuotation)) {
+			if (empty($clientQuote)) {
 				return $mapping->findForwardConfig('failure');
 			}
 	
-			if (!$clientQuotation->clientConfirm()) {
+			if (!$clientQuote->clientConfirm()) {
 				return $mapping->findForwardConfig('failure');
 			}
 			
 			$params = array();
-			$params['clientQuotationId'] = $clientQuotation->getId();
+			$params['clientQuoteId'] = $clientQuote->getId();
 			return $this->addParamsToForwards($params,$mapping,'success');
 			
 		}
@@ -73,26 +73,26 @@ class ImportClientQuoteConfirmAction extends BaseAction {
 		if (Common::isAdmin()) {
 
 			if (empty($_GET['id'])) {
-				//se esta editando una clientQuotation recien creada
-				$clientQuotation = $_SESSION['import']['clientQuotation'];
+				//se esta editando una clientQuote recien creada
+				$clientQuote = $_SESSION['import']['clientQuote'];
 			}
 			else {
-				//se esta editando una clientQuotation existente
-				$clientQuotation = $clientQuotationPeer->get($_POST['clientQuotationId']);
+				//se esta editando una clientQuote existente
+				$clientQuote = $clientQuotePeer->get($_POST['clientQuoteId']);
 			}
 
-			if (empty($clientQuotation)) {
+			if (empty($clientQuote)) {
 				return $mapping->findForwardConfig('failure');
 			}
 	
-			if (!$clientQuotation->clientConfirm()) {
+			if (!$clientQuote->clientConfirm()) {
 				return $mapping->findForwardConfig('failure');
 			}
 			
-			$_SESSION['import']['clientQuotation'] = '';
+			$_SESSION['import']['clientQuote'] = '';
 			
 			$params = array();
-			$params['clientQuotationId'] = $clientQuotation->getId();
+			$params['clientQuoteId'] = $clientQuote->getId();
 			return $this->addParamsToForwards($params,$mapping,'success');
 
 			

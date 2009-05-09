@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ClientQuotationPeer.php");
+require_once("ClientQuotePeer.php");
 
 class ImportClientQuoteAdminConfirmAction extends BaseAction {
 
@@ -46,18 +46,18 @@ class ImportClientQuoteAdminConfirmAction extends BaseAction {
 		
 		if (Common::isAdmin()) {
 
-			$clientQuotation = ClientQuotationPeer::get($_POST['clientQuotationId']);
+			$clientQuote = ClientQuotePeer::get($_POST['clientQuoteId']);
 
-			if (empty($clientQuotation)) {
+			if (empty($clientQuote)) {
 				return $mapping->findForwardConfig('failure');
 			}
 	
-			if (!$clientQuotation->close()) {
+			if (!$clientQuote->close()) {
 				return $mapping->findForwardConfig('failure');
 			}
 			
 			$params = array();
-			$params['clientQuotationId'] = $clientQuotation->getId();
+			$params['clientQuoteId'] = $clientQuote->getId();
 			return $this->addParamsToForwards($params,$mapping,'success');
 
 			

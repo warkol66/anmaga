@@ -5,8 +5,8 @@
 	|-if $message eq "created"-|
 		<div class="successMessage">Cotización creada correctamente.</div>
 	|-/if-|
-	|-if $message eq "supplier-quotation-created"-|
-		<div class="successMessage">Cotización de Proveedor creada correctamente. Puede consultarla accediendo a este <a href="Main.php?do=importSupplierQuoteEdit&amp;id=|-$supplierQuotation->getId()-|" >link</a></div>
+	|-if $message eq "supplier-quote-created"-|
+		<div class="successMessage">Cotización de Proveedor creada correctamente. Puede consultarla accediendo a este <a href="Main.php?do=importSupplierQuoteEdit&amp;id=|-$supplierQuote->getId()-|" >link</a></div>
 	|-/if-|
 	|-if $message eq "price-set"-|
 		<div class="successMessage">Se ha fijado un nuevo precio para el cliente.</div>
@@ -20,38 +20,38 @@
 </div>
 
 
-<div id="div_clientQuotation">
+<div id="div_clientQuote">
 	<p>Podra modificar la cotización mientra la misma este en estado "New". Una vez que la misma haya sido confirmada podrá generar las solicitudes de cotización de productos para el proveedor.</p>
 	<p>
-		Fecha de Creación: |-$clientQuotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|
+		Fecha de Creación: |-$clientQuote->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|
 	</p>
 	<p>
-		Estado: |-$clientQuotation->getStatusNameAdmin()-|
+		Estado: |-$clientQuote->getStatusNameAdmin()-|
 	</p>
 </div>
 
 
-|-if $clientQuotation->isNewStatus()-|
-	|-include file='ImportClientQuoteAddItemInclude.tpl' clientQuotation=$clientQuotation affiliate=$affiliate-|
+|-if $clientQuote->isNewStatus()-|
+	|-include file='ImportClientQuoteAddItemInclude.tpl' clientQuote=$clientQuote affiliate=$affiliate-|
 |-/if-|
 
 
-<div id="clientQuotationItemsHolder">
-	|-if $clientQuotation->isNewStatus()-|
+<div id="clientQuoteItemsHolder">
+	|-if $clientQuote->isNewStatus()-|
 <h1>Detalle de solicitud de cotización</h1>
-		|-include file='ImportClientQuoteItemsAffiliateListInclude.tpl' clientQuotation=$clientQuotation-|
+		|-include file='ImportClientQuoteItemsAffiliateListInclude.tpl' clientQuote=$clientQuote-|
 	|-else-|
 <h1>Solicitud de cotización a proveedor</h1>
-		|-include file='ImportClientQuoteItemsAdminListInclude.tpl' clientQuotation=$clientQuotation-|
+		|-include file='ImportClientQuoteItemsAdminListInclude.tpl' clientQuote=$clientQuote-|
 	|-/if-|
 </div>
 
-<div id="clientQuotationConfirmation">
-	|-if $clientQuotation->isNewStatus()-|
+<div id="clientQuoteConfirmation">
+	|-if $clientQuote->isNewStatus()-|
 	<p>
 
 		<form action="Main.php" method="post">
-			<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
+			<input type="hidden" name="clientQuoteId" value="|-$clientQuote->getId()-|" />
 			<input type="hidden" name="do" value="importClientQuoteConfirm" />
 			<input type="submit" value="Confirmar Cotización">
 		</form>
@@ -59,12 +59,12 @@
 	|-/if-|
 </div>
 
-<div id="clientQuotationAdminConfirmation">
-	|-if $clientQuotation->isPartiallyQuoted()-|
+<div id="clientQuoteAdminConfirmation">
+	|-if $clientQuote->isPartiallyQuoted()-|
 	<p>
 
 		<form action="Main.php" method="post">
-			<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
+			<input type="hidden" name="clientQuoteId" value="|-$clientQuote->getId()-|" />
 			<input type="hidden" name="do" value="importClientQuoteAdminConfirm" />
 			<input type="submit" value="Cerrar Cotización (confirma precios ingresados)" />
 		</form>
@@ -72,18 +72,18 @@
 	|-/if-|
 </div>
 
-<div id="clientQuotationReject">
-	|-if $clientQuotation->isQuoted()-|
+<div id="clientQuoteReject">
+	|-if $clientQuote->isQuoted()-|
 	<p>
 		<form action="Main.php" method="post">
-			<input type="hidden" name="clientQuotationId" value="|-$clientQuotation->getId()-|" />
-			<input type="hidden" name="do" value="importClientQuotationReject" />
+			<input type="hidden" name="clientQuoteId" value="|-$clientQuote->getId()-|" />
+			<input type="hidden" name="do" value="importClientQuoteReject" />
 			<input type="submit" value="Rechazar Cotización" />
 		</form>
 	<p>
 	|-/if-|
 </div>
 
-<div id="clientQuotationCancel"=>
+<div id="clientQuoteCancel"=>
 	<input type="button" name="cancel" value="Cancelar" onClick="javascript:window.history.go(-1)">
 </div>

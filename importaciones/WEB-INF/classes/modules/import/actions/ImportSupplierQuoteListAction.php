@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("SupplierQuotationPeer.php");
+require_once("SupplierQuotePeer.php");
 
 class ImportSupplierQuoteListAction extends BaseAction {
 
@@ -50,22 +50,22 @@ class ImportSupplierQuoteListAction extends BaseAction {
    
 		$smarty->assign("message",$_GET["message"]);
 		
-		if (!empty($_GET['supplierQuotationId']))
-			$smarty->assign('supplierQuotationId',$_GET['supplierQuotationId']);
+		if (!empty($_GET['supplierQuoteId']))
+			$smarty->assign('supplierQuoteId',$_GET['supplierQuoteId']);
 		
-		$supplierQuotationPeer = new SupplierQuotationPeer();
+		$supplierQuotePeer = new SupplierQuotePeer();
 		
 		if (Common::isAdmin()) {
 			//traemos todas las cotizaciones.	
 			
 			$filterValues = array('supplierId');
 			
-			$supplierQuotationPeer = $this->processFilters($supplierQuotationPeer,$filterValues,$smarty);
+			$supplierQuotePeer = $this->processFilters($supplierQuotePeer,$filterValues,$smarty);
 			
-			$pager = $supplierQuotationPeer->getAllPaginatedFiltered($_GET["page"]);
+			$pager = $supplierQuotePeer->getAllPaginatedFiltered($_GET["page"]);
 			$suppliers = SupplierPeer::getAll();
 			
-			$smarty->assign("quotations",$pager->getResult());
+			$smarty->assign("quotes",$pager->getResult());
 			$smarty->assign("pager",$pager);
 			$smarty->assign("suppliers",$suppliers);
 			return $mapping->findForwardConfig('success');

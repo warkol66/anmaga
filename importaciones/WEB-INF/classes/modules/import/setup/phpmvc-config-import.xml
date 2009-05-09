@@ -232,7 +232,7 @@
                name = "importSupplierQuoteCreate"
               scope = "request"
            validate = "true">
-    <forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=supplier-quotation-created" redirect="true"/>
+    <forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=supplier-quote-created" redirect="true"/>
     </action>
 
 	<action    path = "importProductSearchX"

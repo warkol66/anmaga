@@ -11,18 +11,18 @@
 				<th></th>
 			</tr>
 		</thead>
-		|-foreach from=$result item=quotation name=for_quotations-|
-	|-if $smarty.foreach.for_quotations.iteration is odd by 3-|
+		|-foreach from=$result item=quote name=for_quotes-|
+	|-if $smarty.foreach.for_quotes.iteration is odd by 3-|
 			<tr valign="top">
-				<td>|-$quotation->getId()-|</td>
-				<td><img src="images/clear.gif" class="aqua|-*$smarty.foreach.for_quotations.iteration*-||-php-|echo rand(1,10);|-/php-|" /></td>
+				<td>|-$quote->getId()-|</td>
+				<td><img src="images/clear.gif" class="aqua|-*$smarty.foreach.for_quotes.iteration*-||-php-|echo rand(1,10);|-/php-|" /></td>
 				<td>
-					|-assign var=client value=$quotation->getAffiliate()-|
+					|-assign var=client value=$quote->getAffiliate()-|
 					|-$client->getName()-|
 				</td>
-				<td>|-$quotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
-				<td>|-$quotation->getStatusNameAdmin()-|</td>
-				<td>|-assign var=items value=$quotation->getClientQuotationItems()-|
+				<td>|-$quote->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
+				<td>|-$quote->getStatusNameAdmin()-|</td>
+				<td>|-assign var=items value=$quote->getClientQuoteItems()-|
 					|-if $items|@count eq 0-|
 						No hay productos en la solicitud
 					|-else-|
@@ -36,18 +36,18 @@
 				<td nowrap="nowrap">
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientQuoteEdit" />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="Editar" class="buttonImageEdit" title="Editar" alt="Editar" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
+						<input type="submit" name="submit_go_edit_quote" value="Editar" class="buttonImageEdit" title="Editar" alt="Editar" />
 					</form>
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientQuoteHistory" />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="Ver Historial" class="buttonImageHistory" title="Ver Historial" alt="Ver Historial" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
+						<input type="submit" name="submit_go_edit_quote" value="Ver Historial" class="buttonImageHistory" title="Ver Historial" alt="Ver Historial" />
 					</form>
 <!--					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="importClientQuoteDelete" />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_delete_quotation" value="Borrar" onclick="return confirm('Seguro que desea eliminar la cotizacion?')" class="buttonImageDelete" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
+						<input type="submit" name="submit_go_delete_quote" value="Borrar" onclick="return confirm('Seguro que desea eliminar la cotizacion?')" class="buttonImageDelete" />
 					</form>
 -->
 				</td>
@@ -71,18 +71,18 @@
 				<th></th>
 			</tr>
 		</thead>
-		|-foreach from=$result item=quotation name=for_quotations-|
-	|-if $smarty.foreach.for_quotations.iteration is div by 6-|
+		|-foreach from=$result item=quote name=for_quotes-|
+	|-if $smarty.foreach.for_quotes.iteration is div by 6-|
 			<tr valign="top">
-				<td>|-$quotation->getId()-|</td>
-				<td><img src="images/clear.gif" class="aqua|-*$smarty.foreach.for_quotations.iteration*-||-php-|echo rand(1,10);|-/php-|" /></td>
+				<td>|-$quote->getId()-|</td>
+				<td><img src="images/clear.gif" class="aqua|-*$smarty.foreach.for_quotes.iteration*-||-php-|echo rand(1,10);|-/php-|" /></td>
 				<td>
-					|-assign var=client value=$quotation->getAffiliate()-|
+					|-assign var=client value=$quote->getAffiliate()-|
 					|-$client->getName()-|
 				</td>
-				<td>|-$quotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
-				<td>|-$quotation->getStatusNameAdmin()-|</td>
-				<td>|-assign var=items value=$quotation->getClientQuotationItems()-|
+				<td>|-$quote->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
+				<td>|-$quote->getStatusNameAdmin()-|</td>
+				<td>|-assign var=items value=$quote->getClientQuoteItems()-|
 					|-if $items|@count eq 0-|
 						No hay productos en la solicitud
 					|-else-|
@@ -97,18 +97,18 @@
 				<td nowrap="nowrap">
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientQuoteEdit" />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="Editar" class="buttonImageEdit" title="Editar" alt="Editar" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
+						<input type="submit" name="submit_go_edit_quote" value="Editar" class="buttonImageEdit" title="Editar" alt="Editar" />
 					</form>
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientQuoteHistory" />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_edit_quotation" value="Ver Historial" class="buttonImageHistory" title="Ver Historial" alt="Ver Historial" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
+						<input type="submit" name="submit_go_edit_quote" value="Ver Historial" class="buttonImageHistory" title="Ver Historial" alt="Ver Historial" />
 					</form>
 <!--					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="importClientQuoteDelete" />
-						<input type="hidden" name="id" value="|-$quotation->getid()-|" />
-						<input type="submit" name="submit_go_delete_quotation" value="Borrar" onclick="return confirm('Seguro que desea eliminar la cotizacion?')" class="buttonImageDelete" />
+						<input type="hidden" name="id" value="|-$quote->getid()-|" />
+						<input type="submit" name="submit_go_delete_quote" value="Borrar" onclick="return confirm('Seguro que desea eliminar la cotizacion?')" class="buttonImageDelete" />
 					</form>
 -->
 				</td>

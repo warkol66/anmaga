@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ClientQuotationPeer.php");
+require_once("ClientQuotePeer.php");
 require_once("ProductPeer.php");
 require_once("SupplierPeer.php");
 require_once("PortPeer.php");
@@ -50,13 +50,13 @@ class ImportSupplierQuoteHistoryAction extends BaseAction {
 		
 		$smarty->assign("message",$_GET["message"]);
 				
-		$supplierQuotationPeer = new SupplierQuotationPeer();
+		$supplierQuotePeer = new SupplierQuotePeer();
 
 		if (Common::isAdmin()) {
 			//traemos la cotizacion
-			$supplierQuotation = $supplierQuotationPeer->get($_GET["id"]);
+			$supplierQuote = $supplierQuotePeer->get($_GET["id"]);
 			
-			$smarty->assign("supplierQuotation",$supplierQuotation);
+			$smarty->assign("supplierQuote",$supplierQuote);
 			return $mapping->findForwardConfig('success');
 		}		
 		

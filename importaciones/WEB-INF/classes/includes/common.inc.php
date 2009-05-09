@@ -778,10 +778,10 @@ class Common
    * Indica si el los pedidos de cotizaciones manejan cantidades en el modulo import
    * @return boolean
    */
-  function importQuotationsHasQuantities() {
+  function importQuotesHasQuantities() {
 
     global $system;
-    return ($system['config']['import']['quantityOnQuotation']['value'] == 'YES');
+    return ($system['config']['import']['quantityOnQuote']['value'] == 'YES');
 
   }
 

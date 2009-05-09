@@ -22,8 +22,8 @@
 			portOption.selected = 'selected';
 		}
 
-		|-foreach from=$items item=item name=for_clientQuotationsItems-|
-			|-if not $item->hasASupplierQuotationRelated()-|
+		|-foreach from=$items item=item name=for_clientQuotesItems-|
+			|-if not $item->hasASupplierQuoteRelated()-|
 			if ($('checkboxItem|-$item->getId()-|'))
 				$('checkboxItem|-$item->getId()-|').checked = true;
 			|-/if-|

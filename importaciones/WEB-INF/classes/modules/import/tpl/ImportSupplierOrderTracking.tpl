@@ -12,7 +12,7 @@ Seleccione un estado para el pedido y agregue un comentario. Para guardar, haga 
 	</p>
 </div>
 
-<div id="supplierQuotationTracking">
+<div id="supplierQuoteTracking">
 	<form action="Main.php" method="post">
 		<fieldset>
 		<legend>Seguimiento</legend>

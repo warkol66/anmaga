@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ClientQuotationItemPeer.php");
+require_once("ClientQuoteItemPeer.php");
 require_once("ProductPeer.php");
 
 class ImportClientQuoteDeleteItemXAction extends BaseAction {
@@ -47,11 +47,11 @@ class ImportClientQuoteDeleteItemXAction extends BaseAction {
 
 		$this->template->template = 'TemplateAjax.tpl';
 
-		//trabajamos con un client quotation sin salvarse
-		$clientQuotation = $_SESSION['import']['clientQuotation'];
+		//trabajamos con un client quote sin salvarse
+		$clientQuote = $_SESSION['import']['clientQuote'];
 		
-		$items = $clientQuotation->getClientQuotationItems();
-		$clientQuotation->clearClientQuotationItems();
+		$items = $clientQuote->getClientQuoteItems();
+		$clientQuote->clearClientQuoteItems();
 		
 		foreach ($items as $item) {
 			
@@ -61,7 +61,7 @@ class ImportClientQuoteDeleteItemXAction extends BaseAction {
 				$smarty->assign('productId',$_POST['productId']);
 			}
 			else {
-				$clientQuotation->addClientQuotationItem($item);
+				$clientQuote->addClientQuoteItem($item);
 			}
 		}
 					

@@ -12,7 +12,7 @@
 			</tr>
 		</thead>
 		<tbody>
-		|-foreach from=$supplierPurchaseOrder->getSupplierPurchaseOrderHistorys() item=history name=for_quotation_histories-|
+		|-foreach from=$supplierPurchaseOrder->getSupplierPurchaseOrderHistorys() item=history name=for_quote_histories-|
 			<tr>
 				<td>|-$history->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
 				<td>|-$history->getStatusName()-|</td>

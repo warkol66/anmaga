@@ -1,5 +1,5 @@
 <h2>Exportaciones</h2>
-<h1>Historial Cotizacion de Cliente: |-$clientQuotation->getId()-|</h1>
+<h1>Historial Cotizacion de Cliente: |-$clientQuote->getId()-|</h1>
 
 
 <div id="div_status">
@@ -12,7 +12,7 @@
 			</tr>
 		</thead>
 		<tbody>
-		|-foreach from=$clientQuotation->getClientQuotationHistorys() item=history name=for_quotation_histories-|
+		|-foreach from=$clientQuote->getClientQuoteHistorys() item=history name=for_quote_histories-|
 			<tr>
 				<td>|-$history->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
 				<td>|-$history->getStatusNameAdmin()-|</td>

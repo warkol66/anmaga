@@ -88,24 +88,24 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	private $lastActionLogCriteria = null;
 
 	/**
-	 * @var        array ClientQuotation[] Collection to store aggregation of ClientQuotation objects.
+	 * @var        array ClientQuote[] Collection to store aggregation of ClientQuote objects.
 	 */
-	protected $collClientQuotations;
+	protected $collClientQuotes;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collClientQuotations.
+	 * @var        Criteria The criteria used to select the current contents of collClientQuotes.
 	 */
-	private $lastClientQuotationCriteria = null;
+	private $lastClientQuoteCriteria = null;
 
 	/**
-	 * @var        array SupplierQuotationItemComment[] Collection to store aggregation of SupplierQuotationItemComment objects.
+	 * @var        array SupplierQuoteItemComment[] Collection to store aggregation of SupplierQuoteItemComment objects.
 	 */
-	protected $collSupplierQuotationItemComments;
+	protected $collSupplierQuoteItemComments;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collSupplierQuotationItemComments.
+	 * @var        Criteria The criteria used to select the current contents of collSupplierQuoteItemComments.
 	 */
-	private $lastSupplierQuotationItemCommentCriteria = null;
+	private $lastSupplierQuoteItemCommentCriteria = null;
 
 	/**
 	 * @var        array ClientPurchaseOrder[] Collection to store aggregation of ClientPurchaseOrder objects.
@@ -745,11 +745,11 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$this->collActionLogs = null;
 			$this->lastActionLogCriteria = null;
 
-			$this->collClientQuotations = null;
-			$this->lastClientQuotationCriteria = null;
+			$this->collClientQuotes = null;
+			$this->lastClientQuoteCriteria = null;
 
-			$this->collSupplierQuotationItemComments = null;
-			$this->lastSupplierQuotationItemCommentCriteria = null;
+			$this->collSupplierQuoteItemComments = null;
+			$this->lastSupplierQuoteItemCommentCriteria = null;
 
 			$this->collClientPurchaseOrders = null;
 			$this->lastClientPurchaseOrderCriteria = null;
@@ -889,16 +889,16 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collClientQuotations !== null) {
-				foreach ($this->collClientQuotations as $referrerFK) {
+			if ($this->collClientQuotes !== null) {
+				foreach ($this->collClientQuotes as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
 				}
 			}
 
-			if ($this->collSupplierQuotationItemComments !== null) {
-				foreach ($this->collSupplierQuotationItemComments as $referrerFK) {
+			if ($this->collSupplierQuoteItemComments !== null) {
+				foreach ($this->collSupplierQuoteItemComments as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -1026,16 +1026,16 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collClientQuotations !== null) {
-					foreach ($this->collClientQuotations as $referrerFK) {
+				if ($this->collClientQuotes !== null) {
+					foreach ($this->collClientQuotes as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
 					}
 				}
 
-				if ($this->collSupplierQuotationItemComments !== null) {
-					foreach ($this->collSupplierQuotationItemComments as $referrerFK) {
+				if ($this->collSupplierQuoteItemComments !== null) {
+					foreach ($this->collSupplierQuoteItemComments as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1179,15 +1179,15 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				}
 			}
 
-			foreach ($this->getClientQuotations() as $relObj) {
+			foreach ($this->getClientQuotes() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addClientQuotation($relObj->copy($deepCopy));
+					$copyObj->addClientQuote($relObj->copy($deepCopy));
 				}
 			}
 
-			foreach ($this->getSupplierQuotationItemComments() as $relObj) {
+			foreach ($this->getSupplierQuoteItemComments() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addSupplierQuotationItemComment($relObj->copy($deepCopy));
+					$copyObj->addSupplierQuoteItemComment($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1513,47 +1513,47 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collClientQuotations collection (array).
+	 * Clears out the collClientQuotes collection (array).
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addClientQuotations()
+	 * @see        addClientQuotes()
 	 */
-	public function clearClientQuotations()
+	public function clearClientQuotes()
 	{
-		$this->collClientQuotations = null; // important to set this to NULL since that means it is uninitialized
+		$this->collClientQuotes = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collClientQuotations collection (array).
+	 * Initializes the collClientQuotes collection (array).
 	 *
-	 * By default this just sets the collClientQuotations collection to an empty array (like clearcollClientQuotations());
+	 * By default this just sets the collClientQuotes collection to an empty array (like clearcollClientQuotes());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
 	 * @return     void
 	 */
-	public function initClientQuotations()
+	public function initClientQuotes()
 	{
-		$this->collClientQuotations = array();
+		$this->collClientQuotes = array();
 	}
 
 	/**
-	 * Gets an array of ClientQuotation objects which contain a foreign key that references this object.
+	 * Gets an array of ClientQuote objects which contain a foreign key that references this object.
 	 *
 	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
 	 * Otherwise if this User has previously been saved, it will retrieve
-	 * related ClientQuotations from storage. If this User is new, it will return
+	 * related ClientQuotes from storage. If this User is new, it will return
 	 * an empty collection or the current collection, the criteria is ignored on a new object.
 	 *
 	 * @param      PropelPDO $con
 	 * @param      Criteria $criteria
-	 * @return     array ClientQuotation[]
+	 * @return     array ClientQuote[]
 	 * @throws     PropelException
 	 */
-	public function getClientQuotations($criteria = null, PropelPDO $con = null)
+	public function getClientQuotes($criteria = null, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(UserPeer::DATABASE_NAME);
@@ -1563,15 +1563,15 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collClientQuotations === null) {
+		if ($this->collClientQuotes === null) {
 			if ($this->isNew()) {
-			   $this->collClientQuotations = array();
+			   $this->collClientQuotes = array();
 			} else {
 
-				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+				$criteria->add(ClientQuotePeer::USERID, $this->id);
 
-				ClientQuotationPeer::addSelectColumns($criteria);
-				$this->collClientQuotations = ClientQuotationPeer::doSelect($criteria, $con);
+				ClientQuotePeer::addSelectColumns($criteria);
+				$this->collClientQuotes = ClientQuotePeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1581,28 +1581,28 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+				$criteria->add(ClientQuotePeer::USERID, $this->id);
 
-				ClientQuotationPeer::addSelectColumns($criteria);
-				if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
-					$this->collClientQuotations = ClientQuotationPeer::doSelect($criteria, $con);
+				ClientQuotePeer::addSelectColumns($criteria);
+				if (!isset($this->lastClientQuoteCriteria) || !$this->lastClientQuoteCriteria->equals($criteria)) {
+					$this->collClientQuotes = ClientQuotePeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastClientQuotationCriteria = $criteria;
-		return $this->collClientQuotations;
+		$this->lastClientQuoteCriteria = $criteria;
+		return $this->collClientQuotes;
 	}
 
 	/**
-	 * Returns the number of related ClientQuotation objects.
+	 * Returns the number of related ClientQuote objects.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      PropelPDO $con
-	 * @return     int Count of related ClientQuotation objects.
+	 * @return     int Count of related ClientQuote objects.
 	 * @throws     PropelException
 	 */
-	public function countClientQuotations(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countClientQuotes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(UserPeer::DATABASE_NAME);
@@ -1616,14 +1616,14 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 		$count = null;
 
-		if ($this->collClientQuotations === null) {
+		if ($this->collClientQuotes === null) {
 			if ($this->isNew()) {
 				$count = 0;
 			} else {
 
-				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+				$criteria->add(ClientQuotePeer::USERID, $this->id);
 
-				$count = ClientQuotationPeer::doCount($criteria, $con);
+				$count = ClientQuotePeer::doCount($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1633,36 +1633,36 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+				$criteria->add(ClientQuotePeer::USERID, $this->id);
 
-				if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
-					$count = ClientQuotationPeer::doCount($criteria, $con);
+				if (!isset($this->lastClientQuoteCriteria) || !$this->lastClientQuoteCriteria->equals($criteria)) {
+					$count = ClientQuotePeer::doCount($criteria, $con);
 				} else {
-					$count = count($this->collClientQuotations);
+					$count = count($this->collClientQuotes);
 				}
 			} else {
-				$count = count($this->collClientQuotations);
+				$count = count($this->collClientQuotes);
 			}
 		}
-		$this->lastClientQuotationCriteria = $criteria;
+		$this->lastClientQuoteCriteria = $criteria;
 		return $count;
 	}
 
 	/**
-	 * Method called to associate a ClientQuotation object to this object
-	 * through the ClientQuotation foreign key attribute.
+	 * Method called to associate a ClientQuote object to this object
+	 * through the ClientQuote foreign key attribute.
 	 *
-	 * @param      ClientQuotation $l ClientQuotation
+	 * @param      ClientQuote $l ClientQuote
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addClientQuotation(ClientQuotation $l)
+	public function addClientQuote(ClientQuote $l)
 	{
-		if ($this->collClientQuotations === null) {
-			$this->initClientQuotations();
+		if ($this->collClientQuotes === null) {
+			$this->initClientQuotes();
 		}
-		if (!in_array($l, $this->collClientQuotations, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collClientQuotations, $l);
+		if (!in_array($l, $this->collClientQuotes, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collClientQuotes, $l);
 			$l->setUser($this);
 		}
 	}
@@ -1673,13 +1673,13 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this User is new, it will return
 	 * an empty collection; or if this User has previously
-	 * been saved, it will retrieve related ClientQuotations from storage.
+	 * been saved, it will retrieve related ClientQuotes from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
 	 */
-	public function getClientQuotationsJoinAffiliate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getClientQuotesJoinAffiliate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(UserPeer::DATABASE_NAME);
@@ -1689,29 +1689,29 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collClientQuotations === null) {
+		if ($this->collClientQuotes === null) {
 			if ($this->isNew()) {
-				$this->collClientQuotations = array();
+				$this->collClientQuotes = array();
 			} else {
 
-				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+				$criteria->add(ClientQuotePeer::USERID, $this->id);
 
-				$this->collClientQuotations = ClientQuotationPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
+				$this->collClientQuotes = ClientQuotePeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(ClientQuotationPeer::USERID, $this->id);
+			$criteria->add(ClientQuotePeer::USERID, $this->id);
 
-			if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
-				$this->collClientQuotations = ClientQuotationPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
+			if (!isset($this->lastClientQuoteCriteria) || !$this->lastClientQuoteCriteria->equals($criteria)) {
+				$this->collClientQuotes = ClientQuotePeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastClientQuotationCriteria = $criteria;
+		$this->lastClientQuoteCriteria = $criteria;
 
-		return $this->collClientQuotations;
+		return $this->collClientQuotes;
 	}
 
 
@@ -1720,13 +1720,13 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this User is new, it will return
 	 * an empty collection; or if this User has previously
-	 * been saved, it will retrieve related ClientQuotations from storage.
+	 * been saved, it will retrieve related ClientQuotes from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
 	 */
-	public function getClientQuotationsJoinAffiliateUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getClientQuotesJoinAffiliateUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(UserPeer::DATABASE_NAME);
@@ -1736,73 +1736,73 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collClientQuotations === null) {
+		if ($this->collClientQuotes === null) {
 			if ($this->isNew()) {
-				$this->collClientQuotations = array();
+				$this->collClientQuotes = array();
 			} else {
 
-				$criteria->add(ClientQuotationPeer::USERID, $this->id);
+				$criteria->add(ClientQuotePeer::USERID, $this->id);
 
-				$this->collClientQuotations = ClientQuotationPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
+				$this->collClientQuotes = ClientQuotePeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(ClientQuotationPeer::USERID, $this->id);
+			$criteria->add(ClientQuotePeer::USERID, $this->id);
 
-			if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
-				$this->collClientQuotations = ClientQuotationPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
+			if (!isset($this->lastClientQuoteCriteria) || !$this->lastClientQuoteCriteria->equals($criteria)) {
+				$this->collClientQuotes = ClientQuotePeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastClientQuotationCriteria = $criteria;
+		$this->lastClientQuoteCriteria = $criteria;
 
-		return $this->collClientQuotations;
+		return $this->collClientQuotes;
 	}
 
 	/**
-	 * Clears out the collSupplierQuotationItemComments collection (array).
+	 * Clears out the collSupplierQuoteItemComments collection (array).
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addSupplierQuotationItemComments()
+	 * @see        addSupplierQuoteItemComments()
 	 */
-	public function clearSupplierQuotationItemComments()
+	public function clearSupplierQuoteItemComments()
 	{
-		$this->collSupplierQuotationItemComments = null; // important to set this to NULL since that means it is uninitialized
+		$this->collSupplierQuoteItemComments = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collSupplierQuotationItemComments collection (array).
+	 * Initializes the collSupplierQuoteItemComments collection (array).
 	 *
-	 * By default this just sets the collSupplierQuotationItemComments collection to an empty array (like clearcollSupplierQuotationItemComments());
+	 * By default this just sets the collSupplierQuoteItemComments collection to an empty array (like clearcollSupplierQuoteItemComments());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
 	 * @return     void
 	 */
-	public function initSupplierQuotationItemComments()
+	public function initSupplierQuoteItemComments()
 	{
-		$this->collSupplierQuotationItemComments = array();
+		$this->collSupplierQuoteItemComments = array();
 	}
 
 	/**
-	 * Gets an array of SupplierQuotationItemComment objects which contain a foreign key that references this object.
+	 * Gets an array of SupplierQuoteItemComment objects which contain a foreign key that references this object.
 	 *
 	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
 	 * Otherwise if this User has previously been saved, it will retrieve
-	 * related SupplierQuotationItemComments from storage. If this User is new, it will return
+	 * related SupplierQuoteItemComments from storage. If this User is new, it will return
 	 * an empty collection or the current collection, the criteria is ignored on a new object.
 	 *
 	 * @param      PropelPDO $con
 	 * @param      Criteria $criteria
-	 * @return     array SupplierQuotationItemComment[]
+	 * @return     array SupplierQuoteItemComment[]
 	 * @throws     PropelException
 	 */
-	public function getSupplierQuotationItemComments($criteria = null, PropelPDO $con = null)
+	public function getSupplierQuoteItemComments($criteria = null, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(UserPeer::DATABASE_NAME);
@@ -1812,15 +1812,15 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItemComments === null) {
+		if ($this->collSupplierQuoteItemComments === null) {
 			if ($this->isNew()) {
-			   $this->collSupplierQuotationItemComments = array();
+			   $this->collSupplierQuoteItemComments = array();
 			} else {
 
-				$criteria->add(SupplierQuotationItemCommentPeer::USERID, $this->id);
+				$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
 
-				SupplierQuotationItemCommentPeer::addSelectColumns($criteria);
-				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelect($criteria, $con);
+				SupplierQuoteItemCommentPeer::addSelectColumns($criteria);
+				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1830,28 +1830,28 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(SupplierQuotationItemCommentPeer::USERID, $this->id);
+				$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
 
-				SupplierQuotationItemCommentPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSupplierQuotationItemCommentCriteria) || !$this->lastSupplierQuotationItemCommentCriteria->equals($criteria)) {
-					$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelect($criteria, $con);
+				SupplierQuoteItemCommentPeer::addSelectColumns($criteria);
+				if (!isset($this->lastSupplierQuoteItemCommentCriteria) || !$this->lastSupplierQuoteItemCommentCriteria->equals($criteria)) {
+					$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastSupplierQuotationItemCommentCriteria = $criteria;
-		return $this->collSupplierQuotationItemComments;
+		$this->lastSupplierQuoteItemCommentCriteria = $criteria;
+		return $this->collSupplierQuoteItemComments;
 	}
 
 	/**
-	 * Returns the number of related SupplierQuotationItemComment objects.
+	 * Returns the number of related SupplierQuoteItemComment objects.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      PropelPDO $con
-	 * @return     int Count of related SupplierQuotationItemComment objects.
+	 * @return     int Count of related SupplierQuoteItemComment objects.
 	 * @throws     PropelException
 	 */
-	public function countSupplierQuotationItemComments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countSupplierQuoteItemComments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(UserPeer::DATABASE_NAME);
@@ -1865,14 +1865,14 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 		$count = null;
 
-		if ($this->collSupplierQuotationItemComments === null) {
+		if ($this->collSupplierQuoteItemComments === null) {
 			if ($this->isNew()) {
 				$count = 0;
 			} else {
 
-				$criteria->add(SupplierQuotationItemCommentPeer::USERID, $this->id);
+				$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
 
-				$count = SupplierQuotationItemCommentPeer::doCount($criteria, $con);
+				$count = SupplierQuoteItemCommentPeer::doCount($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1882,36 +1882,36 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(SupplierQuotationItemCommentPeer::USERID, $this->id);
+				$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
 
-				if (!isset($this->lastSupplierQuotationItemCommentCriteria) || !$this->lastSupplierQuotationItemCommentCriteria->equals($criteria)) {
-					$count = SupplierQuotationItemCommentPeer::doCount($criteria, $con);
+				if (!isset($this->lastSupplierQuoteItemCommentCriteria) || !$this->lastSupplierQuoteItemCommentCriteria->equals($criteria)) {
+					$count = SupplierQuoteItemCommentPeer::doCount($criteria, $con);
 				} else {
-					$count = count($this->collSupplierQuotationItemComments);
+					$count = count($this->collSupplierQuoteItemComments);
 				}
 			} else {
-				$count = count($this->collSupplierQuotationItemComments);
+				$count = count($this->collSupplierQuoteItemComments);
 			}
 		}
-		$this->lastSupplierQuotationItemCommentCriteria = $criteria;
+		$this->lastSupplierQuoteItemCommentCriteria = $criteria;
 		return $count;
 	}
 
 	/**
-	 * Method called to associate a SupplierQuotationItemComment object to this object
-	 * through the SupplierQuotationItemComment foreign key attribute.
+	 * Method called to associate a SupplierQuoteItemComment object to this object
+	 * through the SupplierQuoteItemComment foreign key attribute.
 	 *
-	 * @param      SupplierQuotationItemComment $l SupplierQuotationItemComment
+	 * @param      SupplierQuoteItemComment $l SupplierQuoteItemComment
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addSupplierQuotationItemComment(SupplierQuotationItemComment $l)
+	public function addSupplierQuoteItemComment(SupplierQuoteItemComment $l)
 	{
-		if ($this->collSupplierQuotationItemComments === null) {
-			$this->initSupplierQuotationItemComments();
+		if ($this->collSupplierQuoteItemComments === null) {
+			$this->initSupplierQuoteItemComments();
 		}
-		if (!in_array($l, $this->collSupplierQuotationItemComments, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collSupplierQuotationItemComments, $l);
+		if (!in_array($l, $this->collSupplierQuoteItemComments, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collSupplierQuoteItemComments, $l);
 			$l->setUser($this);
 		}
 	}
@@ -1922,13 +1922,13 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this User is new, it will return
 	 * an empty collection; or if this User has previously
-	 * been saved, it will retrieve related SupplierQuotationItemComments from storage.
+	 * been saved, it will retrieve related SupplierQuoteItemComments from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
 	 */
-	public function getSupplierQuotationItemCommentsJoinSupplier($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierQuoteItemCommentsJoinSupplier($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(UserPeer::DATABASE_NAME);
@@ -1938,29 +1938,29 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItemComments === null) {
+		if ($this->collSupplierQuoteItemComments === null) {
 			if ($this->isNew()) {
-				$this->collSupplierQuotationItemComments = array();
+				$this->collSupplierQuoteItemComments = array();
 			} else {
 
-				$criteria->add(SupplierQuotationItemCommentPeer::USERID, $this->id);
+				$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
 
-				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
+				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(SupplierQuotationItemCommentPeer::USERID, $this->id);
+			$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
 
-			if (!isset($this->lastSupplierQuotationItemCommentCriteria) || !$this->lastSupplierQuotationItemCommentCriteria->equals($criteria)) {
-				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierQuoteItemCommentCriteria) || !$this->lastSupplierQuoteItemCommentCriteria->equals($criteria)) {
+				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastSupplierQuotationItemCommentCriteria = $criteria;
+		$this->lastSupplierQuoteItemCommentCriteria = $criteria;
 
-		return $this->collSupplierQuotationItemComments;
+		return $this->collSupplierQuoteItemComments;
 	}
 
 
@@ -1969,13 +1969,13 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this User is new, it will return
 	 * an empty collection; or if this User has previously
-	 * been saved, it will retrieve related SupplierQuotationItemComments from storage.
+	 * been saved, it will retrieve related SupplierQuoteItemComments from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
 	 */
-	public function getSupplierQuotationItemCommentsJoinSupplierQuotationItem($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierQuoteItemCommentsJoinSupplierQuoteItem($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(UserPeer::DATABASE_NAME);
@@ -1985,29 +1985,29 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collSupplierQuotationItemComments === null) {
+		if ($this->collSupplierQuoteItemComments === null) {
 			if ($this->isNew()) {
-				$this->collSupplierQuotationItemComments = array();
+				$this->collSupplierQuoteItemComments = array();
 			} else {
 
-				$criteria->add(SupplierQuotationItemCommentPeer::USERID, $this->id);
+				$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
 
-				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelectJoinSupplierQuotationItem($criteria, $con, $join_behavior);
+				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelectJoinSupplierQuoteItem($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(SupplierQuotationItemCommentPeer::USERID, $this->id);
+			$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
 
-			if (!isset($this->lastSupplierQuotationItemCommentCriteria) || !$this->lastSupplierQuotationItemCommentCriteria->equals($criteria)) {
-				$this->collSupplierQuotationItemComments = SupplierQuotationItemCommentPeer::doSelectJoinSupplierQuotationItem($criteria, $con, $join_behavior);
+			if (!isset($this->lastSupplierQuoteItemCommentCriteria) || !$this->lastSupplierQuoteItemCommentCriteria->equals($criteria)) {
+				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelectJoinSupplierQuoteItem($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastSupplierQuotationItemCommentCriteria = $criteria;
+		$this->lastSupplierQuoteItemCommentCriteria = $criteria;
 
-		return $this->collSupplierQuotationItemComments;
+		return $this->collSupplierQuoteItemComments;
 	}
 
 	/**
@@ -2177,7 +2177,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
 	 */
-	public function getClientPurchaseOrdersJoinClientQuotation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getClientPurchaseOrdersJoinClientQuote($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(UserPeer::DATABASE_NAME);
@@ -2194,7 +2194,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 				$criteria->add(ClientPurchaseOrderPeer::USERID, $this->id);
 
-				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinClientQuotation($criteria, $con, $join_behavior);
+				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -2204,7 +2204,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria->add(ClientPurchaseOrderPeer::USERID, $this->id);
 
 			if (!isset($this->lastClientPurchaseOrderCriteria) || !$this->lastClientPurchaseOrderCriteria->equals($criteria)) {
-				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinClientQuotation($criteria, $con, $join_behavior);
+				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastClientPurchaseOrderCriteria = $criteria;
@@ -2473,7 +2473,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
 	 */
-	public function getSupplierPurchaseOrdersJoinSupplierQuotation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierPurchaseOrdersJoinSupplierQuote($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(UserPeer::DATABASE_NAME);
@@ -2490,7 +2490,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 				$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
 
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplierQuotation($criteria, $con, $join_behavior);
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplierQuote($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -2500,7 +2500,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
 
 			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplierQuotation($criteria, $con, $join_behavior);
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplierQuote($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastSupplierPurchaseOrderCriteria = $criteria;
@@ -2520,7 +2520,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
 	 */
-	public function getSupplierPurchaseOrdersJoinClientQuotation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierPurchaseOrdersJoinClientQuote($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(UserPeer::DATABASE_NAME);
@@ -2537,7 +2537,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 				$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
 
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinClientQuotation($criteria, $con, $join_behavior);
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -2547,7 +2547,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
 
 			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinClientQuotation($criteria, $con, $join_behavior);
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastSupplierPurchaseOrderCriteria = $criteria;
@@ -2951,13 +2951,13 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
-			if ($this->collClientQuotations) {
-				foreach ((array) $this->collClientQuotations as $o) {
+			if ($this->collClientQuotes) {
+				foreach ((array) $this->collClientQuotes as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
-			if ($this->collSupplierQuotationItemComments) {
-				foreach ((array) $this->collSupplierQuotationItemComments as $o) {
+			if ($this->collSupplierQuoteItemComments) {
+				foreach ((array) $this->collSupplierQuoteItemComments as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -2982,8 +2982,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		} // if ($deep)
 
 		$this->collActionLogs = null;
-		$this->collClientQuotations = null;
-		$this->collSupplierQuotationItemComments = null;
+		$this->collClientQuotes = null;
+		$this->collSupplierQuoteItemComments = null;
 		$this->collClientPurchaseOrders = null;
 		$this->collSupplierPurchaseOrders = null;
 		$this->singleUserInfo = null;

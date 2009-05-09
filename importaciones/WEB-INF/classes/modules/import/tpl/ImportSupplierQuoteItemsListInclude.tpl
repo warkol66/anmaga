@@ -1,12 +1,12 @@
-<div id="supplierQuotationItemLister">
-	<table id="supplierQuotationItemList" cellpadding="4" cellspacing="0" class="tableTdBorders">
+<div id="supplierQuoteItemLister">
+	<table id="supplierQuoteItemList" cellpadding="4" cellspacing="0" class="tableTdBorders">
 		<tr>
 			<th>Código</th>
 			<th>Nombre</th>
 <!--			<th>Cantidad Pedida</th> -->
 			<th>Precio Unitario del Proveedor</th>			
 		</tr>
-		|-foreach from=$supplierQuotation->getSupplierQuotationItems() item=item name=for_supplierQuotationsItems-|
+		|-foreach from=$supplierQuote->getSupplierQuoteItems() item=item name=for_supplierQuotesItems-|
 		|-assign var=product value=$item->getProduct()-|
 		<tr>
 			<td>|-$product->getCode()-|</td>

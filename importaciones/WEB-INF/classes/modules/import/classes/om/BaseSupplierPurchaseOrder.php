@@ -49,16 +49,16 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	protected $timestampstatus;
 
 	/**
-	 * The value for the supplierquotationid field.
+	 * The value for the supplierquoteid field.
 	 * @var        int
 	 */
-	protected $supplierquotationid;
+	protected $supplierquoteid;
 
 	/**
-	 * The value for the clientquotationid field.
+	 * The value for the clientquoteid field.
 	 * @var        int
 	 */
-	protected $clientquotationid;
+	protected $clientquoteid;
 
 	/**
 	 * The value for the affiliateid field.
@@ -79,14 +79,14 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	protected $userid;
 
 	/**
-	 * @var        SupplierQuotation
+	 * @var        SupplierQuote
 	 */
-	protected $aSupplierQuotation;
+	protected $aSupplierQuote;
 
 	/**
-	 * @var        ClientQuotation
+	 * @var        ClientQuote
 	 */
-	protected $aClientQuotation;
+	protected $aClientQuote;
 
 	/**
 	 * @var        Supplier
@@ -279,23 +279,23 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	}
 
 	/**
-	 * Get the [supplierquotationid] column value.
+	 * Get the [supplierquoteid] column value.
 	 * id de cotizacion de proveedor relacionada
 	 * @return     int
 	 */
-	public function getSupplierquotationid()
+	public function getSupplierquoteid()
 	{
-		return $this->supplierquotationid;
+		return $this->supplierquoteid;
 	}
 
 	/**
-	 * Get the [clientquotationid] column value.
+	 * Get the [clientquoteid] column value.
 	 * id de cotizacion a cliente relacionada
 	 * @return     int
 	 */
-	public function getClientquotationid()
+	public function getClientquoteid()
 	{
-		return $this->clientquotationid;
+		return $this->clientquoteid;
 	}
 
 	/**
@@ -491,52 +491,52 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	} // setTimestampstatus()
 
 	/**
-	 * Set the value of [supplierquotationid] column.
+	 * Set the value of [supplierquoteid] column.
 	 * id de cotizacion de proveedor relacionada
 	 * @param      int $v new value
 	 * @return     SupplierPurchaseOrder The current object (for fluent API support)
 	 */
-	public function setSupplierquotationid($v)
+	public function setSupplierquoteid($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->supplierquotationid !== $v) {
-			$this->supplierquotationid = $v;
-			$this->modifiedColumns[] = SupplierPurchaseOrderPeer::SUPPLIERQUOTATIONID;
+		if ($this->supplierquoteid !== $v) {
+			$this->supplierquoteid = $v;
+			$this->modifiedColumns[] = SupplierPurchaseOrderPeer::SUPPLIERQUOTEID;
 		}
 
-		if ($this->aSupplierQuotation !== null && $this->aSupplierQuotation->getId() !== $v) {
-			$this->aSupplierQuotation = null;
+		if ($this->aSupplierQuote !== null && $this->aSupplierQuote->getId() !== $v) {
+			$this->aSupplierQuote = null;
 		}
 
 		return $this;
-	} // setSupplierquotationid()
+	} // setSupplierquoteid()
 
 	/**
-	 * Set the value of [clientquotationid] column.
+	 * Set the value of [clientquoteid] column.
 	 * id de cotizacion a cliente relacionada
 	 * @param      int $v new value
 	 * @return     SupplierPurchaseOrder The current object (for fluent API support)
 	 */
-	public function setClientquotationid($v)
+	public function setClientquoteid($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->clientquotationid !== $v) {
-			$this->clientquotationid = $v;
-			$this->modifiedColumns[] = SupplierPurchaseOrderPeer::CLIENTQUOTATIONID;
+		if ($this->clientquoteid !== $v) {
+			$this->clientquoteid = $v;
+			$this->modifiedColumns[] = SupplierPurchaseOrderPeer::CLIENTQUOTEID;
 		}
 
-		if ($this->aClientQuotation !== null && $this->aClientQuotation->getId() !== $v) {
-			$this->aClientQuotation = null;
+		if ($this->aClientQuote !== null && $this->aClientQuote->getId() !== $v) {
+			$this->aClientQuote = null;
 		}
 
 		return $this;
-	} // setClientquotationid()
+	} // setClientquoteid()
 
 	/**
 	 * Set the value of [affiliateid] column.
@@ -652,8 +652,8 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 			$this->supplierid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
 			$this->status = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
 			$this->timestampstatus = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-			$this->supplierquotationid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-			$this->clientquotationid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+			$this->supplierquoteid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->clientquoteid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
 			$this->affiliateid = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
 			$this->affiliateuserid = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
 			$this->userid = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
@@ -692,11 +692,11 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		if ($this->aSupplier !== null && $this->supplierid !== $this->aSupplier->getId()) {
 			$this->aSupplier = null;
 		}
-		if ($this->aSupplierQuotation !== null && $this->supplierquotationid !== $this->aSupplierQuotation->getId()) {
-			$this->aSupplierQuotation = null;
+		if ($this->aSupplierQuote !== null && $this->supplierquoteid !== $this->aSupplierQuote->getId()) {
+			$this->aSupplierQuote = null;
 		}
-		if ($this->aClientQuotation !== null && $this->clientquotationid !== $this->aClientQuotation->getId()) {
-			$this->aClientQuotation = null;
+		if ($this->aClientQuote !== null && $this->clientquoteid !== $this->aClientQuote->getId()) {
+			$this->aClientQuote = null;
 		}
 		if ($this->aAffiliate !== null && $this->affiliateid !== $this->aAffiliate->getId()) {
 			$this->aAffiliate = null;
@@ -746,8 +746,8 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->aSupplierQuotation = null;
-			$this->aClientQuotation = null;
+			$this->aSupplierQuote = null;
+			$this->aClientQuote = null;
 			$this->aSupplier = null;
 			$this->aUser = null;
 			$this->aAffiliate = null;
@@ -851,18 +851,18 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aSupplierQuotation !== null) {
-				if ($this->aSupplierQuotation->isModified() || $this->aSupplierQuotation->isNew()) {
-					$affectedRows += $this->aSupplierQuotation->save($con);
+			if ($this->aSupplierQuote !== null) {
+				if ($this->aSupplierQuote->isModified() || $this->aSupplierQuote->isNew()) {
+					$affectedRows += $this->aSupplierQuote->save($con);
 				}
-				$this->setSupplierQuotation($this->aSupplierQuotation);
+				$this->setSupplierQuote($this->aSupplierQuote);
 			}
 
-			if ($this->aClientQuotation !== null) {
-				if ($this->aClientQuotation->isModified() || $this->aClientQuotation->isNew()) {
-					$affectedRows += $this->aClientQuotation->save($con);
+			if ($this->aClientQuote !== null) {
+				if ($this->aClientQuote->isModified() || $this->aClientQuote->isNew()) {
+					$affectedRows += $this->aClientQuote->save($con);
 				}
-				$this->setClientQuotation($this->aClientQuotation);
+				$this->setClientQuote($this->aClientQuote);
 			}
 
 			if ($this->aSupplier !== null) {
@@ -1010,15 +1010,15 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aSupplierQuotation !== null) {
-				if (!$this->aSupplierQuotation->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aSupplierQuotation->getValidationFailures());
+			if ($this->aSupplierQuote !== null) {
+				if (!$this->aSupplierQuote->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aSupplierQuote->getValidationFailures());
 				}
 			}
 
-			if ($this->aClientQuotation !== null) {
-				if (!$this->aClientQuotation->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aClientQuotation->getValidationFailures());
+			if ($this->aClientQuote !== null) {
+				if (!$this->aClientQuote->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aClientQuote->getValidationFailures());
 				}
 			}
 
@@ -1097,8 +1097,8 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::SUPPLIERID)) $criteria->add(SupplierPurchaseOrderPeer::SUPPLIERID, $this->supplierid);
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::STATUS)) $criteria->add(SupplierPurchaseOrderPeer::STATUS, $this->status);
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::TIMESTAMPSTATUS)) $criteria->add(SupplierPurchaseOrderPeer::TIMESTAMPSTATUS, $this->timestampstatus);
-		if ($this->isColumnModified(SupplierPurchaseOrderPeer::SUPPLIERQUOTATIONID)) $criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTATIONID, $this->supplierquotationid);
-		if ($this->isColumnModified(SupplierPurchaseOrderPeer::CLIENTQUOTATIONID)) $criteria->add(SupplierPurchaseOrderPeer::CLIENTQUOTATIONID, $this->clientquotationid);
+		if ($this->isColumnModified(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID)) $criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->supplierquoteid);
+		if ($this->isColumnModified(SupplierPurchaseOrderPeer::CLIENTQUOTEID)) $criteria->add(SupplierPurchaseOrderPeer::CLIENTQUOTEID, $this->clientquoteid);
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::AFFILIATEID)) $criteria->add(SupplierPurchaseOrderPeer::AFFILIATEID, $this->affiliateid);
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::AFFILIATEUSERID)) $criteria->add(SupplierPurchaseOrderPeer::AFFILIATEUSERID, $this->affiliateuserid);
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::USERID)) $criteria->add(SupplierPurchaseOrderPeer::USERID, $this->userid);
@@ -1164,9 +1164,9 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 
 		$copyObj->setTimestampstatus($this->timestampstatus);
 
-		$copyObj->setSupplierquotationid($this->supplierquotationid);
+		$copyObj->setSupplierquoteid($this->supplierquoteid);
 
-		$copyObj->setClientquotationid($this->clientquotationid);
+		$copyObj->setClientquoteid($this->clientquoteid);
 
 		$copyObj->setAffiliateid($this->affiliateid);
 
@@ -1246,24 +1246,24 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	}
 
 	/**
-	 * Declares an association between this object and a SupplierQuotation object.
+	 * Declares an association between this object and a SupplierQuote object.
 	 *
-	 * @param      SupplierQuotation $v
+	 * @param      SupplierQuote $v
 	 * @return     SupplierPurchaseOrder The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setSupplierQuotation(SupplierQuotation $v = null)
+	public function setSupplierQuote(SupplierQuote $v = null)
 	{
 		if ($v === null) {
-			$this->setSupplierquotationid(NULL);
+			$this->setSupplierquoteid(NULL);
 		} else {
-			$this->setSupplierquotationid($v->getId());
+			$this->setSupplierquoteid($v->getId());
 		}
 
-		$this->aSupplierQuotation = $v;
+		$this->aSupplierQuote = $v;
 
 		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the SupplierQuotation object, it will not be re-added.
+		// If this object has already been added to the SupplierQuote object, it will not be re-added.
 		if ($v !== null) {
 			$v->addSupplierPurchaseOrder($this);
 		}
@@ -1273,46 +1273,46 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 
 
 	/**
-	 * Get the associated SupplierQuotation object
+	 * Get the associated SupplierQuote object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     SupplierQuotation The associated SupplierQuotation object.
+	 * @return     SupplierQuote The associated SupplierQuote object.
 	 * @throws     PropelException
 	 */
-	public function getSupplierQuotation(PropelPDO $con = null)
+	public function getSupplierQuote(PropelPDO $con = null)
 	{
-		if ($this->aSupplierQuotation === null && ($this->supplierquotationid !== null)) {
-			$this->aSupplierQuotation = SupplierQuotationPeer::retrieveByPK($this->supplierquotationid, $con);
+		if ($this->aSupplierQuote === null && ($this->supplierquoteid !== null)) {
+			$this->aSupplierQuote = SupplierQuotePeer::retrieveByPK($this->supplierquoteid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
 			   undesirable since it could result in an only partially populated collection
 			   in the referenced object.
-			   $this->aSupplierQuotation->addSupplierPurchaseOrders($this);
+			   $this->aSupplierQuote->addSupplierPurchaseOrders($this);
 			 */
 		}
-		return $this->aSupplierQuotation;
+		return $this->aSupplierQuote;
 	}
 
 	/**
-	 * Declares an association between this object and a ClientQuotation object.
+	 * Declares an association between this object and a ClientQuote object.
 	 *
-	 * @param      ClientQuotation $v
+	 * @param      ClientQuote $v
 	 * @return     SupplierPurchaseOrder The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setClientQuotation(ClientQuotation $v = null)
+	public function setClientQuote(ClientQuote $v = null)
 	{
 		if ($v === null) {
-			$this->setClientquotationid(NULL);
+			$this->setClientquoteid(NULL);
 		} else {
-			$this->setClientquotationid($v->getId());
+			$this->setClientquoteid($v->getId());
 		}
 
-		$this->aClientQuotation = $v;
+		$this->aClientQuote = $v;
 
 		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the ClientQuotation object, it will not be re-added.
+		// If this object has already been added to the ClientQuote object, it will not be re-added.
 		if ($v !== null) {
 			$v->addSupplierPurchaseOrder($this);
 		}
@@ -1322,25 +1322,25 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 
 
 	/**
-	 * Get the associated ClientQuotation object
+	 * Get the associated ClientQuote object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     ClientQuotation The associated ClientQuotation object.
+	 * @return     ClientQuote The associated ClientQuote object.
 	 * @throws     PropelException
 	 */
-	public function getClientQuotation(PropelPDO $con = null)
+	public function getClientQuote(PropelPDO $con = null)
 	{
-		if ($this->aClientQuotation === null && ($this->clientquotationid !== null)) {
-			$this->aClientQuotation = ClientQuotationPeer::retrieveByPK($this->clientquotationid, $con);
+		if ($this->aClientQuote === null && ($this->clientquoteid !== null)) {
+			$this->aClientQuote = ClientQuotePeer::retrieveByPK($this->clientquoteid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
 			   undesirable since it could result in an only partially populated collection
 			   in the referenced object.
-			   $this->aClientQuotation->addSupplierPurchaseOrders($this);
+			   $this->aClientQuote->addSupplierPurchaseOrders($this);
 			 */
 		}
-		return $this->aClientQuotation;
+		return $this->aClientQuote;
 	}
 
 	/**
@@ -2224,8 +2224,8 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		$this->collSupplierPurchaseOrderItems = null;
 		$this->collSupplierPurchaseOrderHistorys = null;
 		$this->collSupplierPurchaseOrderBankTransfers = null;
-			$this->aSupplierQuotation = null;
-			$this->aClientQuotation = null;
+			$this->aSupplierQuote = null;
+			$this->aClientQuote = null;
 			$this->aSupplier = null;
 			$this->aUser = null;
 			$this->aAffiliate = null;

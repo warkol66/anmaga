@@ -8,28 +8,28 @@
 	
 </div>
 
-<div id="div_supplierQuotation">
+<div id="div_supplierQuote">
 	<p>
-		##import,10,Fecha##: |-$supplierQuotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y %R"-|
+		##import,10,Fecha##: |-$supplierQuote->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y %R"-|
 	</p>
 	<p>
-		##import,11,Estado##: |-$supplierQuotation->getStatusName()-|
+		##import,11,Estado##: |-$supplierQuote->getStatusName()-|
 	</p>
 	<p>
-		|-assign var=supplier value=$supplierQuotation->getSupplier()-|
+		|-assign var=supplier value=$supplierQuote->getSupplier()-|
 		##import,6,Proveedor##: |-$supplier->getName()-|
 	</p>
 	<p>
-		##import,27,Código de acceso del Proveedor##: |-$supplierQuotation->getSupplierAccessToken()-|
+		##import,27,Código de acceso del Proveedor##: |-$supplierQuote->getSupplierAccessToken()-|
 	</p>	
 	<p>
-		|-assign var=clientQuotation value=$supplierQuotation->getClientQuotation()-|
-		##import,28,Solicitud de Cotización de Cliente Relacionada##: <a href="Main.php?do=importClientQuoteEdit&amp;id=|-$clientQuotation->getId()-|">|-$clientQuotation->getId()-|</a>
+		|-assign var=clientQuote value=$supplierQuote->getClientQuote()-|
+		##import,28,Solicitud de Cotización de Cliente Relacionada##: <a href="Main.php?do=importClientQuoteEdit&amp;id=|-$clientQuote->getId()-|">|-$clientQuote->getId()-|</a>
 	</p>
 </div>
 
 <h1>##import,29,Productos a cotizar por el proveedor##</h1>
 
-<div id="supplierQuotationItemsHolder">
-		|-include file='ImportSupplierQuoteItemsAdminListInclude.tpl' supplierQuotation=$supplierQuotation-|
+<div id="supplierQuoteItemsHolder">
+		|-include file='ImportSupplierQuoteItemsAdminListInclude.tpl' supplierQuote=$supplierQuote-|
 </div>

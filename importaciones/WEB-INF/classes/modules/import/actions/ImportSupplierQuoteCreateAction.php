@@ -1,7 +1,7 @@
 <?php
 
 require_once("ImportBaseAction.php");
-require_once("ClientQuotationPeer.php");
+require_once("ClientQuotePeer.php");
 
 class ImportSupplierQuoteCreateAction extends ImportBaseAction {
 
@@ -44,12 +44,12 @@ class ImportSupplierQuoteCreateAction extends ImportBaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
-		if (empty($_POST['clientQuotationId']) || empty($_POST['supplierId']) || empty($_POST['clientQuoteItems'])) {
+		if (empty($_POST['clientQuoteId']) || empty($_POST['supplierId']) || empty($_POST['clientQuoteItems'])) {
 			return $mapping->findForwardConfig('failure');
 		}
 		
 		//obtenemos la cotizacion de cliente a procesar
-		$clientQuotation = ClientQuotationPeer::get($_POST['clientQuotationId']);
+		$clientQuote = ClientQuotePeer::get($_POST['clientQuoteId']);
 
 		//obtenemos la informacion del proveedor
 		$supplier = SupplierPeer::get($_POST['supplierId']);
@@ -57,38 +57,38 @@ class ImportSupplierQuoteCreateAction extends ImportBaseAction {
 		$port = PortPeer::get($_POST['portId']);
 
 
-		if (empty($clientQuotation) || empty($supplier) || empty($incoterm) || empty($port)) {
+		if (empty($clientQuote) || empty($supplier) || empty($incoterm) || empty($port)) {
 			return $mapping->findForwardConfig('failure');
 		}
 
 		//obtenemos los items a cotizar de la cotizacion de cliente para generar la cotizacion de proveedor
-		$clientQuotationSelectedItems = array();
+		$clientQuoteSelectedItems = array();
 
 		foreach ($_POST['clientQuoteItems'] as $key) {
 			
-			$item = $clientQuotation->getClientQuotationItem($key);
+			$item = $clientQuote->getClientQuoteItem($key);
 			
 			if (!empty($item)){
-				array_push($clientQuotationSelectedItems,$item);
+				array_push($clientQuoteSelectedItems,$item);
 			}
 		}
 
-		if (empty($clientQuotationSelectedItems)) {
+		if (empty($clientQuoteSelectedItems)) {
 			//caso en que no se hayan indicado elementos para procesar
 			return $mapping->findForwardConfig('failure');
 		}
 		
-		//generamos la supplierQuotation
+		//generamos la supplierQuote
 		
-		$supplierQuotation = SupplierQuotationPeer::createFromClientQuotation($supplier,$incoterm,$port,$clientQuotation,$clientQuotationSelectedItems);
+		$supplierQuote = SupplierQuotePeer::createFromClientQuote($supplier,$incoterm,$port,$clientQuote,$clientQuoteSelectedItems);
 
 		//notificamos al proveedor correspondiente
-		$content = $this->renderSupplierQuotationNotifyEmail($supplierQuotation);
-		$supplierQuotation->notifySupplier($content);
+		$content = $this->renderSupplierQuoteNotifyEmail($supplierQuote);
+		$supplierQuote->notifySupplier($content);
 
 		$params = array();
-		$params['id'] = $clientQuotation->getId();
-		$params['supplierQuotationId'] = $supplierQuotation->getId();
+		$params['id'] = $clientQuote->getId();
+		$params['supplierQuoteId'] = $supplierQuote->getId();
 		
 		return $this->addParamsToForwards($params,$mapping,'success');
 		

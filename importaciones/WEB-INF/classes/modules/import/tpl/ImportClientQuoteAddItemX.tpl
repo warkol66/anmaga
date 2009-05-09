@@ -8,14 +8,14 @@
 <tr id="itemProduct|-$item->getProductId()-|">
 	<td>|-$product->getCode()-|</td>
 	<td>|-$product->getName()-|</td>
-	|-if $quantitiesOnQuotationsFlag -|
+	|-if $quantitiesOnQuotesFlag -|
 		<td>|-$item->getQuantity()-|</td>
 	|-/if-|
 	<td>
 		<form action="Main.php" method="post">
 			<input type="hidden" name="do" value="importClientQuoteDeleteItemX" />
 			<input type="hidden" name="productId" value="|-$item->getProductId()-|" />
-			<input type="button" name="submit_go_delete_quotation" value="Borrar" onClick="javascript:importDeleteItemFromClientQuotationX(this.form)" class="buttonImageDelete" />
+			<input type="button" name="submit_go_delete_quote" value="Borrar" onClick="javascript:importDeleteItemFromClientQuoteX(this.form)" class="buttonImageDelete" />
 		</form>
 	</td>
 <!--	<td>|-$item->getQuantity()-|</td> -->

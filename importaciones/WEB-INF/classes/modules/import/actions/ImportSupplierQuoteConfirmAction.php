@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("SupplierQuotationPeer.php");
+require_once("SupplierQuotePeer.php");
 
 class ImportSupplierQuoteConfirmAction extends BaseAction {
 
@@ -46,7 +46,7 @@ class ImportSupplierQuoteConfirmAction extends BaseAction {
 		
 		$smarty->assign("message",$_GET["message"]);
 		
-		$supplierQuotationPeer = new SupplierQuotationPeer();
+		$supplierQuotePeer = new SupplierQuotePeer();
 
 			
 		if (empty($_POST['token'])) {
@@ -56,9 +56,9 @@ class ImportSupplierQuoteConfirmAction extends BaseAction {
 		$smarty->assign('token',$_POST['token']);
 
 		//traemos todas las cotizaciones.
-		$supplierQuotation = $supplierQuotationPeer->getByAccessToken($_POST["token"]);
+		$supplierQuote = $supplierQuotePeer->getByAccessToken($_POST["token"]);
 		
-		if (!$supplierQuotation->confirm()) {
+		if (!$supplierQuote->confirm()) {
 			return $mapping->findForwardConfig('failure');			
 		}
 

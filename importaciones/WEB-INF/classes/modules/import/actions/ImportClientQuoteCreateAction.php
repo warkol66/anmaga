@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ClientQuotationPeer.php");
+require_once("ClientQuotePeer.php");
 
 class ImportClientQuoteCreateAction extends BaseAction {
 
@@ -44,30 +44,30 @@ class ImportClientQuoteCreateAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
-		$clientQuotationPeer = new ClientQuotationPeer();
+		$clientQuotePeer = new ClientQuotePeer();
 
-		if (empty($_POST['clientQuotation']['affiliateId'])) {
+		if (empty($_POST['clientQuote']['affiliateId'])) {
 			return $mapping->findForwardConfig('failure');
 		}
 
 		if (Common::isAdmin()) {
 			$adminUser = Common::getAdminLogged();
-			$_POST['clientQuotation']['userId'] = $adminUser->getId();
+			$_POST['clientQuote']['userId'] = $adminUser->getId();
 		}
 
 		if (Common::isAffiliatedUser()) {
 			$affiliateUser = Common::getAffiliatedLogged();
-			$_POST['clientQuotation']['affiliateUserId'] = $affiliateUser->getId();
+			$_POST['clientQuote']['affiliateUserId'] = $affiliateUser->getId();
 		}
 
-		$clientQuotation = ClientQuotationPeer::createInstance($_POST['clientQuotation']);
+		$clientQuote = ClientQuotePeer::createInstance($_POST['clientQuote']);
 
-		if (!$clientQuotation) {
+		if (!$clientQuote) {
 			return $mapping->findForwardConfig('failure');
 		}
 		
 		//guardamos en la sesion el objeto creado
-		$_SESSION['import']['clientQuotation'] = $clientQuotation;
+		$_SESSION['import']['clientQuote'] = $clientQuote;
 		
 		return $mapping->findForwardConfig('success');
 

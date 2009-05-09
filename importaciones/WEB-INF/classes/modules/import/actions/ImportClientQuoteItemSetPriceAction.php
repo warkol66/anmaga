@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ClientQuotationItemPeer.php");
+require_once("ClientQuoteItemPeer.php");
 
 
 class ImportClientQuoteItemSetPriceAction extends BaseAction {
@@ -45,17 +45,17 @@ class ImportClientQuoteItemSetPriceAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 
-		if (empty($_GET['clientQuotationItemId'])) {
+		if (empty($_GET['clientQuoteItemId'])) {
 			return $mapping->findForwardConfig('failure');
 		}
 
-		$item = ClientQuotationItemPeer::get($_GET['clientQuotationItemId']);
-		$smarty->assign('clientQuotationItem',$item);
-		$smarty->assign('lastClientQuotationItemsRelated',$item->getLastClientQuotationItemsRelated());
-		$clientQuotation = $item->getClientQuotation();
-		$smarty->assign('clientQuotation',$clientQuotations);
-		$supplierQuotations = $clientQuotation->getSupplierQuotations();
-		$smarty->assign('supplierQuotation',$supplierQuotations[0]);
+		$item = ClientQuoteItemPeer::get($_GET['clientQuoteItemId']);
+		$smarty->assign('clientQuoteItem',$item);
+		$smarty->assign('lastClientQuoteItemsRelated',$item->getLastClientQuoteItemsRelated());
+		$clientQuote = $item->getClientQuote();
+		$smarty->assign('clientQuote',$clientQuotes);
+		$supplierQuotes = $clientQuote->getSupplierQuotes();
+		$smarty->assign('supplierQuote',$supplierQuotes[0]);
 
 		return $mapping->findForwardConfig('success');
 	

@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ClientQuotationItemPeer.php");
+require_once("ClientQuoteItemPeer.php");
 
 
 class ImportClientQuoteItemDoSetPriceAction extends BaseAction {
@@ -45,15 +45,15 @@ class ImportClientQuoteItemDoSetPriceAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
-		if (empty($_POST['clientQuotationItem']) || empty($_POST['clientQuotationItem']['id'])) {
+		if (empty($_POST['clientQuoteItem']) || empty($_POST['clientQuoteItem']['id'])) {
 			return $mapping->findForwardConfig('failure');
 		}
 
-		$item = ClientQuotationItemPeer::update($_POST['clientQuotationItem']);
-		$clientQuotation = $item->getClientQuotation();
+		$item = ClientQuoteItemPeer::update($_POST['clientQuoteItem']);
+		$clientQuote = $item->getClientQuote();
 
 		$params = array();
-		$params['id'] = $clientQuotation->getId();
+		$params['id'] = $clientQuote->getId();
 
 		return $this->addParamsToForwards($params,$mapping,'success');
 

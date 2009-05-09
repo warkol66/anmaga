@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ClientQuotationPeer.php");
+require_once("ClientQuotePeer.php");
 require_once("ProductPeer.php");
 require_once("SupplierPeer.php");
 require_once("PortPeer.php");
@@ -48,7 +48,7 @@ class ImportClientQuoteEditAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		$smarty->assign("message",$_GET["message"]);
-		$smarty->assign("quantitiesOnQuotationsFlag",Common::importQuotationsHasQuantities());
+		$smarty->assign("quantitiesOnQuotesFlag",Common::importQuotesHasQuantities());
 		
 		if (!empty($_GET['notProcessed'])) {
 			$smarty->assign('notProcessed',$_GET['notProcessed']);
@@ -57,13 +57,13 @@ class ImportClientQuoteEditAction extends BaseAction {
 		$products = ProductPeer::getAll();
 		$smarty->assign('products',$products);
 		
-		$clientQuotationPeer = new ClientQuotationPeer();
+		$clientQuotePeer = new ClientQuotePeer();
 
 		if (Common::isAdmin()) {
 			
-			if (!empty($_GET['supplierQuotationId'])) {
-				$supplierQuotation = SupplierQuotationPeer::get($_GET["supplierQuotationId"]);
-				$smarty->assign("supplierQuotation",$supplierQuotation);
+			if (!empty($_GET['supplierQuoteId'])) {
+				$supplierQuote = SupplierQuotePeer::get($_GET["supplierQuoteId"]);
+				$smarty->assign("supplierQuote",$supplierQuote);
 			}
 
 			//traemos todas las cotizaciones.
@@ -71,16 +71,16 @@ class ImportClientQuoteEditAction extends BaseAction {
 			$ports = PortPeer::getAll();
 
 			if (empty($_GET['id'])) {
-				//se esta editando una clientQuotation recien creada
-				$clientQuotation = $_SESSION['import']['clientQuotation'];
+				//se esta editando una clientQuote recien creada
+				$clientQuote = $_SESSION['import']['clientQuote'];
 			}
 			else {
-				//se esta editando una clientQuotation existente
-				$clientQuotation = $clientQuotationPeer->get($_GET["id"]);
+				//se esta editando una clientQuote existente
+				$clientQuote = $clientQuotePeer->get($_GET["id"]);
 			}
 
-			$suppliers = $clientQuotation->getProductRelatedSuppliers();
-			$smarty->assign("clientQuotation",$clientQuotation);
+			$suppliers = $clientQuote->getProductRelatedSuppliers();
+			$smarty->assign("clientQuote",$clientQuote);
 			$smarty->assign("suppliers",$suppliers);
 			$smarty->assign("incoterms",$incoterms);
 			$smarty->assign("ports",$ports);
@@ -93,18 +93,18 @@ class ImportClientQuoteEditAction extends BaseAction {
 			$affiliate = $affiliateUser->getAffiliate();
 			
 			if (empty($_GET['id'])) {
-				//se esta editando una clientQuotation recien creada
-				$clientQuotation = $_SESSION['import']['clientQuotation'];
+				//se esta editando una clientQuote recien creada
+				$clientQuote = $_SESSION['import']['clientQuote'];
 			}
 			else {
-				$clientQuotation = $affiliate->getClientQuotation($_GET['id']);
+				$clientQuote = $affiliate->getClientQuote($_GET['id']);
 			}
 			
-			if (empty($clientQuotation)) {
+			if (empty($clientQuote)) {
 				return $mapping->findForwardConfig('failure');
 			}
 			
-			$smarty->assign("clientQuotation",$clientQuotation);
+			$smarty->assign("clientQuote",$clientQuote);
 			return $mapping->findForwardConfig('success-affiliate');
 		}
 		

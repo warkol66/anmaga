@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("SupplierQuotationPeer.php");
+require_once("SupplierQuotePeer.php");
 
 class ImportSupplierQuoteDoEditItemAction extends BaseAction {
 
@@ -44,7 +44,7 @@ class ImportSupplierQuoteDoEditItemAction extends BaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
-		$supplierQuotationPeer = new SupplierQuotationPeer();
+		$supplierQuotePeer = new SupplierQuotePeer();
 
 		if (empty($_POST['token']) && (empty($_POST['id']))) {
 			return $mapping->findForwardConfig('failure');		
@@ -52,20 +52,20 @@ class ImportSupplierQuoteDoEditItemAction extends BaseAction {
 
 
 		//traemos todas las cotizaciones.
-		$supplierQuotation = $supplierQuotationPeer->getByAccessToken($_POST["token"]);
+		$supplierQuote = $supplierQuotePeer->getByAccessToken($_POST["token"]);
 		
 		//indicamos quien esta haciendo la actualizacion para que se indique en el comentario.
-		$supplier = $supplierQuotation->getSupplier();
-		$_POST["supplierQuotationItem"]['supplierId'] = $supplier->getId();
+		$supplier = $supplierQuote->getSupplier();
+		$_POST["supplierQuoteItem"]['supplierId'] = $supplier->getId();
 		
-		if (empty($supplierQuotation)) {
+		if (empty($supplierQuote)) {
 			return $mapping->findForwardConfig('failure');			
 		}
 		
-		$smarty->assign("supplierQuotation",$supplierQuotation);
+		$smarty->assign("supplierQuote",$supplierQuote);
 		
 
-		if (!SupplierQuotationItemPeer::update($_POST["supplierQuotationItem"])) {
+		if (!SupplierQuoteItemPeer::update($_POST["supplierQuoteItem"])) {
   			return $mapping->findForwardConfig('failure');
 		}		
 

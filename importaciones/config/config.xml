@@ -181,7 +181,7 @@
 		</smtpOptions>
 	</email>
 	<import>
-		<clientQuotationRequest>
+		<clientQuoteRequest>
 			<onTime>
 				<value>9</value>
 				<element_type>COLORCODE</element_type>
@@ -202,8 +202,8 @@
 				<value>1</value>
 				<element_type>COLORCODE</element_type>
 			</cancelled>
-		</clientQuotationRequest>
-		<supplierQuotationRequest>
+		</clientQuoteRequest>
+		<supplierQuoteRequest>
 			<onTime>
 				<value>9</value>
 				<element_type>COLORCODE</element_type>
@@ -224,7 +224,7 @@
 				<value>1</value>
 				<element_type>COLORCODE</element_type>
 			</cancelled>
-		</supplierQuotationRequest>
+		</supplierQuoteRequest>
 		<supplierManufactureRequest>
 			<onTime>
 				<value>9</value>
@@ -247,9 +247,9 @@
 				<element_type>COLORCODE</element_type>
 			</cancelled>
 		</supplierManufactureRequest>
-		<quantityOnQuotation>
+		<quantityOnQuote>
 			<value>NO</value>
 			<element_type>YES/NO</element_type>
-		</quantityOnQuotation>
+		</quantityOnQuote>
 	</import>
 </config>

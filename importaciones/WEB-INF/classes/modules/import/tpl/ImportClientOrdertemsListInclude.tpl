@@ -6,7 +6,7 @@
 			<th>Cantidad</th>
 			<th>Precio Unitario</th>
 		</tr>
-		|-foreach from=$clientPurchaseOrder->getClientPurchaseOrderItems() item=item name=for_clientQuotationsItems-|
+		|-foreach from=$clientPurchaseOrder->getClientPurchaseOrderItems() item=item name=for_clientQuotesItems-|
 		|-assign var=product value=$item->getProduct()-|
 		<tr>
 			<td>|-$product->getCode()-|</td>

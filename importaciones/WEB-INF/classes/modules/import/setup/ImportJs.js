@@ -1,9 +1,9 @@
 //agrega un producto a una cotidzacion de cliente
-function importAddItemToClientQuotationX(form) {
+function importAddItemToClientQuoteX(form) {
 	
 	var fields = Form.serialize(form);
 	var myAjax = new Ajax.Updater(
-				{success: 'clientQuotationItemList'},
+				{success: 'clientQuoteItemList'},
 				url,
 				{
 					method: 'post',
@@ -52,12 +52,12 @@ function importHideDiv(id) {
 	
 }
 
-function importUpdateItemsBySupplier(supplierId,clientQuotationId) {
+function importUpdateItemsBySupplier(supplierId,clientQuoteId) {
 	if (supplierId == '') {
 		return false;
 	}
 	
-	var fields = 'do=importClientQuoteItemsSupplierX&supplierId=' + supplierId + '&clientQuotationId=' + clientQuotationId;
+	var fields = 'do=importClientQuoteItemsSupplierX&supplierId=' + supplierId + '&clientQuoteId=' + clientQuoteId;
 	var myAjax = new Ajax.Updater(
 				{success: 'assignmentMsgBox'},
 				url,
@@ -94,7 +94,7 @@ function importSelectAllByTagName(name) {
 	return true;
 }
 
-function importDeleteItemFromClientQuotationX(form) {
+function importDeleteItemFromClientQuoteX(form) {
 	
 	var fields = Form.serialize(form);
 	var myAjax = new Ajax.Updater(

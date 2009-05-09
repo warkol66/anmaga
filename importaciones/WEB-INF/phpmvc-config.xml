@@ -1101,7 +1101,7 @@
                name = "importSupplierQuoteCreate"
               scope = "request"
            validate = "true">
-    <forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=supplier-quotation-created" redirect="true"/>
+    <forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=supplier-quote-created" redirect="true"/>
     </action>
 
 	<action    path = "importProductSearchX"
@@ -1136,17 +1136,17 @@
 	<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=price-set" redirect="true"/>
 	</action>
 
-	<action    path = "importClientQuotationAccept"
-	           type = "ImportClientQuotationAcceptAction"
-	           name = "importClientQuotationAccept"
+	<action    path = "importClientQuoteAccept"
+	           type = "ImportClientQuoteAcceptAction"
+	           name = "importClientQuoteAccept"
 	          scope = "request"
 	       validate = "true">
 	<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=accepted" redirect="true"/>
 	</action>
 
-	<action    path = "importClientQuotationReject"
-	           type = "ImportClientQuotationRejectAction"
-	           name = "importClientQuotationReject"
+	<action    path = "importClientQuoteReject"
+	           type = "ImportClientQuoteRejectAction"
+	           name = "importClientQuoteReject"
 	          scope = "request"
 	       validate = "true">
 	<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=rejected" redirect="true"/>

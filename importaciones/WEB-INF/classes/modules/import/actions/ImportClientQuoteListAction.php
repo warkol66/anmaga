@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("ClientQuotationPeer.php");
+require_once("ClientQuotePeer.php");
 require_once("AffiliatePeer.php");
 require_once("AffiliateUserPeer.php");
 
@@ -52,10 +52,10 @@ class ImportClientQuoteListAction extends BaseAction {
    
 		$smarty->assign("message",$_GET["message"]);
 		
-		if (!empty($_GET['clientQuotationId']))
-			$smarty->assign('clientQuotationId',$_GET['clientQuotationId']);
+		if (!empty($_GET['clientQuoteId']))
+			$smarty->assign('clientQuoteId',$_GET['clientQuoteId']);
 		
-		$clientQuotationPeer = new ClientQuotationPeer();
+		$clientQuotePeer = new ClientQuotePeer();
 		
 		$products = ProductPeer::getAll();
 		$smarty->assign('products',$products);
@@ -64,9 +64,9 @@ class ImportClientQuoteListAction extends BaseAction {
 			//traemos todas las cotizaciones.
 
 			$filterValues = array('affiliateId','productName','adminStatus');
-			$clientQuotationPeer = $this->processFilters($clientQuotationPeer,$filterValues,$smarty);
+			$clientQuotePeer = $this->processFilters($clientQuotePeer,$filterValues,$smarty);
 
-			$pager = $clientQuotationPeer->getAllPaginatedFiltered($_GET["page"]);
+			$pager = $clientQuotePeer->getAllPaginatedFiltered($_GET["page"]);
 			$affiliates = AffiliatePeer::getAll();
 			$affiliatesUsers = AffiliateUserPeer::getAll();
 			
@@ -74,8 +74,8 @@ class ImportClientQuoteListAction extends BaseAction {
 			$url = $this->addFiltersToUrl($url);
 			$smarty->assign("url",$url);
 
-			$smarty->assign("status",$clientQuotationPeer->getStatusNamesAdmin());
-			$smarty->assign("quotations",$pager->getResult());
+			$smarty->assign("status",$clientQuotePeer->getStatusNamesAdmin());
+			$smarty->assign("quotes",$pager->getResult());
 			$smarty->assign("pager",$pager);
 			$smarty->assign("affiliates",$affiliates);
 			$smarty->assign("affiliatesUsers",$affiliatesUsers);
@@ -85,15 +85,15 @@ class ImportClientQuoteListAction extends BaseAction {
 		if (Common::isAffiliatedUser()) {
 
 			$filterValues = array('productName','affiliateStatus');
-			$clientQuotationPeer = $this->processFilters($clientQuotationPeer,$filterValues,$smarty);
+			$clientQuotePeer = $this->processFilters($clientQuotePeer,$filterValues,$smarty);
 
 			//Traemos todas las cotizaciones de ese afiliado.
 			$affiliateUser = Common::getAffiliatedLogged();
 			$affiliate = $affiliateUser->getAffiliate();
-			$pager = $clientQuotationPeer->getAllPaginatedByAffiliateFiltered($affiliate,$_GET["page"]);
+			$pager = $clientQuotePeer->getAllPaginatedByAffiliateFiltered($affiliate,$_GET["page"]);
 
-			$smarty->assign("status",$clientQuotationPeer->getStatusNamesAffiliate());
-			$smarty->assign("quotations",$pager->getResult());
+			$smarty->assign("status",$clientQuotePeer->getStatusNamesAffiliate());
+			$smarty->assign("quotes",$pager->getResult());
 			$smarty->assign("affiliate",$affiliateUser->getAffiliate());
 			$smarty->assign("pager",$pager);
 			return $mapping->findForwardConfig('success-affiliate');

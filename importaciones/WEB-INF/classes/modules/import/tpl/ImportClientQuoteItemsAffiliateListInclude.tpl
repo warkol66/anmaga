@@ -1,52 +1,52 @@
-|-if $clientQuotation->isQuoted()-|
+|-if $clientQuote->isQuoted()-|
 	<form action="Main.php" method="post" >
 |-/if-|
 
-<div id="clientQuotationItemLister">
-	<table id="clientQuotationItemList" cellpadding="4" cellspacing="0" class="tableTdBorders">
+<div id="clientQuoteItemLister">
+	<table id="clientQuoteItemList" cellpadding="4" cellspacing="0" class="tableTdBorders">
 		<thead>
-			|-if $clientQuotation->isQuoted()-|
+			|-if $clientQuote->isQuoted()-|
 				<th></th>
 			|-/if-|
 			<th>Código</th>
 			<th>Nombre</th>
-			|-if $clientQuotation->isQuoted()-|
+			|-if $clientQuote->isQuoted()-|
 			<th>Precio Unitario</th>
 			|-/if-|	
-			|-if $quantitiesOnQuotationsFlag or $clientQuotation->isQuoted()-|
+			|-if $quantitiesOnQuotesFlag or $clientQuote->isQuoted()-|
 				<th>Cantidad</th>
 			|-/if-|			
 			<th></th>
 		</thead>
-		|-foreach from=$clientQuotation->getClientQuotationItems() item=item name=for_clientQuotationsItems-|
+		|-foreach from=$clientQuote->getClientQuoteItems() item=item name=for_clientQuotesItems-|
 		|-assign var=product value=$item->getProduct()-|
 		<tbody>
 		<tr id="itemProduct|-$item->getProductId()-|">
-			|-if $clientQuotation->isQuoted()-|
+			|-if $clientQuote->isQuoted()-|
 				<td><input type="checkbox" name="clientQuoteItems[]" value="|-$item->getId()-|" /></td>
 			|-/if-|
 			<td>|-$product->getCode()-|</td>
 			<td>|-$product->getName()-|</td>
-			|-if $clientQuotation->isQuoted()-|
+			|-if $clientQuote->isQuoted()-|
 			<td>|-$item->getPrice()-|</td>
 			|-/if-|
-			|-if $quantitiesOnQuotationsFlag-|
+			|-if $quantitiesOnQuotesFlag-|
 			<td>
 				|-$item->getQuantity()-|
-				|-if $clientQuotation->isQuoted()-|
+				|-if $clientQuote->isQuoted()-|
 					<input type="hidden" name="clientQuoteItemsQuantity[|-$item->getId()-|]" value="|-$item->getQuantity()-|" id="clientQuoteItemsQuantity[|-$item->getId()-|]" />
 				|-/if-|
 			</td>
 			|-/if-|
-			|-if not $quantitiesOnQuotationsFlag and $clientQuotation->isQuoted()-|
+			|-if not $quantitiesOnQuotesFlag and $clientQuote->isQuoted()-|
 			<td><input type="text" size="5" name="clientQuoteItemsQuantity[|-$item->getId()-|]" value="" id="clientQuoteItemsQuantity[|-$item->getId()-|]" /></td>
 			|-/if-|
 			<td>
-				|-if $clientQuotation->isNew()-|
+				|-if $clientQuote->isNew()-|
 				<form action="Main.php" method="post">
 					<input type="hidden" name="do" value="importClientQuoteDeleteItemX" />
 					<input type="hidden" name="productId" value="|-$item->getProductId()-|" />
-					<input type="button" name="submit_go_delete_quotation" value="Borrar" onClick="javascript:importDeleteItemFromClientQuotationX(this.form)" class="buttonImageDelete" />
+					<input type="button" name="submit_go_delete_quote" value="Borrar" onClick="javascript:importDeleteItemFromClientQuoteX(this.form)" class="buttonImageDelete" />
 				</form>
 				|-/if-|
 			</td>
@@ -56,13 +56,13 @@
 	</table>
 </div>	
 
-|-if $clientQuotation->isQuoted()-|
+|-if $clientQuote->isQuoted()-|
 	<p>
 		<input type="button" name="selectAll" value="Seleccionar Todos" onClick="javascript:importSelectAllByName('clientQuoteItems[]')" />
 	</p>
 	<p>
-		<input type="hidden" name="clienQuotationId" value="|-$clientQuotation->getId()-|" />
-		<input type="hidden" name="do" value="importClientQuotationAccept" id="do" />
+		<input type="hidden" name="clienQuoteId" value="|-$clientQuote->getId()-|" />
+		<input type="hidden" name="do" value="importClientQuoteAccept" id="do" />
 		<input type="submit" value="Aceptar Cotización de Elementos Seleccionados" />
 	</p>
 </form>

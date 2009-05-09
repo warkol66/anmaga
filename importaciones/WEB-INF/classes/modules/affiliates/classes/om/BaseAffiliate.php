@@ -57,14 +57,14 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 	private $lastAffiliateBranchCriteria = null;
 
 	/**
-	 * @var        array ClientQuotation[] Collection to store aggregation of ClientQuotation objects.
+	 * @var        array ClientQuote[] Collection to store aggregation of ClientQuote objects.
 	 */
-	protected $collClientQuotations;
+	protected $collClientQuotes;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collClientQuotations.
+	 * @var        Criteria The criteria used to select the current contents of collClientQuotes.
 	 */
-	private $lastClientQuotationCriteria = null;
+	private $lastClientQuoteCriteria = null;
 
 	/**
 	 * @var        array ClientPurchaseOrder[] Collection to store aggregation of ClientPurchaseOrder objects.
@@ -327,8 +327,8 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 			$this->collAffiliateBranchs = null;
 			$this->lastAffiliateBranchCriteria = null;
 
-			$this->collClientQuotations = null;
-			$this->lastClientQuotationCriteria = null;
+			$this->collClientQuotes = null;
+			$this->lastClientQuoteCriteria = null;
 
 			$this->collClientPurchaseOrders = null;
 			$this->lastClientPurchaseOrderCriteria = null;
@@ -459,8 +459,8 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collClientQuotations !== null) {
-				foreach ($this->collClientQuotations as $referrerFK) {
+			if ($this->collClientQuotes !== null) {
+				foreach ($this->collClientQuotes as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -570,8 +570,8 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collClientQuotations !== null) {
-					foreach ($this->collClientQuotations as $referrerFK) {
+				if ($this->collClientQuotes !== null) {
+					foreach ($this->collClientQuotes as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -689,9 +689,9 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 				}
 			}
 
-			foreach ($this->getClientQuotations() as $relObj) {
+			foreach ($this->getClientQuotes() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addClientQuotation($relObj->copy($deepCopy));
+					$copyObj->addClientQuote($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1112,47 +1112,47 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collClientQuotations collection (array).
+	 * Clears out the collClientQuotes collection (array).
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addClientQuotations()
+	 * @see        addClientQuotes()
 	 */
-	public function clearClientQuotations()
+	public function clearClientQuotes()
 	{
-		$this->collClientQuotations = null; // important to set this to NULL since that means it is uninitialized
+		$this->collClientQuotes = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collClientQuotations collection (array).
+	 * Initializes the collClientQuotes collection (array).
 	 *
-	 * By default this just sets the collClientQuotations collection to an empty array (like clearcollClientQuotations());
+	 * By default this just sets the collClientQuotes collection to an empty array (like clearcollClientQuotes());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
 	 * @return     void
 	 */
-	public function initClientQuotations()
+	public function initClientQuotes()
 	{
-		$this->collClientQuotations = array();
+		$this->collClientQuotes = array();
 	}
 
 	/**
-	 * Gets an array of ClientQuotation objects which contain a foreign key that references this object.
+	 * Gets an array of ClientQuote objects which contain a foreign key that references this object.
 	 *
 	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
 	 * Otherwise if this Affiliate has previously been saved, it will retrieve
-	 * related ClientQuotations from storage. If this Affiliate is new, it will return
+	 * related ClientQuotes from storage. If this Affiliate is new, it will return
 	 * an empty collection or the current collection, the criteria is ignored on a new object.
 	 *
 	 * @param      PropelPDO $con
 	 * @param      Criteria $criteria
-	 * @return     array ClientQuotation[]
+	 * @return     array ClientQuote[]
 	 * @throws     PropelException
 	 */
-	public function getClientQuotations($criteria = null, PropelPDO $con = null)
+	public function getClientQuotes($criteria = null, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(AffiliatePeer::DATABASE_NAME);
@@ -1162,15 +1162,15 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collClientQuotations === null) {
+		if ($this->collClientQuotes === null) {
 			if ($this->isNew()) {
-			   $this->collClientQuotations = array();
+			   $this->collClientQuotes = array();
 			} else {
 
-				$criteria->add(ClientQuotationPeer::AFFILIATEID, $this->id);
+				$criteria->add(ClientQuotePeer::AFFILIATEID, $this->id);
 
-				ClientQuotationPeer::addSelectColumns($criteria);
-				$this->collClientQuotations = ClientQuotationPeer::doSelect($criteria, $con);
+				ClientQuotePeer::addSelectColumns($criteria);
+				$this->collClientQuotes = ClientQuotePeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1180,28 +1180,28 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(ClientQuotationPeer::AFFILIATEID, $this->id);
+				$criteria->add(ClientQuotePeer::AFFILIATEID, $this->id);
 
-				ClientQuotationPeer::addSelectColumns($criteria);
-				if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
-					$this->collClientQuotations = ClientQuotationPeer::doSelect($criteria, $con);
+				ClientQuotePeer::addSelectColumns($criteria);
+				if (!isset($this->lastClientQuoteCriteria) || !$this->lastClientQuoteCriteria->equals($criteria)) {
+					$this->collClientQuotes = ClientQuotePeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastClientQuotationCriteria = $criteria;
-		return $this->collClientQuotations;
+		$this->lastClientQuoteCriteria = $criteria;
+		return $this->collClientQuotes;
 	}
 
 	/**
-	 * Returns the number of related ClientQuotation objects.
+	 * Returns the number of related ClientQuote objects.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      PropelPDO $con
-	 * @return     int Count of related ClientQuotation objects.
+	 * @return     int Count of related ClientQuote objects.
 	 * @throws     PropelException
 	 */
-	public function countClientQuotations(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countClientQuotes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(AffiliatePeer::DATABASE_NAME);
@@ -1215,14 +1215,14 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 
 		$count = null;
 
-		if ($this->collClientQuotations === null) {
+		if ($this->collClientQuotes === null) {
 			if ($this->isNew()) {
 				$count = 0;
 			} else {
 
-				$criteria->add(ClientQuotationPeer::AFFILIATEID, $this->id);
+				$criteria->add(ClientQuotePeer::AFFILIATEID, $this->id);
 
-				$count = ClientQuotationPeer::doCount($criteria, $con);
+				$count = ClientQuotePeer::doCount($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1232,36 +1232,36 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(ClientQuotationPeer::AFFILIATEID, $this->id);
+				$criteria->add(ClientQuotePeer::AFFILIATEID, $this->id);
 
-				if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
-					$count = ClientQuotationPeer::doCount($criteria, $con);
+				if (!isset($this->lastClientQuoteCriteria) || !$this->lastClientQuoteCriteria->equals($criteria)) {
+					$count = ClientQuotePeer::doCount($criteria, $con);
 				} else {
-					$count = count($this->collClientQuotations);
+					$count = count($this->collClientQuotes);
 				}
 			} else {
-				$count = count($this->collClientQuotations);
+				$count = count($this->collClientQuotes);
 			}
 		}
-		$this->lastClientQuotationCriteria = $criteria;
+		$this->lastClientQuoteCriteria = $criteria;
 		return $count;
 	}
 
 	/**
-	 * Method called to associate a ClientQuotation object to this object
-	 * through the ClientQuotation foreign key attribute.
+	 * Method called to associate a ClientQuote object to this object
+	 * through the ClientQuote foreign key attribute.
 	 *
-	 * @param      ClientQuotation $l ClientQuotation
+	 * @param      ClientQuote $l ClientQuote
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addClientQuotation(ClientQuotation $l)
+	public function addClientQuote(ClientQuote $l)
 	{
-		if ($this->collClientQuotations === null) {
-			$this->initClientQuotations();
+		if ($this->collClientQuotes === null) {
+			$this->initClientQuotes();
 		}
-		if (!in_array($l, $this->collClientQuotations, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collClientQuotations, $l);
+		if (!in_array($l, $this->collClientQuotes, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collClientQuotes, $l);
 			$l->setAffiliate($this);
 		}
 	}
@@ -1272,13 +1272,13 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Affiliate is new, it will return
 	 * an empty collection; or if this Affiliate has previously
-	 * been saved, it will retrieve related ClientQuotations from storage.
+	 * been saved, it will retrieve related ClientQuotes from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Affiliate.
 	 */
-	public function getClientQuotationsJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getClientQuotesJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(AffiliatePeer::DATABASE_NAME);
@@ -1288,29 +1288,29 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collClientQuotations === null) {
+		if ($this->collClientQuotes === null) {
 			if ($this->isNew()) {
-				$this->collClientQuotations = array();
+				$this->collClientQuotes = array();
 			} else {
 
-				$criteria->add(ClientQuotationPeer::AFFILIATEID, $this->id);
+				$criteria->add(ClientQuotePeer::AFFILIATEID, $this->id);
 
-				$this->collClientQuotations = ClientQuotationPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+				$this->collClientQuotes = ClientQuotePeer::doSelectJoinUser($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(ClientQuotationPeer::AFFILIATEID, $this->id);
+			$criteria->add(ClientQuotePeer::AFFILIATEID, $this->id);
 
-			if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
-				$this->collClientQuotations = ClientQuotationPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+			if (!isset($this->lastClientQuoteCriteria) || !$this->lastClientQuoteCriteria->equals($criteria)) {
+				$this->collClientQuotes = ClientQuotePeer::doSelectJoinUser($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastClientQuotationCriteria = $criteria;
+		$this->lastClientQuoteCriteria = $criteria;
 
-		return $this->collClientQuotations;
+		return $this->collClientQuotes;
 	}
 
 
@@ -1319,13 +1319,13 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Affiliate is new, it will return
 	 * an empty collection; or if this Affiliate has previously
-	 * been saved, it will retrieve related ClientQuotations from storage.
+	 * been saved, it will retrieve related ClientQuotes from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Affiliate.
 	 */
-	public function getClientQuotationsJoinAffiliateUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getClientQuotesJoinAffiliateUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(AffiliatePeer::DATABASE_NAME);
@@ -1335,29 +1335,29 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collClientQuotations === null) {
+		if ($this->collClientQuotes === null) {
 			if ($this->isNew()) {
-				$this->collClientQuotations = array();
+				$this->collClientQuotes = array();
 			} else {
 
-				$criteria->add(ClientQuotationPeer::AFFILIATEID, $this->id);
+				$criteria->add(ClientQuotePeer::AFFILIATEID, $this->id);
 
-				$this->collClientQuotations = ClientQuotationPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
+				$this->collClientQuotes = ClientQuotePeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(ClientQuotationPeer::AFFILIATEID, $this->id);
+			$criteria->add(ClientQuotePeer::AFFILIATEID, $this->id);
 
-			if (!isset($this->lastClientQuotationCriteria) || !$this->lastClientQuotationCriteria->equals($criteria)) {
-				$this->collClientQuotations = ClientQuotationPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
+			if (!isset($this->lastClientQuoteCriteria) || !$this->lastClientQuoteCriteria->equals($criteria)) {
+				$this->collClientQuotes = ClientQuotePeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastClientQuotationCriteria = $criteria;
+		$this->lastClientQuoteCriteria = $criteria;
 
-		return $this->collClientQuotations;
+		return $this->collClientQuotes;
 	}
 
 	/**
@@ -1527,7 +1527,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Affiliate.
 	 */
-	public function getClientPurchaseOrdersJoinClientQuotation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getClientPurchaseOrdersJoinClientQuote($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(AffiliatePeer::DATABASE_NAME);
@@ -1544,7 +1544,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 
 				$criteria->add(ClientPurchaseOrderPeer::AFFILIATEID, $this->id);
 
-				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinClientQuotation($criteria, $con, $join_behavior);
+				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -1554,7 +1554,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 			$criteria->add(ClientPurchaseOrderPeer::AFFILIATEID, $this->id);
 
 			if (!isset($this->lastClientPurchaseOrderCriteria) || !$this->lastClientPurchaseOrderCriteria->equals($criteria)) {
-				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinClientQuotation($criteria, $con, $join_behavior);
+				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastClientPurchaseOrderCriteria = $criteria;
@@ -1823,7 +1823,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Affiliate.
 	 */
-	public function getSupplierPurchaseOrdersJoinSupplierQuotation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierPurchaseOrdersJoinSupplierQuote($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(AffiliatePeer::DATABASE_NAME);
@@ -1840,7 +1840,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 
 				$criteria->add(SupplierPurchaseOrderPeer::AFFILIATEID, $this->id);
 
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplierQuotation($criteria, $con, $join_behavior);
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplierQuote($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -1850,7 +1850,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 			$criteria->add(SupplierPurchaseOrderPeer::AFFILIATEID, $this->id);
 
 			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplierQuotation($criteria, $con, $join_behavior);
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplierQuote($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastSupplierPurchaseOrderCriteria = $criteria;
@@ -1870,7 +1870,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Affiliate.
 	 */
-	public function getSupplierPurchaseOrdersJoinClientQuotation($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSupplierPurchaseOrdersJoinClientQuote($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(AffiliatePeer::DATABASE_NAME);
@@ -1887,7 +1887,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 
 				$criteria->add(SupplierPurchaseOrderPeer::AFFILIATEID, $this->id);
 
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinClientQuotation($criteria, $con, $join_behavior);
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -1897,7 +1897,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 			$criteria->add(SupplierPurchaseOrderPeer::AFFILIATEID, $this->id);
 
 			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinClientQuotation($criteria, $con, $join_behavior);
+				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastSupplierPurchaseOrderCriteria = $criteria;
@@ -2068,8 +2068,8 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
-			if ($this->collClientQuotations) {
-				foreach ((array) $this->collClientQuotations as $o) {
+			if ($this->collClientQuotes) {
+				foreach ((array) $this->collClientQuotes as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -2087,7 +2087,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 
 		$this->collAffiliateUsers = null;
 		$this->collAffiliateBranchs = null;
-		$this->collClientQuotations = null;
+		$this->collClientQuotes = null;
 		$this->collClientPurchaseOrders = null;
 		$this->collSupplierPurchaseOrders = null;
 	}

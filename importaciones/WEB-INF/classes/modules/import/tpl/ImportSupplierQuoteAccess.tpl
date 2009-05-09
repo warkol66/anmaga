@@ -14,9 +14,9 @@
 	
 </div>
 
-<div id="div_supplierQuotation">
+<div id="div_supplierQuote">
 	<p>
-		Fecha de Creación: |-$supplierQuotation->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|
+		Fecha de Creación: |-$supplierQuote->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|
 	</p>
 	<p>
 		<strong>
@@ -25,20 +25,20 @@
 	</p>
 </div>
 
-<div id="supplierQuotationItemsHolder">
-		|-include file='ImportSupplierQuoteItemsSupplierListInclude.tpl' token=$token supplierQuotation=$supplierQuotation-|
+<div id="supplierQuoteItemsHolder">
+		|-include file='ImportSupplierQuoteItemsSupplierListInclude.tpl' token=$token supplierQuote=$supplierQuote-|
 </div>
 
 
 
-|-if not $supplierQuotation->isConfirmed()-|
+|-if not $supplierQuote->isConfirmed()-|
 		
-	|-if $supplierQuotation->hasItemsOnFeedback() -|
-		<div id="supplierQuotationConfirmation">
+	|-if $supplierQuote->hasItemsOnFeedback() -|
+		<div id="supplierQuoteConfirmation">
 			<p>Antes de poder confirmar nuevamente la cotizacion, debera responder a todos los items que se encuentran esperando feedback.</p>
 		</div>
 	|-else-|
-		<div id="supplierQuotationConfirmation">
+		<div id="supplierQuoteConfirmation">
 			<p>A continuación podra confirma la cotización. Tenga en cuenta que una vez confirmada, no podra hacerle modificaciones.</p>
 			<form action="Main.php" method="post">
 				<p><input type="hidden" name="token" value="|-$token-|" ></p>

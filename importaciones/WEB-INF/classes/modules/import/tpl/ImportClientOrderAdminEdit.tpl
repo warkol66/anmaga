@@ -10,6 +10,6 @@
 	</p>
 </div>
 
-<div id="clientQuotationItemsHolder">
+<div id="clientQuoteItemsHolder">
 		|-include file='ImportClientOrdertemsListInclude.tpl' clientPurchaseOrder=$clientPurchaseOrder-|
 </div>

@@ -1,7 +1,7 @@
 <?php
 
 require_once("ImportBaseAction.php");
-require_once("SupplierQuotationPeer.php");
+require_once("SupplierQuotePeer.php");
 
 class ImportSupplierQuoteItemsDoNegociateAction extends ImportBaseAction {
 
@@ -44,26 +44,26 @@ class ImportSupplierQuoteItemsDoNegociateAction extends ImportBaseAction {
 		$module = "Import";
 		$smarty->assign('module',$module);
 		
-		$supplierQuotationItemPeer = new SupplierQuotationItemPeer();
+		$supplierQuoteItemPeer = new SupplierQuoteItemPeer();
 			
-		$supplierQuotationItem = $supplierQuotationItemPeer->get($_POST['supplierQuotationItemId']);
+		$supplierQuoteItem = $supplierQuoteItemPeer->get($_POST['supplierQuoteItemId']);
 
-		if (empty($supplierQuotationItem)) {
+		if (empty($supplierQuoteItem)) {
 			return $mapping->findForwardConfig('failure');			
 		}		
 		
  		$user = Common::getAdminLogged();
 		$comment = $_POST['comments'];
 
-		$supplierQuotationItem->askFeedback($user,$comment);
+		$supplierQuoteItem->askFeedback($user,$comment);
 
 		//notificamos al proveedor correspondiente
-		$supplierQuotation = $supplierQuotationItem->getSupplierQuotation();
-		$content = $this->renderSupplierQuotationFeedbackNotifyEmail($supplierQuotation);
-		$supplierQuotation->notifyFeedbackToSupplier($content);
+		$supplierQuote = $supplierQuoteItem->getSupplierQuote();
+		$content = $this->renderSupplierQuoteFeedbackNotifyEmail($supplierQuote);
+		$supplierQuote->notifyFeedbackToSupplier($content);
 		
 		$params = array();
-		$params['id'] = $supplierQuotationItem->getSupplierQuotationId();
+		$params['id'] = $supplierQuoteItem->getSupplierQuoteId();
 
 		return $this->addParamsToForwards($params,$mapping,'success');
 		

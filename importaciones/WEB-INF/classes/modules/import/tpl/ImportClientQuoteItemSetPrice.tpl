@@ -1,24 +1,24 @@
 <h2>Solicitud de Cotización</h2>
 <h1>Fijar Precio a Cliente</h1>
-|-assign var=supplierQuotationItem value=$clientQuotationItem->getSupplierQuotationItem()-|
+|-assign var=supplierQuoteItem value=$clientQuoteItem->getSupplierQuoteItem()-|
 <fieldset>
 <legend>Determinación de precio al cliente</legend>
-<div id="div_clientQuotationItemLastQuotations">
-	|-include file='ImportClientQuoteRelatedQuotationsInclude.tpl' lastClientQuotationItemsRelated=$lastClientQuotationItemsRelated-|
+<div id="div_clientQuoteItemLastQuotes">
+	|-include file='ImportClientQuoteRelatedQuotesInclude.tpl' lastClientQuoteItemsRelated=$lastClientQuoteItemsRelated-|
 </div>
-<div id="div_supplierQuotationReport">
-	|-include file='ImportSupplierQuoteItemReportInclude.tpl' supplierQuotationItem=$supplierQuotationItem-|
+<div id="div_supplierQuoteReport">
+	|-include file='ImportSupplierQuoteItemReportInclude.tpl' supplierQuoteItem=$supplierQuoteItem-|
 </div>
-<div id="div_clientQuotationPrice">
+<div id="div_clientQuotePrice">
 	<h3>Precio</h3>
 	<form action="Main.php" method="post">
 		<p><label for="precio_cotizado_proveedor">Precio Cotizado por Proveedor</label> 			
-			<input name="supplierQuotationItemPrice" type="text" class="readOnly"  size="6" value="|-$supplierQuotationItem->getPrice()|number_format:2:",":"."-|" readonly="readonly" />
+			<input name="supplierQuoteItemPrice" type="text" class="readOnly"  size="6" value="|-$supplierQuoteItem->getPrice()|number_format:2:",":"."-|" readonly="readonly" />
 		</p>
 		<p>
 			<label for="precio">Precio a Cliente</label>
-			<input name="clientQuotationItem[price]" type="text" value="|-$clientQuotationItem->getPrice()-|" size="8" />
-			<input type="hidden" name="clientQuotationItem[id]" value="|-$clientQuotationItem->getId()-|" />
+			<input name="clientQuoteItem[price]" type="text" value="|-$clientQuoteItem->getPrice()-|" size="8" />
+			<input type="hidden" name="clientQuoteItem[id]" value="|-$clientQuoteItem->getId()-|" />
 		</p>
 		<p>
 			<input type="hidden" name="do" value="importClientQuoteItemDoSetPrice" />
