@@ -1,12 +1,12 @@
 |-foreach from=$elements item=element key=element_name-|
 |-if $element|is_array and $element.element_type ne "Text" and $element.element_type ne "Options" and 
 		 $element.element_type ne "YES/NO" and $element.element_type ne "TIMEZONE" and $element.element_type ne "COLORCODE"-|
-<li id="config|-$name-|[|-$element_name-|]">|-$element_name-|
+<li id="config|-$name-|[|-$element_name-|]">|-$element_name|multilang_get_translation:$selectedModule-|
 	<ul id="config|-$name-|[|-$element_name-|]_ul">|-include file=ConfigSetInclude.tpl elements=$element name="$name[$element_name]"-|</ul>
 </li>
 |-else-|
 <li>
-	<label>|-$element_name-|</label>
+	<label>|-$element_name|multilang_get_translation:$selectedModule-|</label>
 	|-if $element.element_type eq "Options"-|
 		<select name="config|-$name-|[|-$element_name-|][value]">
 		|-foreach from=$element.element_options item=option name=for_options-|
@@ -19,8 +19,8 @@
 		|-/foreach-|
 	|-elseif $element.element_type eq "YES/NO"-|
 		<select name="config|-$name-|[|-$element_name-|][value]">
-			<option value="YES"|-if "YES" eq $element.value-| selected="selected"|-/if-|>YES</option>
-			<option value="NO"|-if "NO" eq $element.value-| selected="selected"|-/if-|>NO</option>
+			<option value="YES"|-if "YES" eq $element.value-| selected="selected"|-/if-|>|-"YES"|multilang_get_translation:"common"-|</option>
+			<option value="NO"|-if "NO" eq $element.value-| selected="selected"|-/if-|>|-"NO"|multilang_get_translation:"common"-|</option>
 		</select>
 		<input type="hidden" name="config|-$name-|[|-$element_name-|][element_type]" value="|-$element.element_type-|" />
 	|-elseif $element.element_type eq "TIMEZONE"-|

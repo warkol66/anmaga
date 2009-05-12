@@ -41,7 +41,7 @@
 	</ul>
 		<div id="configMenu" style="display:|-if $module|lower eq 'config' || $module|lower eq 'multilang'-|block|-else-|none|-/if-|;">
 			<ul>
-				<li class="menuLink"><a href="Main.php?do=configView">Ver Configuración</a></li>
+				<!-- <li class="menuLink"><a href="Main.php?do=configView">Ver Configuración</a></li> -->
 				<li class="menuLink"><a href="Main.php?do=configSet">Configurar Sistema</a></li>
 				<li class="menuLink"><a href="Main.php?do=configEdit">Editar Configuración</a></li>
 				<li class="menuLink"><a href="Main.php?do=multilangLanguagesList">Idiomas</a></li>
