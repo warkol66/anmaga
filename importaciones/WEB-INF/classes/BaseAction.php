@@ -102,6 +102,7 @@ class BaseAction extends Action {
 			header("Location: Main.php?do=usersLogin");
 			exit;
 		}
+
 		//if(isset($_SESSION["login_user"]))
 			$loginUser = $_SESSION["loginUser"];
 	//	else

@@ -15,10 +15,11 @@ class UsersLoginAction extends BaseAction {
 
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
-  	/**
-   	* Use a different template
-   	*/
+    	BaseAction::execute($mapping, $form, $request, $response);
+
+	  	/**
+	   	* Use a different template
+	   	*/
 		$this->template->template = "TemplateLogin.tpl";
 		//////////
 		// Access the Smarty PlugIn instance
@@ -40,7 +41,6 @@ class UsersLoginAction extends BaseAction {
 		
 		if (!empty($_SESSION["loginUser"]) || !empty($_SESSION["loginAffiliateUser"]) )
 			return $mapping->findForwardConfig('welcome');		
-
 		
 		if (Common::hasUnifiedLogin()) {
 			$smarty->assign("unifiedLogin",true);		
