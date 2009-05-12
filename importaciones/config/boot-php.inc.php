@@ -167,7 +167,7 @@ if((int)phpversion() > 4) {
 	// PHP 5
 	if( isset($_GET) ) {
 		$actionServer->doGet($request, $response, $_GET);
-	} elseif( isset($_POST) ) {
+	} elseif( isset($_POST) ) {		
 		$actionServer->doPost($request, $response, $_POST, $_FILES);
 	}
 } else {
