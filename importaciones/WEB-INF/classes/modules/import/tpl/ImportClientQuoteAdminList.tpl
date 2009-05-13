@@ -34,7 +34,7 @@
 			<select name="filters[adminStatus]">
 					<option value="">Seleccione Un Estado</option>
 				|-foreach from=$status item=stat name=for_status-|
-					<option value="|-$stat-|" |-if $filters neq '' and $filters.adminStatus eq $stat -|selected="selected"|-/if-|>|-$stat-|</option>
+					<option value="|-$stat-|" |-if $filters neq '' and $filters.adminStatus eq $stat -|selected="selected"|-/if-|>|-$stat|multilang_get_translation:"import"-|</option>
 				|-/foreach-|
 			</select>
 		</p>

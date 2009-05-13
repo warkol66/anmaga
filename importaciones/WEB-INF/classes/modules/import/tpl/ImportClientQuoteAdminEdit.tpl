@@ -1,25 +1,20 @@
 <h2>Exportaciones</h2>
 <h1>Informacion General de la cotización</h1>
-
 <div id="div_messages">
 	|-if $message eq "created"-|
 		<div class="successMessage">Cotización creada correctamente.</div>
-	|-/if-|
-	|-if $message eq "supplier-quote-created"-|
+	|-elseif $message eq "supplier-quote-created"-|
 		<div class="successMessage">Cotización de Proveedor creada correctamente. Puede consultarla accediendo a este <a href="Main.php?do=importSupplierQuoteEdit&amp;id=|-$supplierQuote->getId()-|" >link</a></div>
-	|-/if-|
-	|-if $message eq "price-set"-|
+	|-elseif $message eq "price-set"-|
 		<div class="successMessage">Se ha fijado un nuevo precio para el cliente.</div>
-	|-/if-|
-	|-if $message eq "accepted"-|
-		<div class="successMessage">Se aceptado la cotizacion.|-if isset($notProcessed)-| No se han procesado |-$notProcessed-| items por falta de cantidad.|-/if-|</div>
-	|-/if-|
-	|-if $message eq "rejected"-|
-		<div class="successMessage">Se rechazado la cotizacion.</div>
+	|-elseif $message eq "accepted"-|
+		<div class="successMessage">Se aceptado la cotización.|-if isset($notProcessed)-| No se han procesado |-$notProcessed-| items por falta de cantidad.|-/if-|</div>
+	|-elseif $message eq "rejected"-|
+		<div class="successMessage">Se rechazado la cotización.</div>
 	|-/if-|	
 </div>
 
-
+<!--
 <div id="div_clientQuote">
 	<p>Podra modificar la cotización mientra la misma este en estado "New". Una vez que la misma haya sido confirmada podrá generar las solicitudes de cotización de productos para el proveedor.</p>
 	<p>
@@ -30,7 +25,7 @@
 	</p>
 </div>
 
-
+-->
 |-if $clientQuote->isNewStatus()-|
 	|-include file='ImportClientQuoteAddItemInclude.tpl' clientQuote=$clientQuote affiliate=$affiliate-|
 |-/if-|

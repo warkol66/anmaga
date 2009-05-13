@@ -25,7 +25,7 @@
 			<select name="filters[adminStatus]">
 					<option value="">Seleccione Un Estado</option>
 				|-foreach from=$status item=stat name=for_status-|
-					<option value="|-$stat-|" |-if $filters neq '' and $filters.adminStatus eq $stat -|selected="selected"|-/if-|>|-$stat-|</option>
+					<option value="|-$stat-|" |-if $filters neq '' and $filters.adminStatus eq $stat -|selected="selected"|-/if-|>|-$stat|multilang_get_translation:"import"-|</option>
 				|-/foreach-|
 			</select>
 		</p>
@@ -69,7 +69,7 @@
 					|-$supplier->getName()-|
 				</td>
 				<td>|-$order->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</td>
-				<td>|-$order->getStatusName()-|</td>
+				<td>|-$order->getStatusName()|multilang_get_translation:"import"-|</td>
 				<td>
 					|-assign var=items value=$order->getSupplierPurchaseOrderItems()-|
 					|-if $items|@count eq 0-|
