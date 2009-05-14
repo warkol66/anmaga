@@ -82,7 +82,17 @@ class OrdersListAction extends BaseAction {
 			$url .= "&dateTo=".$_GET['dateTo'];
 			$smarty->assign("selectedDateTo",$_GET["dateTo"]);	
 		}
-			
+
+		global $system;
+		$daysByDefault = $system['config']['orders']['daysByDefault'];
+
+		if (empty($_GET["dateFrom"]) && empty($_GET["dateTo"]) && empty($_GET["state"]) && $daysByDefault != 0) {
+			$dateFrom = date("d-m-Y", (time() - (24 * 60 * 60 * $daysByDefault)));
+			$orderPeer->setSearchDateFrom(Common::usDateToDbDate($dateFrom));
+			$url .= "&dateFrom=".$dateFrom;
+			$smarty->assign("selectedDateFrom",$dateFrom);	
+		}
+
 		$pager = $orderPeer->getSearchPaginated($_GET["page"]);
 		
 		$smarty->assign("orders",$pager->getResult());
