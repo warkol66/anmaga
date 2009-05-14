@@ -48,6 +48,14 @@ class OrdersExportAction extends BaseAction {
 		$module = "Orders";
 		$smarty->assign("module",$module);
 
+		if (!empty($_SESSION["loginUser"])) {
+			$userId = $_SESSION["loginUser"]->getId();
+			$affiliateId = 0;
+		}
+
+		global $system;
+		$exportComment = $system['config']['orders']['exportComment'];
+
 		$orderPeer = new OrderPeer();
 		
 		$idOrders = $_REQUEST["orders"];
@@ -57,12 +65,13 @@ class OrdersExportAction extends BaseAction {
 			$order = OrderPeer::get($id);
 			if (!empty($order) && ( !empty($_SESSION["loginUser"]) || ( empty($_SESSION["loginUser"]) && ($_SESSION["loginAffiliateUser"]->getAffiliateId() == $order->getAffiliateId()) ) ) ) {
 				$orders[] = $order;
+				$order->setState(OrderPeer::STATE_EXPORTED);
+				$order->save();
+				OrderStateChangePeer::create($id,$userId,$affiliateId,OrderPeer::STATE_EXPORTED,$exportComment);	
 			}						
 		}
 		
 		$smarty->assign("orders",$orders);
-		
-		global $system;
 		
 		$articlesPerOrder = $system['config']['orders']['articlesPerOrder'];
 		$smarty->assign("articlesPerOrder",$articlesPerOrder);

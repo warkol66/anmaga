@@ -22,6 +22,7 @@ class OrderPeer extends BaseOrderPeer {
 	const STATE_COMPLETED = 4;
 	const STATE_CANCELLED = 5;
 	const STATE_TO_BE_VERIFIED = 6;
+	const STATE_EXPORTED = 7;
 
 	private $searchAffiliateId;
 	private $searchDateFrom;
@@ -35,7 +36,7 @@ class OrderPeer extends BaseOrderPeer {
 	*/
 	function getRowsPerPage() {
 		global $system;
-		return $system["config"]["system"]["rowsPerPage"];
+		return $system['config']['orders']['ordersPerPage'];
 	}
 	
 	function getStateNameFromNumber($number) {
@@ -56,6 +57,8 @@ class OrderPeer extends BaseOrderPeer {
 				return $stateTexts["cancelled"];	
 			case OrderPeer::STATE_TO_BE_VERIFIED: 
 				return $stateTexts["toBeVerified"];					
+			case OrderPeer::STATE_EXPORTED: 
+				return $stateTexts["exported"];					
 		}
 		return "";
 	}

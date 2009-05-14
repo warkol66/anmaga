@@ -158,8 +158,8 @@ class Order extends BaseOrder {
         function getLastComment() {
             $criteria =  new Criteria();
             $criteria->add(OrderStateChangePeer::ORDERID,$this->getId(),Criteria::EQUAL);
+            $criteria->add(OrderStateChangePeer::STATE,OrderPeer::STATE_EXPORTED,Criteria::NOT_EQUAL);
             $criteria->addDescendingOrderByColumn(OrderStateChangePeer::CREATED);                  
-
 						$commentObj = OrderStateChangePeer::doSelectOne($criteria);
 						return $commentObj;
 

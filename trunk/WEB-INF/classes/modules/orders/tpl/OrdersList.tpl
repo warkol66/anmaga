@@ -34,6 +34,7 @@
 						<option value="4"|-if $selectedState eq 4-| "selected"|-/if-|>Completa</option>
 						<option value="5"|-if $selectedState eq 5-| "selected"|-/if-|>Cancelada</option>
 						<option value="6"|-if $selectedState eq 6-| "selected"|-/if-|>A Verificar</option>
+						<option value="7"|-if $selectedState eq 7-| "selected"|-/if-|>Exportada</option>
 					</select>
 					|-if $all eq "1"-|&nbsp;&nbsp;&nbsp;<label for="affiliateId">Mayorista</label>
 					<select name="affiliateId">

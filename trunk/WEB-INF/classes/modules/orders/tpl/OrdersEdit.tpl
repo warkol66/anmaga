@@ -7,9 +7,7 @@
 <table width="100%"  border="0" cellspacing="0" cellpadding="5">
 	<tr>
 		<td><strong>Pedido: |-$order->getId()-|</strong></td>
-		<td><strong>Creada:</strong> 
-			<input name="created" type="text" value="|-$order->getDateCreated()-|" size="10">&nbsp;&nbsp;
-			<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('created', false, 'ymd', '-');" title="Seleccione la fecha"></td>
+		<td><strong>Creada: |-$order->getDateCreated()-|</strong></td>
 		<td> <strong>Número Pedido del Cliente:</strong>
       	<input type="text" name="number" value="|-if $order->getNumber() eq 0-||-$order->getId()-||-else-||-$order->getNumber()-||-/if-|" /></td>
 	</tr>
@@ -79,6 +77,7 @@
 			<option value="4"|-if $order->getState() eq 4-| selected="selected"|-/if-|>|-$stateTexts.completed-|</option> 
 			<option value="5"|-if $order->getState() eq 5-| selected="selected"|-/if-|>|-$stateTexts.cancelled-|</option>
 			<option value="6"|-if $order->getState() eq 6-| selected="selected"|-/if-|>|-$stateTexts.toBeVerified-|</option>  
+			<option value="7"|-if $order->getState() eq 7-| selected="selected"|-/if-|>|-$stateTexts.exported-|</option>  
 		</select></td>
 		<td class="top"><label for="comment">Observación:</label><br />
 		<textarea name="comment" cols="60" rows="4" wrap="VIRTUAL" id="comment"></textarea></td>
