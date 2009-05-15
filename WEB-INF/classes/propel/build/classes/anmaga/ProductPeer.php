@@ -424,6 +424,63 @@ class ProductPeer extends BaseProductPeer {
 		}
 		return false;
 	}
+
+  function doImportPrices($filename) {
+
+      $archive = array();
+      $rowsReaded = 0;
+      $rowsCreated = 0;
+      $errorCodes = array();
+      $handle = fopen($filename, "r");
+      $separator = ",";
+
+      $data = fgetcsv($handle, 1000, $separator);
+
+      if (stripos($data[0],';') !== false) {
+              $semicolonSeparator = true;
+              $separator = ";";
+      }			
+
+      //me posiciono al principio del archivo
+      fseek($handle,0);
+
+      //lee todo el archivo
+      while (($data = fgetcsv($handle, 1000, $separator)) !== FALSE) {
+
+              //si el ; es el separador, debo reformatear los numeros
+              if ($semicolonSeparator) {
+                      //saco los .
+                      $data[1] = str_replace('.','',$data[1]);  
+                      //reemplazo la , por .
+                      $data[1] = str_replace(',','.',$data[1]);				
+              }
+              
+              $archive[] = $data;
+              $rowsReaded++;                       
+      }
+      
+      fclose($handle); 
+
+      if ($rowsReaded > 0) { 
+              AffiliateProductPeer::deletePrices($this->getId());				
+
+              //procesamiento de filas de datos		
+              foreach ($archive as $row) {
+                      if (ProductPeer::updatePrice($row[0],$row[1])!= false) {
+                              $rowsCreated++;
+                      }
+                      else {
+                              $errorCodes[] = $row[0];
+					  }
+
+              }	
+      }
+
+      $result = array("rowsReaded" => $rowsReaded, "rowsCreated" => $rowsCreated, "errorCodes" => $errorCodes);
+      
+      return $result;
+	
+  }
   
   function setSearchParentNodeId($parentNodeId) {
   	$this->searchParentNodeId = $parentNodeId;

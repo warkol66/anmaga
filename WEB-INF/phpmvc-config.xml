@@ -937,6 +937,14 @@
 		<forward name="success" path="CatalogAffiliateProductList.tpl" />
 	</action>
 
+	<action    path = "catalogPricesAutoUpdate"
+						 type = "CatalogPricesAutoUpdateAction"
+						 name = "catalogPricesAutoUpdate"
+						scope = "request"
+				 validate = "true">	
+	</action>
+	
+
 <!-- End Section AffiliateProductCodes -->
 	</action-mappings>
 
