@@ -72,6 +72,14 @@ class AffiliatePeer extends BaseAffiliatePeer {
 		return $affiliate;
   }
 
+  function getByName($name) {
+		$criteria = new Criteria();
+		$criteria->add(AffiliatePeer::NAME, $name);
+		$criteria->setIgnoreCase(true);
+		$result = AffiliatePeer::doSelect($criteria);
+		$affiliate = $result[0];
+		return $affiliate;
+  }
 
   function update($id,$name) {
 		$affiliate = AffiliatePeer::retrieveByPK($id);
