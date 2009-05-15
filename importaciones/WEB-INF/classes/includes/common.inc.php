@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /*
  * Funciones y variables comunes al sistema
  *
@@ -9,7 +9,6 @@
 
   include_once('Constants.inc.php');
   define('MAXIMOS_RESULTADOS_POR_PAGINA',15);
-  
   ini_set("show_errors",true);
   session_cache_limiter('nocache');
   session_start();
