@@ -27,3 +27,7 @@ function installExecuteSQL(form) {
 	form.submit();
 	
 }
+
+function readOnlyCheckBox() {
+   return false;
+}

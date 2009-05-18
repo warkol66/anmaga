@@ -35,6 +35,7 @@ class InstallSetupPermissionsAction extends BaseAction {
 
 			$securityAction = SecurityActionPeer::getByNameOrPair($lcAction);
 			
+		if (!empty($securityAction)) {
 			//evaluacion de bitlevels
 			$bitlevel = $securityAction->getAccess();
 			
@@ -57,7 +58,7 @@ class InstallSetupPermissionsAction extends BaseAction {
 			
 			$access[$action]['permissionRegistration'] = $securityAction->getAccessRegistrationUser();
 			$access[$action]['noCheckLogin'] = $securityAction->getNoCheckLogin();
-
+		}
 		}
 
 		return $access;

@@ -114,7 +114,9 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 			$securityAction->setNoCheckLogin($noCheckLogin);
 			$securityAction->setAccessAffiliateUser($bitLevelAffiliate);
 			$securityAction->setActive(1);
-			$securityAction->setPair(lcfirst($pair));
+			if ($pair != "")
+				$pair = lcfirst($pair);
+			$securityAction->setPair($pair);
 			
 			$sql = $securityAction->getSQLInsert();	
 			fprintf($fd,"%s\n",$sql);
