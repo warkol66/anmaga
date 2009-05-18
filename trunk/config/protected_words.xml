@@ -10,5 +10,6 @@
 		<completed>Completa</completed>
 		<cancelled>Cancelada</cancelled>
 		<toBeVerified>A Verificar</toBeVerified>	
+		<exported>Exportada</exported>	
 	</orderStates>
 </protectedWords>

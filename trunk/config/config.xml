@@ -152,10 +152,8 @@
 			</thumbnail>
 		</image>
 		<pricesAutoUpdate>
-			<!-- las rutas de los directorios se consideran desde el raiz del sitio -->
-			<!-- los directorios no deben llevar barra final -->
-			<updatesDir>updates/</updatesDir>
-			<processedDir>updates/processed/</processedDir>
+			<updatesDir>updates</updatesDir>
+			<processedDir>updates/processed</processedDir>
 		</pricesAutoUpdate>
 	</catalog>
 	<orders>
@@ -163,6 +161,10 @@
 		<sendMailOnCreation>
 			<value>YES</value>
 			<element_type>YES/NO</element_type>
-		</sendMailOnCreation>		<recipients>facturacion.anmaga@gmail.com,cruzclarke@cantv.net,jhernandez2412@gmail.com,lisbethadrian@hotmail.com,santaella.juan@gmail.com,iliana.alfonzo@gmail.com</recipients>
+		</sendMailOnCreation>
+		<recipients>facturacion.anmaga@gmail.com,cruzclarke@cantv.net,jhernandez2412@gmail.com,lisbethadrian@hotmail.com,santaella.juan@gmail.com,iliana.alfonzo@gmail.com,lisbethadrian@yahoo.es</recipients>
+		<exportComment>Exportado a xml</exportComment>
+		<ordersPerPage>25</ordersPerPage>
+		<daysByDefault>15</daysByDefault>
 	</orders>
 </config>

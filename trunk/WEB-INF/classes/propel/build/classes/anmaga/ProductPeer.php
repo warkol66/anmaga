@@ -412,13 +412,13 @@ class ProductPeer extends BaseProductPeer {
 
 		if (!empty($product)) {
 
-			if ($decimalSeparator == ',') {
+	/*		if ($decimalSeparator == ',') {
 				//saco los . por ser posibles separadores de miles
 				$price = str_replace('.','',$price);  
 				//reemplazo la , del separador decimal por .
 				$price = str_replace(',','.',$price);				
 			}
-			$product->setPrice($price);
+	*/		$product->setPrice($price);
 			$product->save();
 			return true;
 		}
@@ -462,7 +462,7 @@ class ProductPeer extends BaseProductPeer {
       fclose($handle); 
 
       if ($rowsReaded > 0) { 
-              AffiliateProductPeer::deletePrices($this->getId());				
+//              AffiliateProductPeer::deletePrices($this->getId());				
 
               //procesamiento de filas de datos		
               foreach ($archive as $row) {

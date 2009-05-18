@@ -151,6 +151,10 @@
 				<height>70</height>
 			</thumbnail>
 		</image>
+		<pricesAutoUpdate>
+			<updatesDir>updates</updatesDir>
+			<processedDir>updates/processed</processedDir>
+		</pricesAutoUpdate>
 	</catalog>
 	<orders>
 		<articlesPerOrder>11</articlesPerOrder>
@@ -161,5 +165,6 @@
 		<recipients>facturacion.anmaga@gmail.com,cruzclarke@cantv.net,jhernandez2412@gmail.com,lisbethadrian@hotmail.com,santaella.juan@gmail.com,iliana.alfonzo@gmail.com,lisbethadrian@yahoo.es</recipients>
 		<exportComment>Exportado a xml</exportComment>
 		<ordersPerPage>25</ordersPerPage>
+		<daysByDefault>15</daysByDefault>
 	</orders>
 </config>
