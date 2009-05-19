@@ -39,10 +39,10 @@ class LogsListAction extends BaseAction {
 	* execute
 	*
 	* Procesa la solicitud HTTP solicitada, y crea su respectiva respuesta HTTP o
-	* bien lo manda hacia otra web en donde aqui la crea. Devuelve un 
+	* bien lo manda hacia otra web en donde aqui la crea. Devuelve un
 	* "ActionForward" describiendo donde y como se debe mandar la solicitud o
-	* NULL si la respuesta ha sido completada. 
-	* 
+	* NULL si la respuesta ha sido completada.
+	*
 	* @param string $mapping una variable que muestra los sucesos
 	* @param array $form con todo el contenido a ejecutar
 	* @param pointer &$request puntero a un string de lo que se esta solicitando
@@ -53,7 +53,7 @@ class LogsListAction extends BaseAction {
 
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Aqui el acceso al plugin de Smarty
@@ -68,48 +68,35 @@ class LogsListAction extends BaseAction {
 
 		///////
 		/// usado para mostrar 2 fechas a listar, que seran hace un mes, y hoy
-		$smarty->assign("dateFrom",date('d-m-Y',mktime(0,0,0,date("m")-1,date("d"),date("Y"))));        
+		$smarty->assign("dateFrom",date('d-m-Y',mktime(0,0,0,date("m")-1,date("d"),date("Y"))));
 		$smarty->assign("dateTo",date('d-m-Y'));
-		
-		//$smarty->assign("LOGIN",$_SESSION['usuario']);
-		//$smarty->assign("SESION", $_SESSION);
 
 		$module = "Logs";
-
 		$smarty->assign("module",$module);
- 
 
 		//////////
 		/// obtengo todos los usuarios
 		$usersPeer = new UserPeer();
-		
 		$users=$usersPeer->getAll();
-		
 		$smarty->assign("users", $users);
-
-
 
 		//////////
 		/// obtengo los diversos modulos cargados en security
 		$SecurityPeer = new SecurityActionPeer();
-		
-		$modules=$SecurityPeer->getModules();
+
+//		$modules=$SecurityPeer->getModules();
 
 		$smarty->assign("modules", $modules);
-
-
 
 		$logs = new ActionLogPeer();
 
 		//////////
 		// obtengo los afiliados para posteriormente listarlos
-		
-		
 		@include_once('AffiliatePeer.php');
 		if (class_exists('AffiliatePeer')){
 			$affiliatePeer= new AffiliatePeer();
 			$affiliates=$affiliatePeer->getAll();
-			$smarty->assign("affiliates",$affiliates); 
+			$smarty->assign("affiliates",$affiliates);
 		}
 
 		//////////
@@ -117,60 +104,56 @@ class LogsListAction extends BaseAction {
 		$usersByAffiliatePeer = new AffiliateUserPeer();
 		$usersBAff=$usersByAffiliatePeer->getAll();
 		$smarty->assign($usersByAffiliate,$usersBAff);
-		
+
 		/**
 		*
 		*	Corte de control para el listado de logs
-		*	@param string $_GET['saveButton'] aviso de listado
+		*	@param string $_GET['listLogs'] aviso de listado
 		*/
-		if(isSet($_GET['saveButton'])) {
+		if(isSet($_GET['listLogs'])) {
 
 			//////////
-			// Parametros filtro		
+			// Parametros filtro
 			$selectedUser=$_GET['selectUser'];
 
-			$module=$_GET["module"];
+			$selectedModule=$_GET["selectedModule"];
 
 			$dateFromExplode = explode("-", $_GET["dateFrom"]);
 			$dateFrom = date("Y-m-d",mktime(0,0,0,$dateFromExplode[1],$dateFromExplode[0],$dateFromExplode[2]));
-			
+
 			$dateToExplode = explode("-", $_GET["dateTo"]);
 			$dateTo = date("Y-m-d",mktime(0,0,0,$dateToExplode[1],$dateToExplode[0],$dateToExplode[2]));
-		
-			
+
+
 			/**
 			*
 			*	Corte de control para el listado con afiliado o sin el
 			*	@param string $_GET["affiliate"] bandera de afiliado
 			*/
-			if(isset($_GET["affiliate"]) && $_GET["affiliate"] != 'todos' ){
+			if(isset($_GET["affiliateId"]) && $_GET["affiliateId"] != -1 ){
 
-					$affiliateId=$_GET["affiliate"];
-					$selectedLogs=$logs->selectAllByRequirementsAndAffiliatePaginated($dateFrom,$dateTo,$selectedUser,$affiliateId,$module,$_GET["page"]);
+					$affiliateId=$_GET["affiliateId"];
+					$selectedLogs=$logs->selectAllByRequirementsAndAffiliatePaginated($dateFrom,$dateTo,$selectedUser,$affiliateId,$selectedModule,$_GET["page"]);
 
 					////////////
 					// se obtiene e informa el nombre del afiliado
 					if (class_exists('AffiliatePeer')){
 						$affiliatePeer= new AffiliatePeer();
 						$affiliate=$affiliatePeer->get($affiliateId);
-						$smarty->assign("affiliate",$affiliate); 
+						$smarty->assign("affiliate",$affiliate);
+						$smarty->assign("affiliateId",$affiliateId);
 					}
 
-					$url= 'Main.php?do=logsList&saveButton='.$_GET['saveButton'].'&dateFrom='.$_GET["dateFrom"].'&dateTo='.$_GET["dateTo"].'&module='.$_GET["module"].'&affiliate='.$affiliateId.'&selectUser='.$selectedUser;
+					$url= 'Main.php?do=logsList&listLogs='.$_GET['listLogs'].'&dateFrom='.$_GET["dateFrom"].'&dateTo='.$_GET["dateTo"].'&selectedModule='.$_GET["selectedModule"].'&affiliate='.$affiliateId.'&selectUser='.$selectedUser;
 			}
-			else 	{
-				$selectedLogs=$logs->selectAllByRequirementsPaginated($dateFrom,$dateTo,$selectedUser,$module,$_GET["page"]);
-			
-				$url= 'Main.php?do=logsList&saveButton='.$_GET['saveButton'].'&dateFrom='.$_GET["dateFrom"].'&dateTo='.$_GET["dateTo"].'&module='.$_GET["module"].'&selectUser='.$selectedUser;			
-			
+			else{
+				$selectedLogs=$logs->selectAllByRequirementsPaginated($dateFrom,$dateTo,$selectedUser,$selectedModule,$_GET["page"]);
+
+				$url= 'Main.php?do=logsList&listLogs='.$_GET['listLogs'].'&dateFrom='.$_GET["dateFrom"].'&dateTo='.$_GET["dateTo"].'&selectedModule='.$_GET["selectedModule"].'&selectUser='.$selectedUser;
+
 			}
 
-		//	  doLog('List histrico de datos');
-
-		
-			$savedLogs=$selectedLogs->getResult();
-
-			//print_r($uuu);
+/*			$savedLogs=$selectedLogs->getResult();
 
 			$i=1;
 			foreach ($savedLogs as $eachLog){
@@ -197,12 +180,16 @@ class LogsListAction extends BaseAction {
 				}
 					$i++;
 			}
+*/
 
-		//	print_r($userName);
+			$smarty->assign("dateFrom",$_GET["dateFrom"]);
+			$smarty->assign("dateTo",$_GET["dateTo"]);
+			$smarty->assign("selectedUser",$selectedUser);
+			$smarty->assign("affiliateId",$_GET["affiliateId"]);
 
 
-			$smarty->assign("DISPLAY",2); 
-			$smarty->assign("usersName",$userName); 
+			$smarty->assign("DISPLAY",2);
+			$smarty->assign("usersName",$userName);
 			$smarty->assign("logs",$selectedLogs->getResult());
 			$smarty->assign("pager",$selectedLogs);
 
@@ -212,23 +199,10 @@ class LogsListAction extends BaseAction {
 			return $mapping->findForwardConfig('success');
 		}
 
-		
-
-         
-
-   // doLog('Entrar a listar');
-
-		//////////
-		// version 2 del logueo, en estado beta
-		//$actionName="logsList";
-	//	doLogV2(); 
-			
-    $smarty->assign("DISPLAY",1);        
-    
+		$smarty->assign("DISPLAY",1);
 
 		return $mapping->findForwardConfig('success');
 
 	}
 
 }
-?>

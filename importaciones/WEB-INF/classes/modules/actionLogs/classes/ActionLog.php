@@ -41,7 +41,7 @@ class ActionLog extends BaseActionLog {
 		$language=$system["config"]["mluse"]["language"];
 		if(empty($language)) $language='eng';
 		$logLabelInfo=ActionLogLabelPeer::getAllByInfo($this->GetAction(),$this->GetForward(),$language);
-		return $logLabelInfo->getLabel();
+		return $logLabelInfo;
 		}catch (PropelException $e) {}
 	}
 

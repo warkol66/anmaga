@@ -34,7 +34,8 @@ class ActionLogPeer extends BaseActionLogPeer {
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->addAscendingOrderByColumn(ActionLogPeer::ID);
-
+		$cond->addJoin(ActionLogPeer::ACTION, SecurityActionPeer::ACTION,Criteria::LEFT_JOIN);		
+		$cond->addJoin(ActionLogPeer::USERID, UserPeer::ID,Criteria::LEFT_JOIN);		
 
 		$criterion = $cond->getNewCriterion(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_EQUAL);
 		$criterion->addAnd($cond->getNewCriterion(ActionLogPeer::DATETIME, $dateFrom." 00:00:00", Criteria::GREATER_EQUAL ));
@@ -48,10 +49,8 @@ class ActionLogPeer extends BaseActionLogPeer {
 		}
 
 
-		if($module != 1)
-		$cond->add(SecurityActionPeer::MODULE, $module);
-
-		$cond->addJoin(ActionLogPeer::ACTION, SecurityActionPeer::ACTION,Criteria::LEFT_JOIN);		
+		if($module != -1)
+		$cond->add(SecurityActionPeer::MODULE, $module, Criteria::EQUAL);
 
 		$pager = new PropelPager($cond,"ActionLogPeer", "doSelect",$page,$perPage);
 		return $pager;
@@ -77,6 +76,8 @@ class ActionLogPeer extends BaseActionLogPeer {
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->addAscendingOrderByColumn(ActionLogPeer::ID);
+		$cond->addJoin(ActionLogPeer::ACTION, SecurityActionPeer::ACTION,Criteria::LEFT_JOIN);		
+		$cond->addJoin(ActionLogPeer::USERID, UserPeer::ID,Criteria::LEFT_JOIN);		
 
 		$criterion = $cond->getNewCriterion(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_EQUAL);
 		$criterion->addAnd($cond->getNewCriterion(ActionLogPeer::DATETIME, $dateFrom." 00:00:00", Criteria::GREATER_EQUAL ));
@@ -91,12 +92,10 @@ class ActionLogPeer extends BaseActionLogPeer {
 		}
 
 		if ($selectUser != -1)
-		$cond->add(ActionLogPeer::USERID, $selectUser);
+		$cond->add(ActionLogPeer::USERID, $selectUser, Criteria::EQUAL);
 
-		if($module != 1)
-		$cond->add(SecurityActionPeer::MODULE, $module);
-
-		$cond->addJoin(ActionLogPeer::ACTION, SecurityActionPeer::ACTION,Criteria::LEFT_JOIN);		
+		if($module != -1)
+		$cond->add(SecurityActionPeer::MODULE, $module, Criteria::EQUAL);
 
 		$pager = new PropelPager($cond,"ActionLogPeer", "doSelect",$page,$perPage);
 		return $pager;
