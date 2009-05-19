@@ -66,6 +66,10 @@ class InstallDoSetupMessagesAction extends BaseAction {
 			$myRedirectConfig = $mapping->findForwardConfig('failure');
 		}
 		
+		$sql = ActionLogLabelPeer::getSQLCleanup($_POST['moduleName']);	
+		fprintf($fd,"%s\n",$sql);
+
+		
 		$messages = $_POST['message'];
 		
 		foreach (array_keys($messages) as $action) {

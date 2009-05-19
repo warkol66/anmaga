@@ -71,4 +71,9 @@ class ActionLogLabelPeer extends BaseActionLogLabelPeer {
     return $obj[0];
 	}
 
+	function getSQLCleanup($module) {
+		$sql = "DELETE FROM `actionLogs_label` WHERE `action` LIKE " . "'" . $module . "%';";
+		return $sql;
+	}
+
 } // ActionLogLabelPeer
