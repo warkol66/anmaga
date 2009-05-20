@@ -6,12 +6,12 @@ require_once("BaseAction.php");
 require_once("SecurityActionPeer.php");
 
 
-class	SecurityActionUsersDoSaveAction extends BaseAction {
+class	SecurityUsersDoEditAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function SecurityActionUsersDoSaveAction() {
+	function SecurityUsersDoEditAction() {
 		;
 	}
 
@@ -116,4 +116,3 @@ class	SecurityActionUsersDoSaveAction extends BaseAction {
 	}
 
 }
-?>

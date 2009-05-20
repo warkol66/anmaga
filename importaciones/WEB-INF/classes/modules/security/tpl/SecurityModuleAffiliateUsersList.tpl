@@ -1,30 +1,30 @@
-<h2>Permisos de Acceso a Módulos para Usuarios Afiliados</h2>
-
+<h2>Seguridad</h2>
+<h1>Administración de permisos para Usuarios de Afiliados</h1>
+|-if $message eq "saved"-|
+	<div class="resultSuccess">Los cambios han sido guardados</div>
+|-/if-|	
+<p>Mediante esta aplicación puede modificar lso permisos de lso usuarios a acceder y ejecutar diferenctes acciones del sistema. Seleccione un módulo y marque o desmarque el nivel de usuario que desea modificar.
+<br />Si desea dar acceso a cualquer usuario, marque la opción "Todos".</p>
+	<fieldset title="Seleccion el módulo para definir sus permisos">
+	 <legend>Seleccione módulo</legend>
 <form name="securityFilter" id="securityFilter" action="Main.php" method="get">
-	<table>
-		 <tr class="row_even">
-			 <td nowrap class="style6">Seleccion de módulo:&nbsp;</td>
-			 <td>
-				<select name="module" size="1"  class="TXTnormal" onchange="if (this.options[this.selectedIndex].value) document.forms.securityFilter.submit()">
-				<option value='todos'>Seleccione</option>
+		 <p>Seleccione el módulo que desea modificar</p>
+	<p>
+		 <label for="module">Módulo</label>
+				<select name="module" onchange="if (this.options[this.selectedIndex].value) document.forms.securityFilter.submit()">
+				<option value='todos'>Seleccione un módulo</option>
 				|-foreach from=$modulesName item=moduleName-|
 					<option value="|-$moduleName->getName()-|"> |-$moduleName->getName()-|</option>
 				|-/foreach-|
 				</select>
 				<input type="hidden" name="do" value="securityModuleAffiliateUsersList" />
-			 </td>
-		 </tr>
-	</table>
-</form>
-
+			 </p>
+	</form>
+</fieldset>
 |-if $moduleSelected ne ""-|
-<h3>Seguridad del módulo |-$moduleSelected->getModule()-|</h3>
-
-|-if $message eq "saved"-|
-<p class="ok">Cambios guardados.</p>
-|-/if-|	
-
-<form name="security2" action="Main.php" method="post">
+<h3>Seguridad global del módulo |-$moduleSelected->getModule()-|</h3>
+<p>Las acciones que no posean permisos específicos, heredan los permisos del módulo</p>
+<form name="security" action="Main.php" method="post">
 	<table width="100%" border="0" cellpadding="0" cellspacing="1" class="tablaborde"> 
 		<tr> 
 			<th scope="col">Módulo</th> 

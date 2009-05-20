@@ -16,12 +16,12 @@ require_once("ModulePeer.php");
 * @version 1.0
 * @public
 */
-class SecurityActionUsersListAction extends BaseAction {
+class SecurityUsersEditAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function SecurityActionUsersListAction() {
+	function SecurityUsersEditAction() {
 		;
 	}
 
@@ -92,4 +92,3 @@ class SecurityActionUsersListAction extends BaseAction {
 	}
 
 }
-?>

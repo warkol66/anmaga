@@ -1,0 +1,14 @@
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'noPermission', '','esp','success');
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'noPermission', '','eng','success');
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'securityActionList', '','esp','success');
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'securityActionList', '','eng','success');
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'securityActionListUsersByAffiliate', '','esp','success');
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'securityActionListUsersByAffiliate', '','eng','success');
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'securityActionDoSaveByAffiliate', '','esp','success');
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'securityActionDoSaveByAffiliate', '','eng','success');
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'securityActionDoSave', '','esp','success');
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'securityActionDoSave', '','eng','success');
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'securityModuleList', '','esp','success');
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'securityModuleList', '','eng','success');
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'securityModuleDoSave', '','esp','success');
+INSERT INTO `actionLogs_label` (`action`, `label`, `language`, `forward`) VALUES ( 'securityModuleDoSave', '','eng','success');
