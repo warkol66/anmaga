@@ -71,11 +71,11 @@
 			</tr>
 			|-else-| 
 			 |-foreach from=$logs item=log name=eachlog-|
-			 	|-assign var=action value=$log->getSecurityAction()-|
+			 	
 			<tr> 
 			  <td nowrap scope="col">|-$log->getDatetime()-|</td>
 			  <td nowrap scope="col">|-assign var="user" value=$log->getUser()-||-if $user ne ''-||-$user->getUsername()-||-/if-|</td>
-			  <td scope="col" >|-assign var="securityAction" value=$log->getSecurityAction()-||-if $securityAction ne ''-||-$securityAction->getModule()-||-/if-||-if $action ne '' -||-$action->getModule()-| |-/if-||-$log->getAction()-|</td>
+			  <td scope="col" >|-assign var="securityAction" value=$log->getSecurityAction()-||-if $securityAction ne ''-||-$securityAction->getModule()-||-/if-|/|-$log->getAction()-|</td>
 			  <td scope="col" >|-$log->getLabel()-|:|-$log->getObject()-|</td>
 			</tr>
 			|-/foreach-|

@@ -13,6 +13,7 @@
 include_once 'BaseAction.php';
 
 require_once("ActionLogPeer.php");
+require_once("ActionLogLabelPeer.php");
 require_once("UserPeer.php");
 require_once("SecurityActionPeer.php");
 require_once("AffiliateUserPeer.php");

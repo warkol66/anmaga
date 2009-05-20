@@ -35,10 +35,16 @@ class ActionLogPeer extends BaseActionLogPeer {
 		$cond = new Criteria();
 		$cond->addAscendingOrderByColumn(ActionLogPeer::ID);
 		$cond->addJoin(ActionLogPeer::ACTION, SecurityActionPeer::ACTION,Criteria::LEFT_JOIN);		
+
+		//Hack para permitir doble consulta en join
+		$cond->addJoin(ActionLogLabelPeer::FORWARD .' = '. ActionLogPeer::FORWARD.' AND '. ActionLogPeer::ACTION, ActionLogLabelPeer::ACTION, Criteria::LEFT_JOIN);
+
+		$cond->add(ActionLogLabelPeer::LANGUAGE,Common::getCurrentLanguageCode(),Criteria::EQUAL);		
+
 		$cond->addJoin(ActionLogPeer::USERID, UserPeer::ID,Criteria::LEFT_JOIN);		
 
-		$criterion = $cond->getNewCriterion(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_EQUAL);
-		$criterion->addAnd($cond->getNewCriterion(ActionLogPeer::DATETIME, $dateFrom." 00:00:00", Criteria::GREATER_EQUAL ));
+		$criterion = $cond->getNewCriterion(ActionLogPeer::DATETIME, $dateTo, Criteria::LESS_EQUAL);
+		$criterion->addAnd($cond->getNewCriterion(ActionLogPeer::DATETIME, $dateFrom, Criteria::GREATER_EQUAL ));
     $cond->add($criterion);
 
 		////////
@@ -53,7 +59,12 @@ class ActionLogPeer extends BaseActionLogPeer {
 		$cond->add(SecurityActionPeer::MODULE, $module, Criteria::EQUAL);
 
 		$pager = new PropelPager($cond,"ActionLogPeer", "doSelect",$page,$perPage);
+
+//		echo $cond->toString();	die();
+
 		return $pager;
+
+
 	}
 
 
@@ -77,10 +88,16 @@ class ActionLogPeer extends BaseActionLogPeer {
 		$cond = new Criteria();
 		$cond->addAscendingOrderByColumn(ActionLogPeer::ID);
 		$cond->addJoin(ActionLogPeer::ACTION, SecurityActionPeer::ACTION,Criteria::LEFT_JOIN);		
+
+		//Hack para permitir doble consulta en join
+		$cond->addJoin(ActionLogLabelPeer::FORWARD .' = '. ActionLogPeer::FORWARD.' AND '. ActionLogPeer::ACTION, ActionLogLabelPeer::ACTION, Criteria::LEFT_JOIN);
+
+		$cond->add(ActionLogLabelPeer::ACTION, Common::getCurrentLanguageCode(),Criteria::EQUAL);		
+
 		$cond->addJoin(ActionLogPeer::USERID, UserPeer::ID,Criteria::LEFT_JOIN);		
 
-		$criterion = $cond->getNewCriterion(ActionLogPeer::DATETIME, $dateTo." 23:59:59", Criteria::LESS_EQUAL);
-		$criterion->addAnd($cond->getNewCriterion(ActionLogPeer::DATETIME, $dateFrom." 00:00:00", Criteria::GREATER_EQUAL ));
+		$criterion = $cond->getNewCriterion(ActionLogPeer::DATETIME, $dateTo, Criteria::LESS_EQUAL);
+		$criterion->addAnd($cond->getNewCriterion(ActionLogPeer::DATETIME, $dateFrom, Criteria::GREATER_EQUAL ));
     $cond->add($criterion);
 
 		////////////
@@ -88,7 +105,7 @@ class ActionLogPeer extends BaseActionLogPeer {
 		@include_once('AffiliatePeer.php');
 		if (class_exists('AffiliatePeer')){
 			$cond->addJoin(ActionLogPeer::AFFILIATEID, AffiliatePeer::ID,Criteria::LEFT_JOIN);
-			$cond->add(ActionLogPeer::AFFILIATEID, $affiliate);
+			$cond->add(ActionLogPeer::AFFILIATEID, $affiliate,Criteria::EQUAL);
 		}
 
 		if ($selectUser != -1)
@@ -98,6 +115,9 @@ class ActionLogPeer extends BaseActionLogPeer {
 		$cond->add(SecurityActionPeer::MODULE, $module, Criteria::EQUAL);
 
 		$pager = new PropelPager($cond,"ActionLogPeer", "doSelect",$page,$perPage);
+		
+//		echo $cond->toString(); 	die();
+		
 		return $pager;
 	}
 
