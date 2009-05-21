@@ -1,4 +1,6 @@
+DELETE FROM `security_module` WHERE `module` = 'users';
 INSERT INTO `security_module` ( `module` , `access` , `accessAffiliateUser` , `accessRegistrationUser` ) VALUES ('users', '0', '0','1');
+DELETE FROM `security_action` WHERE `module` = 'users';
 INSERT INTO `security_action` (`action`,`module`,`section`,`access`,`accessAffiliateUser`, `active` , `pair` , `noCheckLogin`, `accessRegistrationUser` ) VALUES ('UsersDoActivate','users','','0','0','1','','1','1' );
 INSERT INTO `security_action` (`action`,`module`,`section`,`access`,`accessAffiliateUser`, `active` , `pair` , `noCheckLogin`, `accessRegistrationUser` ) VALUES ('UsersDoAddToGroup','users','','0','0','1','','','0' );
 INSERT INTO `security_action` (`action`,`module`,`section`,`access`,`accessAffiliateUser`, `active` , `pair` , `noCheckLogin`, `accessRegistrationUser` ) VALUES ('UsersDoDelete','users','','0','0','1','','','0' );

@@ -80,7 +80,7 @@ class InstallDoSetupMessagesAction extends BaseAction {
 			
 					//creamos un action log label
 					$actionLogLabel = new ActionLogLabel();
-					$actionLogLabel->setAction($action);
+					$actionLogLabel->setAction(ucfirst($action));
 					$actionLogLabel->setForward($forward);
 					$actionLogLabel->setLanguage($lang);
 					$actionLogLabel->setLabel($messages[$action][$forward][$lang]);
