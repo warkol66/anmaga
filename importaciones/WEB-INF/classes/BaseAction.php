@@ -120,14 +120,14 @@ class BaseAction extends Action {
 		//Solo chequeo permisos si es un action que no esta en la lista de noCheckPermissionActions
 		if (!$isNoCheckPermissionAction) {
 
-//////////// Verificación de permisos desabilitada
+			//////////// Verificación de permisos desabilitada
 			//Chequeo de permisos de acceso
-/*			if (!empty($user)) {
+			if (!empty($user)) {
 
 				$action = SecurityActionPeer::get($_REQUEST["do"]);
 
 				if (empty($action)) {
-					header("Location:Main.php?do=noPermission");
+					header("Location:Main.php?do=securityNoPermission");
 					exit();
 				}
 
@@ -135,19 +135,17 @@ class BaseAction extends Action {
 				$level = $user->getLevel();
 
 				if ( empty($level) || ($level->getBitLevel() & $accessAction) == 0 ) {
-					header("Location:Main.php?do=noPermission");
+					header("Location:Main.php?do=securityNoPermission");
 					exit();
 				}
 			}
-*/
+
 
 	 }
 
 
-		if (!empty($user)) {
+		if (!empty($user))
 			$level = $user->getLevel();
-		}
-
 
 		if (!empty($loginUserAffiliate))
     	$smarty->assign("affiliateId",$loginUserAffiliate->getAffiliateId());

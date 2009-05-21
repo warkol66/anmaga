@@ -36,7 +36,7 @@ class ActionLog extends BaseActionLog {
 	function getLabel(){
 		
 		try{
-		include_once 'anmaga/ActionLogLabelPeer.php';
+		include_once 'ActionLogLabelPeer.php';
 		global $system;
 		$language=$system["config"]["mluse"]["language"];
 		if(empty($language)) $language='eng';
