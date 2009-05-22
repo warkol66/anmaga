@@ -330,11 +330,11 @@ class Common
 	*/
 	function doLog($forward,$object=null) {
 
-		include_once 'ActionLog.php';
+		include_once 'Actionlog.php';
 
-		/*	@include_once('ActionLogLabelPeer.php');
-		if (class_exists('ActionLogLabelPeer')){
-			$actionLogLabel = new ActionLogLabelPeer();
+		/*	@include_once('ActionlogLabelPeer.php');
+		if (class_exists('ActionlogLabelPeer')){
+			$actionLogLabel = new ActionlogLabelPeer();
 			$actionLogLabelObject=$actionLogLabel->getAllByActionLanguageEsp($_REQUEST['do'],$forward);
 		}*/
 
@@ -344,7 +344,7 @@ class Common
 		$userInfo = Common::userInfoToDoLog();
 
 		try{
-			$logs = new ActionLog();
+			$logs = new Actionlog();
 			$logs->setUserId($userInfo["userId"]);
 			$logs->setAffiliateId($userInfo["affiliateId"]);
 			$logs->setDatetime(time());

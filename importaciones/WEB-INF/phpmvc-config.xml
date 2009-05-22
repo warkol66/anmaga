@@ -1440,9 +1440,9 @@
 			<forward name="success" path="ActionlogsList.tpl"/>
 		</action>
 
-		<action    path = "logsPurge"
-					     type = "LogsPurgeAction"
-					     name = "logsPurge"
+		<action    path = "actionlogsPurge"
+					     type = "ActionlogsPurgeAction"
+					     name = "actionlogsPurge"
 					    scope = "request"
 					 validate = "true">
 			<forward name="success" path="ActionlogsPurge.tpl"/>
@@ -1453,7 +1453,7 @@
 					     name = "actionlogsDoPurge"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="/Main.php?do=actionlogsList" redirect="true" />
+			<forward name="success" path="/Main.php?do=actionlogsList&amp;message=purged" redirect="true" />
 		</action>
 
 	</action-mappings>
