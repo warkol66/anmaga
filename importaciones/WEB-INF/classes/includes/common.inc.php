@@ -237,7 +237,7 @@ class Common
 			return false;
 
 		$noCheckMaintenance = array();
-		$noCheckMaintenance[] = "maintenance";
+		$noCheckMaintenance[] = "commonMaintenance";
 		$noCheckMaintenance[] = "usersLoginMaintenance";
 		$noCheckMaintenance[] = "usersDoLogin";
 		$noCheckMaintenance[] = "usersDoLogout";

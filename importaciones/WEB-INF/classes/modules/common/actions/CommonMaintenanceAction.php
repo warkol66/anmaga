@@ -1,20 +1,25 @@
 <?php
+/**
+ * CommonMaintenanceAction
+ *
+ * @package common
+ */
 
 require_once("BaseAction.php");
 
-class IndexAction extends BaseAction {
+class CommonMaintenanceAction extends BaseAction {
 
-	function IndexAction() {
+	function CommonMaintenanceAction() {
 		;
 	}
 
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
-    	/**
-     	* Use a different template
-     	*/
-		$this->template->template = "TemplateIndex.tpl";
+
+		//////////
+		// Use a different template
+		$this->template->template = "TemplateLogin.tpl";
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
@@ -28,4 +33,3 @@ class IndexAction extends BaseAction {
 	}
 
 }
-?>

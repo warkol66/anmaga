@@ -39,6 +39,7 @@ class AffiliatePeer extends BaseAffiliatePeer {
 	 
 	function getByName($name,$con = null) {
 		$cond = new Criteria();
+		$cond->setIgnoreCase(true);
 		$cond->add(AffiliatePeer::NAME,$name);
 		$affs = AffiliatePeer::doSelect($cond,$con);
 		return $affs[0];
@@ -51,6 +52,7 @@ class AffiliatePeer extends BaseAffiliatePeer {
 			$perPage = Common::getRowsPerPage();
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
+		$cond->setIgnoreCase(true);
 		$cond->add(AffiliatePeer::NAME,"%".$name."%",Criteria::LIKE);
 		$cond->addAscendingOrderByColumn(AffiliatePeer::ID);
 

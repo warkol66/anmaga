@@ -62,8 +62,8 @@ class UsersDoEditAction extends BaseAction {
 				if (empty($_POST["levelId"]))
 					$_POST["levelId"]=3;
 				if ($userPeer->create($_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"],$_POST['timezone'])) {
-					Common::doLog('success','username: ' . $_POST["username"] . ' action: add');
-					return $mapping->findForwardConfig('success');
+					Common::doLog('successAdd',$_POST["username"]);
+					return $mapping->findForwardConfig('successAdd');
 				}
 				else {
 					header("Location: Main.php?do=usersList&user=&message=errorUpdate");
@@ -75,8 +75,8 @@ class UsersDoEditAction extends BaseAction {
 				exit;
 			}
 		}
-		Common::doLog('success','username: ' . $_POST["username"] . ' action: add');
-		return $mapping->findForwardConfig('success');
+		Common::doLog('successAdd',$_POST["username"]);
+		return $mapping->findForwardConfig('successAdd');
 	}
 
 }

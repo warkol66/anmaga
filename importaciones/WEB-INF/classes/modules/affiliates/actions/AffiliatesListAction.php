@@ -53,6 +53,7 @@ class AffiliatesListAction extends BaseAction {
 		if (!empty($name)) {
 			$pager = AffiliatePeer::getByNamePaginated($name,$_GET["page"]);
 			$smarty->assign("allFlag",1);
+			$smarty->assign("name",$name);
 		}
 		else
 			$pager = AffiliatePeer::getAllPaginated($_GET["page"]);

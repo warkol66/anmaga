@@ -7,7 +7,7 @@
 * @public
 */
 
-include_once 'Action.php';
+include_once("Action.php");
 include_once("common.inc.php");
 include_once("Paginado.class.php");
 require_once("SecurityActionPeer.php");
@@ -51,19 +51,6 @@ class BaseAction extends Action {
 	function execute($mapping, $form, &$request, &$response) {
 
 		//////////
-		// Verifica la existencia de la sesi?n, si no existe rediecciona a Login
-	 /* if (!estaLogueado() && $_REQUEST['do']!='login')
-		{
-
-			?>
-		
-			<script>
-				window.location.href='Main.php?do=login'
-			</script>
-			<?
-		}
-		 */
-		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
 		$plugInKey = 'SMARTY_PLUGIN';
@@ -76,7 +63,7 @@ class BaseAction extends Action {
 
 		$GLOBALS['_NG_LANGUAGE_'] =& $smarty->language;
 		if (!empty($GLOBALS['_NG_LANGUAGE_'])) {
-			$GLOBALS['_NG_LANGUAGE_']->setCurrentLanguage($system["config"]["mluse"]["language"]);
+			$GLOBALS['_NG_LANGUAGE_']->setCurrentLanguage($system["config"]["multilang"]["language"]);
 		}
 
 		$systemUrl = "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/"))."/Main.php";
@@ -84,64 +71,87 @@ class BaseAction extends Action {
 
 		header("Content-type: text/html; charset=UTF-8");
 
-		if ( Common::inMaintenance() ) {
-			header("Location: Main.php?do=maintenance");
+		if (Common::inMaintenance()) {
+			header("Location: Main.php?do=commonMaintenance");
 			exit;
 		}		
 
-		$noCheckLogin = array();
+		//Configura la acción solicitada y convierto primer letra mayuscula
+		$actionRequested = ucfirst($_REQUEST["do"]);
 		
+		//No verifica login
+		//Sacar siguientes 13 lineas cuanso se saque esto definitivamente del config.xml
+/*		$noCheckLoginActions = array();
 		foreach ($system["config"]["system"]["noCheckLoginActions"] as $action => $status) {
 			if ($status["value"] == "YES")
-				$noCheckLogin[] = $action;
+				$noCheckLoginActions[] = ucfirst($action);
 		}
+		$noCheckLogin = array_search($actionRequested,$noCheckLoginActions);
 
-		$isUnrestrictedAction = array_search($_REQUEST["do"],$noCheckLogin);
 
-		if ( (empty($_SESSION["loginAffiliateUser"]) && empty($_SESSION["loginUser"])) && $isUnrestrictedAction === false ) {
+		if ((empty($_SESSION["loginAffiliateUser"]) && empty($_SESSION["loginUser"]) && empty($_SESSION["loginRegistrationUser"]))
+		&& $noCheckLogin === false ) {
 			header("Location: Main.php?do=usersLogin");
 			exit;
 		}
+*/
 
-		//if(isset($_SESSION["login_user"]))
-			$loginUser = $_SESSION["loginUser"];
-	//	else
-			$loginUserAffiliate = $_SESSION["loginAffiliateUser"];
-			
-		$noCheckPermission = array();
+		$loginUser = $_SESSION["loginUser"];
+		$loginUserAffiliate = $_SESSION["loginAffiliateUser"];
+		$loginRegistrationUser = $_SESSION["loginRegistrationUser"];
 
+		//No verifica permisos
+		//Sacar siguientes 6 lineas cuanso se saque esto definitivamente del config.xml
+/*		$noCheckPermissionActions = array();
 		foreach ($system["config"]["system"]["noCheckPermissionActions"] as $action => $status) {
 			if ($status["value"] == "YES")
-				$noCheckPermission[] = $action;
+				$noCheckPermissionActions[] = ucfirst($action);
+		}                
+		$noCheckPermission = array_search($actionRequested,$noCheckPermissionActions);
+*/
+
+		$securityModule = SecurityModulePeer::get($actionRequested);
+		$securityAction = SecurityActionPeer::get($actionRequested);
+
+		if ($securityAction->getActive != 0) {
+	    if ($securityAction->getNoCheckLogin == 1) {
+	    	$noCheckLogin = 1;
+	    }
 		}
-                    
-		$isNoCheckPermissionAction = array_search($_REQUEST["do"],$noCheckPermission);
+		else{
+			/*Comento esta línea hasta incluir el noCheckLogin del modulo
+			if ($securityModule->getNoCheckLogin == 1)
+	    */	$noCheckLogin = 1;
+		}
+		
+		//Si el sistema está en desarrollo, no verifico permisos
+		if ($system["config"]["system"]["developmentMode"]["value"] == "YES")
+			$noCheckLogin = 1;
 
-		//Solo chequeo permisos si es un action que no esta en la lista de noCheckPermissionActions
-		if (!$isNoCheckPermissionAction) {
+		//Verifico permisos cuando no se encontró en noCheckLogin
+		if (!$noCheckLogin) {
 
-			//////////// Verificación de permisos desabilitada
-			//Chequeo de permisos de acceso
-			if (!empty($user)) {
-
-				$action = SecurityActionPeer::get($_REQUEST["do"]);
-
-				if (empty($action)) {
-					header("Location:Main.php?do=securityNoPermission");
-					exit();
-				}
-
-				$accessAction = $action->getAccess();
-				$level = $user->getLevel();
-
-				if ( empty($level) || ($level->getBitLevel() & $accessAction) == 0 ) {
-					header("Location:Main.php?do=securityNoPermission");
-					exit();
+			//Verifico permisos cuando no se encontró en noCheckPermission
+			//Esta seccion desaparecerá
+			if (!$noCheckPermission) {
+	
+				//Chequeo de permisos de acceso
+				if (!empty($loginUser) || !empty($loginUserAffiliate) || !empty($loginRegistrationUser)) {
+	
+					$actionAccess = $securityAction->getAccessByUser();
+					$userLevel = $user->getLevel();
+	
+					if (empty($actionAccess))
+						$actionAccess = $securityModule->getAccessByUser();
+					
+					if ( empty($userLevel) || ($userLevel->getBitLevel() & $actionAccess) == 0 ) {
+						header("Location:Main.php?do=securityNoPermission");
+						exit();
+					}
 				}
 			}
 
-
-	 }
+		}
 
 
 		if (!empty($user))
@@ -152,13 +162,11 @@ class BaseAction extends Action {
 
 		$smarty->assign("loginUser",$loginUser);
 		$smarty->assign("loginAffiliateUser",$loginUserAffiliate);
-		$smarty->assign("STATUSLOGIN",$login);
-		$smarty->assign("LOGIN",$_SESSION['usuario']);
-		$smarty->assign("SESION", $_SESSION);
-		$smarty->assign('BROWSER',getBrowser());
-
-		//Esta línea será reemplazada por un método dinámico para obtener el idioma activo		
+		$smarty->assign("loginRegistrationUser",$loginRegistrationUser);
 		$smarty->assign("currentLanguageCode",Common::getCurrentLanguageCode());		
+
+		$smarty->assign("Browser",getBrowser());
+
 
 		$this->template = new SmartyOutputFilter();
 		$smarty->register_outputfilter(array($this->template,"smarty_add_template"));

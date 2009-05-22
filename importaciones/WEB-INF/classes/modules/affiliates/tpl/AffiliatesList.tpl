@@ -24,10 +24,10 @@
 |-/if-|
 <table class='tableTdBorders' cellpadding='5' cellspacing='0' width='100%'>
 	<tr>
-		<td colspan='3' class="tdSearch"><a href="javascript:void(null);" onClick='switch_vis("divSearch");' class="tdTitSearch" style="display:inline;">Busqueda por nombre</a>
-			<div id="divSearch" style="display:none;"><form action='Main.php' method='get' style="display:inline;">
+		<td colspan='3' class="tdSearch"><a href="javascript:void(null);" onClick='switch_vis("divSearch");' class="tdTitSearch" style="display:inline;">Búsqueda por nombre</a>
+			<div id="divSearch" style="display:|-if $name ne ''-|block|-else-|none|-/if-|;"><form action='Main.php' method='get' style="display:inline;">
 				<input type="hidden" name="do" value="affiliatesList" />
-				Nombre: <input name="name" type="text" value="" size="30" />
+				Nombre: <input name="name" type="text" value="|-$name-|" size="30" />
 				&nbsp;&nbsp;<input type='submit' value='Buscar' class='tdSearchButton' />
 		</form></div></td>
 		

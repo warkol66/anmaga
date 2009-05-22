@@ -13,16 +13,14 @@ require_once 'om/BaseSecurityModule.php';
 class SecurityModule extends BaseSecurityModule {
 
 	function getSQLInsert() {
-
 		$module = $this->getModule();
 		$access = $this->getAccess();
 		$accessAffiliateUser = $this->getAccessAffiliateUser();
 		$accessRegistrationUser = $this->getAccessRegistrationUser();
 	
 		$query = "INSERT INTO `security_module` ( `module` , `access` , `accessAffiliateUser` , `accessRegistrationUser` ) VALUES ('$module', '$access', '$accessAffiliateUser','$accessRegistrationUser');";
-	
+
 		return $query;
-	
 	}
 	
 	/**
@@ -64,10 +62,8 @@ class SecurityModule extends BaseSecurityModule {
 	 * @return string SQL
 	 */	
 	function getSQLCleanup() {
-
-		$sql = "DELETE FROM `security_module` WHERE `module` = " . "'" . $this->getModule() . "'" . ';';
+		$sql = "DELETE FROM `security_module` WHERE `module` = '" . $this->getModule() . "';'";
 		return  $sql;
-		
 	}
 	
 	function getAccessByUser($user) {

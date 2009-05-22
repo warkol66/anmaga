@@ -79,14 +79,14 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent {
 	protected $aSecurityModule;
 
 	/**
-	 * @var        array ActionLog[] Collection to store aggregation of ActionLog objects.
+	 * @var        array Actionlog[] Collection to store aggregation of Actionlog objects.
 	 */
-	protected $collActionLogs;
+	protected $collActionlogs;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collActionLogs.
+	 * @var        Criteria The criteria used to select the current contents of collActionlogs.
 	 */
-	private $lastActionLogCriteria = null;
+	private $lastActionlogCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -522,8 +522,8 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent {
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->aSecurityModule = null;
-			$this->collActionLogs = null;
-			$this->lastActionLogCriteria = null;
+			$this->collActionlogs = null;
+			$this->lastActionlogCriteria = null;
 
 		} // if (deep)
 	}
@@ -639,8 +639,8 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent {
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
-			if ($this->collActionLogs !== null) {
-				foreach ($this->collActionLogs as $referrerFK) {
+			if ($this->collActionlogs !== null) {
+				foreach ($this->collActionlogs as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -730,8 +730,8 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent {
 			}
 
 
-				if ($this->collActionLogs !== null) {
-					foreach ($this->collActionLogs as $referrerFK) {
+				if ($this->collActionlogs !== null) {
+					foreach ($this->collActionlogs as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -841,9 +841,9 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent {
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
-			foreach ($this->getActionLogs() as $relObj) {
+			foreach ($this->getActionlogs() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addActionLog($relObj->copy($deepCopy));
+					$copyObj->addActionlog($relObj->copy($deepCopy));
 				}
 			}
 
@@ -942,47 +942,47 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collActionLogs collection (array).
+	 * Clears out the collActionlogs collection (array).
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addActionLogs()
+	 * @see        addActionlogs()
 	 */
-	public function clearActionLogs()
+	public function clearActionlogs()
 	{
-		$this->collActionLogs = null; // important to set this to NULL since that means it is uninitialized
+		$this->collActionlogs = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collActionLogs collection (array).
+	 * Initializes the collActionlogs collection (array).
 	 *
-	 * By default this just sets the collActionLogs collection to an empty array (like clearcollActionLogs());
+	 * By default this just sets the collActionlogs collection to an empty array (like clearcollActionlogs());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
 	 * @return     void
 	 */
-	public function initActionLogs()
+	public function initActionlogs()
 	{
-		$this->collActionLogs = array();
+		$this->collActionlogs = array();
 	}
 
 	/**
-	 * Gets an array of ActionLog objects which contain a foreign key that references this object.
+	 * Gets an array of Actionlog objects which contain a foreign key that references this object.
 	 *
 	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
 	 * Otherwise if this SecurityAction has previously been saved, it will retrieve
-	 * related ActionLogs from storage. If this SecurityAction is new, it will return
+	 * related Actionlogs from storage. If this SecurityAction is new, it will return
 	 * an empty collection or the current collection, the criteria is ignored on a new object.
 	 *
 	 * @param      PropelPDO $con
 	 * @param      Criteria $criteria
-	 * @return     array ActionLog[]
+	 * @return     array Actionlog[]
 	 * @throws     PropelException
 	 */
-	public function getActionLogs($criteria = null, PropelPDO $con = null)
+	public function getActionlogs($criteria = null, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(SecurityActionPeer::DATABASE_NAME);
@@ -992,15 +992,15 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collActionLogs === null) {
+		if ($this->collActionlogs === null) {
 			if ($this->isNew()) {
-			   $this->collActionLogs = array();
+			   $this->collActionlogs = array();
 			} else {
 
-				$criteria->add(ActionLogPeer::ACTION, $this->action);
+				$criteria->add(ActionlogPeer::ACTION, $this->action);
 
-				ActionLogPeer::addSelectColumns($criteria);
-				$this->collActionLogs = ActionLogPeer::doSelect($criteria, $con);
+				ActionlogPeer::addSelectColumns($criteria);
+				$this->collActionlogs = ActionlogPeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1010,28 +1010,28 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(ActionLogPeer::ACTION, $this->action);
+				$criteria->add(ActionlogPeer::ACTION, $this->action);
 
-				ActionLogPeer::addSelectColumns($criteria);
-				if (!isset($this->lastActionLogCriteria) || !$this->lastActionLogCriteria->equals($criteria)) {
-					$this->collActionLogs = ActionLogPeer::doSelect($criteria, $con);
+				ActionlogPeer::addSelectColumns($criteria);
+				if (!isset($this->lastActionlogCriteria) || !$this->lastActionlogCriteria->equals($criteria)) {
+					$this->collActionlogs = ActionlogPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastActionLogCriteria = $criteria;
-		return $this->collActionLogs;
+		$this->lastActionlogCriteria = $criteria;
+		return $this->collActionlogs;
 	}
 
 	/**
-	 * Returns the number of related ActionLog objects.
+	 * Returns the number of related Actionlog objects.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      PropelPDO $con
-	 * @return     int Count of related ActionLog objects.
+	 * @return     int Count of related Actionlog objects.
 	 * @throws     PropelException
 	 */
-	public function countActionLogs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countActionlogs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(SecurityActionPeer::DATABASE_NAME);
@@ -1045,14 +1045,14 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent {
 
 		$count = null;
 
-		if ($this->collActionLogs === null) {
+		if ($this->collActionlogs === null) {
 			if ($this->isNew()) {
 				$count = 0;
 			} else {
 
-				$criteria->add(ActionLogPeer::ACTION, $this->action);
+				$criteria->add(ActionlogPeer::ACTION, $this->action);
 
-				$count = ActionLogPeer::doCount($criteria, $con);
+				$count = ActionlogPeer::doCount($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1062,36 +1062,36 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(ActionLogPeer::ACTION, $this->action);
+				$criteria->add(ActionlogPeer::ACTION, $this->action);
 
-				if (!isset($this->lastActionLogCriteria) || !$this->lastActionLogCriteria->equals($criteria)) {
-					$count = ActionLogPeer::doCount($criteria, $con);
+				if (!isset($this->lastActionlogCriteria) || !$this->lastActionlogCriteria->equals($criteria)) {
+					$count = ActionlogPeer::doCount($criteria, $con);
 				} else {
-					$count = count($this->collActionLogs);
+					$count = count($this->collActionlogs);
 				}
 			} else {
-				$count = count($this->collActionLogs);
+				$count = count($this->collActionlogs);
 			}
 		}
-		$this->lastActionLogCriteria = $criteria;
+		$this->lastActionlogCriteria = $criteria;
 		return $count;
 	}
 
 	/**
-	 * Method called to associate a ActionLog object to this object
-	 * through the ActionLog foreign key attribute.
+	 * Method called to associate a Actionlog object to this object
+	 * through the Actionlog foreign key attribute.
 	 *
-	 * @param      ActionLog $l ActionLog
+	 * @param      Actionlog $l Actionlog
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addActionLog(ActionLog $l)
+	public function addActionlog(Actionlog $l)
 	{
-		if ($this->collActionLogs === null) {
-			$this->initActionLogs();
+		if ($this->collActionlogs === null) {
+			$this->initActionlogs();
 		}
-		if (!in_array($l, $this->collActionLogs, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collActionLogs, $l);
+		if (!in_array($l, $this->collActionlogs, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collActionlogs, $l);
 			$l->setSecurityAction($this);
 		}
 	}
@@ -1102,13 +1102,13 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this SecurityAction is new, it will return
 	 * an empty collection; or if this SecurityAction has previously
-	 * been saved, it will retrieve related ActionLogs from storage.
+	 * been saved, it will retrieve related Actionlogs from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in SecurityAction.
 	 */
-	public function getActionLogsJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getActionlogsJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(SecurityActionPeer::DATABASE_NAME);
@@ -1118,29 +1118,29 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collActionLogs === null) {
+		if ($this->collActionlogs === null) {
 			if ($this->isNew()) {
-				$this->collActionLogs = array();
+				$this->collActionlogs = array();
 			} else {
 
-				$criteria->add(ActionLogPeer::ACTION, $this->action);
+				$criteria->add(ActionlogPeer::ACTION, $this->action);
 
-				$this->collActionLogs = ActionLogPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+				$this->collActionlogs = ActionlogPeer::doSelectJoinUser($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(ActionLogPeer::ACTION, $this->action);
+			$criteria->add(ActionlogPeer::ACTION, $this->action);
 
-			if (!isset($this->lastActionLogCriteria) || !$this->lastActionLogCriteria->equals($criteria)) {
-				$this->collActionLogs = ActionLogPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+			if (!isset($this->lastActionlogCriteria) || !$this->lastActionlogCriteria->equals($criteria)) {
+				$this->collActionlogs = ActionlogPeer::doSelectJoinUser($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastActionLogCriteria = $criteria;
+		$this->lastActionlogCriteria = $criteria;
 
-		return $this->collActionLogs;
+		return $this->collActionlogs;
 	}
 
 	/**
@@ -1155,14 +1155,14 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent {
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
-			if ($this->collActionLogs) {
-				foreach ((array) $this->collActionLogs as $o) {
+			if ($this->collActionlogs) {
+				foreach ((array) $this->collActionlogs as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 		} // if ($deep)
 
-		$this->collActionLogs = null;
+		$this->collActionlogs = null;
 			$this->aSecurityModule = null;
 	}
 

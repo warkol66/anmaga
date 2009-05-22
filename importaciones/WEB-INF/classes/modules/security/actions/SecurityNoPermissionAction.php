@@ -2,20 +2,12 @@
 
 require_once("BaseAction.php");
 
-/**
-* Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
-* compiling PHP template engine within php.MVC.
-*
-* @author John C Wildenauer
-* @version 1.0
-* @public
-*/
-class NoPermissionAction extends BaseAction {
+class SecurityNoPermissionAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function NoPermissionAction() {
+	function SecurityNoPermissionAction() {
 		;
 	}
 
@@ -51,17 +43,23 @@ class NoPermissionAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
+
+		if (!empty($_SESSION["loginUser"]) || !empty($_SESSION["loginAffiliateUser"])) {
+
+		}
+		else {
+			//////////
+			// Use a different template
+			$this->template->template = "TemplateLogin.tpl";
+		}
 		
 		//asigno module y seccion
 		$module = "Security";
-		$section = "No Permission";
 
 		$smarty->assign("module",$module);
-		$smarty->assign("section",$section);
 
 		return $mapping->findForwardConfig('success');
 
 	}
 
 }
-?>
