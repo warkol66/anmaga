@@ -24,27 +24,21 @@
 <!-- ========== Action Mapping Definitions ============================== -->
 
   <action-mappings>
-    <action    path = "index"
-               type = "IndexAction"
-               name = "index"
+    <action    path = "commonIndex"
+               type = "CommonIndexAction"
+               name = "commonIndex"
               scope = "request"
            validate = "true">
     	<forward name="success" path="/Main.php?do=usersLogin" redirect="true" />
     </action>
-    <action    path = "maintenance"
-               type = "MaintenanceAction"
-               name = "maintenance"
+    <action    path = "commonMaintenance"
+               type = "CommonMaintenanceAction"
+               name = "commonMaintenance"
               scope = "request"
            validate = "true">
-    	<forward name="success" path="Maintenance.tpl" />
+    	<forward name="success" path="CommonMaintenance.tpl" />
     </action>
-    <action    path = "welcome"
-               type = "WelcomeAction"
-               name = "welcome"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="Welcome.tpl" />
-    </action>
+
     <action    path = "installGenerateConfig"
                type = "InstallGenerateConfigAction"
                name = "nstallGenerateConfig"
@@ -124,7 +118,7 @@
 							 name = "usersDoLogout"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="/Main.php?do=index" redirect="true"/>
+			<forward name="success" path="/Main.php?do=usersLogin" redirect="true"/>
 		</action>
 
 		<action    path = "usersList"
@@ -141,6 +135,7 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="/Main.php?do=usersList&amp;message=saved" redirect="true"/>
+			<forward name="successAdd" path="/Main.php?do=usersList&amp;message=added" redirect="true"/>
 		</action>
 
 		<action    path = "usersDoDelete"
@@ -1434,37 +1429,35 @@
 
 <!-- End Module Import -->
 
-<!-- ========== Action Mapping Módulo Logs  ============================== -->
+<!-- Module Actionlogs -->
+	<action-mappings module = "Actionlogs">
 
-	<action-mappings        module = "Logs">
-
-		<action    path = "logsList"
-					     type = "LogsListAction"
-					     name = "logsList"
+		<action    path = "actionlogsList"
+					     type = "ActionlogsListAction"
+					     name = "actionlogsList"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="LogsList.tpl"/>
-			<forward name="failure" path="demoPageError.tpl"/>
+			<forward name="success" path="ActionlogsList.tpl"/>
 		</action>
+
 		<action    path = "logsPurge"
 					     type = "LogsPurgeAction"
 					     name = "logsPurge"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="LogsPurge.tpl"/>
+			<forward name="success" path="ActionlogsPurge.tpl"/>
 		</action>
-		<action    path = "logsDoPurge"
-					     type = "LogsDoPurgeAction"
-					     name = "logsDoPurge"
+
+		<action    path = "actionlogsDoPurge"
+					     type = "ActionlogsDoPurgeAction"
+					     name = "actionlogsDoPurge"
 					    scope = "request"
 					 validate = "true">
-			<forward name="success" path="/Main.php?do=logsList" redirect="true" />
+			<forward name="success" path="/Main.php?do=actionlogsList" redirect="true" />
 		</action>
 
 	</action-mappings>
-
-<!-- ========== End Logs ================================================= -->->
-
+<!-- End Module Actionlogs -->
 
 <!-- Module Security -->
 	<action-mappings module="Security">

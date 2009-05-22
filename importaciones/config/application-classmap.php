@@ -9,12 +9,12 @@ return array (
       array (
         'classes' => 
         array (
-          'ActionLogMapBuilder' => 'actionLogs/classes/map/ActionLogMapBuilder.php',
-          'ActionLogPeer' => 'actionLogs/classes/ActionLogPeer.php',
-          'ActionLog' => 'actionLogs/classes/ActionLog.php',
-          'ActionLogLabelMapBuilder' => 'actionLogs/classes/map/ActionLogLabelMapBuilder.php',
-          'ActionLogLabelPeer' => 'actionLogs/classes/ActionLogLabelPeer.php',
-          'ActionLogLabel' => 'actionLogs/classes/ActionLogLabel.php',
+          'ActionlogMapBuilder' => 'actionlogs/classes/map/ActionlogMapBuilder.php',
+          'ActionlogPeer' => 'actionlogs/classes/ActionlogPeer.php',
+          'Actionlog' => 'actionlogs/classes/Actionlog.php',
+          'ActionlogLabelMapBuilder' => 'actionlogs/classes/map/ActionlogLabelMapBuilder.php',
+          'ActionlogLabelPeer' => 'actionlogs/classes/ActionlogLabelPeer.php',
+          'ActionlogLabel' => 'actionlogs/classes/ActionlogLabel.php',
           'AffiliateMapBuilder' => 'affiliates/classes/map/AffiliateMapBuilder.php',
           'AffiliatePeer' => 'affiliates/classes/AffiliatePeer.php',
           'Affiliate' => 'affiliates/classes/Affiliate.php',

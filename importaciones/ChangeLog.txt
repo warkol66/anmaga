@@ -1,4 +1,11 @@
 ==============================
+Revisión 482
+------------------------------
+Renombre tablas lodulo actionlogs
+RENAME TABLE `actionLogs_label` TO `actionlogs_label` ;
+RENAME TABLE `actionLogs_log` TO `actionlogs_log` ;
+
+==============================
 Revisión 440
 ------------------------------
 Se renombran tablas y campos de Quotation a Quote
