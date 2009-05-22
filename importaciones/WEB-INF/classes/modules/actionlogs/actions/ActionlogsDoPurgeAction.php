@@ -31,17 +31,19 @@ class ActionlogsDoPurgeAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$dateFromExplode = explode("-", $_GET["dateFrom"]);
-		$dateFrom = date("Y-m-d",mktime(0,0,0,$dateFromExplode[1],$dateFromExplode[0],$dateFromExplode[2]));
+		$dateFrom = Common::convertToMysqlDateFormat($_GET["dateFrom"]);
+//		$dateFromExplode = explode("-", $_GET["dateFrom"]);
+//		$dateFrom = date("Y-m-d",mktime(0,0,0,$dateFromExplode[1],$dateFromExplode[0],$dateFromExplode[2]));
 
-		$dateToExplode = explode("-", $_GET["dateTo"]);
-		$dateTo = date("Y-m-d",mktime(0,0,0,$dateToExplode[1],$dateToExplode[0],$dateToExplode[2]));
+		$dateTo = Common::convertToMysqlDateFormat($_GET["dateTo"]);
+//		$dateToExplode = explode("-", $_GET["dateTo"]);
+//		$dateTo = date("Y-m-d",mktime(0,0,0,$dateToExplode[1],$dateToExplode[0],$dateToExplode[2]));
 
 		$logs = new ActionlogPeer();
 
 		$deleteLogs=$logs->deleteLogs($dateFrom,$dateTo);
 
-		Common::doLog('success',$dateFromExplode."-".$dateToExplode);
+		Common::doLog('success',$_GET["dateFrom"] . " - " . $_GET["dateTo"]);
 		return $mapping->findForwardConfig('success');
 
 	}

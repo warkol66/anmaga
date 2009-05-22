@@ -56,6 +56,8 @@ class ActionlogsListAction extends BaseAction {
 //		$modules=$SecurityPeer->getModules();
 
 		$smarty->assign("modules", $modules);
+		$smarty->assign("message",$_GET["message"]);
+
 
 		$logs = new ActionlogPeer();
 
@@ -113,12 +115,12 @@ class ActionlogsListAction extends BaseAction {
 						$smarty->assign("affiliateId",$affiliateId);
 					}
 
-					$url= 'Main.php?do=logsList&listLogs='.$_GET['listLogs'].'&dateFrom='.$_GET["dateFrom"].'&dateTo='.$_GET["dateTo"].'&selectedModule='.$_GET["selectedModule"].'&affiliate='.$affiliateId.'&selectUser='.$selectedUser;
+					$url= 'Main.php?do=actionlogsList&listLogs='.$_GET['listLogs'].'&dateFrom='.$_GET["dateFrom"].'&dateTo='.$_GET["dateTo"].'&selectedModule='.$_GET["selectedModule"].'&affiliate='.$affiliateId.'&selectUser='.$selectedUser;
 			}
 			else{
 				$selectedLogs=$logs->selectAllByRequirementsPaginated($dateFrom,$dateTo,$selectedUser,$selectedModule,$_GET["page"]);
 
-				$url= 'Main.php?do=logsList&listLogs='.$_GET['listLogs'].'&dateFrom='.$_GET["dateFrom"].'&dateTo='.$_GET["dateTo"].'&selectedModule='.$_GET["selectedModule"].'&selectUser='.$selectedUser;
+				$url= 'Main.php?do=actionlogsList&listLogs='.$_GET['listLogs'].'&dateFrom='.$_GET["dateFrom"].'&dateTo='.$_GET["dateTo"].'&selectedModule='.$_GET["selectedModule"].'&selectUser='.$selectedUser;
 
 			}
 

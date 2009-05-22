@@ -1,9 +1,12 @@
 <script src="scripts/datePicker.js"></script>
 <h2>Histórico de Operaciones</h2>
 <h1>Consultar Histórico de Operaciones</h1>
-			<div id="searchOptions" style="display:|-if $DISPLAY eq 1-|inline|-else-|none|-/if-|">
-			<fieldset>
-				<legend>Opciones de búsqueda</legend>
+|-if $message eq "purged"-|
+	<div class='successMessage'>Registros históricos eliminados correctamente</div>
+|-/if-|
+<div id="searchOptions" style="display:|-if $DISPLAY eq 1-|inline|-else-|none|-/if-|">
+<fieldset>
+	<legend>Opciones de búsqueda</legend>
 		<form name="form1" method="get" action="Main.php">
 		<input type='hidden' name='do' value='actionlogsList' />
 				<p><label for="selectUser">Usuario</label>

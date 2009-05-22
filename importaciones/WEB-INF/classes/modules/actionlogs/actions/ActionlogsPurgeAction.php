@@ -34,12 +34,12 @@ class ActionlogsPurgeAction extends BaseAction {
 		$module = "actionlogs";
 		$smarty->assign("module",$module);
 
-		$logs = new ActionlogPeer();
+		$oldestLogDate = ActionlogPeer::oldestLogDate();
 
 		///////
-		/// usado para mostrar 2 fechas a listar, que seran hace un mes, y hoy
-		$smarty->assign("dateFrom",date('d-m-Y',mktime(0,0,0,date("m")-1,date("d"),date("Y"))));        
-		$smarty->assign("dateTo",date('d-m-Y'));
+		/// usado para mostrar 2 fechas a listar, que seran primer registro y hace un mes
+		$smarty->assign("dateFrom",$oldestLogDate);        
+		$smarty->assign("dateTo",date('d-m-Y',mktime(0,0,0,date("m")-1,date("d"),date("Y"))));        
 		
 		return $mapping->findForwardConfig('success');
 
