@@ -769,9 +769,35 @@ class Common
 		return $translation;
 	}
 
+	/**
+	 * Entrega el código de idioma a utilizar por el sistema
+	 * @return languageCode
+	 */
 	function getCurrentLanguageCode() {
 		global $system;
-		return $system["config"]["mluse"]["language"];
+		$currentLanguageCode = $system["config"]["multilang"]["language"];
+
+		$cookieName = $system["config"]["system"]["parameters"]['siteShortName'] . 'languageCode';
+		$currentLanguageCode = $_COOKIE[$cookieName];
+
+		if ($_SESSION['user']['languageCode']!= '')
+			$currentLanguageCode = $_SESSION['user']['languageCode'];
+		if ($_SESSION['languageCode'] != '')
+			$currentLanguageCode = $_SESSION['languageCode'];
+
+		return $currentLanguageCode;
+	}
+
+	/**
+	 * Indica si el los pedidos de cotizaciones manejan cantidades en el modulo import
+	 * @return boolean
+	 */
+	function setCurrentLanguageCode($languageCode) {
+		global $system;
+		$cookieName = $system["config"]["system"]["parameters"]['siteShortName'] . 'languageCode';
+		setcookie($cookieName,$languageCode);
+
+		$_SESSION['languageCode'] = $languageCode;
 	}
 
 	/**

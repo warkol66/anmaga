@@ -36,8 +36,7 @@ class ConfigSetAction extends BaseAction {
 		$colorCodes = array(1,2,3,4,5,6,7,8,9,10);		
 		$smarty->assign("colorCodes",$colorCodes);
 
-		$languages = common::getAllLanguages();
-		$smarty->assign("languages",$languages);
+		$smarty->assign("languages",common::getAllLanguages());
 
 		global $system;
 		$smarty->assign("selectedModule",$_GET["module"]);

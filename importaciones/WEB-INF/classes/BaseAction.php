@@ -58,13 +58,12 @@ class BaseAction extends Action {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
-		
+
 		global $system;
 
 		$GLOBALS['_NG_LANGUAGE_'] =& $smarty->language;
-		if (!empty($GLOBALS['_NG_LANGUAGE_'])) {
-			$GLOBALS['_NG_LANGUAGE_']->setCurrentLanguage($system["config"]["multilang"]["language"]);
-		}
+		if (!empty($GLOBALS['_NG_LANGUAGE_']))
+			$GLOBALS['_NG_LANGUAGE_']->setCurrentLanguage(Common::getCurrentLanguageCode());
 
 		$systemUrl = "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/"))."/Main.php";
 		$smarty->assign("systemUrl",$systemUrl);
@@ -74,11 +73,11 @@ class BaseAction extends Action {
 		if (Common::inMaintenance()) {
 			header("Location: Main.php?do=commonMaintenance");
 			exit;
-		}		
+		}
 
 		//Configura la acción solicitada y convierto primer letra mayuscula
 		$actionRequested = ucfirst($_REQUEST["do"]);
-		
+
 		//No verifica login
 		//Sacar siguientes 13 lineas cuanso se saque esto definitivamente del config.xml
 /*		$noCheckLoginActions = array();
@@ -106,7 +105,7 @@ class BaseAction extends Action {
 		foreach ($system["config"]["system"]["noCheckPermissionActions"] as $action => $status) {
 			if ($status["value"] == "YES")
 				$noCheckPermissionActions[] = ucfirst($action);
-		}                
+		}
 		$noCheckPermission = array_search($actionRequested,$noCheckPermissionActions);
 */
 
@@ -114,16 +113,16 @@ class BaseAction extends Action {
 		$securityAction = SecurityActionPeer::get($actionRequested);
 
 		if ($securityAction->getActive != 0) {
-	    if ($securityAction->getNoCheckLogin == 1) {
-	    	$noCheckLogin = 1;
-	    }
+			if ($securityAction->getNoCheckLogin == 1) {
+				$noCheckLogin = 1;
+			}
 		}
 		else{
 			/*Comento esta línea hasta incluir el noCheckLogin del modulo
 			if ($securityModule->getNoCheckLogin == 1)
-	    */	$noCheckLogin = 1;
+			*/	$noCheckLogin = 1;
 		}
-		
+
 		//Si el sistema está en desarrollo, no verifico permisos
 		if ($system["config"]["system"]["developmentMode"]["value"] == "YES")
 			$noCheckLogin = 1;
@@ -134,16 +133,16 @@ class BaseAction extends Action {
 			//Verifico permisos cuando no se encontró en noCheckPermission
 			//Esta seccion desaparecerá
 			if (!$noCheckPermission) {
-	
+
 				//Chequeo de permisos de acceso
 				if (!empty($loginUser) || !empty($loginUserAffiliate) || !empty($loginRegistrationUser)) {
-	
+
 					$actionAccess = $securityAction->getAccessByUser();
 					$userLevel = $user->getLevel();
-	
+
 					if (empty($actionAccess))
 						$actionAccess = $securityModule->getAccessByUser();
-					
+
 					if ( empty($userLevel) || ($userLevel->getBitLevel() & $actionAccess) == 0 ) {
 						header("Location:Main.php?do=securityNoPermission");
 						exit();
@@ -158,25 +157,28 @@ class BaseAction extends Action {
 			$level = $user->getLevel();
 
 		if (!empty($loginUserAffiliate))
-    	$smarty->assign("affiliateId",$loginUserAffiliate->getAffiliateId());
+			$smarty->assign("affiliateId",$loginUserAffiliate->getAffiliateId());
 
 		$smarty->assign("loginUser",$loginUser);
 		$smarty->assign("loginAffiliateUser",$loginUserAffiliate);
 		$smarty->assign("loginRegistrationUser",$loginRegistrationUser);
-		$smarty->assign("currentLanguageCode",Common::getCurrentLanguageCode());		
+		$smarty->assign("currentLanguageCode",Common::getCurrentLanguageCode());
 
 		$smarty->assign("Browser",getBrowser());
 
 
 		$this->template = new SmartyOutputFilter();
 		$smarty->register_outputfilter(array($this->template,"smarty_add_template"));
-		
+
 		//Asignacion a smarty de los parametros del sistema
 		$smarty->assign("parameters",$system["config"]["system"]["parameters"]);
 
 		if (!empty($GLOBALS['_NG_LANGUAGE_']))
-			$smarty->register_outputfilter("smarty_outputfilter_i18n");  
-	}
+			$smarty->register_outputfilter("smarty_outputfilter_i18n");
+	
+		$smarty->assign("languagesAvailable",common::getAllLanguages());
+
+	} //End execute
 
 	/**
 	 * Agrega parametros al url de un forward
@@ -188,14 +190,14 @@ class BaseAction extends Action {
 		//redireccionamiento con opciones correctas
 		$myRedirectConfig = $mapping->findForwardConfig($forwardName);
 		$myRedirectPath = $myRedirectConfig->getpath();
-		
-		foreach ($params as $key => $value) 
+
+		foreach ($params as $key => $value)
 			$myRedirectPath .= "&$key=$value";
 
 		return new ForwardConfig($myRedirectPath, True);
-			
+
 	}
-	
+
 	/**
 	 * Realiza el procesamiento de filtros sobre una clase Peer de Propel
 	 * @param Class $peer instancia de clase peer de propel
@@ -203,11 +205,11 @@ class BaseAction extends Action {
 	 * @param $smarty instancia de smarty sobre la cual se esta trabajando (tener en cuenta que al trabajar con una referencia a smarty, no hay problema de pasaje por parametro)
 	 */
 	function processFilters($peer,$filterValues,$smarty) {
-		
+
 		if (!empty($_GET['filters'])) {
-			
+
 			$smarty->assign('filters',$_GET['filters']);
-			
+
 			foreach ($filterValues as $filterField) {
 
 				if (!empty($_GET['filters'][$filterField])) {
@@ -218,26 +220,26 @@ class BaseAction extends Action {
 				}
 			}
 		}
-		
+
 		return $peer;
 	}
-	
+
 	/**
 	 * Agrega a una url los valores de un filtro, utilizado para la url de los paginadores
 	 * @param String $url
 	 * @return String url con los parametros agregados
 	 */
 	function addFiltersToUrl($url) {
-	
+
 		if (!empty($_GET['filters'])) {
 			foreach ($_GET['filters'] as $key => $value) {
-				$url .= '&filters[' . $key . ']=' . $value; 
+				$url .= '&filters[' . $key . ']=' . $value;
 			}
 
 		}
 
 		return $url;
-		
+
 	}
 
 }

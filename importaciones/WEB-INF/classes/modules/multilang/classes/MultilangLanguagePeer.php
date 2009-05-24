@@ -74,6 +74,25 @@ class MultilangLanguagePeer extends BaseMultilangLanguagePeer {
 	}
 
 	/**
+	* Obtiene la informacion de un language.
+	*
+	* @param int $id id del language
+	* @return array Informacion del language
+	*/
+	function getByCode($code) {
+		$cond = new Criteria();
+		$cond->add(MultilangLanguagePeer::CODE, $code, Criteria::EQUAL);
+		$languageObj = MultilangLanguagePeer::doSelect($cond);
+
+		$language = $languageObj[0];
+
+		if ( !empty($language) )
+			$languageCode = $language->getCode();
+
+    return $languageCode;
+	}
+
+	/**
 	* Obtiene todos los languages.
 	*
 	*	@return array Informacion sobre todos los languages

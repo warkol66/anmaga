@@ -39,8 +39,9 @@ class Actionlog extends BaseActionlog {
 		try{
 		include_once 'ActionlogLabelPeer.php';
 		global $system;
-		$language=$system["config"]["mluse"]["language"];
-		if(empty($language)) $language='eng';
+		$language = Common::getCurrentLanguageCode();
+		if(empty($language))
+			$language='eng';
 		$logLabelInfo=ActionlogLabelPeer::getAllByInfo($this->GetAction(),$this->GetForward(),$language);
 		return $logLabelInfo;
 		}catch (PropelException $e) {}

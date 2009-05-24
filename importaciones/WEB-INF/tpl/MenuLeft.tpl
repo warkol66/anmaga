@@ -68,3 +68,12 @@
 
 	<a href="Main.php?do=affiliatesUsersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")' id="logout"></a>
 |-/if-|
+	<div id="setLanguage">
+		<ul>
+		|-if $languagesAvailable|@count gt 1-| 
+		|-foreach from=$languagesAvailable item=language name=foreachLanguage-| 
+			<li class="menuLink"><a href="Main.php?do=commonSetLanguage&languageCode=|-$language->getCode()-|">|-$language->getName()-|</a></li>
+		|-/foreach-|
+		|-/if-|
+		</ul>
+	</div>

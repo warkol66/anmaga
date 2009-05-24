@@ -24,12 +24,12 @@ class Module extends BaseModule {
 	function getLabel(){
 		
 		try{
-		include_once 'anmaga/ModuleLabelPeer.php';
-		global $system;
-		$language=$system["config"]["mluse"]["language"];
-		if(empty($language)) $language='eng';
-		$moduleLabelInfo=ModuleLabelPeer::getByModuleAndLanguage($this->GetName(),$language);
-		return $moduleLabelInfo->getLabel();
+			include_once 'anmaga/ModuleLabelPeer.php';
+			$language = Common::getCurrentLanguageCode();
+			if(empty($language)) 
+				$language='eng';
+			$moduleLabelInfo=ModuleLabelPeer::getByModuleAndLanguage($this->GetName(),$language);
+			return $moduleLabelInfo->getLabel();
 		}catch (PropelException $e) {}
 	}
 
@@ -46,8 +46,9 @@ class Module extends BaseModule {
 			include_once 'anmaga/ModuleLabelPeer.php';
 			
 			global $system;
-			$language=$system["config"]["mluse"]["language"];
-			if(empty($language)) $language='eng';
+			$language = Common::getCurrentLanguageCode();
+			if(empty($language)) 
+				$language='eng';
 			
 			$moduleLabelInfo = ModuleLabelPeer::getByModuleAndLanguage($this->GetName(),$language);
 			if (!empty($moduleLabelInfo))

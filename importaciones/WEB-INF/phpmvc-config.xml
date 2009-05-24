@@ -55,6 +55,13 @@
     <forward name="success" path="Js.tpl" />
     </action> 		
     
+    <action    path = "commonSetLanguage"
+               type = "CommonSetLanguageAction"
+               name = "commonSetLanguage"
+              scope = "request"
+           validate = "true">
+    </action> 		
+
 	</action-mappings>
 
 <!-- ========== Action Mapping Module Users  ============================== -->

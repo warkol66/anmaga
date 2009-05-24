@@ -30,7 +30,7 @@ class ModulePeer extends BaseModulePeer {
 
 /**
 *
-*	Obtiene todos los m�dulos almacenados en la base de datos
+*	Obtiene todos los módulos almacenados en la base de datos
 *	@return object $modules Modulos almacenados en la base de datos
 */
 	function getAll() {
@@ -41,7 +41,7 @@ class ModulePeer extends BaseModulePeer {
 
 	/**
 	*
-	*	Obtiene todos los m�dulos almacenados en la base de datos que tienen categorias
+	*	Obtiene todos los módulos almacenados en la base de datos que tienen categorias
 	*	@return object $modules Modulos almacenados en la base de datos
 	*/
 		function getAllWithCategories() {
@@ -121,7 +121,7 @@ class ModulePeer extends BaseModulePeer {
 	
 /**
 *
-*	Carga un xml con datos del m�dulo y lo Guarda en la base de datos
+*	Carga un xml con datos del módulo y lo Guarda en la base de datos
 *	@param string $moduleName nombre del modulo
 *	@return true si se agrego correctamente
 */
@@ -458,26 +458,26 @@ class ModulePeer extends BaseModulePeer {
 
 	/**
 	*
-	*	Actualiza en la base de datos m�dulos
+	*	Actualiza en la base de datos módulos
 	*	@param string $moduleName nombre del modulo
 	*	@param string $description descripcion del modulo
-	*	@param string $label etiqueta del m�dulo
+	*	@param string $label etiqueta del módulo
 	*	@return true si se agrego correctamente
 	*/
 
 	function updateModule($module,$description,$label) {
 			try{
-			$moduleObj = new Module();
-			$moduleObj = ModulePeer::retrieveByPK($module);
-			$moduleObj ->save();
+				$moduleObj = new Module();
+				$moduleObj = ModulePeer::retrieveByPK($module);
+				$moduleObj ->save();
 			}catch (PropelException $e) {}
 			
 			$cond = new Criteria();
 			$cond->add(ModuleLabelPeer::NAME, $module);
 			
-			global $system;
-			$language=$system["config"]["mluse"]["language"];
-			if(empty($language)) $language='eng';
+			$language = Common::getCurrentLanguageCode();
+			if(empty($language)) 
+				$language='eng';
 
 			$cond->add(ModuleLabelPeer::LANGUAGE, $language);
 			$moduleLabel = ModuleLabelPeer::doSelect($cond);

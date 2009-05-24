@@ -62,9 +62,9 @@
 		</errorReporting>
 		<rowsPerPage>15</rowsPerPage>
 	</system>
-	<mluse>
+	<multilang>
 		<language>esp</language>
-	</mluse>
+	</multilang>
 	<users>
 		<licenses>5</licenses>
 	</users>
