@@ -1,5 +1,6 @@
-<!-- Module Users -->
+<!-- Module Users-->
 	<action-mappings module="Users">
+
 		<action    path = "usersLogin"
 							 type = "UsersLoginAction"
 							 name = "usersLogin"
@@ -7,6 +8,7 @@
 					 validate = "true">
 			<forward name="success" path="UsersLogin.tpl"/>
 			<forward name="maintenance" path="Maintenance.tpl"/>
+			<forward name="welcome" path="/Main.php?do=usersWelcome" redirect="true" />
 		</action>
 
 		<action    path = "usersDoLogin"
@@ -31,7 +33,7 @@
 							 name = "usersDoPasswordRecovery"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=usersLogin&amp;message=passwordSent" redirect="true" />
+			<forward name="success" path="/Main.php?do=usersLogin&amp;message=passwordSent" redirect="true" />
 			<forward name="failure" path="UsersPasswordRecovery.tpl"/>
 		</action>
 
@@ -56,7 +58,7 @@
 							 name = "usersDoLogout"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="/Main.php?do=index" redirect="true"/>
+			<forward name="success" path="/Main.php?do=usersLogin" redirect="true"/>
 		</action>
 
 		<action    path = "usersList"
@@ -73,6 +75,7 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="/Main.php?do=usersList&amp;message=saved" redirect="true"/>
+			<forward name="successAdd" path="/Main.php?do=usersList&amp;message=added" redirect="true"/>
 		</action>
 
 		<action    path = "usersDoDelete"
@@ -92,6 +95,15 @@
 			<forward name="success" path="/Main.php?do=usersList" redirect="true" />
 		</action>
 
+		<action    path = "usersDoLinkToSupplier"
+							 type = "UsersDoLinkToSupplierAction"
+							 name = "usersDoLinkToSupplier"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersList" redirect="true" />
+		</action>
+
+
 		<action    path = "usersDoRemoveFromGroup"
 							 type = "UsersDoRemoveFromGroupAction"
 							 name = "usersDoRemoveFromGroup"
@@ -108,10 +120,12 @@
 			<forward name="success" path="/Main.php?do=usersList&amp;message=activated" redirect="true" />
 			<forward name="failure" path="/Main.php?do=usersList&amp;message=notactivated" redirect="true" />
 		</action>
+
 	</action-mappings>
 
-<!-- Module Users - Section Groups -->
+<!-- Section Groups -->
 	<action-mappings module="Users" section="Groups">
+
 		<action    path = "usersGroupsList"
 							 type = "UsersGroupsListAction"
 							 name = "usersGroupsList"
@@ -153,11 +167,13 @@
 			<forward name="success" path="/Main.php?do=usersGroupsList&amp;message=deleted" redirect="true" />
 			<forward name="failure" path="/Main.php?do=usersGroupsList&amp;message=notdeleted" redirect="true" />
 		</action>
-	</action-mappings>
-<!-- End Section - Groups -->
 
-<!-- Module Users - Section Levels -->
+	</action-mappings>
+<!-- End Section Groups -->
+
+<!-- Section Levels -->
 	<action-mappings module="Users" section="Levels">
+
 		<action    path = "usersLevelsList"
 							 type = "UsersLevelsListAction"
 							 name = "usersLevelsList"
@@ -183,7 +199,8 @@
 			<forward name="success" path="/Main.php?do=usersLevelsList&amp;message=deleted" redirect="true" />
 			<forward name="failure" path="/Main.php?do=usersLevelsList&amp;message=notdeleted" redirect="true" />
 		</action>
+
 	</action-mappings>
-<!-- End Section - Levels -->
+<!-- End Section Levels -->
 
 <!-- End Module Users -->

@@ -44,6 +44,14 @@ class InstallGenerateConfigAction extends BaseAction {
 		
 		$xml = "";
 		
+		global $system;
+		$developmentMode = $system["config"]["system"]["parameters"]["developmentMode"]["value"];
+
+		if ($developmentMode == 'YES')
+			$force_compile = 1;
+		$smarty->assign("force_compile",$force_compile);
+		
+		
 		while (false !== ($moduleName = readdir($directoryHandler))) {
 
 			//verifico si es un directory y no no sea ni oculto ni raiz
@@ -59,8 +67,13 @@ class InstallGenerateConfigAction extends BaseAction {
 		$smarty->assign('xml',$xml);
 		
 		$htmlResult = $smarty->fetch("InstallGenerateConfig.tpl");
+
+		$timezonePeer = new TimezonePeer();
+		$timestamp = $timezonePeer->getServerTimeOnGMT0();
+
+		rename("WEB-INF/phpmvc-config.xml", "WEB-INF/phpmvc-config-".date('Ymd_His').".xml");
 		
-		file_put_contents("WEB-INF/phpmvc-config.new.xml", $htmlResult); 
+		file_put_contents("WEB-INF/phpmvc-config.xml", $htmlResult); 
 		
 		return $mapping->findForwardConfig('success');
 	}

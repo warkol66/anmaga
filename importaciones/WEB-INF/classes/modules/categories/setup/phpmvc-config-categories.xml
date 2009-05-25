@@ -1,5 +1,6 @@
 <!-- Module Categories -->
 	<action-mappings module="Categories">
+
 		<action    path = "categoriesEdit"
 							 type = "CategoriesEditAction"
 							 name = "categoriesEdit"
@@ -42,5 +43,6 @@
 			<forward name="success" path="/Main.php?do=categoriesList" redirect="true" />
 			<forward name="failure" path="/Main.php?do=categoriesList&amp;message=notdeleted" redirect="true" />
 		</action>
+
 	</action-mappings>
 <!-- End Categories -->

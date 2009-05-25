@@ -1,11 +1,12 @@
 <!-- Module Backup -->
   <action-mappings>
+ 
     <action    path = "backupList"
                type = "BackupListAction"
                name = "backupList"
               scope = "request"
            validate = "true">
-    <forward name="success" path="BackupList.tpl" />
+			<forward name="success" path="BackupList.tpl" />
     </action>
 
     <action    path = "backupCreate"
@@ -13,8 +14,8 @@
                name = "backupCreate"
               scope = "request"
            validate = "true">
-    <forward name="success" path="/Main.php?do=backupList&amp;message=created" redirect="true" />
-    <forward name="failure" path="/Main.php?do=backupList&amp;message=create_error" redirect="true" />
+			<forward name="success" path="/Main.php?do=backupList&amp;message=created" redirect="true" />
+			<forward name="failure" path="/Main.php?do=backupList&amp;message=create_error" redirect="true" />
     </action>
 
     <action    path = "backupCreateToFile"
@@ -29,8 +30,8 @@
                name = "backupRestore"
               scope = "request"
            validate = "true">
-    <forward name="success" path="/Main.php?do=backupList&amp;message=restored" redirect="true" />
-    <forward name="failure" path="/Main.php?do=backupList&amp;message=restore_error" redirect="true" />
+			<forward name="success" path="/Main.php?do=backupList&amp;message=restored" redirect="true" />
+			<forward name="failure" path="/Main.php?do=backupList&amp;message=restore_error" redirect="true" />
     </action>
 
     <action    path = "backupRestoreFromFile"
@@ -38,8 +39,8 @@
                name = "backupRestoreFromFile"
               scope = "request"
            validate = "true">
-    <forward name="success" path="/Main.php?do=backupList&amp;message=restored" redirect="true" />
-    <forward name="failure" path="/Main.php?do=backupList&amp;message=restore_error" redirect="true" />
+			<forward name="success" path="/Main.php?do=backupList&amp;message=restored" redirect="true" />
+			<forward name="failure" path="/Main.php?do=backupList&amp;message=restore_error" redirect="true" />
     </action>
 
     <action    path = "backupDelete"
@@ -47,8 +48,8 @@
                name = "backupDelete"
               scope = "request"
            validate = "true">
-    <forward name="success" path="/Main.php?do=backupList&amp;message=deleted" redirect="true" />
-    <forward name="failure" path="/Main.php?do=backupList&amp;message=delete_error" redirect="true" />
+			<forward name="success" path="/Main.php?do=backupList&amp;message=deleted" redirect="true" />
+			<forward name="failure" path="/Main.php?do=backupList&amp;message=delete_error" redirect="true" />
     </action>
 
     <action    path = "backupDownload"
@@ -56,7 +57,7 @@
                name = "backupDownload"
               scope = "request"
            validate = "true">
-    <forward name="failure" path="/Main.php?do=backupList&amp;message=not_exists" redirect="true" />
+			<forward name="failure" path="/Main.php?do=backupList&amp;message=not_exists" redirect="true" />
     </action>
 
   </action-mappings>

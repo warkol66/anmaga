@@ -29,7 +29,7 @@
 							 name = "configDoSet"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=configSet&amp;message=ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=configSet&amp;message=ok" redirect="true" />
 		</action>
 
 		<action    path = "configDoEdit"
@@ -37,7 +37,7 @@
 							 name = "configDoEdit"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=configView&amp;message=ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=configView&amp;message=ok" redirect="true" />
 		</action>
 	</action-mappings>
 <!-- End Module Config -->
