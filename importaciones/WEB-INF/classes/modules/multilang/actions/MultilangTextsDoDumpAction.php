@@ -3,12 +3,12 @@
 require_once("BaseAction.php");
 require_once("MultilangLanguagePeer.php");
 
-class MultilangTextsDumpAction extends BaseAction {
+class MultilangTextsDoDumpAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function MultilangTextsDumpAction() {
+	function MultilangTextsDoDumpAction() {
 		;
 	}
 
@@ -41,18 +41,32 @@ class MultilangTextsDumpAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "Multilang";
-    $smarty->assign("module",$module);
+		if (isset($_GET["moduleName"]) && isset($_GET["languageCode"])) {
+    	/**
+     	* Use a different template
+     	*/
+			$this->template->template = "template_dump.tpl";
 
-  	$appLanguages = MultilangLanguagePeer::getAll();
-  	$smarty->assign("appLanguages",$appLanguages);
-		$modules = ModulePeer::getAll();
-		$smarty->assign('modules',$modules);
+			foreach ($_GET["languageCode"] as $eachLanguage) {
+				$languageId = MultilangLanguagePeer::getLanguageIdByCode($eachLanguage);
 
-		$smarty->assign("moduleName",$_GET["moduleName"]);
-		$smarty->assign("languageCode",$_GET["languageCode"]);
+				$dump .= MultilangTextPeer::getSQLCleanup($_GET["moduleName"],$languageId)."\n";
+				
+				$allMultilangText = MultilangTextPeer::getAllByModuleAndLanguage($_GET["moduleName"],$languageId);
+				foreach ($allMultilangText as $multilangText)
+					$dump .= $multilangText->getSQLInsert()."\n";
+			}
+//			header("content-disposition: attachment; filename=multilang-".$_GET["moduleName"]."-".$_GET["languageCode"].".sql");
+			header("content-disposition: attachment; filename=multilang-".$_GET["moduleName"].".sql");
+			header("Content-type: text/sql; charset=UTF-8");
 
-		return $mapping->findForwardConfig('success');
+    	$texts = MultilangTextPeer::getAll($_GET["moduleName"]);
+    	$smarty->assign("dump",$dump);
+			return $mapping->findForwardConfig('success');
+    
+		}
+
+		return $mapping->findForwardConfig('failure');
 	}
 
 }

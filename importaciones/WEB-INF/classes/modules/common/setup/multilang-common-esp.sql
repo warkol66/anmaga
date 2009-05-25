@@ -1,0 +1,14 @@
+DELETE FROM `multilang_text` WHERE `moduleName` = 'common' AND `languageId` = '1';
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('1', 'common', '1','Editar');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('2', 'common', '1','Eliminar');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('3', 'common', '1','Aceptar');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('4', 'common', '1','Buscar');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('5', 'common', '1','Inicio');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('6', 'common', '1','Anterior');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('7', 'common', '1','Página');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('8', 'common', '1','de');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('9', 'common', '1','Siguiente');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('10', 'common', '1','Última');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('11', 'common', '1','Español');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('12', 'common', '1','Si');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('13', 'common', '1','No');

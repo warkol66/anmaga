@@ -27,7 +27,7 @@ class JsAction extends BaseAction {
 		global $moduleRootDir;
 		
 		if (!empty($_GET["module"])) {
-			$path = $moduleRootDir . "/WEB-INF/classes/modules/" . $_GET["module"] . "/setup/" . ucfirst($_GET["module"]) . ucfirst($_GET["name"]) . ".js";
+			$path = $moduleRootDir . "/WEB-INF/classes/modules/" . $_GET["module"] . "/tpl/" . ucfirst($_GET["module"]) . ucfirst($_GET["name"]) . ".js";
 		} else {
 			$path = "Common" . ucfirst($_GET["name"]) . ".js";
 		}

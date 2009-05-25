@@ -354,4 +354,33 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 		return $texts;
 	}
 
+
+	/**
+	* Obtiene todos los texts de un modulo y un idioma.
+	*
+	*	@param int $moduleName Nombre del modulo
+	*	@param int $languageId Nombre del modulo
+	*	@return array Informacion sobre todos los texts
+	*/
+	function getAllByModuleAndLanguage($moduleName,$languageId) {
+		$cond = new Criteria();
+		$cond->add(MultilangTextPeer::MODULENAME,$moduleName);
+		$cond->add(MultilangTextPeer::LANGUAGEID,$languageId);
+		$alls = MultilangTextPeer::doSelect($cond);
+		return $alls;
+	}
+
+
+	/**
+	 * genera el codigo SQL de limpieza de las tablas afectadas al modulo.
+	 * @return string SQL
+	 */
+	public static function getSQLCleanup($moduleName,$languageId) {
+		
+		$sql = "DELETE FROM `multilang_text` WHERE `moduleName` = '" . $moduleName . "' AND `languageId` = '"  . $languageId . "';";
+		return  $sql;
+
+	}
+
+
 } // MultilangTextPeer

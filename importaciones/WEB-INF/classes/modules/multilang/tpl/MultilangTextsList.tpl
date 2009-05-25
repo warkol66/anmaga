@@ -1,6 +1,5 @@
 <h2>##multilang,1,Multi-idioma##</h2>
 <h1>##multilang,20,Administrar Traducciones##</h1>
-|-popup_init src="scripts/overlib.js"-|
 <p>##multilang,21,Con esta aplicación puede administrar los textos que mostrará el sistema según el idioma del usuario. Seleccione un módulo y agregue un nuevo texto o edite los valores actuales.##</p>
 <fieldset title="##multilang,22,Formulario para selección de módulo##">
 <legend>##multilang,23,Selección de Módulo##</legend>

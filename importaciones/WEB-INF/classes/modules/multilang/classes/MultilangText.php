@@ -27,4 +27,15 @@ class MultilangText extends BaseMultilangText {
 		parent::__construct();
 	}
 
+	function getSQLInsert() {
+		$id = $this->getId();
+		$moduleName = $this->getModuleName();
+		$languageId = $this->getLanguageId();
+		$text = $this->getText();
+	
+		$query = "INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('$id', '$moduleName', '$languageId','$text');";
+
+		return $query;
+	}
+
 } // MultilangText

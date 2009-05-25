@@ -2,95 +2,88 @@ function cambiaclase(element,clase) {
 	var NAME = document.getElementById(element);
 	NAME.className=clase;
 }
-		function logout(){
-			return window.confirm("Esta seguro que quiere salir del sistema?")
-		}
+function logout(){
+	return window.confirm("Esta seguro que quiere salir del sistema?")
+}
 
 <!-- Script usado para hacer un checkbox masivo -->
 
 <!-- Begin
 var checkflag = "false";
 function check(field) {
-if (checkflag == "false") {
-for (i = 0; i < field.length; i++) {
-field[i].checked = true;}
-checkflag = "true";
-return "Deseleccionar Todos"; }
-else {
-for (i = 0; i < field.length; i++) {
-field[i].checked = false; }
-checkflag = "false";
-return "Seleccionar Todos"; }
+	if (checkflag == "false") {
+		for (i = 0; i < field.length; i++) {
+			field[i].checked = true;
+		}
+		checkflag = "true";
+		return "Deseleccionar Todos";
+	}
+	else{
+		for (i = 0; i < field.length; i++){
+			field[i].checked = false;
+		}
+		checkflag = "false";
+		return "Seleccionar Todos";
+	}
 }
 //  End -->
 
 
-function switch_vis(element,display)
-{
+function switch_vis(element,display){
 	var e_ref="";
 	var ant="";
 	e_ref=document.getElementById(element);
-	if (display == undefined)
-	{
+	if (display == undefined){
 		display='block';
 	}
 	ant=e_ref.style.display;
-	if (e_ref.style.display !=  'none' && e_ref.style.display != "")
-	{
+	if (e_ref.style.display !=  'none' && e_ref.style.display != ""){
 		display='none';
 	}
-	else
-	{
+	else{
 		display=display;
 	}
 	e_ref.style.display=display;
 }
-function switch_value(element,value)
-{
+
+function switch_value(element,value){
 	var e_ref="";
 	var ant="";
 	e_ref=document.getElementById(element);
-	if (value == undefined)
-	{
+	if (value == undefined){
 		value='Mostrar Sección';
 	}
 	ant=e_ref.value;
-	if (e_ref.value !=  'Ocultar Sección' && e_ref.value != "")
-	{
+	if (e_ref.value !=  'Ocultar Sección' && e_ref.value != ""){
 		value='Ocultar Sección';
 	}
-	else
-	{
+	else{
 		value=value;
 	}
 	e_ref.value=value;
 }
-function switch_vis_mult(elements)
-{
+
+function switch_vis_mult(elements) {
 	var i=0;
-	for(i=0; i<elements.length; i++)
-	{
+	for(i=0; i<elements.length; i++){
 		switch_vis(elements[i],'none');
 	}
 }
-
 
 function addConfigAttribute(li) {
 	ul = document.getElementById(li.id+"_ul");
 	newName=window.prompt("Nombre del nuevo atributo:",'');
 	ul.innerHTML += "<li>"+newName+": <input type='text' name='"+li.id+"["+newName+"]' value='' />"+
-		'<a class="a_image" href="#" onclick="javascript:deleteConfigAttribute(this.parentNode)">'+
-		'<img src="images/delete-comment-blue.gif" alt="Eliminar" /></a></li>';
+		'<a href="#" onclick="javascript:deleteConfigAttribute(this.parentNode)"><img src="images/delete-comment-blue.gif" class="configLinkImage" alt="Eliminar" title="Eliminar" /></a></li>';
 }
 
 function addConfigSection(li) {
 	ul = document.getElementById(li.id+"_ul");
-	newName=window.prompt("Nombre de la nueva seccion:",'');
+	newName=window.prompt("Nombre de la nueva sección:",'');
 	ul.innerHTML += "<li id='"+li.id+"["+newName+"]'>"+newName+
-		' <a class="a_image" href="#" onclick="javascript:addConfigAttribute(this.parentNode)"><img src="images/add-comment-blue.gif" alt="Agregar Atributo" title="Agregar Atributo" /></a>'+
-		' <a class="a_image" href="#" onclick="javascript:addConfigSection(this.parentNode)"><img src="images/add-folder-green.gif" alt="Agregar Secci&oacute;n" title="Agregar Secci&oacute;n" /></a>'+
-		' <a class="a_image" href="#" onclick="javascript:deleteConfigAttribute(this.parentNode)">'+
-		'<img src="images/delete-folder-green.gif" alt="Eliminar" /></a>'+
+		' <a href="#" onclick="javascript:addConfigAttribute(this.parentNode)"><img src="images/add-comment-blue.gif" class="configLinkImage" alt="Agregar Atributo" title="Agregar Atributo" /></a>'+
+		' <a href="#" onclick="javascript:addConfigSection(this.parentNode)"><img src="images/add-folder-green.gif" class="configLinkImage" alt="Agregar Sección" title="Agregar Sección" /></a>'+
+		' <a href="#" onclick="javascript:deleteConfigAttribute(this.parentNode)"><img src="images/delete-folder-green.gif" class="configLinkImage" alt="Eliminar" title="Eliminar" /></a>'+
 		"<ul id='"+li.id+"["+newName+"]_ul'></ul></li>";
 }
 
@@ -98,8 +91,6 @@ function deleteConfigAttribute(li) {
 	ul = li.parentNode;
 	ul.removeChild(li);
 }
-
-
 
 var myGlobalHandlers = {
 	onCreate: function(){
@@ -133,7 +124,6 @@ function categoriesDoEditX() {
 	$('name').value = "";
 }
 
-
 function modulesDoActivateX(form) {
 	var pars = 'do=modulesDoActivateX';
 	var fields = Form.serialize(form);
@@ -147,7 +137,7 @@ function modulesDoActivateX(form) {
 					postBody: fields,
 					evalScripts: true
 				});
-		$('messageMod').innerHTML = "Actualizando sistema...";
+		$('messageMod').innerHTML = "<div class='inProgress'>Actualizando sistema...</div>";
 }
 
 
@@ -161,7 +151,7 @@ function ordersAddItemToCartX(form) {
 					method: 'post',
 					postBody: fields
 				});
-	$('messageCart').innerHTML = "Adding to cart...";
+	$('messageCart').innerHTML = "<div class='inProgress'>Adding to cart...</div>";
 }
 
 function ordersChangeItemCartX(form) {
@@ -174,7 +164,7 @@ function ordersChangeItemCartX(form) {
 					method: 'post',
 					postBody: fields
 				});
-	$('messageCart').innerHTML = "Modifing cart...";
+	$('messageCart').innerHTML = "<div class='inProgress'>Modifing cart...</div>";
 }
 
 function ordersRemoveItemCartX(form) {
@@ -188,7 +178,7 @@ function ordersRemoveItemCartX(form) {
 					postBody: fields,
 					evalScripts: true
 				});
-	$('messageCart').innerHTML = "Removing product from cart...";
+	$('messageCart').innerHTML = "<div class='inProgress'>Removing product from cart...</div>";
 }
 
 function ordersStateDoChangeX(form) {
@@ -205,17 +195,18 @@ function ordersStateDoChangeX(form) {
 					evalScripts: true,
 					insertion: Insertion.Bottom
 				});
-		$('messageState').innerHTML = "Changing state...";
-	} else {
+		$('messageState').innerHTML = "<div class='inProgress'>Changing state...</div>";
+	}
+	else {
 		alert("Select new state!");
 	}
 }
 
 function ordersSendOrdersExport(form) {
-	
+
 	$('do').value = "ordersExport";
 	form.submit();
-	
+
 	return true;
 } // End of ordersSendOrdersExport
 
@@ -228,7 +219,6 @@ function ordersSendOrdersDelete(form) {
 } // End of ordersSendOrdersExport
 
 
-
 //Multilang Module
 
 function addTraduction(a) {
@@ -239,3 +229,5 @@ function addTraduction(a) {
 
 	return false;
 }
+
+

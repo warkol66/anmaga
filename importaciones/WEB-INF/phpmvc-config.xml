@@ -1901,7 +1901,16 @@
                name = "multilangTextsDump"
               scope = "request"
            validate = "true">
-    <forward name="success" path="MultilangTextsDump.tpl" />
+	    <forward name="success" path="MultilangTextsDump.tpl" />
+	    <forward name="successDump" path="MultilangTextsDoDump.tpl" />
+    </action>
+
+    <action    path = "multilangTextsDoDump"
+               type = "MultilangTextsDoDumpAction"
+               name = "multilangTextsDoDump"
+              scope = "request"
+           validate = "true">
+	    <forward name="success" path="MultilangTextsDoDump.tpl" />
     </action>
 
     <action    path = "multilangTextsDoDelete"
