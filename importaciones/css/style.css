@@ -770,7 +770,7 @@ a.linkAdd:hover, a.linkAdd:active {
 /* /LINK AGREGAR NUEVA ...  */
 
 .configLinkImage {
-	border-width: 0;
+	border: none !Important;
 	margin-left: 1px !Important;
 	margin-right: 1px !Important;
 	padding-left: 1px !Important;
@@ -1435,10 +1435,10 @@ a.tdSearchButton:active  {
 	font-size: 1em;
 	font-weight:normal;
 	text-transform:none;
-	width:14px;
+	/*width:14px;*/
 	height: 14px;
 	margin: 0 5px;
-	padding: 0 7px 3px 16px;
+/*	padding: 0 7px 3px 16px; */
 	display:inline;
 	clear:left;	
 }
