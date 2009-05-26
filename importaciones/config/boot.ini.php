@@ -28,7 +28,6 @@ $appXmlCfgs['config'] = array('name'=>'phpmvc-config.xml', 'fc'=>False);
 
 require_once("$appDir/config/generate_config.php");
 require_once("$appDir/config/load_config.php");
-require_once("$appDir/config/load_protected_words.php");
 
 // En archivo config.php
 // Set php.MVC library root directory (no trailing slash).
