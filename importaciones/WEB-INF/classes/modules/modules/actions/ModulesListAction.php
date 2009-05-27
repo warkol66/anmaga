@@ -55,10 +55,8 @@ class ModulesListAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 		
-		//asigno modulo
-		$modulo = "Modules";
-
-		$smarty->assign("modulo",$modulo);
+		$module = "Modules";
+		$smarty->assign("module",$module);
  
 		$modulePeer = new ModulePeer();
 
@@ -80,17 +78,19 @@ class ModulesListAction extends BaseAction {
 			if ($moduleName[0]!='.'){	
 				if(!$modulePeer->get($moduleName) ){
 
-						$newModule=$modulePeer->addAndInstallModule($moduleName);
-						if (!$newModule){
-							$modulesError[$k]=$moduleName;
-							$k++;
-						}
-						else{
+//					$newModule=$modulePeer->addAndInstallModule($moduleName);
+					if (!$newModule){
+						$modulesError[$k]=$moduleName;
+						$k++;
+					}
+					else{
 						$moduleStatus=$modulePeer->get($moduleName);
 
 						if($moduleStatus){
-							if( ( $status[$i]=$moduleStatus->getAlwaysActive() ) == NULL ) $status[$i]=" No Activo";
-							else $status[$i]="Activo";
+							if (( $status[$i]=$moduleStatus->getAlwaysActive()) == NULL) 
+								$status[$i]=" No Activo";
+							else
+								$status[$i]="Activo";
 	
 							$module = array();
 							$module["module"] = $moduleName;
@@ -98,7 +98,7 @@ class ModulesListAction extends BaseAction {
 							$modules[] = $module;
 							$i++;
 						}
-						}
+					}
 
 				}
 			}
@@ -114,19 +114,10 @@ class ModulesListAction extends BaseAction {
 		// hay que mostrarlos
 		$smarty->assign("modulesError",$modulesError);
 
-		$assignedModules= $modulePeer->getAll();
-		/*foreach($assignedModules as $assignedModule)
-			$assignedModule->getLabel();
-		print_r($assignedModules);*/
-		$smarty->assign("assignedModules",$assignedModules);
-
-
-		//////////
-		// linea de logueo
-		Common::doLog(Common::userInfoToDoLog(),$_REQUEST['do'],'success','listando general');
+		$installedModules= $modulePeer->getAll();
+		$smarty->assign("installedModules",$installedModules);
 		
 		return $mapping->findForwardConfig('success');
 	}
 
 }
-?>

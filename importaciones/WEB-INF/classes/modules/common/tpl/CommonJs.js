@@ -137,7 +137,8 @@ function modulesDoActivateX(form) {
 					postBody: fields,
 					evalScripts: true
 				});
-		$('messageMod').innerHTML = "<div class='inProgress'>Actualizando sistema...</div>";
+		$('messageResult').innerHTML = "";
+		$('messageMod').innerHTML = "<div class='inProgress'>Actualizando módulo...</div>";
 }
 
 

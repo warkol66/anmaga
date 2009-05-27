@@ -28,6 +28,7 @@ class ModuleLabelPeer extends BaseModuleLabelPeer {
 		$cond = new Criteria();
 		$cond->add(ModuleLabelPeer::NAME, $module);
 		$cond->add(ModuleLabelPeer::LANGUAGE, $language);
+		$cond->setLimit(1);
 		$obj = ModuleLabelPeer::doSelect($cond);
 		return $obj[0];
 		}catch (PropelException $e) {}

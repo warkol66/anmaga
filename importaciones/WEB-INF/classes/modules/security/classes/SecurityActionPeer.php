@@ -480,6 +480,14 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		return $info;
 	}
 
+	/**
+	 * genera el codigo SQL de limpieza de las tablas afectadas al modulo.
+	 * @return string SQL
+	 */	
+	function getSQLCleanup() {
+		$sql = "DELETE FROM `security_action` WHERE `module` = '" . $this->getModule() . "';'";
+		return  $sql;
+	}
 
 
 

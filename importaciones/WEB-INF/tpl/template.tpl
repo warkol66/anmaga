@@ -15,12 +15,6 @@
 <script type="text/javascript" src="Main.php?do=js&name=js&module=common&code=|-$currentLanguageCode-|"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/datePicker.js"></script>
 <script language="JavaScript" src="scripts/scriptaculous.js" type="text/javascript"></script>
-<script type="text/javascript" src="scripts/behaviour.js"></script>
-<script type="text/javascript" src="scripts/soundmanager.js"></script>
-<script type="text/javascript" src="scripts/slideshow.js"></script>
-<script type="text/javascript" src="scripts/newsletter-schedule.js"></script>
-<script type="text/javascript" src="scripts/news.js"></script>
-<script type="text/javascript" src="scripts/calendar.js"></script>
 <script type="text/javascript" src="Main.php?do=js&name=js&module=import&code=|-$currentLanguageCode-|"></script>
 |-if $module eq 'content'-|<script language="JavaScript" src="scripts/scriptaculous.js?load=effects,dragdrop" type="text/javascript"></script>|-/if-|
 <script language="JavaScript" type="text/JavaScript">

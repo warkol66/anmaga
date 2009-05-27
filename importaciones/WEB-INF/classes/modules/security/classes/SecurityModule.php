@@ -62,7 +62,7 @@ class SecurityModule extends BaseSecurityModule {
 	 * @return string SQL
 	 */	
 	function getSQLCleanup() {
-		$sql = "DELETE FROM `security_module` WHERE `module` = '" . $this->getModule() . "';'";
+		$sql = "DELETE FROM `security_module` WHERE `module` = '" . $this->getModule() . "';";
 		return  $sql;
 	}
 	

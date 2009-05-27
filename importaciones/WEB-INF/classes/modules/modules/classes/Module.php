@@ -29,7 +29,9 @@ class Module extends BaseModule {
 			if(empty($language)) 
 				$language='eng';
 			$moduleLabelInfo=ModuleLabelPeer::getByModuleAndLanguage($this->GetName(),$language);
-			return $moduleLabelInfo->getLabel();
+			if (!empty($moduleLabelInfo))
+				return $moduleLabelInfo->getLabel();
+			return "";
 		}catch (PropelException $e) {}
 	}
 
