@@ -211,7 +211,7 @@
 							 name = "affiliatesUsersWelcome"
 							scope = "request"
 					 validate = "true">
-				<description value="Página de bienvenida"/>
+				<description value="PÃ¡gina de bienvenida"/>
 			<forward name="success" path="AffiliatesUsersWelcome.tpl"/>
 		</action>
 
@@ -1924,4 +1924,4 @@
 		<set-property property="right_delimiter"     value="-|"/>
 	</plug-in>
 
-</phpmvc-config>
+</phpmvc-config>
