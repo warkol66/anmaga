@@ -39,11 +39,10 @@ class ModuleLabelPeer extends BaseModuleLabelPeer {
 	 * genera el codigo SQL de limpieza de las tablas afectadas al modulo.
 	 * @return string SQL
 	 */
-	public static function getSQLCleanup($moduleName) {
+	public static function getSQLCleanup($moduleName,$languageCode) {
 		
-		$sql = "DELETE FROM `modules_label` WHERE `name` = " . "'" . $moduleName . "'" . ';';
+		$sql = "DELETE FROM `modules_label` WHERE `name` = " . "'" . $moduleName . "' and `language` = '" . $languageCode . "';";
 		return  $sql;
-
 	}
 
 } // ModuleLabelPeer

@@ -14,11 +14,12 @@ class SecurityModule extends BaseSecurityModule {
 
 	function getSQLInsert() {
 		$module = $this->getModule();
+		$noCheckLogin = $this->getNoCheckLogin();
 		$access = $this->getAccess();
 		$accessAffiliateUser = $this->getAccessAffiliateUser();
 		$accessRegistrationUser = $this->getAccessRegistrationUser();
 	
-		$query = "INSERT INTO `security_module` ( `module` , `access` , `accessAffiliateUser` , `accessRegistrationUser` ) VALUES ('$module', '$access', '$accessAffiliateUser','$accessRegistrationUser');";
+		$query = "INSERT INTO `security_module` ( `module` , `noCheckLogin` , `access` , `accessAffiliateUser` , `accessRegistrationUser` ) VALUES ('$module', '$noCheckLogin', '$access', '$accessAffiliateUser','$accessRegistrationUser');";
 
 		return $query;
 	}

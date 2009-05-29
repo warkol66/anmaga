@@ -65,7 +65,7 @@ class SecurityAffiliatesEditAction extends BaseAction {
 		$modules = ModulePeer::getAll();
 
 		if (!empty($_SESSION['loginUser']))
-			$userLevel = 1;
+			$userLevel = 0;
 		else
 			$userLevel = $_SESSION['loginAffiliateUser']->getLevelId();
 

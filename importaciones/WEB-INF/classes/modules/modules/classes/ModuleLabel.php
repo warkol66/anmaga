@@ -16,8 +16,7 @@ class ModuleLabel extends BaseModuleLabel {
 	 *	Devuelve un SQL Insert para el la tabla de ModuleLabel
 	 *	a partir de la informacion de la instancia
 	**/
-	function getSQLInsert($language) {
-		$this->setLanguage($language);
+	function getSQLInsert() {
 		$name = $this->getName();
 		$label = $this->getLabel();
 		$description = $this->getDescription();
