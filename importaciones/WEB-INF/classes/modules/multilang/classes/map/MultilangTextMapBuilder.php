@@ -66,7 +66,7 @@ class MultilangTextMapBuilder implements MapBuilder {
 
 		$tMap->addForeignPrimaryKey('MODULENAME', 'Modulename', 'VARCHAR' , 'modules_module', 'NAME', true, 255);
 
-		$tMap->addForeignPrimaryKey('LANGUAGEID', 'Languageid', 'INTEGER' , 'multilang_language', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('LANGUAGECODE', 'Languagecode', 'VARCHAR' , 'multilang_language', 'CODE', true, 30);
 
 		$tMap->addColumn('TEXT', 'Text', 'LONGVARCHAR', true, null);
 

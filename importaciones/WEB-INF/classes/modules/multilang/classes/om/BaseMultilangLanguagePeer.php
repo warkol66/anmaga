@@ -19,7 +19,7 @@ abstract class BaseMultilangLanguagePeer {
 	const CLASS_DEFAULT = 'multilang.classes.MultilangLanguage';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 3;
+	const NUM_COLUMNS = 4;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -32,6 +32,9 @@ abstract class BaseMultilangLanguagePeer {
 
 	/** the column name for the CODE field */
 	const CODE = 'multilang_language.CODE';
+
+	/** the column name for the LOCALE field */
+	const LOCALE = 'multilang_language.LOCALE';
 
 	/**
 	 * An identiy map to hold any loaded instances of MultilangLanguage objects.
@@ -54,11 +57,11 @@ abstract class BaseMultilangLanguagePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Code', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'code', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::CODE, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'code', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Code', 'Locale', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'code', 'locale', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::CODE, self::LOCALE, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'code', 'locale', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -68,11 +71,11 @@ abstract class BaseMultilangLanguagePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Code' => 2, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'code' => 2, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::CODE => 2, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'code' => 2, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Code' => 2, 'Locale' => 3, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'code' => 2, 'locale' => 3, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::CODE => 2, self::LOCALE => 3, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'code' => 2, 'locale' => 3, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -159,6 +162,8 @@ abstract class BaseMultilangLanguagePeer {
 		$criteria->addSelectColumn(MultilangLanguagePeer::NAME);
 
 		$criteria->addSelectColumn(MultilangLanguagePeer::CODE);
+
+		$criteria->addSelectColumn(MultilangLanguagePeer::LOCALE);
 
 	}
 
@@ -629,7 +634,7 @@ abstract class BaseMultilangLanguagePeer {
 			// delete related MultilangText objects
 			$c = new Criteria(MultilangTextPeer::DATABASE_NAME);
 			
-			$c->add(MultilangTextPeer::LANGUAGEID, $obj->getId());
+			$c->add(MultilangTextPeer::LANGUAGECODE, $obj->getCode());
 			$affectedRows += MultilangTextPeer::doDelete($c, $con);
 		}
 		return $affectedRows;

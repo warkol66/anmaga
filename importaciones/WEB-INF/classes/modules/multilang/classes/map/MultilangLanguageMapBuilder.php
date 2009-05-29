@@ -68,6 +68,8 @@ class MultilangLanguageMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('CODE', 'Code', 'VARCHAR', true, 30);
 
+		$tMap->addColumn('LOCALE', 'Locale', 'VARCHAR', false, 30);
+
 	} // doBuild()
 
 } // MultilangLanguageMapBuilder

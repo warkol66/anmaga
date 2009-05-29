@@ -37,6 +37,12 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 	protected $code;
 
 	/**
+	 * The value for the locale field.
+	 * @var        string
+	 */
+	protected $locale;
+
+	/**
 	 * @var        array MultilangText[] Collection to store aggregation of MultilangText objects.
 	 */
 	protected $collMultilangTexts;
@@ -111,6 +117,16 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [locale] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getLocale()
+	{
+		return $this->locale;
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
@@ -171,6 +187,26 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 	} // setCode()
 
 	/**
+	 * Set the value of [locale] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     MultilangLanguage The current object (for fluent API support)
+	 */
+	public function setLocale($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->locale !== $v) {
+			$this->locale = $v;
+			$this->modifiedColumns[] = MultilangLanguagePeer::LOCALE;
+		}
+
+		return $this;
+	} // setLocale()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -210,6 +246,7 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->code = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->locale = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -219,7 +256,7 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 3; // 3 = MultilangLanguagePeer::NUM_COLUMNS - MultilangLanguagePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 4; // 4 = MultilangLanguagePeer::NUM_COLUMNS - MultilangLanguagePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating MultilangLanguage object", $e);
@@ -497,6 +534,7 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(MultilangLanguagePeer::ID)) $criteria->add(MultilangLanguagePeer::ID, $this->id);
 		if ($this->isColumnModified(MultilangLanguagePeer::NAME)) $criteria->add(MultilangLanguagePeer::NAME, $this->name);
 		if ($this->isColumnModified(MultilangLanguagePeer::CODE)) $criteria->add(MultilangLanguagePeer::CODE, $this->code);
+		if ($this->isColumnModified(MultilangLanguagePeer::LOCALE)) $criteria->add(MultilangLanguagePeer::LOCALE, $this->locale);
 
 		return $criteria;
 	}
@@ -554,6 +592,8 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 		$copyObj->setName($this->name);
 
 		$copyObj->setCode($this->code);
+
+		$copyObj->setLocale($this->locale);
 
 
 		if ($deepCopy) {
@@ -670,7 +710,7 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 			   $this->collMultilangTexts = array();
 			} else {
 
-				$criteria->add(MultilangTextPeer::LANGUAGEID, $this->id);
+				$criteria->add(MultilangTextPeer::LANGUAGECODE, $this->code);
 
 				MultilangTextPeer::addSelectColumns($criteria);
 				$this->collMultilangTexts = MultilangTextPeer::doSelect($criteria, $con);
@@ -683,7 +723,7 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(MultilangTextPeer::LANGUAGEID, $this->id);
+				$criteria->add(MultilangTextPeer::LANGUAGECODE, $this->code);
 
 				MultilangTextPeer::addSelectColumns($criteria);
 				if (!isset($this->lastMultilangTextCriteria) || !$this->lastMultilangTextCriteria->equals($criteria)) {
@@ -723,7 +763,7 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 				$count = 0;
 			} else {
 
-				$criteria->add(MultilangTextPeer::LANGUAGEID, $this->id);
+				$criteria->add(MultilangTextPeer::LANGUAGECODE, $this->code);
 
 				$count = MultilangTextPeer::doCount($criteria, $con);
 			}
@@ -735,7 +775,7 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(MultilangTextPeer::LANGUAGEID, $this->id);
+				$criteria->add(MultilangTextPeer::LANGUAGECODE, $this->code);
 
 				if (!isset($this->lastMultilangTextCriteria) || !$this->lastMultilangTextCriteria->equals($criteria)) {
 					$count = MultilangTextPeer::doCount($criteria, $con);
@@ -796,7 +836,7 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 				$this->collMultilangTexts = array();
 			} else {
 
-				$criteria->add(MultilangTextPeer::LANGUAGEID, $this->id);
+				$criteria->add(MultilangTextPeer::LANGUAGECODE, $this->code);
 
 				$this->collMultilangTexts = MultilangTextPeer::doSelectJoinModule($criteria, $con, $join_behavior);
 			}
@@ -805,7 +845,7 @@ abstract class BaseMultilangLanguage extends BaseObject  implements Persistent {
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(MultilangTextPeer::LANGUAGEID, $this->id);
+			$criteria->add(MultilangTextPeer::LANGUAGECODE, $this->code);
 
 			if (!isset($this->lastMultilangTextCriteria) || !$this->lastMultilangTextCriteria->equals($criteria)) {
 				$this->collMultilangTexts = MultilangTextPeer::doSelectJoinModule($criteria, $con, $join_behavior);

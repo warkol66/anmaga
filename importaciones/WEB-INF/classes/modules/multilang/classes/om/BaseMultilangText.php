@@ -31,10 +31,10 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent {
 	protected $modulename;
 
 	/**
-	 * The value for the languageid field.
-	 * @var        int
+	 * The value for the languagecode field.
+	 * @var        string
 	 */
-	protected $languageid;
+	protected $languagecode;
 
 	/**
 	 * The value for the text field.
@@ -107,13 +107,13 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Get the [languageid] column value.
+	 * Get the [languagecode] column value.
 	 * 
-	 * @return     int
+	 * @return     string
 	 */
-	public function getLanguageid()
+	public function getLanguagecode()
 	{
-		return $this->languageid;
+		return $this->languagecode;
 	}
 
 	/**
@@ -171,28 +171,28 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent {
 	} // setModulename()
 
 	/**
-	 * Set the value of [languageid] column.
+	 * Set the value of [languagecode] column.
 	 * 
-	 * @param      int $v new value
+	 * @param      string $v new value
 	 * @return     MultilangText The current object (for fluent API support)
 	 */
-	public function setLanguageid($v)
+	public function setLanguagecode($v)
 	{
 		if ($v !== null) {
-			$v = (int) $v;
+			$v = (string) $v;
 		}
 
-		if ($this->languageid !== $v) {
-			$this->languageid = $v;
-			$this->modifiedColumns[] = MultilangTextPeer::LANGUAGEID;
+		if ($this->languagecode !== $v) {
+			$this->languagecode = $v;
+			$this->modifiedColumns[] = MultilangTextPeer::LANGUAGECODE;
 		}
 
-		if ($this->aMultilangLanguage !== null && $this->aMultilangLanguage->getId() !== $v) {
+		if ($this->aMultilangLanguage !== null && $this->aMultilangLanguage->getCode() !== $v) {
 			$this->aMultilangLanguage = null;
 		}
 
 		return $this;
-	} // setLanguageid()
+	} // setLanguagecode()
 
 	/**
 	 * Set the value of [text] column.
@@ -253,7 +253,7 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->modulename = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-			$this->languageid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->languagecode = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->text = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
 			$this->resetModified();
 
@@ -290,7 +290,7 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent {
 		if ($this->aModule !== null && $this->modulename !== $this->aModule->getName()) {
 			$this->aModule = null;
 		}
-		if ($this->aMultilangLanguage !== null && $this->languageid !== $this->aMultilangLanguage->getId()) {
+		if ($this->aMultilangLanguage !== null && $this->languagecode !== $this->aMultilangLanguage->getCode()) {
 			$this->aMultilangLanguage = null;
 		}
 	} // ensureConsistency
@@ -562,7 +562,7 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent {
 
 		if ($this->isColumnModified(MultilangTextPeer::ID)) $criteria->add(MultilangTextPeer::ID, $this->id);
 		if ($this->isColumnModified(MultilangTextPeer::MODULENAME)) $criteria->add(MultilangTextPeer::MODULENAME, $this->modulename);
-		if ($this->isColumnModified(MultilangTextPeer::LANGUAGEID)) $criteria->add(MultilangTextPeer::LANGUAGEID, $this->languageid);
+		if ($this->isColumnModified(MultilangTextPeer::LANGUAGECODE)) $criteria->add(MultilangTextPeer::LANGUAGECODE, $this->languagecode);
 		if ($this->isColumnModified(MultilangTextPeer::TEXT)) $criteria->add(MultilangTextPeer::TEXT, $this->text);
 
 		return $criteria;
@@ -582,7 +582,7 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent {
 
 		$criteria->add(MultilangTextPeer::ID, $this->id);
 		$criteria->add(MultilangTextPeer::MODULENAME, $this->modulename);
-		$criteria->add(MultilangTextPeer::LANGUAGEID, $this->languageid);
+		$criteria->add(MultilangTextPeer::LANGUAGECODE, $this->languagecode);
 
 		return $criteria;
 	}
@@ -600,7 +600,7 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent {
 
 		$pks[1] = $this->getModulename();
 
-		$pks[2] = $this->getLanguageid();
+		$pks[2] = $this->getLanguagecode();
 
 		return $pks;
 	}
@@ -618,7 +618,7 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent {
 
 		$this->setModulename($keys[1]);
 
-		$this->setLanguageid($keys[2]);
+		$this->setLanguagecode($keys[2]);
 
 	}
 
@@ -639,7 +639,7 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent {
 
 		$copyObj->setModulename($this->modulename);
 
-		$copyObj->setLanguageid($this->languageid);
+		$copyObj->setLanguagecode($this->languagecode);
 
 		$copyObj->setText($this->text);
 
@@ -696,9 +696,9 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent {
 	public function setMultilangLanguage(MultilangLanguage $v = null)
 	{
 		if ($v === null) {
-			$this->setLanguageid(NULL);
+			$this->setLanguagecode(NULL);
 		} else {
-			$this->setLanguageid($v->getId());
+			$this->setLanguagecode($v->getCode());
 		}
 
 		$this->aMultilangLanguage = $v;
@@ -722,8 +722,8 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent {
 	 */
 	public function getMultilangLanguage(PropelPDO $con = null)
 	{
-		if ($this->aMultilangLanguage === null && ($this->languageid !== null)) {
-			$this->aMultilangLanguage = MultilangLanguagePeer::retrieveByPK($this->languageid, $con);
+		if ($this->aMultilangLanguage === null && (($this->languagecode !== "" && $this->languagecode !== null))) {
+			$this->aMultilangLanguage = MultilangLanguagePeer::retrieveByPK($this->languagecode, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be

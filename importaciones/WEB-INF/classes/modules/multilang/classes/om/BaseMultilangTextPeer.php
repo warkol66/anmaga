@@ -30,8 +30,8 @@ abstract class BaseMultilangTextPeer {
 	/** the column name for the MODULENAME field */
 	const MODULENAME = 'multilang_text.MODULENAME';
 
-	/** the column name for the LANGUAGEID field */
-	const LANGUAGEID = 'multilang_text.LANGUAGEID';
+	/** the column name for the LANGUAGECODE field */
+	const LANGUAGECODE = 'multilang_text.LANGUAGECODE';
 
 	/** the column name for the TEXT field */
 	const TEXT = 'multilang_text.TEXT';
@@ -57,10 +57,10 @@ abstract class BaseMultilangTextPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Modulename', 'Languageid', 'Text', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'modulename', 'languageid', 'text', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::MODULENAME, self::LANGUAGEID, self::TEXT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'moduleName', 'languageId', 'text', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Modulename', 'Languagecode', 'Text', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'modulename', 'languagecode', 'text', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::MODULENAME, self::LANGUAGECODE, self::TEXT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'moduleName', 'languageCode', 'text', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
@@ -71,10 +71,10 @@ abstract class BaseMultilangTextPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Modulename' => 1, 'Languageid' => 2, 'Text' => 3, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'modulename' => 1, 'languageid' => 2, 'text' => 3, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::MODULENAME => 1, self::LANGUAGEID => 2, self::TEXT => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'moduleName' => 1, 'languageId' => 2, 'text' => 3, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Modulename' => 1, 'Languagecode' => 2, 'Text' => 3, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'modulename' => 1, 'languagecode' => 2, 'text' => 3, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::MODULENAME => 1, self::LANGUAGECODE => 2, self::TEXT => 3, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'moduleName' => 1, 'languageCode' => 2, 'text' => 3, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
@@ -161,7 +161,7 @@ abstract class BaseMultilangTextPeer {
 
 		$criteria->addSelectColumn(MultilangTextPeer::MODULENAME);
 
-		$criteria->addSelectColumn(MultilangTextPeer::LANGUAGEID);
+		$criteria->addSelectColumn(MultilangTextPeer::LANGUAGECODE);
 
 		$criteria->addSelectColumn(MultilangTextPeer::TEXT);
 
@@ -288,7 +288,7 @@ abstract class BaseMultilangTextPeer {
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
-				$key = serialize(array((string) $obj->getId(), (string) $obj->getModulename(), (string) $obj->getLanguageid()));
+				$key = serialize(array((string) $obj->getId(), (string) $obj->getModulename(), (string) $obj->getLanguagecode()));
 			} // if key === null
 			self::$instances[$key] = $obj;
 		}
@@ -308,7 +308,7 @@ abstract class BaseMultilangTextPeer {
 	{
 		if (Propel::isInstancePoolingEnabled() && $value !== null) {
 			if (is_object($value) && $value instanceof MultilangText) {
-				$key = serialize(array((string) $value->getId(), (string) $value->getModulename(), (string) $value->getLanguageid()));
+				$key = serialize(array((string) $value->getId(), (string) $value->getModulename(), (string) $value->getLanguagecode()));
 			} elseif (is_array($value) && count($value) === 3) {
 				// assume we've been passed a primary key
 				$key = serialize(array((string) $value[0], (string) $value[1], (string) $value[2]));
@@ -440,7 +440,7 @@ abstract class BaseMultilangTextPeer {
 			$con = Propel::getConnection(MultilangTextPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(MultilangTextPeer::LANGUAGEID,), array(MultilangLanguagePeer::ID,), $join_behavior);
+		$criteria->addJoin(array(MultilangTextPeer::LANGUAGECODE,), array(MultilangLanguagePeer::CODE,), $join_behavior);
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -524,7 +524,7 @@ abstract class BaseMultilangTextPeer {
 		$startcol = (MultilangTextPeer::NUM_COLUMNS - MultilangTextPeer::NUM_LAZY_LOAD_COLUMNS);
 		MultilangLanguagePeer::addSelectColumns($c);
 
-		$c->addJoin(array(MultilangTextPeer::LANGUAGEID,), array(MultilangLanguagePeer::ID,), $join_behavior);
+		$c->addJoin(array(MultilangTextPeer::LANGUAGECODE,), array(MultilangLanguagePeer::CODE,), $join_behavior);
 		$stmt = BasePeer::doSelect($c, $con);
 		$results = array();
 
@@ -672,7 +672,7 @@ abstract class BaseMultilangTextPeer {
 			$con = Propel::getConnection(MultilangTextPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(MultilangTextPeer::LANGUAGEID,), array(MultilangLanguagePeer::ID,), $join_behavior);
+		$criteria->addJoin(array(MultilangTextPeer::LANGUAGECODE,), array(MultilangLanguagePeer::CODE,), $join_behavior);
 		$criteria->addJoin(array(MultilangTextPeer::MODULENAME,), array(ModulePeer::NAME,), $join_behavior);
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -713,7 +713,7 @@ abstract class BaseMultilangTextPeer {
 		ModulePeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + (ModulePeer::NUM_COLUMNS - ModulePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(MultilangTextPeer::LANGUAGEID,), array(MultilangLanguagePeer::ID,), $join_behavior);
+		$c->addJoin(array(MultilangTextPeer::LANGUAGECODE,), array(MultilangLanguagePeer::CODE,), $join_behavior);
 		$c->addJoin(array(MultilangTextPeer::MODULENAME,), array(ModulePeer::NAME,), $join_behavior);
 		$stmt = BasePeer::doSelect($c, $con);
 		$results = array();
@@ -865,7 +865,7 @@ abstract class BaseMultilangTextPeer {
 			$con = Propel::getConnection(MultilangTextPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(MultilangTextPeer::LANGUAGEID,), array(MultilangLanguagePeer::ID,), $join_behavior);
+				$criteria->addJoin(array(MultilangTextPeer::LANGUAGECODE,), array(MultilangLanguagePeer::CODE,), $join_behavior);
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -980,7 +980,7 @@ abstract class BaseMultilangTextPeer {
 		MultilangLanguagePeer::addSelectColumns($c);
 		$startcol3 = $startcol2 + (MultilangLanguagePeer::NUM_COLUMNS - MultilangLanguagePeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(MultilangTextPeer::LANGUAGEID,), array(MultilangLanguagePeer::ID,), $join_behavior);
+				$c->addJoin(array(MultilangTextPeer::LANGUAGECODE,), array(MultilangLanguagePeer::CODE,), $join_behavior);
 
 		$stmt = BasePeer::doSelect($c, $con);
 		$results = array();
@@ -1118,8 +1118,8 @@ abstract class BaseMultilangTextPeer {
 			$comparison = $criteria->getComparison(MultilangTextPeer::MODULENAME);
 			$selectCriteria->add(MultilangTextPeer::MODULENAME, $criteria->remove(MultilangTextPeer::MODULENAME), $comparison);
 
-			$comparison = $criteria->getComparison(MultilangTextPeer::LANGUAGEID);
-			$selectCriteria->add(MultilangTextPeer::LANGUAGEID, $criteria->remove(MultilangTextPeer::LANGUAGEID), $comparison);
+			$comparison = $criteria->getComparison(MultilangTextPeer::LANGUAGECODE);
+			$selectCriteria->add(MultilangTextPeer::LANGUAGECODE, $criteria->remove(MultilangTextPeer::LANGUAGECODE), $comparison);
 
 		} else { // $values is MultilangText object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -1204,7 +1204,7 @@ abstract class BaseMultilangTextPeer {
 
 				$criterion = $criteria->getNewCriterion(MultilangTextPeer::ID, $value[0]);
 				$criterion->addAnd($criteria->getNewCriterion(MultilangTextPeer::MODULENAME, $value[1]));
-				$criterion->addAnd($criteria->getNewCriterion(MultilangTextPeer::LANGUAGEID, $value[2]));
+				$criterion->addAnd($criteria->getNewCriterion(MultilangTextPeer::LANGUAGECODE, $value[2]));
 				$criteria->addOr($criterion);
 
 				// we can invalidate the cache for this single PK
@@ -1273,13 +1273,13 @@ abstract class BaseMultilangTextPeer {
 	 * Retrieve object using using composite pkey values.
 	 * @param      int $id
 	   @param      string $modulename
-	   @param      int $languageid
+	   @param      string $languagecode
 	   
 	 * @param      PropelPDO $con
 	 * @return     MultilangText
 	 */
-	public static function retrieveByPK($id, $modulename, $languageid, PropelPDO $con = null) {
-		$key = serialize(array((string) $id, (string) $modulename, (string) $languageid));
+	public static function retrieveByPK($id, $modulename, $languagecode, PropelPDO $con = null) {
+		$key = serialize(array((string) $id, (string) $modulename, (string) $languagecode));
  		if (null !== ($obj = MultilangTextPeer::getInstanceFromPool($key))) {
  			return $obj;
 		}
@@ -1290,7 +1290,7 @@ abstract class BaseMultilangTextPeer {
 		$criteria = new Criteria(MultilangTextPeer::DATABASE_NAME);
 		$criteria->add(MultilangTextPeer::ID, $id);
 		$criteria->add(MultilangTextPeer::MODULENAME, $modulename);
-		$criteria->add(MultilangTextPeer::LANGUAGEID, $languageid);
+		$criteria->add(MultilangTextPeer::LANGUAGECODE, $languagecode);
 		$v = MultilangTextPeer::doSelect($criteria, $con);
 
 		return !empty($v) ? $v[0] : null;
