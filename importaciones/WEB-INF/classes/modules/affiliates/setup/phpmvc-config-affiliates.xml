@@ -140,7 +140,6 @@
 							 name = "affiliatesUsersLogin"
 							scope = "request"
 					 validate = "true">
-				<description value="Modulo de ingreso"/>
 			<forward name="success" path="AffiliatesUsersLogin.tpl"/>
 		</action>
 
@@ -149,7 +148,6 @@
 							 name = "affiliatesUsersDoLogin"
 							scope = "request"
 					 validate = "true">
-				<description value="Modulo de ingreso"/>
 			<forward name="success" path="AffiliatesUsersWelcome.tpl"/>
 			<forward name="failure-unified" path="UsersLogin.tpl"/>
 			<forward name="failure" path="AffiliatesUsersLogin.tpl"/>
@@ -160,7 +158,6 @@
 							 name = "affiliatesUsersWelcome"
 							scope = "request"
 					 validate = "true">
-				<description value="Página de bienvenida"/>
 			<forward name="success" path="AffiliatesUsersWelcome.tpl"/>
 		</action>
 
