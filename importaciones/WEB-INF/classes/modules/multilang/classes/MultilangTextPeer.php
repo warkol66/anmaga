@@ -30,14 +30,14 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 	* Crea un text nuevo.
 	*
 	* @param int $moduleName Nombre del modulo
-	* @param int $languageId languageId del text
+	* @param int $languageCode languageCode del text
 	* @param string $text text del text
 	* @return integer Id del Text creado
 	*/
-	function create($moduleName,$languageId,$text) {
+	function create($moduleName,$languageCode,$text) {
 		$textObj = new MultilangText();
 		$textObj->setModuleName($moduleName);
-		$textObj->setLanguageId($languageId);
+		$textObj->setLanguageCode($languageCode);
 		$textObj->setText(MultilangTextPeer::replaceText($text));
 		$newId = MultilangTextPeer::getNextIdByModuleName($moduleName);
 		$textObj->setId($newId);
@@ -68,15 +68,15 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 	*
 	* @param int $id id del text
 	* @param int $moduleName Nombre del modulo
-	* @param int $languageId languageId del text
+	* @param int $languageCode languageCode del text
 	* @param string $text text del text
 	* @return integer Id del Text creado
 	*/
-	function createWithId($id,$moduleName,$languageId,$text) {
+	function createWithId($id,$moduleName,$languageCode,$text) {
 		$textObj = new MultilangText();
 		$textObj->setId($id);
 		$textObj->setModuleName($moduleName);
-		$textObj->setlanguageId($languageId);
+		$textObj->setlanguageCode($languageCode);
 		$textObj->setText(MultilangTextPeer::replaceText($text));
 		$textObj->save();
 		return $textObj->getId();
@@ -87,18 +87,18 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 	*
 	* @param int $id id del text
 	* @param int $moduleName Nombre del modulo
-	* @param int $languageId languageId del text
+	* @param int $languageCode languageCode del text
 	* @param string $text text del text
 	* @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
-	function update($id,$moduleName,$languageId,$text,$moduleId) {
-		$textObj = MultilangTextPeer::retrieveByPK($id,$moduleName,$languageId);
+	function update($id,$moduleName,$languageCode,$text,$moduleId) {
+		$textObj = MultilangTextPeer::retrieveByPK($id,$moduleName,$languageCode);
 		if (empty($textObj)) {
 			$textObj = new MultilangText();
 			$textObj->setId($id);
 			$textObj->setModuleName($moduleName);
 		}
-		$textObj->setlanguageId($languageId);
+		$textObj->setlanguageCode($languageCode);
 		$textObj->setText(MultilangTextPeer::replaceText($text));
 		$textObj->save();
 		return true;
@@ -109,11 +109,11 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 	*
 	* @param int $id id del text
 	* @param int $moduleName Nombre del modulo
-	* @param int $languageId languageId del text
+	* @param int $languageCode languageCode del text
 	* @return boolean true si se elimino correctamente el text, false sino
 	*/
-	function delete($id,$moduleName,$languageId) {
-		$textObj = MultilangTextPeer::retrieveByPK($id,$moduleName,$languageId);
+	function delete($id,$moduleName,$languageCode) {
+		$textObj = MultilangTextPeer::retrieveByPK($id,$moduleName,$languageCode);
 		$textObj->delete();
 		return true;
 	}
@@ -155,11 +155,11 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 	*
 	* @param int $id id del text
 	* @param int $moduleName Nombre del modulo
-	* @param int $languageId languageId del text
+	* @param int $languageCode languageCode del text
 	* @return array Informacion del text
 	*/
-	function get($id,$moduleName,$languageId) {
-		$textObj = MultilangTextPeer::retrieveByPK($id,$moduleName,$languageId);
+	function get($id,$moduleName,$languageCode) {
+		$textObj = MultilangTextPeer::retrieveByPK($id,$moduleName,$languageCode);
 		return $textObj;
 	}
 
@@ -176,7 +176,7 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 		$alls = MultilangTextPeer::doSelect($cond);
 		$allsOrdered = array();
 		foreach ($alls as $text) {
-			$allsOrdered[$text->getLanguageId()] = $text;
+			$allsOrdered[$text->getLanguageCode()] = $text;
 		}
 		return $allsOrdered;
 	}
@@ -192,11 +192,11 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 		$cond = new Criteria();
 		$cond->add(MultilangTextPeer::ID,$id);
 		$cond->add(MultilangTextPeer::MODULENAME,$moduleName);
-		$cond->addAscendingOrderByColumn(MultilangTextPeer::LANGUAGEID);
+		$cond->addAscendingOrderByColumn(MultilangTextPeer::LANGUAGECODE);
 		$alls = MultilangTextPeer::doSelect($cond);
 		$allsOrdered = array();
 		foreach ($alls as $text) {
-			$allsOrdered[$text->getLanguageId()] = $text;
+			$allsOrdered[$text->getLanguageCode()] = $text;
 		}
 		return $allsOrdered;
 	}
@@ -213,8 +213,7 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 		$cond = new Criteria();
 		$cond->add(MultilangTextPeer::ID,$id);
 		$cond->add(MultilangTextPeer::MODULENAME,$moduleName);
-		$cond->addJoin(MultilangTextPeer::LANGUAGEID,MultilangLanguagePeer::ID);
-		$cond->add(MultilangLanguagePeer::CODE,$languageCode);
+		$cond->add(MultilangTextPeer::LANGUAGECODE,$languageCode);
 		$text = MultilangTextPeer::doSelectOne($cond);
 		return $text;
 	}	
@@ -262,11 +261,11 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 		$cond = new Criteria();
 		$cond->add(MultilangTextPeer::MODULENAME,$moduleName);
 		$cond->addAscendingOrderByColumn(MultilangTextPeer::ID);
-		$cond->addAscendingOrderByColumn(MultilangTextPeer::LANGUAGEID);
+		$cond->addAscendingOrderByColumn(MultilangTextPeer::LANGUAGECODE);
 		$alls = MultilangTextPeer::doSelect($cond);
 		$allsOrdered = array();
 		foreach ($alls as $text) {
-			$allsOrdered[$text->getId()][$text->getLanguageId()] = $text;
+			$allsOrdered[$text->getId()][$text->getLanguageCode()] = $text;
 		}
 		return $allsOrdered;
 	}
@@ -286,7 +285,7 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 		$cond = new Criteria();
 		$cond->add(MultilangTextPeer::MODULENAME,$moduleName);
 		$cond->addAscendingOrderByColumn(MultilangTextPeer::ID);
-		$cond->addAscendingOrderByColumn(MultilangTextPeer::LANGUAGEID);
+		$cond->addAscendingOrderByColumn(MultilangTextPeer::LANGUAGECODE);
 
     	$pager = new PropelPager($cond,"MultilangTextPeer", "doSelect",$page,$perPage);
 		return $pager;
@@ -296,13 +295,13 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 	* Busca en los texts, paginados.
 	*
 	* @param int $moduleName Nombre del modulo
-	* @param int $langId Id del idioma
+	* @param int $langCode Code del idioma
 	* @param string $search Texto a buscar
 	* @param int $page Numero de pagina (1 por defecto)
 	* @param int $perPage Cantidad de elementos por pagina (10 por defecto)
 	* @return array Informacion sobre todos los texts
 	*/
-	function searchPaginated($moduleName,$langId,$search,$page=1,$perPage=10) {
+	function searchPaginated($moduleName,$langCode,$search,$page=1,$perPage=10) {
 		if (empty($page))
 			$page = 1;
 		require_once("propel/util/PropelPager.php");
@@ -311,7 +310,7 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 		$cond->addAscendingOrderByColumn(MultilangTextPeer::ID);
 
 		$cond->add(MultilangTextPeer::TEXT,"%".$search."%",Criteria::LIKE);
-		$cond->add(MultilangTextPeer::LANGUAGEID,$langId);
+		$cond->add(MultilangTextPeer::LANGUAGECODE,$langCode);
 		$cond->setIgnoreCase(true);
 
 		$pager = new PropelPager($cond,"MultilangTextPeer", "doSelect",$page,$perPage);
@@ -322,18 +321,18 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 	* Busca en los texts.
 	*
 	* @param int $moduleName Nombre del modulo
-	* @param int $langId Id del idioma
+	* @param int $langCode Code del idioma
 	* @param string $search Texto a buscar
 	* @return array Informacion sobre todos los texts
 	*/
-	function search($moduleName,$langId,$search) {
+	function search($moduleName,$langCode,$search) {
 		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->add(MultilangTextPeer::MODULENAME,$moduleName);
 		$cond->addAscendingOrderByColumn(MultilangTextPeer::ID);
 
 		$cond->add(MultilangTextPeer::TEXT,"%".$search."%",Criteria::LIKE);
-		$cond->add(MultilangTextPeer::LANGUAGEID,$langId);
+		$cond->add(MultilangTextPeer::LANGUAGECODE,$langCode);
 		$cond->setIgnoreCase(true);
 
 		$alls = MultilangTextPeer::doSelect($cond);
@@ -348,7 +347,7 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 		$texts = Array();
 		if (!empty($languageObj)) {
 			$cond = new Criteria();
-			$cond->add(MultilangTextPeer::LANGUAGEID, $languageObj->getId());
+			$cond->add(MultilangTextPeer::LANGUAGECODE, $languageObj->getCode());
 			$texts = MultilangTextPeer::doSelect($cond);
 		}
 		return $texts;
@@ -359,13 +358,13 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 	* Obtiene todos los texts de un modulo y un idioma.
 	*
 	*	@param int $moduleName Nombre del modulo
-	*	@param int $languageId Nombre del modulo
+	*	@param int $languageCode Codigo del idioma
 	*	@return array Informacion sobre todos los texts
 	*/
-	function getAllByModuleAndLanguage($moduleName,$languageId) {
+	function getAllByModuleAndLanguage($moduleName,$languageCode) {
 		$cond = new Criteria();
 		$cond->add(MultilangTextPeer::MODULENAME,$moduleName);
-		$cond->add(MultilangTextPeer::LANGUAGEID,$languageId);
+		$cond->add(MultilangTextPeer::LANGUAGECODE,$languageCode);
 		$alls = MultilangTextPeer::doSelect($cond);
 		return $alls;
 	}
@@ -375,9 +374,9 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 	 * genera el codigo SQL de limpieza de las tablas afectadas al modulo.
 	 * @return string SQL
 	 */
-	public static function getSQLCleanup($moduleName,$languageId) {
+	public static function getSQLCleanup($moduleName,$languageCode) {
 		
-		$sql = "DELETE FROM `multilang_text` WHERE `moduleName` = '" . $moduleName . "' AND `languageId` = '"  . $languageId . "';";
+		$sql = "DELETE FROM `multilang_text` WHERE `moduleName` = '" . $moduleName . "' AND `languageCode` = '"  . $languageCode . "';";
 		return  $sql;
 
 	}

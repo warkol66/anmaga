@@ -48,8 +48,8 @@
     <tr>
       <td>|-$textId-|</td>
       |-foreach from=$appLanguages item=language name=for_languages-|
-      |-assign var="languageId" value=$language->getId()-|
-      |-assign var="text" value=$textLanguages[$languageId]-|
+      |-assign var="languageCode" value=$language->getCode()-|
+      |-assign var="text" value=$textLanguages[$languageCode]-|
       |-if $text ne ""-|
       	|-assign var="textContent" value=$text->getText()-|
       |-/if-|

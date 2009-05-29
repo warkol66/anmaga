@@ -50,7 +50,7 @@ class MultilangTextsDumpAction extends BaseAction {
 		$smarty->assign('modules',$modules);
 
 		$smarty->assign("moduleName",$_GET["moduleName"]);
-		$smarty->assign("languageCode",$_GET["languageCode"]);
+		$smarty->assign("languageCodes",$_GET["languageCodes"]);
 
 		return $mapping->findForwardConfig('success');
 	}

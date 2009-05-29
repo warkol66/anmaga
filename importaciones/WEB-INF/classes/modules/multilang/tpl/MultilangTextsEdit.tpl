@@ -14,12 +14,12 @@
     <fieldset title="##multilang,41,Formulario de edición de datos de traducción##">
     <p>##multilang,42,Ingrese las traducciones.##</p>
     |-foreach from=$appLanguages item=language name=for_languages-|
-    |-assign var="languageId" value=$language->getId()-|
+    |-assign var="languageCode" value=$language->getCode()-|
     |-assign var="languageName" value=$language->getName()-|
-    |-if $action eq "edit"-||-assign var="text" value=$texts[$languageId]-||-/if-|
+    |-if $action eq "edit"-||-assign var="text" value=$texts[$languageCode]-||-/if-|
     <p>
-      <label for="text[|-$languageId-|]">|-$languageName-|</label>
-      <textarea name="text[|-$languageId-|]" cols="70" rows="3" wrap="virtual" />|-if $text ne ""-||-$text->gettext()-||-/if-|</textarea>
+      <label for="text[|-$languageCode-|]">|-$languageName-|</label>
+      <textarea name="text[|-$languageCode-|]" cols="70" rows="3" wrap="virtual" />|-if $text ne ""-||-$text->gettext()-||-/if-|</textarea>
       |-if $action eq "edit" and $text ne ""-|
       <br />
 			##multilang,43,Código de inserción##: #&#0035;|-$moduleName-|,|-$textId-|,|-$text->gettext()-|#&#0035;

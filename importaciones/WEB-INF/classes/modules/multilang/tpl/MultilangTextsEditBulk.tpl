@@ -30,23 +30,23 @@
     |-math equation="x / y" x=90 y=$appLanguagesCount  format="%.0f" assign=labelsWidth-|
 	    <div style="display:none;">
 		    |-foreach from=$appLanguages item=language name=for_languages-|
-		    |-assign var="languageId" value=$language->getId()-|
+		    |-assign var="languageCode" value=$language->getCode()-|
 		    |-assign var="languageName" value=$language->getName()-|
 		    <p style="float:left;width:|-$labelsWidth-|%;clear:none;">
-		      <label for="text[][|-$languageId-|]">|-$languageName-|</label>
-		      <textarea name="text[][|-$languageId-|]" cols="|-$textareaCols-|" rows="3" wrap="virtual" /></textarea>
+		      <label for="text[][|-$languageCode-|]">|-$languageName-|</label>
+		      <textarea name="text[][|-$languageCode-|]" cols="|-$textareaCols-|" rows="3" wrap="virtual" /></textarea>
 		    </p>
 		    |-/foreach-|    
 	    </div>
 	    
 	   	<div>
 		    |-foreach from=$appLanguages item=language name=for_languages-|
-		    |-assign var="languageId" value=$language->getId()-|
+		    |-assign var="languageCode" value=$language->getCode()-|
 		    |-assign var="languageName" value=$language->getName()-|
-		    |-if $action eq "edit"-||-assign var="text" value=$texts[$languageId]-||-/if-|
+		    |-if $action eq "edit"-||-assign var="text" value=$texts[$languageCode]-||-/if-|
 		    <p style="float:left;width:|-$labelsWidth-|%;clear:none;">
-		      <label for="text[][|-$languageId-|]">|-$languageName-|</label>
-		      <textarea name="text[][|-$languageId-|]" cols="|-$textareaCols-|" rows="3" wrap="virtual" />|-if $text ne ""-||-$text->gettext()-||-/if-|</textarea>
+		      <label for="text[][|-$languageCode-|]">|-$languageName-|</label>
+		      <textarea name="text[][|-$languageCode-|]" cols="|-$textareaCols-|" rows="3" wrap="virtual" />|-if $text ne ""-||-$text->gettext()-||-/if-|</textarea>
 		      |-if $action eq "edit" and $text ne ""-|
 		      <br />
 					##multilang,43,Código de inserción##: #&#0035;|-$moduleName-|,|-$textId-|,|-$text->gettext()-|#&#0035;

@@ -30,10 +30,10 @@ class MultilangText extends BaseMultilangText {
 	function getSQLInsert() {
 		$id = $this->getId();
 		$moduleName = $this->getModuleName();
-		$languageId = $this->getLanguageId();
+		$languageCode = $this->getLanguageCode();
 		$text = $this->getText();
 	
-		$query = "INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageId` , `text` ) VALUES ('$id', '$moduleName', '$languageId','$text');";
+		$query = "INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('$id', '$moduleName', '$languageCode','$text');";
 
 		return $query;
 	}

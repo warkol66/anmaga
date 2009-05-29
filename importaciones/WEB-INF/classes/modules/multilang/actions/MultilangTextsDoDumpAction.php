@@ -41,18 +41,17 @@ class MultilangTextsDoDumpAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		if (isset($_GET["moduleName"]) && isset($_GET["languageCode"])) {
+		if (isset($_GET["moduleName"]) && isset($_GET["languageCodes"])) {
     	/**
      	* Use a different template
      	*/
 			$this->template->template = "template_dump.tpl";
 
-			foreach ($_GET["languageCode"] as $eachLanguage) {
-				$languageId = MultilangLanguagePeer::getLanguageIdByCode($eachLanguage);
+			foreach ($_GET["languageCodes"] as $languageCode) {
 
-				$dump .= MultilangTextPeer::getSQLCleanup($_GET["moduleName"],$languageId)."\n";
+				$dump .= MultilangTextPeer::getSQLCleanup($_GET["moduleName"],$languageCode)."\n";
 				
-				$allMultilangText = MultilangTextPeer::getAllByModuleAndLanguage($_GET["moduleName"],$languageId);
+				$allMultilangText = MultilangTextPeer::getAllByModuleAndLanguage($_GET["moduleName"],$languageCode);
 				foreach ($allMultilangText as $multilangText)
 					$dump .= $multilangText->getSQLInsert()."\n";
 			}

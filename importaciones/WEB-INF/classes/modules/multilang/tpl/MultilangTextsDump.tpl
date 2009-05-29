@@ -18,7 +18,7 @@
 	</p>
 					    |-foreach from=$appLanguages item=language name=for_languages-|
 							<p><label for="|-$language->getCode()-|">|-$language->getName()-|</label>
-							<input type="checkbox" name="languageCode[|-$language->getCode()-|]" value="|-$language->getCode()-|" id="languageCode[|-$language->getCode()-|]" |-if $languageCode[i] ne ''-|checked="checked"|-/if-| />
+							<input type="checkbox" name="languageCodes[|-$language->getCode()-|]" value="|-$language->getCode()-|" id="languageCode[|-$language->getCode()-|]" |-if $languageCodes[i] ne ''-|checked="checked"|-/if-| />
 					   </p> |-/foreach-|
 	<p>
 		<input name="Submit" type="submit" class="button" value="Generar dump con textos" />

@@ -67,25 +67,25 @@ class MultilangTextsListAction extends BaseAction {
 
 			$allsOrdered = array();
 			foreach ($alls as $text) {
-				$allsOrdered[$text->getId()][$text->getLanguageId()] = $text;
+				$allsOrdered[$text->getId()][$text->getLanguageCode()] = $text;
 			}
 			$url = "Main.php?do=multilangTextsList&moduleName=".$_GET["moduleName"];
 		}
 		else {
-			$pager = MultilangTextPeer::searchPaginated($_GET["moduleName"],$_GET["languageId"],$_GET["search"],$_GET["page"],$perPage);
-			$allsOrdered = $pager->getResult();
-
-			$actualLanguage = MultilangLanguagePeer::get($_GET["languageId"]);
-			$smarty->assign("actualLanguage",$actualLanguage);
+			$pager = MultilangTextPeer::searchPaginated($_GET["moduleName"],$_GET["languageCode"],$_GET["search"],$_GET["page"],$perPage);
+			$allsOrdered = $pager->getResult();
 			
 			$smarty->assign("search",$_GET["search"]);
-			$url = "Main.php?do=multilangTextsList&moduleName=".$_GET["moduleName"]."&languageId=".$_GET["languageId"]."&search=".$_GET["search"];
+			$url = "Main.php?do=multilangTextsList&moduleName=".$_GET["moduleName"]."&languageCode=".$_GET["languageCode"]."&search=".$_GET["search"];
 		}
 
     $smarty->assign("texts",$allsOrdered);
     $smarty->assign("pager",$pager);
     
     $smarty->assign("url",$url);
+
+	$searchLanguage = MultilangLanguagePeer::getLanguageByCode($_GET["languageCode"]);
+	$smarty->assign("searchLanguage",$searchLanguage);
 
     $smarty->assign("message",$_GET["message"]);
 

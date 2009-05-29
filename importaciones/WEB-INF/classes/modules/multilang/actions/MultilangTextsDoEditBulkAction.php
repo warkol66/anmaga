@@ -54,8 +54,8 @@ class MultilangTextsDoEditBulkAction extends BaseAction {
 		foreach ($_POST["text"] as $item) {
 			//los primeros $appLanguagesCount son del div oculto
 			if ($i >= $appLanguagesCount) {
-				foreach ($item as $languageId => $text) {	
-					$traduction[$languageId] = $text;
+				foreach ($item as $languageCode => $text) {	
+					$traduction[$languageCode] = $text;
 				}
 				$j++;
 				//Cuando complete todas las traducciones de un texto, debo guardar el conjunto en $traductions
@@ -70,11 +70,11 @@ class MultilangTextsDoEditBulkAction extends BaseAction {
 		
 		foreach ($traductions as $traduction) {
 			$i=0;
-			foreach ($traduction as $languageId => $text) {
+			foreach ($traduction as $languageCode => $text) {
 				if ($i==0)
-					$id = MultilangTextPeer::create($_POST["moduleName"],$languageId,$text);
+					$id = MultilangTextPeer::create($_POST["moduleName"],$languageCode,$text);
 				else
-	      			MultilangTextPeer::createWithId($id,$_POST["moduleName"],$languageId,$text);
+	      			MultilangTextPeer::createWithId($id,$_POST["moduleName"],$languageCode,$text);
 				$i++;
 			}	
 		}

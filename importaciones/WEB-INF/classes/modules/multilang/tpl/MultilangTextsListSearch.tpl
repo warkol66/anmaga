@@ -9,7 +9,7 @@
 	<div class='successMessage'>##multilang,28,Texto eliminado correctamente##</div>
 	|-/if-|
 	|-include file="MultilangTextsIncludeSearch.tpl"-|
-	<p>##multilang,47,Idioma##: <span>|-$actualLanguage->getName()-|</span> - ##multilang,48,Texto buscado##: <span>|-$search-|</span> <a href="Main.php?do=multilangTextsList&moduleName=|-$moduleName-|">##multilang,49,Ver todos##</a></p>
+	<p>##multilang,47,Idioma##: <span>|-$searchLanguage->getName()-|</span> - ##multilang,48,Texto buscado##: <span>|-$search-|</span> <a href="Main.php?do=multilangTextsList&moduleName=|-$moduleName-|">##multilang,49,Ver todos##</a></p>
 	|-if $texts|@count eq 0-|
 	<h4>##multilang,50,Su búsqueda no obtuvo resultados##</h4>
 	|-else-|
@@ -21,7 +21,7 @@
    <thead>
       <tr>
         <th width="5%">##multilang,7,Id##</th>
-        <th width="90%">|-$actualLanguage->getName()-|</th>
+        <th width="90%">|-$searchLanguage->getName()-|</th>
         <th width="5%">&nbsp;</th>
       </tr>
     </thead>

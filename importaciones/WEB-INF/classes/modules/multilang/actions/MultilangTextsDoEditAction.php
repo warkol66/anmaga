@@ -47,17 +47,17 @@ class MultilangTextsDoEditAction extends BaseAction {
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un text existente
 
-			foreach ($_POST["text"] as $languageId => $text)
-				MultilangTextPeer::update($_POST["id"],$_POST["moduleName"],$languageId,$text);
+			foreach ($_POST["text"] as $languageCode => $text)
+				MultilangTextPeer::update($_POST["id"],$_POST["moduleName"],$languageCode,$text);
 
 		} else {
 			//estoy creando un nuevo text
 			$i=0;
-			foreach ($_POST["text"] as $languageId => $text) {
+			foreach ($_POST["text"] as $languageCode => $text) {
 				if ($i==0)
-					$id = MultilangTextPeer::create($_POST["moduleName"],$languageId,$text);
+					$id = MultilangTextPeer::create($_POST["moduleName"],$languageCode,$text);
 				else
-          			MultilangTextPeer::createWithId($id,$_POST["moduleName"],$languageId,$text);
+          			MultilangTextPeer::createWithId($id,$_POST["moduleName"],$languageCode,$text);
 				$i++;
 			}
 		}
