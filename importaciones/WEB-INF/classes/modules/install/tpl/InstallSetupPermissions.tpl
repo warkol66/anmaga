@@ -3,9 +3,14 @@
 <h2>Configuración del Sistema</h2>
 <h1>Instalación de Módulos del Sistema: Módulo <strong>|-$moduleName-|</strong>.</h1>
 <fieldset>
-	<legend>Segundo Paso - Configuración de Permisos</legend>
+	<legend>Configuración de Permisos</legend>
 	<p>Asigne los permisos correspondientes</p> 
 	<form method="post">
+		<p>
+		<input type="submit" value="Generar archivo de permisos" />
+		|-include file="InstallFormNavigationInclude.tpl"-|
+	</p>
+
 	<input type="hidden" name="moduleName" value="|-$moduleName-|" />
 		<h4>Permisos Generales del Módulo</h4>
 		<p>Asignar permisos generales al módulo</p>
@@ -126,7 +131,7 @@
 		<input type="hidden" name="mode" value="|-$mode-|" id="mode">
 	|-/if-|
 	<p>
-		<input type="submit" value="Generar Permisos" />
+		<input type="submit" value="Generar archivo de permisos" />
 		|-include file="InstallFormNavigationInclude.tpl"-|
 	</p>
 </form>

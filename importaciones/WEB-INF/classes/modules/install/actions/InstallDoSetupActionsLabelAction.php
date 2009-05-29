@@ -65,8 +65,12 @@ class InstallDoSetupActionsLabelAction extends BaseAction {
 		//guardado de informacion de descripcion del modulo
 
 		$fds = Array();
-		foreach ($_POST["languages"] as $languageCode) 
-			$fds[$languageCode] = fopen($modulePath . 'actionLabel_'.$languageCode.'.sql','w');	
+		foreach ($_POST["languages"] as $languageCode) {
+			$fds[$languageCode] = fopen($modulePath . 'actionLabel_'.$languageCode.'.sql','w');
+			$securityActionLabel = new SecurityActionLabel();
+			$sql = $securityActionLabel->getSQLCleanup($_POST['moduleName']);
+			fprintf($fds[$languageCode],"%s\n",$sql);
+		}
 		
 		foreach ($_POST["labels"] as $action => $labels) {
 			foreach ($labels as $languageCode => $label) {

@@ -17,8 +17,7 @@
 <table width="100%" cellpadding="5" cellspacing="0" class="tableTdBorders"> 
 	<tr> 
 		<th width="20%" scope="col" class="thFillTitle">Nombre del  Módulo</th> 
-		<th width="20%" scope="col" class="thFillTitle">Acción</th>
-		<th width="60%" scope="col" class="thFillTitle">Pasos Específicos del proceso de instalación</th> 
+		<th width="80%" scope="col" class="thFillTitle">Pasos Específicos del proceso de instalación</th> 
 	</tr> 
 	|-foreach from=$modulesToInstall item=module name=modulef-|
 	<tr> 
@@ -28,15 +27,13 @@
 				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module-|" />
 				<input type="hidden" name="nextDo" value="installSetupModuleInformation" />
-				<input type="submit" value="Instalar" />
+				<input type="submit" value="Información de Módulo" />
 			</form>		
-		</td>
-		<td nowrap>
 			<form method="get">
 				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module-|" />
 				<input type="hidden" name="nextDo" value="installSetupActionsLabel" />
-				<input type="submit" value="Actions Label" />
+				<input type="submit" value="Acciones" />
 			</form>
 			<form method="get">
 				<input type="hidden" name="do" value="installSetupSelectLanguages" />
@@ -54,7 +51,7 @@
 				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module-|" />
 				<input type="hidden" name="nextDo" value="installFileCheck" />
-				<input type="submit" value="Ejecutar Instalacion" />
+				<input type="submit" value="Ejecutar Instalación" />
 			</form>
 		</td> 
 	</tr> 
@@ -64,8 +61,7 @@
 <table width="100%" cellpadding="5" cellspacing="0" class="tableTdBorders"> 
 	<tr> 
 		<th width="20%" class="thFillTitle" scope="col">Nombre del Módulo</th> 
-		<th width="20%" class="thFillTitle" scope="col">Acción</th>
-		<th width="60%" class="thFillTitle" scope="col">Pasos Específicos del proceso de instalación</th>		 
+		<th width="80%" class="thFillTitle" scope="col">Pasos Específicos del proceso de instalación</th>		 
 	</tr> 
 	|-foreach from=$modulesInstalled item=module name=modulef-|
 	<tr> 
@@ -75,16 +71,14 @@
 				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module->getName()-|" />
 				<input type="hidden" name="mode" value="reinstall">
-				<input type="submit" value="Reinstalar" />
+				<input type="submit" value="Información de Módulo" />
 			</form>		
-		</td>
-		<td nowrap>
 			<form method="get">
 				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module-|" />
 				<input type="hidden" name="mode" value="reinstall">
 				<input type="hidden" name="nextDo" value="installSetupActionsLabel" />
-				<input type="submit" value="Actions Label" />
+				<input type="submit" value="Acciones" />
 			</form>
 			<form method="get">
 				<input type="hidden" name="do" value="installSetupSelectLanguages" />
@@ -105,7 +99,7 @@
 				<input type="hidden" name="moduleName" value="|-$module->getName()-|" />
 				<input type="hidden" name="mode" value="reinstall">
 				<input type="hidden" name="nextDo" value="installFileCheck" />
-				<input type="submit" value="Ejecutar Instalacion" />
+				<input type="submit" value="Ejecutar Instalación" />
 			</form>
 		</td> 
 	</tr> 

@@ -14,13 +14,13 @@ CREATE TABLE `multilang_text`
 (
 	`id` INTEGER  NOT NULL,
 	`moduleName` VARCHAR(255)  NOT NULL,
-	`languageId` INTEGER  NOT NULL,
+	`languageCode` VARCHAR(30)  NOT NULL,
 	`text` TEXT  NOT NULL,
-	PRIMARY KEY (`id`,`moduleName`,`languageId`),
-	INDEX `multilang_text_FI_1` (`languageId`),
+	PRIMARY KEY (`id`,`moduleName`,`languageCode`),
+	INDEX `multilang_text_FI_1` (`languageCode`),
 	CONSTRAINT `multilang_text_FK_1`
-		FOREIGN KEY (`languageId`)
-		REFERENCES `multilang_language` (`id`)
+		FOREIGN KEY (`languageCode`)
+		REFERENCES `multilang_language` (`code`)
 		ON DELETE CASCADE,
 	INDEX `multilang_text_FI_2` (`moduleName`),
 	CONSTRAINT `multilang_text_FK_2`
@@ -40,7 +40,9 @@ CREATE TABLE `multilang_language`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(50)  NOT NULL,
 	`code` VARCHAR(30)  NOT NULL,
-	PRIMARY KEY (`id`)
+	`locale` VARCHAR(30),
+	PRIMARY KEY (`id`),
+	INDEX `I_referenced_multilang_text_FK_1_1` (`code`)
 )Type=MyISAM;
 
 # This restores the fkey checks, after having unset them earlier

@@ -41,6 +41,7 @@ CREATE TABLE `security_module`
 	`access` INTEGER COMMENT 'El acceso a ese modulo',
 	`accessAffiliateUser` INTEGER COMMENT 'El acceso a ese modulo para los usuarios por afiliados',
 	`accessRegistrationUser` INTEGER COMMENT 'El acceso a ese modulo para los usuarios por registracion',
+	`noCheckLogin` TINYINT default 0 COMMENT 'Si no se chequea login ese modulo',
 	PRIMARY KEY (`module`)
 )Type=MyISAM COMMENT='Modulos del sistema';
 

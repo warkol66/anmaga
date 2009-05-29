@@ -91,6 +91,16 @@ class InstallDoSetupModuleInformationAction extends BaseAction {
 		foreach ($_POST["languages"] as $languageCode) 
 			fclose($fds[$languageCode]);
 
+		$moduleObj = new Module();
+		$moduleObj->setName($_POST['moduleName']);
+		$moduleObj->setAlwaysActive($_POST['alwaysActive']);
+		$moduleObj->setHasCategories($_POST['hasCategories']);
+		
+		fprintf($fd,"%s\n",$moduleObj->getSQLCleanup());
+		$sqlAlwaysActive = $moduleObj->getSQLInsert(); 
+		fprintf($fd,"%s\n",$sqlAlwaysActive);
+
+
 		//generacion de sql de las dependencias
 		$moduleDependency = new ModuleDependency();
 		$moduleDependency->setModuleName($_POST['moduleName']);
@@ -113,14 +123,6 @@ class InstallDoSetupModuleInformationAction extends BaseAction {
 			
 		}
 		
-		$moduleObj = new Module();
-		$moduleObj->setName($_POST['moduleName']);
-		$moduleObj->setAlwaysActive($_POST['alwaysActive']);
-		$moduleObj->setHasCategories($_POST['hasCategories']);
-		
-		fprintf($fd,"%s\n",$moduleObj->getSQLCleanup());
-		$sqlAlwaysActive = $moduleObj->getSQLInsert(); 
-		fprintf($fd,"%s\n",$sqlAlwaysActive);
 		
 		fclose($fd);
 

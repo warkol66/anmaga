@@ -14,9 +14,14 @@ class SecurityActionLabel extends BaseSecurityActionLabel {
 
 	function getSQLInsert() {
 
-		$query = "DELETE FROM `security_actionLabel` WHERE `action` = '" . $this->getAction() . "' and `language` = '" . $this->getLanguage() . "';\n";
-	
-		$query .= "INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('" . $this->getAction() . "', '" . $this->getLabel() . "', '" . $this->getLanguage() . "');";
+		$query = "INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('" . $this->getAction() . "', '" . $this->getLabel() . "', '" . $this->getLanguage() . "');";
+
+		return $query;
+	}	
+
+	function getSQLCleanup($module) {
+
+		$query = "DELETE FROM `security_actionLabel` WHERE `action` LIKE '" . ucfirst($module) . "%' and `language` = '" . $this->getLanguage() . "';";
 
 		return $query;
 	}	

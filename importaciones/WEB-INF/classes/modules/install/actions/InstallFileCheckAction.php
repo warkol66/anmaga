@@ -69,6 +69,10 @@ class InstallFileCheckAction extends BaseAction {
 		foreach ($_GET["languages"] as $languageCode) 
  			$messages[$languageCode] = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup/" . 'messages_' . $languageCode . '.sql');
  		
+		$multilangTexts = Array();
+		foreach ($_GET["languages"] as $languageCode) 
+ 			$multilangTexts[$languageCode] = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup/" . 'multilangText_' . $languageCode . '.sql');
+
 		$smarty->assign('phpConfigXMLContent',$phpConfigXMLContent);
 		$smarty->assign('modulePathsContent',$modulePathsContent);
 		$smarty->assign('information',$information);
@@ -76,6 +80,7 @@ class InstallFileCheckAction extends BaseAction {
 		$smarty->assign('actionsLabel',$actionsLabel);
 		$smarty->assign('permissions',$permissions);
 		$smarty->assign('messages',$messages);
+		$smarty->assign('multilangTexts',$multilangTexts);
 		$smarty->assign('moduleName',$_GET['moduleName']);
 
 		$languages = Array();

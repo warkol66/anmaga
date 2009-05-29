@@ -4,7 +4,7 @@
 <h1>Instalación de Módulos: Módulo <strong>|-$moduleName|capitalize-|</strong>.</h1>
 <form  method="post">
 	<fieldset>
-		<legend>Primer Paso - Información del Módulo</legend>
+		<legend>Información del Módulo</legend>
 		<p>Ingrese la información correspondiente al módulo</p>
 			<p>
 				<label>Nombre del Módulo:</label>
@@ -77,7 +77,7 @@
 		|-if isset($mode)-|
 		<input type="hidden" name="mode" value="|-$mode-|" id="mode">
 		|-/if-|	
-		<input type="submit" value="Guardar Cambios" />
+		<input type="submit" value="Generar archivo de información" />
 		|-include file="InstallFormNavigationInclude.tpl"-|
 	</fieldset>	
 </form>

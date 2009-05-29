@@ -91,6 +91,11 @@ class InstallDoFileCheckAction extends BaseAction {
 				$this->loadSQLtoDatabase($filename);
 			}
 			
+			foreach ($_GET["languages"] as $languageCode) {
+				$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/setup/" . 'multilangText_' . $languageCode . '.sql';
+				$this->loadSQLtoDatabase($filename);
+			}
+
 	 		//mensaje de exito si ejecuta con SQL			
 			$queryData = '&message='. "success-sql";
 		}
