@@ -19,7 +19,7 @@ abstract class BaseSecurityModulePeer {
 	const CLASS_DEFAULT = 'security.classes.SecurityModule';
 
 	/** The total number of columns. */
-	const NUM_COLUMNS = 4;
+	const NUM_COLUMNS = 5;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -35,6 +35,9 @@ abstract class BaseSecurityModulePeer {
 
 	/** the column name for the ACCESSREGISTRATIONUSER field */
 	const ACCESSREGISTRATIONUSER = 'security_module.ACCESSREGISTRATIONUSER';
+
+	/** the column name for the NOCHECKLOGIN field */
+	const NOCHECKLOGIN = 'security_module.NOCHECKLOGIN';
 
 	/**
 	 * An identiy map to hold any loaded instances of SecurityModule objects.
@@ -57,11 +60,11 @@ abstract class BaseSecurityModulePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Module', 'Access', 'Accessaffiliateuser', 'Accessregistrationuser', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('module', 'access', 'accessaffiliateuser', 'accessregistrationuser', ),
-		BasePeer::TYPE_COLNAME => array (self::MODULE, self::ACCESS, self::ACCESSAFFILIATEUSER, self::ACCESSREGISTRATIONUSER, ),
-		BasePeer::TYPE_FIELDNAME => array ('module', 'access', 'accessAffiliateUser', 'accessRegistrationUser', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Module', 'Access', 'Accessaffiliateuser', 'Accessregistrationuser', 'Nochecklogin', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('module', 'access', 'accessaffiliateuser', 'accessregistrationuser', 'nochecklogin', ),
+		BasePeer::TYPE_COLNAME => array (self::MODULE, self::ACCESS, self::ACCESSAFFILIATEUSER, self::ACCESSREGISTRATIONUSER, self::NOCHECKLOGIN, ),
+		BasePeer::TYPE_FIELDNAME => array ('module', 'access', 'accessAffiliateUser', 'accessRegistrationUser', 'noCheckLogin', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	/**
@@ -71,11 +74,11 @@ abstract class BaseSecurityModulePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Module' => 0, 'Access' => 1, 'Accessaffiliateuser' => 2, 'Accessregistrationuser' => 3, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('module' => 0, 'access' => 1, 'accessaffiliateuser' => 2, 'accessregistrationuser' => 3, ),
-		BasePeer::TYPE_COLNAME => array (self::MODULE => 0, self::ACCESS => 1, self::ACCESSAFFILIATEUSER => 2, self::ACCESSREGISTRATIONUSER => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('module' => 0, 'access' => 1, 'accessAffiliateUser' => 2, 'accessRegistrationUser' => 3, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Module' => 0, 'Access' => 1, 'Accessaffiliateuser' => 2, 'Accessregistrationuser' => 3, 'Nochecklogin' => 4, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('module' => 0, 'access' => 1, 'accessaffiliateuser' => 2, 'accessregistrationuser' => 3, 'nochecklogin' => 4, ),
+		BasePeer::TYPE_COLNAME => array (self::MODULE => 0, self::ACCESS => 1, self::ACCESSAFFILIATEUSER => 2, self::ACCESSREGISTRATIONUSER => 3, self::NOCHECKLOGIN => 4, ),
+		BasePeer::TYPE_FIELDNAME => array ('module' => 0, 'access' => 1, 'accessAffiliateUser' => 2, 'accessRegistrationUser' => 3, 'noCheckLogin' => 4, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	/**
@@ -164,6 +167,8 @@ abstract class BaseSecurityModulePeer {
 		$criteria->addSelectColumn(SecurityModulePeer::ACCESSAFFILIATEUSER);
 
 		$criteria->addSelectColumn(SecurityModulePeer::ACCESSREGISTRATIONUSER);
+
+		$criteria->addSelectColumn(SecurityModulePeer::NOCHECKLOGIN);
 
 	}
 

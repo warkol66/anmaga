@@ -70,6 +70,8 @@ class SecurityModuleMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('ACCESSREGISTRATIONUSER', 'Accessregistrationuser', 'INTEGER', false, null);
 
+		$tMap->addColumn('NOCHECKLOGIN', 'Nochecklogin', 'BOOLEAN', false, null);
+
 	} // doBuild()
 
 } // SecurityModuleMapBuilder

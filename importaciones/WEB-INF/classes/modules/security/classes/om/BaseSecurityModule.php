@@ -43,6 +43,13 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	protected $accessregistrationuser;
 
 	/**
+	 * The value for the nochecklogin field.
+	 * Note: this column has a database default value of: false
+	 * @var        boolean
+	 */
+	protected $nochecklogin;
+
+	/**
 	 * @var        array SecurityAction[] Collection to store aggregation of SecurityAction objects.
 	 */
 	protected $collSecurityActions;
@@ -84,6 +91,7 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	 */
 	public function applyDefaultValues()
 	{
+		$this->nochecklogin = false;
 	}
 
 	/**
@@ -124,6 +132,16 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	public function getAccessregistrationuser()
 	{
 		return $this->accessregistrationuser;
+	}
+
+	/**
+	 * Get the [nochecklogin] column value.
+	 * Si no se chequea login ese modulo
+	 * @return     boolean
+	 */
+	public function getNochecklogin()
+	{
+		return $this->nochecklogin;
 	}
 
 	/**
@@ -207,6 +225,26 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	} // setAccessregistrationuser()
 
 	/**
+	 * Set the value of [nochecklogin] column.
+	 * Si no se chequea login ese modulo
+	 * @param      boolean $v new value
+	 * @return     SecurityModule The current object (for fluent API support)
+	 */
+	public function setNochecklogin($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->nochecklogin !== $v || $v === false) {
+			$this->nochecklogin = $v;
+			$this->modifiedColumns[] = SecurityModulePeer::NOCHECKLOGIN;
+		}
+
+		return $this;
+	} // setNochecklogin()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -217,7 +255,11 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	public function hasOnlyDefaultValues()
 	{
 			// First, ensure that we don't have any columns that have been modified which aren't default columns.
-			if (array_diff($this->modifiedColumns, array())) {
+			if (array_diff($this->modifiedColumns, array(SecurityModulePeer::NOCHECKLOGIN))) {
+				return false;
+			}
+
+			if ($this->nochecklogin !== false) {
 				return false;
 			}
 
@@ -247,6 +289,7 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 			$this->access = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->accessaffiliateuser = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
 			$this->accessregistrationuser = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+			$this->nochecklogin = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -256,7 +299,7 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 4; // 4 = SecurityModulePeer::NUM_COLUMNS - SecurityModulePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 5; // 5 = SecurityModulePeer::NUM_COLUMNS - SecurityModulePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating SecurityModule object", $e);
@@ -530,6 +573,7 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(SecurityModulePeer::ACCESS)) $criteria->add(SecurityModulePeer::ACCESS, $this->access);
 		if ($this->isColumnModified(SecurityModulePeer::ACCESSAFFILIATEUSER)) $criteria->add(SecurityModulePeer::ACCESSAFFILIATEUSER, $this->accessaffiliateuser);
 		if ($this->isColumnModified(SecurityModulePeer::ACCESSREGISTRATIONUSER)) $criteria->add(SecurityModulePeer::ACCESSREGISTRATIONUSER, $this->accessregistrationuser);
+		if ($this->isColumnModified(SecurityModulePeer::NOCHECKLOGIN)) $criteria->add(SecurityModulePeer::NOCHECKLOGIN, $this->nochecklogin);
 
 		return $criteria;
 	}
@@ -591,6 +635,8 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 		$copyObj->setAccessaffiliateuser($this->accessaffiliateuser);
 
 		$copyObj->setAccessregistrationuser($this->accessregistrationuser);
+
+		$copyObj->setNochecklogin($this->nochecklogin);
 
 
 		if ($deepCopy) {
