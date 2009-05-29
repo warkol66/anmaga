@@ -25,6 +25,7 @@
     <column name="access" type="INTEGER" description="El acceso a ese modulo" />
     <column name="accessAffiliateUser" type="INTEGER" description="El acceso a ese modulo para los usuarios por afiliados" />
     <column name="accessRegistrationUser" type="INTEGER" description="El acceso a ese modulo para los usuarios por registracion" />
+		<column name="noCheckLogin" type="BOOLEAN" default="false" description="Si no se chequea login ese modulo" />
   </table>
 
   <table name="security_actionLabel" phpName="SecurityActionLabel"  description="etiquetas de actions de seguridad">
