@@ -12,12 +12,16 @@
 <table width="100%" cellpadding="5" cellspacing="0" class="tableTdBorders"> 
 	<tr> 
 		<th width="20%" scope="col" class="thFillTitle">Módulo</th>
+		<th width="10%" scope="col" class="thFillTitle">No verifica login</th>
 		<th width="10%" scope="col" class="thFillTitle">Usuarios</th> 
 		<th width="10%" scope="col" class="thFillTitle">Usuarios Por Afiliado</th>
 		<th width="10%" scope="col" class="thFillTitle">Usuarios Por Registro</th>
 	</tr> 
 	<tr> 
 		<td>|-$moduleName-|</td>
+		<td>
+			<input type="checkbox" name="noCheckLoginModule" value="1" |-if $moduleSelected && $moduleSelected->getNoCheckLogin()-|checked="checked"|-/if-|/><br>
+		</td>
 		<td nowrap>
 				|-foreach from=$levels item=groupbit name=bitlevelgroup-|
 					<input type="checkbox" name="permissionGeneral[access][]" value="|-$groupbit->getBitLevel()-|" |-checked_if_has_access first=$groupbit->getBitLevel() second=$moduleSelected->getAccess()-| />
@@ -116,7 +120,7 @@
 </table> 
 	<input type="hidden" name="do" value="installDoSetupPermissions" />
 	|-foreach from=$languages item=language-|
-	<input type="hidden" name="languages[]" value="|-$language->getId()-|" />
+	<input type="hidden" name="languages[]" value="|-$language->getCode()-|" />
 	|-/foreach-|	
 	|-if isset($mode)-|
 		<input type="hidden" name="mode" value="|-$mode-|" id="mode">

@@ -33,6 +33,9 @@
 	|-if isset($mode)-|
 		<input type="hidden" name="mode" value="|-$mode-|" id="mode">
 	|-/if-|
+	|-foreach from=$languages item=language-|
+	<input type="hidden" name="languages[]" value="|-$language->getCode()-|" />
+	|-/foreach-|
 	<p>
 		<input type="submit" value="Guardar Mensajes" />
 		|-include file="InstallFormNavigationInclude.tpl"-|

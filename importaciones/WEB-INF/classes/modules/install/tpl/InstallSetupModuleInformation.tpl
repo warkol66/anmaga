@@ -72,7 +72,7 @@
 		<input type="hidden" name="moduleName" value="|-$moduleName-|" />
 		<input type="hidden" name="do" value="installDoSetupModuleInformation" />
 		|-foreach from=$languages item=language-|
-		<input type="hidden" name="languages[]" value="|-$language->getId()-|" />
+		<input type="hidden" name="languages[]" value="|-$language->getCode()-|" />
 		|-/foreach-|
 		|-if isset($mode)-|
 		<input type="hidden" name="mode" value="|-$mode-|" id="mode">

@@ -72,10 +72,24 @@ class InstallDoFileCheckAction extends BaseAction {
 			//carga de informacion de los SQL generados			
 			$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/setup/" . 'information.sql';
 	 		$this->loadSQLtoDatabase($filename);
+
+			foreach ($_GET["languages"] as $languageCode) {
+				$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/setup/" . 'modulesLabel_' . $languageCode . '.sql';
+				$this->loadSQLtoDatabase($filename);
+			}
+
+			foreach ($_GET["languages"] as $languageCode) {
+				$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/setup/" . 'actionLabel_' . $languageCode . '.sql';
+				$this->loadSQLtoDatabase($filename);
+			}
+
 			$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/setup/" . $_POST['moduleName'] . '-permissions.sql';
 			$this->loadSQLtoDatabase($filename);
-	 		$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/setup/" . 'messages.sql';
-			$this->loadSQLtoDatabase($filename);
+
+			foreach ($_GET["languages"] as $languageCode) {
+				$filename = "WEB-INF/classes/modules/" . $_POST['moduleName'] . "/setup/" . 'messages_' . $languageCode . '.sql';
+				$this->loadSQLtoDatabase($filename);
+			}
 			
 	 		//mensaje de exito si ejecuta con SQL			
 			$queryData = '&message='. "success-sql";

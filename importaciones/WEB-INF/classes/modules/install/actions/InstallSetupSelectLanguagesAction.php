@@ -44,6 +44,7 @@ class InstallSetupSelectLanguagesAction extends BaseAction {
 		$languages = Common::getAllLanguages();
 		$smarty->assign('languages',$languages);	
 		
+		$smarty->assign('nextDo',$_GET['nextDo']);
 		$smarty->assign('moduleName',$_GET['moduleName']);
 		
 		$smarty->assign('mode',$_GET['mode']);

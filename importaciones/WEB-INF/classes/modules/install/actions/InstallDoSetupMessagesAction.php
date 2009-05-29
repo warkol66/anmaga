@@ -7,7 +7,7 @@
 
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
-require_once("ActionLogLabel.php");
+require_once("ActionlogLabel.php");
 
 class InstallDoSetupMessagesAction extends BaseAction {
 
@@ -21,7 +21,9 @@ class InstallDoSetupMessagesAction extends BaseAction {
 		$myRedirectPath = $myRedirectConfig->getpath();
 		$queryData = '&moduleName='.$_POST["moduleName"];
 		if (isset($_POST['mode']))
-			$queryData .= '&mode=' . $_POST['mode'];		
+			$queryData .= '&mode=' . $_POST['mode'];
+		foreach ($_POST["languages"] as $languageId) 
+			$queryData .= '&languages[]=' . $languageId;		
 		$myRedirectPath .= $queryData;
 		$fc = new ForwardConfig($myRedirectPath, True);
 		return $fc;
@@ -61,14 +63,12 @@ class InstallDoSetupMessagesAction extends BaseAction {
 		
 		$modulePath = "WEB-INF/classes/modules/" . $_POST['moduleName'] . '/setup/';
 				
-		$fd = fopen($modulePath  . 'messages.sql','w');
-		if (!$fd) {
-			$myRedirectConfig = $mapping->findForwardConfig('failure');
-		}
-		
-		$sql = ActionLogLabelPeer::getSQLCleanup($_POST['moduleName']);	
-		fprintf($fd,"%s\n",$sql);
+		$fds = Array();
+		foreach ($_POST["languages"] as $languageCode) 
+			$fds[$languageCode] = fopen($modulePath . 'messages_'.$languageCode.'.sql','w');
 
+		foreach ($_POST["languages"] as $languageCode) 
+			fprintf($fds[$languageCode],"%s\n",ActionlogLabelPeer::getSQLCleanup($_POST['moduleName'],$languageCode));
 		
 		$messages = $_POST['message'];
 		
@@ -79,20 +79,21 @@ class InstallDoSetupMessagesAction extends BaseAction {
 				foreach(array_keys($messages[$action][$forward]) as $lang) {
 			
 					//creamos un action log label
-					$actionLogLabel = new ActionLogLabel();
+					$actionLogLabel = new ActionlogLabel();
 					$actionLogLabel->setAction(ucfirst($action));
 					$actionLogLabel->setForward($forward);
 					$actionLogLabel->setLanguage($lang);
 					$actionLogLabel->setLabel($messages[$action][$forward][$lang]);
 					//obtenemos el insert asociado a la instancia
 					$sql = $actionLogLabel->getSQLInsert();
-					fprintf($fd,"%s\n",$sql);
+					fprintf($fds[$lang],"%s\n",$sql);
 				}			
 			}
 		
 		}
 
-		fclose($fd);
+		foreach ($_POST["languages"] as $languageCode) 
+			fclose($fds[$languageCode]);
 		
 		//solamente se ejecuta este paso
 		if (isset($_POST['stepOnly'])) {

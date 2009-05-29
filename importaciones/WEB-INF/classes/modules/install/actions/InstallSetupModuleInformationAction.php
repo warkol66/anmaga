@@ -42,8 +42,8 @@ class InstallSetupModuleInformationAction extends BaseAction {
 		}
 
 		$languages = Array();
-		foreach ($_GET["languages"] as $languageId) {
-			$language = MultilangLanguagePeer::get($languageId);
+		foreach ($_GET["languages"] as $languageCode) {
+			$language = MultilangLanguagePeer::getLanguageByCode($languageCode);
 			$languages[] = $language;
 		}
 		

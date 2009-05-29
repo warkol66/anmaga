@@ -31,7 +31,25 @@
 							 name = "installDoSetupModuleInformation"
 							scope = "request"
 					 validate = "true">
-			<forward name="success"  path="/Main.php?do=installSetupPermissions" />
+			<forward name="success"  path="/Main.php?do=installSetupActionsLabel" />
+			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
+		</action>
+
+		<action    path = "installSetupActionsLabel"
+							 type = "InstallSetupActionsLabelAction"
+							 name = "installSetupActionsLabel"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupActionsLabel.tpl" />
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
+		</action>
+
+		<action    path = "installDoSetupActionsLabel"
+							 type = "InstallDoSetupActionsLabelAction"
+							 name = "installDoSetupActionsLabel"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="/Main.php?do=installSetupPermissions" redirect="true" />
 			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
 		</action>
 

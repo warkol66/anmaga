@@ -35,6 +35,12 @@ class InstallFileCheckAction extends BaseAction {
 		$moduleLabel = "Install";
 		$smarty->assign("moduleLabel",$moduleLabel);
  
+		$languages = Array();
+		foreach ($_GET["languages"] as $languageCode) {
+			$language = MultilangLanguagePeer::getLanguageByCode($languageCode);
+			$languages[] = $language;
+		}
+
 		$modulePeer = new ModulePeer();
 
 		if (!isset($_GET['moduleName'])) {
@@ -48,16 +54,37 @@ class InstallFileCheckAction extends BaseAction {
  		//archivos generados durante la instalacion
  		
  		$information = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup/" . 'information.sql');
+	
+		$informations = Array();
+		foreach ($_GET["languages"] as $languageCode) 
+			$informations[$languageCode] = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup/" . 'modulesLabel_' . $languageCode . '.sql');
+
+		$actionsLabel = Array();
+		foreach ($_GET["languages"] as $languageCode) 
+			$actionsLabel[$languageCode] = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup/" . 'actionLabel_' . $languageCode . '.sql');
+
  		$permissions = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup/" . $_GET['moduleName'] . '-permissions.sql');
  		
- 		$messages = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup/" . 'messages.sql');
+		$messages = Array();
+		foreach ($_GET["languages"] as $languageCode) 
+ 			$messages[$languageCode] = file_get_contents("WEB-INF/classes/modules/" . $_GET['moduleName'] . "/setup/" . 'messages_' . $languageCode . '.sql');
  		
 		$smarty->assign('phpConfigXMLContent',$phpConfigXMLContent);
 		$smarty->assign('modulePathsContent',$modulePathsContent);
 		$smarty->assign('information',$information);
+		$smarty->assign('informations',$informations);
+		$smarty->assign('actionsLabel',$actionsLabel);
 		$smarty->assign('permissions',$permissions);
 		$smarty->assign('messages',$messages);
 		$smarty->assign('moduleName',$_GET['moduleName']);
+
+		$languages = Array();
+		foreach ($_GET["languages"] as $languageCode) {
+			$language = MultilangLanguagePeer::getLanguageByCode($languageCode);
+			$languages[] = $language;
+		}
+		$smarty->assign('languages',$languages);
+
 		return $mapping->findForwardConfig('success');
 	}
 

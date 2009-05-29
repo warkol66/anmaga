@@ -27,24 +27,34 @@
 			<form method="get">
 				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module-|" />
+				<input type="hidden" name="nextDo" value="installSetupModuleInformation" />
 				<input type="submit" value="Instalar" />
 			</form>		
 		</td>
 		<td nowrap>
-			<form method="post">
-				<input type="hidden" name="do" value="installSetupModuleInformation" />
+			<form method="get">
+				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module-|" />
-				<input type="submit" value="Información" />
+				<input type="hidden" name="nextDo" value="installSetupActionsLabel" />
+				<input type="submit" value="Actions Label" />
 			</form>
 			<form method="get">
-				<input type="hidden" name="do" value="installSetupPermissions" />
+				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module-|" />
+				<input type="hidden" name="nextDo" value="installSetupPermissions" />
 				<input type="submit" value="Permisos" />
 			</form>
 			<form method="get">
-				<input type="hidden" name="do" value="installSetupMessages" />
+				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module-|" />
+				<input type="hidden" name="nextDo" value="installSetupMessages" />
 				<input type="submit" value="Mensajes de Log" />
+			</form>
+			<form method="get">
+				<input type="hidden" name="do" value="installSetupSelectLanguages" />
+				<input type="hidden" name="moduleName" value="|-$module-|" />
+				<input type="hidden" name="nextDo" value="installFileCheck" />
+				<input type="submit" value="Ejecutar Instalacion" />
 			</form>
 		</td> 
 	</tr> 
@@ -69,23 +79,33 @@
 			</form>		
 		</td>
 		<td nowrap>
-			<form method="post">
-				<input type="hidden" name="do" value="installSetupModuleInformation" />
-				<input type="hidden" name="moduleName" value="|-$module->getName()-|" />
+			<form method="get">
+				<input type="hidden" name="do" value="installSetupSelectLanguages" />
+				<input type="hidden" name="moduleName" value="|-$module-|" />
 				<input type="hidden" name="mode" value="reinstall">
-				<input type="submit" value="Información" />
+				<input type="hidden" name="nextDo" value="installSetupActionsLabel" />
+				<input type="submit" value="Actions Label" />
 			</form>
 			<form method="get">
-				<input type="hidden" name="do" value="installSetupPermissions" />
+				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module->getName()-|" />
 				<input type="hidden" name="mode" value="reinstall">
+				<input type="hidden" name="nextDo" value="installSetupPermissions" />
 				<input type="submit" value="Permisos" />
 			</form>
 			<form method="get">
-				<input type="hidden" name="do" value="installSetupMessages" />
+				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module->getName()-|" />
 				<input type="hidden" name="mode" value="reinstall">
+				<input type="hidden" name="nextDo" value="installSetupMessages" />
 				<input type="submit" value="Mensajes de Log" />
+			</form>
+			<form method="get">
+				<input type="hidden" name="do" value="installSetupSelectLanguages" />
+				<input type="hidden" name="moduleName" value="|-$module->getName()-|" />
+				<input type="hidden" name="mode" value="reinstall">
+				<input type="hidden" name="nextDo" value="installFileCheck" />
+				<input type="submit" value="Ejecutar Instalacion" />
 			</form>
 		</td> 
 	</tr> 

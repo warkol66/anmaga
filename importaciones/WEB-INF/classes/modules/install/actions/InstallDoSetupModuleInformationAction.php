@@ -69,19 +69,28 @@ class InstallDoSetupModuleInformationAction extends BaseAction {
 		if ($fd == false)
 			return $mapping->findForwardConfig('failure');
 
+		$fds = Array();
+		foreach ($_POST["languages"] as $languageCode) 
+			$fds[$languageCode] = fopen($modulePath . 'modulesLabel_'.$languageCode.'.sql','w');	
+
 		$moduleLabelPeer = new ModuleLabelPeer();	
 		
-		fprintf($fd,"%s\n",ModuleLabelPeer::getSQLCleanup($_POST['moduleName']));	
+		foreach ($_POST["languages"] as $languageCode) 
+			fprintf($fds[$languageCode],"%s\n",ModuleLabelPeer::getSQLCleanup($_POST['moduleName'],$languageCode));	
 		
 		foreach ($_POST["labels"] as $languageCode => $label) {
 			$moduleLabel = new ModuleLabel();
 			$moduleLabel->setName($_POST['moduleName']);			
 			$moduleLabel->setLabel($label);
+			$moduleLabel->setLanguage($languageCode);
 			$moduleLabel->setDescription($_POST['descriptions'][$languageCode]);
-			$sql = $moduleLabel->getSQLInsert($languageCode);
-			fprintf($fd,"%s\n",$sql);			
+			$sql = $moduleLabel->getSQLInsert();
+			fprintf($fds[$languageCode],"%s\n",$sql);			
 		}
 		
+		foreach ($_POST["languages"] as $languageCode) 
+			fclose($fds[$languageCode]);
+
 		//generacion de sql de las dependencias
 		$moduleDependency = new ModuleDependency();
 		$moduleDependency->setModuleName($_POST['moduleName']);

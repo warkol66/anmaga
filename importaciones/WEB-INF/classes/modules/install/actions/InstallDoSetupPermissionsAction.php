@@ -65,7 +65,10 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 				foreach ($permission[$action]['access'] as $access) {
 					$bitLevel += $access;
 				
-				}	
+				}
+				//El supervisor siempre tiene acceso
+				if ($bitLevel > 0)
+					$bitLevel += 1;	
 			
 			}
 			
@@ -176,6 +179,7 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 		$securityModule->setAccess($bitLevel);
 		$securityModule->setAccessRegistrationUser($accessRegistrationUser);
 		$securityModule->setAccessAffiliateUser($bitLevelAffiliate);
+		$securityModule->setNoCheckLogin($_POST["noCheckLoginModule"]);
 		
 		$sql = $securityModule->getSQLCleanup();
 		fprintf($fd,"%s\n",$sql);		
