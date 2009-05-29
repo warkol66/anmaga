@@ -78,50 +78,18 @@ class BaseAction extends Action {
 		//Configura la acción solicitada y convierto primer letra mayuscula
 		$actionRequested = ucfirst($_REQUEST["do"]);
 
-		//No verifica login
-		//Sacar siguientes 13 lineas cuanso se saque esto definitivamente del config.xml
-/*		$noCheckLoginActions = array();
-		foreach ($system["config"]["system"]["noCheckLoginActions"] as $action => $status) {
-			if ($status["value"] == "YES")
-				$noCheckLoginActions[] = ucfirst($action);
-		}
-		$noCheckLogin = array_search($actionRequested,$noCheckLoginActions);
-
-
-		if ((empty($_SESSION["loginAffiliateUser"]) && empty($_SESSION["loginUser"]) && empty($_SESSION["loginRegistrationUser"]))
-		&& $noCheckLogin === false ) {
-			header("Location: Main.php?do=usersLogin");
-			exit;
-		}
-*/
-
 		$loginUser = $_SESSION["loginUser"];
 		$loginUserAffiliate = $_SESSION["loginAffiliateUser"];
 		$loginRegistrationUser = $_SESSION["loginRegistrationUser"];
 
-		//No verifica permisos
-		//Sacar siguientes 6 lineas cuanso se saque esto definitivamente del config.xml
-/*		$noCheckPermissionActions = array();
-		foreach ($system["config"]["system"]["noCheckPermissionActions"] as $action => $status) {
-			if ($status["value"] == "YES")
-				$noCheckPermissionActions[] = ucfirst($action);
-		}
-		$noCheckPermission = array_search($actionRequested,$noCheckPermissionActions);
-*/
-
-		$securityModule = SecurityModulePeer::get($actionRequested);
 		$securityAction = SecurityActionPeer::get($actionRequested);
-
-		if ($securityAction->getActive != 0) {
-			if ($securityAction->getNoCheckLogin == 1) {
-				$noCheckLogin = 1;
-			}
-		}
-		else{
-			/*Comento esta línea hasta incluir el noCheckLogin del modulo
-			if ($securityModule->getNoCheckLogin == 1)
-			*/	$noCheckLogin = 1;
-		}
+		$securityModule = SecurityModulePeer::get($actionRequested);
+	
+		$noCheckLogin = 1;
+		if (!empty($securityAction))
+			$noCheckLogin = $securityAction->getOverallNoCheckLogin();
+		elseif (!empty($securityModule))
+			$noCheckLogin = $securityModule->getNoCheckLogin();
 
 		//Si el sistema está en desarrollo, no verifico permisos
 		if ($system["config"]["system"]["developmentMode"]["value"] == "YES")
@@ -130,23 +98,18 @@ class BaseAction extends Action {
 		//Verifico permisos cuando no se encontró en noCheckLogin
 		if (!$noCheckLogin) {
 
-			//Verifico permisos cuando no se encontró en noCheckPermission
-			//Esta seccion desaparecerá
-			if (!$noCheckPermission) {
+			//Chequeo de permisos de acceso
+			if (!empty($loginUser) || !empty($loginUserAffiliate) || !empty($loginRegistrationUser)) {
 
-				//Chequeo de permisos de acceso
-				if (!empty($loginUser) || !empty($loginUserAffiliate) || !empty($loginRegistrationUser)) {
+				$actionAccess = $securityAction->getAccessByUser();
+				$userLevel = $user->getLevel();
 
-					$actionAccess = $securityAction->getAccessByUser();
-					$userLevel = $user->getLevel();
+				if (empty($actionAccess))
+					$actionAccess = $securityModule->getAccessByUser();
 
-					if (empty($actionAccess))
-						$actionAccess = $securityModule->getAccessByUser();
-
-					if ( empty($userLevel) || ($userLevel->getBitLevel() & $actionAccess) == 0 ) {
-						header("Location:Main.php?do=securityNoPermission");
-						exit();
-					}
+				if ( empty($userLevel) || ($userLevel->getBitLevel() & $actionAccess) == 0 ) {
+					header("Location:Main.php?do=securityNoPermission");
+					exit();
 				}
 			}
 
