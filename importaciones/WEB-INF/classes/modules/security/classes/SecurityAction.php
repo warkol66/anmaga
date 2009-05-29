@@ -152,5 +152,18 @@ class SecurityAction extends BaseSecurityAction {
 			return true;
 	}
 
+	function getOverallNoCheckLogin() {
+		$noCheckLogin = 0;
+		if ($this->getActive != 0) {
+			if ($this->getNoCheckLogin() == 1) {
+				$noCheckLogin = 1;
+			}
+		}
+		else{
+			$securityModule = $this->getSecurityModule();			if ($securityModule->getNoCheckLogin() == 1)
+				$noCheckLogin = 1;
+		}
+		return $noCheckLogin;	
+	}
 
 } // SecurityAction
