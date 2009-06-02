@@ -39,6 +39,10 @@ if (!empty($argc)) {
 			$_GET[$division[0]] = $division[1];
 		} 
 	}
+	$_ENV['PHPMVC_MODE_CLI'] = true;
+}
+else {
+	$_ENV['PHPMVC_MODE_CLI'] = false;
 }
 
 // Load the application bootup file on web mode
