@@ -1,4 +1,41 @@
 ==============================
+Revisión 510
+------------------------------
+
+INSERT INTO `users_user` (
+`id` ,
+`username` ,
+`password` ,
+`active` ,
+`created` ,
+`updated` ,
+`levelId` ,
+`lastLogin` ,
+`timezone`
+)
+VALUES (
+3 , 'system', MD5( 'passwordnoaccesible' ) , '0', '2009-06-02 12:53:14', '2009-06-02 12:53:18', '1', NULL , NULL
+);
+
+INSERT INTO `importaciones`.`users_userInfo` (
+`userId` ,
+`name` ,
+`surname` ,
+`mailAddress`
+)
+VALUES (
+'3', 'system', 'system', 'gflamerich@gmail.com'
+);
+
+==============================
+Revisión 508
+------------------------------
+
+ALTER TABLE `security_module` ADD `noCheckLogin` INT NULL AFTER `module`;
+ALTER TABLE `multilang_language` ADD `locale` VARCHAR( 30 ) NULL AFTER `id` ;
+ALTER TABLE `multilang_text` CHANGE `languageId` `languageCode` VARCHAR( 30 ) NOT NULL;
+
+==============================
 Revisión 482
 ------------------------------
 Renombre tablas lodulo actionlogs
