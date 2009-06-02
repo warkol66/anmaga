@@ -92,6 +92,20 @@ class UserPeer extends BaseUserPeer {
 		$todosObj = UserPeer::doSelect($cond);
 		return $todosObj[0];
   }
+
+  /**
+  * Obtiene la informacion de un usuario segun su nombre de usuario
+  *
+  * @param int $id Id del usuario
+  * @return array Informacion del usuario
+  */
+  function getByUsername($username) {
+		$cond = new Criteria();
+		$cond->add(UserPeer::USERNAME, $username);
+		$result = UserPeer::doSelect($cond);
+		return $result[0];
+  }
+
   
   /**
   * Obtiene los grupos de usuarios en los cuales es miembro un usuario.

@@ -15,6 +15,16 @@
 	extract($_SESSION,EXTR_PREFIX_ALL,'session');
 	extract($_GET,EXTR_PREFIX_ALL,'get');
 	extract($_POST,EXTR_PREFIX_ALL,'post');
+	
+	//Configuracion de Usuario en Caso de ejecucion por linea de comando
+
+	if ($_ENV['PHPMVC_MODE_CLI'] == true) {
+		//cargamos el usuario system modo supervisor para login de los actions
+		require_once('UserPeer.php');
+		$user = UserPeer::getByUsername('system');
+		$_SESSION["login_user"] = $user;
+		$_SESSION["loginUser"] = $user;
+	}
 
 	//Configuracion de Error Reporting
 	global $system;

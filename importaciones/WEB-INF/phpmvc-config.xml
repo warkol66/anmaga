@@ -49,6 +49,38 @@
 
 <!-- ========== Modules Action Mapping Definitions ====================== -->
 
+<!-- Module Actionlogs -->
+	<action-mappings module = "Actionlogs">
+
+		<action    path = "actionlogsList"
+					     type = "ActionlogsListAction"
+					     name = "actionlogsList"
+					    scope = "request"
+					 validate = "true">
+			<forward name="success" path="ActionlogsList.tpl"/>
+		</action>
+
+		<action    path = "actionlogsPurge"
+					     type = "ActionlogsPurgeAction"
+					     name = "actionlogsPurge"
+					    scope = "request"
+					 validate = "true">
+			<forward name="success" path="ActionlogsPurge.tpl"/>
+		</action>
+
+		<action    path = "actionlogsDoPurge"
+					     type = "ActionlogsDoPurgeAction"
+					     name = "actionlogsDoPurge"
+					    scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=actionlogsList&amp;message=purged" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Module Actionlogs -->
+
+
+
 <!-- Module Affiliates -->
 	<action-mappings module="Affiliates">
 
@@ -191,7 +223,6 @@
 							 name = "affiliatesUsersLogin"
 							scope = "request"
 					 validate = "true">
-				<description value="Modulo de ingreso"/>
 			<forward name="success" path="AffiliatesUsersLogin.tpl"/>
 		</action>
 
@@ -200,7 +231,6 @@
 							 name = "affiliatesUsersDoLogin"
 							scope = "request"
 					 validate = "true">
-				<description value="Modulo de ingreso"/>
 			<forward name="success" path="AffiliatesUsersWelcome.tpl"/>
 			<forward name="failure-unified" path="UsersLogin.tpl"/>
 			<forward name="failure" path="AffiliatesUsersLogin.tpl"/>
@@ -211,7 +241,6 @@
 							 name = "affiliatesUsersWelcome"
 							scope = "request"
 					 validate = "true">
-				<description value="Página de bienvenida"/>
 			<forward name="success" path="AffiliatesUsersWelcome.tpl"/>
 		</action>
 
@@ -353,216 +382,6 @@
 
 
 
-<!-- Module Common -->
-  <action-mappings>
-    <action    path = "commonIndex"
-               type = "CommonIndexAction"
-               name = "commonIndex"
-              scope = "request"
-           validate = "true">
-    	<forward name="success" path="/Main.php?do=usersLogin" redirect="true" />
-    </action>
-    <action    path = "commonMaintenance"
-               type = "CommonMaintenanceAction"
-               name = "commonMaintenance"
-              scope = "request"
-           validate = "true">
-    	<forward name="success" path="CommonMaintenance.tpl" />
-    </action>
-
-    <action    path = "installGenerateConfig"
-               type = "InstallGenerateConfigAction"
-               name = "nstallGenerateConfig"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="InstallGenerateConfig.tpl" />
-    </action> 	
-	
-    <action    path = "js"
-               type = "JsAction"
-               name = "jsConfig"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="Js.tpl" />
-    </action> 		
-    
-    <action    path = "commonSetLanguage"
-               type = "CommonSetLanguageAction"
-               name = "commonSetLanguage"
-              scope = "request"
-           validate = "true">
-    </action> 		
-
-	</action-mappings>
-<!-- End Common -->
-
-
-
-<!-- Modulo Multilang -->
-
-<!-- Section Languages -->
-	<action-mappings>
-
-		<action    path = "multilangLanguagesEdit"
-							 type = "MultilangLanguagesEditAction"
-							 name = "multilangLanguagesEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="MultilangLanguagesEdit.tpl" />
-		</action>
-
-		<action    path = "multilangLanguagesDoEdit"
-							 type = "MultilangLanguagesDoEditAction"
-							 name = "multilangLanguagesDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=multilangLanguagesList&amp;message=ok" redirect="true" />
-			<forward name="failure" path="MultilangLanguagesEdit.tpl" />
-		</action>
-
-		<action    path = "multilangLanguagesList"
-							 type = "MultilangLanguagesListAction"
-							 name = "multilangLanguagesList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="MultilangLanguagesList.tpl" />
-		</action>
-
-		<action    path = "multilangLanguagesDoDelete"
-							 type = "MultilangLanguagesDoDeleteAction"
-							 name = "multilangLanguagesDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=multilangLanguagesList&amp;message=deleted_ok" redirect="true" />
-		</action>
-
-	</action-mappings>
-<!-- End Section Languages -->
-
-<!-- Seccion Texts -->
-	<action-mappings>
-
-		<action    path = "multilangTextsEdit"
-							 type = "MultilangTextsEditAction"
-							 name = "multilangTextsEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="MultilangTextsEdit.tpl" />
-		</action>
-
-		<action    path = "multilangTextsDoEdit"
-							 type = "MultilangTextsDoEditAction"
-							 name = "multilangTextsDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=multilangTextsList&amp;message=ok" redirect="true" />
-			<forward name="failure" path="MultilangTextsEdit.tpl" />
-		</action>
-
-		<action    path = "multilangTextsEditBulk"
-							 type = "MultilangTextsEditBulkAction"
-							 name = "multilangTextsEditBulk"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="MultilangTextsEditBulk.tpl" />
-		</action>
-
-		<action    path = "multilangTextsDoEditBulk"
-							 type = "MultilangTextsDoEditBulkAction"
-							 name = "multilangTextsDoEditBulk"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=multilangTextsList&amp;message=ok" redirect="true" />
-			<forward name="failure" path="MultilangTextsEditBulk.tpl" />
-		</action>
-
-		<action    path = "multilangTextsList"
-							 type = "MultilangTextsListAction"
-							 name = "multilangTextsList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="MultilangTextsList.tpl" />
-			<forward name="search" path="MultilangTextsListSearch.tpl" />
-		</action>
-
-		<action    path = "multilangTextsDump"
-							 type = "MultilangTextsDumpAction"
-							 name = "multilangTextsDump"
-							scope = "request"
-					 validate = "true">
-				<forward name="success" path="MultilangTextsDump.tpl" />
-				<forward name="successDump" path="MultilangTextsDoDump.tpl" />
-		</action>
-
-		<action    path = "multilangTextsDoDump"
-							 type = "MultilangTextsDoDumpAction"
-							 name = "multilangTextsDoDump"
-							scope = "request"
-					 validate = "true">
-				<forward name="success" path="MultilangTextsDoDump.tpl" />
-		</action>
-
-		<action    path = "multilangTextsDoDelete"
-							 type = "MultilangTextsDoDeleteAction"
-							 name = "multilangTextsDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=multilangTextsList&amp;message=deleted_ok" redirect="true" />
-		</action>
-
-	</action-mappings>
-<!-- End Section Texts -->
-
-<!-- End Module Multilang -->
-
-
-
-<!-- Module Config -->
-	<action-mappings module="Config">
-		<action    path = "configView"
-							 type = "ConfigViewAction"
-							 name = "configView"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="ConfigView.tpl"/>
-		</action>
-
-		<action    path = "configEdit"
-							 type = "ConfigEditAction"
-							 name = "configEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="ConfigEdit.tpl"/>
-		</action>
-		
-		<action    path = "configSet"
-							 type = "ConfigSetAction"
-							 name = "configSet"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="ConfigSet.tpl"/>
-		</action>
-		
-		<action    path = "configDoSet"
-							 type = "ConfigDoSetAction"
-							 name = "configDoSet"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=configSet&amp;message=ok" redirect="true" />
-		</action>
-
-		<action    path = "configDoEdit"
-							 type = "ConfigDoEditAction"
-							 name = "configDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=configView&amp;message=ok" redirect="true" />
-		</action>
-	</action-mappings>
-<!-- End Module Config -->
-
-
-
 <!-- Module Backup -->
   <action-mappings>
  
@@ -630,328 +449,6 @@
 
 
 
-<!-- Module Install -->
-	<action-mappings module="Install">
-
-		<action    path = "installList"
-							 type = "InstallListAction"
-							 name = "installList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="InstallList.tpl" />
-		</action>
-
-		<action    path = "installSetupSelectLanguages"
-							 type = "InstallSetupSelectLanguagesAction"
-							 name = "installSetupSelectLanguages"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="InstallSetupSelectLanguages.tpl" />
-		</action>
-
-		<action    path = "installSetupModuleInformation"
-							 type = "InstallSetupModuleInformationAction"
-							 name = "installSetupModuleInformation"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="InstallSetupModuleInformation.tpl" />
-			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
-		</action>
-
-		<action    path = "installDoSetupModuleInformation"
-							 type = "InstallDoSetupModuleInformationAction"
-							 name = "installDoSetupModuleInformation"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="/Main.php?do=installSetupActionsLabel" />
-			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
-		</action>
-
-		<action    path = "installSetupActionsLabel"
-							 type = "InstallSetupActionsLabelAction"
-							 name = "installSetupActionsLabel"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="InstallSetupActionsLabel.tpl" />
-			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
-		</action>
-
-		<action    path = "installDoSetupActionsLabel"
-							 type = "InstallDoSetupActionsLabelAction"
-							 name = "installDoSetupActionsLabel"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="/Main.php?do=installSetupPermissions" redirect="true" />
-			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
-		</action>
-
-		<action    path = "installSetupPermissions"
-							 type = "InstallSetupPermissionsAction"
-							 name = "installSetupPermissions"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="InstallSetupPermissions.tpl" />
-			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
-		</action>
-
-		<action    path = "installDoSetupPermissions"
-							 type = "InstallDoSetupPermissionsAction"
-							 name = "installDoSetupPermissions"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="/Main.php?do=installSetupMessages" redirect="true" />
-			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
-		</action>
-
-		<action    path = "installSetupMessages"
-							 type = "InstallSetupMessagesAction"
-							 name = "installSetupMessages"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="InstallSetupMessages.tpl" />
-			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
-		</action>
-
-		<action    path = "installDoSetupMessages"
-							 type = "InstallDoSetupMessagesAction"
-							 name = "installDoSetupMessages"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="/Main.php?do=installFileCheck" />
-			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
-		</action>
-
-		<action    path = "installFileCheck"
-							 type = "InstallFileCheckAction"
-							 name = "installFileCheck"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="InstallFileCheck.tpl" />
-			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
-		</action>
-
-		<action    path = "installDoFileCheck"
-							 type = "InstallDoFileCheckAction"
-							 name = "installDoFileCheck"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="/Main.php?do=installList" />
-		</action>
-
-	</action-mappings>
-<!-- End Module Install -->
-
-
-
-<!-- Module Users-->
-	<action-mappings module="Users">
-
-		<action    path = "usersLogin"
-							 type = "UsersLoginAction"
-							 name = "usersLogin"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersLogin.tpl"/>
-			<forward name="maintenance" path="Maintenance.tpl"/>
-			<forward name="welcome" path="/Main.php?do=usersWelcome" redirect="true" />
-		</action>
-
-		<action    path = "usersDoLogin"
-							 type = "UsersDoLoginAction"
-							 name = "usersDoLogin"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersWelcome.tpl"/>
-			<forward name="failure" path="UsersLogin.tpl"/>
-		</action>
-
-		<action    path = "usersPasswordRecovery"
-							 type = "UsersPasswordRecoveryAction"
-							 name = "usersPasswordRecovery"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersPasswordRecovery.tpl"/>
-		</action>
-
-		<action    path = "usersDoPasswordRecovery"
-							 type = "UsersDoPasswordRecoveryAction"
-							 name = "usersDoPasswordRecovery"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersLogin&amp;message=passwordSent" redirect="true" />
-			<forward name="failure" path="UsersPasswordRecovery.tpl"/>
-		</action>
-
-		<action    path = "usersWelcome"
-							 type = "UsersWelcomeAction"
-							 name = "usersWelcome"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersWelcome.tpl"/>
-		</action>
-
-		<action    path = "usersLoginMaintenance"
-							 type = "UsersLoginMaintenanceAction"
-							 name = "usersLoginMaintenance"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersLogin.tpl"/>
-		</action>
-
-		<action    path = "usersDoLogout"
-							 type = "UsersDoLogoutAction"
-							 name = "usersDoLogout"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersLogin" redirect="true"/>
-		</action>
-
-		<action    path = "usersList"
-							 type = "UsersListAction"
-							 name = "usersList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersList.tpl"/>
-		</action>
-
-		<action    path = "usersDoEdit"
-							 type = "UsersDoEditAction"
-							 name = "usersDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersList&amp;message=saved" redirect="true"/>
-			<forward name="successAdd" path="/Main.php?do=usersList&amp;message=added" redirect="true"/>
-		</action>
-
-		<action    path = "usersDoDelete"
-							 type = "UsersDoDeleteAction"
-							 name = "usersDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersList&amp;message=deleted" redirect="true" />
-			<forward name="failure" path="/Main.php?do=usersList&amp;message=notdeleted" redirect="true" />
-		</action>
-
-		<action    path = "usersDoAddToGroup"
-							 type = "UsersDoAddToGroupAction"
-							 name = "usersDoAddToGroup"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersList" redirect="true" />
-		</action>
-
-		<action    path = "usersDoLinkToSupplier"
-							 type = "UsersDoLinkToSupplierAction"
-							 name = "usersDoLinkToSupplier"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersList" redirect="true" />
-		</action>
-
-
-		<action    path = "usersDoRemoveFromGroup"
-							 type = "UsersDoRemoveFromGroupAction"
-							 name = "usersDoRemoveFromGroup"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersList" redirect="true" />
-		</action>
-
-		<action    path = "usersDoActivate"
-							 type = "UsersDoActivateAction"
-							 name = "usersDoActivate"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersList&amp;message=activated" redirect="true" />
-			<forward name="failure" path="/Main.php?do=usersList&amp;message=notactivated" redirect="true" />
-		</action>
-
-	</action-mappings>
-
-<!-- Section Groups -->
-	<action-mappings module="Users" section="Groups">
-
-		<action    path = "usersGroupsList"
-							 type = "UsersGroupsListAction"
-							 name = "usersGroupsList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersGroupsList.tpl"/>
-		</action>
-
-		<action    path = "usersGroupsDoEdit"
-							 type = "UsersGroupsDoEditAction"
-							 name = "usersGroupsDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersGroupsList&amp;message=saved" redirect="true"/>
-			<forward name="blankName" path="/Main.php?do=usersGroupsList&amp;message=blankName" redirect="true"/>
-		</action>
-
-		<action    path = "usersGroupsDoAddCategoryToGroup"
-							 type = "UsersGroupsDoAddCategoryToGroupAction"
-							 name = "usersGroupsDoAddCategoryToGroup"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersGroupsList" redirect="true" />
-		</action>
-
-		<action    path = "usersGroupsDoRemoveCatFromGroup"
-							 type = "UsersGroupsDoRemoveCatFromGroupAction"
-							 name = "usersGroupsDoRemoveCatFromGroup"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersGroupsList" redirect="true" />
-		</action>
-
-		<action    path = "usersGroupsDoDelete"
-							 type = "UsersGroupsDoDeleteAction"
-							 name = "usersGroupsDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersGroupsList&amp;message=deleted" redirect="true" />
-			<forward name="failure" path="/Main.php?do=usersGroupsList&amp;message=notdeleted" redirect="true" />
-		</action>
-
-	</action-mappings>
-<!-- End Section Groups -->
-
-<!-- Section Levels -->
-	<action-mappings module="Users" section="Levels">
-
-		<action    path = "usersLevelsList"
-							 type = "UsersLevelsListAction"
-							 name = "usersLevelsList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersLevelsList.tpl"/>
-		</action>
-
-		<action    path = "usersLevelsDoEdit"
-							 type = "UsersLevelsDoEditAction"
-							 name = "usersLevelsDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersLevelsList&amp;message=saved" redirect="true"/>
-			<forward name="blankName" path="/Main.php?do=usersLevelsList&amp;message=blankName" redirect="true"/>
-		</action>
-
-		<action    path = "usersLevelsDoDelete"
-							 type = "UsersLevelsDoDeleteAction"
-							 name = "usersLevelsDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersLevelsList&amp;message=deleted" redirect="true" />
-			<forward name="failure" path="/Main.php?do=usersLevelsList&amp;message=notdeleted" redirect="true" />
-		</action>
-
-	</action-mappings>
-<!-- End Section Levels -->
-
-<!-- End Module Users -->
-
-
-
 <!-- Module Categories -->
 	<action-mappings module="Categories">
 
@@ -1003,35 +500,94 @@
 
 
 
-<!-- Module Actionlogs -->
-	<action-mappings module = "Actionlogs">
+<!-- Module Common -->
+  <action-mappings>
+    <action    path = "commonIndex"
+               type = "CommonIndexAction"
+               name = "commonIndex"
+              scope = "request"
+           validate = "true">
+    	<forward name="success" path="/Main.php?do=usersLogin" redirect="true" />
+    </action>
+    <action    path = "commonMaintenance"
+               type = "CommonMaintenanceAction"
+               name = "commonMaintenance"
+              scope = "request"
+           validate = "true">
+    	<forward name="success" path="CommonMaintenance.tpl" />
+    </action>
 
-		<action    path = "actionlogsList"
-					     type = "ActionlogsListAction"
-					     name = "actionlogsList"
-					    scope = "request"
-					 validate = "true">
-			<forward name="success" path="ActionlogsList.tpl"/>
-		</action>
-
-		<action    path = "actionlogsPurge"
-					     type = "ActionlogsPurgeAction"
-					     name = "actionlogsPurge"
-					    scope = "request"
-					 validate = "true">
-			<forward name="success" path="ActionlogsPurge.tpl"/>
-		</action>
-
-		<action    path = "actionlogsDoPurge"
-					     type = "ActionlogsDoPurgeAction"
-					     name = "actionlogsDoPurge"
-					    scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=actionlogsList&amp;message=purged" redirect="true" />
-		</action>
+    <action    path = "installGenerateConfig"
+               type = "InstallGenerateConfigAction"
+               name = "nstallGenerateConfig"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="InstallGenerateConfig.tpl" />
+    </action> 	
+	
+    <action    path = "js"
+               type = "JsAction"
+               name = "jsConfig"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Js.tpl" />
+    </action> 		
+    
+    <action    path = "commonSetLanguage"
+               type = "CommonSetLanguageAction"
+               name = "commonSetLanguage"
+              scope = "request"
+           validate = "true">
+    </action> 		
 
 	</action-mappings>
-<!-- End Module Actionlogs -->
+<!-- End Common -->
+
+
+
+<!-- Module Config -->
+	<action-mappings module="Config">
+		<action    path = "configView"
+							 type = "ConfigViewAction"
+							 name = "configView"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ConfigView.tpl"/>
+		</action>
+
+		<action    path = "configEdit"
+							 type = "ConfigEditAction"
+							 name = "configEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ConfigEdit.tpl"/>
+		</action>
+		
+		<action    path = "configSet"
+							 type = "ConfigSetAction"
+							 name = "configSet"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ConfigSet.tpl"/>
+		</action>
+		
+		<action    path = "configDoSet"
+							 type = "ConfigDoSetAction"
+							 name = "configDoSet"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=configSet&amp;message=ok" redirect="true" />
+		</action>
+
+		<action    path = "configDoEdit"
+							 type = "ConfigDoEditAction"
+							 name = "configDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=configView&amp;message=ok" redirect="true" />
+		</action>
+	</action-mappings>
+<!-- End Module Config -->
 
 
 
@@ -1668,6 +1224,119 @@
 
 
 
+<!-- Module Install -->
+	<action-mappings module="Install">
+
+		<action    path = "installList"
+							 type = "InstallListAction"
+							 name = "installList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallList.tpl" />
+		</action>
+
+		<action    path = "installSetupSelectLanguages"
+							 type = "InstallSetupSelectLanguagesAction"
+							 name = "installSetupSelectLanguages"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupSelectLanguages.tpl" />
+		</action>
+
+		<action    path = "installSetupModuleInformation"
+							 type = "InstallSetupModuleInformationAction"
+							 name = "installSetupModuleInformation"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupModuleInformation.tpl" />
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
+		</action>
+
+		<action    path = "installDoSetupModuleInformation"
+							 type = "InstallDoSetupModuleInformationAction"
+							 name = "installDoSetupModuleInformation"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="/Main.php?do=installSetupActionsLabel" />
+			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
+		</action>
+
+		<action    path = "installSetupActionsLabel"
+							 type = "InstallSetupActionsLabelAction"
+							 name = "installSetupActionsLabel"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupActionsLabel.tpl" />
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
+		</action>
+
+		<action    path = "installDoSetupActionsLabel"
+							 type = "InstallDoSetupActionsLabelAction"
+							 name = "installDoSetupActionsLabel"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="/Main.php?do=installSetupPermissions" redirect="true" />
+			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
+		</action>
+
+		<action    path = "installSetupPermissions"
+							 type = "InstallSetupPermissionsAction"
+							 name = "installSetupPermissions"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupPermissions.tpl" />
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
+		</action>
+
+		<action    path = "installDoSetupPermissions"
+							 type = "InstallDoSetupPermissionsAction"
+							 name = "installDoSetupPermissions"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="/Main.php?do=installSetupMessages" redirect="true" />
+			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
+		</action>
+
+		<action    path = "installSetupMessages"
+							 type = "InstallSetupMessagesAction"
+							 name = "installSetupMessages"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupMessages.tpl" />
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
+		</action>
+
+		<action    path = "installDoSetupMessages"
+							 type = "InstallDoSetupMessagesAction"
+							 name = "installDoSetupMessages"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="/Main.php?do=installFileCheck" />
+			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
+		</action>
+
+		<action    path = "installFileCheck"
+							 type = "InstallFileCheckAction"
+							 name = "installFileCheck"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallFileCheck.tpl" />
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
+		</action>
+
+		<action    path = "installDoFileCheck"
+							 type = "InstallDoFileCheckAction"
+							 name = "installDoFileCheck"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="/Main.php?do=installList" />
+		</action>
+
+	</action-mappings>
+<!-- End Module Install -->
+
+
+
 <!-- Module Modules -->
 	<action-mappings module="Modules">
 		<action    path = "modulesList"
@@ -1719,6 +1388,125 @@
 		</action>
 	</action-mappings>
 <!-- End Module Modules -->
+
+
+
+<!-- Modulo Multilang -->
+
+<!-- Section Languages -->
+	<action-mappings>
+
+		<action    path = "multilangLanguagesEdit"
+							 type = "MultilangLanguagesEditAction"
+							 name = "multilangLanguagesEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="MultilangLanguagesEdit.tpl" />
+		</action>
+
+		<action    path = "multilangLanguagesDoEdit"
+							 type = "MultilangLanguagesDoEditAction"
+							 name = "multilangLanguagesDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=multilangLanguagesList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="MultilangLanguagesEdit.tpl" />
+		</action>
+
+		<action    path = "multilangLanguagesList"
+							 type = "MultilangLanguagesListAction"
+							 name = "multilangLanguagesList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="MultilangLanguagesList.tpl" />
+		</action>
+
+		<action    path = "multilangLanguagesDoDelete"
+							 type = "MultilangLanguagesDoDeleteAction"
+							 name = "multilangLanguagesDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=multilangLanguagesList&amp;message=deleted_ok" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Section Languages -->
+
+<!-- Seccion Texts -->
+	<action-mappings>
+
+		<action    path = "multilangTextsEdit"
+							 type = "MultilangTextsEditAction"
+							 name = "multilangTextsEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="MultilangTextsEdit.tpl" />
+		</action>
+
+		<action    path = "multilangTextsDoEdit"
+							 type = "MultilangTextsDoEditAction"
+							 name = "multilangTextsDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=multilangTextsList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="MultilangTextsEdit.tpl" />
+		</action>
+
+		<action    path = "multilangTextsEditBulk"
+							 type = "MultilangTextsEditBulkAction"
+							 name = "multilangTextsEditBulk"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="MultilangTextsEditBulk.tpl" />
+		</action>
+
+		<action    path = "multilangTextsDoEditBulk"
+							 type = "MultilangTextsDoEditBulkAction"
+							 name = "multilangTextsDoEditBulk"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=multilangTextsList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="MultilangTextsEditBulk.tpl" />
+		</action>
+
+		<action    path = "multilangTextsList"
+							 type = "MultilangTextsListAction"
+							 name = "multilangTextsList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="MultilangTextsList.tpl" />
+			<forward name="search" path="MultilangTextsListSearch.tpl" />
+		</action>
+
+		<action    path = "multilangTextsDump"
+							 type = "MultilangTextsDumpAction"
+							 name = "multilangTextsDump"
+							scope = "request"
+					 validate = "true">
+				<forward name="success" path="MultilangTextsDump.tpl" />
+				<forward name="successDump" path="MultilangTextsDoDump.tpl" />
+		</action>
+
+		<action    path = "multilangTextsDoDump"
+							 type = "MultilangTextsDoDumpAction"
+							 name = "multilangTextsDoDump"
+							scope = "request"
+					 validate = "true">
+				<forward name="success" path="MultilangTextsDoDump.tpl" />
+		</action>
+
+		<action    path = "multilangTextsDoDelete"
+							 type = "MultilangTextsDoDeleteAction"
+							 name = "multilangTextsDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=multilangTextsList&amp;message=deleted_ok" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Section Texts -->
+
+<!-- End Module Multilang -->
 
 
 
@@ -1918,6 +1706,215 @@
 
 	</action-mappings>
 <!-- End Module Security OLD-->
+
+
+
+<!-- Module Users-->
+	<action-mappings module="Users">
+
+		<action    path = "usersLogin"
+							 type = "UsersLoginAction"
+							 name = "usersLogin"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="UsersLogin.tpl"/>
+			<forward name="maintenance" path="Maintenance.tpl"/>
+			<forward name="welcome" path="/Main.php?do=usersWelcome" redirect="true" />
+		</action>
+
+		<action    path = "usersDoLogin"
+							 type = "UsersDoLoginAction"
+							 name = "usersDoLogin"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="UsersWelcome.tpl"/>
+			<forward name="failure" path="UsersLogin.tpl"/>
+		</action>
+
+		<action    path = "usersPasswordRecovery"
+							 type = "UsersPasswordRecoveryAction"
+							 name = "usersPasswordRecovery"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="UsersPasswordRecovery.tpl"/>
+		</action>
+
+		<action    path = "usersDoPasswordRecovery"
+							 type = "UsersDoPasswordRecoveryAction"
+							 name = "usersDoPasswordRecovery"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersLogin&amp;message=passwordSent" redirect="true" />
+			<forward name="failure" path="UsersPasswordRecovery.tpl"/>
+		</action>
+
+		<action    path = "usersWelcome"
+							 type = "UsersWelcomeAction"
+							 name = "usersWelcome"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="UsersWelcome.tpl"/>
+		</action>
+
+		<action    path = "usersLoginMaintenance"
+							 type = "UsersLoginMaintenanceAction"
+							 name = "usersLoginMaintenance"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="UsersLogin.tpl"/>
+		</action>
+
+		<action    path = "usersDoLogout"
+							 type = "UsersDoLogoutAction"
+							 name = "usersDoLogout"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersLogin" redirect="true"/>
+		</action>
+
+		<action    path = "usersList"
+							 type = "UsersListAction"
+							 name = "usersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="UsersList.tpl"/>
+		</action>
+
+		<action    path = "usersDoEdit"
+							 type = "UsersDoEditAction"
+							 name = "usersDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersList&amp;message=saved" redirect="true"/>
+			<forward name="successAdd" path="/Main.php?do=usersList&amp;message=added" redirect="true"/>
+		</action>
+
+		<action    path = "usersDoDelete"
+							 type = "UsersDoDeleteAction"
+							 name = "usersDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersList&amp;message=deleted" redirect="true" />
+			<forward name="failure" path="/Main.php?do=usersList&amp;message=notdeleted" redirect="true" />
+		</action>
+
+		<action    path = "usersDoAddToGroup"
+							 type = "UsersDoAddToGroupAction"
+							 name = "usersDoAddToGroup"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersList" redirect="true" />
+		</action>
+
+		<action    path = "usersDoLinkToSupplier"
+							 type = "UsersDoLinkToSupplierAction"
+							 name = "usersDoLinkToSupplier"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersList" redirect="true" />
+		</action>
+
+
+		<action    path = "usersDoRemoveFromGroup"
+							 type = "UsersDoRemoveFromGroupAction"
+							 name = "usersDoRemoveFromGroup"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersList" redirect="true" />
+		</action>
+
+		<action    path = "usersDoActivate"
+							 type = "UsersDoActivateAction"
+							 name = "usersDoActivate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersList&amp;message=activated" redirect="true" />
+			<forward name="failure" path="/Main.php?do=usersList&amp;message=notactivated" redirect="true" />
+		</action>
+
+	</action-mappings>
+
+<!-- Section Groups -->
+	<action-mappings module="Users" section="Groups">
+
+		<action    path = "usersGroupsList"
+							 type = "UsersGroupsListAction"
+							 name = "usersGroupsList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="UsersGroupsList.tpl"/>
+		</action>
+
+		<action    path = "usersGroupsDoEdit"
+							 type = "UsersGroupsDoEditAction"
+							 name = "usersGroupsDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersGroupsList&amp;message=saved" redirect="true"/>
+			<forward name="blankName" path="/Main.php?do=usersGroupsList&amp;message=blankName" redirect="true"/>
+		</action>
+
+		<action    path = "usersGroupsDoAddCategoryToGroup"
+							 type = "UsersGroupsDoAddCategoryToGroupAction"
+							 name = "usersGroupsDoAddCategoryToGroup"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersGroupsList" redirect="true" />
+		</action>
+
+		<action    path = "usersGroupsDoRemoveCatFromGroup"
+							 type = "UsersGroupsDoRemoveCatFromGroupAction"
+							 name = "usersGroupsDoRemoveCatFromGroup"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersGroupsList" redirect="true" />
+		</action>
+
+		<action    path = "usersGroupsDoDelete"
+							 type = "UsersGroupsDoDeleteAction"
+							 name = "usersGroupsDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersGroupsList&amp;message=deleted" redirect="true" />
+			<forward name="failure" path="/Main.php?do=usersGroupsList&amp;message=notdeleted" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Section Groups -->
+
+<!-- Section Levels -->
+	<action-mappings module="Users" section="Levels">
+
+		<action    path = "usersLevelsList"
+							 type = "UsersLevelsListAction"
+							 name = "usersLevelsList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="UsersLevelsList.tpl"/>
+		</action>
+
+		<action    path = "usersLevelsDoEdit"
+							 type = "UsersLevelsDoEditAction"
+							 name = "usersLevelsDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersLevelsList&amp;message=saved" redirect="true"/>
+			<forward name="blankName" path="/Main.php?do=usersLevelsList&amp;message=blankName" redirect="true"/>
+		</action>
+
+		<action    path = "usersLevelsDoDelete"
+							 type = "UsersLevelsDoDeleteAction"
+							 name = "usersLevelsDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersLevelsList&amp;message=deleted" redirect="true" />
+			<forward name="failure" path="/Main.php?do=usersLevelsList&amp;message=notdeleted" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Section Levels -->
+
+<!-- End Module Users -->
 
 
 

@@ -62,7 +62,7 @@
 |-else-|
 <input name="showSearch" type="button" class="button" id="showSearch" value="Ver Opciones de Búsqueda" onClick="javascript:switch_vis('searchOptions');" />
 	<h4>Resultado de su consulta al histórico de operaciones del Sistema |-if $affiliateId gt 0-| del afiliado |-$affiliate->getName()-||-/if-|</h4>
-		<table width="100%"  border="0" cellpadding="4" cellspacing="0" class="tableTdBorders">
+		<table width="100%"  border="0" cellpadding="5" cellspacing="0" class="tableTdBorders">
 			<tr> 
 				<th width="10%" nowrap scope="col">Fecha y Hora</th>
 				<th width="10%" scope="col">Usuario</th>
@@ -78,7 +78,7 @@
 			 	
 			<tr> 
 			  <td nowrap scope="col">|-$log->getDatetime()-|</td>
-			  <td nowrap scope="col">|-assign var="user" value=$log->getUser()-||-if $user ne ''-||-$user->getUsername()-||-/if-|</td>
+			  <td nowrap scope="col">|-assign var="user" value=$log->getUser()-||-if $user ne ''-||-$user->getUsername()-||-/if-||-assign var="affiliate" value=$log->getAffiliateUser()-||-if $affiliate ne ''-||-$affiliate->getUsername()-| (affiliate)|-/if-|</td>
 			  <td scope="col" >|-assign var="securityAction" value=$log->getSecurityAction()-||-if $securityAction ne ''-||-$securityAction->getModule()-|/|-/if-||-$log->getAction()-|</td>
 			  <td scope="col" >|-assign var="label" value=$log->getLabel()-||-if $label ne ''-||-$label->getLabel()-||-/if-||-$log->getLabel()-||-if $log->getObject() ne ''-|:|-$log->getObject()-||-/if-|</td>
 			</tr>
@@ -88,7 +88,7 @@
 			</tr>
 			|-/if-| 
   <tr>
-		<td colspan="4"><input name="btnRegresar" type="button" class="button" id="regresar" value="Regresar" onClick="location.href='Main.php?do=logsList'" />
+		<td colspan="4"><input name="btnRegresar" type="button" class="button" id="regresar" value="Regresar" onClick="location.href='Main.php?do=actionlogsList'" />
 	</td>
   </tr>
 </table>

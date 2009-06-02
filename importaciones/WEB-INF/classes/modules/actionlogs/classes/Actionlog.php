@@ -65,4 +65,11 @@ class Actionlog extends BaseActionlog {
 	
 	}
 
+	function getAffiliateUser(){
+		$criteria = new Criteria();
+		require_once('AffiliateUserPeer.php');
+		return AffiliateUserPeer::get($this->getAffiliateId());
+	}
+
+
 } // Actionlog
