@@ -4,6 +4,9 @@
 <head>
 <title>|-$parameters.siteName-|</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--clases para validacion del lago del client por js -->
+<link rel="stylesheet" href="css/validation.css" type="text/css">
+
 <link rel="stylesheet" href="css/style.css" type="text/css">
 <!--[if !IE]>--> <link href="css/style_ns6+.css" rel="stylesheet" type="text/css"> <!--<![endif]-->
 
@@ -12,6 +15,7 @@
 <!--[if gte IE 7]> <link href="css/styles-ie7.css" rel="stylesheet" type="text/css"> <![endif]-->
 <link rel="shortcut icon" href="images/favicon.ico">
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/validation.js"></script>
 <script type="text/javascript" src="Main.php?do=js&name=js&module=common&code=|-$currentLanguageCode-|"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/datePicker.js"></script>
 <script language="JavaScript" src="scripts/scriptaculous.js" type="text/javascript"></script>

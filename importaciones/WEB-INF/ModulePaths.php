@@ -113,7 +113,12 @@ class ModulePaths {
 		//Multilang
 		$appDirs[]      = 'WEB-INF/classes/modules/multilang';
 		$appDirs[]      = 'WEB-INF/classes/modules/multilang/actions';
-		$appDirs[]      = 'WEB-INF/classes/modules/multilang/classes';		
+		$appDirs[]      = 'WEB-INF/classes/modules/multilang/classes';
+
+		//Validation
+		$appDirs[]      = 'WEB-INF/classes/modules/validation';
+		$appDirs[]      = 'WEB-INF/classes/modules/validation/actions';
+		$appDirs[]      = 'WEB-INF/classes/modules/validation/classes';				
 
 		return $appDirs;
 
