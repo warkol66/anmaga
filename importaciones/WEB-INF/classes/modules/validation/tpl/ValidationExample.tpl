@@ -7,20 +7,20 @@
 			
 		</p>
 		<p>
-			<label for="text_validation">Text Validation</label><input type="text" name="text_validation" value="" id="text_validation" class="textValidation" />
+			<label for="text_validation">Text Validation</label><input type="text" name="text_validation" value="" id="text_validation" class="textValidation emptyValidation" />
 		</p>
 		<p>
-			<label for="mail_validation">Mail Validation</label><input type="text" name="mail_validation" value="" id="mail_validation" class="mailValidation" />
+			<label for="mail_validation">Mail Validation</label><input type="text" name="mail_validation" value="" id="mail_validation" class="mailValidation emptyValidation" />
 		</p>
 		<p>
-			<label for="numeric_validation">Numeric Validation</label><input type="" name="numeric_validation" value="" id="numeric_validation" class="numericValidation" />		
+			<label for="numeric_validation">Numeric Validation</label><input type="" name="numeric_validation" value="" id="numeric_validation" class="numericValidation emptyValidation" />		
 		</p>
 		<p>
-			<label for="date_validation">Date Validation</label><input type="text" name="date_validation" value="" id="date_validation" class="dateValidation" /> Format (dd/mm/yyyy)
+			<label for="date_validation">Date Validation</label><input type="text" name="date_validation" value="" id="date_validation" class="dateValidation emptyValidation" /> Format (dd/mm/yyyy)
 		</p>
 		<p>Ajax Validators</p>
 		<p>
-			<label for="input_text_validation">Input Text Ajax Validation</label><input type="text" name="input_text_validation" value="" id="input_text_validation" |-ajax_onchange_validation_attribute actionName=validationAjaxExample-| /> |-ajax_onchange_validation_msg_box idField=input_text_validation-|		
+			<label for="input_text_validation">Input Text Ajax Validation</label><input type="text" name="input_text_validation" value="" id="input_text_validation" class="emptyValidation" |-ajax_onchange_validation_attribute actionName=validationAjaxExample-| /> |-ajax_onchange_validation_msg_box idField=input_text_validation-|		
 		</p>
 		<p>
 			<input type="hidden" name="do" value="validationExampleDo" id="do"/>
