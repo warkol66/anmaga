@@ -11,6 +11,13 @@ function validationValidateFormClienSide(form) {
 	var numericArray = document.getElementsByClassName('numericValidation',form);
 	var dateArray = document.getElementsByClassName('dateValidation',form);
 	
+	validationClearInvalidFields(emptyArray);
+	validationClearInvalidFields(mailArray);	
+	validationClearInvalidFields(textArray);
+	validationClearInvalidFields(numericArray);
+	validationClearInvalidFields(dateArray);
+	
+	//validaciones
 	var emptyResult = validationValidateElements(emptyArray, validationEmptyValidator);
 	var textResult = validationValidateElements(textArray, validationTextValidator);
 	var mailResult = validationValidateElements(mailArray, validationMailValidator);
@@ -20,12 +27,13 @@ function validationValidateFormClienSide(form) {
 	valid = ((emptyResult.length == 0) && (textResult.length == 0) && (mailResult.length == 0) && (numericResult.length == 0) && (dateResult.length == 0))
 
 	if (valid == false) {
+		validationSetInvalidFields(emptyResult);
 		validationSetInvalidFields(textResult);
 		validationSetInvalidFields(mailResult);
 		validationSetInvalidFields(numericResult);
 		validationSetInvalidFields(dateResult);
 		
-		alert('Algunos Campos Han Resultado Invalidos, No se Ha enviado el Formulario');
+		alert('Algunos Campos Han Resultado Invalidos, No se ha enviado el Formulario');
 	}
 	else {
 		form.submit();
@@ -33,10 +41,19 @@ function validationValidateFormClienSide(form) {
 	
 }
 
+function validationClearInvalidFields(elements) {
+	
+	for (var i=0; i < elements.length; i++) {
+		elements[i].style.border = '';
+	};
+	
+}
+
+
 function validationSetInvalidFields(elements) {
 	
 	for (var i=0; i < elements.length; i++) {
-		
+		elements[i].style.border = '1px solid red';
 	};
 	
 }
@@ -69,16 +86,10 @@ function validationEmptyValidator(element) {
 
 function validationTextValidator(element) {
 	
-	if (validationEmptyValidator(element) == false)
-		return false;
-	
 	return validateField(element, 'txt');
 }
 
 function validationMailValidator(element) {
-
-	if (validationEmptyValidator(element) == false)
-		return false;
 
 	return validateField(element, 'email');
 
@@ -86,17 +97,11 @@ function validationMailValidator(element) {
 
 function validationNumericValidator(element) {
 
-	if (validationEmptyValidator(element) == false)
-		return false;
-
 	return validateField(element, 'num');
 
 }
 
 function validationDateValidator(element) {
-
-	if (validationEmptyValidator(element) == false)
-		return false;
 	
 	return validateField(element, 'date');
 	
@@ -114,8 +119,11 @@ function validationValidateFieldThruAjax(element,doAction) {
 					onSuccess: function(transport) {
 						var response = transport.responseText.evalJSON();
 
+						$(response.name).style.border = '';
+
 						if (response.value == 1) {
 							//es invalido
+							$(response.name).style.border = '1px solid red';
 						}
 						
 						var elementName = response.name + '_box';
