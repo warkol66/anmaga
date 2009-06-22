@@ -862,6 +862,12 @@ fieldset {
 .buttonImageRestoreFromServerDisabled, .linkImageRestoreFromServerDisabled {
 	background: url(../images/linkImageRestoreFromServerDisabled.png) no-repeat center;
 }
+.buttonImageThumbnail, .linkImageThumbnail {
+	background: url(../images/linkImageThumbnail.png) no-repeat center;
+}
+.buttonImageThumbnailDisabled, .linkImageThumbnailDisabled {
+	background: url(../images/linkImageThumbnailDisabled.png) no-repeat center;
+}
 
 
 fieldset {  

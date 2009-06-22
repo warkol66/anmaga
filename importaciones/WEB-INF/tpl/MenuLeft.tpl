@@ -71,9 +71,9 @@
 	<div id="setLanguage">
 		<ul>
 		|-if $languagesAvailable|@count gt 1-| 
-		|-foreach from=$languagesAvailable item=language name=foreachLanguage-| 
+		|-foreach from=$languagesAvailable item=language name=foreachLanguage-||-if $language->getCode() ne $currentLanguageCode-| 
 			<li class="menuLink"><a href="Main.php?do=commonSetLanguage&languageCode=|-$language->getCode()-|">|-$language->getName()-|</a></li>
-		|-/foreach-|
+		|-/if-||-/foreach-|
 		|-/if-|
 		</ul>
 	</div>

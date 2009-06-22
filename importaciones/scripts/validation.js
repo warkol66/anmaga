@@ -54,6 +54,7 @@ function validationSetInvalidFields(elements) {
 	
 	for (var i=0; i < elements.length; i++) {
 		elements[i].style.border = '1px solid red';
+		elements[i].style.background = 'pink';
 	};
 	
 }
