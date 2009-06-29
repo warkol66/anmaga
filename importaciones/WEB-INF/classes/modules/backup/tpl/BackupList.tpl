@@ -30,6 +30,10 @@
 		<div class="successMessage">Se ha producido un error al eliminar el backup.</div>
 	|-elseif $message eq "not_exists"-|
 		<div class="successMessage">El archivo de backup pedido no existe.</div>
+	|-elseif $message eq "not_sent"-|
+		<div class="successMessage">Se ha producido un error al enviar el backup.</div>
+	|-elseif $message eq "sent"-|
+		<div class="successMessage">Se ha enviado el backup.</div>
 	|-/if-|
 	<p>Esta herramienta le permite generar y restaurar respaldos de la información contenida en el sistema. Puede guardar los respaldos en el servidor o en su equipo.</p>
 	<p>Recuerde que al resutaurar un respaldo toda la información existente se reemplazará por la información que está en el respaldo</p>
@@ -41,7 +45,7 @@
 
 	<p>Generar respaldo para descargar&nbsp;&nbsp;		
 	Completo <a href='Main.php?do=backupCreate&amp;mode=complete' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='linkImageStoreLocal' /></a>&nbsp;&nbsp;	  
-	Sólo datos <a href='Main.php?do=backupCreateToFile&amp;mode=complete' title='Generar respaldo de datos para descargar'><img src="images/clear.png"  class='linkImageStoreLocal' /></a>	</p>
+	Sólo datos <a href='Main.php?do=backupCreateToFile&amp;mode=data' title='Generar respaldo de datos para descargar'><img src="images/clear.png"  class='linkImageStoreLocal' /></a>	</p>
 	<p>Restaurar respaldo desde una copia local <a href='javascript:showBackupLoader()' title='Seleccionar archivo local para restaurar'><img src="images/clear.png"  class='linkImageRestore' /></a></p>
 		<div id="backupLoader" style="display: none;">
 		<br />
@@ -75,6 +79,7 @@
 				<th colspan="5" class="thFillTitle">No hay respaldos disponibles</th>
 			</tr>
 		|-/if-|
+		|-assign var=counter value=1-|
 		|-foreach from=$filenames item=filename name=for_filenames-|
 			<tr>
 				<td><a href="Main.php?do=backupDownload&filename=|-$filename.name-|"><img src="images/clear.png"  class='linkImageDownload' /></a></td>
@@ -82,6 +87,14 @@
 				<td align="right">|-$filename.time|date_format:"%Y-%m-%d %H:%M:%S"|change_timezone|date_format:"%d-%m-%Y %H:%M:%S"-|</td>
 				<td align="right">|-$filename.size|number_format:3:",":"."-| kb</td>
 				<td nowrap>
+					<input type="button" value="Eliminar Backup" class="buttonImageEmail" onClick='$("emailSend|-$counter-|").show()'/>
+					<form action="Main.php" style='display: none;' method="post" id='emailSend|-$counter-|'>
+						<input type="hidden" name="filename" value="|-$filename.name-|"  />
+						<input type="hidden" name="do" value="backupSendByEmail" />
+						<input type="text" name="email" value="" />
+						<input type="submit" value="Enviar" />
+						<input type="button" value="Cancelar" onclick='$("emailSend|-$counter-|").hide();' />						
+					</form>
 					<form action="Main.php" method="post">
 						<input type="hidden" name="filename" value="|-$filename.name-|"  />
 						<input type="hidden" name="do" value="backupRestore" />
@@ -91,9 +104,10 @@
 						<input type="hidden" name="filename" value="|-$filename.name-|"  />
 						<input type="hidden" name="do" value="backupDelete" />
 						<input type="submit" value="Eliminar Backup" class="buttonImageDelete" title='Eliminar este respaldo' onclick="return confirm('Esta opción elimina permanentemente este respaldo. ¿Está seguro que desea eliminarlo?');" />
-					</form>				
+					</form>
 				</td>
 			</tr>
+			|-assign var=counter value=$counter+1-|
 		|-/foreach-|						
 		</tbody>
 	</table>

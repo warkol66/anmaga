@@ -444,6 +444,15 @@
 			<forward name="failure" path="/Main.php?do=backupList&amp;message=not_exists" redirect="true" />
     </action>
 
+    <action    path = "backupSendByEmail"
+               type = "BackupSendByEmailAction"
+               name = "backupSendByEmail"
+              scope = "request"
+           validate = "true">
+			<forward name="success" path="/Main.php?do=backupList&amp;message=sent" redirect="true" />
+			<forward name="failure" path="/Main.php?do=backupList&amp;message=not_sent" redirect="true" />
+    </action>
+
   </action-mappings>
 <!-- End Module Backup-->
 

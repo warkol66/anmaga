@@ -440,6 +440,71 @@ class BackupPeer {
 		return true;
 		
 	}
+	
+	/**
+	 * Envio de un BackupExistente Por Email
+	 * @param string nombre del archivo a enviar
+	 * @param string email del destinatario
+	 */
+	function sendBackupToEmail($filename,$email) {
+		
+		if (file_exists('WEB-INF/../backups/' . $filename) == false)
+			return false;
 
+		require_once('EmailManagement.php');
+
+		global $system;
+
+		$subject = 'Envio de Backup ' . $filename;
+		$destination = $email;
+		$mailFrom = $system["config"]["system"]["parameters"]["fromEmail"];
+		$text = 'Adjunto a este mensaje se encuentra el backup ' . $filename . ' enviado.';
+		$manager = new EmailManagement();
+
+		//creamos el mensaje multipart
+		$message = $manager->createMultipartMessage($subject,$text);
+		
+		//creamos el file utilizando el wrapper de archivo de Swift.
+		$attachmentFile = new Swift_File('WEB-INF/../backups/' . $filename)	;
+		$attachment = new Swift_Message_Attachment($attachmentFile, $filename, "application/zip");
+		$message->attach($attachment);
+
+		//realizamos el envio
+		$result = $manager->sendMessage($destination,$mailFrom,$message);
+		
+		return $result;
+		
+		
+	}
+
+	/**
+	 * Envio del contenido de un backup por Email
+	 * @param string buffer con el contenido del backup (el mismo estara comprimido en zip)
+	 * @param string email del destinatario
+	 */
+	function sendBackupContentToEmail($content,$email) {
+
+		require_once('EmailManagement.php');
+
+		global $system;
+
+		$subject = 'Envio de Backup Generado Por Sistema';
+		$destination = $email;
+		$mailFrom = $system["config"]["system"]["parameters"]["fromEmail"];
+		$text = 'Adjunto a este mensaje se encuentra el backup enviado.';
+		$manager = new EmailManagement();
+
+		//creamos el mensaje multipart
+		$message = $manager->createMultipartMessage($subject,$text);
+		
+		$attachment = new Swift_Message_Attachment($content, $filename, "application/zip");
+		$message->attach($attachment);
+
+		//realizamos el envio
+		$result = $manager->sendMessage($destination,$mailFrom,$message);
+		
+		return $result;
+
+	}
 
 }
