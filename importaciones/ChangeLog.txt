@@ -1,4 +1,10 @@
 ==============================
+Revisión 
+------------------------------
+
+UPDATE `importaciones`.`users_user` SET `id` = '-1' WHERE `users_user`.`id` = 3;
+
+==============================
 Revisión 510
 ------------------------------
 
@@ -14,7 +20,7 @@ INSERT INTO `users_user` (
 `timezone`
 )
 VALUES (
-3 , 'system', MD5( 'passwordnoaccesible' ) , '0', '2009-06-02 12:53:14', '2009-06-02 12:53:18', '1', NULL , NULL
+-1 , 'system', MD5( 'passwordnoaccesible' ) , '0', '2009-06-02 12:53:14', '2009-06-02 12:53:18', '1', NULL , NULL
 );
 
 INSERT INTO `importaciones`.`users_userInfo` (
@@ -24,7 +30,7 @@ INSERT INTO `importaciones`.`users_userInfo` (
 `mailAddress`
 )
 VALUES (
-'3', 'system', 'system', 'gflamerich@gmail.com'
+'-1', 'system', 'system', 'gflamerich@gmail.com'
 );
 
 ==============================
