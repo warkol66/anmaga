@@ -11,24 +11,24 @@ function getLabel(id) {
 		<legend>Validators Example</legend>
 		<p>Client Side Validators</p>
 		<p>
-			<label for="empty_validation">Empty Validation</label><input type="text" name="empty_validation" value="" id="empty_validation" class="emptyValidation" />
+			<label for="empty_validation">Empty Validation</label><input type="text" name="empty_validation" value="" id="empty_validation" class="emptyValidation" /> |-validation_msg_box idField=empty_validation-|
 			
 		</p>
 		<p>
-			<label for="text_validation">Text Validation</label><input type="text" name="text_validation" value="" id="text_validation" class="textValidation emptyValidation" onClick="javascript:getLabel();" />
+			<label for="text_validation">Text Validation</label><input type="text" name="text_validation" value="" id="text_validation" class="textValidation emptyValidation" onClick="javascript:getLabel();" /> |-validation_msg_box idField=text_validation-|
 		</p>
 		<p>
-			<label for="mail_validation">Mail Validation</label><input type="text" name="mail_validation" value="" id="mail_validation" class="mailValidation emptyValidation" />
+			<label for="mail_validation">Mail Validation</label><input type="text" name="mail_validation" value="" id="mail_validation" class="mailValidation emptyValidation" /> |-validation_msg_box idField=mail_validation-|
 		</p>
 		<p>
-			<label for="numeric_validation">Numeric Validation</label><input type="" name="numeric_validation" value="" id="numeric_validation" class="numericValidation emptyValidation" />		
+			<label for="numeric_validation">Numeric Validation</label><input type="" name="numeric_validation" value="" id="numeric_validation" class="numericValidation emptyValidation" /> |-validation_msg_box idField=numeric_validation-|		
 		</p>
 		<p>
-			<label for="date_validation">Date Validation</label><input type="text" name="date_validation" value="" id="date_validation" class="dateValidation emptyValidation" /> Format (dd/mm/yyyy)
+			<label for="date_validation">Date Validation</label><input type="text" name="date_validation" value="" id="date_validation" class="dateValidation emptyValidation" /> Format (dd/mm/yyyy) |-validation_msg_box idField=date_validation-|
 		</p>
 		<p>Ajax Validators</p>
 		<p>
-			<label for="input_text_validation">Input Text Ajax Validation</label><input type="text" name="input_text_validation" value="" id="input_text_validation" class="emptyValidation" |-ajax_onchange_validation_attribute actionName=validationAjaxExample-| /> |-ajax_onchange_validation_msg_box idField=input_text_validation-|		
+			<label for="input_text_validation">Input Text Ajax Validation</label><input type="text" name="input_text_validation" value="" id="input_text_validation" class="emptyValidation" |-ajax_onchange_validation_attribute actionName=validationAjaxExample-| /> |-validation_msg_box idField=input_text_validation-|		
 		</p>
 		<p>
 			<input type="hidden" name="do" value="validationExampleDo" id="do" />

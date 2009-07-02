@@ -27,6 +27,10 @@
 <script language="JavaScript" type="text/JavaScript">
 	var url="|-$systemUrl-|";
 </script>
+
+<!-- inclusion de mensajes para javascript -->
+|-include file='ValidationJavascriptMessagesInclude.tpl'-|
+
 |-if $loadAreaedit eq 1-||-include file='ContentEditAreaeditInclude.tpl' editors="content"-||-/if-|
 
 |-if $actualAction eq "newsArticlesEdit" or $actualAction eq "calendarEventsEdit"-|
