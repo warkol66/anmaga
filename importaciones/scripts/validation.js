@@ -27,13 +27,11 @@ function validationValidateFormClienSide(form) {
 	valid = ((emptyResult.length == 0) && (textResult.length == 0) && (mailResult.length == 0) && (numericResult.length == 0) && (dateResult.length == 0))
 
 	if (valid == false) {
-		validationSetInvalidFields(emptyResult);
-		validationSetInvalidFields(textResult);
-		validationSetInvalidFields(mailResult);
-		validationSetInvalidFields(numericResult);
-		validationSetInvalidFields(dateResult);
-		
-		alert('Algunos Campos Han Resultado Invalidos, No se ha enviado el Formulario');
+		validationSetInvalidFields(emptyResult,validation_messageEmpty);
+		validationSetInvalidFields(textResult,validation_messageText);
+		validationSetInvalidFields(mailResult,validation_messageMail);
+		validationSetInvalidFields(numericResult,validation_messageNumeric);
+		validationSetInvalidFields(dateResult,validation_messageDate);
 	}
 	else {
 		form.submit();
@@ -45,16 +43,28 @@ function validationClearInvalidFields(elements) {
 	
 	for (var i=0; i < elements.length; i++) {
 		elements[i].style.border = '';
+		elements[i].style.background = '';
+		if ($(elements[i].id + '_box') != null) {
+			$(elements[i].id + '_box').innerHTML = '';
+		}
 	};
 	
 }
 
 
-function validationSetInvalidFields(elements) {
+function validationSetInvalidFields(elements,message) {
 	
 	for (var i=0; i < elements.length; i++) {
 		elements[i].style.border = '1px solid red';
 		elements[i].style.background = 'pink';
+		if ($(elements[i].id + '_box') != null) {
+			if ($(elements[i].id + '_box').innerHTML != '') {
+				$(elements[i].id + '_box').innerHTML = $(elements[i].id + '_box').innerHTML + ', ';
+			}
+			
+			$(elements[i].id + '_box').innerHTML = $(elements[i].id + '_box').innerHTML + message;
+		}
+		
 	};
 	
 }
