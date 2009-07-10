@@ -1,5 +1,6 @@
 /**
- * Efectura la validacion de formulario
+ * Efectura la validacion de formulario via javascript
+ * @param Element form
  */
 function validationValidateFormClienSide(form) {
 	
@@ -39,50 +40,132 @@ function validationValidateFormClienSide(form) {
 	
 }
 
+/**
+ * Validacion de un campo a traves de su id.
+ * @param String fieldId id de dom del nombre del elemento a validar.  
+ */
+function validationValidateField(fieldId) {
+	var field = $(fieldId);
+	
+	validationClearInvalidField(field);
+	
+	if (field.hasClassName('emptyValidation')) {
+		if (!(validationValidateElement(field, validationEmptyValidator))) {
+			validationSetInvalidField(field,validation_messageEmpty);
+		}
+	}
+
+	if (field.hasClassName('textValidation')) {
+		if (!(validationValidateElement(field, validationTextValidator))) {
+			validationSetInvalidField(field,validation_messageText);
+		}		
+	}
+	
+	if (field.hasClassName('mailValidation')) {
+		if (!(validationValidateElement(field, validationMailValidator))) {
+			validationSetInvalidField(field,validation_messageMail);
+		}				
+	}
+
+	if (field.hasClassName('numericValidation')) {
+		if (!(validationValidateElement(field,  validationNumericValidator))) {
+			validationSetInvalidField(field,validation_messageNumeric);
+		}		
+	}
+
+	if (field.hasClassName('dateValidation')) {
+		if (!(validationValidateElement(field, validationDateValidator))) {
+			validationSetInvalidField(field,validation_messageDate);
+		}		
+		
+	}
+
+	
+}
+
+/**
+ * Dado un cierto elemento Dom, elimina aspectos de su interfaz
+ * posibles si hubieran sido validados anteriormente
+ * @param Element element elemento DOM
+ */
+function validationClearInvalidField(element) {
+
+	element.style.border = '';
+	element.style.background = '';
+	if ($(element.id + '_box') != null) {
+		$(element.id + '_box').innerHTML = '';
+	}	
+
+}
+
+/**
+ * Dado un conjunto de elementos Dom, elimina aspectos de su interfaz
+ * posibles si hubieran sido validados anteriormente
+ * @param Element element elemento DOM
+ */
 function validationClearInvalidFields(elements) {
 	
 	for (var i=0; i < elements.length; i++) {
-		elements[i].style.border = '';
-		elements[i].style.background = '';
-		if ($(elements[i].id + '_box') != null) {
-			$(elements[i].id + '_box').innerHTML = '';
-		}
+		validationClearInvalidField(elements[i]);
 	};
 	
 }
 
-
+/**
+ * Realiza las modificaciones necesarias para indicar un conjunto de
+ * elementos invalidos.
+ * @param Array elements array de elementos
+ * @param String message mensaje de validacion para el conjunto de elementos
+ */ 
 function validationSetInvalidFields(elements,message) {
 	
 	for (var i=0; i < elements.length; i++) {
-		elements[i].style.border = '1px solid red';
-		elements[i].style.background = 'pink';
-		if ($(elements[i].id + '_box') != null) {
-			
-			//buscamos el del elemento correspondiente
-			var fieldName = '';
-			var labels = document.getElementsByTagName('label');
-			for (var j=0; j < labels.length; j++) {
-				if (labels[j].attributes.getNamedItem('for').value == elements[i].id) {
-					fieldName = labels[j].innerHTML;
-				}
-			};
-						
-			if ($(elements[i].id + '_box').innerHTML != '') {
-				//personalizacion de mensaje si se encuentra label
-				$(elements[i].id + '_box').innerHTML = $(elements[i].id + '_box').innerHTML + ', ';
-			}
-			
-			var newMessage = message.replace(/%field%/,fieldName);
-
-			
-			$(elements[i].id + '_box').innerHTML = $(elements[i].id + '_box').innerHTML + newMessage;
-		}
-		
+		validationSetInvalidField(elements[i],message)
 	};
 	
 }
 
+/**
+ * Realiza las modificaciones necesarias para indicar un 
+ * elemento invalido.
+ * @param Element elements elemento DOM
+ * @param String message mensaje de validacion
+ */
+function validationSetInvalidField(element,message) {
+	
+	element.style.border = '1px solid red';
+	element.style.background = 'pink';
+	if ($(element.id + '_box') != null) {
+		
+		//buscamos el del elemento correspondiente
+		var fieldName = '';
+		var labels = document.getElementsByTagName('label');
+		for (var j=0; j < labels.length; j++) {
+			if (labels[j].attributes.getNamedItem('for').value == element.id) {
+				fieldName = labels[j].innerHTML;
+			}
+		};
+					
+		if ($(element.id + '_box').innerHTML != '') {
+			//personalizacion de mensaje si se encuentra label
+			$(element.id + '_box').innerHTML = $(element.id + '_box').innerHTML + ', ';
+		}
+		
+		var newMessage = message.replace(/%field%/,fieldName);
+
+		
+		$(element.id + '_box').innerHTML = $(element.id + '_box').innerHTML + newMessage;
+	}
+	
+	
+}
+
+/**
+ * Efectua la validacion en un conjunto de elementos
+ * @param Array elements
+ * @param String validationFunction nombre de la funcion de validacion a utilizar.
+ * @return Array array de elementos invalidos.
+ */
 function validationValidateElements(elements, validationFunction) {
 	
 	var valid = false;
@@ -100,6 +183,19 @@ function validationValidateElements(elements, validationFunction) {
 	
 }
 
+/**
+ * Efectua la validacion de un elemento DOM
+ * @param String validationFunction nombre de la funcion de validacion a utilizar.
+ * @return Boolean
+ */
+function validationValidateElement(element,validationFunction) {
+	return validationFunction(element);
+}
+
+/**
+ * Validador de elemento vacio
+ * @param Element element elemento DOM
+ */
 function validationEmptyValidator(element) {
 
 	if (element.value == '') {
@@ -109,29 +205,54 @@ function validationEmptyValidator(element) {
 	return true;
 }
 
+/**
+ * Validador de elemento de texto
+ * @param Element element elemento DOM
+ * @return boolean
+ */
 function validationTextValidator(element) {
 	
 	return validateField(element, 'txt');
 }
 
+/**
+ * Validador de elemento con contenido de email
+ * @param Element element elemento DOM
+ * @return boolean
+ */
 function validationMailValidator(element) {
 
 	return validateField(element, 'email');
 
 }
 
+/**
+ * Validador de elemento numerico
+ * @param Element element elemento DOM
+ * @return boolean
+ */
 function validationNumericValidator(element) {
 
 	return validateField(element, 'num');
 
 }
 
+/**
+ * Validador de elemento fecha
+ * @param Element element elemento DOM
+ * @return boolean
+ */
 function validationDateValidator(element) {
 	
 	return validateField(element, 'date');
 	
 }
 
+/**
+ * Validacion via AJAX
+ * @param Element element elemento DOM a validar
+ * @param String doAction nombre del action con el cual se realizara la validacion por AJAX.
+ */
 function validationValidateFieldThruAjax(element,doAction) {
 
 	var url = 'Main.php?do=' + doAction;
