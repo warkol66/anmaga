@@ -58,11 +58,25 @@ function validationSetInvalidFields(elements,message) {
 		elements[i].style.border = '1px solid red';
 		elements[i].style.background = 'pink';
 		if ($(elements[i].id + '_box') != null) {
+			
+			//buscamos el del elemento correspondiente
+			var fieldName = '';
+			var labels = document.getElementsByTagName('label');
+			for (var j=0; j < labels.length; j++) {
+				if (labels[j].attributes.getNamedItem('for').value == elements[i].id) {
+					fieldName = labels[j].innerHTML;
+				}
+			};
+						
 			if ($(elements[i].id + '_box').innerHTML != '') {
+				//personalizacion de mensaje si se encuentra label
 				$(elements[i].id + '_box').innerHTML = $(elements[i].id + '_box').innerHTML + ', ';
 			}
 			
-			$(elements[i].id + '_box').innerHTML = $(elements[i].id + '_box').innerHTML + message;
+			var newMessage = message.replace(/%field%/,fieldName);
+
+			
+			$(elements[i].id + '_box').innerHTML = $(elements[i].id + '_box').innerHTML + newMessage;
 		}
 		
 	};
