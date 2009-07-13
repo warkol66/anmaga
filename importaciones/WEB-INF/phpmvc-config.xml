@@ -209,6 +209,7 @@
 			<forward name="success" path="/Main.php?do=affiliatesUsersList&amp;message=saved" redirect="true" />
 			<forward name="failure" path="/Main.php?do=affiliatesUsersList&amp;message=failure" redirect="true" />
 		</action>
+		
 
 		<action    path = "affiliatesUsersDoDelete"
 							 type = "AffiliatesUsersDoDeleteAction"
@@ -1797,6 +1798,15 @@
 			<forward name="success" path="/Main.php?do=usersList&amp;message=saved" redirect="true"/>
 			<forward name="successAdd" path="/Main.php?do=usersList&amp;message=added" redirect="true"/>
 		</action>
+
+		<action    path = "usersValidationUsernameX"
+							 type = "UsersValidationUsernameXAction"
+							 name = "usersValidationUsernameX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="UsersValidationUsername.tpl" />
+		</action>
+
 
 		<action    path = "usersDoDelete"
 							 type = "UsersDoDeleteAction"

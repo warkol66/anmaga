@@ -3,21 +3,21 @@
 <form method='post' action='Main.php?do=usersDoEdit'>
 	<input type='hidden' name='id' value='|-if $action eq "edit"-||-$currentUser->getId()-||-/if-|' />
 	<p><label for="username">##162,Identificación de Usuario##</label>
-			<input name='username' type='text' value='|-if $action eq "edit"-||-$currentUser->getUsername()-||-/if-|' size="40" />
+			<input id='username' name='username' type='text' value='|-if $action eq "edit"-||-$currentUser->getUsername()-||-/if-|' size="40" |-ajax_onchange_validation_attribute actionName=usersValidationUsernameX-|/> |-validation_msg_box idField=username-|
 	</p>
-		<p><label for="username">##163,Nombre##</label>
+		<p><label for="name">##163,Nombre##</label>
 			<input name='name' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getName()-||-/if-|' size="50" />
 		</p>
-		<p><label for="username">##164,Apellido##</label>
+		<p><label for="surname">##164,Apellido##</label>
 			<input name='surname' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getSurname()-||-/if-|' size="50" />
 		</p>
-		<p><label for="username">E-mail</label>
+		<p><label for="mailAddress">E-mail</label>
 			<input name='mailAddress' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getMailAddress()-||-/if-|' size="40" />
 		</p>
-		<p><label for="username">##165,Contraseña##</label>
+		<p><label for="pass">##165,Contraseña##</label>
 			<input name='pass' type='password' value='' size="20" />
 		</p>
-		<p><label for="username">##166,Repetir Contraseña##</label>
+		<p><label for="pass2">##166,Repetir Contraseña##</label>
 			<input name='pass2' type='password' value='' size="20" />
 		</p>
 		<p><label for="username">Nivel de Usuario</label>
