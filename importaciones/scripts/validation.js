@@ -41,6 +41,47 @@ function validationValidateFormClienSide(form) {
 }
 
 /**
+ * Efectura la validacion de un elemento via javascript
+ * @param Element id
+ */
+function validationValidateFieldClienSide(id) {
+	
+	var valid = false;
+	var field = document.getElementById(id);
+	var validationClass = field.className;
+	validationClearInvalidField(field);	
+
+	switch(validationClass){
+	case 'mailValidation':
+		if (validationMailValidator(field) == false){
+			validationSetInvalidField(field,validation_messageMail);
+		}
+		break;
+	case 'textValidation':
+		if (validationTextValidator(field) == false){
+			validationSetInvalidField(field,validation_messageText);
+		}
+		break;
+	case 'numericValidation':
+		if (validationNumericValidator(field) == false){
+			validationSetInvalidField(field,validation_messageNumeric);
+		}
+		break;
+	case 'dateValidation':
+		if (validationDateValidator(field) == false){
+			validationSetInvalidField(field,validation_messageDate);
+		}
+		break;
+	case 'emptyValidation':
+		if (validationEmptyValidator(field) == false){
+			validationSetInvalidField(field,validation_messageEmpty);
+		}
+		break;
+	}
+}
+
+
+/**
  * Validacion de un campo a traves de su id.
  * @param String fieldId id de dom del nombre del elemento a validar.  
  */

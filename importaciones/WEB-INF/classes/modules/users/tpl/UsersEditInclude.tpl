@@ -9,19 +9,19 @@
 			<input id='username' name='username' type='text' value='|-if $action eq "edit"-||-$currentUser->getUsername()-||-/if-|' size="30" |-ajax_onchange_validation_attribute actionName=usersValidationUsernameX-| />|-validation_msg_box idField=username-|
 	</p>
 		<p><label for="name">##163,Nombre##</label>
-			<input name='name' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getName()-||-/if-|' size="50" />
+			<input id='name' name='name' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getName()|escape-||-/if-|' size="50" />|-validation_msg_box idField=name-|
 		</p>
 		<p><label for="surname">##164,Apellido##</label>
-			<input name='surname' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getSurname()-||-/if-|' size="50" />
+			<input id='surname' name='surname' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getSurname()|escape-||-/if-|' size="50" />|-validation_msg_box idField=surname-|
 		</p>
 		<p><label for="mailAddress">E-mail</label>
-			<input id='mailAddress' name='mailAddress' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getMailAddress()-||-/if-|' size="40" class="mailValidation" /> |-validation_msg_box idField=mailAddress-|
+			<input id='mailAddress' name='mailAddress' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getMailAddress()-||-/if-|' size="40" class="mailValidation" onchange="javascript:validationValidateFieldClienSide('mailAddress');" /> |-validation_msg_box idField=mailAddress-|
 		</p>
 		<p><label for="pass">##165,Contraseña##</label>
-			<input id='pass' name='pass' type='password' value='' size="20" class="emptyValidation" /> |-validation_msg_box idField=pass-|
+			<input id='pass' name='pass' type='password' value='' size="20" class="emptyValidation" onchange="javascript:validationValidateFieldClienSide('pass');" /> |-validation_msg_box idField=pass-|
 		</p>
 		<p><label for="pass2">##166,Repetir Contraseña##</label>
-			<input id='pass2' name='pass2' type='password' value='' size="20" class="emptyValidation" /> |-validation_msg_box idField=pass2-|
+			<input id='pass2' name='pass2' type='password' value='' size="20" class="emptyValidation" onchange="javascript:validationValidateFieldClienSide('pass2');" /> |-validation_msg_box idField=pass2-|
 		</p>
 		<p><label for="username">Nivel de Usuario</label>
 				|-if $action eq 'edit' and $currentUser->getId() lt 3-|
