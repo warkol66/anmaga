@@ -1,3 +1,6 @@
+<!-- inclusion de validación de javascript -->
+|-include file='ValidationJavascriptInclude.tpl'-|
+
 <fieldset title="Formulario de edición de usuarios">
 <legend>Datos del Usuario</legend>
 <form method='post' action='Main.php?do=usersDoEdit'>
@@ -12,13 +15,13 @@
 			<input name='surname' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getSurname()-||-/if-|' size="50" />
 		</p>
 		<p><label for="mailAddress">E-mail</label>
-			<input name='mailAddress' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getMailAddress()-||-/if-|' size="40" />
+			<input id='mailAddress' name='mailAddress' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getMailAddress()-||-/if-|' size="40" class="mailValidation" /> |-validation_msg_box idField=mailAddress-|
 		</p>
 		<p><label for="pass">##165,Contraseña##</label>
-			<input name='pass' type='password' value='' size="20" />
+			<input id='pass' name='pass' type='password' value='' size="20" class="emptyValidation" /> |-validation_msg_box idField=pass-|
 		</p>
 		<p><label for="pass2">##166,Repetir Contraseña##</label>
-			<input name='pass2' type='password' value='' size="20" />
+			<input id='pass2' name='pass2' type='password' value='' size="20" class="emptyValidation" /> |-validation_msg_box idField=pass2-|
 		</p>
 		<p><label for="username">Nivel de Usuario</label>
 				|-if $action eq 'edit' and $currentUser->getId() lt 3-|
@@ -44,6 +47,7 @@
 		<p> |-if $action eq "edit"-|
 				<input type="hidden" name="accion" value="edit" />
 				|-/if-|
+						|-javascript_form_validation_button value=Guardar-|
 				<input type='submit' name='guardar' value='##97,Guardar##'/>
 				&nbsp;&nbsp;
 				<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##'/>

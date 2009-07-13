@@ -4,32 +4,19 @@
 <head>
 <title>|-$parameters.siteName-|</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<!--clases para validacion del lado del client por js -->
-<link rel="stylesheet" href="css/validation.css" type="text/css">
-
-<link rel="stylesheet" href="css/style.css" type="text/css">
-<!--[if !IE]>--> <link href="css/style_ns6+.css" rel="stylesheet" type="text/css"> <!--<![endif]-->
-
 <link rel="stylesheet" href="css/main.css" type="text/css">
+<!--[if !IE]>--> <link href="css/style_ns6+.css" rel="stylesheet" type="text/css"> <!--<![endif]-->
 <!--[if lte IE 6]> <link href="css/styles-ie6.css" rel="stylesheet" type="text/css"> <![endif]-->
 <!--[if gte IE 7]> <link href="css/styles-ie7.css" rel="stylesheet" type="text/css"> <![endif]-->
 <link rel="shortcut icon" href="images/favicon.ico">
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-<!-- libreria de validacion client-side externa -->
-<script language="JavaScript" type="text/javascript" src="scripts/validation/js_validation_library.js"></script>
-<!-- libreria de validacion del framework-->
-<script language="JavaScript" type="text/javascript" src="scripts/validation.js"></script>
 <script type="text/javascript" src="Main.php?do=js&name=js&module=common&code=|-$currentLanguageCode-|"></script>
 <script language="JavaScript" type="text/javascript" src="scripts/datePicker.js"></script>
 <script language="JavaScript" src="scripts/scriptaculous.js" type="text/javascript"></script>
 <script type="text/javascript" src="Main.php?do=js&name=js&module=import&code=|-$currentLanguageCode-|"></script>
-|-if $module eq 'content'-|<script language="JavaScript" src="scripts/scriptaculous.js?load=effects,dragdrop" type="text/javascript"></script>|-/if-|
 <script language="JavaScript" type="text/JavaScript">
 	var url="|-$systemUrl-|";
 </script>
-
-<!-- inclusion de mensajes para javascript -->
-|-include file='ValidationJavascriptMessagesInclude.tpl'-|
 
 |-if $loadAreaedit eq 1-||-include file='ContentEditAreaeditInclude.tpl' editors="content"-||-/if-|
 

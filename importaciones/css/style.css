@@ -1764,5 +1764,7 @@ fieldset.nestedFieldset fieldset label {
 .aqua10 {
 	background: url(../images/Aqua10.png) center no-repeat;
 }
-
+input.textValidation, input.mailValidation, input.numericValidation, input.dateValidation,
+input.emptyValidation {
+}
 

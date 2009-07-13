@@ -92,6 +92,7 @@ function validationClearInvalidField(element) {
 
 	element.style.border = '';
 	element.style.background = '';
+	element.style.background = '#C5F1C7 url(images/valid.gif) no-repeat right';
 	if ($(element.id + '_box') != null) {
 		$(element.id + '_box').innerHTML = '';
 	}	
@@ -133,8 +134,10 @@ function validationSetInvalidFields(elements,message) {
  */
 function validationSetInvalidField(element,message) {
 	
-	element.style.border = '1px solid red';
-	element.style.background = 'pink';
+	//element.style.border = '1px solid red';
+	//element.style.background = 'pink';
+	element.style.background = '#F4D3D3 url(images/invalid.gif) no-repeat right';
+
 	if ($(element.id + '_box') != null) {
 		
 		//buscamos el del elemento correspondiente
