@@ -868,6 +868,12 @@ fieldset {
 .buttonImageThumbnailDisabled, .linkImageThumbnailDisabled {
 	background: url(../images/linkImageThumbnailDisabled.png) no-repeat center;
 }
+.buttonImageManufacture, .linkImageManufacture {
+	background: url(../images/linkImageManufacture.png) no-repeat center;
+}
+.buttonImageManufactureDisabled, .linkImageManufactureDisabled {
+	background: url(../images/linkImageManufactureDisabled.png) no-repeat center;
+}
 
 
 fieldset {  

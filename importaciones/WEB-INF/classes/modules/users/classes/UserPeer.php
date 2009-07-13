@@ -101,9 +101,10 @@ class UserPeer extends BaseUserPeer {
   */
   function getByUsername($username) {
 		$cond = new Criteria();
+		$cond->setIgnoreCase(true);
 		$cond->add(UserPeer::USERNAME, $username);
-		$result = UserPeer::doSelect($cond);
-		return $result[0];
+		$result = UserPeer::doSelectOne($cond);
+		return $result;
   }
 
   

@@ -3,7 +3,7 @@
 <form method='post' action='Main.php?do=usersDoEdit'>
 	<input type='hidden' name='id' value='|-if $action eq "edit"-||-$currentUser->getId()-||-/if-|' />
 	<p><label for="username">##162,Identificación de Usuario##</label>
-			<input id='username' name='username' type='text' value='|-if $action eq "edit"-||-$currentUser->getUsername()-||-/if-|' size="40" |-ajax_onchange_validation_attribute actionName=usersValidationUsernameX-|/> |-validation_msg_box idField=username-|
+			<input id='username' name='username' type='text' value='|-if $action eq "edit"-||-$currentUser->getUsername()-||-/if-|' size="30" |-ajax_onchange_validation_attribute actionName=usersValidationUsernameX-| />|-validation_msg_box idField=username-|
 	</p>
 		<p><label for="name">##163,Nombre##</label>
 			<input name='name' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getName()-||-/if-|' size="50" />

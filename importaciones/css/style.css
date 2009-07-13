@@ -391,7 +391,7 @@ textarea.campo {
 .smallButton{
 	font-size: 1em;
 	line-height: 1.10em;
-	height: 1.70 em;
+	height: 1.70em;
 	margin: 0 0 0 0;
 	padding: 0 0 0 0;
 }
@@ -437,7 +437,7 @@ a.menuButton:active {
 	padding: 6px 2px 6px 22px;
 	display: block;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 0.70 em;
+	font-size: 0.70em;
 	font-weight: bold;
 	text-decoration: none;
 	line-height: 1.30em;
@@ -691,6 +691,18 @@ fieldset li {
 	padding-left: 30px;
 	padding-right: 30px;
 }
+.resultValid {
+	font-weight: bold;
+	color: #227E22;
+	padding-left: 6px;
+	padding-right: 6px;
+}
+.resultInvalid {
+	font-weight: bold;
+	color: #B22222;
+	padding-left: 6px;
+	padding-right: 6px;
+}
 .errorMessage {
 	color: #B22222;
 	font-weight: bold;
@@ -728,7 +740,8 @@ option{
 .buttonImageEmail, .buttonImageEmailDisabled, .buttonImageHistory, .buttonImageHistoryDisabled,
 .buttonImageSendMultiple, .buttonImageSendMultipleDisabled, .buttonImageStoreInServer, .buttonImageStoreInDisabled,
 .buttonImageRestore, .buttonImageRestoreDisabled, .buttonImageStoreLocal, .buttonImageStoreLocalDisabled, 
-.buttonImageRestoreFromServer, .buttonImageRestoreFromServerDisabled {
+.buttonImageRestoreFromServer, .buttonImageRestoreFromServerDisabled, .buttonImageManufacture,
+.buttonImageManufactureDisabled {
 	font-size: 0px !Important;
 	width: 16px;
 	height: 16px;
@@ -746,7 +759,8 @@ option{
 .linkImageHistory, .linkImageHistoryDisabled, .linkSendMultiple, .linkImageSendMultipleDisabled,
 .linkImageStoreInServer, .linkImageStoreInServerDisabled, .linkImageStoreLocal, .linkImageStoreLocalDisabled,
 .linkImageRestore, .linkImageRestoreDisabled, 
-.linkImageRestoreFromServer, .linkImageRestoreFromServerDisabled {
+.linkImageRestoreFromServer, .linkImageRestoreFromServerDisabled, .linkImageManufacture,
+.linkImageManufactureDisabled {
 	width: 20px;
 	height: 16px;
 	border-width: 0;
@@ -1671,7 +1685,6 @@ a.progressCancel:hover {
 #overDiv table td:first-child {
 	padding: 1px;
 	font-size: 1.2em;
-	line-height: auto;	
 }
 #overDiv table td table td{
 	padding: 5px;
