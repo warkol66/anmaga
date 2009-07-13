@@ -61,8 +61,8 @@ class ImportSuppliersDoEditAction extends BaseAction {
 				$supplier->setname($_POST['supplier']["name"]);
 				$supplier->setEmail($_POST['supplier']["email"]);
 				$supplier->setactive($_POST['supplier']["active"]);
-				$supplier->setDefaultIncotermId($_POST['supplier']['defaultIncotermId'])
-				$supplier->setDefaultPortId($_POST['supplier']['defaultPortId'])
+				$supplier->setDefaultIncotermId($_POST['supplier']['defaultIncotermId']);
+				$supplier->setDefaultPortId($_POST['supplier']['defaultPortId']);
 				$smarty->assign("supplier",$supplier);	
 				$smarty->assign("action","create");
 				$smarty->assign("message","error");

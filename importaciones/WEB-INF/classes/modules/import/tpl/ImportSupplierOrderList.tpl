@@ -87,7 +87,7 @@
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importSupplierOrderTracking" />
 						<input type="hidden" name="id" value="|-$order->getid()-|" />
-						<input type="submit" name="submit_go_edit_order" value="Seguimiento de Fabricación" title="Seguimiento de Fabricación" alt="Seguimiento de Fabricación" />
+						<input type="submit" name="submit_go_edit_order" value="Seguimiento de Fabricación" title="Seguimiento de Fabricación" alt="Seguimiento de Fabricación" class="buttonImageManufacture" />
 					</form>
 					|-/if-|
 					<form action="Main.php" method="get">						

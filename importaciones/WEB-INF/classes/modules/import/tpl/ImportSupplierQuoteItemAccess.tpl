@@ -28,7 +28,6 @@
 	<p>
 		<label>##import,31,Nombre##</label>
 		<input name="name" type="text" size="45" readonly="true" value="|-if $activeLanguage == 'eng'-||-$product->getName()-||-elseif $activeLanguage == 'cn'-||-$product->getNameChinese()-||-elseif $activeLanguage == 'esp'-||-$product->getNameSpanish()-||-else-||-$product->getName()-||-/if-|" class="readOnly" />
-		
 	</p>		
 	<p>
 		<label>##import,44,Descripción##</label>
@@ -91,7 +90,7 @@
 	<p>
 		<label>##import,62,Entrega##: </label> <input name="supplierQuoteItem[delivery]" type="text" value="|-$supplierQuoteItem->getDelivery()-|" size="6" /> 
 	##import,35,Dias##</p>
-	<p><strong>##import,63,Comentarios##:</strong></p>
+	<h3>##import,63,Comentarios##:</strong></p>
 	<p>|-include file="ImportSupplierQuoteItemCommentsInclude.tpl" supplierQuoteItem=$supplierQuoteItem-|</p>
 	<p>##import,71,A continuación podrá agregar un comentario a esta cotización##</p>
 	<p>

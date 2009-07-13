@@ -63,7 +63,7 @@ class ImportProductsDoEditAction extends BaseAction {
 				$product->setnamespanish($_POST['product']["nameSpanish"]);
 				$product->setdescription($_POST['product']["description"]);
 				$product->setdescriptionSpanish($_POST['product']["descriptionSpanish"]);
-				$product->setactive($_POST['product']["active"]);
+				$product->setstatus($_POST['product']["active"]);
 				$smarty->assign("product",$product);	
 				$smarty->assign("action","create");
 				$smarty->assign("message","error");
