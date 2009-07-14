@@ -1,5 +1,5 @@
 <!-- libreria de validacion client-side externa -->
-<script language="JavaScript" type="text/javascript" src="scripts/validation/js_validation_library.js"></script>
+<script language="JavaScript" type="text/javascript" src="scripts/js_validation_library.js"></script>
 <!-- libreria de validacion del framework-->
 <script language="JavaScript" type="text/javascript" src="scripts/validation.js"></script>
 <script type="text/javascript">
