@@ -64,7 +64,7 @@
 	</tr>
 	|-foreach from=$users item=user name=for_users-|
 	|-assign var="userInfo" value=$user->getUserInfo()-|
-	<tr>
+	|-if $user->getUsername() neq 'system'-|<tr>
 		<td>|-$user->getUsername()-|</td>
 		<td>|-$userInfo->getName()-|</td>
 		<td>|-$userInfo->getSurname()-|</td>
@@ -78,7 +78,7 @@
 			<a href='Main.php?do=usersDoDelete&user=|-$user->getId()-|' title="##115,Eliminar##"><img src="images/clear.png" class="linkImageDelete">
 |-/if-|
 		</td>
-	</tr>
+	</tr>|-/if-|
 	|-/foreach-|
 	|-if $licensesLeft gt 0-|
 	<tr>

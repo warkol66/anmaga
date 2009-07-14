@@ -6,8 +6,12 @@
 <form method='post' action='Main.php?do=usersDoEdit'>
 	<input type='hidden' name='id' value='|-if $action eq "edit"-||-$currentUser->getId()-||-/if-|' />
 	<p><label for="username">##162,Identificación de Usuario##</label>
-			<input id='username' name='username' type='text' value='|-if $action eq "edit"-||-$currentUser->getUsername()-||-/if-|' size="30" |-ajax_onchange_validation_attribute actionName=usersValidationUsernameX-| />|-validation_msg_box idField=username-|
-	</p>
+|-if $action eq 'edit' and $currentUser->getId() lt 3-|
+		<input name="username" type="hidden" value="|-$currentUser->getUsername()-|" />
+		<input id='usernameDisabled' name='usernameDisabled' type='text' value='|-$currentUser->getUsername()-|' size="30" disabled="disabled" />
+|-else-|
+			<input id='username' name='username' type='text' value='|-if $action eq "edit"-||-$currentUser->getUsername()-||-/if-|'  size="30" |-ajax_onchange_validation_attribute actionName=usersValidationUsernameX-| />|-validation_msg_box idField=username-|
+|-/if-|</p>
 		<p><label for="name">##163,Nombre##</label>
 			<input id='name' name='name' type='text' value='|-if $action eq "edit"-||-$currentUserInfo->getName()|escape-||-/if-|' size="50" />|-validation_msg_box idField=name-|
 		</p>
@@ -48,8 +52,6 @@
 				<input type="hidden" name="accion" value="edit" />
 				|-/if-|
 						|-javascript_form_validation_button value=Guardar-|
-				<input type='submit' name='guardar' value='##97,Guardar##'/>
-				&nbsp;&nbsp;
 				<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##'/>
 			</p>
 
