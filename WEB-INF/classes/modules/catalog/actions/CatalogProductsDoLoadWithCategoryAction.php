@@ -62,7 +62,7 @@ class CatalogProductsDoLoadWithCategoryAction extends BaseAction {
 						$products[] = $data;
 			}
 			fclose($handle);  
-			
+
 			switch ($_POST["mode"]) {
 				case "1": //Reemplaza todo el catalogo
 					ProductPeer::deleteAll();
@@ -77,7 +77,7 @@ class CatalogProductsDoLoadWithCategoryAction extends BaseAction {
 
 			foreach ($products as $product) {
 				//solo cargo si son 7 o mas elementos
-				if (count($product) > 6 || $_POST["mode"] == 4) {
+				if (count($product) > 5 || $_POST["mode"] == 4) {
 					//Busco la categoria
 					$category = ProductCategoryPeer::getByName($product[4]);
 					if (!empty($category))
