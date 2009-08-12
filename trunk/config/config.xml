@@ -123,6 +123,10 @@
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
 			</usersByRegistrationDoPassRecovery>
+			<catalogPricesAutoUpdate>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</catalogPricesAutoUpdate>
 		</noCheckLoginActions>
 		<rowsPerPage>20</rowsPerPage>
 	</system>
