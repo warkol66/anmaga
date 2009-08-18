@@ -27,8 +27,8 @@ class SecurityModulePeer extends BaseSecurityModulePeer {
 	function getAccess($moduleName){
 		$cond = new Criteria();
 		$cond->add(SecurityModulePeer::MODULE, $moduleName);
-		$obj = SecurityModulePeer::doSelect($cond);
-		return $obj[0];
+		$obj = SecurityModulePeer::doSelectOne($cond);
+		return $obj;
 	}
 
 
@@ -105,8 +105,8 @@ class SecurityModulePeer extends BaseSecurityModulePeer {
 	function getAccessByModule($moduleName) {
 		$cond = new Criteria();
 		$cond->add(SecurityModulePeer::MODULE, $moduleName);
-		$obj = SecurityModulePeer::doSelect($cond);
-		return $obj[0]->getAccess();
+		$obj = SecurityModulePeer::doSelectOne($cond);
+		return $obj->getAccess();
 	}
 
 

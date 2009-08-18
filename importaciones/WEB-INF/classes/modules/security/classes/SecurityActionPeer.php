@@ -27,8 +27,8 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	*/
 	function getAll() {
 		$cond = new Criteria();
-		$todosObj = SecurityActionPeer::doSelect($cond);
-		return $todosObj;
+		$allObjs = SecurityActionPeer::doSelect($cond);
+		return $allObjs;
   }
   
 	/**
@@ -53,7 +53,6 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		return SecurityActionPeer::getOnlyActionsWithAccess($allActions,$bitLevel);
   }
  
-	
 	/**
 	* Obtiene todos los actions cargados en la DB con acceso
 	*
@@ -87,24 +86,21 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		return $actions;
   }
 
-
-
 	/**
 	* elimina un action
 	* @param string $action nombre del action
 	* @return true
 	*/
-	function delete($action)
-		{ 	try{
+	function delete($action){
+		try{
 			$obj = new securityAction();
 			$obj = SecurityActionPeer::retrieveByPK($action);
 			if(!empty($obj))
-				{
 					$obj->delete();
-				}
-		}catch (PropelException $e) {}
-		return true;
 		}
+		catch (PropelException $e) {}
+		return true;
+	}
 
 
 	/**
@@ -135,26 +131,26 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		return;
   }
 
-
 	/**
 	*  Guarda actions en la base de datos
 	*
 	* @param string $action con el nombre del action
 	* @param string $modulo con el nombre del modulo al cual pertenece el action
-	* @param int $access con el numero de acceso que tendr� el action
-	* @return true si todo est� ok
+	* @param int $access con el numero de acceso que tendrá el action
+	* @return true si todo está ok
 	*/
 
 	function addAction($action,$modulo,$access) {
 		try{
-		$security = new securityAction();
-		$security->setAction($action);
-		$security->setModule($modulo);
-		$security->setSection(1);
-		$security->setAccess($access);
-		$security->setAccessAffiliateUser($access);
-		$security->save();
-		}catch (PropelException $e) {}
+			$security = new securityAction();
+			$security->setAction($action);
+			$security->setModule($modulo);
+			$security->setSection(1);
+			$security->setAccess($access);
+			$security->setAccessAffiliateUser($access);
+			$security->save();
+		}
+		catch (PropelException $e) {}
 		return;
 	}
 	
@@ -163,42 +159,41 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	*
 	* @param string $action con el nombre del action
 	* @param string $modulo con el nombre del modulo al cual pertenece el action
-	* @param int $access con el numero de acceso que tendr� el action
+	* @param int $access con el numero de acceso que tendrá el action
 	* @param string $pair Nombre del par
-	* @return true si todo est� ok
+	* @return true si todo está ok
 	*/
 	function addActionWithPair($action,$modulo,$access,$pair=null,$labels) {
 		try{
-		$security = new securityAction();
-		$security->setAction($action);
-		$security->setModule($modulo);
-		if ($pair)
-			$security->setPair($pair);
-		$security->setSection(1);
-		$security->setAccess($access);
-		$security->setActive(1);
-		$security->setAccessAffiliateUser($access);
-		$security->save();
-		}catch (PropelException $e) {}
+			$security = new securityAction();
+			$security->setAction($action);
+			$security->setModule($modulo);
+			if ($pair)
+				$security->setPair($pair);
+			$security->setSection(1);
+			$security->setAccess($access);
+			$security->setActive(1);
+			$security->setAccessAffiliateUser($access);
+			$security->save();
+		}
+		catch (PropelException $e) {}
 
 		foreach ($labels as $language => $label){
-				$securityLabelPeer = new SecurityActionLabel();
-				$securityLabelPeer ->setAction($action);
-				$securityLabelPeer ->setLanguage($language);
-				$securityLabelPeer ->setLabel($label);
-				$securityLabelPeer->save();
-			}
+			$securityLabelPeer = new SecurityActionLabel();
+			$securityLabelPeer ->setAction($action);
+			$securityLabelPeer ->setLanguage($language);
+			$securityLabelPeer ->setLabel($label);
+			$securityLabelPeer->save();
+		}
 		return true;
 	}
-
-
 
 	/**
 	* Actualiza los actions en la base de datos
 	*
 	* @param string $action con el nombre del action
-	* @param int $access con el numero de acceso que tendr� el action
-	* @return true si todo est� ok
+	* @param int $access con el numero de acceso que tendrá el action
+	* @return true si todo está ok
 	*/
 
 	function setNewAccess($action,$access) {
@@ -213,8 +208,8 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	* Actualiza el action con el acceso AffiliateUser
 	*
 	* @param string $action con el nombre del action
-	* @param int $access con el numero de acceso que tendr� el action
-	* @return true si todo est� ok
+	* @param int $access con el numero de acceso que tendrá el action
+	* @return true si todo está ok
 	*/
 
 	function setNewAccessAffiliateUser($action,$access) {
@@ -225,15 +220,13 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		return;
 	}
 
-	
-	
 	/**
 	* obtiene un action
 	* @param string $action nombre del action
 	* @return object $obj action encontrado
 	*/
 	function get($action) {
-		   	$obj = SecurityActionPeer::retrieveByPK($action);
+	 	$obj = SecurityActionPeer::retrieveByPK($action);
 		return $obj;
 	}
 	
@@ -243,12 +236,13 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	* @return object $obj action encontrado
 	*/
 	function getByNameOrPair($action) {
-		$c = new Criteria();		
-		$cton1 = $c->getNewCriterion(SecurityActionPeer::ACTION, 'LOWER('.SecurityActionPeer::ACTION.') = "'.strtolower($action).'"',Criteria::CUSTOM);
-		$cton2 = $c->getNewCriterion(SecurityActionPeer::PAIR, 'LOWER('.SecurityActionPeer::PAIR.') = "'.strtolower($action).'"',Criteria::CUSTOM);
+		$criteria = new Criteria();
+		$criteria->setIgnoreCase();
+		$cton1 = $criteria->getNewCriterion(SecurityActionPeer::ACTION, $action, Criteria::EQUAL); 
+		$cton2 = $criteria->getNewCriterion(SecurityActionPeer::PAIR, $action, Criteria::EQUAL);
 		$cton1->addOr($cton2);
-		$c->add($cton1);		
-		$action = SecurityActionPeer::doSelectOne($c);
+		$criteria->add($cton1);		
+		$action = SecurityActionPeer::doSelectOne($criteria);
 		return $action;
 	}	
 
@@ -259,6 +253,7 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	*/
 	function getAllByModule($module) {
 		$criteria = new Criteria();
+		$criteria->setIgnoreCase();
 		$criteria->add(SecurityActionPeer::MODULE, $module);
     	$obj = SecurityActionPeer::doSelect($criteria);
     	return $obj;
@@ -271,6 +266,7 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	*/
 	function getAllByModuleCheckingLogin($module) {
 		$criteria = new Criteria();
+		$criteria->setIgnoreCase();
 		$criteria->add(SecurityActionPeer::MODULE, $module);
 		$criteria->add(SecurityActionPeer::NOCHECKLOGIN, false);
 		$obj = SecurityActionPeer::doSelect($criteria);
@@ -288,7 +284,6 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 		return SecurityActionPeer::getOnlyActionsWithAccessAffiliateUser($allActions,$bitLevel);
 	}
 	
-
 	/**
 	* obtengo todos los actions de un modulo, dependiendo el nivel, sin los action que no chequean login
 	* @param string $module nombre del modulo
@@ -318,28 +313,28 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	*/
 	function getAllByAction($action) {
 		$criteria = new Criteria();
+		$criteria->setIgnoreCase();
 		$criteria->add(SecurityActionPeer::ACTION, $action);
     if( $obj = SecurityActionPeer::doSelect($criteria) )
 			return true;
 			else    return false;
 	}
 	
-
 	/**
 	* Obtiene un action a partir de su par
 	* @param string $pair nombre del action par
-	* @return object $obj si lo encontr�
+	* @return object $obj si lo encontró
 	*/
 	function getByPair($pair) {
 		$criteria = new Criteria();
+		$criteria->setIgnoreCase();
 		$criteria->add(SecurityActionPeer::PAIR, $pair);
-    $objs = SecurityActionPeer::doSelect($criteria);
-    if (!empty($objs[0]))
-    	return $objs[0];
+    $objs = SecurityActionPeer::doSelectOne($criteria);
+    if (!empty($objs))
+    	return $objs;
     else
     	return false;
 	}
-
 
 	/**
 	* Obtiene todos los nombres de modulos (1 sola vez por nombre)
@@ -420,12 +415,12 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	* @return string $module nombre del modulo del action
 	*/
 	function getModuleByAction($action) {
-			$criteria = new Criteria();
-			$criteria->add(SecurityActionPeer::ACTION, $action);
-		$obj = SecurityActionPeer::doSelect($criteria);
-			return $obj[0]->getModule();
+		$criteria = new Criteria();
+		$criteria->add(SecurityActionPeer::ACTION, $action);
+		$obj = SecurityActionPeer::doSelectOne($criteria);
+		return $obj->getModule();
 
-		}
+	}
 
 	/**
 	 *
@@ -435,13 +430,11 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	 * @return 1 si un numero se incluye en otro
 	 */
 	function checkAccessBitToBit($paramUser,$paramModule){
-		if ((intval($paramModule) & intval($paramUser)) > 0 ){
-				return 1;
-		}
+		if ((intval($paramModule) & intval($paramUser)) > 0 )
+			return 1;
+		else
 			return 0;
-
 	}
-
 
 	/**
 	* obtiene el nivel de usuario y el id de afiliado de dicho usuario

@@ -12,6 +12,16 @@ require_once 'security/classes/om/BaseSecurityAction.php';
  */	
 class SecurityAction extends BaseSecurityAction {
 
+	/**
+	 * Initializes internal state of Content object.
+	 * @see        parent::__construct()
+	 */
+	public function __construct()
+	{
+		// Make sure that parent constructor is always invoked, since that
+		// is where any default values for this object are set.
+		parent::__construct();
+	}
 
 	/**
 	*
@@ -21,18 +31,16 @@ class SecurityAction extends BaseSecurityAction {
 	*/
 	
 	function getLabel(){
-		
+		$language = Common::getCurrentLanguageCode();
+		include_once 'SecurityActionLabelPeer.php';
 		try{
-		global $system;
-		$language=$system["config"]["mluse"]["language"];
-		include_once 'tablero/SecurityActionLabelPeer.php';
-		$language='eng';
-		$actionLabelInfo=SecurityActionLabelPeer::getByActionAndLanguage($this->GetAction(),$language);
-		if (!empty($actionLabelInfo))
-			return $actionLabelInfo->getLabel();
-		else
-			return $this->getAction();
-		}catch (PropelException $e) {}
+			$actionLabelInfo = SecurityActionLabelPeer::getByActionAndLanguage($this->GetAction(),$language);
+			if (!empty($actionLabelInfo))
+				return $actionLabelInfo->getLabel();
+			else
+				return $this->getAction();
+		}
+		catch (PropelException $e) {}
 	}
 
 
@@ -155,12 +163,12 @@ class SecurityAction extends BaseSecurityAction {
 	function getOverallNoCheckLogin() {
 		$noCheckLogin = 0;
 		if ($this->getActive != 0) {
-			if ($this->getNoCheckLogin() == 1) {
+			if ($this->getNoCheckLogin() == 1) 
 				$noCheckLogin = 1;
-			}
 		}
 		else{
-			$securityModule = $this->getSecurityModule();			if ($securityModule->getNoCheckLogin() == 1)
+			$securityModule = $this->getSecurityModule();
+			if ($securityModule->getNoCheckLogin() == 1)
 				$noCheckLogin = 1;
 		}
 		return $noCheckLogin;	
