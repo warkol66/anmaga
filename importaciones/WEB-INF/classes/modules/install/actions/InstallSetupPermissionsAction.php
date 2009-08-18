@@ -8,6 +8,19 @@
 require_once("BaseAction.php");
 require_once("ModulePeer.php");
 
+if(false === function_exists('lcfirst')){
+	/**
+	 * Make a string's first character lowercase
+	 *
+	 * @param string $str
+	 * @return string the resulting string.
+	 */
+	function lcfirst( $str ) {
+		$str[0] = strtolower($str[0]);
+		return (string)$str;
+	}
+}
+
 class InstallSetupPermissionsAction extends BaseAction {
 
 	function InstallSetupPermissionsAction() {
@@ -31,34 +44,33 @@ class InstallSetupPermissionsAction extends BaseAction {
 		$access = array();
 		
 		foreach ($actions as $action) {
-			$lcAction = strtolower(substr($action,0,1)) . substr($action,1,strlen($action)-1);
+			$lcAction = lcfirst($action);
 
 			$securityAction = SecurityActionPeer::getByNameOrPair($lcAction);
-			
 		if (!empty($securityAction)) {
-			//evaluacion de bitlevels
-			$bitlevel = $securityAction->getAccess();
 			
 			$access[$action] = array();
-			$access[$action]['permission'] = array();
-			$access[$action]['permission'][1] = $this->evaluateBitlevel(1,$bitlevel);
-			$access[$action]['permission'][2] = $this->evaluateBitlevel(2,$bitlevel);
-			$access[$action]['permission'][4] = $this->evaluateBitlevel(4,$bitlevel);
-			$access[$action]['permission'][all] = $this->evaluateBitlevel(1073741823,$bitlevel);
 
-			$bitLevelAffiliate = $securityAction->getAccessAffiliateUser();
+			$bitLevel = $securityAction->getAccess();
+			if ($bitLevel == 1073741823) {
+				$access[$action]['bitLevel'] = 0;
+				$access[$action]['all'] = 1;				
+			}
+			else
+				$access[$action]['bitLevel'] = $bitLevel;
 			
-			$access[$action]['permissionAffiliate'] = array();
-			$access[$action]['permissionAffiliate'][1] = $this->evaluateBitlevel(1,$bitLevelAffiliate);
-			$access[$action]['permissionAffiliate'][2] = $this->evaluateBitlevel(2,$bitLevelAffiliate);
-			$access[$action]['permissionAffiliate'][4] = $this->evaluateBitlevel(4,$bitLevelAffiliate);
-			$access[$action]['permissionAffiliate'][all] = $this->evaluateBitlevel(1073741823,$bitLevelAffiliate);			
-
-			//evaluacion de permisos booleanos
+			$bitLevelAffiliate = $securityAction->getAccessAffiliateUser();
+			if ($bitLevelAffiliate == 1073741823) {
+				$access[$action]['bitLevelAffiliate'] = 0;
+				$access[$action]['affiliateAll'] = 1;
+			}
+			else
+				$access[$action]['bitLevelAffiliate'] = $bitLevelAffiliate;
 			
 			$access[$action]['permissionRegistration'] = $securityAction->getAccessRegistrationUser();
 			$access[$action]['noCheckLogin'] = $securityAction->getNoCheckLogin();
 		}
+
 		}
 
 		return $access;
@@ -68,14 +80,13 @@ class InstallSetupPermissionsAction extends BaseAction {
 		
 		$access = array();
 		
-		//evaluacion de bitlevels
 		$securityModule = SecurityModulePeer::getAccess($module);
 
 		if (!empty($securityModule)) {
 		
 			$bitlevel = $securityModule->getAccess();
 		
-			$access['permissionGeneral'] = array();
+			$access['bitLevel'] = array();
 			$access['permissionGeneral'][1] = $this->evaluateBitlevel(1,$bitlevel);
 			$access['permissionGeneral'][2] = $this->evaluateBitlevel(2,$bitlevel);
 			$access['permissionGeneral'][4] = $this->evaluateBitlevel(4,$bitlevel);
@@ -117,8 +128,8 @@ class InstallSetupPermissionsAction extends BaseAction {
 		}
 
 		//asigno modulo
-		$moduleLabel = "Install";
-		$smarty->assign("moduleLabel",$moduleLabel);
+		$module = "Install";
+		$smarty->assign("module",$module);
  
 		$modulePeer = new ModulePeer();
 
@@ -139,13 +150,9 @@ class InstallSetupPermissionsAction extends BaseAction {
 		$actions = array();
 		
 		while (false !== ($filename = readdir($directoryHandler))) {
-			
 			//verifico si es un archivo php
-			if (is_file($modulePath . $filename) && (ereg('(.*)Action.php$',$filename,$regs))) {
+			if (is_file($modulePath . $filename) && (ereg('(.*)Action.php$',$filename,$regs)))
 				array_push($actions,$regs[1]);		
-			}
-			
-		
 		}
 		closedir($directoryHandler);
 		
@@ -158,11 +165,8 @@ class InstallSetupPermissionsAction extends BaseAction {
 				//armamos el nombre de la posible action sin do				
 				$actionWithoutDo = $parts[1].$parts[2][0].$parts[2][3].$parts[3];
 			
-				if (in_array($actionWithoutDo,$actions)) {			
-
+				if (in_array($actionWithoutDo,$actions))		
 					$pairActions[$actionWithoutDo] = $action;
-				}
-		
 			}
 		}
 		
@@ -190,10 +194,12 @@ class InstallSetupPermissionsAction extends BaseAction {
 			$smarty->assign('mode',$_GET['mode']);
 			
 			$generalAccess = $this->getAccessToModule($_GET['moduleName']);
+
 			$withoutPairAccess = $this->getAccessToActions($withoutPair);
 			$withPairAccess = $this->getAccessToActions($withPair);
-			
+
 			$moduleSelected = SecurityModulePeer::getAccess($_GET['moduleName']);
+
 			$smarty->assign('moduleSelected',$moduleSelected);
 
 			$smarty->assign('withoutPairAccess',$withoutPairAccess);

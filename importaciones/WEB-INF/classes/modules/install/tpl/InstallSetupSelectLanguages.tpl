@@ -18,4 +18,5 @@
 		|-/if-|			
 		<input type="submit" value="Aceptar" />
 	</p>
+</fieldset>
 </form>

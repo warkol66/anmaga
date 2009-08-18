@@ -98,7 +98,7 @@ class InstallSetupMessagesAction extends BaseAction {
 			
 			$smarty->assign('mode',$_GET['mode']);
 			
-			require_once('ActionLogLabelPeer.php');
+			require_once('ActionlogLabelPeer.php');
 			
 			$actualMessages = array();
 			
@@ -107,9 +107,9 @@ class InstallSetupMessagesAction extends BaseAction {
 				foreach ($forwards as $forward) {
 					
 					foreach ($languages as $language) {
-						$actionLogLabel = ActionLogLabelPeer::getAllByInfo($action,$forward,$language->getCode());
-						if (!empty($actionLogLabel))
-							$actualMessages[$action][$forward][$language->getCode()] = $actionLogLabel->getLabel();
+						$actionlogLabel = ActionlogLabelPeer::getAllByInfo($action,$forward,$language->getCode());
+						if (!empty($actionlogLabel))
+							$actualMessages[$action][$forward][$language->getCode()] = $actionlogLabel->getLabel();
 					}
 				}
 			}

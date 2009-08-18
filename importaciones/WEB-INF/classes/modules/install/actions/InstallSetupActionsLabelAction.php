@@ -15,24 +15,6 @@ class InstallSetupActionsLabelAction extends BaseAction {
 		;
 	}
 
-	function filterMessages($module,$messages) {
-
-		$path = "WEB-INF/classes/modules/" . $module . "/actions/";
-
-		$filteredMessages = array();
-
-		foreach ($messages as $key => $value) {
-			$actionFile = $path . ucfirst($key) . 'Action.php';
-			$actionFileContents = '';
-			$actionFileContents = file_get_contents($actionFile);
-			if (preg_match('(Common::doLog)',$actionFileContents) >= 1) {	
-				$filteredMessages["$key"] = $value;
-			}
-		}
-		
-		return $filteredMessages;
-	}
-
 	function execute($mapping, $form, &$request, &$response) {
 
 		BaseAction::execute($mapping, $form, $request, $response);
@@ -119,28 +101,18 @@ class InstallSetupActionsLabelAction extends BaseAction {
 		if (isset($_GET['mode']) && $_GET['mode'] == 'reinstall') {
 			
 			$smarty->assign('mode',$_GET['mode']);
-			
-			require_once('ActionLogLabelPeer.php');
-			
-			$actualMessages = array();
-			
-			foreach ($messages as $action => $forwards) {
-				
-				foreach ($forwards as $forward) {
-					
-					foreach ($languages as $language) {
-						$actionLogLabel = ActionLogLabelPeer::getAllByInfo($action,$forward,$language->getCode());
-						if (!empty($actionLogLabel))
-							$actualMessages[$action][$forward][$language->getCode()] = $actionLogLabel->getLabel();
-					}
+			require_once('SecurityActionLabelPeer.php');
+			$actualLabels = array();
+			foreach ($totalActions as $action) {
+				foreach ($languages as $language) {
+					$actionLabel = SecurityActionLabelPeer::getByActionAndLanguage($action,$language->getCode());
+					if (!empty($actionLabel))
+						$actualLabels[$action][$language->getCode()] = $actionLabel->getLabel();
 				}
 			}
-			$smarty->assign('actualMessages',$actualMessages);
+			$smarty->assign('actualLabels',$actualLabels);
 		}
 		
-		//filtramos aquellos actions que no tienen acciones de log.
-		$filteredMessages = $this->filterMessages($_GET['moduleName'],$messages);
-
 		$smarty->assign("languages",$languages);
 
 		$smarty->assign('actions',$totalActions);

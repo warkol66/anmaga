@@ -15,36 +15,36 @@
 
 <!-- ========== Default Action Mapping Definitions ============================== -->
 
-  <action-mappings>
-    <action    path = "index"
-               type = "IndexAction"
-               name = "index"
-              scope = "request"
-           validate = "true">
-    	<forward name="success" path="/Main.php?do=usersLogin" redirect="true" />
-    </action>
-    <action    path = "maintenance"
-               type = "MaintenanceAction"
-               name = "maintenance"
-              scope = "request"
-           validate = "true">
-    	<forward name="success" path="Maintenance.tpl" />
-    </action>
-    <action    path = "welcome"
-               type = "WelcomeAction"
-               name = "welcome"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="Welcome.tpl" />
-    </action>
-    <action    path = "installGenerateConfig"
-               type = "InstallGenerateConfigAction"
-               name = "installGenerateConfig"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="InstallGenerateConfig.tpl" />
-    </action>    
-    
+	<action-mappings>
+		<action    path = "index"
+							 type = "IndexAction"
+							 name = "index"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersLogin" redirect="true" />
+		</action>
+		<action    path = "maintenance"
+							 type = "MaintenanceAction"
+							 name = "maintenance"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="Maintenance.tpl" />
+		</action>
+		<action    path = "welcome"
+							 type = "WelcomeAction"
+							 name = "welcome"
+							scope = "request"
+					 validate = "true">
+		<forward name="success" path="Welcome.tpl" />
+		</action>
+		<action    path = "installGenerateConfig"
+							 type = "InstallGenerateConfigAction"
+							 name = "installGenerateConfig"
+							scope = "request"
+					 validate = "true">
+		<forward name="success" path="InstallGenerateConfig.tpl" />
+		</action>
+
 	</action-mappings>
 
 <!-- ========== Modules Action Mapping Definitions ====================== -->
@@ -71,3 +71,4 @@
 	</plug-in>
 
 </phpmvc-config>
+

@@ -70,6 +70,7 @@
 			<form method="get">
 				<input type="hidden" name="do" value="installSetupSelectLanguages" />
 				<input type="hidden" name="moduleName" value="|-$module->getName()-|" />
+				<input type="hidden" name="nextDo" value="installSetupModuleInformation" />
 				<input type="hidden" name="mode" value="reinstall">
 				<input type="submit" value="Información de Módulo" />
 			</form>		
