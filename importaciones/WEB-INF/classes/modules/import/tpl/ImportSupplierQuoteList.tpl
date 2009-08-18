@@ -66,7 +66,7 @@
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importSupplierQuoteHistory" />
 						<input type="hidden" name="id" value="|-$quote->getid()-|" />
-						<input type="submit" name="submit_go_edit_quote" value="##import,18,Ver Historial##" class="buttonImageHistory" title="##import,19,Consultar histórico de solicitud##" />
+						<input type="button" name="submit_go_edit_quote" value="##import,18,Ver Historial##" class="buttonImageHistory" title="##import,19,Consultar histórico de solicitud##" onClick="window.open('Main.php?do=importSupplierQuoteHistory&id=|-$quote->getid()-|','History','width=670,height=500,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes');" />
 					</form>
 					
 					<input type="button" value="##import,20,Reenviar a otros destinatarios##" onClick="javascript:importShowDiv('resendDiv|-$quote->getId()-|')" class="buttonImageSendMultiple" title="##import,21,Enviar la solicitud a otros destinatarios##"/>

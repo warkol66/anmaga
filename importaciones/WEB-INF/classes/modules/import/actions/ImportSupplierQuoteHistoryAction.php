@@ -47,6 +47,10 @@ class ImportSupplierQuoteHistoryAction extends BaseAction {
 
 		$module = "Import";
 		$smarty->assign('module',$module);
+
+		//////////
+		// Use a different template
+		$this->template->template = "TemplateBasic.tpl";
 		
 		$smarty->assign("message",$_GET["message"]);
 				

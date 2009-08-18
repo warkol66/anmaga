@@ -72,7 +72,7 @@
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientOrderHistory" />
 						<input type="hidden" name="id" value="|-$order->getid()-|" />
-						<input type="submit" name="submit_go_edit_order" value="Ver Historial" class="buttonImageHistory" title="Ver Historial" alt="Ver Historial" />
+						<input type="button" name="submit_go_edit_order" value="Ver Historial" class="buttonImageHistory" title="Ver Historial" alt="Ver Historial" onClick="window.open('Main.php?do=importClientOrderHistory&id=|-$quote->getid()-|','History','width=670,height=500,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes');" />
 					</form>
 <!--					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="importClientQuoteDelete" />

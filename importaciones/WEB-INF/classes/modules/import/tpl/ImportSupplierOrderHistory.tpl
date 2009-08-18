@@ -1,7 +1,6 @@
+<div id="rightColumn">
 <h2>Exportaciones</h2>
 <h1>Historial Cotización de Proveedor: |-$supplierPurchaseOrder->getId()-|</h1>
-
-
 <div id="div_status">
 	<table cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-newsmedias">
 		<thead>
@@ -22,5 +21,5 @@
 		</tbody>
 	</table>
 </div>
-
-<input type="button" name="cancel" value="Volver" onClick="javascript:history.go(-1)"/>
+<input type="button" name="cancel" value="Volver" onClick="window.close()"/>
+</div>

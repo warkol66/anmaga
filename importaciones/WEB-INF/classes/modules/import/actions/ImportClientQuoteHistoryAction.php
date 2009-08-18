@@ -49,6 +49,10 @@ class ImportClientQuoteHistoryAction extends BaseAction {
 		$smarty->assign('module',$module);
 		
 		$smarty->assign("message",$_GET["message"]);
+
+		//////////
+		// Use a different template
+		$this->template->template = "TemplateBasic.tpl";
 		
 		$clientQuotePeer = new ClientQuotePeer();
 

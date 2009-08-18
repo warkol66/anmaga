@@ -47,6 +47,10 @@ class ImportClientOrderHistoryAction extends BaseAction {
 		
 		$smarty->assign("message",$_GET["message"]);
 		
+				//////////
+		// Use a different template
+		$this->template->template = "TemplatePlain.tpl";
+
 		$clientPurchaseOrderPeer = new ClientPurchaseOrderPeer();
 
 		if (Common::isAdmin()) {
