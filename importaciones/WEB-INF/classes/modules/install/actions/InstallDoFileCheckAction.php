@@ -52,9 +52,8 @@ class InstallDoFileCheckAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		//asigno modulo
-		$moduleLabel = "Install";
-		$smarty->assign("moduleLabel",$moduleLabel);
+		$module = "Install";
+		$smarty->assign("module",$module);
  
 		$modulePeer = new ModulePeer();
 

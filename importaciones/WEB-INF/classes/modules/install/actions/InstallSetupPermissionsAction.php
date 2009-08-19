@@ -127,7 +127,6 @@ class InstallSetupPermissionsAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		//asigno modulo
 		$module = "Install";
 		$smarty->assign("module",$module);
  
