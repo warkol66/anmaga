@@ -26,10 +26,11 @@ class MultilangLanguagePeer extends BaseMultilangLanguagePeer {
 	* @param string $code code del language
 	* @return boolean true si se creo el language correctamente, false sino
 	*/
-	function create($name,$code) {
+	function create($name,$code,$locale) {
 		$languageObj = new MultilangLanguage();
 		$languageObj->setName($name);
 		$languageObj->setCode($code);    
+		$languageObj->setLocale($locale);    
 		$languageObj->save();
 		return true;
 	}
@@ -42,10 +43,11 @@ class MultilangLanguagePeer extends BaseMultilangLanguagePeer {
 	* @param string $code code del language
 	* @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
-	function update($id,$name,$code) {
+	function update($id,$name,$code,$locale) {
 		$languageObj = MultilangLanguagePeer::retrieveByPK($id);
 		$languageObj->setName($name);
 		$languageObj->setCode($code);    
+		$languageObj->setLocale($locale);    
 		$languageObj->save();
 		return true;
 	}

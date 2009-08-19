@@ -55,7 +55,7 @@
 		    |-/foreach-|
 	    </div>
 
-		<a href="#" onclick="return addTraduction(this)" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a>
+		<a href="#" onclick="return addTranslation(this)" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a>
 
 	</div>
     

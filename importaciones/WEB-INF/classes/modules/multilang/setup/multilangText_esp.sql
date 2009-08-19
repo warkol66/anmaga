@@ -52,3 +52,6 @@ INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) V
 INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('51', 'multilang', 'esp','Crear Múltples Traducciones ');
 INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('52', 'multilang', 'esp','A continuación se muestra el formulario de creación de traducciones múltiples. Para agregar una nueva fila de traducciones, haga click en &quot;Agregar traducción&quot; y una nueva fila aparecerá. Ingrese las traducciones y haga click en &quot;Aceptar&quot; para crear los textos.');
 INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('53', 'multilang', 'esp','Agregar Múltiples Traducciones');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('54', 'multilang', 'esp','Español');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('55', 'multilang', 'esp','Inglés');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('56', 'multilang', 'esp','Chino');

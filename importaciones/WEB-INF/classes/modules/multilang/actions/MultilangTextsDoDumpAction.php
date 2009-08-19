@@ -45,7 +45,7 @@ class MultilangTextsDoDumpAction extends BaseAction {
     	/**
      	* Use a different template
      	*/
-			$this->template->template = "template_dump.tpl";
+			$this->template->template = "TemplatePlain.tpl";
 
 			foreach ($_GET["languageCodes"] as $languageCode) {
 

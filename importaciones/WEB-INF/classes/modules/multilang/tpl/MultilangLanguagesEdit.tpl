@@ -22,6 +22,10 @@
       <label for="code">##multilang,9,Código##</label>
       <input type="text" id="code" name="code" value="|-if $action eq 'edit'-||-$language->getcode()-||-/if-|" title="##multilang,9,Código##" maxlength="10" />
     </p>
+    <p>
+      <label for="locale">Locale</label>
+      <input type="text" id="locale" name="locale" value="|-if $action eq 'edit'-||-$language->getLocale()-||-/if-|" title="Locale" maxlength="20" />
+    </p>
     <p> |-if $action eq 'edit'-|
       <input type="hidden" name="id" id="id" value="|-if $action eq 'edit'-||-$language->getid()-||-/if-|" />
       |-/if-|

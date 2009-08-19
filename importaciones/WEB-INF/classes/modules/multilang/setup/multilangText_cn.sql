@@ -52,3 +52,6 @@ INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) V
 INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('51', 'multilang', 'cn','');
 INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('52', 'multilang', 'cn','');
 INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('53', 'multilang', 'cn','');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('54', 'multilang', 'cn','');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('55', 'multilang', 'cn','');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('56', 'multilang', 'cn','');

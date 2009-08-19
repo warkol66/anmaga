@@ -10,12 +10,13 @@
   <table border="0" cellpadding="5" cellspacing="0" id="tabla-languages" class="tableTdBorders">
     <thead>
 			<tr>
-				 <th colspan="4" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangLanguagesEdit" class="addLink">##multilang,6,Agregar Idioma##</a></div></th>
+				 <th colspan="5" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangLanguagesEdit" class="addLink">##multilang,6,Agregar Idioma##</a></div></th>
 			</tr>
       <tr class="thFillTitle">
         <th>##multilang,7,Id##</th>
         <th>##multilang,8,Nombre##</th>
         <th>##multilang,9,Código##</th>
+        <th>Locale</th>
         <th width="5%">&nbsp;</th>
       </tr>
     </thead>
@@ -25,6 +26,7 @@
       <td>|-$language->getid()-|</td>
       <td>|-$language->getname()-|</td>
       <td>|-$language->getcode()-|</td>
+      <td>|-$language->getLocale()-|</td>
       <td nowrap="nowrap"><form action="Main.php" method="get">
           <input type="hidden" name="do" value="multilangLanguagesEdit" />
           <input type="hidden" name="id" value="|-$language->getid()-|" />
@@ -39,7 +41,7 @@
     |-/foreach-|
     </tbody>
 			<tr>
-				 <th colspan="4" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangLanguagesEdit" class="addLink">##multilang,6,Agregar Idioma##</a></div></th>
+				 <th colspan="5" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangLanguagesEdit" class="addLink">##multilang,6,Agregar Idioma##</a></div></th>
 			</tr>
   </table>
 </div>

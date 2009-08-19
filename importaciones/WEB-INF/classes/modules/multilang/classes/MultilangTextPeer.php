@@ -286,8 +286,9 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 		$cond->add(MultilangTextPeer::MODULENAME,$moduleName);
 		$cond->addAscendingOrderByColumn(MultilangTextPeer::ID);
 		$cond->addAscendingOrderByColumn(MultilangTextPeer::LANGUAGECODE);
+		$cond->addJoin(MultilangTextPeer::LANGUAGECODE,MultilangLanguagePeer::CODE,Criteria::INNER_JOIN);
 
-    	$pager = new PropelPager($cond,"MultilangTextPeer", "doSelect",$page,$perPage);
+  	$pager = new PropelPager($cond,"MultilangTextPeer", "doSelect",$page,$perPage);
 		return $pager;
 	}
   

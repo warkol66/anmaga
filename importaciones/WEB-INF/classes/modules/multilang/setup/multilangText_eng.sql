@@ -52,3 +52,6 @@ INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) V
 INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('51', 'multilang', 'eng','Create translations &quot;bulk&quot;');
 INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('52', 'multilang', 'eng','The following form allows you to create bulk ttranslations. To add more translations, click on &quot;Add trasnlations&quot; and a new row will appear. To save trasnlations, click on &quot;Accept&quot;.');
 INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('53', 'multilang', 'eng','Add Translations &quot;Bulk&quot;');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('54', 'multilang', 'eng','Spanish');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('55', 'multilang', 'eng','English');
+INSERT INTO `multilang_text` ( `id` , `moduleName` , `languageCode` , `text` ) VALUES ('55', 'multilang', 'eng','Chinese');

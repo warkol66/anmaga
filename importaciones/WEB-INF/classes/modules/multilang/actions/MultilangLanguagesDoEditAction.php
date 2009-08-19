@@ -47,7 +47,7 @@ class MultilangLanguagesDoEditAction extends BaseAction {
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un language existente
 
-			if ( MultilangLanguagePeer::update($_POST["id"],$_POST["name"],$_POST["code"]) )
+			if ( MultilangLanguagePeer::update($_POST["id"],$_POST["name"],$_POST["code"],$_POST["locale"]) )
       			return $mapping->findForwardConfig('success');
       		else
       			return $mapping->findForwardConfig('success');
@@ -56,10 +56,11 @@ class MultilangLanguagesDoEditAction extends BaseAction {
 		else {
 		  //estoy creando un nuevo language
 
-			if ( !MultilangLanguagePeer::create($_POST["name"],$_POST["code"]) ) {
+			if ( !MultilangLanguagePeer::create($_POST["name"],$_POST["code"],$_POST["locale"]) ) {
 				$smarty->assign("id",$_POST["id"]);
 				$smarty->assign("name",$_POST["name"]);
 				$smarty->assign("code",$_POST["code"]);
+				$smarty->assign("locale",$_POST["locale"]);
 				$smarty->assign("action","create");
 				$smarty->assign("message","error");
 				return $mapping->findForwardConfig('failure');
