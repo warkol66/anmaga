@@ -538,4 +538,14 @@ class ModulePeer extends BaseModulePeer {
 		return false;
 	}
 
+
+	function existsModule($moduleName) {
+
+		$dir = "WEB-INF/classes/modules/".$moduleName;
+		$dh  = opendir($dir);		
+		if (!empty($dh))
+			return true;
+		return false;
+	}
+
 } // ModulePeer
