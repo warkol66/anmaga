@@ -65,19 +65,16 @@
 				<input type="checkbox" name="permission[|-$action-|][access][]" value="|-$groupbit->getBitLevel()-|" |-checked_if_has_access first=$groupbit->getBitLevel() second=$withoutPairAccess.$action.bitLevel-| />
 			|-$groupbit->getName()-|<br />
 			|-/foreach-|		
-			<input type="checkbox" name="permission[|-$action-|][all]" value="true" |-if $withoutPairAccess.$action.all-|checked="checked"|-/if-|> Todos<br>
-		</td>
+			<input type="checkbox" name="permission[|-$action-|][all]2" value="true" |-if $withoutpairaccess.$action.all-|checked="checked"|-/if-| /> 
+			Todos<br>		</td>
 		<td nowrap>
 			|-foreach from=$affiliateLevels item=groupbit name=bitlevelgroup-|
 				<input type="checkbox" name="permissionAffiliate[|-$action-|][access][]" value="|-$groupbit->getBitLevel()-|" |-checked_if_has_access first=$groupbit->getBitLevel() second=$action.bitLevelAffiliate-| />
 				|-$groupbit->getName()-| <br />
 			|-/foreach-|		
-			<input type="checkbox" name="permissionAffiliate[|-$action-|][all]" value="true" |-if $withoutPairAccess.$action.permissionAffiliate.all-|checked="checked"|-/if-|> Todos<br>
-		</td> 
+			<input type="checkbox" name="permissionAffiliate[|-$action-|][all]" value="true" |-if $withoutPairAccess.$action.permissionAffiliate.all-|checked="checked"|-/if-|> Todos<br>		</td> 
 		<td>
-			<input type="checkbox" name="permissionRegistration[|-$action-|]" value="1" |-if $withoutPairAccess.$action.permissionRegistration-|checked="checked"|-/if-|/><br>
-		</td>
-
+			<input type="checkbox" name="permissionRegistration[|-$action-|]" value="1" |-if $withoutPairAccess.$action.permissionRegistration-|checked="checked"|-/if-|/><br>		</td>
 	</tr> 
 	|-/foreach-|
 
@@ -85,17 +82,15 @@
 	<tr> 
 		<td>|-$action-|</td> 
 		<td>
-			<input type="checkbox" name="noCheckLogin[|-$action-|]" value="1" |-if $withPairAccess.$action.noCheckLogin-|checked="checked"|-/if-|/><br>
-		</td>
+			<input type="checkbox" name="noCheckLogin[|-$action-|]" value="1" |-if $withPairAccess.$action.noCheckLogin-|checked="checked"|-/if-|/><br>		</td>
 		<td nowrap>
 
 			|-foreach from=$levels item=groupbit name=bitlevelgroup-|
 				<input type="checkbox" name="permission[|-$action-|][access][]" value="|-$groupbit->getBitLevel()-|" |-checked_if_has_access first=$groupbit->getBitLevel() second=$withPairAccess.$action.bitLevel-| /> |-$groupbit->getName()-|<br />
 			|-/foreach-|		
 			<input type="checkbox" name="permission[|-$action-|][all]" value="true" |-if $withoutPairAccess.$action.all-|checked="checked"|-/if-|> Todos<br>
-			<input type="hidden" name="permission[|-$action-|][pair]" value="|-$pairActions[$action]-|" />
-			<input type="hidden" name="permission[|-$action-|][access][]" value="0" />
-		</td>
+			<input type="hidden" name="pair[|-$action-|][pair]" value="|-$pairActions[$action]-|" />
+			</td>
 		<td nowrap>
 
 			|-foreach from=$affiliateLevels item=groupbit name=bitlevelgroup-|
@@ -103,14 +98,11 @@
 				|-$groupbit->getName()-| <br />
 			|-/foreach-|		
 			<input type="checkbox" name="permissionAffiliate[|-$action-|][all]" value="true" |-if $withoutPairAccess.$action.permissionAffiliate.all-|checked="checked"|-/if-|> Todos<br>
-			<input type="hidden" name="permissionAffiliate[|-$action-|][access][]" value="0" />
-		</td> 
+			<input type="hidden" name="permissionAffiliate[|-$action-|][access][]" value="0" />		</td> 
 		<td>
-			<input type="checkbox" name="permissionRegistration[|-$action-|]" value="1" |-if $withPairAccess.$action.permissionRegistration-|checked="checked"|-/if-|/><br>
-		</td>		
+			<input type="checkbox" name="permissionRegistration[|-$action-|]" value="1" |-if $withPairAccess.$action.permissionRegistration-|checked="checked"|-/if-|/><br>		</td>		
 	</tr> 
 	|-/foreach-|
-	
 </table> 
 	<p>
 	<input type="hidden" name="do" value="installDoSetupPermissions" />

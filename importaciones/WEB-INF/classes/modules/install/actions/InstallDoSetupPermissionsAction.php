@@ -42,13 +42,13 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 	 * @param $fd file descriptor del archivo donde se deberan guardar los permisos
 	 *
 	 */
-	function writeActionsPermissionsToOutput($module,$permission,$permissionAffiliate,$permissionRegistration,$noCheckLoginArray,$fd) {
+	function writeActionsPermissionsToOutput($module,$pairs,$permission,$permissionAffiliate,$permissionRegistration,$noCheckLoginArray,$fd) {
 
 		$sql = SecurityActionPeer::getSQLCleanup($module);	
 		fprintf($fd,"%s\n",$sql);
-	
+
 		foreach (array_keys($permission) as $action) {
-		
+
 			if (array_key_exists('all',$permission[$action])) //para ese action todos los permisos				
 				$bitLevel = 1073741823;	
 			else {
@@ -78,9 +78,9 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 				$noCheckLogin = 1;
 
 			
-			$pair = "";
-			if (array_key_exists('pair',$permission[$action])) //vemos si la accion tiene definido un pair
-				$pair = lcfirst($permission[$action]['pair']);
+			$pairedAction = "";
+			if (array_key_exists('pair',$pairs[$action])) //vemos si la accion tiene definido un pair
+				$pairedAction = lcfirst($pairs[$action]['pair']);
 
 			//TODO FALTA SECCION
 			$section = '';
@@ -94,13 +94,11 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 			$securityAction->setNoCheckLogin($noCheckLogin);
 			$securityAction->setAccessAffiliateUser($bitLevelAffiliate);
 			$securityAction->setActive(1);
-			$securityAction->setPair($pair);
+			$securityAction->setPair($pairedAction);
 
 			$sql = $securityAction->getSQLInsert();	
 			fprintf($fd,"%s\n",$sql);
-
 		}
-	
 	
 	}
 	
@@ -200,6 +198,7 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 
 
 		$permission = $_POST['permission'];
+		$pairs = $_POST['pair'];
 		$permissionAffiliate = $_POST['permissionAffiliate'];
 		$permissionGeneral = $_POST['permissionGeneral'];
 		$permissionAffiliateGeneral = $_POST['permissionAffiliateGeneral'];
@@ -207,11 +206,9 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 		$permissionRegistration = $_POST['permissionRegistration'];
 		$noCheckLogin = $_POST['noCheckLogin'];	
 
-
 		foreach (array_keys($noCheckLogin) as $action)
 			if (!array_key_exists($action,$permission))
 				$permission[$action] = $action;
-
 
 		$moduleName = $_POST['moduleName'];
 		$modulePath = "WEB-INF/classes/modules/" . $moduleName . '/setup/';
@@ -222,7 +219,7 @@ class InstallDoSetupPermissionsAction extends BaseAction {
 			return $mapping->findForwardConfig('failure');
 
 		$this->writeGeneralPermissionsToOutput($moduleName,$permissionGeneral,$permissionAffiliateGeneral,$permissionRegistrationGeneral,$fd);
-		$this->writeActionsPermissionsToOutput($moduleName,$permission,$permissionAffiliate,$permissionRegistration,$noCheckLogin,$fd);
+		$this->writeActionsPermissionsToOutput($moduleName,$pairs,$permission,$permissionAffiliate,$permissionRegistration,$noCheckLogin,$fd);
 
 		fclose($fd);
 		
