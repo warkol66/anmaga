@@ -47,11 +47,30 @@ class ActionlogLabelPeer extends BaseActionlogLabelPeer {
 
 	function getAllByInfo($action,$forward,$language) {
 		$criteria = new Criteria();
+		$criteria->setIgnoreCase(true);
 		$criteria->add(ActionlogLabelPeer::ACTION, $action);
 		$criteria->add(ActionlogLabelPeer::LANGUAGE, $language);
 		$criteria->add(ActionlogLabelPeer::FORWARD, $forward);
-    $obj = ActionlogLabelPeer::doSelect($criteria);
-    return $obj[0];
+    $obj = ActionlogLabelPeer::doSelectOne($criteria);
+    return $obj;
+	}
+
+	/**
+	* Obtiene una etiqueta
+	* @param string $action nombre del action
+	* @param string $forward tipo de forward
+	* @param string $language idioma
+	* @return object $obj objeto encontrado
+	*/
+
+	function getByInfo($action,$forward,$language) {
+		$criteria = new Criteria();
+		$criteria->setIgnoreCase(true);
+		$criteria->add(ActionlogLabelPeer::ACTION, $action);
+		$criteria->add(ActionlogLabelPeer::LANGUAGE, $language);
+		$criteria->add(ActionlogLabelPeer::FORWARD, $forward);
+    $obj = ActionlogLabelPeer::doSelectOne($criteria);
+    return $obj;
 	}
 
 	/**
@@ -66,8 +85,8 @@ class ActionlogLabelPeer extends BaseActionlogLabelPeer {
 		$criteria->add(ActionlogLabelPeer::ACTION, $action);
 		$criteria->add(ActionlogLabelPeer::LANGUAGE, 'esp');
 		$criteria->add(ActionlogLabelPeer::FORWARD, $forward);
-    $obj = ActionlogLabelPeer::doSelect($criteria);
-    return $obj[0];
+    $obj = ActionlogLabelPeer::doSelectOne($criteria);
+    return $obj;
 	}
 
 	/**
