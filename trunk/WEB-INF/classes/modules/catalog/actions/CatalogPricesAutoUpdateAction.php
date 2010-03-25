@@ -55,23 +55,29 @@ class CatalogPricesAutoUpdateAction extends BaseAction {
 			if (is_file($updatesDir . $file)) {
 
 				$parts = explode('.',$file);
-				if (count($parts) == 2 && $parts[1] == 'csv') {
+				//Cambio extensión a txt
+				//if (count($parts) == 2 && $parts[1] == 'csv') {
+				if (count($parts) == 2 && $parts[1] == 'txt') {
 					$filename = $parts[0];
 					$filePath = $updatesDir . $file;
-					if ($filename == 'listaPrecios') {
+					if ($filename == 'general') {
 						//procesamiento general
 						$this->processGeneralUpdate($filePath);
-						copy($filePath,$processedDir . $filename . date("Ymdhms") . '.csv');
+						copy($filePath,$processedDir . $filename . date("Ymdhms") . '.txt');
 						unlink($filePath);
 					//	Common::doLog('success',$filename);
 
 					}
 					else {
-						$nameParts = explode('_',$filename);
-						if (count($nameParts) == 2) {
-							$affiliateName = $nameParts[1];
+						//No vienen dos partes, solo el afiliadp
+						//$nameParts = explode('_',$filename);
+						//if (count($nameParts) == 2) {
+						$affiliate = AffiliatePeer::getByName($filename)
+						if (!empty($affiliate)) {
+						//	$affiliateName = $nameParts[1];
+							$affiliateName = $affiliate->getName();
 							$this->processAffiliateUpdate($affiliateName,$filePath);
-							copy($filePath,$processedDir . $filename . date("Ymdhms") . '.csv');
+							copy($filePath,$processedDir . $filename . date("Ymdhms") . '.txt');
 							unlink($filePath);
 					//		Common::doLog('success',$filename);
 					

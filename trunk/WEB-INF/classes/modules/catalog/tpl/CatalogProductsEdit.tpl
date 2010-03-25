@@ -20,12 +20,12 @@
 		
 		<p> 
 			<label for="name">Nombre</label> 
-			<input name="name" type="text" id="name" title="name" value="|-if $action eq 'edit'-||-$node->getname()-||-/if-|" size="60" maxlength="255" /> 
+			<input name="name" type="text" id="name" title="name" value="|-if $action eq 'edit'-||-$node->getname()|escape-||-/if-|" size="60" maxlength="255" /> 
 			</p> 
 		<br clear="all">
 		<p> 
 			<label for="description">Descripción</label> 
-			<textarea name="description" cols="60" rows="6" wrap="VIRTUAL" id="description">|-if $action eq 'edit'-||-$product->getdescription()-||-/if-|</textarea> 
+			<textarea name="description" cols="60" rows="6" wrap="VIRTUAL" id="description">|-if $action eq 'edit'-||-$product->getdescription()|escape-||-/if-|</textarea> 
 		</p> 
 		<br clear="all">
 		<p> 
@@ -34,7 +34,7 @@
 			</p> 
 		<br clear="all">
 		|-if $action eq 'edit'-|
-		<div> <img src="Main.php?do=catalogProductsGetImage&id=|-$node->getId()-|" alt="|-$node->getname()-|" /> </div> 
+		<div> <img src="Main.php?do=catalogProductsGetImage&id=|-$node->getId()-|" alt="|-$node->getname()|escape-|" /> </div> 
 		|-/if-|
 		<p> 
 			<label for="image">Imagen</label> 
