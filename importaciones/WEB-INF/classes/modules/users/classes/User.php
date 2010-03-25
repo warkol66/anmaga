@@ -22,6 +22,10 @@ class User extends BaseUser {
 		parent::__construct();
 	}
 
+	/*
+	 * Obtiene los grupos a los que pertenece un usuario
+	 * @returns todos los grupos.
+	 */
 	function getGroups() {
 		require_once("GroupPeer.php");
 		$cond = new Criteria();
@@ -30,26 +34,48 @@ class User extends BaseUser {
 		return $todosObj;
 	}
 
-	function isSupervisor() {
-  	$groups = $this->getGroups();
-  	foreach ($groups as $group) {
-  		if ( $group->getGroupId() == 1 ) {
-  			return true;
-  		}
+	/*
+	 * Indica si un usuario forma parte de un grupo
+	 * @param array $groups array de grupos
+	 * @returns true si pertenece al grupo, de lo contrario, false.
+	 */
+	function belongsToGroups($groups) {
+		$groupsArray = explode(";",$groups);
+		require_once("UserGroupPeer.php");
+		$c = new Criteria();
+		$c->add(UserGroupPeer::USERID, $this->getId());
+		$all = UserGroupPeer::doSelect($c);
+		foreach ($all as $userGroup) {
+			if (in_array($userGroup->getGroupId(),$groupsArray))
+				return true;
 		}
 		return false;
 	}
 
-	function isAdmin() {
+	/*
+	 * Indica si un usuario forma parte del grupo supervisor
+	 * @returns true si pertenece al grupo, de lo contrario, false.
+	 */
+	function isSupervisor() {
+  	$groups = $this->getGroups();
+  	foreach ($groups as $group){
+  		if ( $group->getGroupId() == 1 )
+  			return true;
+  	}
+		return false;
+	}
 
+	/*
+	 * Indica si un usuario forma parte del grupo supervisor
+	 * @returns true si pertenece al grupo, de lo contrario, false.
+	 */
+	function isAdmin() {
   	$groups = $this->getGroups();
   	foreach ($groups as $group) {
-  		if ( $group->getGroupId() == 2 ) {
+  		if ( $group->getGroupId() == 2 )
   			return true;
-  		}
-		}
+  	}
 		return false;
-
 	}
 
 	/*

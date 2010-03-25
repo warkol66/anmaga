@@ -765,116 +765,97 @@ fieldset {
 }
 
 /* Image Buttons and Links */
-.buttonImageDelete, .linkImageDelete {
-	background: url(../images/linkImageDelete.png) center no-repeat;
+.buttonImageDelete, .linkImageDelete, .buttonImageEdit, .linkImageEdit,.buttonImageView, .linkImageView,
+.buttonImageAdd, .linkImageAdd, .buttonImageGoTo, .linkImageGoTo, .buttonImageBack, .linkImageBack,
+.buttonImageViewGantt, .linkImageViewGantt, .buttonImageUpload, .linkImageUpload, 
+.buttonImageDownload, .linkImageDownload, .buttonImageInfo, .linkImageInfo, .buttonImageHelp, .linkImageHelp,
+.buttonImageActivate, .linkImageActivate, .buttonImageEmail, .linkImageEmail, .buttonImageSendMultiple, .linkImageSendMultiple,
+.buttonImageHistory, .linkImageHistory, .buttonImageStoreInServer, .linkImageStoreInServer,
+.buttonImageStoreLocal, .linkImageStoreLocal, .buttonImageRestore, .linkImageRestore, 
+.buttonImageRestoreFromServer, .linlImageRestoreFromServer, .buttonImageThumbnail, .linkImageThumbnail,
+.buttonImageWeight, .linkImageWeight, .buttonImageOrder, .linkImageOrder,
+.buttonImageManufacture, .linkImageManufacture {
+	background: url(../images/linkImage_all.png) no-repeat;
 }
-.buttonImageDeleteDisabled, .linkImageDeleteDisabled {
-	background: url(../images/linkImageDeleteDisabled.png) center no-repeat;
+.buttonImageDeleteDisabled, .linkImageDeleteDisabled, .buttonImageEditDisabled, .linkImageEditDisabled,
+.buttonImageDownloadDisabled, .linkImageDownloadDisabled, .buttonImageActivateDisabled, .linkImageActivateDisabled,
+.buttonImageViewDisabled, .linkImageViewDisabled, .buttonImageUploadDisabled, .linkImageUploadDisabled,
+.buttonImageEmailDisabled, .linkImageEmailDisabled, .buttonImageSendMultipleDisabled, .linkImageSendMultipleDisabled,
+.buttonImageAddDisabled, .linkImageAddDisabled, .buttonImageHistoryDisabled, .linkImageHistoryDisabled, 
+.buttonImageStoreInServerDisabled, .linkImageStoreInServerDisabled, .buttonImageStoreLocalDisabled, .linkImageStoreLocalDisabled,
+.buttonImageRestoreDisabled, .linkImageRestoreDisabled, .buttonImageRestoreFromServerDisabled, .linkImageRestoreFromServerDisabled
+.buttonImageThumbnailDisabled, .linkImageThumbnailDisabled, .buttonImageWeightDisabled, .linkImageWeightDisabled,
+.buttonImageOrderDisabled, .linkImageOrderDisabled, .buttonImageManufactureDisabled, .linkImageManufactureDisabled {
+	background: url(../images/linkImage_all_dis.png) no-repeat;
 }
-.buttonImageEdit, .linkImageEdit {
-	background: url(../images/linkImageEdit.png) no-repeat center;
+.buttonImageEdit, .linkImageEdit, .buttonImageEditDisabled, .linkImageEditDisabled {
+	background-position: 0px 0px;
 }
-.buttonImageEditDisabled, .linkImageEditDisabled {
-	background: url(../images/linkImageEditDisabled.png) no-repeat center;
+.buttonImageDelete, .linkImageDelete, .buttonImageDeleteDisabled, .linkImageDeleteDisabled {
+	background-position: -16px 0px;
 }
-.buttonImageAdd, .linkImageAdd {
-	background: url(../images/linkImageAdd.png) no-repeat center;
+.buttonImageView, .linkImageView, .buttonImageViewDisabled, .linkImageViewDisabled {
+	background-position: -32px 0px;
 }
-.buttonImageAddDisabled, .linkImageAddDisabled {
-	background: url(../images/linkImageAddDisabled.png) no-repeat center;
+.buttonImageUpload, .linkImageUpload, .buttonImageUploadDisabled, .linkImageUploadDisabled{
+	background-position: -48px 0px;
 }
-.buttonImageView, .linkImageView {
-	background: url(../images/linkImageView.png) no-repeat center;
+.buttonImageDownload, .linkImageDownload, .buttonImageDownloadDisabled, .linkImageDownloadDisabled {
+	background-position: -64px 0px;
 }
-.buttonImageViewDisabled, .linkImageViewDisabled {
-	background: url(../images/linkImageViewDisabled.png) no-repeat center;
-}
-.buttonImageGoTo, .linkImageGoTo {
-	background: url(../images/linkImageGoTo.png) no-repeat center;
-}
-.buttonImageBack, .linkImageBack {
-	background: url(../images/linkImageBack.png) no-repeat center;
-}
-.buttonImageViewGantt, .linkImageViewGantt {
-	background: url(../images/linkImageViewGantt.png) no-repeat center;
-}
-.buttonImageUpload, .linkImageUpload {
-	background: url(../images/linkImageUpload.png) no-repeat center;
-}
-.buttonImageUploadDisabled, .linkImageUploadDisabled {
-	background: url(../images/linkImageUploadDisabled.png) no-repeat center;
-}
-.buttonImageDownload, .linkImageDownload {
-	background: url(../images/linkImageDownload.png) no-repeat center;
-}
-.buttonImageDownloadDisabled, .linkImageDownloadDisabled {
-	background: url(../images/linkImageDownloadDisabled.png) no-repeat center;
-}
-.buttonImageActivate, .linkImageActivate {
-	background: url(../images/linkImageActivate.png) no-repeat center;
-}
-.buttonImageActivateDisabled, .linkImageActivateDisabled {
-	background: url(../images/linkImageActivateDisabled.png) no-repeat center;
+.buttonImageAdd, .linkImageAdd, .buttonImageAddDisabled, .linkImageAddDisabled {
+	background-position: -80px 0px;
 }
 .buttonImageInfo, .linkImageInfo {
-	background: url(../images/linkImageInfo.png) no-repeat center;
+	background-position: -96px 0px;
 }
 .buttonImageHelp, .linkImageHelp {
-	background: url(../images/linkImageHelp.png) no-repeat center;
+	background-position: -112px 0px;
 }
-.buttonImageEmail, .linkImageEmail {
-	background: url(../images/linkImageEmail.png) no-repeat center;
+.buttonImageBack, .linkImageBack {
+	background-position: -128px 0px;
 }
-.buttonImageEmailDisabled, .linkImageEmailDisabled {
-	background: url(../images/linkImageEmailDisabled.png) no-repeat center;
+.buttonImageGoTo, .linkImageGoTo {
+	background-position: -144px 0px;
 }
-.buttonImageHistory, .linkImageHistory {
-	background: url(../images/linkImageHistory.png) no-repeat center;
+.buttonImageStoreInServer, .linkImageStoreInServer, .buttonImageStoreInServerDisabled, .linkImageStoreInServerDisabled {
+	background-position: 0px -16px;
 }
-.buttonImageHistoryDisabled, .linkImageHistoryDisabled {
-	background: url(../images/linkImageHistoryDisabled.png) no-repeat center;
+.buttonImageStoreLocal, .linkImageStoreLocal, .buttonImageStoreLocalDisabled, .linkImageStoreLocalDisabled {
+	background-position: -16px -16px;
 }
-.buttonImageSendMultiple, .linkImageSendMultiple {
-	background: url(../images/linkImageSendMultiple.png) no-repeat center;
+.buttonImageRestoreFromServer, .linlImageRestoreFromServer, .buttonImageRestoreFromServerDisabled, .linkImageRestoreFromServerDisabled  {
+	background-position: -32px -16px;
 }
-.buttonImageSendMultipleDisabled, .linkImageSendMultipleDisabled {
-	background: url(../images/linkImageSendMultipleDisabled.png) no-repeat center;
+.buttonImageRestore, .linkImageRestore, .buttonImageRestoreDisabled, .linkImageRestoreDisabled {
+	background-position: -48px -16px;
 }
-.buttonImageStoreInServer, .linkImageStoreInServer {
-	background: url(../images/linkImageStoreInServer.png) no-repeat center;
+.buttonImageEmail, .linkImageEmail, .buttonImageEmailDisabled, .linkImageEmailDisabled {
+	background-position: -64px -16px;
 }
-.buttonImageStoreInServerDisabled, .linkImageStoreInServerDisabled {
-	background: url(../images/linkImageStoreInServerDisabled.png) no-repeat center;
+.buttonImageSendMultiple, .linkImageSendMultiple, .buttonImageSendMultipleDisabled, .linkImageSendMultipleDisabled {
+	background-position: -80px -16px;
 }
-.buttonImageStoreLocal, .linkImageStoreLocal {
-	background: url(../images/linkImageStoreLocal.png) no-repeat center;
+.buttonImageOrder, .linkImageOrder, .buttonImageOrderDisabled, .linkImageOrderDisabled {
+	background-position: -96px -16px;
 }
-.buttonImageStoreLocalDisabled, .linkImageStoreLocalDisabled {
-	background: url(../images/linkImageStoreLocalDisabled.png) no-repeat center;
+.buttonImageWeight, .linkImageWeight, .buttonImageWeightDisabled, .linkImageWeightDisabled {
+	background-position: -112px -16px;
 }
-.buttonImageRestore, .linkImageRestore {
-	background: url(../images/linkImageRestore.png) no-repeat center;
+.buttonImageActivate, .linkImageActivate, .buttonImageActivateDisabled, .linkImageActivateDisabled {
+	background-position: -128px -16px;
 }
-.buttonImageRestoreDisabled, .linkImageRestoreDisabled {
-	background: url(../images/linkImageRestoreDisabled.png) no-repeat center;
+.buttonImageHistory, .linkImageHistory, .buttonImageHistoryDisabled, .linkImageHistoryDisabled  {
+	background-position: -144px -16px;
 }
-.buttonImageRestoreFromServer, .linlImageRestoreFromServer {
-	background: url(../images/linkImageRestoreFromServer.png) no-repeat center;
+.buttonImageThumbnail, .linkImageThumbnail, .buttonImageThumbnailDisabled, .linkImageThumbnailDisabled {
+	background-position: -16px -32px;
 }
-.buttonImageRestoreFromServerDisabled, .linkImageRestoreFromServerDisabled {
-	background: url(../images/linkImageRestoreFromServerDisabled.png) no-repeat center;
+.buttonImageViewGantt, .linkImageViewGantt {
+	background-position: -48px -32px;
 }
-.buttonImageThumbnail, .linkImageThumbnail {
-	background: url(../images/linkImageThumbnail.png) no-repeat center;
-}
-.buttonImageThumbnailDisabled, .linkImageThumbnailDisabled {
-	background: url(../images/linkImageThumbnailDisabled.png) no-repeat center;
-}
-.buttonImageManufacture, .linkImageManufacture {
-	background: url(../images/linkImageManufacture.png) no-repeat center;
-}
-.buttonImageManufactureDisabled, .linkImageManufactureDisabled {
-	background: url(../images/linkImageManufactureDisabled.png) no-repeat center;
+.buttonImageManufacture, .linkImageManufacture, .buttonImageManufactureDisabled, .linkImageManufactureDisabled {
+	background-position: -64px -32px;
 }
 
 fieldset {  

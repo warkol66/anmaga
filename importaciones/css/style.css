@@ -1727,43 +1727,44 @@ fieldset.nestedFieldset fieldset label {
 }
 
 
-.aqua1, .aqua2, .aqua3, .aqua4, .aqua5,
-.aqua6, .aqua7, .aqua8, .aqua9, .aqua10 {
-	width: 20px;
+.aqua1, .aqua2, .aqua3, .aqua4, .aqua5, .aqua6, .aqua7, .aqua8, .aqua9, .aqua10 {
+	width: 16px;
 	height: 16px;
 	border-width: 0;
 	cursor:pointer;
+	background: url(../images/aqua.png) no-repeat;
 }
 .aqua1 {
-	background: url(../images/Aqua1.png) center no-repeat;
+	background-position: 0px 0px;
 }
 .aqua2 {
-	background: url(../images/Aqua2.png) center no-repeat;
+	background-position: -16px 0px;
 }
 .aqua3 {
-	background: url(../images/Aqua3.png) center no-repeat;
+	background-position: -32px 0px;
 }
 .aqua4 {
-	background: url(../images/Aqua4.png) center no-repeat;
+	background-position: -48px 0px;
 }
 .aqua5 {
-	background: url(../images/Aqua5.png) center no-repeat;
+	background-position: -64px 0px;
 }
 .aqua6 {
-	background: url(../images/Aqua6.png) center no-repeat;
+	background-position: -80px 0px;
 }
 .aqua7 {
-	background: url(../images/Aqua7.png) center no-repeat;
+	background-position: -96px 0px;
 }
 .aqua8 {
-	background: url(../images/Aqua8.png) center no-repeat;
+	background-position: -112px 0px;
 }
 .aqua9 {
-	background: url(../images/Aqua9.png) center no-repeat;
+	background-position: -128px 0px;
 }
 .aqua10 {
-	background: url(../images/Aqua10.png) center no-repeat;
+	background-position: -144px 0px;
 }
+
 input.textValidation, input.mailValidation, input.numericValidation, input.dateValidation,
 input.emptyValidation {
 }
