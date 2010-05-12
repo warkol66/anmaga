@@ -34,6 +34,8 @@ class OrdersImportPlugin {
 				if ( !empty($row[1]) && !empty($row[2]) && !empty($row[11]) ) {
 					$order = array();
 					$order["number"] = $row[1];
+
+/* El 7 de Mayo de 2010 se modifican los separadores
 						//saco los . por ser posibles separadores de miles
 						$row[19] = str_replace('.','',$row[19]);  
 						//reemplazo la , del separador decimal por .
@@ -48,7 +50,19 @@ class OrdersImportPlugin {
 						$row[17] = str_replace('.','',$row[17]);  
 						//reemplazo la , del separador decimal por .
 						$row[17] = str_replace(',','.',$row[17]);				
+*/
+
+					//saco las , por ser posibles separadores de miles
+						$row[19] = str_replace(',','',$row[19]);  
+					$order["total"] = $row[19];
+					//saco las , por ser posibles separadores de miles
+						$row[18] = str_replace(',','',$row[18]);  
+					$order["tax"] = $row[18];
+					//saco los . por ser posibles separadores de miles
+						$row[17] = str_replace(',','',$row[17]);  
 					$order["subtotal"] = $row[17];
+
+
 					$order["created"] = $row[2];
 					$order["branchNumber"] = $row[11];
 					$order["modifiedProductCodes"] = false;
@@ -62,10 +76,16 @@ class OrdersImportPlugin {
 					$item["productCode"] = str_pad($row[4], strlen($row[4])+1, "0", STR_PAD_LEFT);
 					$item["affiliateProductCode"] = $row[2];
 					$item["quantity"] = $row[7];
+
+/* El 7 de Mayo de 2010 se modifican los separadores
 					//saco los . por ser posibles separadores de miles
 					$row[10] = str_replace('.','',$row[10]);  
 					//reemplazo la , del separador decimal por .
 					$row[10] = str_replace(',','.',$row[10]);				
+*/
+
+					//saco las , por ser posibles separadores de miles
+						$row[10] = str_replace(',','',$row[10]);  
 					$item["price"] = $row[10];
 					$orders[$item["orderNumber"]]["items"][] = $item;
 				}							
