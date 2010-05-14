@@ -1,5 +1,5 @@
 |-* WARNING: Cuidado con las dobles comillas en los formatos de número *-|<?xml version = "1.0" encoding="Windows-1252" standalone="yes"?>
-<VFPData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="\\anmaga-server\pedidos_xml\profit_Schema.xsd">
+<VFPData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="\\|-$profitRoot-|\pedidos_xml\profit_Schema.xsd">
 |-foreach from=$orders item=order name=for_orders-||-assign var=number value=$order->getNumber()-||-counter start=0 assign=subnumber name=subnumber-||-counter start=0 assign=iteration name=iteration-||-foreach from=$order->getOrderItemsOrderByProductOrderCode() item=item name=for_products-||-counter name=iteration-||-assign var=product value=$item->getProduct()-|
 |-assign var=productNode value=$product->getNode()-|
 |-assign var=productOrderCode value=$product->getOrderCode()-|
