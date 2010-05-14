@@ -162,12 +162,10 @@
 			<value>YES</value>
 			<element_type>YES/NO</element_type>
 		</sendMailOnCreation>
-		<recipients>facturacion.anmaga@gmail.com,jhernandez2412@gmail.com,lisbethadrian@hotmail.com,lisbethadrian@yahoo.es,
-oil_cg@yahoo.com,gerson_agudelo@hotmail.com,ventasautocare@yahoo.com
-
-</recipients>
+		<recipients>facturacion.anmaga@gmail.com,jhernandez2412@gmail.com,lisbethadrian@hotmail.com,lisbethadrian@yahoo.es,oil_cg@yahoo.com,gerson_agudelo@hotmail.com,ventasautocare@yahoo.com</recipients>
 		<exportComment>Exportado a xml</exportComment>
 		<ordersPerPage>25</ordersPerPage>
 		<daysByDefault>15</daysByDefault>
+		<profitRoot>carecare-server</profitRoot>
 	</orders>
 </config>

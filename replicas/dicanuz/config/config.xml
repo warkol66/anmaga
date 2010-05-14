@@ -28,15 +28,15 @@
 			<thousandsSeparator>.</thousandsSeparator>
 			<decimalSeparator>,</decimalSeparator>
 			<numberOfDecimals>2</numberOfDecimals>
-			<siteName>CAR SUPPLY</siteName>
-			<siteDescription>Sistema de Administración de Pedidos de CAR SUPPLY</siteDescription>
-			<siteShortName>Carsupply</siteShortName>
+			<siteName>DICANUZ</siteName>
+			<siteDescription>Sistema de Administración de Pedidos de DICANUZ</siteDescription>
+			<siteShortName>Dicanuz</siteShortName>
 			<webmasterMail>gflamerich@gmail.com</webmasterMail>
 			<debugMail>gflamerich@gmail.com</debugMail>
 			<fromEmail>facturacion.anmaga@gmail.com</fromEmail>
 			<tablePrefix></tablePrefix>
-			<news>Novedades: Bienvenido al sistema Car Supply.</news>
-			<affiliateNews>Novedades: distinguidos Clientes, Bienvenido al sistema Car Supply.</affiliateNews>
+			<news>Novedades: Bienvenido al sistema Dicanuz. </news>
+			<affiliateNews>Novedades: distinguidos Clientes, Bienvenido al sistema Dicanuz. </affiliateNews>
 		</parameters>
 		<errorReporting>
 			<value>E_ALL ^ E_NOTICE</value>
@@ -162,10 +162,10 @@
 			<value>YES</value>
 			<element_type>YES/NO</element_type>
 		</sendMailOnCreation>
-		<recipients>facturacion.anmaga@gmail.com,jhernandez2412@gmail.com,lisbethadrian@hotmail.com,lisbethadrian@yahoo.es,oil_cg@yahoo.com,gerson_agudelo@hotmail.com,ventasautocare@yahoo.com</recipients>
+		<recipients>facturacion.anmaga@gmail.com,jhernandez2412@gmail.com,lisbethadrian@hotmail.com,lisbethadrian@yahoo.es,oil_cg@yahoo.com,gerson_agudelo@hotmail.com,ventasdicanuz@yahoo.com</recipients>
 		<exportComment>Exportado a xml</exportComment>
 		<ordersPerPage>25</ordersPerPage>
 		<daysByDefault>15</daysByDefault>
-		<profitRoot>-</profitRoot>
+		<profitRoot>servidord</profitRoot>
 	</orders>
 </config>
