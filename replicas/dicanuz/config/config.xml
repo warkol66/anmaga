@@ -167,5 +167,6 @@
 		<ordersPerPage>25</ordersPerPage>
 		<daysByDefault>15</daysByDefault>
 		<profitRoot>servidord</profitRoot>
+		<profitCode>0580200002</profitCode>
 	</orders>
 </config>

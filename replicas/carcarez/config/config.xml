@@ -167,5 +167,6 @@
 		<ordersPerPage>25</ordersPerPage>
 		<daysByDefault>15</daysByDefault>
 		<profitRoot>carecare-server</profitRoot>
+		<profitCode></profitCode>
 	</orders>
 </config>
