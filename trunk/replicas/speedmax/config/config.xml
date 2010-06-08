@@ -167,5 +167,6 @@
 		<ordersPerPage>25</ordersPerPage>
 		<daysByDefault>15</daysByDefault>
 		<profitRoot>speed-server</profitRoot>
+		<profitCode></profitCode>
 	</orders>
 </config>
