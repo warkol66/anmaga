@@ -219,3 +219,11 @@ function ordersSendOrdersDelete(form) {
 
 	return true;
 } // End of ordersSendOrdersExport
+
+function ordersSendOrdersExportSaf(form) {
+	
+	$('doActions').value = "ordersExportSaf";
+	form.submit();
+	
+	return true;
+} // End of ordersSendOrdersExportSaf

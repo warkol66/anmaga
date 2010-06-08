@@ -62,4 +62,12 @@ class AffiliateInfoPeer extends BaseAffiliateInfoPeer {
 		return true;
   }
 
+  function getByInternalNumber($internalNumber) {
+		$criteria = new Criteria();
+		$criteria->setIgnoreCase(true);
+		$criteria->add(AffiliateInfoPeer::AFFILIATEINTERNALNUMBER, $internalNumber);
+		$affiliateInfo = AffiliateInfoPeer::doSelectOne($criteria);
+		return $affiliateInfo;
+  }
+
 } // AffiliateInfoPeer

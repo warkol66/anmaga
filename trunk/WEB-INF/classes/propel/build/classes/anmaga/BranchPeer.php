@@ -142,6 +142,20 @@ class BranchPeer extends BaseBranchPeer {
     return $alls;
   }  
   
+  /**
+  * Obtiene todos los branchs de un affiliate.
+  *
+  * @param int $affiliateId Id del affiliate
+  *	@return array Informacion sobre todos los branchs
+  */
+  function getByCode($code) {
+    $cond = new Criteria();
+    $cond->add(BranchPeer::CODE, $code);
+    $result = BranchPeer::doSelect($cond);
+    $branch = $result[0];
+    return $branch;
+  }  
+
   function setSearchAffiliateId($affiliateId) {
     $this->searchAffiliateId = $affiliateId;
   }  

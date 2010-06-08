@@ -1214,6 +1214,14 @@
 			<forward name="success" path="OrdersExport.tpl" />
 		</action>
 		
+		<action    path = "ordersExportSaf"
+							 type = "OrdersExportSafAction"
+							 name = "ordersExportSaf"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="OrdersExportSaf.tpl" />
+		</action>
+
 		<action    path = "ordersDoDelete"
 						 type = "OrdersDoDeleteAction"
 						 name = "ordersDoDelete"

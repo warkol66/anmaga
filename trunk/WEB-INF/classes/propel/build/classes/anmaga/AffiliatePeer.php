@@ -102,4 +102,13 @@ class AffiliatePeer extends BaseAffiliatePeer {
 		return $affiliate->getId();
   }
 
+  function getByInternalNumber($internalNumber) {
+		$criteria = new Criteria();
+		$criteria->setIgnoreCase(true);
+		$criteria->addJoin(AffiliateInfoPeer::AFFILIATEID, AffiliatePeer::ID);
+		$criteria->add(AffiliateInfoPeer::AFFILIATEINTERNALNUMBER, $internalNumber);
+		$affiliateInfo = AffiliateInfoPeer::doSelectOne($criteria);
+		return $affiliateInfo;
+  }
+
 } // AffiliatePeer
