@@ -188,7 +188,7 @@ DROP TABLE IF EXISTS `affiliates_affiliateInfo`;
 CREATE TABLE `affiliates_affiliateInfo`
 (
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Id afiliado',
-	`affiliateInternalNumber` INTEGER  NOT NULL COMMENT 'Id interno',
+	`affiliateInternalNumber` VARCHAR(12) COMMENT 'Id interno',
 	`address` VARCHAR(255) COMMENT 'Direccion afiliado',
 	`phone` VARCHAR(50) COMMENT 'Telefono afiliado',
 	`email` VARCHAR(50) COMMENT 'Email afiliado',

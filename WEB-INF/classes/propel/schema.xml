@@ -98,7 +98,7 @@
 
   <table name="affiliates_affiliateInfo" phpName="AffiliateInfo"  description="Informacion del afiliado">
     <column name="affiliateId" primaryKey="true" required="true" type="INTEGER" description="Id afiliado"/>
-    <column name="affiliateInternalNumber" required="true" type="INTEGER" description="Id interno"/>
+    <column name="affiliateInternalNumber" type="VARCHAR" size="12" description="Id interno"/>
     <column name="address" type="VARCHAR" size="255" description="Direccion afiliado"/>
     <column name="phone" type="VARCHAR" size="50" description="Telefono afiliado"/>
     <column name="email" type="VARCHAR" size="50" description="Email afiliado"/>

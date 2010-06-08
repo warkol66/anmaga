@@ -23,4 +23,31 @@ class OrderItem extends BaseOrderItem {
     return $orderTemplateItem;
 	}
 
+	function getOrderCode() {
+		$criteria = new Criteria();
+    $criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
+    $criteria->add(ProductPeer::ID,$this->getProductId());
+    $item = ProductPeer::doSelectOne($criteria);
+    $orderCode = $item->getOrderCode();                  
+		return $orderCode;
+	}
+
+	function getCode() {
+		$criteria = new Criteria();
+    $criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
+    $criteria->add(ProductPeer::ID,$this->getProductId());
+    $item = ProductPeer::doSelectOne($criteria);
+    $orderCode = $item->getCode();                  
+		return $orderCode;
+	}
+
+	function getUnit() {
+		$criteria = new Criteria();
+    $criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
+    $criteria->add(ProductPeer::ID,$this->getProductId());
+    $item = ProductPeer::doSelectOne($criteria);
+    $orderCode = $item->getUnit();                  
+		return $orderCode;
+	}
+
 }

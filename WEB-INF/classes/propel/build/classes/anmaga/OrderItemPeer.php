@@ -82,4 +82,23 @@ class OrderItemPeer extends BaseOrderItemPeer {
 		return $alls;
   }
 
+  /**
+  * Obtiene todos los order items por ordenes.
+	*
+	*	@return array Informacion sobre todos los orderitems
+  */
+	function getAllByOrders($ids) {
+		$criteria = new Criteria();
+    $criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
+    $criteria->addAscendingOrderByColumn(ProductPeer::ORDERCODE);                  
+		foreach($ids as $id){
+			if (!isset($criterionId))
+				$criterionId = $criteria->getNewCriterion(OrderItemPeer::ORDERID,$id);
+			else
+				$criterionId->addOr($criteria->getNewCriterion(OrderItemPeer::ORDERID,$id));		
+		}
+		$criteria->add($criterionId);
+		$all = OrderItemPeer::doSelect($criteria);
+		return $all;
+  }
 }
