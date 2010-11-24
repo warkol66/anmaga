@@ -95,6 +95,18 @@ class ClientPurchaseOrder extends BaseClientPurchaseOrder {
 		return $this->statusNamesClient[$this->getStatus()];
 	}	
 	
+	/**
+	 * Indicates if the quote has a certain Product
+	 * @param $product Product
+	 * @return boolean
+	 */
+	public function getAffiliateName() {
+		
+		$affiliateId = $this->getAffiliateId();
+		$affiliate = AffiliatePeer::get($affiliateId);
+		return $affiliate->getName();
+		
+	}
 	
 
 } // ClientPurchaseOrder

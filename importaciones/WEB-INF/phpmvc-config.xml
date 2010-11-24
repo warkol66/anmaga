@@ -1230,6 +1230,60 @@
 
 <!-- End Section BankAccounts -->
 
+<!-- Section Shipment -->
+	<action-mappings>
+
+		<action    path = "importShipmentList"
+							 type = "ImportShipmentListAction"
+							 name = "importShipmentList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportShipmentList.tpl" />
+		</action>
+
+		<action    path = "importShipmentEdit"
+							 type = "ImportShipmentEditAction"
+							 name = "importShipmentEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportShipmentEdit.tpl" />
+		</action>
+
+		<action    path = "importShipmentHistory"
+							 type = "ImportShipmentHistoryAction"
+							 name = "importShipmentHistory"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportShipmentHistory.tpl" />
+		</action>
+
+		<action    path = "importShipmentReleaseList"
+							 type = "ImportShipmentReleaseListAction"
+							 name = "importShipmentReleaseList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportShipmentReleaseList.tpl" />
+		</action>
+
+		<action    path = "importShipmentReleaseEdit"
+							 type = "ImportShipmentReleaseEditAction"
+							 name = "importShipmentReleaseEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportShipmentReleaseEdit.tpl" />
+		</action>
+
+		<action    path = "importShipmentReleaseHistory"
+							 type = "ImportShipmentReleaseHistoryAction"
+							 name = "importShipmentReleaseHistory"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportShipmentReleaseHistory.tpl" />
+		</action>
+
+	</action-mappings>
+<!-- End Section Shipment -->
+
 <!-- End Module Import -->
 
 

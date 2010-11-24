@@ -77,6 +77,7 @@ class ImportClientQuoteEditAction extends BaseAction {
 			else {
 				//se esta editando una clientQuote existente
 				$clientQuote = $clientQuotePeer->get($_GET["id"]);
+				$_SESSION['import']['clientQuote'] = $clientQuote;
 			}
 
 			$suppliers = $clientQuote->getProductRelatedSuppliers();

@@ -26,11 +26,12 @@
 </div>
 
 -->
+<p>
+	Cliente: <strong>|-$clientQuote->getAffiliateName()-|</strong> - Cotización Número: <strong>|-$clientQuote->getId()-|</strong> - Fecha: <strong>|-$clientQuote->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|</strong>
+</p>
 |-if $clientQuote->isNewStatus()-|
 	|-include file='ImportClientQuoteAddItemInclude.tpl' clientQuote=$clientQuote affiliate=$affiliate-|
 |-/if-|
-
-
 <div id="clientQuoteItemsHolder">
 	|-if $clientQuote->isNewStatus()-|
 <h1>Detalle de solicitud de cotización</h1>

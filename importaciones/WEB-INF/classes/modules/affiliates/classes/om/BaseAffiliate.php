@@ -87,6 +87,16 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 	private $lastSupplierPurchaseOrderCriteria = null;
 
 	/**
+	 * @var        array Shipment[] Collection to store aggregation of Shipment objects.
+	 */
+	protected $collShipments;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collShipments.
+	 */
+	private $lastShipmentCriteria = null;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -336,6 +346,9 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 			$this->collSupplierPurchaseOrders = null;
 			$this->lastSupplierPurchaseOrderCriteria = null;
 
+			$this->collShipments = null;
+			$this->lastShipmentCriteria = null;
+
 		} // if (deep)
 	}
 
@@ -483,6 +496,14 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collShipments !== null) {
+				foreach ($this->collShipments as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 
 		}
@@ -588,6 +609,14 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 
 				if ($this->collSupplierPurchaseOrders !== null) {
 					foreach ($this->collSupplierPurchaseOrders as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collShipments !== null) {
+					foreach ($this->collShipments as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -704,6 +733,12 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 			foreach ($this->getSupplierPurchaseOrders() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addSupplierPurchaseOrder($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getShipments() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addShipment($relObj->copy($deepCopy));
 				}
 			}
 
@@ -2047,6 +2082,255 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Clears out the collShipments collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addShipments()
+	 */
+	public function clearShipments()
+	{
+		$this->collShipments = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collShipments collection (array).
+	 *
+	 * By default this just sets the collShipments collection to an empty array (like clearcollShipments());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initShipments()
+	{
+		$this->collShipments = array();
+	}
+
+	/**
+	 * Gets an array of Shipment objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this Affiliate has previously been saved, it will retrieve
+	 * related Shipments from storage. If this Affiliate is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array Shipment[]
+	 * @throws     PropelException
+	 */
+	public function getShipments($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(AffiliatePeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collShipments === null) {
+			if ($this->isNew()) {
+			   $this->collShipments = array();
+			} else {
+
+				$criteria->add(ShipmentPeer::AFFILIATEID, $this->id);
+
+				ShipmentPeer::addSelectColumns($criteria);
+				$this->collShipments = ShipmentPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(ShipmentPeer::AFFILIATEID, $this->id);
+
+				ShipmentPeer::addSelectColumns($criteria);
+				if (!isset($this->lastShipmentCriteria) || !$this->lastShipmentCriteria->equals($criteria)) {
+					$this->collShipments = ShipmentPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastShipmentCriteria = $criteria;
+		return $this->collShipments;
+	}
+
+	/**
+	 * Returns the number of related Shipment objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related Shipment objects.
+	 * @throws     PropelException
+	 */
+	public function countShipments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(AffiliatePeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collShipments === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(ShipmentPeer::AFFILIATEID, $this->id);
+
+				$count = ShipmentPeer::doCount($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(ShipmentPeer::AFFILIATEID, $this->id);
+
+				if (!isset($this->lastShipmentCriteria) || !$this->lastShipmentCriteria->equals($criteria)) {
+					$count = ShipmentPeer::doCount($criteria, $con);
+				} else {
+					$count = count($this->collShipments);
+				}
+			} else {
+				$count = count($this->collShipments);
+			}
+		}
+		$this->lastShipmentCriteria = $criteria;
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a Shipment object to this object
+	 * through the Shipment foreign key attribute.
+	 *
+	 * @param      Shipment $l Shipment
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addShipment(Shipment $l)
+	{
+		if ($this->collShipments === null) {
+			$this->initShipments();
+		}
+		if (!in_array($l, $this->collShipments, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collShipments, $l);
+			$l->setAffiliate($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Affiliate is new, it will return
+	 * an empty collection; or if this Affiliate has previously
+	 * been saved, it will retrieve related Shipments from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Affiliate.
+	 */
+	public function getShipmentsJoinSupplierPurchaseOrder($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(AffiliatePeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collShipments === null) {
+			if ($this->isNew()) {
+				$this->collShipments = array();
+			} else {
+
+				$criteria->add(ShipmentPeer::AFFILIATEID, $this->id);
+
+				$this->collShipments = ShipmentPeer::doSelectJoinSupplierPurchaseOrder($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ShipmentPeer::AFFILIATEID, $this->id);
+
+			if (!isset($this->lastShipmentCriteria) || !$this->lastShipmentCriteria->equals($criteria)) {
+				$this->collShipments = ShipmentPeer::doSelectJoinSupplierPurchaseOrder($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastShipmentCriteria = $criteria;
+
+		return $this->collShipments;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Affiliate is new, it will return
+	 * an empty collection; or if this Affiliate has previously
+	 * been saved, it will retrieve related Shipments from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Affiliate.
+	 */
+	public function getShipmentsJoinSupplier($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(AffiliatePeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collShipments === null) {
+			if ($this->isNew()) {
+				$this->collShipments = array();
+			} else {
+
+				$criteria->add(ShipmentPeer::AFFILIATEID, $this->id);
+
+				$this->collShipments = ShipmentPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(ShipmentPeer::AFFILIATEID, $this->id);
+
+			if (!isset($this->lastShipmentCriteria) || !$this->lastShipmentCriteria->equals($criteria)) {
+				$this->collShipments = ShipmentPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastShipmentCriteria = $criteria;
+
+		return $this->collShipments;
+	}
+
+	/**
 	 * Resets all collections of referencing foreign keys.
 	 *
 	 * This method is a user-space workaround for PHP's inability to garbage collect objects
@@ -2083,6 +2367,11 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collShipments) {
+				foreach ((array) $this->collShipments as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
 		$this->collAffiliateUsers = null;
@@ -2090,6 +2379,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent {
 		$this->collClientQuotes = null;
 		$this->collClientPurchaseOrders = null;
 		$this->collSupplierPurchaseOrders = null;
+		$this->collShipments = null;
 	}
 
 } // BaseAffiliate

@@ -400,5 +400,45 @@
 	  	<column name="bank" required="true" type="VARCHAR" size="255" description="Banco" />
 		 <column type="BOOLEAN" name="active" required="true" description="Is product active?" />
 	</table>
-	
+
+
+
+
+
+	<table name="import_shipment" phpName='Shipment' description="Datos de envio">
+		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id del envio" autoIncrement="true"/>
+		<column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
+		<column name="supplierId" type="INTEGER" description="Supplier" required="true" />
+		<column name="status" type="INTEGER" description="Status del envio" required="true" />
+		<column name="timestampStatus" type="TIMESTAMP" description="Fecha del ultimo cambio de status" />
+	  <column name="supplierPurchaseOrderId" required="true" type="INTEGER" description="id de cotizacion de proveedor relacionada" />
+		<column name="clientQuoteId" type="INTEGER" required="true" description="id de cotizacion a cliente relacionada" />
+		<column name="affiliateId" type="INTEGER" description="Afiliado" required="true" />
+
+		<foreign-key foreignTable="import_supplierPurchaseOrder" >
+		  <reference local="supplierPurchaseOrderId" foreign="id" />
+		</foreign-key>
+
+		<foreign-key foreignTable="import_supplier" >
+		  <reference local="supplierId" foreign="id" />
+		</foreign-key>
+
+		<foreign-key foreignTable="affiliates_affiliate" >
+		  <reference local="affiliateId" foreign="id" />
+		</foreign-key>	
+
+	</table>
+
+	<table name="import_shipmentRelease" phpName='ShipmentRelease' description="Datos de nacionalizacion">
+		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id del envio" autoIncrement="true"/>
+		<column name="shipmentId" type="INTEGER" description="Envio" required="true" />
+		<column name="status" type="INTEGER" description="Status del envio" required="true" />
+		<column name="timestampStatus" type="TIMESTAMP" description="Fecha del ultimo cambio de status" />
+
+		<foreign-key foreignTable="import_shipment" >
+		  <reference local="shipmentId" foreign="id" />
+		</foreign-key>
+
+	</table>
+
 </database>

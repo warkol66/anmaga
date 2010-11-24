@@ -468,5 +468,19 @@ class ClientQuote extends BaseClientQuote {
 		return false;
 		
 	}
+
+
+	/**
+	 * Indicates if the quote has a certain Product
+	 * @param $product Product
+	 * @return boolean
+	 */
+	public function getAffiliateName() {
+		
+		$affiliateId = $this->getAffiliateId();
+		$affiliate = AffiliatePeer::get($affiliateId);
+		return $affiliate->getName();
+		
+	}
 	
 } // ClientQuote

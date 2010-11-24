@@ -3,6 +3,9 @@
 
 <div id="div_general_information">
 	<p>
+		Cliente: |-$clientPurchaseOrder->getAffiliateName()-|
+	</p>
+	<p>
 		Fecha de Creación: |-$clientPurchaseOrder->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|
 	</p>
 	<p>

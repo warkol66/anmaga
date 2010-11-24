@@ -8,8 +8,11 @@ Seleccione un estado para el pedido y agregue un comentario. Para guardar, haga 
 		Fecha de Creación del Pedido: |-$supplierPurchaseOrder->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y"-|
 	</p>
 	<p>
-		Estado Actual: |-$supplierPurchaseOrder->getStatusName()-|
-	</p>
+		Estado Actual: |-$supplierPurchaseOrder->getStatusName()-|	<form action="Main.php" method="get" style="display:inline">						
+						<input type="hidden" name="do" value="importSupplierOrderHistory" />
+						<input type="hidden" name="id" value="$supplierPurchaseOrder->getId()" />
+						<input type="button" name="submit_go_edit_order" value="Ver Historial" title="Ver Historial" alt="Ver Historial" onClick="window.open('Main.php?do=importSupplierOrderHistory&id=|-$supplierPurchaseOrder->getid()-|','History','width=670,height=500,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes');" />
+					</form></p>
 </div>
 
 <div id="supplierQuoteTracking">

@@ -780,6 +780,16 @@ class Common
 	}
 
 	/**
+	 * Entrega el código de idioma por defecto del sistema
+	 * @return languageCode
+	 */	
+	function getSystemDefaultLanguageCode()
+	{
+		global $system;
+		return $system["config"]["multilang"]["language"];
+	}
+
+	/**
 	 * Entrega el código de idioma a utilizar por el sistema
 	 * @return languageCode
 	 */
@@ -788,7 +798,12 @@ class Common
 		$currentLanguageCode = $system["config"]["multilang"]["language"];
 
 		$cookieName = $system["config"]["system"]["parameters"]['siteShortName'] . 'languageCode';
-		$currentLanguageCode = $_COOKIE[$cookieName];
+	
+	
+		if (isset($_COOKIE[$cookieName]))
+			$currentLanguageCode = $_COOKIE[$cookieName];
+		else
+			$currentLanguageCode = $system["config"]["multilang"]["language"];
 
 		if ($_SESSION['user']['languageCode']!= '')
 			$currentLanguageCode = $_SESSION['user']['languageCode'];

@@ -50,7 +50,7 @@ class ImportClientQuoteAddItemXAction extends BaseAction {
 
 		$this->template->template = 'TemplateAjax.tpl';
 
-		if (!empty($_POST['clientQuoteItem']) && !empty($_POST['clientQuoteItem']['quantity'])) {
+		if (!empty($_POST['clientQuoteItem']) && ((!empty($_POST['clientQuoteItem']['quantity'])) || (!Common::importQuotesHasQuantities()))) {
 
 			if (empty($_POST['clientQuoteItem']['clientQuoteId'])) {
 				//trabajamos con un client quote sin salvarse

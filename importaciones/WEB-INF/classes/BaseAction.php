@@ -102,16 +102,16 @@ class BaseAction extends Action {
 			if (!empty($loginUser) || !empty($loginUserAffiliate) || !empty($loginRegistrationUser)) {
 
 				$actionAccess = $securityAction->getAccessByUser();
-				$userLevel = $user->getLevel();
+//				$userLevel = $user->getLevel();
 
-				if (empty($actionAccess))
-					$actionAccess = $securityModule->getAccessByUser();
+//				if (empty($actionAccess))
+//					$actionAccess = $securityModule->getAccessByUser();
 
-				if ( empty($userLevel) || ($userLevel->getBitLevel() & $actionAccess) == 0 ) {
+/*				if ( empty($userLevel) || ($userLevel->getBitLevel() & $actionAccess) == 0 ) {
 					header("Location:Main.php?do=securityNoPermission");
 					exit();
 				}
-			}
+*/			}
 
 		}
 

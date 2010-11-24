@@ -42,6 +42,8 @@ class ImportSupplierOrderHistoryAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
+		$this->template->template = 'TemplateBasic.tpl';
+
 		$module = "Import";
 		$smarty->assign('module',$module);
 		

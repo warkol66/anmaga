@@ -16,7 +16,9 @@
 			|-if $quantitiesOnQuotesFlag or $clientQuote->isQuoted()-|
 				<th>Cantidad</th>
 			|-/if-|			
+				|-if $clientQuote->isNew()-|
 			<th></th>
+			|-/if-|			
 		</thead>
 		|-foreach from=$clientQuote->getClientQuoteItems() item=item name=for_clientQuotesItems-|
 		|-assign var=product value=$item->getProduct()-|
@@ -41,18 +43,18 @@
 			|-if not $quantitiesOnQuotesFlag and $clientQuote->isQuoted()-|
 			<td><input type="text" size="5" name="clientQuoteItemsQuantity[|-$item->getId()-|]" value="" id="clientQuoteItemsQuantity[|-$item->getId()-|]" /></td>
 			|-/if-|
-			<td>
 				|-if $clientQuote->isNew()-|
+			<td>
 				<form action="Main.php" method="post">
 					<input type="hidden" name="do" value="importClientQuoteDeleteItemX" />
 					<input type="hidden" name="productId" value="|-$item->getProductId()-|" />
 					<input type="button" name="submit_go_delete_quote" value="Borrar" onClick="javascript:importDeleteItemFromClientQuoteX(this.form)" class="buttonImageDelete" />
 				</form>
-				|-/if-|
 			</td>
+				|-/if-|
 		</tr>
-		</tbody>
 		|-/foreach-|
+		</tbody>
 	</table>
 </div>	
 

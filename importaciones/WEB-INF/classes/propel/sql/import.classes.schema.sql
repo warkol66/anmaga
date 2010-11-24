@@ -556,5 +556,57 @@ CREATE TABLE `import_bankAccount`
 	PRIMARY KEY (`id`)
 )Type=MyISAM COMMENT='Cuentas bancarias';
 
+#-----------------------------------------------------------------------------
+#-- import_shipment
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `import_shipment`;
+
+
+CREATE TABLE `import_shipment`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del envio',
+	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
+	`supplierId` INTEGER  NOT NULL COMMENT 'Supplier',
+	`status` INTEGER  NOT NULL COMMENT 'Status del envio',
+	`timestampStatus` DATETIME COMMENT 'Fecha del ultimo cambio de status',
+	`supplierPurchaseOrderId` INTEGER  NOT NULL COMMENT 'id de cotizacion de proveedor relacionada',
+	`clientQuoteId` INTEGER  NOT NULL COMMENT 'id de cotizacion a cliente relacionada',
+	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
+	PRIMARY KEY (`id`),
+	INDEX `import_shipment_FI_1` (`supplierPurchaseOrderId`),
+	CONSTRAINT `import_shipment_FK_1`
+		FOREIGN KEY (`supplierPurchaseOrderId`)
+		REFERENCES `import_supplierPurchaseOrder` (`id`),
+	INDEX `import_shipment_FI_2` (`supplierId`),
+	CONSTRAINT `import_shipment_FK_2`
+		FOREIGN KEY (`supplierId`)
+		REFERENCES `import_supplier` (`id`),
+	INDEX `import_shipment_FI_3` (`affiliateId`),
+	CONSTRAINT `import_shipment_FK_3`
+		FOREIGN KEY (`affiliateId`)
+		REFERENCES `affiliates_affiliate` (`id`)
+)Type=MyISAM COMMENT='Datos de envio';
+
+#-----------------------------------------------------------------------------
+#-- import_shipmentRelease
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `import_shipmentRelease`;
+
+
+CREATE TABLE `import_shipmentRelease`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del envio',
+	`shipmentId` INTEGER  NOT NULL COMMENT 'Envio',
+	`status` INTEGER  NOT NULL COMMENT 'Status del envio',
+	`timestampStatus` DATETIME COMMENT 'Fecha del ultimo cambio de status',
+	PRIMARY KEY (`id`),
+	INDEX `import_shipmentRelease_FI_1` (`shipmentId`),
+	CONSTRAINT `import_shipmentRelease_FK_1`
+		FOREIGN KEY (`shipmentId`)
+		REFERENCES `import_shipment` (`id`)
+)Type=MyISAM COMMENT='Datos de nacionalizacion';
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

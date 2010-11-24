@@ -52,7 +52,7 @@ class ImportClientQuoteDeleteItemXAction extends BaseAction {
 		
 		$items = $clientQuote->getClientQuoteItems();
 		$clientQuote->clearClientQuoteItems();
-		
+
 		foreach ($items as $item) {
 			
 			if ($item->getProductId() == $_POST['productId']) {

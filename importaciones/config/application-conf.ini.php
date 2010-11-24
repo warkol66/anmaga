@@ -5,25 +5,39 @@ return array_merge_recursive(array (
   'log' => 
   array (
     'type' => 'file',
-    'name' => 'propel.log',
-    'ident' => 'application',
-    'level' => '6',
+    'name' => 'e:\\temp\\propel.log',
+    'ident' => 'anmaga',
+    'level' => '7',
   ),
   'propel' => 
   array (
     'datasources' => 
     array (
-      'application' => 
+      'anmaga' => 
       array (
         'adapter' => 'mysql',
         'connection' => 
         array (
-          'dsn' => 'mysql:host=localhost; dbname=anmagaex_export',
-          'user' => 'root',
-          'password' => 'vertrigo',
+          'phptype' => 'mysql',
+          'hostspec' => 'localhost',
+          'database' => 'anmaga',
+          'username' => 'root',
+          'password' => 'dxukal',
         ),
       ),
-      'default' => 'application',
+      'mluse' => 
+      array (
+        'adapter' => 'mysql',
+        'connection' => 
+        array (
+          'phptype' => 'mysql',
+          'hostspec' => 'localhost',
+          'database' => 'anmaga',
+          'username' => 'root',
+          'password' => 'dxukal',
+        ),
+      ),
+      'default' => 'anmaga',
     ),
     'generator_version' => '1.3.0',
   ),
