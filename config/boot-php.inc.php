@@ -54,6 +54,8 @@ include $appServerRootDir.'/WEB-INF/classes/phpmvc/utils/ClassPath.php';
 // Setup the app server paths
 include $appServerRootDir.'/WEB-INF/GlobalPaths.php';
 $globalPaths = GlobalPaths::getGlobalPaths();
+$propelVersionPath='WEB-INF/lib/pear/propel_'.$propelVersion;
+array_push($globalPaths,$propelVersionPath);
 $gPath = ClassPath::getClassPath($appServerRootDir, $globalPaths, $osType);
 
 // Setup the module paths
