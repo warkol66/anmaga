@@ -19,7 +19,7 @@ CREATE TABLE `categories_category`
 	`active` TINYINT  NOT NULL COMMENT 'Is category active?',
 	`isPublic` TINYINT default 0 NOT NULL COMMENT 'Is category public?',
 	PRIMARY KEY (`id`)
-)Type=MyISAM COMMENT='Categorias';
+) ENGINE=MyISAM COMMENT='Categorias';
 
 #-----------------------------------------------------------------------------
 #-- users_groupCategory
@@ -41,7 +41,7 @@ CREATE TABLE `users_groupCategory`
 	CONSTRAINT `users_groupCategory_FK_2`
 		FOREIGN KEY (`categoryId`)
 		REFERENCES `categories_category` (`id`)
-)Type=MyISAM COMMENT='Groups / Categories';
+) ENGINE=MyISAM COMMENT='Groups / Categories';
 
 #-----------------------------------------------------------------------------
 #-- affiliates_groupCategory
@@ -63,7 +63,7 @@ CREATE TABLE `affiliates_groupCategory`
 	CONSTRAINT `affiliates_groupCategory_FK_2`
 		FOREIGN KEY (`categoryId`)
 		REFERENCES `categories_category` (`id`)
-)Type=MyISAM COMMENT='Groups / Categories';
+) ENGINE=MyISAM COMMENT='Groups / Categories';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

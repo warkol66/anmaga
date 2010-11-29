@@ -17,7 +17,7 @@ CREATE TABLE `affiliates_affiliate`
 	`ownerId` INTEGER COMMENT 'Id del usuario administrador del afiliado',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `affiliates_affiliate_U_1` (`name`)
-)Type=MyISAM COMMENT='Afiliados';
+) ENGINE=MyISAM COMMENT='Afiliados';
 
 #-----------------------------------------------------------------------------
 #-- affiliates_affiliateInfo
@@ -38,7 +38,7 @@ CREATE TABLE `affiliates_affiliateInfo`
 	`web` VARCHAR(255) COMMENT 'Direccion web del afiliado',
 	`memo` TEXT COMMENT 'Informacion adicional del afiliado',
 	PRIMARY KEY (`affiliateId`)
-)Type=MyISAM COMMENT='Informacion del afiliado';
+) ENGINE=MyISAM COMMENT='Informacion del afiliado';
 
 #-----------------------------------------------------------------------------
 #-- affiliates_user
@@ -69,7 +69,7 @@ CREATE TABLE `affiliates_user`
 	CONSTRAINT `affiliates_user_FK_2`
 		FOREIGN KEY (`affiliateId`)
 		REFERENCES `affiliates_affiliate` (`id`)
-)Type=MyISAM COMMENT='Usuarios de afiliado';
+) ENGINE=MyISAM COMMENT='Usuarios de afiliado';
 
 #-----------------------------------------------------------------------------
 #-- affiliates_userInfo
@@ -88,7 +88,7 @@ CREATE TABLE `affiliates_userInfo`
 	CONSTRAINT `affiliates_userInfo_FK_1`
 		FOREIGN KEY (`userId`)
 		REFERENCES `affiliates_user` (`id`)
-)Type=MyISAM COMMENT='Information about users by affiliates';
+) ENGINE=MyISAM COMMENT='Information about users by affiliates';
 
 #-----------------------------------------------------------------------------
 #-- affiliates_level
@@ -104,7 +104,7 @@ CREATE TABLE `affiliates_level`
 	`bitLevel` INTEGER COMMENT 'Bit del nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `affiliates_level_U_1` (`name`)
-)Type=MyISAM COMMENT='Levels';
+) ENGINE=MyISAM COMMENT='Levels';
 
 #-----------------------------------------------------------------------------
 #-- affiliates_userGroup
@@ -126,7 +126,7 @@ CREATE TABLE `affiliates_userGroup`
 		FOREIGN KEY (`groupId`)
 		REFERENCES `affiliates_group` (`id`)
 		ON DELETE CASCADE
-)Type=MyISAM COMMENT='Users / Groups';
+) ENGINE=MyISAM COMMENT='Users / Groups';
 
 #-----------------------------------------------------------------------------
 #-- affiliates_group
@@ -144,7 +144,7 @@ CREATE TABLE `affiliates_group`
 	`bitLevel` INTEGER COMMENT 'Nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `affiliates_group_U_1` (`name`)
-)Type=MyISAM COMMENT='Groups';
+) ENGINE=MyISAM COMMENT='Groups';
 
 #-----------------------------------------------------------------------------
 #-- affiliates_branch
@@ -169,7 +169,7 @@ CREATE TABLE `affiliates_branch`
 	CONSTRAINT `affiliates_branch_FK_1`
 		FOREIGN KEY (`affiliateId`)
 		REFERENCES `affiliates_affiliate` (`id`)
-)Type=MyISAM COMMENT='Affiliates branches information';
+) ENGINE=MyISAM COMMENT='Affiliates branches information';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

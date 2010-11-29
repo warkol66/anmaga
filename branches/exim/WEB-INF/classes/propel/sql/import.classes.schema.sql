@@ -22,7 +22,7 @@ CREATE TABLE `import_product`
 	`descriptionChinese` TEXT COMMENT 'Descripcion del producto en chino',
 	`status` INTEGER  NOT NULL COMMENT 'product status',
 	PRIMARY KEY (`id`)
-)Type=MyISAM COMMENT='Productos';
+) ENGINE=MyISAM COMMENT='Productos';
 
 #-----------------------------------------------------------------------------
 #-- import_productSupplier
@@ -44,7 +44,7 @@ CREATE TABLE `import_productSupplier`
 	CONSTRAINT `import_productSupplier_FK_2`
 		FOREIGN KEY (`supplierId`)
 		REFERENCES `import_supplier` (`id`)
-)Type=MyISAM COMMENT='Relacion Productos Proveedores';
+) ENGINE=MyISAM COMMENT='Relacion Productos Proveedores';
 
 #-----------------------------------------------------------------------------
 #-- import_supplier
@@ -70,7 +70,7 @@ CREATE TABLE `import_supplier`
 	CONSTRAINT `import_supplier_FK_2`
 		FOREIGN KEY (`defaultPortId`)
 		REFERENCES `import_port` (`id`)
-)Type=MyISAM COMMENT='Proveedores';
+) ENGINE=MyISAM COMMENT='Proveedores';
 
 #-----------------------------------------------------------------------------
 #-- import_clientQuote
@@ -101,7 +101,7 @@ CREATE TABLE `import_clientQuote`
 	CONSTRAINT `import_clientQuote_FK_3`
 		FOREIGN KEY (`affiliateUserId`)
 		REFERENCES `affiliates_user` (`id`)
-)Type=MyISAM COMMENT='Cotizacion a Cliente';
+) ENGINE=MyISAM COMMENT='Cotizacion a Cliente';
 
 #-----------------------------------------------------------------------------
 #-- import_clientQuoteHistory
@@ -121,7 +121,7 @@ CREATE TABLE `import_clientQuoteHistory`
 	CONSTRAINT `import_clientQuoteHistory_FK_1`
 		FOREIGN KEY (`clientQuoteId`)
 		REFERENCES `import_clientQuote` (`id`)
-)Type=MyISAM COMMENT='Historial de Cotizacion a Cliente';
+) ENGINE=MyISAM COMMENT='Historial de Cotizacion a Cliente';
 
 #-----------------------------------------------------------------------------
 #-- import_clientQuoteItem
@@ -136,7 +136,7 @@ CREATE TABLE `import_clientQuoteItem`
 	`clientQuoteId` INTEGER  NOT NULL COMMENT 'Id de cotizacion de cliente',
 	`productId` INTEGER  NOT NULL COMMENT 'Id producto',
 	`price` FLOAT COMMENT 'precio de producto',
-	`quantity` INTEGER COMMENT 'cantidad de producto',
+	`quantity` INTEGER  NOT NULL COMMENT 'cantidad de producto',
 	PRIMARY KEY (`id`),
 	INDEX `import_clientQuoteItem_FI_1` (`clientQuoteId`),
 	CONSTRAINT `import_clientQuoteItem_FK_1`
@@ -146,7 +146,7 @@ CREATE TABLE `import_clientQuoteItem`
 	CONSTRAINT `import_clientQuoteItem_FK_2`
 		FOREIGN KEY (`productId`)
 		REFERENCES `import_product` (`id`)
-)Type=MyISAM COMMENT='Elemento de Cotizacion Cliente';
+) ENGINE=MyISAM COMMENT='Elemento de Cotizacion Cliente';
 
 #-----------------------------------------------------------------------------
 #-- import_supplierQuote
@@ -173,7 +173,7 @@ CREATE TABLE `import_supplierQuote`
 	CONSTRAINT `import_supplierQuote_FK_2`
 		FOREIGN KEY (`supplierId`)
 		REFERENCES `import_supplier` (`id`)
-)Type=MyISAM COMMENT='Cotizacion de Proveedor';
+) ENGINE=MyISAM COMMENT='Cotizacion de Proveedor';
 
 #-----------------------------------------------------------------------------
 #-- import_supplierQuoteHistory
@@ -193,7 +193,7 @@ CREATE TABLE `import_supplierQuoteHistory`
 	CONSTRAINT `import_supplierQuoteHistory_FK_1`
 		FOREIGN KEY (`supplierQuoteId`)
 		REFERENCES `import_supplierQuote` (`id`)
-)Type=MyISAM COMMENT='Historial de Cotizacion a Proveedor';
+) ENGINE=MyISAM COMMENT='Historial de Cotizacion a Proveedor';
 
 #-----------------------------------------------------------------------------
 #-- import_supplierQuoteItem
@@ -252,7 +252,7 @@ CREATE TABLE `import_supplierQuoteItem`
 	CONSTRAINT `import_supplierQuoteItem_FK_6`
 		FOREIGN KEY (`portId`)
 		REFERENCES `import_port` (`id`)
-)Type=MyISAM COMMENT='Elemento de Cotizacion de Proveedor';
+) ENGINE=MyISAM COMMENT='Elemento de Cotizacion de Proveedor';
 
 #-----------------------------------------------------------------------------
 #-- import_supplierQuoteItemComment
@@ -284,7 +284,7 @@ CREATE TABLE `import_supplierQuoteItemComment`
 	CONSTRAINT `import_supplierQuoteItemComment_FK_3`
 		FOREIGN KEY (`supplierQuoteItemId`)
 		REFERENCES `import_supplierQuoteItem` (`id`)
-)Type=MyISAM COMMENT='Feedback entre supplier y usuario admin de anmaga sobre un Item';
+) ENGINE=MyISAM COMMENT='Feedback entre supplier y usuario admin de anmaga sobre un Item';
 
 #-----------------------------------------------------------------------------
 #-- import_port
@@ -300,7 +300,7 @@ CREATE TABLE `import_port`
 	`name` VARCHAR(255) COMMENT 'Nombre del puerto',
 	`active` TINYINT  NOT NULL COMMENT 'Is port active?',
 	PRIMARY KEY (`id`)
-)Type=MyISAM COMMENT='Puerto';
+) ENGINE=MyISAM COMMENT='Puerto';
 
 #-----------------------------------------------------------------------------
 #-- import_incoterm
@@ -316,7 +316,7 @@ CREATE TABLE `import_incoterm`
 	`description` VARCHAR(255) COMMENT 'Descripcion del Incoterm',
 	`active` TINYINT  NOT NULL COMMENT 'Is incoterm active?',
 	PRIMARY KEY (`id`)
-)Type=MyISAM COMMENT='Incoterm';
+) ENGINE=MyISAM COMMENT='Incoterm';
 
 #-----------------------------------------------------------------------------
 #-- import_clientPurchaseOrder
@@ -352,7 +352,7 @@ CREATE TABLE `import_clientPurchaseOrder`
 	CONSTRAINT `import_clientPurchaseOrder_FK_4`
 		FOREIGN KEY (`affiliateUserId`)
 		REFERENCES `affiliates_user` (`id`)
-)Type=MyISAM COMMENT='Orden de Pedido a Cliente';
+) ENGINE=MyISAM COMMENT='Orden de Pedido a Cliente';
 
 #-----------------------------------------------------------------------------
 #-- import_clientPurchaseOrderItem
@@ -366,8 +366,8 @@ CREATE TABLE `import_clientPurchaseOrderItem`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id elemento de Orden de Pedido a Cliente',
 	`productId` INTEGER  NOT NULL COMMENT 'Id producto',
 	`clientPurchaseOrderId` INTEGER  NOT NULL COMMENT 'Id producto',
-	`quantity` INTEGER COMMENT 'Id producto',
-	`price` FLOAT COMMENT 'precio de producto',
+	`quantity` INTEGER  NOT NULL COMMENT 'Id producto',
+	`price` FLOAT  NOT NULL COMMENT 'precio de producto',
 	PRIMARY KEY (`id`),
 	INDEX `import_clientPurchaseOrderItem_FI_1` (`productId`),
 	CONSTRAINT `import_clientPurchaseOrderItem_FK_1`
@@ -377,7 +377,7 @@ CREATE TABLE `import_clientPurchaseOrderItem`
 	CONSTRAINT `import_clientPurchaseOrderItem_FK_2`
 		FOREIGN KEY (`clientPurchaseOrderId`)
 		REFERENCES `import_clientPurchaseOrder` (`id`)
-)Type=MyISAM COMMENT='Elemento de Orden de Pedido a Cliente';
+) ENGINE=MyISAM COMMENT='Elemento de Orden de Pedido a Cliente';
 
 #-----------------------------------------------------------------------------
 #-- import_clientPurchaseOrderHistory
@@ -397,7 +397,7 @@ CREATE TABLE `import_clientPurchaseOrderHistory`
 	CONSTRAINT `import_clientPurchaseOrderHistory_FK_1`
 		FOREIGN KEY (`clientPurchaseOrderId`)
 		REFERENCES `import_clientPurchaseOrder` (`id`)
-)Type=MyISAM COMMENT='Historial de Estados por los que fue pasando la Orden de Pedido a Cliente';
+) ENGINE=MyISAM COMMENT='Historial de Estados por los que fue pasando la Orden de Pedido a Cliente';
 
 #-----------------------------------------------------------------------------
 #-- import_supplierPurchaseOrder
@@ -443,7 +443,7 @@ CREATE TABLE `import_supplierPurchaseOrder`
 	CONSTRAINT `import_supplierPurchaseOrder_FK_6`
 		FOREIGN KEY (`affiliateUserId`)
 		REFERENCES `affiliates_user` (`id`)
-)Type=MyISAM COMMENT='Orden de Pedido a Proveedor';
+) ENGINE=MyISAM COMMENT='Orden de Pedido a Proveedor';
 
 #-----------------------------------------------------------------------------
 #-- import_supplierPurchaseOrderItem
@@ -457,12 +457,12 @@ CREATE TABLE `import_supplierPurchaseOrderItem`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id elemento de Orden de Pedido a Cliente',
 	`productId` INTEGER  NOT NULL COMMENT 'Id producto',
 	`supplierPurchaseOrderId` INTEGER  NOT NULL COMMENT 'Id producto',
-	`quantity` INTEGER COMMENT 'Id producto',
+	`quantity` INTEGER  NOT NULL COMMENT 'Id producto',
 	`portId` INTEGER  NOT NULL COMMENT 'id de puerto',
 	`incotermId` INTEGER  NOT NULL COMMENT 'id de incoterm',
-	`price` FLOAT COMMENT 'precio de producto',
-	`delivery` INTEGER COMMENT 'Tiempo en dias para la entrega del producto.',
-	`package` INTEGER COMMENT 'A seleccionar entre Unidades o Bultos',
+	`price` FLOAT  NOT NULL COMMENT 'precio de producto',
+	`delivery` INTEGER  NOT NULL COMMENT 'Tiempo en dias para la entrega del producto.',
+	`package` INTEGER  NOT NULL COMMENT 'A seleccionar entre Unidades o Bultos',
 	`unitLength` FLOAT COMMENT 'Largo del empaque de la unidad ',
 	`unitWidth` FLOAT COMMENT 'Ancho del empaque de la unidad ',
 	`unitHeight` FLOAT COMMENT 'Alto del empaque de la unidad ',
@@ -490,7 +490,7 @@ CREATE TABLE `import_supplierPurchaseOrderItem`
 	CONSTRAINT `import_supplierPurchaseOrderItem_FK_4`
 		FOREIGN KEY (`portId`)
 		REFERENCES `import_port` (`id`)
-)Type=MyISAM COMMENT='Elemento de Orden de Pedido a Proveedor';
+) ENGINE=MyISAM COMMENT='Elemento de Orden de Pedido a Proveedor';
 
 #-----------------------------------------------------------------------------
 #-- import_supplierPurchaseOrderHistory
@@ -511,7 +511,7 @@ CREATE TABLE `import_supplierPurchaseOrderHistory`
 	CONSTRAINT `import_supplierPurchaseOrderHistory_FK_1`
 		FOREIGN KEY (`supplierPurchaseOrderId`)
 		REFERENCES `import_supplierPurchaseOrder` (`id`)
-)Type=MyISAM COMMENT='Historial de Estados por los que fue pasando la Orden de Pedido a Proveedor';
+) ENGINE=MyISAM COMMENT='Historial de Estados por los que fue pasando la Orden de Pedido a Proveedor';
 
 #-----------------------------------------------------------------------------
 #-- import_supplierPurchaseOrderBankTransfer
@@ -538,7 +538,7 @@ CREATE TABLE `import_supplierPurchaseOrderBankTransfer`
 	CONSTRAINT `import_supplierPurchaseOrderBankTransfer_FK_2`
 		FOREIGN KEY (`bankAccountId`)
 		REFERENCES `import_bankAccount` (`id`)
-)Type=MyISAM COMMENT='Transferencias bancarias realizadas a esa orden de pedido a proveedor';
+) ENGINE=MyISAM COMMENT='Transferencias bancarias realizadas a esa orden de pedido a proveedor';
 
 #-----------------------------------------------------------------------------
 #-- import_bankAccount
@@ -554,7 +554,7 @@ CREATE TABLE `import_bankAccount`
 	`bank` VARCHAR(255)  NOT NULL COMMENT 'Banco',
 	`active` TINYINT  NOT NULL COMMENT 'Is product active?',
 	PRIMARY KEY (`id`)
-)Type=MyISAM COMMENT='Cuentas bancarias';
+) ENGINE=MyISAM COMMENT='Cuentas bancarias';
 
 #-----------------------------------------------------------------------------
 #-- import_shipment
@@ -586,7 +586,7 @@ CREATE TABLE `import_shipment`
 	CONSTRAINT `import_shipment_FK_3`
 		FOREIGN KEY (`affiliateId`)
 		REFERENCES `affiliates_affiliate` (`id`)
-)Type=MyISAM COMMENT='Datos de envio';
+) ENGINE=MyISAM COMMENT='Datos de envio';
 
 #-----------------------------------------------------------------------------
 #-- import_shipmentRelease
@@ -606,7 +606,7 @@ CREATE TABLE `import_shipmentRelease`
 	CONSTRAINT `import_shipmentRelease_FK_1`
 		FOREIGN KEY (`shipmentId`)
 		REFERENCES `import_shipment` (`id`)
-)Type=MyISAM COMMENT='Datos de nacionalizacion';
+) ENGINE=MyISAM COMMENT='Datos de nacionalizacion';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
