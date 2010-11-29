@@ -1,0 +1,3 @@
+#contentWrapper { 
+	background-position: 5px; /*Corrección IE ancho del borde */
+}

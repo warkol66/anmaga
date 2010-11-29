@@ -1,0 +1,142 @@
+<?php
+/** 
+ * AffiliatesUsersListAction
+ *
+ * @package affiliates 
+ */
+
+require_once("BaseAction.php");
+require_once("AffiliateUserPeer.php");
+require_once("AffiliateUserInfo.php");
+require_once("AffiliateGroupPeer.php");
+require_once("AffiliateLevelPeer.php");
+require_once("AffiliatePeer.php");
+require_once("TimezonePeer.php");
+
+class AffiliatesUsersListAction extends BaseAction {
+
+	function AffiliatesUsersListAction() {
+		;
+	}
+
+	// ----- Public Methods ------------------------------------------------- //
+
+	/**
+	* Process the specified HTTP request, and create the corresponding HTTP
+	* response (or forward to another web component that will create it).
+	* Return an <code>ActionForward</code> instance describing where and how
+	* control should be forwarded, or <code>NULL</code> if the response has
+	* already been completed.
+	*
+	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
+	* @param ActionForm			The optional ActionForm bean for this request (if any)
+	* @param HttpRequestBase	The HTTP request we are processing
+	* @param HttpRequestBase	The HTTP response we are creating
+	* @public
+	* @returns ActionForward
+	*/
+	function execute($mapping, $form, &$request, &$response) {
+
+		BaseAction::execute($mapping, $form, $request, $response);
+
+		//////////
+		// Access the Smarty PlugIn instance
+		// Note the reference "=&"
+		$plugInKey = 'SMARTY_PLUGIN';
+		$smarty =& $this->actionServer->getPlugIn($plugInKey);
+		if($smarty == NULL) {
+			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
+		}
+
+		$module = "Affiliates";
+		$section = "Users";
+
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
+
+		$timezonePeer = new TimezonePeer();
+		$smarty->assign('timezones',$timezonePeer->getAll());
+
+		$usersPeer = new AffiliateUserPeer();
+		//Si esta logueado un usuario comun
+		if (!empty($_SESSION["loginUser"])) {
+			$affiliateId = $_GET["affiliateId"];
+			if(!empty($affiliateId)) {
+				if ($affiliateId == -1){
+					$pager = $usersPeer->getAllPaginated();
+					$users = $pager->getResult();
+					$smarty->assign("pager",$pager);
+					$url = "Main.php?do=AffiliatesUsersList";
+					$deletedUsers = $usersPeer->getDeleteds();
+				}
+				else{
+					$users = $usersPeer->getAffiliate($affiliateId);
+					$deletedUsers = $usersPeer->getDeletedsByAffiliate($affiliateId);
+					$url = "Main.php?do=AffiliatesUsersList&affiliateId=".$affiliateId;
+				}
+			}
+			else{
+				$pager = $usersPeer->getAllPaginated();
+				$users = $pager->getResult();
+				$smarty->assign("pager",$pager);
+				$url = "Main.php?do=AffiliatesUsersList";
+				$deletedUsers = $usersPeer->getDeleteds();
+			}
+			$affiliates = new AffiliatePeer();
+			$smarty->assign("affiliates",$affiliates);
+		}
+		else{
+			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
+			$AffiliateUserPeer->setAffiliateId($affiliateId);
+			$pager = $usersPeer->getAllPaginatedFiltered();
+			$users = $pager->getResult();
+			$smarty->assign("pager",$pager);
+			$url = "Main.php?do=AffiliatesUsersList";
+			$deletedUsers = $usersPeer->getDeletedsByAffiliate($affiliateId);
+		}
+
+		$smarty->assign("deletedUsers",$deletedUsers);
+		$smarty->assign("affiliateId",$affiliateId);
+
+		if ( !empty($_GET["user"]) ) {
+			//voy a editar un usuario
+
+			try {
+				$user = $usersPeer->get($_GET["user"]);
+				$smarty->assign("currentAffiliateUser",$user);
+				$smarty->assign("currentAffiliateUserInfo",$user->getAffiliateUserInfo());
+				$groups = $usersPeer->getGroupsByUser($_GET["user"]);
+				$smarty->assign("currentUserGroups",$groups);
+				$groups = AffiliateGroupPeer::getAll();
+				$smarty->assign("groups",$groups);
+				$levels = AffiliateLevelPeer::getAll();
+				$smarty->assign("levels",$levels);
+					$smarty->assign("action","edit");
+				$smarty->assign("affiliateId",$user->getAffiliateId());
+			}
+			catch (PropelException $e) {
+				$smarty->assign("action","create");
+			}
+		}
+		else if ( isset($_GET["user"]) ) {
+			//voy a crear un usuario nuevo
+
+			$levels = AffiliateLevelPeer::getAll();
+			$smarty->assign("levels",$levels);
+
+			$smarty->assign("currentAffiliateUser",new AffiliateUser());
+			$smarty->assign("currentAffiliateUserInfo",new AffiliateUserInfo());
+
+			$smarty->assign("action","create");
+		}
+
+		$smarty->assign("users",$users);
+		$smarty->assign("affId",$affiliateId);
+		$smarty->assign("message",$_GET["message"]);
+		$smarty->assign("showList",true);
+		$smarty->assign("url",$url);
+
+		return $mapping->findForwardConfig('success');
+	}
+
+}

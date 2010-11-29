@@ -1,0 +1,29 @@
+<!-- Module Validation -->
+	<action-mappings module="Validation">
+
+		<action    path = "validationExample"
+							 type = "ValidationExampleAction"
+							 name = "validationExample"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="ValidationExample.tpl" />
+		</action>
+
+		<action    path = "validationExampleDo"
+							 type = "ValidationExampleDoAction"
+							 name = "validationExampleDo"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="ValidationDoExample.tpl" />
+		</action>
+
+		<action    path = "validationAjaxExample"
+							 type = "ValidationAjaxExampleAction"
+							 name = "validationAjaxExample"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="ValidationAjax.tpl" />
+		</action>		
+
+	</action-mappings>
+<!-- End Module Validation -->
