@@ -142,7 +142,6 @@ class SupplierPeer extends BaseSupplierPeer {
       $perPage = 	SupplierPeer::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("propel/util/PropelPager.php");
     $cond = new Criteria();     
     $cond->add(SupplierPeer::ACTIVE,'1');
     $pager = new PropelPager($cond,"SupplierPeer", "doSelect",$page,$perPage);

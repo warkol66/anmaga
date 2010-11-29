@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'import_supplierPurchaseOrderBankTransfer' table.
  *
  * Transferencias bancarias realizadas a esa orden de pedido a proveedor
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
 abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'import_supplierPurchaseOrderBankTransfer';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'SupplierPurchaseOrderBankTransfer';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'import.classes.SupplierPurchaseOrderBankTransfer';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'SupplierPurchaseOrderBankTransferTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 7;
 
@@ -53,11 +60,6 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -69,6 +71,7 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Supplierpurchaseorderid', 'Banktransfernumber', 'Amount', 'Accountnumber', 'Bankaccountid', 'Createdat', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'supplierpurchaseorderid', 'banktransfernumber', 'amount', 'accountnumber', 'bankaccountid', 'createdat', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::SUPPLIERPURCHASEORDERID, self::BANKTRANSFERNUMBER, self::AMOUNT, self::ACCOUNTNUMBER, self::BANKACCOUNTID, self::CREATEDAT, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'SUPPLIERPURCHASEORDERID', 'BANKTRANSFERNUMBER', 'AMOUNT', 'ACCOUNTNUMBER', 'BANKACCOUNTID', 'CREATEDAT', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'supplierPurchaseOrderId', 'bankTransferNumber', 'amount', 'accountNumber', 'bankAccountId', 'createdAt', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
@@ -83,21 +86,11 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Supplierpurchaseorderid' => 1, 'Banktransfernumber' => 2, 'Amount' => 3, 'Accountnumber' => 4, 'Bankaccountid' => 5, 'Createdat' => 6, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'supplierpurchaseorderid' => 1, 'banktransfernumber' => 2, 'amount' => 3, 'accountnumber' => 4, 'bankaccountid' => 5, 'createdat' => 6, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SUPPLIERPURCHASEORDERID => 1, self::BANKTRANSFERNUMBER => 2, self::AMOUNT => 3, self::ACCOUNTNUMBER => 4, self::BANKACCOUNTID => 5, self::CREATEDAT => 6, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'SUPPLIERPURCHASEORDERID' => 1, 'BANKTRANSFERNUMBER' => 2, 'AMOUNT' => 3, 'ACCOUNTNUMBER' => 4, 'BANKACCOUNTID' => 5, 'CREATEDAT' => 6, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'supplierPurchaseOrderId' => 1, 'bankTransferNumber' => 2, 'amount' => 3, 'accountNumber' => 4, 'bankAccountId' => 5, 'createdAt' => 6, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new SupplierPurchaseOrderBankTransferMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -159,27 +152,30 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::ID);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::BANKTRANSFERNUMBER);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::AMOUNT);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::ACCOUNTNUMBER);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::CREATEDAT);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::ID);
+			$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID);
+			$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::BANKTRANSFERNUMBER);
+			$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::AMOUNT);
+			$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::ACCOUNTNUMBER);
+			$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID);
+			$criteria->addSelectColumn(SupplierPurchaseOrderBankTransferPeer::CREATEDAT);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.SUPPLIERPURCHASEORDERID');
+			$criteria->addSelectColumn($alias . '.BANKTRANSFERNUMBER');
+			$criteria->addSelectColumn($alias . '.AMOUNT');
+			$criteria->addSelectColumn($alias . '.ACCOUNTNUMBER');
+			$criteria->addSelectColumn($alias . '.BANKACCOUNTID');
+			$criteria->addSelectColumn($alias . '.CREATEDAT');
+		}
 	}
 
 	/**
@@ -367,6 +363,14 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to import_supplierPurchaseOrderBankTransfer
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -379,12 +383,26 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -397,18 +415,16 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = SupplierPurchaseOrderBankTransferPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = SupplierPurchaseOrderBankTransferPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = SupplierPurchaseOrderBankTransferPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = SupplierPurchaseOrderBankTransferPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -418,11 +434,36 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 		$stmt->closeCursor();
 		return $results;
 	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (SupplierPurchaseOrderBankTransfer object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = SupplierPurchaseOrderBankTransferPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = SupplierPurchaseOrderBankTransferPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + SupplierPurchaseOrderBankTransferPeer::NUM_COLUMNS;
+		} else {
+			$cls = SupplierPurchaseOrderBankTransferPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			SupplierPurchaseOrderBankTransferPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
+	}
 
 	/**
 	 * Returns the number of rows matching criteria, joining the related SupplierPurchaseOrder table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -455,7 +496,8 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderBankTransferPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID,), array(SupplierPurchaseOrderPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, SupplierPurchaseOrderPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -471,7 +513,7 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related BankAccount table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -504,7 +546,8 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderBankTransferPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID,), array(BankAccountPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID, BankAccountPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -519,41 +562,41 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 
 	/**
 	 * Selects a collection of SupplierPurchaseOrderBankTransfer objects pre-filled with their SupplierPurchaseOrder objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrderBankTransfer objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinSupplierPurchaseOrder(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinSupplierPurchaseOrder(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderBankTransferPeer::addSelectColumns($c);
+		SupplierPurchaseOrderBankTransferPeer::addSelectColumns($criteria);
 		$startcol = (SupplierPurchaseOrderBankTransferPeer::NUM_COLUMNS - SupplierPurchaseOrderBankTransferPeer::NUM_LAZY_LOAD_COLUMNS);
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID,), array(SupplierPurchaseOrderPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, SupplierPurchaseOrderPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderBankTransferPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderBankTransferPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierPurchaseOrderBankTransferPeer::getOMClass();
+				$cls = SupplierPurchaseOrderBankTransferPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderBankTransferPeer::addInstanceToPool($obj1, $key1);
@@ -564,9 +607,8 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 				$obj2 = SupplierPurchaseOrderPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = SupplierPurchaseOrderPeer::getOMClass();
+					$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					SupplierPurchaseOrderPeer::addInstanceToPool($obj2, $key2);
@@ -586,41 +628,41 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 
 	/**
 	 * Selects a collection of SupplierPurchaseOrderBankTransfer objects pre-filled with their BankAccount objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrderBankTransfer objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinBankAccount(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinBankAccount(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderBankTransferPeer::addSelectColumns($c);
+		SupplierPurchaseOrderBankTransferPeer::addSelectColumns($criteria);
 		$startcol = (SupplierPurchaseOrderBankTransferPeer::NUM_COLUMNS - SupplierPurchaseOrderBankTransferPeer::NUM_LAZY_LOAD_COLUMNS);
-		BankAccountPeer::addSelectColumns($c);
+		BankAccountPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID,), array(BankAccountPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID, BankAccountPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderBankTransferPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderBankTransferPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierPurchaseOrderBankTransferPeer::getOMClass();
+				$cls = SupplierPurchaseOrderBankTransferPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderBankTransferPeer::addInstanceToPool($obj1, $key1);
@@ -631,9 +673,8 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 				$obj2 = BankAccountPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = BankAccountPeer::getOMClass();
+					$cls = BankAccountPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					BankAccountPeer::addInstanceToPool($obj2, $key2);
@@ -654,7 +695,7 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -687,8 +728,10 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderBankTransferPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID,), array(SupplierPurchaseOrderPeer::ID,), $join_behavior);
-		$criteria->addJoin(array(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID,), array(BankAccountPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, SupplierPurchaseOrderPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID, BankAccountPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -703,46 +746,47 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 	/**
 	 * Selects a collection of SupplierPurchaseOrderBankTransfer objects pre-filled with all related objects.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrderBankTransfer objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAll(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderBankTransferPeer::addSelectColumns($c);
+		SupplierPurchaseOrderBankTransferPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierPurchaseOrderBankTransferPeer::NUM_COLUMNS - SupplierPurchaseOrderBankTransferPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		BankAccountPeer::addSelectColumns($c);
+		BankAccountPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (BankAccountPeer::NUM_COLUMNS - BankAccountPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID,), array(SupplierPurchaseOrderPeer::ID,), $join_behavior);
-		$c->addJoin(array(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID,), array(BankAccountPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, SupplierPurchaseOrderPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID, BankAccountPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderBankTransferPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderBankTransferPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierPurchaseOrderBankTransferPeer::getOMClass();
+				$cls = SupplierPurchaseOrderBankTransferPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderBankTransferPeer::addInstanceToPool($obj1, $key1);
@@ -755,10 +799,8 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 				$obj2 = SupplierPurchaseOrderPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = SupplierPurchaseOrderPeer::getOMClass();
+					$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SupplierPurchaseOrderPeer::addInstanceToPool($obj2, $key2);
@@ -775,10 +817,8 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 				$obj3 = BankAccountPeer::getInstanceFromPool($key3);
 				if (!$obj3) {
 
-					$omClass = BankAccountPeer::getOMClass();
+					$cls = BankAccountPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					BankAccountPeer::addInstanceToPool($obj3, $key3);
@@ -798,7 +838,7 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related SupplierPurchaseOrder table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -831,7 +871,8 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderBankTransferPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID,), array(BankAccountPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID, BankAccountPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -847,7 +888,7 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related BankAccount table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -880,7 +921,8 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderBankTransferPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID,), array(SupplierPurchaseOrderPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, SupplierPurchaseOrderPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -896,45 +938,45 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 	/**
 	 * Selects a collection of SupplierPurchaseOrderBankTransfer objects pre-filled with all related objects except SupplierPurchaseOrder.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrderBankTransfer objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptSupplierPurchaseOrder(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptSupplierPurchaseOrder(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderBankTransferPeer::addSelectColumns($c);
+		SupplierPurchaseOrderBankTransferPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierPurchaseOrderBankTransferPeer::NUM_COLUMNS - SupplierPurchaseOrderBankTransferPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		BankAccountPeer::addSelectColumns($c);
+		BankAccountPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (BankAccountPeer::NUM_COLUMNS - BankAccountPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID,), array(BankAccountPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderBankTransferPeer::BANKACCOUNTID, BankAccountPeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderBankTransferPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderBankTransferPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierPurchaseOrderBankTransferPeer::getOMClass();
+				$cls = SupplierPurchaseOrderBankTransferPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderBankTransferPeer::addInstanceToPool($obj1, $key1);
@@ -947,10 +989,8 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 					$obj2 = BankAccountPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = BankAccountPeer::getOMClass();
+						$cls = BankAccountPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					BankAccountPeer::addInstanceToPool($obj2, $key2);
@@ -971,45 +1011,45 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 	/**
 	 * Selects a collection of SupplierPurchaseOrderBankTransfer objects pre-filled with all related objects except BankAccount.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrderBankTransfer objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptBankAccount(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptBankAccount(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderBankTransferPeer::addSelectColumns($c);
+		SupplierPurchaseOrderBankTransferPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierPurchaseOrderBankTransferPeer::NUM_COLUMNS - SupplierPurchaseOrderBankTransferPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID,), array(SupplierPurchaseOrderPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderBankTransferPeer::SUPPLIERPURCHASEORDERID, SupplierPurchaseOrderPeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderBankTransferPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderBankTransferPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierPurchaseOrderBankTransferPeer::getOMClass();
+				$cls = SupplierPurchaseOrderBankTransferPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderBankTransferPeer::addInstanceToPool($obj1, $key1);
@@ -1022,10 +1062,8 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 					$obj2 = SupplierPurchaseOrderPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = SupplierPurchaseOrderPeer::getOMClass();
+						$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SupplierPurchaseOrderPeer::addInstanceToPool($obj2, $key2);
@@ -1055,17 +1093,31 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseSupplierPurchaseOrderBankTransferPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseSupplierPurchaseOrderBankTransferPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new SupplierPurchaseOrderBankTransferTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return SupplierPurchaseOrderBankTransferPeer::CLASS_DEFAULT;
+		return $withPrefix ? SupplierPurchaseOrderBankTransferPeer::CLASS_DEFAULT : SupplierPurchaseOrderBankTransferPeer::OM_CLASS;
 	}
 
 	/**
@@ -1132,7 +1184,12 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(SupplierPurchaseOrderBankTransferPeer::ID);
-			$selectCriteria->add(SupplierPurchaseOrderBankTransferPeer::ID, $criteria->remove(SupplierPurchaseOrderBankTransferPeer::ID), $comparison);
+			$value = $criteria->remove(SupplierPurchaseOrderBankTransferPeer::ID);
+			if ($value) {
+				$selectCriteria->add(SupplierPurchaseOrderBankTransferPeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(SupplierPurchaseOrderBankTransferPeer::TABLE_NAME);
+			}
 
 		} else { // $values is SupplierPurchaseOrderBankTransfer object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -1160,7 +1217,12 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(SupplierPurchaseOrderBankTransferPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(SupplierPurchaseOrderBankTransferPeer::TABLE_NAME, $con, SupplierPurchaseOrderBankTransferPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			SupplierPurchaseOrderBankTransferPeer::clearInstancePool();
+			SupplierPurchaseOrderBankTransferPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1191,24 +1253,18 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			SupplierPurchaseOrderBankTransferPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof SupplierPurchaseOrderBankTransfer) {
+		} elseif ($values instanceof SupplierPurchaseOrderBankTransfer) { // it's a model object
 			// invalidate the cache for this single object
 			SupplierPurchaseOrderBankTransferPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(SupplierPurchaseOrderBankTransferPeer::ID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				SupplierPurchaseOrderBankTransferPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -1224,7 +1280,7 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			SupplierPurchaseOrderBankTransferPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1323,14 +1379,7 @@ abstract class BaseSupplierPurchaseOrderBankTransferPeer {
 
 } // BaseSupplierPurchaseOrderBankTransferPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the SupplierPurchaseOrderBankTransferPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the SupplierPurchaseOrderBankTransferPeer class:
-//
-// Propel::getDatabaseMap(SupplierPurchaseOrderBankTransferPeer::DATABASE_NAME)->addTableBuilder(SupplierPurchaseOrderBankTransferPeer::TABLE_NAME, SupplierPurchaseOrderBankTransferPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseSupplierPurchaseOrderBankTransferPeer::DATABASE_NAME)->addTableBuilder(BaseSupplierPurchaseOrderBankTransferPeer::TABLE_NAME, BaseSupplierPurchaseOrderBankTransferPeer::getMapBuilder());
+BaseSupplierPurchaseOrderBankTransferPeer::buildTableMap();
 

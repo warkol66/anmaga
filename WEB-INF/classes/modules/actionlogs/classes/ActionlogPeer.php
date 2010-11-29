@@ -31,7 +31,6 @@ class ActionlogPeer extends BaseActionlogPeer {
 	function selectAllByRequirementsPaginated ($dateFrom,$dateTo,$selectUser,$module,$page=1,$perPage=25) {
 		if (empty($page))
 			$page = 1;
-		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->addAscendingOrderByColumn(ActionlogPeer::ID);
 		$cond->addJoin(ActionlogPeer::ACTION, SecurityActionPeer::ACTION,Criteria::LEFT_JOIN);		
@@ -84,7 +83,6 @@ class ActionlogPeer extends BaseActionlogPeer {
 	function selectAllByRequirementsAndAffiliatePaginated  ($dateFrom,$dateTo,$selectUser,$affiliate,$module,$page=1,$perPage=25) {
 		if (empty($page))
 			$page = 1;
-		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->addAscendingOrderByColumn(ActionlogPeer::ID);
 		$cond->addJoin(ActionlogPeer::ACTION, SecurityActionPeer::ACTION,Criteria::LEFT_JOIN);		

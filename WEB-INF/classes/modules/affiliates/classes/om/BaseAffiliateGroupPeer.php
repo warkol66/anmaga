@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'affiliates_group' table.
  *
  * Groups
  *
- * @package    affiliates.classes.om
+ * @package    propel.generator.affiliates.classes.om
  */
 abstract class BaseAffiliateGroupPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseAffiliateGroupPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'affiliates_group';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'AffiliateGroup';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'affiliates.classes.AffiliateGroup';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'AffiliateGroupTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 5;
 
@@ -47,11 +54,6 @@ abstract class BaseAffiliateGroupPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -63,6 +65,7 @@ abstract class BaseAffiliateGroupPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Created', 'Updated', 'Bitlevel', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'created', 'updated', 'bitlevel', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::CREATED, self::UPDATED, self::BITLEVEL, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'CREATED', 'UPDATED', 'BITLEVEL', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'created', 'updated', 'bitLevel', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
@@ -77,21 +80,11 @@ abstract class BaseAffiliateGroupPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Created' => 2, 'Updated' => 3, 'Bitlevel' => 4, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'created' => 2, 'updated' => 3, 'bitlevel' => 4, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::CREATED => 2, self::UPDATED => 3, self::BITLEVEL => 4, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'CREATED' => 2, 'UPDATED' => 3, 'BITLEVEL' => 4, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'created' => 2, 'updated' => 3, 'bitLevel' => 4, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new AffiliateGroupMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -153,23 +146,26 @@ abstract class BaseAffiliateGroupPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(AffiliateGroupPeer::ID);
-
-		$criteria->addSelectColumn(AffiliateGroupPeer::NAME);
-
-		$criteria->addSelectColumn(AffiliateGroupPeer::CREATED);
-
-		$criteria->addSelectColumn(AffiliateGroupPeer::UPDATED);
-
-		$criteria->addSelectColumn(AffiliateGroupPeer::BITLEVEL);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(AffiliateGroupPeer::ID);
+			$criteria->addSelectColumn(AffiliateGroupPeer::NAME);
+			$criteria->addSelectColumn(AffiliateGroupPeer::CREATED);
+			$criteria->addSelectColumn(AffiliateGroupPeer::UPDATED);
+			$criteria->addSelectColumn(AffiliateGroupPeer::BITLEVEL);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.CREATED');
+			$criteria->addSelectColumn($alias . '.UPDATED');
+			$criteria->addSelectColumn($alias . '.BITLEVEL');
+		}
 	}
 
 	/**
@@ -357,6 +353,20 @@ abstract class BaseAffiliateGroupPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to affiliates_group
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+		// Invalidate objects in AffiliateUserGroupPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		AffiliateUserGroupPeer::clearInstancePool();
+		// Invalidate objects in AffiliateGroupCategoryPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		AffiliateGroupCategoryPeer::clearInstancePool();
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -369,12 +379,26 @@ abstract class BaseAffiliateGroupPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -387,18 +411,16 @@ abstract class BaseAffiliateGroupPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = AffiliateGroupPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = AffiliateGroupPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = AffiliateGroupPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = AffiliateGroupPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -407,6 +429,31 @@ abstract class BaseAffiliateGroupPeer {
 		}
 		$stmt->closeCursor();
 		return $results;
+	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (AffiliateGroup object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = AffiliateGroupPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = AffiliateGroupPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + AffiliateGroupPeer::NUM_COLUMNS;
+		} else {
+			$cls = AffiliateGroupPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			AffiliateGroupPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
 	}
 	/**
 	 * Returns the TableMap related to this peer.
@@ -421,17 +468,31 @@ abstract class BaseAffiliateGroupPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseAffiliateGroupPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseAffiliateGroupPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new AffiliateGroupTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return AffiliateGroupPeer::CLASS_DEFAULT;
+		return $withPrefix ? AffiliateGroupPeer::CLASS_DEFAULT : AffiliateGroupPeer::OM_CLASS;
 	}
 
 	/**
@@ -498,7 +559,12 @@ abstract class BaseAffiliateGroupPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(AffiliateGroupPeer::ID);
-			$selectCriteria->add(AffiliateGroupPeer::ID, $criteria->remove(AffiliateGroupPeer::ID), $comparison);
+			$value = $criteria->remove(AffiliateGroupPeer::ID);
+			if ($value) {
+				$selectCriteria->add(AffiliateGroupPeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(AffiliateGroupPeer::TABLE_NAME);
+			}
 
 		} else { // $values is AffiliateGroup object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -527,7 +593,12 @@ abstract class BaseAffiliateGroupPeer {
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
 			$affectedRows += AffiliateGroupPeer::doOnDeleteCascade(new Criteria(AffiliateGroupPeer::DATABASE_NAME), $con);
-			$affectedRows += BasePeer::doDeleteAll(AffiliateGroupPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(AffiliateGroupPeer::TABLE_NAME, $con, AffiliateGroupPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			AffiliateGroupPeer::clearInstancePool();
+			AffiliateGroupPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -554,30 +625,14 @@ abstract class BaseAffiliateGroupPeer {
 		}
 
 		if ($values instanceof Criteria) {
-			// invalidate the cache for all objects of this type, since we have no
-			// way of knowing (without running a query) what objects should be invalidated
-			// from the cache based on this Criteria.
-			AffiliateGroupPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof AffiliateGroup) {
-			// invalidate the cache for this single object
-			AffiliateGroupPeer::removeInstanceFromPool($values);
+		} elseif ($values instanceof AffiliateGroup) { // it's a model object
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(AffiliateGroupPeer::ID, (array) $values, Criteria::IN);
-
-			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
-				AffiliateGroupPeer::removeInstanceFromPool($singleval);
-			}
 		}
 
 		// Set the correct dbName
@@ -589,25 +644,26 @@ abstract class BaseAffiliateGroupPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += AffiliateGroupPeer::doOnDeleteCascade($criteria, $con);
 			
-				// Because this db requires some delete cascade/set null emulation, we have to
-				// clear the cached instance *after* the emulation has happened (since
-				// instances get re-added by the select statement contained therein).
-				if ($values instanceof Criteria) {
-					AffiliateGroupPeer::clearInstancePool();
-				} else { // it's a PK or object
-					AffiliateGroupPeer::removeInstanceFromPool($values);
+			// cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
+			$c = clone $criteria;
+			$affectedRows += AffiliateGroupPeer::doOnDeleteCascade($c, $con);
+			
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			if ($values instanceof Criteria) {
+				AffiliateGroupPeer::clearInstancePool();
+			} elseif ($values instanceof AffiliateGroup) { // it's a model object
+				AffiliateGroupPeer::removeInstanceFromPool($values);
+			} else { // it's a primary key, or an array of pks
+				foreach ((array) $values as $singleval) {
+					AffiliateGroupPeer::removeInstanceFromPool($singleval);
 				}
+			}
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
-			// invalidate objects in AffiliateUserGroupPeer instance pool, since one or more of them may be deleted by ON DELETE CASCADE rule.
-			AffiliateUserGroupPeer::clearInstancePool();
-
-			// invalidate objects in AffiliateGroupCategoryPeer instance pool, since one or more of them may be deleted by ON DELETE CASCADE rule.
-			AffiliateGroupCategoryPeer::clearInstancePool();
-
+			AffiliateGroupPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -640,16 +696,16 @@ abstract class BaseAffiliateGroupPeer {
 
 
 			// delete related AffiliateUserGroup objects
-			$c = new Criteria(AffiliateUserGroupPeer::DATABASE_NAME);
+			$criteria = new Criteria(AffiliateUserGroupPeer::DATABASE_NAME);
 			
-			$c->add(AffiliateUserGroupPeer::GROUPID, $obj->getId());
-			$affectedRows += AffiliateUserGroupPeer::doDelete($c, $con);
+			$criteria->add(AffiliateUserGroupPeer::GROUPID, $obj->getId());
+			$affectedRows += AffiliateUserGroupPeer::doDelete($criteria, $con);
 
 			// delete related AffiliateGroupCategory objects
-			$c = new Criteria(AffiliateGroupCategoryPeer::DATABASE_NAME);
+			$criteria = new Criteria(AffiliateGroupCategoryPeer::DATABASE_NAME);
 			
-			$c->add(AffiliateGroupCategoryPeer::GROUPID, $obj->getId());
-			$affectedRows += AffiliateGroupCategoryPeer::doDelete($c, $con);
+			$criteria->add(AffiliateGroupCategoryPeer::GROUPID, $obj->getId());
+			$affectedRows += AffiliateGroupCategoryPeer::doDelete($criteria, $con);
 		}
 		return $affectedRows;
 	}
@@ -744,14 +800,7 @@ abstract class BaseAffiliateGroupPeer {
 
 } // BaseAffiliateGroupPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the AffiliateGroupPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the AffiliateGroupPeer class:
-//
-// Propel::getDatabaseMap(AffiliateGroupPeer::DATABASE_NAME)->addTableBuilder(AffiliateGroupPeer::TABLE_NAME, AffiliateGroupPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseAffiliateGroupPeer::DATABASE_NAME)->addTableBuilder(BaseAffiliateGroupPeer::TABLE_NAME, BaseAffiliateGroupPeer::getMapBuilder());
+BaseAffiliateGroupPeer::buildTableMap();
 

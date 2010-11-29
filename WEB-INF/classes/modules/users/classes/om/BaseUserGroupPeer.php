@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'users_userGroup' table.
  *
  * Users / Groups
  *
- * @package    users.classes.om
+ * @package    propel.generator.users.classes.om
  */
 abstract class BaseUserGroupPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseUserGroupPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'users_userGroup';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'UserGroup';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'users.classes.UserGroup';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'UserGroupTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 2;
 
@@ -38,11 +45,6 @@ abstract class BaseUserGroupPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -54,6 +56,7 @@ abstract class BaseUserGroupPeer {
 		BasePeer::TYPE_PHPNAME => array ('Userid', 'Groupid', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('userid', 'groupid', ),
 		BasePeer::TYPE_COLNAME => array (self::USERID, self::GROUPID, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('USERID', 'GROUPID', ),
 		BasePeer::TYPE_FIELDNAME => array ('userId', 'groupId', ),
 		BasePeer::TYPE_NUM => array (0, 1, )
 	);
@@ -68,21 +71,11 @@ abstract class BaseUserGroupPeer {
 		BasePeer::TYPE_PHPNAME => array ('Userid' => 0, 'Groupid' => 1, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('userid' => 0, 'groupid' => 1, ),
 		BasePeer::TYPE_COLNAME => array (self::USERID => 0, self::GROUPID => 1, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('USERID' => 0, 'GROUPID' => 1, ),
 		BasePeer::TYPE_FIELDNAME => array ('userId' => 0, 'groupId' => 1, ),
 		BasePeer::TYPE_NUM => array (0, 1, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new UserGroupMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -144,17 +137,20 @@ abstract class BaseUserGroupPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(UserGroupPeer::USERID);
-
-		$criteria->addSelectColumn(UserGroupPeer::GROUPID);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(UserGroupPeer::USERID);
+			$criteria->addSelectColumn(UserGroupPeer::GROUPID);
+		} else {
+			$criteria->addSelectColumn($alias . '.USERID');
+			$criteria->addSelectColumn($alias . '.GROUPID');
+		}
 	}
 
 	/**
@@ -342,6 +338,14 @@ abstract class BaseUserGroupPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to users_userGroup
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -354,12 +358,26 @@ abstract class BaseUserGroupPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null && $row[$startcol + 1] === null) {
+		if ($row[$startcol] === null && $row[$startcol + 1] === null) {
 			return null;
 		}
-		return serialize(array((string) $row[$startcol + 0], (string) $row[$startcol + 1]));
+		return serialize(array((string) $row[$startcol], (string) $row[$startcol + 1]));
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return array((int) $row[$startcol], (int) $row[$startcol + 1]);
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -372,18 +390,16 @@ abstract class BaseUserGroupPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = UserGroupPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = UserGroupPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = UserGroupPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = UserGroupPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -393,11 +409,36 @@ abstract class BaseUserGroupPeer {
 		$stmt->closeCursor();
 		return $results;
 	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (UserGroup object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = UserGroupPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = UserGroupPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + UserGroupPeer::NUM_COLUMNS;
+		} else {
+			$cls = UserGroupPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			UserGroupPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
+	}
 
 	/**
 	 * Returns the number of rows matching criteria, joining the related User table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -430,7 +471,8 @@ abstract class BaseUserGroupPeer {
 			$con = Propel::getConnection(UserGroupPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(UserGroupPeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$criteria->addJoin(UserGroupPeer::USERID, UserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -446,7 +488,7 @@ abstract class BaseUserGroupPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Group table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -479,7 +521,8 @@ abstract class BaseUserGroupPeer {
 			$con = Propel::getConnection(UserGroupPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(UserGroupPeer::GROUPID,), array(GroupPeer::ID,), $join_behavior);
+		$criteria->addJoin(UserGroupPeer::GROUPID, GroupPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -494,41 +537,41 @@ abstract class BaseUserGroupPeer {
 
 	/**
 	 * Selects a collection of UserGroup objects pre-filled with their User objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of UserGroup objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		UserGroupPeer::addSelectColumns($c);
+		UserGroupPeer::addSelectColumns($criteria);
 		$startcol = (UserGroupPeer::NUM_COLUMNS - UserGroupPeer::NUM_LAZY_LOAD_COLUMNS);
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(UserGroupPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(UserGroupPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = UserGroupPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = UserGroupPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = UserGroupPeer::getOMClass();
+				$cls = UserGroupPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				UserGroupPeer::addInstanceToPool($obj1, $key1);
@@ -539,9 +582,8 @@ abstract class BaseUserGroupPeer {
 				$obj2 = UserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = UserPeer::getOMClass();
+					$cls = UserPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					UserPeer::addInstanceToPool($obj2, $key2);
@@ -561,41 +603,41 @@ abstract class BaseUserGroupPeer {
 
 	/**
 	 * Selects a collection of UserGroup objects pre-filled with their Group objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of UserGroup objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinGroup(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinGroup(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		UserGroupPeer::addSelectColumns($c);
+		UserGroupPeer::addSelectColumns($criteria);
 		$startcol = (UserGroupPeer::NUM_COLUMNS - UserGroupPeer::NUM_LAZY_LOAD_COLUMNS);
-		GroupPeer::addSelectColumns($c);
+		GroupPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(UserGroupPeer::GROUPID,), array(GroupPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(UserGroupPeer::GROUPID, GroupPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = UserGroupPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = UserGroupPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = UserGroupPeer::getOMClass();
+				$cls = UserGroupPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				UserGroupPeer::addInstanceToPool($obj1, $key1);
@@ -606,9 +648,8 @@ abstract class BaseUserGroupPeer {
 				$obj2 = GroupPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = GroupPeer::getOMClass();
+					$cls = GroupPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					GroupPeer::addInstanceToPool($obj2, $key2);
@@ -629,7 +670,7 @@ abstract class BaseUserGroupPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -662,8 +703,10 @@ abstract class BaseUserGroupPeer {
 			$con = Propel::getConnection(UserGroupPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(UserGroupPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$criteria->addJoin(array(UserGroupPeer::GROUPID,), array(GroupPeer::ID,), $join_behavior);
+		$criteria->addJoin(UserGroupPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(UserGroupPeer::GROUPID, GroupPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -678,46 +721,47 @@ abstract class BaseUserGroupPeer {
 	/**
 	 * Selects a collection of UserGroup objects pre-filled with all related objects.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of UserGroup objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAll(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		UserGroupPeer::addSelectColumns($c);
+		UserGroupPeer::addSelectColumns($criteria);
 		$startcol2 = (UserGroupPeer::NUM_COLUMNS - UserGroupPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		GroupPeer::addSelectColumns($c);
+		GroupPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (GroupPeer::NUM_COLUMNS - GroupPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(UserGroupPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$c->addJoin(array(UserGroupPeer::GROUPID,), array(GroupPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(UserGroupPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(UserGroupPeer::GROUPID, GroupPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = UserGroupPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = UserGroupPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = UserGroupPeer::getOMClass();
+				$cls = UserGroupPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				UserGroupPeer::addInstanceToPool($obj1, $key1);
@@ -730,10 +774,8 @@ abstract class BaseUserGroupPeer {
 				$obj2 = UserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = UserPeer::getOMClass();
+					$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					UserPeer::addInstanceToPool($obj2, $key2);
@@ -750,10 +792,8 @@ abstract class BaseUserGroupPeer {
 				$obj3 = GroupPeer::getInstanceFromPool($key3);
 				if (!$obj3) {
 
-					$omClass = GroupPeer::getOMClass();
+					$cls = GroupPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					GroupPeer::addInstanceToPool($obj3, $key3);
@@ -773,7 +813,7 @@ abstract class BaseUserGroupPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related User table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -806,7 +846,8 @@ abstract class BaseUserGroupPeer {
 			$con = Propel::getConnection(UserGroupPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(UserGroupPeer::GROUPID,), array(GroupPeer::ID,), $join_behavior);
+		$criteria->addJoin(UserGroupPeer::GROUPID, GroupPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -822,7 +863,7 @@ abstract class BaseUserGroupPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Group table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -855,7 +896,8 @@ abstract class BaseUserGroupPeer {
 			$con = Propel::getConnection(UserGroupPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(UserGroupPeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$criteria->addJoin(UserGroupPeer::USERID, UserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -871,45 +913,45 @@ abstract class BaseUserGroupPeer {
 	/**
 	 * Selects a collection of UserGroup objects pre-filled with all related objects except User.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of UserGroup objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		UserGroupPeer::addSelectColumns($c);
+		UserGroupPeer::addSelectColumns($criteria);
 		$startcol2 = (UserGroupPeer::NUM_COLUMNS - UserGroupPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		GroupPeer::addSelectColumns($c);
+		GroupPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (GroupPeer::NUM_COLUMNS - GroupPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(UserGroupPeer::GROUPID,), array(GroupPeer::ID,), $join_behavior);
+		$criteria->addJoin(UserGroupPeer::GROUPID, GroupPeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = UserGroupPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = UserGroupPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = UserGroupPeer::getOMClass();
+				$cls = UserGroupPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				UserGroupPeer::addInstanceToPool($obj1, $key1);
@@ -922,10 +964,8 @@ abstract class BaseUserGroupPeer {
 					$obj2 = GroupPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = GroupPeer::getOMClass();
+						$cls = GroupPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					GroupPeer::addInstanceToPool($obj2, $key2);
@@ -946,45 +986,45 @@ abstract class BaseUserGroupPeer {
 	/**
 	 * Selects a collection of UserGroup objects pre-filled with all related objects except Group.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of UserGroup objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptGroup(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptGroup(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		UserGroupPeer::addSelectColumns($c);
+		UserGroupPeer::addSelectColumns($criteria);
 		$startcol2 = (UserGroupPeer::NUM_COLUMNS - UserGroupPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(UserGroupPeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$criteria->addJoin(UserGroupPeer::USERID, UserPeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = UserGroupPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = UserGroupPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = UserGroupPeer::getOMClass();
+				$cls = UserGroupPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				UserGroupPeer::addInstanceToPool($obj1, $key1);
@@ -997,10 +1037,8 @@ abstract class BaseUserGroupPeer {
 					$obj2 = UserPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = UserPeer::getOMClass();
+						$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					UserPeer::addInstanceToPool($obj2, $key2);
@@ -1030,17 +1068,31 @@ abstract class BaseUserGroupPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseUserGroupPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseUserGroupPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new UserGroupTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return UserGroupPeer::CLASS_DEFAULT;
+		return $withPrefix ? UserGroupPeer::CLASS_DEFAULT : UserGroupPeer::OM_CLASS;
 	}
 
 	/**
@@ -1103,10 +1155,20 @@ abstract class BaseUserGroupPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(UserGroupPeer::USERID);
-			$selectCriteria->add(UserGroupPeer::USERID, $criteria->remove(UserGroupPeer::USERID), $comparison);
+			$value = $criteria->remove(UserGroupPeer::USERID);
+			if ($value) {
+				$selectCriteria->add(UserGroupPeer::USERID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(UserGroupPeer::TABLE_NAME);
+			}
 
 			$comparison = $criteria->getComparison(UserGroupPeer::GROUPID);
-			$selectCriteria->add(UserGroupPeer::GROUPID, $criteria->remove(UserGroupPeer::GROUPID), $comparison);
+			$value = $criteria->remove(UserGroupPeer::GROUPID);
+			if ($value) {
+				$selectCriteria->add(UserGroupPeer::GROUPID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(UserGroupPeer::TABLE_NAME);
+			}
 
 		} else { // $values is UserGroup object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -1134,7 +1196,12 @@ abstract class BaseUserGroupPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(UserGroupPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(UserGroupPeer::TABLE_NAME, $con, UserGroupPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			UserGroupPeer::clearInstancePool();
+			UserGroupPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1165,34 +1232,25 @@ abstract class BaseUserGroupPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			UserGroupPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof UserGroup) {
+		} elseif ($values instanceof UserGroup) { // it's a model object
 			// invalidate the cache for this single object
 			UserGroupPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			// primary key is composite; we therefore, expect
-			// the primary key passed to be an array of pkey
-			// values
+			// the primary key passed to be an array of pkey values
 			if (count($values) == count($values, COUNT_RECURSIVE)) {
 				// array is not multi-dimensional
 				$values = array($values);
 			}
-
 			foreach ($values as $value) {
-
 				$criterion = $criteria->getNewCriterion(UserGroupPeer::USERID, $value[0]);
 				$criterion->addAnd($criteria->getNewCriterion(UserGroupPeer::GROUPID, $value[1]));
 				$criteria->addOr($criterion);
-
 				// we can invalidate the cache for this single PK
 				UserGroupPeer::removeInstanceFromPool($value);
 			}
@@ -1209,7 +1267,7 @@ abstract class BaseUserGroupPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			UserGroupPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1258,14 +1316,13 @@ abstract class BaseUserGroupPeer {
 	/**
 	 * Retrieve object using using composite pkey values.
 	 * @param      int $userid
-	   @param      int $groupid
-	   
+	 * @param      int $groupid
 	 * @param      PropelPDO $con
 	 * @return     UserGroup
 	 */
 	public static function retrieveByPK($userid, $groupid, PropelPDO $con = null) {
-		$key = serialize(array((string) $userid, (string) $groupid));
- 		if (null !== ($obj = UserGroupPeer::getInstanceFromPool($key))) {
+		$_instancePoolKey = serialize(array((string) $userid, (string) $groupid));
+ 		if (null !== ($obj = UserGroupPeer::getInstanceFromPool($_instancePoolKey))) {
  			return $obj;
 		}
 
@@ -1281,14 +1338,7 @@ abstract class BaseUserGroupPeer {
 	}
 } // BaseUserGroupPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the UserGroupPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the UserGroupPeer class:
-//
-// Propel::getDatabaseMap(UserGroupPeer::DATABASE_NAME)->addTableBuilder(UserGroupPeer::TABLE_NAME, UserGroupPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseUserGroupPeer::DATABASE_NAME)->addTableBuilder(BaseUserGroupPeer::TABLE_NAME, BaseUserGroupPeer::getMapBuilder());
+BaseUserGroupPeer::buildTableMap();
 

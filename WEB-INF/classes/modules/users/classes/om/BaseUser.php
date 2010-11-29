@@ -1,14 +1,20 @@
 <?php
 
+
 /**
  * Base class that represents a row from the 'users_user' table.
  *
  * Users
  *
- * @package    users.classes.om
+ * @package    propel.generator.users.classes.om
  */
-abstract class BaseUser extends BaseObject  implements Persistent {
+abstract class BaseUser extends BaseObject  implements Persistent
+{
 
+	/**
+	 * Peer class name
+	 */
+  const PEER = 'UserPeer';
 
 	/**
 	 * The Peer class.
@@ -78,24 +84,9 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	protected $aLevel;
 
 	/**
-	 * @var        array Actionlog[] Collection to store aggregation of Actionlog objects.
-	 */
-	protected $collActionlogs;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collActionlogs.
-	 */
-	private $lastActionlogCriteria = null;
-
-	/**
 	 * @var        array ClientQuote[] Collection to store aggregation of ClientQuote objects.
 	 */
 	protected $collClientQuotes;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collClientQuotes.
-	 */
-	private $lastClientQuoteCriteria = null;
 
 	/**
 	 * @var        array SupplierQuoteItemComment[] Collection to store aggregation of SupplierQuoteItemComment objects.
@@ -103,29 +94,14 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	protected $collSupplierQuoteItemComments;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collSupplierQuoteItemComments.
-	 */
-	private $lastSupplierQuoteItemCommentCriteria = null;
-
-	/**
 	 * @var        array ClientPurchaseOrder[] Collection to store aggregation of ClientPurchaseOrder objects.
 	 */
 	protected $collClientPurchaseOrders;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collClientPurchaseOrders.
-	 */
-	private $lastClientPurchaseOrderCriteria = null;
-
-	/**
 	 * @var        array SupplierPurchaseOrder[] Collection to store aggregation of SupplierPurchaseOrder objects.
 	 */
 	protected $collSupplierPurchaseOrders;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collSupplierPurchaseOrders.
-	 */
-	private $lastSupplierPurchaseOrderCriteria = null;
 
 	/**
 	 * @var        UserInfo one-to-one related UserInfo object
@@ -138,9 +114,9 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	protected $collUserGroups;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collUserGroups.
+	 * @var        array Actionlog[] Collection to store aggregation of Actionlog objects.
 	 */
-	private $lastUserGroupCriteria = null;
+	protected $collActionlogs;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -155,26 +131,6 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * @var        boolean
 	 */
 	protected $alreadyInValidation = false;
-
-	/**
-	 * Initializes internal state of BaseUser object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
-
-	/**
-	 * Applies default values to this object.
-	 * This method should be called from the object's constructor (or
-	 * equivalent initialization method).
-	 * @see        __construct()
-	 */
-	public function applyDefaultValues()
-	{
-	}
 
 	/**
 	 * Get the [id] column value.
@@ -631,11 +587,6 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			// First, ensure that we don't have any columns that have been modified which aren't default columns.
-			if (array_diff($this->modifiedColumns, array())) {
-				return false;
-			}
-
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -675,7 +626,6 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$this->ensureConsistency();
 			}
 
-			// FIXME - using NUM_COLUMNS may be clearer.
 			return $startcol + 9; // 9 = UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
@@ -742,25 +692,19 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->aLevel = null;
-			$this->collActionlogs = null;
-			$this->lastActionlogCriteria = null;
-
 			$this->collClientQuotes = null;
-			$this->lastClientQuoteCriteria = null;
 
 			$this->collSupplierQuoteItemComments = null;
-			$this->lastSupplierQuoteItemCommentCriteria = null;
 
 			$this->collClientPurchaseOrders = null;
-			$this->lastClientPurchaseOrderCriteria = null;
 
 			$this->collSupplierPurchaseOrders = null;
-			$this->lastSupplierPurchaseOrderCriteria = null;
 
 			$this->singleUserInfo = null;
 
 			$this->collUserGroups = null;
-			$this->lastUserGroupCriteria = null;
+
+			$this->collActionlogs = null;
 
 		} // if (deep)
 	}
@@ -786,9 +730,17 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		
 		$con->beginTransaction();
 		try {
-			UserPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
+			$ret = $this->preDelete($con);
+			if ($ret) {
+				UserQuery::create()
+					->filterByPrimaryKey($this->getPrimaryKey())
+					->delete($con);
+				$this->postDelete($con);
+				$con->commit();
+				$this->setDeleted(true);
+			} else {
+				$con->commit();
+			}
 		} catch (PropelException $e) {
 			$con->rollBack();
 			throw $e;
@@ -819,10 +771,27 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		}
 		
 		$con->beginTransaction();
+		$isInsert = $this->isNew();
 		try {
-			$affectedRows = $this->doSave($con);
+			$ret = $this->preSave($con);
+			if ($isInsert) {
+				$ret = $ret && $this->preInsert($con);
+			} else {
+				$ret = $ret && $this->preUpdate($con);
+			}
+			if ($ret) {
+				$affectedRows = $this->doSave($con);
+				if ($isInsert) {
+					$this->postInsert($con);
+				} else {
+					$this->postUpdate($con);
+				}
+				$this->postSave($con);
+				UserPeer::addInstanceToPool($this);
+			} else {
+				$affectedRows = 0;
+			}
 			$con->commit();
-			UserPeer::addInstanceToPool($this);
 			return $affectedRows;
 		} catch (PropelException $e) {
 			$con->rollBack();
@@ -866,27 +835,20 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = UserPeer::doInsert($this, $con);
-					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
-										 // should always be true here (even though technically
-										 // BasePeer::doInsert() can insert multiple rows).
+					$criteria = $this->buildCriteria();
+					if ($criteria->keyContainsValue(UserPeer::ID) ) {
+						throw new PropelException('Cannot insert a value for auto-increment primary key ('.UserPeer::ID.')');
+					}
 
+					$pk = BasePeer::doInsert($criteria, $con);
+					$affectedRows += 1;
 					$this->setId($pk);  //[IMV] update autoincrement primary key
-
 					$this->setNew(false);
 				} else {
 					$affectedRows += UserPeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
-			}
-
-			if ($this->collActionlogs !== null) {
-				foreach ($this->collActionlogs as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
 			}
 
 			if ($this->collClientQuotes !== null) {
@@ -929,6 +891,14 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 			if ($this->collUserGroups !== null) {
 				foreach ($this->collUserGroups as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collActionlogs !== null) {
+				foreach ($this->collActionlogs as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -1018,14 +988,6 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			}
 
 
-				if ($this->collActionlogs !== null) {
-					foreach ($this->collActionlogs as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
 				if ($this->collClientQuotes !== null) {
 					foreach ($this->collClientQuotes as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
@@ -1072,11 +1034,203 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 					}
 				}
 
+				if ($this->collActionlogs !== null) {
+					foreach ($this->collActionlogs as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 
 			$this->alreadyInValidation = false;
 		}
 
 		return (!empty($failureMap) ? $failureMap : true);
+	}
+
+	/**
+	 * Retrieves a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name name
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     mixed Value of field.
+	 */
+	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = UserPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$field = $this->getByPosition($pos);
+		return $field;
+	}
+
+	/**
+	 * Retrieves a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @return     mixed Value of field at $pos
+	 */
+	public function getByPosition($pos)
+	{
+		switch($pos) {
+			case 0:
+				return $this->getId();
+				break;
+			case 1:
+				return $this->getUsername();
+				break;
+			case 2:
+				return $this->getPassword();
+				break;
+			case 3:
+				return $this->getActive();
+				break;
+			case 4:
+				return $this->getCreated();
+				break;
+			case 5:
+				return $this->getUpdated();
+				break;
+			case 6:
+				return $this->getLevelid();
+				break;
+			case 7:
+				return $this->getLastlogin();
+				break;
+			case 8:
+				return $this->getTimezone();
+				break;
+			default:
+				return null;
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Exports the object as an array.
+	 *
+	 * You can specify the key type of the array by passing one of the class
+	 * type constants.
+	 *
+	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    Defaults to BasePeer::TYPE_PHPNAME.
+	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
+	 *
+	 * @return    array an associative array containing the field names (as keys) and field values
+	 */
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	{
+		$keys = UserPeer::getFieldNames($keyType);
+		$result = array(
+			$keys[0] => $this->getId(),
+			$keys[1] => $this->getUsername(),
+			$keys[2] => $this->getPassword(),
+			$keys[3] => $this->getActive(),
+			$keys[4] => $this->getCreated(),
+			$keys[5] => $this->getUpdated(),
+			$keys[6] => $this->getLevelid(),
+			$keys[7] => $this->getLastlogin(),
+			$keys[8] => $this->getTimezone(),
+		);
+		if ($includeForeignObjects) {
+			if (null !== $this->aLevel) {
+				$result['Level'] = $this->aLevel->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Sets a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name peer name
+	 * @param      mixed $value field value
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     void
+	 */
+	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = UserPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		return $this->setByPosition($pos, $value);
+	}
+
+	/**
+	 * Sets a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @param      mixed $value field value
+	 * @return     void
+	 */
+	public function setByPosition($pos, $value)
+	{
+		switch($pos) {
+			case 0:
+				$this->setId($value);
+				break;
+			case 1:
+				$this->setUsername($value);
+				break;
+			case 2:
+				$this->setPassword($value);
+				break;
+			case 3:
+				$this->setActive($value);
+				break;
+			case 4:
+				$this->setCreated($value);
+				break;
+			case 5:
+				$this->setUpdated($value);
+				break;
+			case 6:
+				$this->setLevelid($value);
+				break;
+			case 7:
+				$this->setLastlogin($value);
+				break;
+			case 8:
+				$this->setTimezone($value);
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Populates the object using an array.
+	 *
+	 * This is particularly useful when populating an object from one of the
+	 * request arrays (e.g. $_POST).  This method goes through the column
+	 * names, checking to see whether a matching key exists in populated
+	 * array. If so the setByName() method is called for that column.
+	 *
+	 * You can specify the key type of the array by additionally passing one
+	 * of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+	 * The default key type is the column's phpname (e.g. 'AuthorId')
+	 *
+	 * @param      array  $arr     An array to populate the object from.
+	 * @param      string $keyType The type of keys the array uses.
+	 * @return     void
+	 */
+	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
+	{
+		$keys = UserPeer::getFieldNames($keyType);
+
+		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setUsername($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setPassword($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setActive($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setCreated($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setUpdated($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setLevelid($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setLastlogin($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setTimezone($arr[$keys[8]]);
 	}
 
 	/**
@@ -1112,7 +1266,6 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	public function buildPkeyCriteria()
 	{
 		$criteria = new Criteria(UserPeer::DATABASE_NAME);
-
 		$criteria->add(UserPeer::ID, $this->id);
 
 		return $criteria;
@@ -1139,6 +1292,15 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Returns true if the primary key for this object is null.
+	 * @return     boolean
+	 */
+	public function isPrimaryKeyNull()
+	{
+		return null === $this->getId();
+	}
+
+	/**
 	 * Sets contents of passed object to values from current object.
 	 *
 	 * If desired, this method can also make copies of all associated (fkey referrers)
@@ -1150,34 +1312,19 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-
 		$copyObj->setUsername($this->username);
-
 		$copyObj->setPassword($this->password);
-
 		$copyObj->setActive($this->active);
-
 		$copyObj->setCreated($this->created);
-
 		$copyObj->setUpdated($this->updated);
-
 		$copyObj->setLevelid($this->levelid);
-
 		$copyObj->setLastlogin($this->lastlogin);
-
 		$copyObj->setTimezone($this->timezone);
-
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
-
-			foreach ($this->getActionlogs() as $relObj) {
-				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addActionlog($relObj->copy($deepCopy));
-				}
-			}
 
 			foreach ($this->getClientQuotes() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -1214,13 +1361,17 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				}
 			}
 
+			foreach ($this->getActionlogs() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addActionlog($relObj->copy($deepCopy));
+				}
+			}
+
 		} // if ($deepCopy)
 
 
 		$copyObj->setNew(true);
-
 		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
-
 	}
 
 	/**
@@ -1298,7 +1449,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	public function getLevel(PropelPDO $con = null)
 	{
 		if ($this->aLevel === null && ($this->levelid !== null)) {
-			$this->aLevel = LevelPeer::retrieveByPK($this->levelid, $con);
+			$this->aLevel = LevelQuery::create()->findPk($this->levelid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1311,209 +1462,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collActionlogs collection (array).
-	 *
-	 * This does not modify the database; however, it will remove any associated objects, causing
-	 * them to be refetched by subsequent calls to accessor method.
-	 *
-	 * @return     void
-	 * @see        addActionlogs()
-	 */
-	public function clearActionlogs()
-	{
-		$this->collActionlogs = null; // important to set this to NULL since that means it is uninitialized
-	}
-
-	/**
-	 * Initializes the collActionlogs collection (array).
-	 *
-	 * By default this just sets the collActionlogs collection to an empty array (like clearcollActionlogs());
-	 * however, you may wish to override this method in your stub class to provide setting appropriate
-	 * to your application -- for example, setting the initial array to the values stored in database.
-	 *
-	 * @return     void
-	 */
-	public function initActionlogs()
-	{
-		$this->collActionlogs = array();
-	}
-
-	/**
-	 * Gets an array of Actionlog objects which contain a foreign key that references this object.
-	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this User has previously been saved, it will retrieve
-	 * related Actionlogs from storage. If this User is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
-	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array Actionlog[]
-	 * @throws     PropelException
-	 */
-	public function getActionlogs($criteria = null, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActionlogs === null) {
-			if ($this->isNew()) {
-			   $this->collActionlogs = array();
-			} else {
-
-				$criteria->add(ActionlogPeer::USERID, $this->id);
-
-				ActionlogPeer::addSelectColumns($criteria);
-				$this->collActionlogs = ActionlogPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(ActionlogPeer::USERID, $this->id);
-
-				ActionlogPeer::addSelectColumns($criteria);
-				if (!isset($this->lastActionlogCriteria) || !$this->lastActionlogCriteria->equals($criteria)) {
-					$this->collActionlogs = ActionlogPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastActionlogCriteria = $criteria;
-		return $this->collActionlogs;
-	}
-
-	/**
-	 * Returns the number of related Actionlog objects.
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct
-	 * @param      PropelPDO $con
-	 * @return     int Count of related Actionlog objects.
-	 * @throws     PropelException
-	 */
-	public function countActionlogs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collActionlogs === null) {
-			if ($this->isNew()) {
-				$count = 0;
-			} else {
-
-				$criteria->add(ActionlogPeer::USERID, $this->id);
-
-				$count = ActionlogPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(ActionlogPeer::USERID, $this->id);
-
-				if (!isset($this->lastActionlogCriteria) || !$this->lastActionlogCriteria->equals($criteria)) {
-					$count = ActionlogPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collActionlogs);
-				}
-			} else {
-				$count = count($this->collActionlogs);
-			}
-		}
-		$this->lastActionlogCriteria = $criteria;
-		return $count;
-	}
-
-	/**
-	 * Method called to associate a Actionlog object to this object
-	 * through the Actionlog foreign key attribute.
-	 *
-	 * @param      Actionlog $l Actionlog
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function addActionlog(Actionlog $l)
-	{
-		if ($this->collActionlogs === null) {
-			$this->initActionlogs();
-		}
-		if (!in_array($l, $this->collActionlogs, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collActionlogs, $l);
-			$l->setUser($this);
-		}
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this User is new, it will return
-	 * an empty collection; or if this User has previously
-	 * been saved, it will retrieve related Actionlogs from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in User.
-	 */
-	public function getActionlogsJoinSecurityAction($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActionlogs === null) {
-			if ($this->isNew()) {
-				$this->collActionlogs = array();
-			} else {
-
-				$criteria->add(ActionlogPeer::USERID, $this->id);
-
-				$this->collActionlogs = ActionlogPeer::doSelectJoinSecurityAction($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(ActionlogPeer::USERID, $this->id);
-
-			if (!isset($this->lastActionlogCriteria) || !$this->lastActionlogCriteria->equals($criteria)) {
-				$this->collActionlogs = ActionlogPeer::doSelectJoinSecurityAction($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastActionlogCriteria = $criteria;
-
-		return $this->collActionlogs;
-	}
-
-	/**
-	 * Clears out the collClientQuotes collection (array).
+	 * Clears out the collClientQuotes collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -1527,7 +1476,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collClientQuotes collection (array).
+	 * Initializes the collClientQuotes collection.
 	 *
 	 * By default this just sets the collClientQuotes collection to an empty array (like clearcollClientQuotes());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -1537,59 +1486,40 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 */
 	public function initClientQuotes()
 	{
-		$this->collClientQuotes = array();
+		$this->collClientQuotes = new PropelObjectCollection();
+		$this->collClientQuotes->setModel('ClientQuote');
 	}
 
 	/**
 	 * Gets an array of ClientQuote objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this User has previously been saved, it will retrieve
-	 * related ClientQuotes from storage. If this User is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array ClientQuote[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array ClientQuote[] List of ClientQuote objects
 	 * @throws     PropelException
 	 */
 	public function getClientQuotes($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collClientQuotes === null) {
-			if ($this->isNew()) {
-			   $this->collClientQuotes = array();
+		if(null === $this->collClientQuotes || null !== $criteria) {
+			if ($this->isNew() && null === $this->collClientQuotes) {
+				// return empty collection
+				$this->initClientQuotes();
 			} else {
-
-				$criteria->add(ClientQuotePeer::USERID, $this->id);
-
-				ClientQuotePeer::addSelectColumns($criteria);
-				$this->collClientQuotes = ClientQuotePeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(ClientQuotePeer::USERID, $this->id);
-
-				ClientQuotePeer::addSelectColumns($criteria);
-				if (!isset($this->lastClientQuoteCriteria) || !$this->lastClientQuoteCriteria->equals($criteria)) {
-					$this->collClientQuotes = ClientQuotePeer::doSelect($criteria, $con);
+				$collClientQuotes = ClientQuoteQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collClientQuotes;
 				}
+				$this->collClientQuotes = $collClientQuotes;
 			}
 		}
-		$this->lastClientQuoteCriteria = $criteria;
 		return $this->collClientQuotes;
 	}
 
@@ -1604,48 +1534,21 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 */
 	public function countClientQuotes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collClientQuotes === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collClientQuotes || null !== $criteria) {
+			if ($this->isNew() && null === $this->collClientQuotes) {
+				return 0;
 			} else {
-
-				$criteria->add(ClientQuotePeer::USERID, $this->id);
-
-				$count = ClientQuotePeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(ClientQuotePeer::USERID, $this->id);
-
-				if (!isset($this->lastClientQuoteCriteria) || !$this->lastClientQuoteCriteria->equals($criteria)) {
-					$count = ClientQuotePeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collClientQuotes);
+				$query = ClientQuoteQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collClientQuotes);
+				return $query
+					->filterByUser($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collClientQuotes);
 		}
-		$this->lastClientQuoteCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -1661,8 +1564,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		if ($this->collClientQuotes === null) {
 			$this->initClientQuotes();
 		}
-		if (!in_array($l, $this->collClientQuotes, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collClientQuotes, $l);
+		if (!$this->collClientQuotes->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collClientQuotes[]= $l;
 			$l->setUser($this);
 		}
 	}
@@ -1678,40 +1581,18 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array ClientQuote[] List of ClientQuote objects
 	 */
 	public function getClientQuotesJoinAffiliate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = ClientQuoteQuery::create(null, $criteria);
+		$query->joinWith('Affiliate', $join_behavior);
 
-		if ($this->collClientQuotes === null) {
-			if ($this->isNew()) {
-				$this->collClientQuotes = array();
-			} else {
-
-				$criteria->add(ClientQuotePeer::USERID, $this->id);
-
-				$this->collClientQuotes = ClientQuotePeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(ClientQuotePeer::USERID, $this->id);
-
-			if (!isset($this->lastClientQuoteCriteria) || !$this->lastClientQuoteCriteria->equals($criteria)) {
-				$this->collClientQuotes = ClientQuotePeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastClientQuoteCriteria = $criteria;
-
-		return $this->collClientQuotes;
+		return $this->getClientQuotes($query, $con);
 	}
 
 
@@ -1725,44 +1606,22 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array ClientQuote[] List of ClientQuote objects
 	 */
 	public function getClientQuotesJoinAffiliateUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = ClientQuoteQuery::create(null, $criteria);
+		$query->joinWith('AffiliateUser', $join_behavior);
 
-		if ($this->collClientQuotes === null) {
-			if ($this->isNew()) {
-				$this->collClientQuotes = array();
-			} else {
-
-				$criteria->add(ClientQuotePeer::USERID, $this->id);
-
-				$this->collClientQuotes = ClientQuotePeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(ClientQuotePeer::USERID, $this->id);
-
-			if (!isset($this->lastClientQuoteCriteria) || !$this->lastClientQuoteCriteria->equals($criteria)) {
-				$this->collClientQuotes = ClientQuotePeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastClientQuoteCriteria = $criteria;
-
-		return $this->collClientQuotes;
+		return $this->getClientQuotes($query, $con);
 	}
 
 	/**
-	 * Clears out the collSupplierQuoteItemComments collection (array).
+	 * Clears out the collSupplierQuoteItemComments collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -1776,7 +1635,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collSupplierQuoteItemComments collection (array).
+	 * Initializes the collSupplierQuoteItemComments collection.
 	 *
 	 * By default this just sets the collSupplierQuoteItemComments collection to an empty array (like clearcollSupplierQuoteItemComments());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -1786,59 +1645,40 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 */
 	public function initSupplierQuoteItemComments()
 	{
-		$this->collSupplierQuoteItemComments = array();
+		$this->collSupplierQuoteItemComments = new PropelObjectCollection();
+		$this->collSupplierQuoteItemComments->setModel('SupplierQuoteItemComment');
 	}
 
 	/**
 	 * Gets an array of SupplierQuoteItemComment objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this User has previously been saved, it will retrieve
-	 * related SupplierQuoteItemComments from storage. If this User is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array SupplierQuoteItemComment[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array SupplierQuoteItemComment[] List of SupplierQuoteItemComment objects
 	 * @throws     PropelException
 	 */
 	public function getSupplierQuoteItemComments($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collSupplierQuoteItemComments === null) {
-			if ($this->isNew()) {
-			   $this->collSupplierQuoteItemComments = array();
+		if(null === $this->collSupplierQuoteItemComments || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierQuoteItemComments) {
+				// return empty collection
+				$this->initSupplierQuoteItemComments();
 			} else {
-
-				$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
-
-				SupplierQuoteItemCommentPeer::addSelectColumns($criteria);
-				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
-
-				SupplierQuoteItemCommentPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSupplierQuoteItemCommentCriteria) || !$this->lastSupplierQuoteItemCommentCriteria->equals($criteria)) {
-					$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelect($criteria, $con);
+				$collSupplierQuoteItemComments = SupplierQuoteItemCommentQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collSupplierQuoteItemComments;
 				}
+				$this->collSupplierQuoteItemComments = $collSupplierQuoteItemComments;
 			}
 		}
-		$this->lastSupplierQuoteItemCommentCriteria = $criteria;
 		return $this->collSupplierQuoteItemComments;
 	}
 
@@ -1853,48 +1693,21 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 */
 	public function countSupplierQuoteItemComments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collSupplierQuoteItemComments === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collSupplierQuoteItemComments || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierQuoteItemComments) {
+				return 0;
 			} else {
-
-				$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
-
-				$count = SupplierQuoteItemCommentPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
-
-				if (!isset($this->lastSupplierQuoteItemCommentCriteria) || !$this->lastSupplierQuoteItemCommentCriteria->equals($criteria)) {
-					$count = SupplierQuoteItemCommentPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collSupplierQuoteItemComments);
+				$query = SupplierQuoteItemCommentQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collSupplierQuoteItemComments);
+				return $query
+					->filterByUser($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collSupplierQuoteItemComments);
 		}
-		$this->lastSupplierQuoteItemCommentCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -1910,8 +1723,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		if ($this->collSupplierQuoteItemComments === null) {
 			$this->initSupplierQuoteItemComments();
 		}
-		if (!in_array($l, $this->collSupplierQuoteItemComments, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collSupplierQuoteItemComments, $l);
+		if (!$this->collSupplierQuoteItemComments->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collSupplierQuoteItemComments[]= $l;
 			$l->setUser($this);
 		}
 	}
@@ -1927,40 +1740,18 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItemComment[] List of SupplierQuoteItemComment objects
 	 */
 	public function getSupplierQuoteItemCommentsJoinSupplier($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemCommentQuery::create(null, $criteria);
+		$query->joinWith('Supplier', $join_behavior);
 
-		if ($this->collSupplierQuoteItemComments === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItemComments = array();
-			} else {
-
-				$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
-
-				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCommentCriteria) || !$this->lastSupplierQuoteItemCommentCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCommentCriteria = $criteria;
-
-		return $this->collSupplierQuoteItemComments;
+		return $this->getSupplierQuoteItemComments($query, $con);
 	}
 
 
@@ -1974,44 +1765,22 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItemComment[] List of SupplierQuoteItemComment objects
 	 */
 	public function getSupplierQuoteItemCommentsJoinSupplierQuoteItem($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemCommentQuery::create(null, $criteria);
+		$query->joinWith('SupplierQuoteItem', $join_behavior);
 
-		if ($this->collSupplierQuoteItemComments === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItemComments = array();
-			} else {
-
-				$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
-
-				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelectJoinSupplierQuoteItem($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemCommentPeer::USERID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCommentCriteria) || !$this->lastSupplierQuoteItemCommentCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelectJoinSupplierQuoteItem($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCommentCriteria = $criteria;
-
-		return $this->collSupplierQuoteItemComments;
+		return $this->getSupplierQuoteItemComments($query, $con);
 	}
 
 	/**
-	 * Clears out the collClientPurchaseOrders collection (array).
+	 * Clears out the collClientPurchaseOrders collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -2025,7 +1794,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collClientPurchaseOrders collection (array).
+	 * Initializes the collClientPurchaseOrders collection.
 	 *
 	 * By default this just sets the collClientPurchaseOrders collection to an empty array (like clearcollClientPurchaseOrders());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -2035,59 +1804,40 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 */
 	public function initClientPurchaseOrders()
 	{
-		$this->collClientPurchaseOrders = array();
+		$this->collClientPurchaseOrders = new PropelObjectCollection();
+		$this->collClientPurchaseOrders->setModel('ClientPurchaseOrder');
 	}
 
 	/**
 	 * Gets an array of ClientPurchaseOrder objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this User has previously been saved, it will retrieve
-	 * related ClientPurchaseOrders from storage. If this User is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array ClientPurchaseOrder[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array ClientPurchaseOrder[] List of ClientPurchaseOrder objects
 	 * @throws     PropelException
 	 */
 	public function getClientPurchaseOrders($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collClientPurchaseOrders === null) {
-			if ($this->isNew()) {
-			   $this->collClientPurchaseOrders = array();
+		if(null === $this->collClientPurchaseOrders || null !== $criteria) {
+			if ($this->isNew() && null === $this->collClientPurchaseOrders) {
+				// return empty collection
+				$this->initClientPurchaseOrders();
 			} else {
-
-				$criteria->add(ClientPurchaseOrderPeer::USERID, $this->id);
-
-				ClientPurchaseOrderPeer::addSelectColumns($criteria);
-				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(ClientPurchaseOrderPeer::USERID, $this->id);
-
-				ClientPurchaseOrderPeer::addSelectColumns($criteria);
-				if (!isset($this->lastClientPurchaseOrderCriteria) || !$this->lastClientPurchaseOrderCriteria->equals($criteria)) {
-					$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelect($criteria, $con);
+				$collClientPurchaseOrders = ClientPurchaseOrderQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collClientPurchaseOrders;
 				}
+				$this->collClientPurchaseOrders = $collClientPurchaseOrders;
 			}
 		}
-		$this->lastClientPurchaseOrderCriteria = $criteria;
 		return $this->collClientPurchaseOrders;
 	}
 
@@ -2102,48 +1852,21 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 */
 	public function countClientPurchaseOrders(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collClientPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collClientPurchaseOrders || null !== $criteria) {
+			if ($this->isNew() && null === $this->collClientPurchaseOrders) {
+				return 0;
 			} else {
-
-				$criteria->add(ClientPurchaseOrderPeer::USERID, $this->id);
-
-				$count = ClientPurchaseOrderPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(ClientPurchaseOrderPeer::USERID, $this->id);
-
-				if (!isset($this->lastClientPurchaseOrderCriteria) || !$this->lastClientPurchaseOrderCriteria->equals($criteria)) {
-					$count = ClientPurchaseOrderPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collClientPurchaseOrders);
+				$query = ClientPurchaseOrderQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collClientPurchaseOrders);
+				return $query
+					->filterByUser($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collClientPurchaseOrders);
 		}
-		$this->lastClientPurchaseOrderCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -2159,8 +1882,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		if ($this->collClientPurchaseOrders === null) {
 			$this->initClientPurchaseOrders();
 		}
-		if (!in_array($l, $this->collClientPurchaseOrders, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collClientPurchaseOrders, $l);
+		if (!$this->collClientPurchaseOrders->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collClientPurchaseOrders[]= $l;
 			$l->setUser($this);
 		}
 	}
@@ -2176,40 +1899,18 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array ClientPurchaseOrder[] List of ClientPurchaseOrder objects
 	 */
 	public function getClientPurchaseOrdersJoinClientQuote($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = ClientPurchaseOrderQuery::create(null, $criteria);
+		$query->joinWith('ClientQuote', $join_behavior);
 
-		if ($this->collClientPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$this->collClientPurchaseOrders = array();
-			} else {
-
-				$criteria->add(ClientPurchaseOrderPeer::USERID, $this->id);
-
-				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(ClientPurchaseOrderPeer::USERID, $this->id);
-
-			if (!isset($this->lastClientPurchaseOrderCriteria) || !$this->lastClientPurchaseOrderCriteria->equals($criteria)) {
-				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastClientPurchaseOrderCriteria = $criteria;
-
-		return $this->collClientPurchaseOrders;
+		return $this->getClientPurchaseOrders($query, $con);
 	}
 
 
@@ -2223,40 +1924,18 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array ClientPurchaseOrder[] List of ClientPurchaseOrder objects
 	 */
 	public function getClientPurchaseOrdersJoinAffiliate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = ClientPurchaseOrderQuery::create(null, $criteria);
+		$query->joinWith('Affiliate', $join_behavior);
 
-		if ($this->collClientPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$this->collClientPurchaseOrders = array();
-			} else {
-
-				$criteria->add(ClientPurchaseOrderPeer::USERID, $this->id);
-
-				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(ClientPurchaseOrderPeer::USERID, $this->id);
-
-			if (!isset($this->lastClientPurchaseOrderCriteria) || !$this->lastClientPurchaseOrderCriteria->equals($criteria)) {
-				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastClientPurchaseOrderCriteria = $criteria;
-
-		return $this->collClientPurchaseOrders;
+		return $this->getClientPurchaseOrders($query, $con);
 	}
 
 
@@ -2270,44 +1949,22 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array ClientPurchaseOrder[] List of ClientPurchaseOrder objects
 	 */
 	public function getClientPurchaseOrdersJoinAffiliateUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = ClientPurchaseOrderQuery::create(null, $criteria);
+		$query->joinWith('AffiliateUser', $join_behavior);
 
-		if ($this->collClientPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$this->collClientPurchaseOrders = array();
-			} else {
-
-				$criteria->add(ClientPurchaseOrderPeer::USERID, $this->id);
-
-				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(ClientPurchaseOrderPeer::USERID, $this->id);
-
-			if (!isset($this->lastClientPurchaseOrderCriteria) || !$this->lastClientPurchaseOrderCriteria->equals($criteria)) {
-				$this->collClientPurchaseOrders = ClientPurchaseOrderPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastClientPurchaseOrderCriteria = $criteria;
-
-		return $this->collClientPurchaseOrders;
+		return $this->getClientPurchaseOrders($query, $con);
 	}
 
 	/**
-	 * Clears out the collSupplierPurchaseOrders collection (array).
+	 * Clears out the collSupplierPurchaseOrders collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -2321,7 +1978,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collSupplierPurchaseOrders collection (array).
+	 * Initializes the collSupplierPurchaseOrders collection.
 	 *
 	 * By default this just sets the collSupplierPurchaseOrders collection to an empty array (like clearcollSupplierPurchaseOrders());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -2331,59 +1988,40 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 */
 	public function initSupplierPurchaseOrders()
 	{
-		$this->collSupplierPurchaseOrders = array();
+		$this->collSupplierPurchaseOrders = new PropelObjectCollection();
+		$this->collSupplierPurchaseOrders->setModel('SupplierPurchaseOrder');
 	}
 
 	/**
 	 * Gets an array of SupplierPurchaseOrder objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this User has previously been saved, it will retrieve
-	 * related SupplierPurchaseOrders from storage. If this User is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array SupplierPurchaseOrder[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array SupplierPurchaseOrder[] List of SupplierPurchaseOrder objects
 	 * @throws     PropelException
 	 */
 	public function getSupplierPurchaseOrders($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-			   $this->collSupplierPurchaseOrders = array();
+		if(null === $this->collSupplierPurchaseOrders || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierPurchaseOrders) {
+				// return empty collection
+				$this->initSupplierPurchaseOrders();
 			} else {
-
-				$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-				SupplierPurchaseOrderPeer::addSelectColumns($criteria);
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-				SupplierPurchaseOrderPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-					$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelect($criteria, $con);
+				$collSupplierPurchaseOrders = SupplierPurchaseOrderQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collSupplierPurchaseOrders;
 				}
+				$this->collSupplierPurchaseOrders = $collSupplierPurchaseOrders;
 			}
 		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
 		return $this->collSupplierPurchaseOrders;
 	}
 
@@ -2398,48 +2036,21 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 */
 	public function countSupplierPurchaseOrders(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collSupplierPurchaseOrders || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierPurchaseOrders) {
+				return 0;
 			} else {
-
-				$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-				$count = SupplierPurchaseOrderPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-				if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-					$count = SupplierPurchaseOrderPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collSupplierPurchaseOrders);
+				$query = SupplierPurchaseOrderQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collSupplierPurchaseOrders);
+				return $query
+					->filterByUser($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collSupplierPurchaseOrders);
 		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -2455,8 +2066,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		if ($this->collSupplierPurchaseOrders === null) {
 			$this->initSupplierPurchaseOrders();
 		}
-		if (!in_array($l, $this->collSupplierPurchaseOrders, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collSupplierPurchaseOrders, $l);
+		if (!$this->collSupplierPurchaseOrders->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collSupplierPurchaseOrders[]= $l;
 			$l->setUser($this);
 		}
 	}
@@ -2472,40 +2083,18 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierPurchaseOrder[] List of SupplierPurchaseOrder objects
 	 */
 	public function getSupplierPurchaseOrdersJoinSupplierQuote($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierPurchaseOrderQuery::create(null, $criteria);
+		$query->joinWith('SupplierQuote', $join_behavior);
 
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$this->collSupplierPurchaseOrders = array();
-			} else {
-
-				$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplierQuote($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplierQuote($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
-
-		return $this->collSupplierPurchaseOrders;
+		return $this->getSupplierPurchaseOrders($query, $con);
 	}
 
 
@@ -2519,40 +2108,18 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierPurchaseOrder[] List of SupplierPurchaseOrder objects
 	 */
 	public function getSupplierPurchaseOrdersJoinClientQuote($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierPurchaseOrderQuery::create(null, $criteria);
+		$query->joinWith('ClientQuote', $join_behavior);
 
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$this->collSupplierPurchaseOrders = array();
-			} else {
-
-				$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
-
-		return $this->collSupplierPurchaseOrders;
+		return $this->getSupplierPurchaseOrders($query, $con);
 	}
 
 
@@ -2566,40 +2133,18 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierPurchaseOrder[] List of SupplierPurchaseOrder objects
 	 */
 	public function getSupplierPurchaseOrdersJoinSupplier($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierPurchaseOrderQuery::create(null, $criteria);
+		$query->joinWith('Supplier', $join_behavior);
 
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$this->collSupplierPurchaseOrders = array();
-			} else {
-
-				$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
-
-		return $this->collSupplierPurchaseOrders;
+		return $this->getSupplierPurchaseOrders($query, $con);
 	}
 
 
@@ -2613,40 +2158,18 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierPurchaseOrder[] List of SupplierPurchaseOrder objects
 	 */
 	public function getSupplierPurchaseOrdersJoinAffiliate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierPurchaseOrderQuery::create(null, $criteria);
+		$query->joinWith('Affiliate', $join_behavior);
 
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$this->collSupplierPurchaseOrders = array();
-			} else {
-
-				$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
-
-		return $this->collSupplierPurchaseOrders;
+		return $this->getSupplierPurchaseOrders($query, $con);
 	}
 
 
@@ -2660,46 +2183,24 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierPurchaseOrder[] List of SupplierPurchaseOrder objects
 	 */
 	public function getSupplierPurchaseOrdersJoinAffiliateUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierPurchaseOrderQuery::create(null, $criteria);
+		$query->joinWith('AffiliateUser', $join_behavior);
 
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$this->collSupplierPurchaseOrders = array();
-			} else {
-
-				$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPurchaseOrderPeer::USERID, $this->id);
-
-			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
-
-		return $this->collSupplierPurchaseOrders;
+		return $this->getSupplierPurchaseOrders($query, $con);
 	}
 
 	/**
 	 * Gets a single UserInfo object, which is related to this object by a one-to-one relationship.
 	 *
-	 * @param      PropelPDO $con
+	 * @param      PropelPDO $con optional connection object
 	 * @return     UserInfo
 	 * @throws     PropelException
 	 */
@@ -2707,7 +2208,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	{
 
 		if ($this->singleUserInfo === null && !$this->isNew()) {
-			$this->singleUserInfo = UserInfoPeer::retrieveByPK($this->id, $con);
+			$this->singleUserInfo = UserInfoQuery::create()->findPk($this->getPrimaryKey(), $con);
 		}
 
 		return $this->singleUserInfo;
@@ -2716,16 +2217,16 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	/**
 	 * Sets a single UserInfo object as related to this object by a one-to-one relationship.
 	 *
-	 * @param      UserInfo $l UserInfo
+	 * @param      UserInfo $v UserInfo
 	 * @return     User The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setUserInfo(UserInfo $v)
+	public function setUserInfo(UserInfo $v = null)
 	{
 		$this->singleUserInfo = $v;
 
 		// Make sure that that the passed-in UserInfo isn't already associated with this object
-		if ($v->getUser() === null) {
+		if ($v !== null && $v->getUser() === null) {
 			$v->setUser($this);
 		}
 
@@ -2733,7 +2234,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collUserGroups collection (array).
+	 * Clears out the collUserGroups collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -2747,7 +2248,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collUserGroups collection (array).
+	 * Initializes the collUserGroups collection.
 	 *
 	 * By default this just sets the collUserGroups collection to an empty array (like clearcollUserGroups());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -2757,59 +2258,40 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 */
 	public function initUserGroups()
 	{
-		$this->collUserGroups = array();
+		$this->collUserGroups = new PropelObjectCollection();
+		$this->collUserGroups->setModel('UserGroup');
 	}
 
 	/**
 	 * Gets an array of UserGroup objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this User has previously been saved, it will retrieve
-	 * related UserGroups from storage. If this User is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array UserGroup[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array UserGroup[] List of UserGroup objects
 	 * @throws     PropelException
 	 */
 	public function getUserGroups($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserGroups === null) {
-			if ($this->isNew()) {
-			   $this->collUserGroups = array();
+		if(null === $this->collUserGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collUserGroups) {
+				// return empty collection
+				$this->initUserGroups();
 			} else {
-
-				$criteria->add(UserGroupPeer::USERID, $this->id);
-
-				UserGroupPeer::addSelectColumns($criteria);
-				$this->collUserGroups = UserGroupPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(UserGroupPeer::USERID, $this->id);
-
-				UserGroupPeer::addSelectColumns($criteria);
-				if (!isset($this->lastUserGroupCriteria) || !$this->lastUserGroupCriteria->equals($criteria)) {
-					$this->collUserGroups = UserGroupPeer::doSelect($criteria, $con);
+				$collUserGroups = UserGroupQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collUserGroups;
 				}
+				$this->collUserGroups = $collUserGroups;
 			}
 		}
-		$this->lastUserGroupCriteria = $criteria;
 		return $this->collUserGroups;
 	}
 
@@ -2824,48 +2306,21 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 */
 	public function countUserGroups(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collUserGroups === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collUserGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collUserGroups) {
+				return 0;
 			} else {
-
-				$criteria->add(UserGroupPeer::USERID, $this->id);
-
-				$count = UserGroupPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(UserGroupPeer::USERID, $this->id);
-
-				if (!isset($this->lastUserGroupCriteria) || !$this->lastUserGroupCriteria->equals($criteria)) {
-					$count = UserGroupPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collUserGroups);
+				$query = UserGroupQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collUserGroups);
+				return $query
+					->filterByUser($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collUserGroups);
 		}
-		$this->lastUserGroupCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -2881,8 +2336,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		if ($this->collUserGroups === null) {
 			$this->initUserGroups();
 		}
-		if (!in_array($l, $this->collUserGroups, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collUserGroups, $l);
+		if (!$this->collUserGroups->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collUserGroups[]= $l;
 			$l->setUser($this);
 		}
 	}
@@ -2898,40 +2353,174 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array UserGroup[] List of UserGroup objects
 	 */
 	public function getUserGroupsJoinGroup($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = UserGroupQuery::create(null, $criteria);
+		$query->joinWith('Group', $join_behavior);
 
-		if ($this->collUserGroups === null) {
-			if ($this->isNew()) {
-				$this->collUserGroups = array();
+		return $this->getUserGroups($query, $con);
+	}
+
+	/**
+	 * Clears out the collActionlogs collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addActionlogs()
+	 */
+	public function clearActionlogs()
+	{
+		$this->collActionlogs = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collActionlogs collection.
+	 *
+	 * By default this just sets the collActionlogs collection to an empty array (like clearcollActionlogs());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initActionlogs()
+	{
+		$this->collActionlogs = new PropelObjectCollection();
+		$this->collActionlogs->setModel('Actionlog');
+	}
+
+	/**
+	 * Gets an array of Actionlog objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array Actionlog[] List of Actionlog objects
+	 * @throws     PropelException
+	 */
+	public function getActionlogs($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collActionlogs || null !== $criteria) {
+			if ($this->isNew() && null === $this->collActionlogs) {
+				// return empty collection
+				$this->initActionlogs();
 			} else {
+				$collActionlogs = ActionlogQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collActionlogs;
+				}
+				$this->collActionlogs = $collActionlogs;
+			}
+		}
+		return $this->collActionlogs;
+	}
 
-				$criteria->add(UserGroupPeer::USERID, $this->id);
-
-				$this->collUserGroups = UserGroupPeer::doSelectJoinGroup($criteria, $con, $join_behavior);
+	/**
+	 * Returns the number of related Actionlog objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related Actionlog objects.
+	 * @throws     PropelException
+	 */
+	public function countActionlogs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collActionlogs || null !== $criteria) {
+			if ($this->isNew() && null === $this->collActionlogs) {
+				return 0;
+			} else {
+				$query = ActionlogQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByUser($this)
+					->count($con);
 			}
 		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(UserGroupPeer::USERID, $this->id);
-
-			if (!isset($this->lastUserGroupCriteria) || !$this->lastUserGroupCriteria->equals($criteria)) {
-				$this->collUserGroups = UserGroupPeer::doSelectJoinGroup($criteria, $con, $join_behavior);
-			}
+			return count($this->collActionlogs);
 		}
-		$this->lastUserGroupCriteria = $criteria;
+	}
 
-		return $this->collUserGroups;
+	/**
+	 * Method called to associate a Actionlog object to this object
+	 * through the Actionlog foreign key attribute.
+	 *
+	 * @param      Actionlog $l Actionlog
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addActionlog(Actionlog $l)
+	{
+		if ($this->collActionlogs === null) {
+			$this->initActionlogs();
+		}
+		if (!$this->collActionlogs->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collActionlogs[]= $l;
+			$l->setUser($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this User is new, it will return
+	 * an empty collection; or if this User has previously
+	 * been saved, it will retrieve related Actionlogs from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array Actionlog[] List of Actionlog objects
+	 */
+	public function getActionlogsJoinSecurityAction($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = ActionlogQuery::create(null, $criteria);
+		$query->joinWith('SecurityAction', $join_behavior);
+
+		return $this->getActionlogs($query, $con);
+	}
+
+	/**
+	 * Clears the current object and sets all attributes to their default values
+	 */
+	public function clear()
+	{
+		$this->id = null;
+		$this->username = null;
+		$this->password = null;
+		$this->active = null;
+		$this->created = null;
+		$this->updated = null;
+		$this->levelid = null;
+		$this->lastlogin = null;
+		$this->timezone = null;
+		$this->alreadyInSave = false;
+		$this->alreadyInValidation = false;
+		$this->clearAllReferences();
+		$this->resetModified();
+		$this->setNew(true);
+		$this->setDeleted(false);
 	}
 
 	/**
@@ -2946,11 +2535,6 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
-			if ($this->collActionlogs) {
-				foreach ((array) $this->collActionlogs as $o) {
-					$o->clearAllReferences($deep);
-				}
-			}
 			if ($this->collClientQuotes) {
 				foreach ((array) $this->collClientQuotes as $o) {
 					$o->clearAllReferences($deep);
@@ -2979,16 +2563,40 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collActionlogs) {
+				foreach ((array) $this->collActionlogs as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
-		$this->collActionlogs = null;
 		$this->collClientQuotes = null;
 		$this->collSupplierQuoteItemComments = null;
 		$this->collClientPurchaseOrders = null;
 		$this->collSupplierPurchaseOrders = null;
 		$this->singleUserInfo = null;
 		$this->collUserGroups = null;
-			$this->aLevel = null;
+		$this->collActionlogs = null;
+		$this->aLevel = null;
+	}
+
+	/**
+	 * Catches calls to virtual methods
+	 */
+	public function __call($name, $params)
+	{
+		if (preg_match('/get(\w+)/', $name, $matches)) {
+			$virtualColumn = $matches[1];
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+			// no lcfirst in php<5.3...
+			$virtualColumn[0] = strtolower($virtualColumn[0]);
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+		}
+		return parent::__call($name, $params);
 	}
 
 } // BaseUser

@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'import_clientQuote' table.
  *
  * Cotizacion a Cliente
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
 abstract class BaseClientQuotePeer {
 
@@ -15,9 +16,15 @@ abstract class BaseClientQuotePeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'import_clientQuote';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'ClientQuote';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'import.classes.ClientQuote';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'ClientQuoteTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 7;
 
@@ -53,11 +60,6 @@ abstract class BaseClientQuotePeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -69,6 +71,7 @@ abstract class BaseClientQuotePeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Createdat', 'Affiliateid', 'Affiliateuserid', 'Userid', 'Status', 'Timestampstatus', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdat', 'affiliateid', 'affiliateuserid', 'userid', 'status', 'timestampstatus', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATEDAT, self::AFFILIATEID, self::AFFILIATEUSERID, self::USERID, self::STATUS, self::TIMESTAMPSTATUS, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CREATEDAT', 'AFFILIATEID', 'AFFILIATEUSERID', 'USERID', 'STATUS', 'TIMESTAMPSTATUS', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'createdAt', 'affiliateId', 'affiliateUserId', 'userId', 'status', 'timestampStatus', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
@@ -83,21 +86,11 @@ abstract class BaseClientQuotePeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Createdat' => 1, 'Affiliateid' => 2, 'Affiliateuserid' => 3, 'Userid' => 4, 'Status' => 5, 'Timestampstatus' => 6, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdat' => 1, 'affiliateid' => 2, 'affiliateuserid' => 3, 'userid' => 4, 'status' => 5, 'timestampstatus' => 6, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATEDAT => 1, self::AFFILIATEID => 2, self::AFFILIATEUSERID => 3, self::USERID => 4, self::STATUS => 5, self::TIMESTAMPSTATUS => 6, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CREATEDAT' => 1, 'AFFILIATEID' => 2, 'AFFILIATEUSERID' => 3, 'USERID' => 4, 'STATUS' => 5, 'TIMESTAMPSTATUS' => 6, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'createdAt' => 1, 'affiliateId' => 2, 'affiliateUserId' => 3, 'userId' => 4, 'status' => 5, 'timestampStatus' => 6, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new ClientQuoteMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -159,27 +152,30 @@ abstract class BaseClientQuotePeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(ClientQuotePeer::ID);
-
-		$criteria->addSelectColumn(ClientQuotePeer::CREATEDAT);
-
-		$criteria->addSelectColumn(ClientQuotePeer::AFFILIATEID);
-
-		$criteria->addSelectColumn(ClientQuotePeer::AFFILIATEUSERID);
-
-		$criteria->addSelectColumn(ClientQuotePeer::USERID);
-
-		$criteria->addSelectColumn(ClientQuotePeer::STATUS);
-
-		$criteria->addSelectColumn(ClientQuotePeer::TIMESTAMPSTATUS);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(ClientQuotePeer::ID);
+			$criteria->addSelectColumn(ClientQuotePeer::CREATEDAT);
+			$criteria->addSelectColumn(ClientQuotePeer::AFFILIATEID);
+			$criteria->addSelectColumn(ClientQuotePeer::AFFILIATEUSERID);
+			$criteria->addSelectColumn(ClientQuotePeer::USERID);
+			$criteria->addSelectColumn(ClientQuotePeer::STATUS);
+			$criteria->addSelectColumn(ClientQuotePeer::TIMESTAMPSTATUS);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.CREATEDAT');
+			$criteria->addSelectColumn($alias . '.AFFILIATEID');
+			$criteria->addSelectColumn($alias . '.AFFILIATEUSERID');
+			$criteria->addSelectColumn($alias . '.USERID');
+			$criteria->addSelectColumn($alias . '.STATUS');
+			$criteria->addSelectColumn($alias . '.TIMESTAMPSTATUS');
+		}
 	}
 
 	/**
@@ -367,6 +363,14 @@ abstract class BaseClientQuotePeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to import_clientQuote
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -379,12 +383,26 @@ abstract class BaseClientQuotePeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -397,18 +415,16 @@ abstract class BaseClientQuotePeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = ClientQuotePeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = ClientQuotePeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = ClientQuotePeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = ClientQuotePeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -418,11 +434,36 @@ abstract class BaseClientQuotePeer {
 		$stmt->closeCursor();
 		return $results;
 	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (ClientQuote object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = ClientQuotePeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = ClientQuotePeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + ClientQuotePeer::NUM_COLUMNS;
+		} else {
+			$cls = ClientQuotePeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			ClientQuotePeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
+	}
 
 	/**
 	 * Returns the number of rows matching criteria, joining the related User table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -455,7 +496,8 @@ abstract class BaseClientQuotePeer {
 			$con = Propel::getConnection(ClientQuotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ClientQuotePeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$criteria->addJoin(ClientQuotePeer::USERID, UserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -471,7 +513,7 @@ abstract class BaseClientQuotePeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Affiliate table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -504,7 +546,8 @@ abstract class BaseClientQuotePeer {
 			$con = Propel::getConnection(ClientQuotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ClientQuotePeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -520,7 +563,7 @@ abstract class BaseClientQuotePeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related AffiliateUser table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -553,7 +596,8 @@ abstract class BaseClientQuotePeer {
 			$con = Propel::getConnection(ClientQuotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ClientQuotePeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -568,41 +612,41 @@ abstract class BaseClientQuotePeer {
 
 	/**
 	 * Selects a collection of ClientQuote objects pre-filled with their User objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ClientQuote objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 		$startcol = (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(ClientQuotePeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ClientQuotePeer::USERID, UserPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ClientQuotePeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ClientQuotePeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = ClientQuotePeer::getOMClass();
+				$cls = ClientQuotePeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ClientQuotePeer::addInstanceToPool($obj1, $key1);
@@ -613,9 +657,8 @@ abstract class BaseClientQuotePeer {
 				$obj2 = UserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = UserPeer::getOMClass();
+					$cls = UserPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					UserPeer::addInstanceToPool($obj2, $key2);
@@ -635,41 +678,41 @@ abstract class BaseClientQuotePeer {
 
 	/**
 	 * Selects a collection of ClientQuote objects pre-filled with their Affiliate objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ClientQuote objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAffiliate(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAffiliate(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 		$startcol = (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
-		AffiliatePeer::addSelectColumns($c);
+		AffiliatePeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(ClientQuotePeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ClientQuotePeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ClientQuotePeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = ClientQuotePeer::getOMClass();
+				$cls = ClientQuotePeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ClientQuotePeer::addInstanceToPool($obj1, $key1);
@@ -680,9 +723,8 @@ abstract class BaseClientQuotePeer {
 				$obj2 = AffiliatePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = AffiliatePeer::getOMClass();
+					$cls = AffiliatePeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					AffiliatePeer::addInstanceToPool($obj2, $key2);
@@ -702,41 +744,41 @@ abstract class BaseClientQuotePeer {
 
 	/**
 	 * Selects a collection of ClientQuote objects pre-filled with their AffiliateUser objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ClientQuote objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAffiliateUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAffiliateUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 		$startcol = (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
-		AffiliateUserPeer::addSelectColumns($c);
+		AffiliateUserPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(ClientQuotePeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ClientQuotePeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ClientQuotePeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = ClientQuotePeer::getOMClass();
+				$cls = ClientQuotePeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ClientQuotePeer::addInstanceToPool($obj1, $key1);
@@ -747,9 +789,8 @@ abstract class BaseClientQuotePeer {
 				$obj2 = AffiliateUserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = AffiliateUserPeer::getOMClass();
+					$cls = AffiliateUserPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					AffiliateUserPeer::addInstanceToPool($obj2, $key2);
@@ -770,7 +811,7 @@ abstract class BaseClientQuotePeer {
 	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -803,9 +844,12 @@ abstract class BaseClientQuotePeer {
 			$con = Propel::getConnection(ClientQuotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ClientQuotePeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$criteria->addJoin(array(ClientQuotePeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-		$criteria->addJoin(array(ClientQuotePeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(ClientQuotePeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -820,50 +864,52 @@ abstract class BaseClientQuotePeer {
 	/**
 	 * Selects a collection of ClientQuote objects pre-filled with all related objects.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ClientQuote objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAll(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 		$startcol2 = (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliatePeer::addSelectColumns($c);
+		AffiliatePeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliateUserPeer::addSelectColumns($c);
+		AffiliateUserPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(ClientQuotePeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$c->addJoin(array(ClientQuotePeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-		$c->addJoin(array(ClientQuotePeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ClientQuotePeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ClientQuotePeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ClientQuotePeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = ClientQuotePeer::getOMClass();
+				$cls = ClientQuotePeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ClientQuotePeer::addInstanceToPool($obj1, $key1);
@@ -876,10 +922,8 @@ abstract class BaseClientQuotePeer {
 				$obj2 = UserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = UserPeer::getOMClass();
+					$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					UserPeer::addInstanceToPool($obj2, $key2);
@@ -896,10 +940,8 @@ abstract class BaseClientQuotePeer {
 				$obj3 = AffiliatePeer::getInstanceFromPool($key3);
 				if (!$obj3) {
 
-					$omClass = AffiliatePeer::getOMClass();
+					$cls = AffiliatePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					AffiliatePeer::addInstanceToPool($obj3, $key3);
@@ -916,10 +958,8 @@ abstract class BaseClientQuotePeer {
 				$obj4 = AffiliateUserPeer::getInstanceFromPool($key4);
 				if (!$obj4) {
 
-					$omClass = AffiliateUserPeer::getOMClass();
+					$cls = AffiliateUserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
 					AffiliateUserPeer::addInstanceToPool($obj4, $key4);
@@ -939,7 +979,7 @@ abstract class BaseClientQuotePeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related User table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -972,8 +1012,10 @@ abstract class BaseClientQuotePeer {
 			$con = Propel::getConnection(ClientQuotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(ClientQuotePeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(ClientQuotePeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -989,7 +1031,7 @@ abstract class BaseClientQuotePeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Affiliate table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1022,8 +1064,10 @@ abstract class BaseClientQuotePeer {
 			$con = Propel::getConnection(ClientQuotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(ClientQuotePeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(ClientQuotePeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(ClientQuotePeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1039,7 +1083,7 @@ abstract class BaseClientQuotePeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related AffiliateUser table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1072,8 +1116,10 @@ abstract class BaseClientQuotePeer {
 			$con = Propel::getConnection(ClientQuotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(ClientQuotePeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(ClientQuotePeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
+		$criteria->addJoin(ClientQuotePeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1089,49 +1135,50 @@ abstract class BaseClientQuotePeer {
 	/**
 	 * Selects a collection of ClientQuote objects pre-filled with all related objects except User.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ClientQuote objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 		$startcol2 = (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliatePeer::addSelectColumns($c);
+		AffiliatePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliateUserPeer::addSelectColumns($c);
+		AffiliateUserPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(ClientQuotePeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-				$c->addJoin(array(ClientQuotePeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ClientQuotePeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ClientQuotePeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = ClientQuotePeer::getOMClass();
+				$cls = ClientQuotePeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ClientQuotePeer::addInstanceToPool($obj1, $key1);
@@ -1144,10 +1191,8 @@ abstract class BaseClientQuotePeer {
 					$obj2 = AffiliatePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = AffiliatePeer::getOMClass();
+						$cls = AffiliatePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					AffiliatePeer::addInstanceToPool($obj2, $key2);
@@ -1165,10 +1210,8 @@ abstract class BaseClientQuotePeer {
 					$obj3 = AffiliateUserPeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$omClass = AffiliateUserPeer::getOMClass();
+						$cls = AffiliateUserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					AffiliateUserPeer::addInstanceToPool($obj3, $key3);
@@ -1189,49 +1232,50 @@ abstract class BaseClientQuotePeer {
 	/**
 	 * Selects a collection of ClientQuote objects pre-filled with all related objects except Affiliate.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ClientQuote objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptAffiliate(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptAffiliate(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 		$startcol2 = (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliateUserPeer::addSelectColumns($c);
+		AffiliateUserPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(ClientQuotePeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$c->addJoin(array(ClientQuotePeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(ClientQuotePeer::USERID, UserPeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ClientQuotePeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ClientQuotePeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = ClientQuotePeer::getOMClass();
+				$cls = ClientQuotePeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ClientQuotePeer::addInstanceToPool($obj1, $key1);
@@ -1244,10 +1288,8 @@ abstract class BaseClientQuotePeer {
 					$obj2 = UserPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = UserPeer::getOMClass();
+						$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					UserPeer::addInstanceToPool($obj2, $key2);
@@ -1265,10 +1307,8 @@ abstract class BaseClientQuotePeer {
 					$obj3 = AffiliateUserPeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$omClass = AffiliateUserPeer::getOMClass();
+						$cls = AffiliateUserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					AffiliateUserPeer::addInstanceToPool($obj3, $key3);
@@ -1289,49 +1329,50 @@ abstract class BaseClientQuotePeer {
 	/**
 	 * Selects a collection of ClientQuote objects pre-filled with all related objects except AffiliateUser.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ClientQuote objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptAffiliateUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptAffiliateUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 		$startcol2 = (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliatePeer::addSelectColumns($c);
+		AffiliatePeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(ClientQuotePeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$c->addJoin(array(ClientQuotePeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
+		$criteria->addJoin(ClientQuotePeer::USERID, UserPeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ClientQuotePeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ClientQuotePeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ClientQuotePeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = ClientQuotePeer::getOMClass();
+				$cls = ClientQuotePeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ClientQuotePeer::addInstanceToPool($obj1, $key1);
@@ -1344,10 +1385,8 @@ abstract class BaseClientQuotePeer {
 					$obj2 = UserPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = UserPeer::getOMClass();
+						$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					UserPeer::addInstanceToPool($obj2, $key2);
@@ -1365,10 +1404,8 @@ abstract class BaseClientQuotePeer {
 					$obj3 = AffiliatePeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$omClass = AffiliatePeer::getOMClass();
+						$cls = AffiliatePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					AffiliatePeer::addInstanceToPool($obj3, $key3);
@@ -1398,17 +1435,31 @@ abstract class BaseClientQuotePeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseClientQuotePeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseClientQuotePeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new ClientQuoteTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return ClientQuotePeer::CLASS_DEFAULT;
+		return $withPrefix ? ClientQuotePeer::CLASS_DEFAULT : ClientQuotePeer::OM_CLASS;
 	}
 
 	/**
@@ -1475,7 +1526,12 @@ abstract class BaseClientQuotePeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(ClientQuotePeer::ID);
-			$selectCriteria->add(ClientQuotePeer::ID, $criteria->remove(ClientQuotePeer::ID), $comparison);
+			$value = $criteria->remove(ClientQuotePeer::ID);
+			if ($value) {
+				$selectCriteria->add(ClientQuotePeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(ClientQuotePeer::TABLE_NAME);
+			}
 
 		} else { // $values is ClientQuote object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -1503,7 +1559,12 @@ abstract class BaseClientQuotePeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(ClientQuotePeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(ClientQuotePeer::TABLE_NAME, $con, ClientQuotePeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			ClientQuotePeer::clearInstancePool();
+			ClientQuotePeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1534,24 +1595,18 @@ abstract class BaseClientQuotePeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			ClientQuotePeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof ClientQuote) {
+		} elseif ($values instanceof ClientQuote) { // it's a model object
 			// invalidate the cache for this single object
 			ClientQuotePeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(ClientQuotePeer::ID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				ClientQuotePeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -1567,7 +1622,7 @@ abstract class BaseClientQuotePeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			ClientQuotePeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1666,14 +1721,7 @@ abstract class BaseClientQuotePeer {
 
 } // BaseClientQuotePeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the ClientQuotePeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the ClientQuotePeer class:
-//
-// Propel::getDatabaseMap(ClientQuotePeer::DATABASE_NAME)->addTableBuilder(ClientQuotePeer::TABLE_NAME, ClientQuotePeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseClientQuotePeer::DATABASE_NAME)->addTableBuilder(BaseClientQuotePeer::TABLE_NAME, BaseClientQuotePeer::getMapBuilder());
+BaseClientQuotePeer::buildTableMap();
 

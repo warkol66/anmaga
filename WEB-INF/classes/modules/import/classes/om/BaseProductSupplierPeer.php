@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'import_productSupplier' table.
  *
  * Relacion Productos Proveedores
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
 abstract class BaseProductSupplierPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseProductSupplierPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'import_productSupplier';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'ProductSupplier';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'import.classes.ProductSupplier';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'ProductSupplierTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 3;
 
@@ -41,11 +48,6 @@ abstract class BaseProductSupplierPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -57,6 +59,7 @@ abstract class BaseProductSupplierPeer {
 		BasePeer::TYPE_PHPNAME => array ('Productid', 'Supplierid', 'Code', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('productid', 'supplierid', 'code', ),
 		BasePeer::TYPE_COLNAME => array (self::PRODUCTID, self::SUPPLIERID, self::CODE, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('PRODUCTID', 'SUPPLIERID', 'CODE', ),
 		BasePeer::TYPE_FIELDNAME => array ('productId', 'supplierId', 'code', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
@@ -71,21 +74,11 @@ abstract class BaseProductSupplierPeer {
 		BasePeer::TYPE_PHPNAME => array ('Productid' => 0, 'Supplierid' => 1, 'Code' => 2, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('productid' => 0, 'supplierid' => 1, 'code' => 2, ),
 		BasePeer::TYPE_COLNAME => array (self::PRODUCTID => 0, self::SUPPLIERID => 1, self::CODE => 2, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('PRODUCTID' => 0, 'SUPPLIERID' => 1, 'CODE' => 2, ),
 		BasePeer::TYPE_FIELDNAME => array ('productId' => 0, 'supplierId' => 1, 'code' => 2, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new ProductSupplierMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -147,19 +140,22 @@ abstract class BaseProductSupplierPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(ProductSupplierPeer::PRODUCTID);
-
-		$criteria->addSelectColumn(ProductSupplierPeer::SUPPLIERID);
-
-		$criteria->addSelectColumn(ProductSupplierPeer::CODE);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(ProductSupplierPeer::PRODUCTID);
+			$criteria->addSelectColumn(ProductSupplierPeer::SUPPLIERID);
+			$criteria->addSelectColumn(ProductSupplierPeer::CODE);
+		} else {
+			$criteria->addSelectColumn($alias . '.PRODUCTID');
+			$criteria->addSelectColumn($alias . '.SUPPLIERID');
+			$criteria->addSelectColumn($alias . '.CODE');
+		}
 	}
 
 	/**
@@ -347,6 +343,14 @@ abstract class BaseProductSupplierPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to import_productSupplier
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -359,12 +363,26 @@ abstract class BaseProductSupplierPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -377,18 +395,16 @@ abstract class BaseProductSupplierPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = ProductSupplierPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = ProductSupplierPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = ProductSupplierPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = ProductSupplierPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -398,11 +414,36 @@ abstract class BaseProductSupplierPeer {
 		$stmt->closeCursor();
 		return $results;
 	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (ProductSupplier object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = ProductSupplierPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = ProductSupplierPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + ProductSupplierPeer::NUM_COLUMNS;
+		} else {
+			$cls = ProductSupplierPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			ProductSupplierPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
+	}
 
 	/**
 	 * Returns the number of rows matching criteria, joining the related Product table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -435,7 +476,8 @@ abstract class BaseProductSupplierPeer {
 			$con = Propel::getConnection(ProductSupplierPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ProductSupplierPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
+		$criteria->addJoin(ProductSupplierPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -451,7 +493,7 @@ abstract class BaseProductSupplierPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Supplier table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -484,7 +526,8 @@ abstract class BaseProductSupplierPeer {
 			$con = Propel::getConnection(ProductSupplierPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ProductSupplierPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
+		$criteria->addJoin(ProductSupplierPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -499,41 +542,41 @@ abstract class BaseProductSupplierPeer {
 
 	/**
 	 * Selects a collection of ProductSupplier objects pre-filled with their Product objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ProductSupplier objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinProduct(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinProduct(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ProductSupplierPeer::addSelectColumns($c);
+		ProductSupplierPeer::addSelectColumns($criteria);
 		$startcol = (ProductSupplierPeer::NUM_COLUMNS - ProductSupplierPeer::NUM_LAZY_LOAD_COLUMNS);
-		ProductPeer::addSelectColumns($c);
+		ProductPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(ProductSupplierPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ProductSupplierPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ProductSupplierPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ProductSupplierPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = ProductSupplierPeer::getOMClass();
+				$cls = ProductSupplierPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ProductSupplierPeer::addInstanceToPool($obj1, $key1);
@@ -544,16 +587,16 @@ abstract class BaseProductSupplierPeer {
 				$obj2 = ProductPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = ProductPeer::getOMClass();
+					$cls = ProductPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					ProductPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 
 				// Add the $obj1 (ProductSupplier) to $obj2 (Product)
-				$obj2->setProductSupplier($obj1);
+				// one to one relationship
+				$obj1->setProduct($obj2);
 
 			} // if joined row was not null
 
@@ -566,41 +609,41 @@ abstract class BaseProductSupplierPeer {
 
 	/**
 	 * Selects a collection of ProductSupplier objects pre-filled with their Supplier objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ProductSupplier objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinSupplier(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinSupplier(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ProductSupplierPeer::addSelectColumns($c);
+		ProductSupplierPeer::addSelectColumns($criteria);
 		$startcol = (ProductSupplierPeer::NUM_COLUMNS - ProductSupplierPeer::NUM_LAZY_LOAD_COLUMNS);
-		SupplierPeer::addSelectColumns($c);
+		SupplierPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(ProductSupplierPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ProductSupplierPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ProductSupplierPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ProductSupplierPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = ProductSupplierPeer::getOMClass();
+				$cls = ProductSupplierPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ProductSupplierPeer::addInstanceToPool($obj1, $key1);
@@ -611,9 +654,8 @@ abstract class BaseProductSupplierPeer {
 				$obj2 = SupplierPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = SupplierPeer::getOMClass();
+					$cls = SupplierPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					SupplierPeer::addInstanceToPool($obj2, $key2);
@@ -634,7 +676,7 @@ abstract class BaseProductSupplierPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -667,8 +709,10 @@ abstract class BaseProductSupplierPeer {
 			$con = Propel::getConnection(ProductSupplierPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ProductSupplierPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-		$criteria->addJoin(array(ProductSupplierPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
+		$criteria->addJoin(ProductSupplierPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(ProductSupplierPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -683,46 +727,47 @@ abstract class BaseProductSupplierPeer {
 	/**
 	 * Selects a collection of ProductSupplier objects pre-filled with all related objects.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ProductSupplier objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAll(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ProductSupplierPeer::addSelectColumns($c);
+		ProductSupplierPeer::addSelectColumns($criteria);
 		$startcol2 = (ProductSupplierPeer::NUM_COLUMNS - ProductSupplierPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ProductPeer::addSelectColumns($c);
+		ProductPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierPeer::addSelectColumns($c);
+		SupplierPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (SupplierPeer::NUM_COLUMNS - SupplierPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(ProductSupplierPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-		$c->addJoin(array(ProductSupplierPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ProductSupplierPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(ProductSupplierPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ProductSupplierPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ProductSupplierPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = ProductSupplierPeer::getOMClass();
+				$cls = ProductSupplierPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ProductSupplierPeer::addInstanceToPool($obj1, $key1);
@@ -735,10 +780,8 @@ abstract class BaseProductSupplierPeer {
 				$obj2 = ProductPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = ProductPeer::getOMClass();
+					$cls = ProductPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					ProductPeer::addInstanceToPool($obj2, $key2);
@@ -755,10 +798,8 @@ abstract class BaseProductSupplierPeer {
 				$obj3 = SupplierPeer::getInstanceFromPool($key3);
 				if (!$obj3) {
 
-					$omClass = SupplierPeer::getOMClass();
+					$cls = SupplierPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					SupplierPeer::addInstanceToPool($obj3, $key3);
@@ -778,7 +819,7 @@ abstract class BaseProductSupplierPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Product table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -811,7 +852,8 @@ abstract class BaseProductSupplierPeer {
 			$con = Propel::getConnection(ProductSupplierPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(ProductSupplierPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
+		$criteria->addJoin(ProductSupplierPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -827,7 +869,7 @@ abstract class BaseProductSupplierPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Supplier table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -860,7 +902,8 @@ abstract class BaseProductSupplierPeer {
 			$con = Propel::getConnection(ProductSupplierPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(ProductSupplierPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
+		$criteria->addJoin(ProductSupplierPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -876,45 +919,45 @@ abstract class BaseProductSupplierPeer {
 	/**
 	 * Selects a collection of ProductSupplier objects pre-filled with all related objects except Product.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ProductSupplier objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptProduct(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptProduct(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ProductSupplierPeer::addSelectColumns($c);
+		ProductSupplierPeer::addSelectColumns($criteria);
 		$startcol2 = (ProductSupplierPeer::NUM_COLUMNS - ProductSupplierPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierPeer::addSelectColumns($c);
+		SupplierPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierPeer::NUM_COLUMNS - SupplierPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(ProductSupplierPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
+		$criteria->addJoin(ProductSupplierPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ProductSupplierPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ProductSupplierPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = ProductSupplierPeer::getOMClass();
+				$cls = ProductSupplierPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ProductSupplierPeer::addInstanceToPool($obj1, $key1);
@@ -927,17 +970,15 @@ abstract class BaseProductSupplierPeer {
 					$obj2 = SupplierPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = SupplierPeer::getOMClass();
+						$cls = SupplierPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SupplierPeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
 				// Add the $obj1 (ProductSupplier) to the collection in $obj2 (Supplier)
-				$obj2->setProductSupplier($obj1);
+				$obj2->addProductSupplier($obj1);
 
 			} // if joined row is not null
 
@@ -951,45 +992,45 @@ abstract class BaseProductSupplierPeer {
 	/**
 	 * Selects a collection of ProductSupplier objects pre-filled with all related objects except Supplier.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ProductSupplier objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptSupplier(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptSupplier(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ProductSupplierPeer::addSelectColumns($c);
+		ProductSupplierPeer::addSelectColumns($criteria);
 		$startcol2 = (ProductSupplierPeer::NUM_COLUMNS - ProductSupplierPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ProductPeer::addSelectColumns($c);
+		ProductPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(ProductSupplierPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
+		$criteria->addJoin(ProductSupplierPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ProductSupplierPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ProductSupplierPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = ProductSupplierPeer::getOMClass();
+				$cls = ProductSupplierPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ProductSupplierPeer::addInstanceToPool($obj1, $key1);
@@ -1002,17 +1043,15 @@ abstract class BaseProductSupplierPeer {
 					$obj2 = ProductPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = ProductPeer::getOMClass();
+						$cls = ProductPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					ProductPeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
 				// Add the $obj1 (ProductSupplier) to the collection in $obj2 (Product)
-				$obj2->addProductSupplier($obj1);
+				$obj1->setProduct($obj2);
 
 			} // if joined row is not null
 
@@ -1035,17 +1074,31 @@ abstract class BaseProductSupplierPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseProductSupplierPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseProductSupplierPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new ProductSupplierTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return ProductSupplierPeer::CLASS_DEFAULT;
+		return $withPrefix ? ProductSupplierPeer::CLASS_DEFAULT : ProductSupplierPeer::OM_CLASS;
 	}
 
 	/**
@@ -1108,7 +1161,12 @@ abstract class BaseProductSupplierPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(ProductSupplierPeer::PRODUCTID);
-			$selectCriteria->add(ProductSupplierPeer::PRODUCTID, $criteria->remove(ProductSupplierPeer::PRODUCTID), $comparison);
+			$value = $criteria->remove(ProductSupplierPeer::PRODUCTID);
+			if ($value) {
+				$selectCriteria->add(ProductSupplierPeer::PRODUCTID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(ProductSupplierPeer::TABLE_NAME);
+			}
 
 		} else { // $values is ProductSupplier object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -1136,7 +1194,12 @@ abstract class BaseProductSupplierPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(ProductSupplierPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(ProductSupplierPeer::TABLE_NAME, $con, ProductSupplierPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			ProductSupplierPeer::clearInstancePool();
+			ProductSupplierPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1167,24 +1230,18 @@ abstract class BaseProductSupplierPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			ProductSupplierPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof ProductSupplier) {
+		} elseif ($values instanceof ProductSupplier) { // it's a model object
 			// invalidate the cache for this single object
 			ProductSupplierPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(ProductSupplierPeer::PRODUCTID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				ProductSupplierPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -1200,7 +1257,7 @@ abstract class BaseProductSupplierPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			ProductSupplierPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1299,14 +1356,7 @@ abstract class BaseProductSupplierPeer {
 
 } // BaseProductSupplierPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the ProductSupplierPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the ProductSupplierPeer class:
-//
-// Propel::getDatabaseMap(ProductSupplierPeer::DATABASE_NAME)->addTableBuilder(ProductSupplierPeer::TABLE_NAME, ProductSupplierPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseProductSupplierPeer::DATABASE_NAME)->addTableBuilder(BaseProductSupplierPeer::TABLE_NAME, BaseProductSupplierPeer::getMapBuilder());
+BaseProductSupplierPeer::buildTableMap();
 

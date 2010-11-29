@@ -1,14 +1,20 @@
 <?php
 
+
 /**
  * Base class that represents a row from the 'security_module' table.
  *
  * Modulos del sistema
  *
- * @package    security.classes.om
+ * @package    propel.generator.security.classes.om
  */
-abstract class BaseSecurityModule extends BaseObject  implements Persistent {
+abstract class BaseSecurityModule extends BaseObject  implements Persistent
+{
 
+	/**
+	 * Peer class name
+	 */
+  const PEER = 'SecurityModulePeer';
 
 	/**
 	 * The Peer class.
@@ -55,11 +61,6 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	protected $collSecurityActions;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collSecurityActions.
-	 */
-	private $lastSecurityActionCriteria = null;
-
-	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -74,16 +75,6 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	protected $alreadyInValidation = false;
 
 	/**
-	 * Initializes internal state of BaseSecurityModule object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
-
-	/**
 	 * Applies default values to this object.
 	 * This method should be called from the object's constructor (or
 	 * equivalent initialization method).
@@ -92,6 +83,16 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	public function applyDefaultValues()
 	{
 		$this->nochecklogin = false;
+	}
+
+	/**
+	 * Initializes internal state of BaseSecurityModule object.
+	 * @see        applyDefaults()
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+		$this->applyDefaultValues();
 	}
 
 	/**
@@ -236,7 +237,7 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 			$v = (boolean) $v;
 		}
 
-		if ($this->nochecklogin !== $v || $v === false) {
+		if ($this->nochecklogin !== $v || $this->isNew()) {
 			$this->nochecklogin = $v;
 			$this->modifiedColumns[] = SecurityModulePeer::NOCHECKLOGIN;
 		}
@@ -254,11 +255,6 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			// First, ensure that we don't have any columns that have been modified which aren't default columns.
-			if (array_diff($this->modifiedColumns, array(SecurityModulePeer::NOCHECKLOGIN))) {
-				return false;
-			}
-
 			if ($this->nochecklogin !== false) {
 				return false;
 			}
@@ -298,7 +294,6 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 				$this->ensureConsistency();
 			}
 
-			// FIXME - using NUM_COLUMNS may be clearer.
 			return $startcol + 5; // 5 = SecurityModulePeer::NUM_COLUMNS - SecurityModulePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
@@ -362,7 +357,6 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->collSecurityActions = null;
-			$this->lastSecurityActionCriteria = null;
 
 		} // if (deep)
 	}
@@ -388,9 +382,17 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 		
 		$con->beginTransaction();
 		try {
-			SecurityModulePeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
+			$ret = $this->preDelete($con);
+			if ($ret) {
+				SecurityModuleQuery::create()
+					->filterByPrimaryKey($this->getPrimaryKey())
+					->delete($con);
+				$this->postDelete($con);
+				$con->commit();
+				$this->setDeleted(true);
+			} else {
+				$con->commit();
+			}
 		} catch (PropelException $e) {
 			$con->rollBack();
 			throw $e;
@@ -421,10 +423,27 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 		}
 		
 		$con->beginTransaction();
+		$isInsert = $this->isNew();
 		try {
-			$affectedRows = $this->doSave($con);
+			$ret = $this->preSave($con);
+			if ($isInsert) {
+				$ret = $ret && $this->preInsert($con);
+			} else {
+				$ret = $ret && $this->preUpdate($con);
+			}
+			if ($ret) {
+				$affectedRows = $this->doSave($con);
+				if ($isInsert) {
+					$this->postInsert($con);
+				} else {
+					$this->postUpdate($con);
+				}
+				$this->postSave($con);
+				SecurityModulePeer::addInstanceToPool($this);
+			} else {
+				$affectedRows = 0;
+			}
 			$con->commit();
-			SecurityModulePeer::addInstanceToPool($this);
 			return $affectedRows;
 		} catch (PropelException $e) {
 			$con->rollBack();
@@ -453,14 +472,12 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = SecurityModulePeer::doInsert($this, $con);
-					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
-										 // should always be true here (even though technically
-										 // BasePeer::doInsert() can insert multiple rows).
-
+					$criteria = $this->buildCriteria();
+					$pk = BasePeer::doInsert($criteria, $con);
+					$affectedRows = 1;
 					$this->setNew(false);
 				} else {
-					$affectedRows += SecurityModulePeer::doUpdate($this, $con);
+					$affectedRows = SecurityModulePeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
@@ -561,6 +578,152 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Retrieves a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name name
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     mixed Value of field.
+	 */
+	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = SecurityModulePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$field = $this->getByPosition($pos);
+		return $field;
+	}
+
+	/**
+	 * Retrieves a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @return     mixed Value of field at $pos
+	 */
+	public function getByPosition($pos)
+	{
+		switch($pos) {
+			case 0:
+				return $this->getModule();
+				break;
+			case 1:
+				return $this->getAccess();
+				break;
+			case 2:
+				return $this->getAccessaffiliateuser();
+				break;
+			case 3:
+				return $this->getAccessregistrationuser();
+				break;
+			case 4:
+				return $this->getNochecklogin();
+				break;
+			default:
+				return null;
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Exports the object as an array.
+	 *
+	 * You can specify the key type of the array by passing one of the class
+	 * type constants.
+	 *
+	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    Defaults to BasePeer::TYPE_PHPNAME.
+	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 *
+	 * @return    array an associative array containing the field names (as keys) and field values
+	 */
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true)
+	{
+		$keys = SecurityModulePeer::getFieldNames($keyType);
+		$result = array(
+			$keys[0] => $this->getModule(),
+			$keys[1] => $this->getAccess(),
+			$keys[2] => $this->getAccessaffiliateuser(),
+			$keys[3] => $this->getAccessregistrationuser(),
+			$keys[4] => $this->getNochecklogin(),
+		);
+		return $result;
+	}
+
+	/**
+	 * Sets a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name peer name
+	 * @param      mixed $value field value
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     void
+	 */
+	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = SecurityModulePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		return $this->setByPosition($pos, $value);
+	}
+
+	/**
+	 * Sets a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @param      mixed $value field value
+	 * @return     void
+	 */
+	public function setByPosition($pos, $value)
+	{
+		switch($pos) {
+			case 0:
+				$this->setModule($value);
+				break;
+			case 1:
+				$this->setAccess($value);
+				break;
+			case 2:
+				$this->setAccessaffiliateuser($value);
+				break;
+			case 3:
+				$this->setAccessregistrationuser($value);
+				break;
+			case 4:
+				$this->setNochecklogin($value);
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Populates the object using an array.
+	 *
+	 * This is particularly useful when populating an object from one of the
+	 * request arrays (e.g. $_POST).  This method goes through the column
+	 * names, checking to see whether a matching key exists in populated
+	 * array. If so the setByName() method is called for that column.
+	 *
+	 * You can specify the key type of the array by additionally passing one
+	 * of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+	 * The default key type is the column's phpname (e.g. 'AuthorId')
+	 *
+	 * @param      array  $arr     An array to populate the object from.
+	 * @param      string $keyType The type of keys the array uses.
+	 * @return     void
+	 */
+	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
+	{
+		$keys = SecurityModulePeer::getFieldNames($keyType);
+
+		if (array_key_exists($keys[0], $arr)) $this->setModule($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setAccess($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setAccessaffiliateuser($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setAccessregistrationuser($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setNochecklogin($arr[$keys[4]]);
+	}
+
+	/**
 	 * Build a Criteria object containing the values of all modified columns in this object.
 	 *
 	 * @return     Criteria The Criteria object containing all modified values.
@@ -589,7 +752,6 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	public function buildPkeyCriteria()
 	{
 		$criteria = new Criteria(SecurityModulePeer::DATABASE_NAME);
-
 		$criteria->add(SecurityModulePeer::MODULE, $this->module);
 
 		return $criteria;
@@ -616,6 +778,15 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Returns true if the primary key for this object is null.
+	 * @return     boolean
+	 */
+	public function isPrimaryKeyNull()
+	{
+		return null === $this->getModule();
+	}
+
+	/**
 	 * Sets contents of passed object to values from current object.
 	 *
 	 * If desired, this method can also make copies of all associated (fkey referrers)
@@ -627,17 +798,11 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-
 		$copyObj->setModule($this->module);
-
 		$copyObj->setAccess($this->access);
-
 		$copyObj->setAccessaffiliateuser($this->accessaffiliateuser);
-
 		$copyObj->setAccessregistrationuser($this->accessregistrationuser);
-
 		$copyObj->setNochecklogin($this->nochecklogin);
-
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -654,7 +819,6 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 
 
 		$copyObj->setNew(true);
-
 	}
 
 	/**
@@ -696,7 +860,7 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collSecurityActions collection (array).
+	 * Clears out the collSecurityActions collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -710,7 +874,7 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collSecurityActions collection (array).
+	 * Initializes the collSecurityActions collection.
 	 *
 	 * By default this just sets the collSecurityActions collection to an empty array (like clearcollSecurityActions());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -720,59 +884,40 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	 */
 	public function initSecurityActions()
 	{
-		$this->collSecurityActions = array();
+		$this->collSecurityActions = new PropelObjectCollection();
+		$this->collSecurityActions->setModel('SecurityAction');
 	}
 
 	/**
 	 * Gets an array of SecurityAction objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this SecurityModule has previously been saved, it will retrieve
-	 * related SecurityActions from storage. If this SecurityModule is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this SecurityModule is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array SecurityAction[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array SecurityAction[] List of SecurityAction objects
 	 * @throws     PropelException
 	 */
 	public function getSecurityActions($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SecurityModulePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collSecurityActions === null) {
-			if ($this->isNew()) {
-			   $this->collSecurityActions = array();
+		if(null === $this->collSecurityActions || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSecurityActions) {
+				// return empty collection
+				$this->initSecurityActions();
 			} else {
-
-				$criteria->add(SecurityActionPeer::MODULE, $this->module);
-
-				SecurityActionPeer::addSelectColumns($criteria);
-				$this->collSecurityActions = SecurityActionPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(SecurityActionPeer::MODULE, $this->module);
-
-				SecurityActionPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSecurityActionCriteria) || !$this->lastSecurityActionCriteria->equals($criteria)) {
-					$this->collSecurityActions = SecurityActionPeer::doSelect($criteria, $con);
+				$collSecurityActions = SecurityActionQuery::create(null, $criteria)
+					->filterBySecurityModule($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collSecurityActions;
 				}
+				$this->collSecurityActions = $collSecurityActions;
 			}
 		}
-		$this->lastSecurityActionCriteria = $criteria;
 		return $this->collSecurityActions;
 	}
 
@@ -787,48 +932,21 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 	 */
 	public function countSecurityActions(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SecurityModulePeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collSecurityActions === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collSecurityActions || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSecurityActions) {
+				return 0;
 			} else {
-
-				$criteria->add(SecurityActionPeer::MODULE, $this->module);
-
-				$count = SecurityActionPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(SecurityActionPeer::MODULE, $this->module);
-
-				if (!isset($this->lastSecurityActionCriteria) || !$this->lastSecurityActionCriteria->equals($criteria)) {
-					$count = SecurityActionPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collSecurityActions);
+				$query = SecurityActionQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collSecurityActions);
+				return $query
+					->filterBySecurityModule($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collSecurityActions);
 		}
-		$this->lastSecurityActionCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -844,10 +962,29 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 		if ($this->collSecurityActions === null) {
 			$this->initSecurityActions();
 		}
-		if (!in_array($l, $this->collSecurityActions, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collSecurityActions, $l);
+		if (!$this->collSecurityActions->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collSecurityActions[]= $l;
 			$l->setSecurityModule($this);
 		}
+	}
+
+	/**
+	 * Clears the current object and sets all attributes to their default values
+	 */
+	public function clear()
+	{
+		$this->module = null;
+		$this->access = null;
+		$this->accessaffiliateuser = null;
+		$this->accessregistrationuser = null;
+		$this->nochecklogin = null;
+		$this->alreadyInSave = false;
+		$this->alreadyInValidation = false;
+		$this->clearAllReferences();
+		$this->applyDefaultValues();
+		$this->resetModified();
+		$this->setNew(true);
+		$this->setDeleted(false);
 	}
 
 	/**
@@ -870,6 +1007,25 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent {
 		} // if ($deep)
 
 		$this->collSecurityActions = null;
+	}
+
+	/**
+	 * Catches calls to virtual methods
+	 */
+	public function __call($name, $params)
+	{
+		if (preg_match('/get(\w+)/', $name, $matches)) {
+			$virtualColumn = $matches[1];
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+			// no lcfirst in php<5.3...
+			$virtualColumn[0] = strtolower($virtualColumn[0]);
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+		}
+		return parent::__call($name, $params);
 	}
 
 } // BaseSecurityModule

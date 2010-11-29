@@ -14,11 +14,13 @@
   include_once 'Locale.php';
   include_once 'PropertyMessageResources.php';
 
-require_once 'propel/Propel.php';
+require_once 'lib/Propel.php';
 Propel::init("$moduleRootDir/config/application-conf.php");
 require_once("UserPeer.php");
 require_once("AffiliateUserPeer.php");
 
 //ponemos el server en GMT-0
 putenv('TZ=UTC');
+
+require_once("BaseAction.php");
 

@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'modules_module' table.
  *
  *  Registro de modulos
  *
- * @package    modules.classes.om
+ * @package    propel.generator.modules.classes.om
  */
 abstract class BaseModulePeer {
 
@@ -15,9 +16,15 @@ abstract class BaseModulePeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'modules_module';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'Module';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'modules.classes.Module';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'ModuleTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 4;
 
@@ -44,11 +51,6 @@ abstract class BaseModulePeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -60,6 +62,7 @@ abstract class BaseModulePeer {
 		BasePeer::TYPE_PHPNAME => array ('Name', 'Active', 'Alwaysactive', 'Hascategories', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('name', 'active', 'alwaysactive', 'hascategories', ),
 		BasePeer::TYPE_COLNAME => array (self::NAME, self::ACTIVE, self::ALWAYSACTIVE, self::HASCATEGORIES, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('NAME', 'ACTIVE', 'ALWAYSACTIVE', 'HASCATEGORIES', ),
 		BasePeer::TYPE_FIELDNAME => array ('name', 'active', 'alwaysActive', 'hasCategories', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
@@ -74,21 +77,11 @@ abstract class BaseModulePeer {
 		BasePeer::TYPE_PHPNAME => array ('Name' => 0, 'Active' => 1, 'Alwaysactive' => 2, 'Hascategories' => 3, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('name' => 0, 'active' => 1, 'alwaysactive' => 2, 'hascategories' => 3, ),
 		BasePeer::TYPE_COLNAME => array (self::NAME => 0, self::ACTIVE => 1, self::ALWAYSACTIVE => 2, self::HASCATEGORIES => 3, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('NAME' => 0, 'ACTIVE' => 1, 'ALWAYSACTIVE' => 2, 'HASCATEGORIES' => 3, ),
 		BasePeer::TYPE_FIELDNAME => array ('name' => 0, 'active' => 1, 'alwaysActive' => 2, 'hasCategories' => 3, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new ModuleMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -150,21 +143,24 @@ abstract class BaseModulePeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(ModulePeer::NAME);
-
-		$criteria->addSelectColumn(ModulePeer::ACTIVE);
-
-		$criteria->addSelectColumn(ModulePeer::ALWAYSACTIVE);
-
-		$criteria->addSelectColumn(ModulePeer::HASCATEGORIES);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(ModulePeer::NAME);
+			$criteria->addSelectColumn(ModulePeer::ACTIVE);
+			$criteria->addSelectColumn(ModulePeer::ALWAYSACTIVE);
+			$criteria->addSelectColumn(ModulePeer::HASCATEGORIES);
+		} else {
+			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.ACTIVE');
+			$criteria->addSelectColumn($alias . '.ALWAYSACTIVE');
+			$criteria->addSelectColumn($alias . '.HASCATEGORIES');
+		}
 	}
 
 	/**
@@ -352,6 +348,20 @@ abstract class BaseModulePeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to modules_module
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+		// Invalidate objects in ModuleDependencyPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		ModuleDependencyPeer::clearInstancePool();
+		// Invalidate objects in ModuleLabelPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		ModuleLabelPeer::clearInstancePool();
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -364,12 +374,26 @@ abstract class BaseModulePeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (string) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -382,18 +406,16 @@ abstract class BaseModulePeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = ModulePeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = ModulePeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = ModulePeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = ModulePeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -402,6 +424,31 @@ abstract class BaseModulePeer {
 		}
 		$stmt->closeCursor();
 		return $results;
+	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (Module object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = ModulePeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = ModulePeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + ModulePeer::NUM_COLUMNS;
+		} else {
+			$cls = ModulePeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			ModulePeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
 	}
 	/**
 	 * Returns the TableMap related to this peer.
@@ -416,17 +463,31 @@ abstract class BaseModulePeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseModulePeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseModulePeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new ModuleTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return ModulePeer::CLASS_DEFAULT;
+		return $withPrefix ? ModulePeer::CLASS_DEFAULT : ModulePeer::OM_CLASS;
 	}
 
 	/**
@@ -489,7 +550,12 @@ abstract class BaseModulePeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(ModulePeer::NAME);
-			$selectCriteria->add(ModulePeer::NAME, $criteria->remove(ModulePeer::NAME), $comparison);
+			$value = $criteria->remove(ModulePeer::NAME);
+			if ($value) {
+				$selectCriteria->add(ModulePeer::NAME, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(ModulePeer::TABLE_NAME);
+			}
 
 		} else { // $values is Module object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -518,7 +584,12 @@ abstract class BaseModulePeer {
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
 			$affectedRows += ModulePeer::doOnDeleteCascade(new Criteria(ModulePeer::DATABASE_NAME), $con);
-			$affectedRows += BasePeer::doDeleteAll(ModulePeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(ModulePeer::TABLE_NAME, $con, ModulePeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			ModulePeer::clearInstancePool();
+			ModulePeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -545,30 +616,14 @@ abstract class BaseModulePeer {
 		}
 
 		if ($values instanceof Criteria) {
-			// invalidate the cache for all objects of this type, since we have no
-			// way of knowing (without running a query) what objects should be invalidated
-			// from the cache based on this Criteria.
-			ModulePeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof Module) {
-			// invalidate the cache for this single object
-			ModulePeer::removeInstanceFromPool($values);
+		} elseif ($values instanceof Module) { // it's a model object
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(ModulePeer::NAME, (array) $values, Criteria::IN);
-
-			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
-				ModulePeer::removeInstanceFromPool($singleval);
-			}
 		}
 
 		// Set the correct dbName
@@ -580,25 +635,26 @@ abstract class BaseModulePeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += ModulePeer::doOnDeleteCascade($criteria, $con);
 			
-				// Because this db requires some delete cascade/set null emulation, we have to
-				// clear the cached instance *after* the emulation has happened (since
-				// instances get re-added by the select statement contained therein).
-				if ($values instanceof Criteria) {
-					ModulePeer::clearInstancePool();
-				} else { // it's a PK or object
-					ModulePeer::removeInstanceFromPool($values);
+			// cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
+			$c = clone $criteria;
+			$affectedRows += ModulePeer::doOnDeleteCascade($c, $con);
+			
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			if ($values instanceof Criteria) {
+				ModulePeer::clearInstancePool();
+			} elseif ($values instanceof Module) { // it's a model object
+				ModulePeer::removeInstanceFromPool($values);
+			} else { // it's a primary key, or an array of pks
+				foreach ((array) $values as $singleval) {
+					ModulePeer::removeInstanceFromPool($singleval);
 				}
+			}
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
-			// invalidate objects in ModuleDependencyPeer instance pool, since one or more of them may be deleted by ON DELETE CASCADE rule.
-			ModuleDependencyPeer::clearInstancePool();
-
-			// invalidate objects in ModuleLabelPeer instance pool, since one or more of them may be deleted by ON DELETE CASCADE rule.
-			ModuleLabelPeer::clearInstancePool();
-
+			ModulePeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -631,16 +687,16 @@ abstract class BaseModulePeer {
 
 
 			// delete related ModuleDependency objects
-			$c = new Criteria(ModuleDependencyPeer::DATABASE_NAME);
+			$criteria = new Criteria(ModuleDependencyPeer::DATABASE_NAME);
 			
-			$c->add(ModuleDependencyPeer::MODULENAME, $obj->getName());
-			$affectedRows += ModuleDependencyPeer::doDelete($c, $con);
+			$criteria->add(ModuleDependencyPeer::MODULENAME, $obj->getName());
+			$affectedRows += ModuleDependencyPeer::doDelete($criteria, $con);
 
 			// delete related ModuleLabel objects
-			$c = new Criteria(ModuleLabelPeer::DATABASE_NAME);
+			$criteria = new Criteria(ModuleLabelPeer::DATABASE_NAME);
 			
-			$c->add(ModuleLabelPeer::NAME, $obj->getName());
-			$affectedRows += ModuleLabelPeer::doDelete($c, $con);
+			$criteria->add(ModuleLabelPeer::NAME, $obj->getName());
+			$affectedRows += ModuleLabelPeer::doDelete($criteria, $con);
 		}
 		return $affectedRows;
 	}
@@ -735,14 +791,7 @@ abstract class BaseModulePeer {
 
 } // BaseModulePeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the ModulePeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the ModulePeer class:
-//
-// Propel::getDatabaseMap(ModulePeer::DATABASE_NAME)->addTableBuilder(ModulePeer::TABLE_NAME, ModulePeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseModulePeer::DATABASE_NAME)->addTableBuilder(BaseModulePeer::TABLE_NAME, BaseModulePeer::getMapBuilder());
+BaseModulePeer::buildTableMap();
 

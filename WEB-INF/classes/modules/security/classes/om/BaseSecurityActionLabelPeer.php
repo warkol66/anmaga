@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'security_actionLabel' table.
  *
  * etiquetas de actions de seguridad
  *
- * @package    security.classes.om
+ * @package    propel.generator.security.classes.om
  */
 abstract class BaseSecurityActionLabelPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseSecurityActionLabelPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'security_actionLabel';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'SecurityActionLabel';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'security.classes.SecurityActionLabel';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'SecurityActionLabelTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 4;
 
@@ -44,11 +51,6 @@ abstract class BaseSecurityActionLabelPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -60,6 +62,7 @@ abstract class BaseSecurityActionLabelPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Action', 'Language', 'Label', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'action', 'language', 'label', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::ACTION, self::LANGUAGE, self::LABEL, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'ACTION', 'LANGUAGE', 'LABEL', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'action', 'language', 'label', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
@@ -74,21 +77,11 @@ abstract class BaseSecurityActionLabelPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Action' => 1, 'Language' => 2, 'Label' => 3, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'action' => 1, 'language' => 2, 'label' => 3, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::ACTION => 1, self::LANGUAGE => 2, self::LABEL => 3, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'ACTION' => 1, 'LANGUAGE' => 2, 'LABEL' => 3, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'action' => 1, 'language' => 2, 'label' => 3, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new SecurityActionLabelMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -150,21 +143,24 @@ abstract class BaseSecurityActionLabelPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(SecurityActionLabelPeer::ID);
-
-		$criteria->addSelectColumn(SecurityActionLabelPeer::ACTION);
-
-		$criteria->addSelectColumn(SecurityActionLabelPeer::LANGUAGE);
-
-		$criteria->addSelectColumn(SecurityActionLabelPeer::LABEL);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(SecurityActionLabelPeer::ID);
+			$criteria->addSelectColumn(SecurityActionLabelPeer::ACTION);
+			$criteria->addSelectColumn(SecurityActionLabelPeer::LANGUAGE);
+			$criteria->addSelectColumn(SecurityActionLabelPeer::LABEL);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.ACTION');
+			$criteria->addSelectColumn($alias . '.LANGUAGE');
+			$criteria->addSelectColumn($alias . '.LABEL');
+		}
 	}
 
 	/**
@@ -352,6 +348,14 @@ abstract class BaseSecurityActionLabelPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to security_actionLabel
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -364,12 +368,26 @@ abstract class BaseSecurityActionLabelPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null && $row[$startcol + 1] === null) {
+		if ($row[$startcol] === null && $row[$startcol + 1] === null) {
 			return null;
 		}
-		return serialize(array((string) $row[$startcol + 0], (string) $row[$startcol + 1]));
+		return serialize(array((string) $row[$startcol], (string) $row[$startcol + 1]));
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return array((int) $row[$startcol], (string) $row[$startcol + 1]);
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -382,18 +400,16 @@ abstract class BaseSecurityActionLabelPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = SecurityActionLabelPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = SecurityActionLabelPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = SecurityActionLabelPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = SecurityActionLabelPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -402,6 +418,31 @@ abstract class BaseSecurityActionLabelPeer {
 		}
 		$stmt->closeCursor();
 		return $results;
+	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (SecurityActionLabel object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = SecurityActionLabelPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = SecurityActionLabelPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + SecurityActionLabelPeer::NUM_COLUMNS;
+		} else {
+			$cls = SecurityActionLabelPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			SecurityActionLabelPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
 	}
 	/**
 	 * Returns the TableMap related to this peer.
@@ -416,17 +457,31 @@ abstract class BaseSecurityActionLabelPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseSecurityActionLabelPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseSecurityActionLabelPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new SecurityActionLabelTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return SecurityActionLabelPeer::CLASS_DEFAULT;
+		return $withPrefix ? SecurityActionLabelPeer::CLASS_DEFAULT : SecurityActionLabelPeer::OM_CLASS;
 	}
 
 	/**
@@ -493,10 +548,20 @@ abstract class BaseSecurityActionLabelPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(SecurityActionLabelPeer::ID);
-			$selectCriteria->add(SecurityActionLabelPeer::ID, $criteria->remove(SecurityActionLabelPeer::ID), $comparison);
+			$value = $criteria->remove(SecurityActionLabelPeer::ID);
+			if ($value) {
+				$selectCriteria->add(SecurityActionLabelPeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(SecurityActionLabelPeer::TABLE_NAME);
+			}
 
 			$comparison = $criteria->getComparison(SecurityActionLabelPeer::ACTION);
-			$selectCriteria->add(SecurityActionLabelPeer::ACTION, $criteria->remove(SecurityActionLabelPeer::ACTION), $comparison);
+			$value = $criteria->remove(SecurityActionLabelPeer::ACTION);
+			if ($value) {
+				$selectCriteria->add(SecurityActionLabelPeer::ACTION, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(SecurityActionLabelPeer::TABLE_NAME);
+			}
 
 		} else { // $values is SecurityActionLabel object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -524,7 +589,12 @@ abstract class BaseSecurityActionLabelPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(SecurityActionLabelPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(SecurityActionLabelPeer::TABLE_NAME, $con, SecurityActionLabelPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			SecurityActionLabelPeer::clearInstancePool();
+			SecurityActionLabelPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -555,34 +625,25 @@ abstract class BaseSecurityActionLabelPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			SecurityActionLabelPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof SecurityActionLabel) {
+		} elseif ($values instanceof SecurityActionLabel) { // it's a model object
 			// invalidate the cache for this single object
 			SecurityActionLabelPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			// primary key is composite; we therefore, expect
-			// the primary key passed to be an array of pkey
-			// values
+			// the primary key passed to be an array of pkey values
 			if (count($values) == count($values, COUNT_RECURSIVE)) {
 				// array is not multi-dimensional
 				$values = array($values);
 			}
-
 			foreach ($values as $value) {
-
 				$criterion = $criteria->getNewCriterion(SecurityActionLabelPeer::ID, $value[0]);
 				$criterion->addAnd($criteria->getNewCriterion(SecurityActionLabelPeer::ACTION, $value[1]));
 				$criteria->addOr($criterion);
-
 				// we can invalidate the cache for this single PK
 				SecurityActionLabelPeer::removeInstanceFromPool($value);
 			}
@@ -599,7 +660,7 @@ abstract class BaseSecurityActionLabelPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			SecurityActionLabelPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -648,14 +709,13 @@ abstract class BaseSecurityActionLabelPeer {
 	/**
 	 * Retrieve object using using composite pkey values.
 	 * @param      int $id
-	   @param      string $action
-	   
+	 * @param      string $action
 	 * @param      PropelPDO $con
 	 * @return     SecurityActionLabel
 	 */
 	public static function retrieveByPK($id, $action, PropelPDO $con = null) {
-		$key = serialize(array((string) $id, (string) $action));
- 		if (null !== ($obj = SecurityActionLabelPeer::getInstanceFromPool($key))) {
+		$_instancePoolKey = serialize(array((string) $id, (string) $action));
+ 		if (null !== ($obj = SecurityActionLabelPeer::getInstanceFromPool($_instancePoolKey))) {
  			return $obj;
 		}
 
@@ -671,14 +731,7 @@ abstract class BaseSecurityActionLabelPeer {
 	}
 } // BaseSecurityActionLabelPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the SecurityActionLabelPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the SecurityActionLabelPeer class:
-//
-// Propel::getDatabaseMap(SecurityActionLabelPeer::DATABASE_NAME)->addTableBuilder(SecurityActionLabelPeer::TABLE_NAME, SecurityActionLabelPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseSecurityActionLabelPeer::DATABASE_NAME)->addTableBuilder(BaseSecurityActionLabelPeer::TABLE_NAME, BaseSecurityActionLabelPeer::getMapBuilder());
+BaseSecurityActionLabelPeer::buildTableMap();
 

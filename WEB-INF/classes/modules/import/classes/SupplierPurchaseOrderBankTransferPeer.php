@@ -1,6 +1,5 @@
 <?php
 
-require_once 'import/classes/map/SupplierPurchaseOrderBankTransferMapBuilder.php';
 require 'import/classes/om/BaseSupplierPurchaseOrderBankTransferPeer.php';
 require_once('import/classes/SupplierPurchaseOrderBankTransfer.php');
 
@@ -144,7 +143,6 @@ class SupplierPurchaseOrderBankTransferPeer extends BaseSupplierPurchaseOrderBan
 	      $perPage = 	SupplierPurchaseOrderBankTransferPeer::getRowsPerPage();
 	    if (empty($page))
 	      $page = 1;
-	    require_once("propel/util/PropelPager.php");
 	    $cond = new Criteria();
 	    $pager = new PropelPager($cond,"SupplierPurchaseOrderBankTransferPeer", "doSelect",$page,$perPage);
 	    return $pager;

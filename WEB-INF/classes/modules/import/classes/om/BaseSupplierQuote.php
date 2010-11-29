@@ -1,14 +1,20 @@
 <?php
 
+
 /**
  * Base class that represents a row from the 'import_supplierQuote' table.
  *
  * Cotizacion de Proveedor
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
-abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
+abstract class BaseSupplierQuote extends BaseObject  implements Persistent
+{
 
+	/**
+	 * Peer class name
+	 */
+  const PEER = 'SupplierQuotePeer';
 
 	/**
 	 * The Peer class.
@@ -76,29 +82,14 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	protected $collSupplierQuoteHistorys;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collSupplierQuoteHistorys.
-	 */
-	private $lastSupplierQuoteHistoryCriteria = null;
-
-	/**
 	 * @var        array SupplierQuoteItem[] Collection to store aggregation of SupplierQuoteItem objects.
 	 */
 	protected $collSupplierQuoteItems;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collSupplierQuoteItems.
-	 */
-	private $lastSupplierQuoteItemCriteria = null;
-
-	/**
 	 * @var        array SupplierPurchaseOrder[] Collection to store aggregation of SupplierPurchaseOrder objects.
 	 */
 	protected $collSupplierPurchaseOrders;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collSupplierPurchaseOrders.
-	 */
-	private $lastSupplierPurchaseOrderCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -113,26 +104,6 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 * @var        boolean
 	 */
 	protected $alreadyInValidation = false;
-
-	/**
-	 * Initializes internal state of BaseSupplierQuote object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
-
-	/**
-	 * Applies default values to this object.
-	 * This method should be called from the object's constructor (or
-	 * equivalent initialization method).
-	 * @see        __construct()
-	 */
-	public function applyDefaultValues()
-	{
-	}
 
 	/**
 	 * Get the [id] column value.
@@ -476,11 +447,6 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			// First, ensure that we don't have any columns that have been modified which aren't default columns.
-			if (array_diff($this->modifiedColumns, array())) {
-				return false;
-			}
-
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -518,7 +484,6 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 				$this->ensureConsistency();
 			}
 
-			// FIXME - using NUM_COLUMNS may be clearer.
 			return $startcol + 7; // 7 = SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
@@ -590,13 +555,10 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 			$this->aClientQuote = null;
 			$this->aSupplier = null;
 			$this->collSupplierQuoteHistorys = null;
-			$this->lastSupplierQuoteHistoryCriteria = null;
 
 			$this->collSupplierQuoteItems = null;
-			$this->lastSupplierQuoteItemCriteria = null;
 
 			$this->collSupplierPurchaseOrders = null;
-			$this->lastSupplierPurchaseOrderCriteria = null;
 
 		} // if (deep)
 	}
@@ -622,9 +584,17 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 		
 		$con->beginTransaction();
 		try {
-			SupplierQuotePeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
+			$ret = $this->preDelete($con);
+			if ($ret) {
+				SupplierQuoteQuery::create()
+					->filterByPrimaryKey($this->getPrimaryKey())
+					->delete($con);
+				$this->postDelete($con);
+				$con->commit();
+				$this->setDeleted(true);
+			} else {
+				$con->commit();
+			}
 		} catch (PropelException $e) {
 			$con->rollBack();
 			throw $e;
@@ -655,10 +625,27 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 		}
 		
 		$con->beginTransaction();
+		$isInsert = $this->isNew();
 		try {
-			$affectedRows = $this->doSave($con);
+			$ret = $this->preSave($con);
+			if ($isInsert) {
+				$ret = $ret && $this->preInsert($con);
+			} else {
+				$ret = $ret && $this->preUpdate($con);
+			}
+			if ($ret) {
+				$affectedRows = $this->doSave($con);
+				if ($isInsert) {
+					$this->postInsert($con);
+				} else {
+					$this->postUpdate($con);
+				}
+				$this->postSave($con);
+				SupplierQuotePeer::addInstanceToPool($this);
+			} else {
+				$affectedRows = 0;
+			}
 			$con->commit();
-			SupplierQuotePeer::addInstanceToPool($this);
 			return $affectedRows;
 		} catch (PropelException $e) {
 			$con->rollBack();
@@ -709,13 +696,14 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = SupplierQuotePeer::doInsert($this, $con);
-					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
-										 // should always be true here (even though technically
-										 // BasePeer::doInsert() can insert multiple rows).
+					$criteria = $this->buildCriteria();
+					if ($criteria->keyContainsValue(SupplierQuotePeer::ID) ) {
+						throw new PropelException('Cannot insert a value for auto-increment primary key ('.SupplierQuotePeer::ID.')');
+					}
 
+					$pk = BasePeer::doInsert($criteria, $con);
+					$affectedRows += 1;
 					$this->setId($pk);  //[IMV] update autoincrement primary key
-
 					$this->setNew(false);
 				} else {
 					$affectedRows += SupplierQuotePeer::doUpdate($this, $con);
@@ -869,6 +857,177 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Retrieves a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name name
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     mixed Value of field.
+	 */
+	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = SupplierQuotePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$field = $this->getByPosition($pos);
+		return $field;
+	}
+
+	/**
+	 * Retrieves a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @return     mixed Value of field at $pos
+	 */
+	public function getByPosition($pos)
+	{
+		switch($pos) {
+			case 0:
+				return $this->getId();
+				break;
+			case 1:
+				return $this->getCreatedat();
+				break;
+			case 2:
+				return $this->getSupplierid();
+				break;
+			case 3:
+				return $this->getStatus();
+				break;
+			case 4:
+				return $this->getTimestampstatus();
+				break;
+			case 5:
+				return $this->getClientquoteid();
+				break;
+			case 6:
+				return $this->getSupplieraccesstoken();
+				break;
+			default:
+				return null;
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Exports the object as an array.
+	 *
+	 * You can specify the key type of the array by passing one of the class
+	 * type constants.
+	 *
+	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    Defaults to BasePeer::TYPE_PHPNAME.
+	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
+	 *
+	 * @return    array an associative array containing the field names (as keys) and field values
+	 */
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	{
+		$keys = SupplierQuotePeer::getFieldNames($keyType);
+		$result = array(
+			$keys[0] => $this->getId(),
+			$keys[1] => $this->getCreatedat(),
+			$keys[2] => $this->getSupplierid(),
+			$keys[3] => $this->getStatus(),
+			$keys[4] => $this->getTimestampstatus(),
+			$keys[5] => $this->getClientquoteid(),
+			$keys[6] => $this->getSupplieraccesstoken(),
+		);
+		if ($includeForeignObjects) {
+			if (null !== $this->aClientQuote) {
+				$result['ClientQuote'] = $this->aClientQuote->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aSupplier) {
+				$result['Supplier'] = $this->aSupplier->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Sets a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name peer name
+	 * @param      mixed $value field value
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     void
+	 */
+	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = SupplierQuotePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		return $this->setByPosition($pos, $value);
+	}
+
+	/**
+	 * Sets a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @param      mixed $value field value
+	 * @return     void
+	 */
+	public function setByPosition($pos, $value)
+	{
+		switch($pos) {
+			case 0:
+				$this->setId($value);
+				break;
+			case 1:
+				$this->setCreatedat($value);
+				break;
+			case 2:
+				$this->setSupplierid($value);
+				break;
+			case 3:
+				$this->setStatus($value);
+				break;
+			case 4:
+				$this->setTimestampstatus($value);
+				break;
+			case 5:
+				$this->setClientquoteid($value);
+				break;
+			case 6:
+				$this->setSupplieraccesstoken($value);
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Populates the object using an array.
+	 *
+	 * This is particularly useful when populating an object from one of the
+	 * request arrays (e.g. $_POST).  This method goes through the column
+	 * names, checking to see whether a matching key exists in populated
+	 * array. If so the setByName() method is called for that column.
+	 *
+	 * You can specify the key type of the array by additionally passing one
+	 * of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+	 * The default key type is the column's phpname (e.g. 'AuthorId')
+	 *
+	 * @param      array  $arr     An array to populate the object from.
+	 * @param      string $keyType The type of keys the array uses.
+	 * @return     void
+	 */
+	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
+	{
+		$keys = SupplierQuotePeer::getFieldNames($keyType);
+
+		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setCreatedat($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setSupplierid($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setStatus($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setTimestampstatus($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setClientquoteid($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setSupplieraccesstoken($arr[$keys[6]]);
+	}
+
+	/**
 	 * Build a Criteria object containing the values of all modified columns in this object.
 	 *
 	 * @return     Criteria The Criteria object containing all modified values.
@@ -899,7 +1058,6 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	public function buildPkeyCriteria()
 	{
 		$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-
 		$criteria->add(SupplierQuotePeer::ID, $this->id);
 
 		return $criteria;
@@ -926,6 +1084,15 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Returns true if the primary key for this object is null.
+	 * @return     boolean
+	 */
+	public function isPrimaryKeyNull()
+	{
+		return null === $this->getId();
+	}
+
+	/**
 	 * Sets contents of passed object to values from current object.
 	 *
 	 * If desired, this method can also make copies of all associated (fkey referrers)
@@ -937,19 +1104,12 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-
 		$copyObj->setCreatedat($this->createdat);
-
 		$copyObj->setSupplierid($this->supplierid);
-
 		$copyObj->setStatus($this->status);
-
 		$copyObj->setTimestampstatus($this->timestampstatus);
-
 		$copyObj->setClientquoteid($this->clientquoteid);
-
 		$copyObj->setSupplieraccesstoken($this->supplieraccesstoken);
-
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -978,9 +1138,7 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 
 
 		$copyObj->setNew(true);
-
 		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
-
 	}
 
 	/**
@@ -1058,7 +1216,7 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	public function getClientQuote(PropelPDO $con = null)
 	{
 		if ($this->aClientQuote === null && ($this->clientquoteid !== null)) {
-			$this->aClientQuote = ClientQuotePeer::retrieveByPK($this->clientquoteid, $con);
+			$this->aClientQuote = ClientQuoteQuery::create()->findPk($this->clientquoteid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1107,7 +1265,7 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	public function getSupplier(PropelPDO $con = null)
 	{
 		if ($this->aSupplier === null && ($this->supplierid !== null)) {
-			$this->aSupplier = SupplierPeer::retrieveByPK($this->supplierid, $con);
+			$this->aSupplier = SupplierQuery::create()->findPk($this->supplierid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1120,7 +1278,7 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collSupplierQuoteHistorys collection (array).
+	 * Clears out the collSupplierQuoteHistorys collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -1134,7 +1292,7 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collSupplierQuoteHistorys collection (array).
+	 * Initializes the collSupplierQuoteHistorys collection.
 	 *
 	 * By default this just sets the collSupplierQuoteHistorys collection to an empty array (like clearcollSupplierQuoteHistorys());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -1144,59 +1302,40 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 */
 	public function initSupplierQuoteHistorys()
 	{
-		$this->collSupplierQuoteHistorys = array();
+		$this->collSupplierQuoteHistorys = new PropelObjectCollection();
+		$this->collSupplierQuoteHistorys->setModel('SupplierQuoteHistory');
 	}
 
 	/**
 	 * Gets an array of SupplierQuoteHistory objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this SupplierQuote has previously been saved, it will retrieve
-	 * related SupplierQuoteHistorys from storage. If this SupplierQuote is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this SupplierQuote is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array SupplierQuoteHistory[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array SupplierQuoteHistory[] List of SupplierQuoteHistory objects
 	 * @throws     PropelException
 	 */
 	public function getSupplierQuoteHistorys($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collSupplierQuoteHistorys === null) {
-			if ($this->isNew()) {
-			   $this->collSupplierQuoteHistorys = array();
+		if(null === $this->collSupplierQuoteHistorys || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierQuoteHistorys) {
+				// return empty collection
+				$this->initSupplierQuoteHistorys();
 			} else {
-
-				$criteria->add(SupplierQuoteHistoryPeer::SUPPLIERQUOTEID, $this->id);
-
-				SupplierQuoteHistoryPeer::addSelectColumns($criteria);
-				$this->collSupplierQuoteHistorys = SupplierQuoteHistoryPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(SupplierQuoteHistoryPeer::SUPPLIERQUOTEID, $this->id);
-
-				SupplierQuoteHistoryPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSupplierQuoteHistoryCriteria) || !$this->lastSupplierQuoteHistoryCriteria->equals($criteria)) {
-					$this->collSupplierQuoteHistorys = SupplierQuoteHistoryPeer::doSelect($criteria, $con);
+				$collSupplierQuoteHistorys = SupplierQuoteHistoryQuery::create(null, $criteria)
+					->filterBySupplierQuote($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collSupplierQuoteHistorys;
 				}
+				$this->collSupplierQuoteHistorys = $collSupplierQuoteHistorys;
 			}
 		}
-		$this->lastSupplierQuoteHistoryCriteria = $criteria;
 		return $this->collSupplierQuoteHistorys;
 	}
 
@@ -1211,48 +1350,21 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 */
 	public function countSupplierQuoteHistorys(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collSupplierQuoteHistorys === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collSupplierQuoteHistorys || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierQuoteHistorys) {
+				return 0;
 			} else {
-
-				$criteria->add(SupplierQuoteHistoryPeer::SUPPLIERQUOTEID, $this->id);
-
-				$count = SupplierQuoteHistoryPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(SupplierQuoteHistoryPeer::SUPPLIERQUOTEID, $this->id);
-
-				if (!isset($this->lastSupplierQuoteHistoryCriteria) || !$this->lastSupplierQuoteHistoryCriteria->equals($criteria)) {
-					$count = SupplierQuoteHistoryPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collSupplierQuoteHistorys);
+				$query = SupplierQuoteHistoryQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collSupplierQuoteHistorys);
+				return $query
+					->filterBySupplierQuote($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collSupplierQuoteHistorys);
 		}
-		$this->lastSupplierQuoteHistoryCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -1268,14 +1380,14 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 		if ($this->collSupplierQuoteHistorys === null) {
 			$this->initSupplierQuoteHistorys();
 		}
-		if (!in_array($l, $this->collSupplierQuoteHistorys, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collSupplierQuoteHistorys, $l);
+		if (!$this->collSupplierQuoteHistorys->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collSupplierQuoteHistorys[]= $l;
 			$l->setSupplierQuote($this);
 		}
 	}
 
 	/**
-	 * Clears out the collSupplierQuoteItems collection (array).
+	 * Clears out the collSupplierQuoteItems collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -1289,7 +1401,7 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collSupplierQuoteItems collection (array).
+	 * Initializes the collSupplierQuoteItems collection.
 	 *
 	 * By default this just sets the collSupplierQuoteItems collection to an empty array (like clearcollSupplierQuoteItems());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -1299,59 +1411,40 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 */
 	public function initSupplierQuoteItems()
 	{
-		$this->collSupplierQuoteItems = array();
+		$this->collSupplierQuoteItems = new PropelObjectCollection();
+		$this->collSupplierQuoteItems->setModel('SupplierQuoteItem');
 	}
 
 	/**
 	 * Gets an array of SupplierQuoteItem objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this SupplierQuote has previously been saved, it will retrieve
-	 * related SupplierQuoteItems from storage. If this SupplierQuote is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this SupplierQuote is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array SupplierQuoteItem[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array SupplierQuoteItem[] List of SupplierQuoteItem objects
 	 * @throws     PropelException
 	 */
 	public function getSupplierQuoteItems($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-			   $this->collSupplierQuoteItems = array();
+		if(null === $this->collSupplierQuoteItems || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierQuoteItems) {
+				// return empty collection
+				$this->initSupplierQuoteItems();
 			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-				SupplierQuoteItemPeer::addSelectColumns($criteria);
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-				SupplierQuoteItemPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-					$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelect($criteria, $con);
+				$collSupplierQuoteItems = SupplierQuoteItemQuery::create(null, $criteria)
+					->filterBySupplierQuote($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collSupplierQuoteItems;
 				}
+				$this->collSupplierQuoteItems = $collSupplierQuoteItems;
 			}
 		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
 		return $this->collSupplierQuoteItems;
 	}
 
@@ -1366,48 +1459,21 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 */
 	public function countSupplierQuoteItems(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collSupplierQuoteItems || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierQuoteItems) {
+				return 0;
 			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-				$count = SupplierQuoteItemPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-				if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-					$count = SupplierQuoteItemPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collSupplierQuoteItems);
+				$query = SupplierQuoteItemQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collSupplierQuoteItems);
+				return $query
+					->filterBySupplierQuote($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collSupplierQuoteItems);
 		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -1423,8 +1489,8 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 		if ($this->collSupplierQuoteItems === null) {
 			$this->initSupplierQuoteItems();
 		}
-		if (!in_array($l, $this->collSupplierQuoteItems, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collSupplierQuoteItems, $l);
+		if (!$this->collSupplierQuoteItems->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collSupplierQuoteItems[]= $l;
 			$l->setSupplierQuote($this);
 		}
 	}
@@ -1440,40 +1506,18 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in SupplierQuote.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItem[] List of SupplierQuoteItem objects
 	 */
 	public function getSupplierQuoteItemsJoinClientQuoteItem($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemQuery::create(null, $criteria);
+		$query->joinWith('ClientQuoteItem', $join_behavior);
 
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItems = array();
-			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinClientQuoteItem($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinClientQuoteItem($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
-
-		return $this->collSupplierQuoteItems;
+		return $this->getSupplierQuoteItems($query, $con);
 	}
 
 
@@ -1487,40 +1531,18 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in SupplierQuote.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItem[] List of SupplierQuoteItem objects
 	 */
 	public function getSupplierQuoteItemsJoinProductRelatedByProductid($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemQuery::create(null, $criteria);
+		$query->joinWith('ProductRelatedByProductid', $join_behavior);
 
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItems = array();
-			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinProductRelatedByProductid($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinProductRelatedByProductid($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
-
-		return $this->collSupplierQuoteItems;
+		return $this->getSupplierQuoteItems($query, $con);
 	}
 
 
@@ -1534,40 +1556,18 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in SupplierQuote.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItem[] List of SupplierQuoteItem objects
 	 */
 	public function getSupplierQuoteItemsJoinProductRelatedByReplacedproductid($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemQuery::create(null, $criteria);
+		$query->joinWith('ProductRelatedByReplacedproductid', $join_behavior);
 
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItems = array();
-			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinProductRelatedByReplacedproductid($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinProductRelatedByReplacedproductid($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
-
-		return $this->collSupplierQuoteItems;
+		return $this->getSupplierQuoteItems($query, $con);
 	}
 
 
@@ -1581,40 +1581,18 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in SupplierQuote.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItem[] List of SupplierQuoteItem objects
 	 */
 	public function getSupplierQuoteItemsJoinIncoterm($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemQuery::create(null, $criteria);
+		$query->joinWith('Incoterm', $join_behavior);
 
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItems = array();
-			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinIncoterm($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinIncoterm($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
-
-		return $this->collSupplierQuoteItems;
+		return $this->getSupplierQuoteItems($query, $con);
 	}
 
 
@@ -1628,44 +1606,22 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in SupplierQuote.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItem[] List of SupplierQuoteItem objects
 	 */
 	public function getSupplierQuoteItemsJoinPort($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemQuery::create(null, $criteria);
+		$query->joinWith('Port', $join_behavior);
 
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItems = array();
-			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemPeer::SUPPLIERQUOTEID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
-
-		return $this->collSupplierQuoteItems;
+		return $this->getSupplierQuoteItems($query, $con);
 	}
 
 	/**
-	 * Clears out the collSupplierPurchaseOrders collection (array).
+	 * Clears out the collSupplierPurchaseOrders collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -1679,7 +1635,7 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collSupplierPurchaseOrders collection (array).
+	 * Initializes the collSupplierPurchaseOrders collection.
 	 *
 	 * By default this just sets the collSupplierPurchaseOrders collection to an empty array (like clearcollSupplierPurchaseOrders());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -1689,59 +1645,40 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 */
 	public function initSupplierPurchaseOrders()
 	{
-		$this->collSupplierPurchaseOrders = array();
+		$this->collSupplierPurchaseOrders = new PropelObjectCollection();
+		$this->collSupplierPurchaseOrders->setModel('SupplierPurchaseOrder');
 	}
 
 	/**
 	 * Gets an array of SupplierPurchaseOrder objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this SupplierQuote has previously been saved, it will retrieve
-	 * related SupplierPurchaseOrders from storage. If this SupplierQuote is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this SupplierQuote is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array SupplierPurchaseOrder[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array SupplierPurchaseOrder[] List of SupplierPurchaseOrder objects
 	 * @throws     PropelException
 	 */
 	public function getSupplierPurchaseOrders($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-			   $this->collSupplierPurchaseOrders = array();
+		if(null === $this->collSupplierPurchaseOrders || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierPurchaseOrders) {
+				// return empty collection
+				$this->initSupplierPurchaseOrders();
 			} else {
-
-				$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-				SupplierPurchaseOrderPeer::addSelectColumns($criteria);
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-				SupplierPurchaseOrderPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-					$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelect($criteria, $con);
+				$collSupplierPurchaseOrders = SupplierPurchaseOrderQuery::create(null, $criteria)
+					->filterBySupplierQuote($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collSupplierPurchaseOrders;
 				}
+				$this->collSupplierPurchaseOrders = $collSupplierPurchaseOrders;
 			}
 		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
 		return $this->collSupplierPurchaseOrders;
 	}
 
@@ -1756,48 +1693,21 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 */
 	public function countSupplierPurchaseOrders(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collSupplierPurchaseOrders || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierPurchaseOrders) {
+				return 0;
 			} else {
-
-				$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-				$count = SupplierPurchaseOrderPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-				if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-					$count = SupplierPurchaseOrderPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collSupplierPurchaseOrders);
+				$query = SupplierPurchaseOrderQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collSupplierPurchaseOrders);
+				return $query
+					->filterBySupplierQuote($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collSupplierPurchaseOrders);
 		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -1813,8 +1723,8 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 		if ($this->collSupplierPurchaseOrders === null) {
 			$this->initSupplierPurchaseOrders();
 		}
-		if (!in_array($l, $this->collSupplierPurchaseOrders, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collSupplierPurchaseOrders, $l);
+		if (!$this->collSupplierPurchaseOrders->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collSupplierPurchaseOrders[]= $l;
 			$l->setSupplierQuote($this);
 		}
 	}
@@ -1830,40 +1740,18 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in SupplierQuote.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierPurchaseOrder[] List of SupplierPurchaseOrder objects
 	 */
 	public function getSupplierPurchaseOrdersJoinClientQuote($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierPurchaseOrderQuery::create(null, $criteria);
+		$query->joinWith('ClientQuote', $join_behavior);
 
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$this->collSupplierPurchaseOrders = array();
-			} else {
-
-				$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinClientQuote($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
-
-		return $this->collSupplierPurchaseOrders;
+		return $this->getSupplierPurchaseOrders($query, $con);
 	}
 
 
@@ -1877,40 +1765,18 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in SupplierQuote.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierPurchaseOrder[] List of SupplierPurchaseOrder objects
 	 */
 	public function getSupplierPurchaseOrdersJoinSupplier($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierPurchaseOrderQuery::create(null, $criteria);
+		$query->joinWith('Supplier', $join_behavior);
 
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$this->collSupplierPurchaseOrders = array();
-			} else {
-
-				$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
-
-		return $this->collSupplierPurchaseOrders;
+		return $this->getSupplierPurchaseOrders($query, $con);
 	}
 
 
@@ -1924,40 +1790,18 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in SupplierQuote.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierPurchaseOrder[] List of SupplierPurchaseOrder objects
 	 */
 	public function getSupplierPurchaseOrdersJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierPurchaseOrderQuery::create(null, $criteria);
+		$query->joinWith('User', $join_behavior);
 
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$this->collSupplierPurchaseOrders = array();
-			} else {
-
-				$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinUser($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinUser($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
-
-		return $this->collSupplierPurchaseOrders;
+		return $this->getSupplierPurchaseOrders($query, $con);
 	}
 
 
@@ -1971,40 +1815,18 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in SupplierQuote.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierPurchaseOrder[] List of SupplierPurchaseOrder objects
 	 */
 	public function getSupplierPurchaseOrdersJoinAffiliate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierPurchaseOrderQuery::create(null, $criteria);
+		$query->joinWith('Affiliate', $join_behavior);
 
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$this->collSupplierPurchaseOrders = array();
-			} else {
-
-				$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinAffiliate($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
-
-		return $this->collSupplierPurchaseOrders;
+		return $this->getSupplierPurchaseOrders($query, $con);
 	}
 
 
@@ -2018,40 +1840,38 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in SupplierQuote.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierPurchaseOrder[] List of SupplierPurchaseOrder objects
 	 */
 	public function getSupplierPurchaseOrdersJoinAffiliateUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuotePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierPurchaseOrderQuery::create(null, $criteria);
+		$query->joinWith('AffiliateUser', $join_behavior);
 
-		if ($this->collSupplierPurchaseOrders === null) {
-			if ($this->isNew()) {
-				$this->collSupplierPurchaseOrders = array();
-			} else {
+		return $this->getSupplierPurchaseOrders($query, $con);
+	}
 
-				$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->id);
-
-			if (!isset($this->lastSupplierPurchaseOrderCriteria) || !$this->lastSupplierPurchaseOrderCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrders = SupplierPurchaseOrderPeer::doSelectJoinAffiliateUser($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierPurchaseOrderCriteria = $criteria;
-
-		return $this->collSupplierPurchaseOrders;
+	/**
+	 * Clears the current object and sets all attributes to their default values
+	 */
+	public function clear()
+	{
+		$this->id = null;
+		$this->createdat = null;
+		$this->supplierid = null;
+		$this->status = null;
+		$this->timestampstatus = null;
+		$this->clientquoteid = null;
+		$this->supplieraccesstoken = null;
+		$this->alreadyInSave = false;
+		$this->alreadyInValidation = false;
+		$this->clearAllReferences();
+		$this->resetModified();
+		$this->setNew(true);
+		$this->setDeleted(false);
 	}
 
 	/**
@@ -2086,8 +1906,27 @@ abstract class BaseSupplierQuote extends BaseObject  implements Persistent {
 		$this->collSupplierQuoteHistorys = null;
 		$this->collSupplierQuoteItems = null;
 		$this->collSupplierPurchaseOrders = null;
-			$this->aClientQuote = null;
-			$this->aSupplier = null;
+		$this->aClientQuote = null;
+		$this->aSupplier = null;
+	}
+
+	/**
+	 * Catches calls to virtual methods
+	 */
+	public function __call($name, $params)
+	{
+		if (preg_match('/get(\w+)/', $name, $matches)) {
+			$virtualColumn = $matches[1];
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+			// no lcfirst in php<5.3...
+			$virtualColumn[0] = strtolower($virtualColumn[0]);
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+		}
+		return parent::__call($name, $params);
 	}
 
 } // BaseSupplierQuote

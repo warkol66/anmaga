@@ -161,7 +161,6 @@ class AffiliateBranchPeer extends BaseAffiliateBranchPeer {
       $perPage = 	AffiliateBranchPeer::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("propel/util/PropelPager.php");
     $cond = new Criteria();
     if (!empty($this->searchAffiliateId))
       $cond->add(AffiliateBranchPeer::AFFILIATEID, $this->searchAffiliateId);

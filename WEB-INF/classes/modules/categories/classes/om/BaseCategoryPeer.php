@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'categories_category' table.
  *
  * Categorias
  *
- * @package    categories.classes.om
+ * @package    propel.generator.categories.classes.om
  */
 abstract class BaseCategoryPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseCategoryPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'categories_category';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'Category';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'categories.classes.Category';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'CategoryTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 6;
 
@@ -50,11 +57,6 @@ abstract class BaseCategoryPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -66,6 +68,7 @@ abstract class BaseCategoryPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Parentid', 'Name', 'Module', 'Active', 'Ispublic', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'parentid', 'name', 'module', 'active', 'ispublic', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::PARENTID, self::NAME, self::MODULE, self::ACTIVE, self::ISPUBLIC, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'PARENTID', 'NAME', 'MODULE', 'ACTIVE', 'ISPUBLIC', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'parentId', 'name', 'module', 'active', 'isPublic', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
@@ -80,21 +83,11 @@ abstract class BaseCategoryPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Parentid' => 1, 'Name' => 2, 'Module' => 3, 'Active' => 4, 'Ispublic' => 5, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'parentid' => 1, 'name' => 2, 'module' => 3, 'active' => 4, 'ispublic' => 5, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::PARENTID => 1, self::NAME => 2, self::MODULE => 3, self::ACTIVE => 4, self::ISPUBLIC => 5, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'PARENTID' => 1, 'NAME' => 2, 'MODULE' => 3, 'ACTIVE' => 4, 'ISPUBLIC' => 5, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'parentId' => 1, 'name' => 2, 'module' => 3, 'active' => 4, 'isPublic' => 5, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new CategoryMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -156,25 +149,28 @@ abstract class BaseCategoryPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(CategoryPeer::ID);
-
-		$criteria->addSelectColumn(CategoryPeer::PARENTID);
-
-		$criteria->addSelectColumn(CategoryPeer::NAME);
-
-		$criteria->addSelectColumn(CategoryPeer::MODULE);
-
-		$criteria->addSelectColumn(CategoryPeer::ACTIVE);
-
-		$criteria->addSelectColumn(CategoryPeer::ISPUBLIC);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(CategoryPeer::ID);
+			$criteria->addSelectColumn(CategoryPeer::PARENTID);
+			$criteria->addSelectColumn(CategoryPeer::NAME);
+			$criteria->addSelectColumn(CategoryPeer::MODULE);
+			$criteria->addSelectColumn(CategoryPeer::ACTIVE);
+			$criteria->addSelectColumn(CategoryPeer::ISPUBLIC);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.PARENTID');
+			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.MODULE');
+			$criteria->addSelectColumn($alias . '.ACTIVE');
+			$criteria->addSelectColumn($alias . '.ISPUBLIC');
+		}
 	}
 
 	/**
@@ -362,6 +358,14 @@ abstract class BaseCategoryPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to categories_category
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -374,12 +378,26 @@ abstract class BaseCategoryPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -392,18 +410,16 @@ abstract class BaseCategoryPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = CategoryPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = CategoryPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = CategoryPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = CategoryPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -412,6 +428,31 @@ abstract class BaseCategoryPeer {
 		}
 		$stmt->closeCursor();
 		return $results;
+	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (Category object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = CategoryPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = CategoryPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + CategoryPeer::NUM_COLUMNS;
+		} else {
+			$cls = CategoryPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			CategoryPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
 	}
 	/**
 	 * Returns the TableMap related to this peer.
@@ -426,17 +467,31 @@ abstract class BaseCategoryPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseCategoryPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseCategoryPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new CategoryTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return CategoryPeer::CLASS_DEFAULT;
+		return $withPrefix ? CategoryPeer::CLASS_DEFAULT : CategoryPeer::OM_CLASS;
 	}
 
 	/**
@@ -503,7 +558,12 @@ abstract class BaseCategoryPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(CategoryPeer::ID);
-			$selectCriteria->add(CategoryPeer::ID, $criteria->remove(CategoryPeer::ID), $comparison);
+			$value = $criteria->remove(CategoryPeer::ID);
+			if ($value) {
+				$selectCriteria->add(CategoryPeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(CategoryPeer::TABLE_NAME);
+			}
 
 		} else { // $values is Category object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -531,7 +591,12 @@ abstract class BaseCategoryPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(CategoryPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(CategoryPeer::TABLE_NAME, $con, CategoryPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			CategoryPeer::clearInstancePool();
+			CategoryPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -562,24 +627,18 @@ abstract class BaseCategoryPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			CategoryPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof Category) {
+		} elseif ($values instanceof Category) { // it's a model object
 			// invalidate the cache for this single object
 			CategoryPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(CategoryPeer::ID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				CategoryPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -595,7 +654,7 @@ abstract class BaseCategoryPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			CategoryPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -694,14 +753,7 @@ abstract class BaseCategoryPeer {
 
 } // BaseCategoryPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the CategoryPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the CategoryPeer class:
-//
-// Propel::getDatabaseMap(CategoryPeer::DATABASE_NAME)->addTableBuilder(CategoryPeer::TABLE_NAME, CategoryPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseCategoryPeer::DATABASE_NAME)->addTableBuilder(BaseCategoryPeer::TABLE_NAME, BaseCategoryPeer::getMapBuilder());
+BaseCategoryPeer::buildTableMap();
 

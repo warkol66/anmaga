@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'users_level' table.
  *
  * Levels
  *
- * @package    users.classes.om
+ * @package    propel.generator.users.classes.om
  */
 abstract class BaseLevelPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseLevelPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'users_level';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'Level';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'users.classes.Level';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'LevelTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 3;
 
@@ -41,11 +48,6 @@ abstract class BaseLevelPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -57,6 +59,7 @@ abstract class BaseLevelPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Bitlevel', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'bitlevel', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::BITLEVEL, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'BITLEVEL', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'bitLevel', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
@@ -71,21 +74,11 @@ abstract class BaseLevelPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Bitlevel' => 2, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'bitlevel' => 2, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::BITLEVEL => 2, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'BITLEVEL' => 2, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'bitLevel' => 2, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new LevelMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -147,19 +140,22 @@ abstract class BaseLevelPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(LevelPeer::ID);
-
-		$criteria->addSelectColumn(LevelPeer::NAME);
-
-		$criteria->addSelectColumn(LevelPeer::BITLEVEL);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(LevelPeer::ID);
+			$criteria->addSelectColumn(LevelPeer::NAME);
+			$criteria->addSelectColumn(LevelPeer::BITLEVEL);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.BITLEVEL');
+		}
 	}
 
 	/**
@@ -347,6 +343,14 @@ abstract class BaseLevelPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to users_level
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -359,12 +363,26 @@ abstract class BaseLevelPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -377,18 +395,16 @@ abstract class BaseLevelPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = LevelPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = LevelPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = LevelPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = LevelPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -397,6 +413,31 @@ abstract class BaseLevelPeer {
 		}
 		$stmt->closeCursor();
 		return $results;
+	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (Level object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = LevelPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = LevelPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + LevelPeer::NUM_COLUMNS;
+		} else {
+			$cls = LevelPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			LevelPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
 	}
 	/**
 	 * Returns the TableMap related to this peer.
@@ -411,17 +452,31 @@ abstract class BaseLevelPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseLevelPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseLevelPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new LevelTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return LevelPeer::CLASS_DEFAULT;
+		return $withPrefix ? LevelPeer::CLASS_DEFAULT : LevelPeer::OM_CLASS;
 	}
 
 	/**
@@ -488,7 +543,12 @@ abstract class BaseLevelPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(LevelPeer::ID);
-			$selectCriteria->add(LevelPeer::ID, $criteria->remove(LevelPeer::ID), $comparison);
+			$value = $criteria->remove(LevelPeer::ID);
+			if ($value) {
+				$selectCriteria->add(LevelPeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(LevelPeer::TABLE_NAME);
+			}
 
 		} else { // $values is Level object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -516,7 +576,12 @@ abstract class BaseLevelPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(LevelPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(LevelPeer::TABLE_NAME, $con, LevelPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			LevelPeer::clearInstancePool();
+			LevelPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -547,24 +612,18 @@ abstract class BaseLevelPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			LevelPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof Level) {
+		} elseif ($values instanceof Level) { // it's a model object
 			// invalidate the cache for this single object
 			LevelPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(LevelPeer::ID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				LevelPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -580,7 +639,7 @@ abstract class BaseLevelPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			LevelPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -679,14 +738,7 @@ abstract class BaseLevelPeer {
 
 } // BaseLevelPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the LevelPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the LevelPeer class:
-//
-// Propel::getDatabaseMap(LevelPeer::DATABASE_NAME)->addTableBuilder(LevelPeer::TABLE_NAME, LevelPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseLevelPeer::DATABASE_NAME)->addTableBuilder(BaseLevelPeer::TABLE_NAME, BaseLevelPeer::getMapBuilder());
+BaseLevelPeer::buildTableMap();
 

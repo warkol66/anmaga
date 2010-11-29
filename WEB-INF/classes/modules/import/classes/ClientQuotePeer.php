@@ -257,7 +257,6 @@ class ClientQuotePeer extends BaseClientQuotePeer {
       $perPage = 	ClientQuotePeer::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("propel/util/PropelPager.php");
     $cond = new Criteria();     
     $pager = new PropelPager($cond,"ClientQuotePeer", "doSelect",$page,$perPage);
     return $pager;
@@ -277,7 +276,6 @@ class ClientQuotePeer extends BaseClientQuotePeer {
       $perPage = 	ClientQuotePeer::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("propel/util/PropelPager.php");
     $cond = new Criteria();
 	$cond->add(ClientQuotePeer::AFFILIATEID,$affiliate->getId());
     $pager = new PropelPager($cond,"ClientQuotePeer", "doSelect",$page,$perPage);
@@ -297,7 +295,6 @@ class ClientQuotePeer extends BaseClientQuotePeer {
       $perPage = 	ClientQuotePeer::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("propel/util/PropelPager.php");
     $cond = $this->getFilterCriteria();
 	$cond->add(ClientQuotePeer::AFFILIATEID,$affiliate->getId());
     $pager = new PropelPager($cond,"ClientQuotePeer", "doSelect",$page,$perPage);
@@ -373,7 +370,6 @@ class ClientQuotePeer extends BaseClientQuotePeer {
       $perPage = 	SupplierQuotePeer::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("propel/util/PropelPager.php");
     $cond = $this->getFilterCriteria();   
     $pager = new PropelPager($cond,"ClientQuotePeer","doSelect",$page,$perPage);
     return $pager;

@@ -1,14 +1,20 @@
 <?php
 
+
 /**
  * Base class that represents a row from the 'import_supplierQuoteItem' table.
  *
  * Elemento de Cotizacion de Proveedor
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
-abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
+abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent
+{
 
+	/**
+	 * Peer class name
+	 */
+  const PEER = 'SupplierQuoteItemPeer';
 
 	/**
 	 * The Peer class.
@@ -192,11 +198,6 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	protected $collSupplierQuoteItemComments;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collSupplierQuoteItemComments.
-	 */
-	private $lastSupplierQuoteItemCommentCriteria = null;
-
-	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -209,26 +210,6 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	 * @var        boolean
 	 */
 	protected $alreadyInValidation = false;
-
-	/**
-	 * Initializes internal state of BaseSupplierQuoteItem object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
-
-	/**
-	 * Applies default values to this object.
-	 * This method should be called from the object's constructor (or
-	 * equivalent initialization method).
-	 * @see        __construct()
-	 */
-	public function applyDefaultValues()
-	{
-	}
 
 	/**
 	 * Get the [id] column value.
@@ -954,11 +935,6 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			// First, ensure that we don't have any columns that have been modified which aren't default columns.
-			if (array_diff($this->modifiedColumns, array())) {
-				return false;
-			}
-
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -1012,7 +988,6 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 				$this->ensureConsistency();
 			}
 
-			// FIXME - using NUM_COLUMNS may be clearer.
 			return $startcol + 23; // 23 = SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
@@ -1100,7 +1075,6 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 			$this->aIncoterm = null;
 			$this->aPort = null;
 			$this->collSupplierQuoteItemComments = null;
-			$this->lastSupplierQuoteItemCommentCriteria = null;
 
 		} // if (deep)
 	}
@@ -1126,9 +1100,17 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 		
 		$con->beginTransaction();
 		try {
-			SupplierQuoteItemPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
+			$ret = $this->preDelete($con);
+			if ($ret) {
+				SupplierQuoteItemQuery::create()
+					->filterByPrimaryKey($this->getPrimaryKey())
+					->delete($con);
+				$this->postDelete($con);
+				$con->commit();
+				$this->setDeleted(true);
+			} else {
+				$con->commit();
+			}
 		} catch (PropelException $e) {
 			$con->rollBack();
 			throw $e;
@@ -1159,10 +1141,27 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 		}
 		
 		$con->beginTransaction();
+		$isInsert = $this->isNew();
 		try {
-			$affectedRows = $this->doSave($con);
+			$ret = $this->preSave($con);
+			if ($isInsert) {
+				$ret = $ret && $this->preInsert($con);
+			} else {
+				$ret = $ret && $this->preUpdate($con);
+			}
+			if ($ret) {
+				$affectedRows = $this->doSave($con);
+				if ($isInsert) {
+					$this->postInsert($con);
+				} else {
+					$this->postUpdate($con);
+				}
+				$this->postSave($con);
+				SupplierQuoteItemPeer::addInstanceToPool($this);
+			} else {
+				$affectedRows = 0;
+			}
 			$con->commit();
-			SupplierQuoteItemPeer::addInstanceToPool($this);
 			return $affectedRows;
 		} catch (PropelException $e) {
 			$con->rollBack();
@@ -1241,13 +1240,14 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = SupplierQuoteItemPeer::doInsert($this, $con);
-					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
-										 // should always be true here (even though technically
-										 // BasePeer::doInsert() can insert multiple rows).
+					$criteria = $this->buildCriteria();
+					if ($criteria->keyContainsValue(SupplierQuoteItemPeer::ID) ) {
+						throw new PropelException('Cannot insert a value for auto-increment primary key ('.SupplierQuoteItemPeer::ID.')');
+					}
 
+					$pk = BasePeer::doInsert($criteria, $con);
+					$affectedRows += 1;
 					$this->setId($pk);  //[IMV] update autoincrement primary key
-
 					$this->setNew(false);
 				} else {
 					$affectedRows += SupplierQuoteItemPeer::doUpdate($this, $con);
@@ -1393,6 +1393,317 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Retrieves a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name name
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     mixed Value of field.
+	 */
+	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = SupplierQuoteItemPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$field = $this->getByPosition($pos);
+		return $field;
+	}
+
+	/**
+	 * Retrieves a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @return     mixed Value of field at $pos
+	 */
+	public function getByPosition($pos)
+	{
+		switch($pos) {
+			case 0:
+				return $this->getId();
+				break;
+			case 1:
+				return $this->getSupplierquoteid();
+				break;
+			case 2:
+				return $this->getProductid();
+				break;
+			case 3:
+				return $this->getReplacedproductid();
+				break;
+			case 4:
+				return $this->getClientquoteitemid();
+				break;
+			case 5:
+				return $this->getStatus();
+				break;
+			case 6:
+				return $this->getQuantity();
+				break;
+			case 7:
+				return $this->getPortid();
+				break;
+			case 8:
+				return $this->getIncotermid();
+				break;
+			case 9:
+				return $this->getPrice();
+				break;
+			case 10:
+				return $this->getSuppliercomments();
+				break;
+			case 11:
+				return $this->getDelivery();
+				break;
+			case 12:
+				return $this->getPackage();
+				break;
+			case 13:
+				return $this->getUnitlength();
+				break;
+			case 14:
+				return $this->getUnitwidth();
+				break;
+			case 15:
+				return $this->getUnitheight();
+				break;
+			case 16:
+				return $this->getUnitgrossweigth();
+				break;
+			case 17:
+				return $this->getUnitspercarton();
+				break;
+			case 18:
+				return $this->getCartons();
+				break;
+			case 19:
+				return $this->getCartonlength();
+				break;
+			case 20:
+				return $this->getCartonwidth();
+				break;
+			case 21:
+				return $this->getCartonheight();
+				break;
+			case 22:
+				return $this->getCartongrossweigth();
+				break;
+			default:
+				return null;
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Exports the object as an array.
+	 *
+	 * You can specify the key type of the array by passing one of the class
+	 * type constants.
+	 *
+	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    Defaults to BasePeer::TYPE_PHPNAME.
+	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
+	 *
+	 * @return    array an associative array containing the field names (as keys) and field values
+	 */
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	{
+		$keys = SupplierQuoteItemPeer::getFieldNames($keyType);
+		$result = array(
+			$keys[0] => $this->getId(),
+			$keys[1] => $this->getSupplierquoteid(),
+			$keys[2] => $this->getProductid(),
+			$keys[3] => $this->getReplacedproductid(),
+			$keys[4] => $this->getClientquoteitemid(),
+			$keys[5] => $this->getStatus(),
+			$keys[6] => $this->getQuantity(),
+			$keys[7] => $this->getPortid(),
+			$keys[8] => $this->getIncotermid(),
+			$keys[9] => $this->getPrice(),
+			$keys[10] => $this->getSuppliercomments(),
+			$keys[11] => $this->getDelivery(),
+			$keys[12] => $this->getPackage(),
+			$keys[13] => $this->getUnitlength(),
+			$keys[14] => $this->getUnitwidth(),
+			$keys[15] => $this->getUnitheight(),
+			$keys[16] => $this->getUnitgrossweigth(),
+			$keys[17] => $this->getUnitspercarton(),
+			$keys[18] => $this->getCartons(),
+			$keys[19] => $this->getCartonlength(),
+			$keys[20] => $this->getCartonwidth(),
+			$keys[21] => $this->getCartonheight(),
+			$keys[22] => $this->getCartongrossweigth(),
+		);
+		if ($includeForeignObjects) {
+			if (null !== $this->aSupplierQuote) {
+				$result['SupplierQuote'] = $this->aSupplierQuote->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aClientQuoteItem) {
+				$result['ClientQuoteItem'] = $this->aClientQuoteItem->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aProductRelatedByProductid) {
+				$result['ProductRelatedByProductid'] = $this->aProductRelatedByProductid->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aProductRelatedByReplacedproductid) {
+				$result['ProductRelatedByReplacedproductid'] = $this->aProductRelatedByReplacedproductid->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aIncoterm) {
+				$result['Incoterm'] = $this->aIncoterm->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aPort) {
+				$result['Port'] = $this->aPort->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Sets a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name peer name
+	 * @param      mixed $value field value
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     void
+	 */
+	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = SupplierQuoteItemPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		return $this->setByPosition($pos, $value);
+	}
+
+	/**
+	 * Sets a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @param      mixed $value field value
+	 * @return     void
+	 */
+	public function setByPosition($pos, $value)
+	{
+		switch($pos) {
+			case 0:
+				$this->setId($value);
+				break;
+			case 1:
+				$this->setSupplierquoteid($value);
+				break;
+			case 2:
+				$this->setProductid($value);
+				break;
+			case 3:
+				$this->setReplacedproductid($value);
+				break;
+			case 4:
+				$this->setClientquoteitemid($value);
+				break;
+			case 5:
+				$this->setStatus($value);
+				break;
+			case 6:
+				$this->setQuantity($value);
+				break;
+			case 7:
+				$this->setPortid($value);
+				break;
+			case 8:
+				$this->setIncotermid($value);
+				break;
+			case 9:
+				$this->setPrice($value);
+				break;
+			case 10:
+				$this->setSuppliercomments($value);
+				break;
+			case 11:
+				$this->setDelivery($value);
+				break;
+			case 12:
+				$this->setPackage($value);
+				break;
+			case 13:
+				$this->setUnitlength($value);
+				break;
+			case 14:
+				$this->setUnitwidth($value);
+				break;
+			case 15:
+				$this->setUnitheight($value);
+				break;
+			case 16:
+				$this->setUnitgrossweigth($value);
+				break;
+			case 17:
+				$this->setUnitspercarton($value);
+				break;
+			case 18:
+				$this->setCartons($value);
+				break;
+			case 19:
+				$this->setCartonlength($value);
+				break;
+			case 20:
+				$this->setCartonwidth($value);
+				break;
+			case 21:
+				$this->setCartonheight($value);
+				break;
+			case 22:
+				$this->setCartongrossweigth($value);
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Populates the object using an array.
+	 *
+	 * This is particularly useful when populating an object from one of the
+	 * request arrays (e.g. $_POST).  This method goes through the column
+	 * names, checking to see whether a matching key exists in populated
+	 * array. If so the setByName() method is called for that column.
+	 *
+	 * You can specify the key type of the array by additionally passing one
+	 * of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+	 * The default key type is the column's phpname (e.g. 'AuthorId')
+	 *
+	 * @param      array  $arr     An array to populate the object from.
+	 * @param      string $keyType The type of keys the array uses.
+	 * @return     void
+	 */
+	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
+	{
+		$keys = SupplierQuoteItemPeer::getFieldNames($keyType);
+
+		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setSupplierquoteid($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setProductid($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setReplacedproductid($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setClientquoteitemid($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setStatus($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setQuantity($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setPortid($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setIncotermid($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setPrice($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setSuppliercomments($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setDelivery($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setPackage($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setUnitlength($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setUnitwidth($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setUnitheight($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setUnitgrossweigth($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setUnitspercarton($arr[$keys[17]]);
+		if (array_key_exists($keys[18], $arr)) $this->setCartons($arr[$keys[18]]);
+		if (array_key_exists($keys[19], $arr)) $this->setCartonlength($arr[$keys[19]]);
+		if (array_key_exists($keys[20], $arr)) $this->setCartonwidth($arr[$keys[20]]);
+		if (array_key_exists($keys[21], $arr)) $this->setCartonheight($arr[$keys[21]]);
+		if (array_key_exists($keys[22], $arr)) $this->setCartongrossweigth($arr[$keys[22]]);
+	}
+
+	/**
 	 * Build a Criteria object containing the values of all modified columns in this object.
 	 *
 	 * @return     Criteria The Criteria object containing all modified values.
@@ -1439,7 +1750,6 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	public function buildPkeyCriteria()
 	{
 		$criteria = new Criteria(SupplierQuoteItemPeer::DATABASE_NAME);
-
 		$criteria->add(SupplierQuoteItemPeer::ID, $this->id);
 
 		return $criteria;
@@ -1466,6 +1776,15 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Returns true if the primary key for this object is null.
+	 * @return     boolean
+	 */
+	public function isPrimaryKeyNull()
+	{
+		return null === $this->getId();
+	}
+
+	/**
 	 * Sets contents of passed object to values from current object.
 	 *
 	 * If desired, this method can also make copies of all associated (fkey referrers)
@@ -1477,51 +1796,28 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-
 		$copyObj->setSupplierquoteid($this->supplierquoteid);
-
 		$copyObj->setProductid($this->productid);
-
 		$copyObj->setReplacedproductid($this->replacedproductid);
-
 		$copyObj->setClientquoteitemid($this->clientquoteitemid);
-
 		$copyObj->setStatus($this->status);
-
 		$copyObj->setQuantity($this->quantity);
-
 		$copyObj->setPortid($this->portid);
-
 		$copyObj->setIncotermid($this->incotermid);
-
 		$copyObj->setPrice($this->price);
-
 		$copyObj->setSuppliercomments($this->suppliercomments);
-
 		$copyObj->setDelivery($this->delivery);
-
 		$copyObj->setPackage($this->package);
-
 		$copyObj->setUnitlength($this->unitlength);
-
 		$copyObj->setUnitwidth($this->unitwidth);
-
 		$copyObj->setUnitheight($this->unitheight);
-
 		$copyObj->setUnitgrossweigth($this->unitgrossweigth);
-
 		$copyObj->setUnitspercarton($this->unitspercarton);
-
 		$copyObj->setCartons($this->cartons);
-
 		$copyObj->setCartonlength($this->cartonlength);
-
 		$copyObj->setCartonwidth($this->cartonwidth);
-
 		$copyObj->setCartonheight($this->cartonheight);
-
 		$copyObj->setCartongrossweigth($this->cartongrossweigth);
-
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1538,9 +1834,7 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 
 
 		$copyObj->setNew(true);
-
 		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
-
 	}
 
 	/**
@@ -1618,7 +1912,7 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	public function getSupplierQuote(PropelPDO $con = null)
 	{
 		if ($this->aSupplierQuote === null && ($this->supplierquoteid !== null)) {
-			$this->aSupplierQuote = SupplierQuotePeer::retrieveByPK($this->supplierquoteid, $con);
+			$this->aSupplierQuote = SupplierQuoteQuery::create()->findPk($this->supplierquoteid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1667,7 +1961,7 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	public function getClientQuoteItem(PropelPDO $con = null)
 	{
 		if ($this->aClientQuoteItem === null && ($this->clientquoteitemid !== null)) {
-			$this->aClientQuoteItem = ClientQuoteItemPeer::retrieveByPK($this->clientquoteitemid, $con);
+			$this->aClientQuoteItem = ClientQuoteItemQuery::create()->findPk($this->clientquoteitemid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1716,7 +2010,7 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	public function getProductRelatedByProductid(PropelPDO $con = null)
 	{
 		if ($this->aProductRelatedByProductid === null && ($this->productid !== null)) {
-			$this->aProductRelatedByProductid = ProductPeer::retrieveByPK($this->productid, $con);
+			$this->aProductRelatedByProductid = ProductQuery::create()->findPk($this->productid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1765,7 +2059,7 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	public function getProductRelatedByReplacedproductid(PropelPDO $con = null)
 	{
 		if ($this->aProductRelatedByReplacedproductid === null && ($this->replacedproductid !== null)) {
-			$this->aProductRelatedByReplacedproductid = ProductPeer::retrieveByPK($this->replacedproductid, $con);
+			$this->aProductRelatedByReplacedproductid = ProductQuery::create()->findPk($this->replacedproductid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1814,7 +2108,7 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	public function getIncoterm(PropelPDO $con = null)
 	{
 		if ($this->aIncoterm === null && ($this->incotermid !== null)) {
-			$this->aIncoterm = IncotermPeer::retrieveByPK($this->incotermid, $con);
+			$this->aIncoterm = IncotermQuery::create()->findPk($this->incotermid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1863,7 +2157,7 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	public function getPort(PropelPDO $con = null)
 	{
 		if ($this->aPort === null && ($this->portid !== null)) {
-			$this->aPort = PortPeer::retrieveByPK($this->portid, $con);
+			$this->aPort = PortQuery::create()->findPk($this->portid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1876,7 +2170,7 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collSupplierQuoteItemComments collection (array).
+	 * Clears out the collSupplierQuoteItemComments collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -1890,7 +2184,7 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collSupplierQuoteItemComments collection (array).
+	 * Initializes the collSupplierQuoteItemComments collection.
 	 *
 	 * By default this just sets the collSupplierQuoteItemComments collection to an empty array (like clearcollSupplierQuoteItemComments());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -1900,59 +2194,40 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	 */
 	public function initSupplierQuoteItemComments()
 	{
-		$this->collSupplierQuoteItemComments = array();
+		$this->collSupplierQuoteItemComments = new PropelObjectCollection();
+		$this->collSupplierQuoteItemComments->setModel('SupplierQuoteItemComment');
 	}
 
 	/**
 	 * Gets an array of SupplierQuoteItemComment objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this SupplierQuoteItem has previously been saved, it will retrieve
-	 * related SupplierQuoteItemComments from storage. If this SupplierQuoteItem is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this SupplierQuoteItem is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array SupplierQuoteItemComment[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array SupplierQuoteItemComment[] List of SupplierQuoteItemComment objects
 	 * @throws     PropelException
 	 */
 	public function getSupplierQuoteItemComments($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuoteItemPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collSupplierQuoteItemComments === null) {
-			if ($this->isNew()) {
-			   $this->collSupplierQuoteItemComments = array();
+		if(null === $this->collSupplierQuoteItemComments || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierQuoteItemComments) {
+				// return empty collection
+				$this->initSupplierQuoteItemComments();
 			} else {
-
-				$criteria->add(SupplierQuoteItemCommentPeer::SUPPLIERQUOTEITEMID, $this->id);
-
-				SupplierQuoteItemCommentPeer::addSelectColumns($criteria);
-				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(SupplierQuoteItemCommentPeer::SUPPLIERQUOTEITEMID, $this->id);
-
-				SupplierQuoteItemCommentPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSupplierQuoteItemCommentCriteria) || !$this->lastSupplierQuoteItemCommentCriteria->equals($criteria)) {
-					$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelect($criteria, $con);
+				$collSupplierQuoteItemComments = SupplierQuoteItemCommentQuery::create(null, $criteria)
+					->filterBySupplierQuoteItem($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collSupplierQuoteItemComments;
 				}
+				$this->collSupplierQuoteItemComments = $collSupplierQuoteItemComments;
 			}
 		}
-		$this->lastSupplierQuoteItemCommentCriteria = $criteria;
 		return $this->collSupplierQuoteItemComments;
 	}
 
@@ -1967,48 +2242,21 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	 */
 	public function countSupplierQuoteItemComments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuoteItemPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collSupplierQuoteItemComments === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collSupplierQuoteItemComments || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierQuoteItemComments) {
+				return 0;
 			} else {
-
-				$criteria->add(SupplierQuoteItemCommentPeer::SUPPLIERQUOTEITEMID, $this->id);
-
-				$count = SupplierQuoteItemCommentPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(SupplierQuoteItemCommentPeer::SUPPLIERQUOTEITEMID, $this->id);
-
-				if (!isset($this->lastSupplierQuoteItemCommentCriteria) || !$this->lastSupplierQuoteItemCommentCriteria->equals($criteria)) {
-					$count = SupplierQuoteItemCommentPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collSupplierQuoteItemComments);
+				$query = SupplierQuoteItemCommentQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collSupplierQuoteItemComments);
+				return $query
+					->filterBySupplierQuoteItem($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collSupplierQuoteItemComments);
 		}
-		$this->lastSupplierQuoteItemCommentCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -2024,8 +2272,8 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 		if ($this->collSupplierQuoteItemComments === null) {
 			$this->initSupplierQuoteItemComments();
 		}
-		if (!in_array($l, $this->collSupplierQuoteItemComments, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collSupplierQuoteItemComments, $l);
+		if (!$this->collSupplierQuoteItemComments->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collSupplierQuoteItemComments[]= $l;
 			$l->setSupplierQuoteItem($this);
 		}
 	}
@@ -2041,40 +2289,18 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in SupplierQuoteItem.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItemComment[] List of SupplierQuoteItemComment objects
 	 */
 	public function getSupplierQuoteItemCommentsJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuoteItemPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemCommentQuery::create(null, $criteria);
+		$query->joinWith('User', $join_behavior);
 
-		if ($this->collSupplierQuoteItemComments === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItemComments = array();
-			} else {
-
-				$criteria->add(SupplierQuoteItemCommentPeer::SUPPLIERQUOTEITEMID, $this->id);
-
-				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelectJoinUser($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemCommentPeer::SUPPLIERQUOTEITEMID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCommentCriteria) || !$this->lastSupplierQuoteItemCommentCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelectJoinUser($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCommentCriteria = $criteria;
-
-		return $this->collSupplierQuoteItemComments;
+		return $this->getSupplierQuoteItemComments($query, $con);
 	}
 
 
@@ -2088,40 +2314,54 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in SupplierQuoteItem.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItemComment[] List of SupplierQuoteItemComment objects
 	 */
 	public function getSupplierQuoteItemCommentsJoinSupplier($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(SupplierQuoteItemPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemCommentQuery::create(null, $criteria);
+		$query->joinWith('Supplier', $join_behavior);
 
-		if ($this->collSupplierQuoteItemComments === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItemComments = array();
-			} else {
+		return $this->getSupplierQuoteItemComments($query, $con);
+	}
 
-				$criteria->add(SupplierQuoteItemCommentPeer::SUPPLIERQUOTEITEMID, $this->id);
-
-				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemCommentPeer::SUPPLIERQUOTEITEMID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCommentCriteria) || !$this->lastSupplierQuoteItemCommentCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItemComments = SupplierQuoteItemCommentPeer::doSelectJoinSupplier($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCommentCriteria = $criteria;
-
-		return $this->collSupplierQuoteItemComments;
+	/**
+	 * Clears the current object and sets all attributes to their default values
+	 */
+	public function clear()
+	{
+		$this->id = null;
+		$this->supplierquoteid = null;
+		$this->productid = null;
+		$this->replacedproductid = null;
+		$this->clientquoteitemid = null;
+		$this->status = null;
+		$this->quantity = null;
+		$this->portid = null;
+		$this->incotermid = null;
+		$this->price = null;
+		$this->suppliercomments = null;
+		$this->delivery = null;
+		$this->package = null;
+		$this->unitlength = null;
+		$this->unitwidth = null;
+		$this->unitheight = null;
+		$this->unitgrossweigth = null;
+		$this->unitspercarton = null;
+		$this->cartons = null;
+		$this->cartonlength = null;
+		$this->cartonwidth = null;
+		$this->cartonheight = null;
+		$this->cartongrossweigth = null;
+		$this->alreadyInSave = false;
+		$this->alreadyInValidation = false;
+		$this->clearAllReferences();
+		$this->resetModified();
+		$this->setNew(true);
+		$this->setDeleted(false);
 	}
 
 	/**
@@ -2144,12 +2384,31 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent {
 		} // if ($deep)
 
 		$this->collSupplierQuoteItemComments = null;
-			$this->aSupplierQuote = null;
-			$this->aClientQuoteItem = null;
-			$this->aProductRelatedByProductid = null;
-			$this->aProductRelatedByReplacedproductid = null;
-			$this->aIncoterm = null;
-			$this->aPort = null;
+		$this->aSupplierQuote = null;
+		$this->aClientQuoteItem = null;
+		$this->aProductRelatedByProductid = null;
+		$this->aProductRelatedByReplacedproductid = null;
+		$this->aIncoterm = null;
+		$this->aPort = null;
+	}
+
+	/**
+	 * Catches calls to virtual methods
+	 */
+	public function __call($name, $params)
+	{
+		if (preg_match('/get(\w+)/', $name, $matches)) {
+			$virtualColumn = $matches[1];
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+			// no lcfirst in php<5.3...
+			$virtualColumn[0] = strtolower($virtualColumn[0]);
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+		}
+		return parent::__call($name, $params);
 	}
 
 } // BaseSupplierQuoteItem

@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'affiliates_affiliateInfo' table.
  *
  * Informacion del afiliado
  *
- * @package    affiliates.classes.om
+ * @package    propel.generator.affiliates.classes.om
  */
 abstract class BaseAffiliateInfoPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseAffiliateInfoPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'affiliates_affiliateInfo';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'AffiliateInfo';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'affiliates.classes.AffiliateInfo';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'AffiliateInfoTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 9;
 
@@ -59,11 +66,6 @@ abstract class BaseAffiliateInfoPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -75,6 +77,7 @@ abstract class BaseAffiliateInfoPeer {
 		BasePeer::TYPE_PHPNAME => array ('Affiliateid', 'Affiliateinternalnumber', 'Address', 'Phone', 'Email', 'Contact', 'Contactemail', 'Web', 'Memo', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('affiliateid', 'affiliateinternalnumber', 'address', 'phone', 'email', 'contact', 'contactemail', 'web', 'memo', ),
 		BasePeer::TYPE_COLNAME => array (self::AFFILIATEID, self::AFFILIATEINTERNALNUMBER, self::ADDRESS, self::PHONE, self::EMAIL, self::CONTACT, self::CONTACTEMAIL, self::WEB, self::MEMO, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('AFFILIATEID', 'AFFILIATEINTERNALNUMBER', 'ADDRESS', 'PHONE', 'EMAIL', 'CONTACT', 'CONTACTEMAIL', 'WEB', 'MEMO', ),
 		BasePeer::TYPE_FIELDNAME => array ('affiliateId', 'affiliateInternalNumber', 'address', 'phone', 'email', 'contact', 'contactEmail', 'web', 'memo', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
@@ -89,21 +92,11 @@ abstract class BaseAffiliateInfoPeer {
 		BasePeer::TYPE_PHPNAME => array ('Affiliateid' => 0, 'Affiliateinternalnumber' => 1, 'Address' => 2, 'Phone' => 3, 'Email' => 4, 'Contact' => 5, 'Contactemail' => 6, 'Web' => 7, 'Memo' => 8, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('affiliateid' => 0, 'affiliateinternalnumber' => 1, 'address' => 2, 'phone' => 3, 'email' => 4, 'contact' => 5, 'contactemail' => 6, 'web' => 7, 'memo' => 8, ),
 		BasePeer::TYPE_COLNAME => array (self::AFFILIATEID => 0, self::AFFILIATEINTERNALNUMBER => 1, self::ADDRESS => 2, self::PHONE => 3, self::EMAIL => 4, self::CONTACT => 5, self::CONTACTEMAIL => 6, self::WEB => 7, self::MEMO => 8, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('AFFILIATEID' => 0, 'AFFILIATEINTERNALNUMBER' => 1, 'ADDRESS' => 2, 'PHONE' => 3, 'EMAIL' => 4, 'CONTACT' => 5, 'CONTACTEMAIL' => 6, 'WEB' => 7, 'MEMO' => 8, ),
 		BasePeer::TYPE_FIELDNAME => array ('affiliateId' => 0, 'affiliateInternalNumber' => 1, 'address' => 2, 'phone' => 3, 'email' => 4, 'contact' => 5, 'contactEmail' => 6, 'web' => 7, 'memo' => 8, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new AffiliateInfoMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -165,31 +158,34 @@ abstract class BaseAffiliateInfoPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(AffiliateInfoPeer::AFFILIATEID);
-
-		$criteria->addSelectColumn(AffiliateInfoPeer::AFFILIATEINTERNALNUMBER);
-
-		$criteria->addSelectColumn(AffiliateInfoPeer::ADDRESS);
-
-		$criteria->addSelectColumn(AffiliateInfoPeer::PHONE);
-
-		$criteria->addSelectColumn(AffiliateInfoPeer::EMAIL);
-
-		$criteria->addSelectColumn(AffiliateInfoPeer::CONTACT);
-
-		$criteria->addSelectColumn(AffiliateInfoPeer::CONTACTEMAIL);
-
-		$criteria->addSelectColumn(AffiliateInfoPeer::WEB);
-
-		$criteria->addSelectColumn(AffiliateInfoPeer::MEMO);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(AffiliateInfoPeer::AFFILIATEID);
+			$criteria->addSelectColumn(AffiliateInfoPeer::AFFILIATEINTERNALNUMBER);
+			$criteria->addSelectColumn(AffiliateInfoPeer::ADDRESS);
+			$criteria->addSelectColumn(AffiliateInfoPeer::PHONE);
+			$criteria->addSelectColumn(AffiliateInfoPeer::EMAIL);
+			$criteria->addSelectColumn(AffiliateInfoPeer::CONTACT);
+			$criteria->addSelectColumn(AffiliateInfoPeer::CONTACTEMAIL);
+			$criteria->addSelectColumn(AffiliateInfoPeer::WEB);
+			$criteria->addSelectColumn(AffiliateInfoPeer::MEMO);
+		} else {
+			$criteria->addSelectColumn($alias . '.AFFILIATEID');
+			$criteria->addSelectColumn($alias . '.AFFILIATEINTERNALNUMBER');
+			$criteria->addSelectColumn($alias . '.ADDRESS');
+			$criteria->addSelectColumn($alias . '.PHONE');
+			$criteria->addSelectColumn($alias . '.EMAIL');
+			$criteria->addSelectColumn($alias . '.CONTACT');
+			$criteria->addSelectColumn($alias . '.CONTACTEMAIL');
+			$criteria->addSelectColumn($alias . '.WEB');
+			$criteria->addSelectColumn($alias . '.MEMO');
+		}
 	}
 
 	/**
@@ -377,6 +373,14 @@ abstract class BaseAffiliateInfoPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to affiliates_affiliateInfo
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -389,12 +393,26 @@ abstract class BaseAffiliateInfoPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -407,18 +425,16 @@ abstract class BaseAffiliateInfoPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = AffiliateInfoPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = AffiliateInfoPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = AffiliateInfoPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = AffiliateInfoPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -427,6 +443,31 @@ abstract class BaseAffiliateInfoPeer {
 		}
 		$stmt->closeCursor();
 		return $results;
+	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (AffiliateInfo object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = AffiliateInfoPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = AffiliateInfoPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + AffiliateInfoPeer::NUM_COLUMNS;
+		} else {
+			$cls = AffiliateInfoPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			AffiliateInfoPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
 	}
 	/**
 	 * Returns the TableMap related to this peer.
@@ -441,17 +482,31 @@ abstract class BaseAffiliateInfoPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseAffiliateInfoPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseAffiliateInfoPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new AffiliateInfoTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return AffiliateInfoPeer::CLASS_DEFAULT;
+		return $withPrefix ? AffiliateInfoPeer::CLASS_DEFAULT : AffiliateInfoPeer::OM_CLASS;
 	}
 
 	/**
@@ -514,7 +569,12 @@ abstract class BaseAffiliateInfoPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(AffiliateInfoPeer::AFFILIATEID);
-			$selectCriteria->add(AffiliateInfoPeer::AFFILIATEID, $criteria->remove(AffiliateInfoPeer::AFFILIATEID), $comparison);
+			$value = $criteria->remove(AffiliateInfoPeer::AFFILIATEID);
+			if ($value) {
+				$selectCriteria->add(AffiliateInfoPeer::AFFILIATEID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(AffiliateInfoPeer::TABLE_NAME);
+			}
 
 		} else { // $values is AffiliateInfo object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -542,7 +602,12 @@ abstract class BaseAffiliateInfoPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(AffiliateInfoPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(AffiliateInfoPeer::TABLE_NAME, $con, AffiliateInfoPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			AffiliateInfoPeer::clearInstancePool();
+			AffiliateInfoPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -573,24 +638,18 @@ abstract class BaseAffiliateInfoPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			AffiliateInfoPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof AffiliateInfo) {
+		} elseif ($values instanceof AffiliateInfo) { // it's a model object
 			// invalidate the cache for this single object
 			AffiliateInfoPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(AffiliateInfoPeer::AFFILIATEID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				AffiliateInfoPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -606,7 +665,7 @@ abstract class BaseAffiliateInfoPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			AffiliateInfoPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -705,14 +764,7 @@ abstract class BaseAffiliateInfoPeer {
 
 } // BaseAffiliateInfoPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the AffiliateInfoPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the AffiliateInfoPeer class:
-//
-// Propel::getDatabaseMap(AffiliateInfoPeer::DATABASE_NAME)->addTableBuilder(AffiliateInfoPeer::TABLE_NAME, AffiliateInfoPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseAffiliateInfoPeer::DATABASE_NAME)->addTableBuilder(BaseAffiliateInfoPeer::TABLE_NAME, BaseAffiliateInfoPeer::getMapBuilder());
+BaseAffiliateInfoPeer::buildTableMap();
 

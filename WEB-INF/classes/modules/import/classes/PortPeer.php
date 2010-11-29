@@ -108,7 +108,6 @@ class PortPeer extends BasePortPeer {
       $perPage = 	PortPeer::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("propel/util/PropelPager.php");
     $cond = new Criteria();
     $cond->add(PortPeer::ACTIVE, '1');
     $pager = new PropelPager($cond,"PortPeer", "doSelect",$page,$perPage);

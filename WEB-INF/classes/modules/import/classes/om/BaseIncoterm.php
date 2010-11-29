@@ -1,14 +1,20 @@
 <?php
 
+
 /**
  * Base class that represents a row from the 'import_incoterm' table.
  *
  * Incoterm
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
-abstract class BaseIncoterm extends BaseObject  implements Persistent {
+abstract class BaseIncoterm extends BaseObject  implements Persistent
+{
 
+	/**
+	 * Peer class name
+	 */
+  const PEER = 'IncotermPeer';
 
 	/**
 	 * The Peer class.
@@ -48,29 +54,14 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	protected $collSuppliers;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collSuppliers.
-	 */
-	private $lastSupplierCriteria = null;
-
-	/**
 	 * @var        array SupplierQuoteItem[] Collection to store aggregation of SupplierQuoteItem objects.
 	 */
 	protected $collSupplierQuoteItems;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collSupplierQuoteItems.
-	 */
-	private $lastSupplierQuoteItemCriteria = null;
-
-	/**
 	 * @var        array SupplierPurchaseOrderItem[] Collection to store aggregation of SupplierPurchaseOrderItem objects.
 	 */
 	protected $collSupplierPurchaseOrderItems;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collSupplierPurchaseOrderItems.
-	 */
-	private $lastSupplierPurchaseOrderItemCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -85,26 +76,6 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * @var        boolean
 	 */
 	protected $alreadyInValidation = false;
-
-	/**
-	 * Initializes internal state of BaseIncoterm object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
-
-	/**
-	 * Applies default values to this object.
-	 * This method should be called from the object's constructor (or
-	 * equivalent initialization method).
-	 * @see        __construct()
-	 */
-	public function applyDefaultValues()
-	{
-	}
 
 	/**
 	 * Get the [id] column value.
@@ -236,11 +207,6 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			// First, ensure that we don't have any columns that have been modified which aren't default columns.
-			if (array_diff($this->modifiedColumns, array())) {
-				return false;
-			}
-
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -275,7 +241,6 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 				$this->ensureConsistency();
 			}
 
-			// FIXME - using NUM_COLUMNS may be clearer.
 			return $startcol + 4; // 4 = IncotermPeer::NUM_COLUMNS - IncotermPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
@@ -339,13 +304,10 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->collSuppliers = null;
-			$this->lastSupplierCriteria = null;
 
 			$this->collSupplierQuoteItems = null;
-			$this->lastSupplierQuoteItemCriteria = null;
 
 			$this->collSupplierPurchaseOrderItems = null;
-			$this->lastSupplierPurchaseOrderItemCriteria = null;
 
 		} // if (deep)
 	}
@@ -371,9 +333,17 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 		
 		$con->beginTransaction();
 		try {
-			IncotermPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
+			$ret = $this->preDelete($con);
+			if ($ret) {
+				IncotermQuery::create()
+					->filterByPrimaryKey($this->getPrimaryKey())
+					->delete($con);
+				$this->postDelete($con);
+				$con->commit();
+				$this->setDeleted(true);
+			} else {
+				$con->commit();
+			}
 		} catch (PropelException $e) {
 			$con->rollBack();
 			throw $e;
@@ -404,10 +374,27 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 		}
 		
 		$con->beginTransaction();
+		$isInsert = $this->isNew();
 		try {
-			$affectedRows = $this->doSave($con);
+			$ret = $this->preSave($con);
+			if ($isInsert) {
+				$ret = $ret && $this->preInsert($con);
+			} else {
+				$ret = $ret && $this->preUpdate($con);
+			}
+			if ($ret) {
+				$affectedRows = $this->doSave($con);
+				if ($isInsert) {
+					$this->postInsert($con);
+				} else {
+					$this->postUpdate($con);
+				}
+				$this->postSave($con);
+				IncotermPeer::addInstanceToPool($this);
+			} else {
+				$affectedRows = 0;
+			}
 			$con->commit();
-			IncotermPeer::addInstanceToPool($this);
 			return $affectedRows;
 		} catch (PropelException $e) {
 			$con->rollBack();
@@ -439,16 +426,17 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = IncotermPeer::doInsert($this, $con);
-					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
-										 // should always be true here (even though technically
-										 // BasePeer::doInsert() can insert multiple rows).
+					$criteria = $this->buildCriteria();
+					if ($criteria->keyContainsValue(IncotermPeer::ID) ) {
+						throw new PropelException('Cannot insert a value for auto-increment primary key ('.IncotermPeer::ID.')');
+					}
 
+					$pk = BasePeer::doInsert($criteria, $con);
+					$affectedRows = 1;
 					$this->setId($pk);  //[IMV] update autoincrement primary key
-
 					$this->setNew(false);
 				} else {
-					$affectedRows += IncotermPeer::doUpdate($this, $con);
+					$affectedRows = IncotermPeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
@@ -581,6 +569,144 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Retrieves a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name name
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     mixed Value of field.
+	 */
+	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = IncotermPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$field = $this->getByPosition($pos);
+		return $field;
+	}
+
+	/**
+	 * Retrieves a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @return     mixed Value of field at $pos
+	 */
+	public function getByPosition($pos)
+	{
+		switch($pos) {
+			case 0:
+				return $this->getId();
+				break;
+			case 1:
+				return $this->getName();
+				break;
+			case 2:
+				return $this->getDescription();
+				break;
+			case 3:
+				return $this->getActive();
+				break;
+			default:
+				return null;
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Exports the object as an array.
+	 *
+	 * You can specify the key type of the array by passing one of the class
+	 * type constants.
+	 *
+	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    Defaults to BasePeer::TYPE_PHPNAME.
+	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 *
+	 * @return    array an associative array containing the field names (as keys) and field values
+	 */
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true)
+	{
+		$keys = IncotermPeer::getFieldNames($keyType);
+		$result = array(
+			$keys[0] => $this->getId(),
+			$keys[1] => $this->getName(),
+			$keys[2] => $this->getDescription(),
+			$keys[3] => $this->getActive(),
+		);
+		return $result;
+	}
+
+	/**
+	 * Sets a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name peer name
+	 * @param      mixed $value field value
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     void
+	 */
+	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = IncotermPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		return $this->setByPosition($pos, $value);
+	}
+
+	/**
+	 * Sets a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @param      mixed $value field value
+	 * @return     void
+	 */
+	public function setByPosition($pos, $value)
+	{
+		switch($pos) {
+			case 0:
+				$this->setId($value);
+				break;
+			case 1:
+				$this->setName($value);
+				break;
+			case 2:
+				$this->setDescription($value);
+				break;
+			case 3:
+				$this->setActive($value);
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Populates the object using an array.
+	 *
+	 * This is particularly useful when populating an object from one of the
+	 * request arrays (e.g. $_POST).  This method goes through the column
+	 * names, checking to see whether a matching key exists in populated
+	 * array. If so the setByName() method is called for that column.
+	 *
+	 * You can specify the key type of the array by additionally passing one
+	 * of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+	 * The default key type is the column's phpname (e.g. 'AuthorId')
+	 *
+	 * @param      array  $arr     An array to populate the object from.
+	 * @param      string $keyType The type of keys the array uses.
+	 * @return     void
+	 */
+	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
+	{
+		$keys = IncotermPeer::getFieldNames($keyType);
+
+		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setDescription($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setActive($arr[$keys[3]]);
+	}
+
+	/**
 	 * Build a Criteria object containing the values of all modified columns in this object.
 	 *
 	 * @return     Criteria The Criteria object containing all modified values.
@@ -608,7 +734,6 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	public function buildPkeyCriteria()
 	{
 		$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-
 		$criteria->add(IncotermPeer::ID, $this->id);
 
 		return $criteria;
@@ -635,6 +760,15 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Returns true if the primary key for this object is null.
+	 * @return     boolean
+	 */
+	public function isPrimaryKeyNull()
+	{
+		return null === $this->getId();
+	}
+
+	/**
 	 * Sets contents of passed object to values from current object.
 	 *
 	 * If desired, this method can also make copies of all associated (fkey referrers)
@@ -646,13 +780,9 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-
 		$copyObj->setName($this->name);
-
 		$copyObj->setDescription($this->description);
-
 		$copyObj->setActive($this->active);
-
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -681,9 +811,7 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 
 
 		$copyObj->setNew(true);
-
 		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
-
 	}
 
 	/**
@@ -725,7 +853,7 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collSuppliers collection (array).
+	 * Clears out the collSuppliers collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -739,7 +867,7 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collSuppliers collection (array).
+	 * Initializes the collSuppliers collection.
 	 *
 	 * By default this just sets the collSuppliers collection to an empty array (like clearcollSuppliers());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -749,59 +877,40 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 */
 	public function initSuppliers()
 	{
-		$this->collSuppliers = array();
+		$this->collSuppliers = new PropelObjectCollection();
+		$this->collSuppliers->setModel('Supplier');
 	}
 
 	/**
 	 * Gets an array of Supplier objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this Incoterm has previously been saved, it will retrieve
-	 * related Suppliers from storage. If this Incoterm is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Incoterm is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array Supplier[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array Supplier[] List of Supplier objects
 	 * @throws     PropelException
 	 */
 	public function getSuppliers($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collSuppliers === null) {
-			if ($this->isNew()) {
-			   $this->collSuppliers = array();
+		if(null === $this->collSuppliers || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSuppliers) {
+				// return empty collection
+				$this->initSuppliers();
 			} else {
-
-				$criteria->add(SupplierPeer::DEFAULTINCOTERMID, $this->id);
-
-				SupplierPeer::addSelectColumns($criteria);
-				$this->collSuppliers = SupplierPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(SupplierPeer::DEFAULTINCOTERMID, $this->id);
-
-				SupplierPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSupplierCriteria) || !$this->lastSupplierCriteria->equals($criteria)) {
-					$this->collSuppliers = SupplierPeer::doSelect($criteria, $con);
+				$collSuppliers = SupplierQuery::create(null, $criteria)
+					->filterByIncoterm($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collSuppliers;
 				}
+				$this->collSuppliers = $collSuppliers;
 			}
 		}
-		$this->lastSupplierCriteria = $criteria;
 		return $this->collSuppliers;
 	}
 
@@ -816,48 +925,21 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 */
 	public function countSuppliers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collSuppliers === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collSuppliers || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSuppliers) {
+				return 0;
 			} else {
-
-				$criteria->add(SupplierPeer::DEFAULTINCOTERMID, $this->id);
-
-				$count = SupplierPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(SupplierPeer::DEFAULTINCOTERMID, $this->id);
-
-				if (!isset($this->lastSupplierCriteria) || !$this->lastSupplierCriteria->equals($criteria)) {
-					$count = SupplierPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collSuppliers);
+				$query = SupplierQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collSuppliers);
+				return $query
+					->filterByIncoterm($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collSuppliers);
 		}
-		$this->lastSupplierCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -873,8 +955,8 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 		if ($this->collSuppliers === null) {
 			$this->initSuppliers();
 		}
-		if (!in_array($l, $this->collSuppliers, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collSuppliers, $l);
+		if (!$this->collSuppliers->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collSuppliers[]= $l;
 			$l->setIncoterm($this);
 		}
 	}
@@ -890,44 +972,22 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array Supplier[] List of Supplier objects
 	 */
 	public function getSuppliersJoinPort($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuery::create(null, $criteria);
+		$query->joinWith('Port', $join_behavior);
 
-		if ($this->collSuppliers === null) {
-			if ($this->isNew()) {
-				$this->collSuppliers = array();
-			} else {
-
-				$criteria->add(SupplierPeer::DEFAULTINCOTERMID, $this->id);
-
-				$this->collSuppliers = SupplierPeer::doSelectJoinPort($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPeer::DEFAULTINCOTERMID, $this->id);
-
-			if (!isset($this->lastSupplierCriteria) || !$this->lastSupplierCriteria->equals($criteria)) {
-				$this->collSuppliers = SupplierPeer::doSelectJoinPort($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierCriteria = $criteria;
-
-		return $this->collSuppliers;
+		return $this->getSuppliers($query, $con);
 	}
 
 	/**
-	 * Clears out the collSupplierQuoteItems collection (array).
+	 * Clears out the collSupplierQuoteItems collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -941,7 +1001,7 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collSupplierQuoteItems collection (array).
+	 * Initializes the collSupplierQuoteItems collection.
 	 *
 	 * By default this just sets the collSupplierQuoteItems collection to an empty array (like clearcollSupplierQuoteItems());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -951,59 +1011,40 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 */
 	public function initSupplierQuoteItems()
 	{
-		$this->collSupplierQuoteItems = array();
+		$this->collSupplierQuoteItems = new PropelObjectCollection();
+		$this->collSupplierQuoteItems->setModel('SupplierQuoteItem');
 	}
 
 	/**
 	 * Gets an array of SupplierQuoteItem objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this Incoterm has previously been saved, it will retrieve
-	 * related SupplierQuoteItems from storage. If this Incoterm is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Incoterm is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array SupplierQuoteItem[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array SupplierQuoteItem[] List of SupplierQuoteItem objects
 	 * @throws     PropelException
 	 */
 	public function getSupplierQuoteItems($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-			   $this->collSupplierQuoteItems = array();
+		if(null === $this->collSupplierQuoteItems || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierQuoteItems) {
+				// return empty collection
+				$this->initSupplierQuoteItems();
 			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-				SupplierQuoteItemPeer::addSelectColumns($criteria);
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-				SupplierQuoteItemPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-					$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelect($criteria, $con);
+				$collSupplierQuoteItems = SupplierQuoteItemQuery::create(null, $criteria)
+					->filterByIncoterm($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collSupplierQuoteItems;
 				}
+				$this->collSupplierQuoteItems = $collSupplierQuoteItems;
 			}
 		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
 		return $this->collSupplierQuoteItems;
 	}
 
@@ -1018,48 +1059,21 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 */
 	public function countSupplierQuoteItems(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collSupplierQuoteItems || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierQuoteItems) {
+				return 0;
 			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-				$count = SupplierQuoteItemPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-				if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-					$count = SupplierQuoteItemPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collSupplierQuoteItems);
+				$query = SupplierQuoteItemQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collSupplierQuoteItems);
+				return $query
+					->filterByIncoterm($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collSupplierQuoteItems);
 		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -1075,8 +1089,8 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 		if ($this->collSupplierQuoteItems === null) {
 			$this->initSupplierQuoteItems();
 		}
-		if (!in_array($l, $this->collSupplierQuoteItems, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collSupplierQuoteItems, $l);
+		if (!$this->collSupplierQuoteItems->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collSupplierQuoteItems[]= $l;
 			$l->setIncoterm($this);
 		}
 	}
@@ -1092,40 +1106,18 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItem[] List of SupplierQuoteItem objects
 	 */
 	public function getSupplierQuoteItemsJoinSupplierQuote($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemQuery::create(null, $criteria);
+		$query->joinWith('SupplierQuote', $join_behavior);
 
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItems = array();
-			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinSupplierQuote($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinSupplierQuote($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
-
-		return $this->collSupplierQuoteItems;
+		return $this->getSupplierQuoteItems($query, $con);
 	}
 
 
@@ -1139,40 +1131,18 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItem[] List of SupplierQuoteItem objects
 	 */
 	public function getSupplierQuoteItemsJoinClientQuoteItem($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemQuery::create(null, $criteria);
+		$query->joinWith('ClientQuoteItem', $join_behavior);
 
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItems = array();
-			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinClientQuoteItem($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinClientQuoteItem($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
-
-		return $this->collSupplierQuoteItems;
+		return $this->getSupplierQuoteItems($query, $con);
 	}
 
 
@@ -1186,40 +1156,18 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItem[] List of SupplierQuoteItem objects
 	 */
 	public function getSupplierQuoteItemsJoinProductRelatedByProductid($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemQuery::create(null, $criteria);
+		$query->joinWith('ProductRelatedByProductid', $join_behavior);
 
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItems = array();
-			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinProductRelatedByProductid($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinProductRelatedByProductid($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
-
-		return $this->collSupplierQuoteItems;
+		return $this->getSupplierQuoteItems($query, $con);
 	}
 
 
@@ -1233,40 +1181,18 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItem[] List of SupplierQuoteItem objects
 	 */
 	public function getSupplierQuoteItemsJoinProductRelatedByReplacedproductid($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemQuery::create(null, $criteria);
+		$query->joinWith('ProductRelatedByReplacedproductid', $join_behavior);
 
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItems = array();
-			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinProductRelatedByReplacedproductid($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinProductRelatedByReplacedproductid($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
-
-		return $this->collSupplierQuoteItems;
+		return $this->getSupplierQuoteItems($query, $con);
 	}
 
 
@@ -1280,44 +1206,22 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierQuoteItem[] List of SupplierQuoteItem objects
 	 */
 	public function getSupplierQuoteItemsJoinPort($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierQuoteItemQuery::create(null, $criteria);
+		$query->joinWith('Port', $join_behavior);
 
-		if ($this->collSupplierQuoteItems === null) {
-			if ($this->isNew()) {
-				$this->collSupplierQuoteItems = array();
-			} else {
-
-				$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierQuoteItemPeer::INCOTERMID, $this->id);
-
-			if (!isset($this->lastSupplierQuoteItemCriteria) || !$this->lastSupplierQuoteItemCriteria->equals($criteria)) {
-				$this->collSupplierQuoteItems = SupplierQuoteItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierQuoteItemCriteria = $criteria;
-
-		return $this->collSupplierQuoteItems;
+		return $this->getSupplierQuoteItems($query, $con);
 	}
 
 	/**
-	 * Clears out the collSupplierPurchaseOrderItems collection (array).
+	 * Clears out the collSupplierPurchaseOrderItems collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -1331,7 +1235,7 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collSupplierPurchaseOrderItems collection (array).
+	 * Initializes the collSupplierPurchaseOrderItems collection.
 	 *
 	 * By default this just sets the collSupplierPurchaseOrderItems collection to an empty array (like clearcollSupplierPurchaseOrderItems());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -1341,59 +1245,40 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 */
 	public function initSupplierPurchaseOrderItems()
 	{
-		$this->collSupplierPurchaseOrderItems = array();
+		$this->collSupplierPurchaseOrderItems = new PropelObjectCollection();
+		$this->collSupplierPurchaseOrderItems->setModel('SupplierPurchaseOrderItem');
 	}
 
 	/**
 	 * Gets an array of SupplierPurchaseOrderItem objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this Incoterm has previously been saved, it will retrieve
-	 * related SupplierPurchaseOrderItems from storage. If this Incoterm is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Incoterm is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array SupplierPurchaseOrderItem[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array SupplierPurchaseOrderItem[] List of SupplierPurchaseOrderItem objects
 	 * @throws     PropelException
 	 */
 	public function getSupplierPurchaseOrderItems($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collSupplierPurchaseOrderItems === null) {
-			if ($this->isNew()) {
-			   $this->collSupplierPurchaseOrderItems = array();
+		if(null === $this->collSupplierPurchaseOrderItems || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierPurchaseOrderItems) {
+				// return empty collection
+				$this->initSupplierPurchaseOrderItems();
 			} else {
-
-				$criteria->add(SupplierPurchaseOrderItemPeer::INCOTERMID, $this->id);
-
-				SupplierPurchaseOrderItemPeer::addSelectColumns($criteria);
-				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(SupplierPurchaseOrderItemPeer::INCOTERMID, $this->id);
-
-				SupplierPurchaseOrderItemPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
-					$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelect($criteria, $con);
+				$collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemQuery::create(null, $criteria)
+					->filterByIncoterm($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collSupplierPurchaseOrderItems;
 				}
+				$this->collSupplierPurchaseOrderItems = $collSupplierPurchaseOrderItems;
 			}
 		}
-		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
 		return $this->collSupplierPurchaseOrderItems;
 	}
 
@@ -1408,48 +1293,21 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 */
 	public function countSupplierPurchaseOrderItems(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collSupplierPurchaseOrderItems === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collSupplierPurchaseOrderItems || null !== $criteria) {
+			if ($this->isNew() && null === $this->collSupplierPurchaseOrderItems) {
+				return 0;
 			} else {
-
-				$criteria->add(SupplierPurchaseOrderItemPeer::INCOTERMID, $this->id);
-
-				$count = SupplierPurchaseOrderItemPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(SupplierPurchaseOrderItemPeer::INCOTERMID, $this->id);
-
-				if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
-					$count = SupplierPurchaseOrderItemPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collSupplierPurchaseOrderItems);
+				$query = SupplierPurchaseOrderItemQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collSupplierPurchaseOrderItems);
+				return $query
+					->filterByIncoterm($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collSupplierPurchaseOrderItems);
 		}
-		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -1465,8 +1323,8 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 		if ($this->collSupplierPurchaseOrderItems === null) {
 			$this->initSupplierPurchaseOrderItems();
 		}
-		if (!in_array($l, $this->collSupplierPurchaseOrderItems, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collSupplierPurchaseOrderItems, $l);
+		if (!$this->collSupplierPurchaseOrderItems->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collSupplierPurchaseOrderItems[]= $l;
 			$l->setIncoterm($this);
 		}
 	}
@@ -1482,40 +1340,18 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierPurchaseOrderItem[] List of SupplierPurchaseOrderItem objects
 	 */
 	public function getSupplierPurchaseOrderItemsJoinProduct($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierPurchaseOrderItemQuery::create(null, $criteria);
+		$query->joinWith('Product', $join_behavior);
 
-		if ($this->collSupplierPurchaseOrderItems === null) {
-			if ($this->isNew()) {
-				$this->collSupplierPurchaseOrderItems = array();
-			} else {
-
-				$criteria->add(SupplierPurchaseOrderItemPeer::INCOTERMID, $this->id);
-
-				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinProduct($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPurchaseOrderItemPeer::INCOTERMID, $this->id);
-
-			if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinProduct($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
-
-		return $this->collSupplierPurchaseOrderItems;
+		return $this->getSupplierPurchaseOrderItems($query, $con);
 	}
 
 
@@ -1529,40 +1365,18 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierPurchaseOrderItem[] List of SupplierPurchaseOrderItem objects
 	 */
 	public function getSupplierPurchaseOrderItemsJoinSupplierPurchaseOrder($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierPurchaseOrderItemQuery::create(null, $criteria);
+		$query->joinWith('SupplierPurchaseOrder', $join_behavior);
 
-		if ($this->collSupplierPurchaseOrderItems === null) {
-			if ($this->isNew()) {
-				$this->collSupplierPurchaseOrderItems = array();
-			} else {
-
-				$criteria->add(SupplierPurchaseOrderItemPeer::INCOTERMID, $this->id);
-
-				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinSupplierPurchaseOrder($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPurchaseOrderItemPeer::INCOTERMID, $this->id);
-
-			if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinSupplierPurchaseOrder($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
-
-		return $this->collSupplierPurchaseOrderItems;
+		return $this->getSupplierPurchaseOrderItems($query, $con);
 	}
 
 
@@ -1576,40 +1390,35 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Incoterm.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array SupplierPurchaseOrderItem[] List of SupplierPurchaseOrderItem objects
 	 */
 	public function getSupplierPurchaseOrderItemsJoinPort($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(IncotermPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = SupplierPurchaseOrderItemQuery::create(null, $criteria);
+		$query->joinWith('Port', $join_behavior);
 
-		if ($this->collSupplierPurchaseOrderItems === null) {
-			if ($this->isNew()) {
-				$this->collSupplierPurchaseOrderItems = array();
-			} else {
+		return $this->getSupplierPurchaseOrderItems($query, $con);
+	}
 
-				$criteria->add(SupplierPurchaseOrderItemPeer::INCOTERMID, $this->id);
-
-				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(SupplierPurchaseOrderItemPeer::INCOTERMID, $this->id);
-
-			if (!isset($this->lastSupplierPurchaseOrderItemCriteria) || !$this->lastSupplierPurchaseOrderItemCriteria->equals($criteria)) {
-				$this->collSupplierPurchaseOrderItems = SupplierPurchaseOrderItemPeer::doSelectJoinPort($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastSupplierPurchaseOrderItemCriteria = $criteria;
-
-		return $this->collSupplierPurchaseOrderItems;
+	/**
+	 * Clears the current object and sets all attributes to their default values
+	 */
+	public function clear()
+	{
+		$this->id = null;
+		$this->name = null;
+		$this->description = null;
+		$this->active = null;
+		$this->alreadyInSave = false;
+		$this->alreadyInValidation = false;
+		$this->clearAllReferences();
+		$this->resetModified();
+		$this->setNew(true);
+		$this->setDeleted(false);
 	}
 
 	/**
@@ -1644,6 +1453,25 @@ abstract class BaseIncoterm extends BaseObject  implements Persistent {
 		$this->collSuppliers = null;
 		$this->collSupplierQuoteItems = null;
 		$this->collSupplierPurchaseOrderItems = null;
+	}
+
+	/**
+	 * Catches calls to virtual methods
+	 */
+	public function __call($name, $params)
+	{
+		if (preg_match('/get(\w+)/', $name, $matches)) {
+			$virtualColumn = $matches[1];
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+			// no lcfirst in php<5.3...
+			$virtualColumn[0] = strtolower($virtualColumn[0]);
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+		}
+		return parent::__call($name, $params);
 	}
 
 } // BaseIncoterm

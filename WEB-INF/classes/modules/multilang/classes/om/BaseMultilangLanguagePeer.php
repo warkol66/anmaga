@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'multilang_language' table.
  *
  * 
  *
- * @package    multilang.classes.om
+ * @package    propel.generator.multilang.classes.om
  */
 abstract class BaseMultilangLanguagePeer {
 
@@ -15,9 +16,15 @@ abstract class BaseMultilangLanguagePeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'multilang_language';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'MultilangLanguage';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'multilang.classes.MultilangLanguage';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'MultilangLanguageTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 4;
 
@@ -44,11 +51,6 @@ abstract class BaseMultilangLanguagePeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -60,6 +62,7 @@ abstract class BaseMultilangLanguagePeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Code', 'Locale', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'code', 'locale', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::CODE, self::LOCALE, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'CODE', 'LOCALE', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'code', 'locale', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
@@ -74,21 +77,11 @@ abstract class BaseMultilangLanguagePeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Code' => 2, 'Locale' => 3, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'code' => 2, 'locale' => 3, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::CODE => 2, self::LOCALE => 3, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'CODE' => 2, 'LOCALE' => 3, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'code' => 2, 'locale' => 3, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new MultilangLanguageMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -150,21 +143,24 @@ abstract class BaseMultilangLanguagePeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(MultilangLanguagePeer::ID);
-
-		$criteria->addSelectColumn(MultilangLanguagePeer::NAME);
-
-		$criteria->addSelectColumn(MultilangLanguagePeer::CODE);
-
-		$criteria->addSelectColumn(MultilangLanguagePeer::LOCALE);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(MultilangLanguagePeer::ID);
+			$criteria->addSelectColumn(MultilangLanguagePeer::NAME);
+			$criteria->addSelectColumn(MultilangLanguagePeer::CODE);
+			$criteria->addSelectColumn(MultilangLanguagePeer::LOCALE);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.CODE');
+			$criteria->addSelectColumn($alias . '.LOCALE');
+		}
 	}
 
 	/**
@@ -352,6 +348,17 @@ abstract class BaseMultilangLanguagePeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to multilang_language
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+		// Invalidate objects in MultilangTextPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		MultilangTextPeer::clearInstancePool();
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -364,12 +371,26 @@ abstract class BaseMultilangLanguagePeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -382,18 +403,16 @@ abstract class BaseMultilangLanguagePeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = MultilangLanguagePeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = MultilangLanguagePeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = MultilangLanguagePeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = MultilangLanguagePeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -402,6 +421,31 @@ abstract class BaseMultilangLanguagePeer {
 		}
 		$stmt->closeCursor();
 		return $results;
+	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (MultilangLanguage object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = MultilangLanguagePeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = MultilangLanguagePeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + MultilangLanguagePeer::NUM_COLUMNS;
+		} else {
+			$cls = MultilangLanguagePeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			MultilangLanguagePeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
 	}
 	/**
 	 * Returns the TableMap related to this peer.
@@ -416,17 +460,31 @@ abstract class BaseMultilangLanguagePeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseMultilangLanguagePeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseMultilangLanguagePeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new MultilangLanguageTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return MultilangLanguagePeer::CLASS_DEFAULT;
+		return $withPrefix ? MultilangLanguagePeer::CLASS_DEFAULT : MultilangLanguagePeer::OM_CLASS;
 	}
 
 	/**
@@ -493,7 +551,12 @@ abstract class BaseMultilangLanguagePeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(MultilangLanguagePeer::ID);
-			$selectCriteria->add(MultilangLanguagePeer::ID, $criteria->remove(MultilangLanguagePeer::ID), $comparison);
+			$value = $criteria->remove(MultilangLanguagePeer::ID);
+			if ($value) {
+				$selectCriteria->add(MultilangLanguagePeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(MultilangLanguagePeer::TABLE_NAME);
+			}
 
 		} else { // $values is MultilangLanguage object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -522,7 +585,12 @@ abstract class BaseMultilangLanguagePeer {
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
 			$affectedRows += MultilangLanguagePeer::doOnDeleteCascade(new Criteria(MultilangLanguagePeer::DATABASE_NAME), $con);
-			$affectedRows += BasePeer::doDeleteAll(MultilangLanguagePeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(MultilangLanguagePeer::TABLE_NAME, $con, MultilangLanguagePeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			MultilangLanguagePeer::clearInstancePool();
+			MultilangLanguagePeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -549,30 +617,14 @@ abstract class BaseMultilangLanguagePeer {
 		}
 
 		if ($values instanceof Criteria) {
-			// invalidate the cache for all objects of this type, since we have no
-			// way of knowing (without running a query) what objects should be invalidated
-			// from the cache based on this Criteria.
-			MultilangLanguagePeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof MultilangLanguage) {
-			// invalidate the cache for this single object
-			MultilangLanguagePeer::removeInstanceFromPool($values);
+		} elseif ($values instanceof MultilangLanguage) { // it's a model object
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(MultilangLanguagePeer::ID, (array) $values, Criteria::IN);
-
-			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
-				MultilangLanguagePeer::removeInstanceFromPool($singleval);
-			}
 		}
 
 		// Set the correct dbName
@@ -584,22 +636,26 @@ abstract class BaseMultilangLanguagePeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += MultilangLanguagePeer::doOnDeleteCascade($criteria, $con);
 			
-				// Because this db requires some delete cascade/set null emulation, we have to
-				// clear the cached instance *after* the emulation has happened (since
-				// instances get re-added by the select statement contained therein).
-				if ($values instanceof Criteria) {
-					MultilangLanguagePeer::clearInstancePool();
-				} else { // it's a PK or object
-					MultilangLanguagePeer::removeInstanceFromPool($values);
+			// cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
+			$c = clone $criteria;
+			$affectedRows += MultilangLanguagePeer::doOnDeleteCascade($c, $con);
+			
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			if ($values instanceof Criteria) {
+				MultilangLanguagePeer::clearInstancePool();
+			} elseif ($values instanceof MultilangLanguage) { // it's a model object
+				MultilangLanguagePeer::removeInstanceFromPool($values);
+			} else { // it's a primary key, or an array of pks
+				foreach ((array) $values as $singleval) {
+					MultilangLanguagePeer::removeInstanceFromPool($singleval);
 				}
+			}
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
-			// invalidate objects in MultilangTextPeer instance pool, since one or more of them may be deleted by ON DELETE CASCADE rule.
-			MultilangTextPeer::clearInstancePool();
-
+			MultilangLanguagePeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -632,10 +688,10 @@ abstract class BaseMultilangLanguagePeer {
 
 
 			// delete related MultilangText objects
-			$c = new Criteria(MultilangTextPeer::DATABASE_NAME);
+			$criteria = new Criteria(MultilangTextPeer::DATABASE_NAME);
 			
-			$c->add(MultilangTextPeer::LANGUAGECODE, $obj->getCode());
-			$affectedRows += MultilangTextPeer::doDelete($c, $con);
+			$criteria->add(MultilangTextPeer::LANGUAGECODE, $obj->getCode());
+			$affectedRows += MultilangTextPeer::doDelete($criteria, $con);
 		}
 		return $affectedRows;
 	}
@@ -730,14 +786,7 @@ abstract class BaseMultilangLanguagePeer {
 
 } // BaseMultilangLanguagePeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the MultilangLanguagePeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the MultilangLanguagePeer class:
-//
-// Propel::getDatabaseMap(MultilangLanguagePeer::DATABASE_NAME)->addTableBuilder(MultilangLanguagePeer::TABLE_NAME, MultilangLanguagePeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseMultilangLanguagePeer::DATABASE_NAME)->addTableBuilder(BaseMultilangLanguagePeer::TABLE_NAME, BaseMultilangLanguagePeer::getMapBuilder());
+BaseMultilangLanguagePeer::buildTableMap();
 

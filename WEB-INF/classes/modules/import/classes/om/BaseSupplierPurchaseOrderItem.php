@@ -1,14 +1,20 @@
 <?php
 
+
 /**
  * Base class that represents a row from the 'import_supplierPurchaseOrderItem' table.
  *
  * Elemento de Orden de Pedido a Proveedor
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
-abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Persistent {
+abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Persistent
+{
 
+	/**
+	 * Peer class name
+	 */
+  const PEER = 'SupplierPurchaseOrderItemPeer';
 
 	/**
 	 * The Peer class.
@@ -165,26 +171,6 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 	 * @var        boolean
 	 */
 	protected $alreadyInValidation = false;
-
-	/**
-	 * Initializes internal state of BaseSupplierPurchaseOrderItem object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
-
-	/**
-	 * Applies default values to this object.
-	 * This method should be called from the object's constructor (or
-	 * equivalent initialization method).
-	 * @see        __construct()
-	 */
-	public function applyDefaultValues()
-	{
-	}
 
 	/**
 	 * Get the [id] column value.
@@ -782,11 +768,6 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			// First, ensure that we don't have any columns that have been modified which aren't default columns.
-			if (array_diff($this->modifiedColumns, array())) {
-				return false;
-			}
-
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -836,7 +817,6 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 				$this->ensureConsistency();
 			}
 
-			// FIXME - using NUM_COLUMNS may be clearer.
 			return $startcol + 19; // 19 = SupplierPurchaseOrderItemPeer::NUM_COLUMNS - SupplierPurchaseOrderItemPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
@@ -939,9 +919,17 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 		
 		$con->beginTransaction();
 		try {
-			SupplierPurchaseOrderItemPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
+			$ret = $this->preDelete($con);
+			if ($ret) {
+				SupplierPurchaseOrderItemQuery::create()
+					->filterByPrimaryKey($this->getPrimaryKey())
+					->delete($con);
+				$this->postDelete($con);
+				$con->commit();
+				$this->setDeleted(true);
+			} else {
+				$con->commit();
+			}
 		} catch (PropelException $e) {
 			$con->rollBack();
 			throw $e;
@@ -972,10 +960,27 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 		}
 		
 		$con->beginTransaction();
+		$isInsert = $this->isNew();
 		try {
-			$affectedRows = $this->doSave($con);
+			$ret = $this->preSave($con);
+			if ($isInsert) {
+				$ret = $ret && $this->preInsert($con);
+			} else {
+				$ret = $ret && $this->preUpdate($con);
+			}
+			if ($ret) {
+				$affectedRows = $this->doSave($con);
+				if ($isInsert) {
+					$this->postInsert($con);
+				} else {
+					$this->postUpdate($con);
+				}
+				$this->postSave($con);
+				SupplierPurchaseOrderItemPeer::addInstanceToPool($this);
+			} else {
+				$affectedRows = 0;
+			}
 			$con->commit();
-			SupplierPurchaseOrderItemPeer::addInstanceToPool($this);
 			return $affectedRows;
 		} catch (PropelException $e) {
 			$con->rollBack();
@@ -1040,13 +1045,14 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = SupplierPurchaseOrderItemPeer::doInsert($this, $con);
-					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
-										 // should always be true here (even though technically
-										 // BasePeer::doInsert() can insert multiple rows).
+					$criteria = $this->buildCriteria();
+					if ($criteria->keyContainsValue(SupplierPurchaseOrderItemPeer::ID) ) {
+						throw new PropelException('Cannot insert a value for auto-increment primary key ('.SupplierPurchaseOrderItemPeer::ID.')');
+					}
 
+					$pk = BasePeer::doInsert($criteria, $con);
+					$affectedRows += 1;
 					$this->setId($pk);  //[IMV] update autoincrement primary key
-
 					$this->setNew(false);
 				} else {
 					$affectedRows += SupplierPurchaseOrderItemPeer::doUpdate($this, $con);
@@ -1164,6 +1170,279 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 	}
 
 	/**
+	 * Retrieves a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name name
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     mixed Value of field.
+	 */
+	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = SupplierPurchaseOrderItemPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$field = $this->getByPosition($pos);
+		return $field;
+	}
+
+	/**
+	 * Retrieves a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @return     mixed Value of field at $pos
+	 */
+	public function getByPosition($pos)
+	{
+		switch($pos) {
+			case 0:
+				return $this->getId();
+				break;
+			case 1:
+				return $this->getProductid();
+				break;
+			case 2:
+				return $this->getSupplierpurchaseorderid();
+				break;
+			case 3:
+				return $this->getQuantity();
+				break;
+			case 4:
+				return $this->getPortid();
+				break;
+			case 5:
+				return $this->getIncotermid();
+				break;
+			case 6:
+				return $this->getPrice();
+				break;
+			case 7:
+				return $this->getDelivery();
+				break;
+			case 8:
+				return $this->getPackage();
+				break;
+			case 9:
+				return $this->getUnitlength();
+				break;
+			case 10:
+				return $this->getUnitwidth();
+				break;
+			case 11:
+				return $this->getUnitheight();
+				break;
+			case 12:
+				return $this->getUnitgrossweigth();
+				break;
+			case 13:
+				return $this->getUnitspercarton();
+				break;
+			case 14:
+				return $this->getCartons();
+				break;
+			case 15:
+				return $this->getCartonlength();
+				break;
+			case 16:
+				return $this->getCartonwidth();
+				break;
+			case 17:
+				return $this->getCartonheight();
+				break;
+			case 18:
+				return $this->getCartongrossweigth();
+				break;
+			default:
+				return null;
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Exports the object as an array.
+	 *
+	 * You can specify the key type of the array by passing one of the class
+	 * type constants.
+	 *
+	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    Defaults to BasePeer::TYPE_PHPNAME.
+	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
+	 *
+	 * @return    array an associative array containing the field names (as keys) and field values
+	 */
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	{
+		$keys = SupplierPurchaseOrderItemPeer::getFieldNames($keyType);
+		$result = array(
+			$keys[0] => $this->getId(),
+			$keys[1] => $this->getProductid(),
+			$keys[2] => $this->getSupplierpurchaseorderid(),
+			$keys[3] => $this->getQuantity(),
+			$keys[4] => $this->getPortid(),
+			$keys[5] => $this->getIncotermid(),
+			$keys[6] => $this->getPrice(),
+			$keys[7] => $this->getDelivery(),
+			$keys[8] => $this->getPackage(),
+			$keys[9] => $this->getUnitlength(),
+			$keys[10] => $this->getUnitwidth(),
+			$keys[11] => $this->getUnitheight(),
+			$keys[12] => $this->getUnitgrossweigth(),
+			$keys[13] => $this->getUnitspercarton(),
+			$keys[14] => $this->getCartons(),
+			$keys[15] => $this->getCartonlength(),
+			$keys[16] => $this->getCartonwidth(),
+			$keys[17] => $this->getCartonheight(),
+			$keys[18] => $this->getCartongrossweigth(),
+		);
+		if ($includeForeignObjects) {
+			if (null !== $this->aProduct) {
+				$result['Product'] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aSupplierPurchaseOrder) {
+				$result['SupplierPurchaseOrder'] = $this->aSupplierPurchaseOrder->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aIncoterm) {
+				$result['Incoterm'] = $this->aIncoterm->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aPort) {
+				$result['Port'] = $this->aPort->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Sets a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name peer name
+	 * @param      mixed $value field value
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     void
+	 */
+	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = SupplierPurchaseOrderItemPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		return $this->setByPosition($pos, $value);
+	}
+
+	/**
+	 * Sets a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @param      mixed $value field value
+	 * @return     void
+	 */
+	public function setByPosition($pos, $value)
+	{
+		switch($pos) {
+			case 0:
+				$this->setId($value);
+				break;
+			case 1:
+				$this->setProductid($value);
+				break;
+			case 2:
+				$this->setSupplierpurchaseorderid($value);
+				break;
+			case 3:
+				$this->setQuantity($value);
+				break;
+			case 4:
+				$this->setPortid($value);
+				break;
+			case 5:
+				$this->setIncotermid($value);
+				break;
+			case 6:
+				$this->setPrice($value);
+				break;
+			case 7:
+				$this->setDelivery($value);
+				break;
+			case 8:
+				$this->setPackage($value);
+				break;
+			case 9:
+				$this->setUnitlength($value);
+				break;
+			case 10:
+				$this->setUnitwidth($value);
+				break;
+			case 11:
+				$this->setUnitheight($value);
+				break;
+			case 12:
+				$this->setUnitgrossweigth($value);
+				break;
+			case 13:
+				$this->setUnitspercarton($value);
+				break;
+			case 14:
+				$this->setCartons($value);
+				break;
+			case 15:
+				$this->setCartonlength($value);
+				break;
+			case 16:
+				$this->setCartonwidth($value);
+				break;
+			case 17:
+				$this->setCartonheight($value);
+				break;
+			case 18:
+				$this->setCartongrossweigth($value);
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Populates the object using an array.
+	 *
+	 * This is particularly useful when populating an object from one of the
+	 * request arrays (e.g. $_POST).  This method goes through the column
+	 * names, checking to see whether a matching key exists in populated
+	 * array. If so the setByName() method is called for that column.
+	 *
+	 * You can specify the key type of the array by additionally passing one
+	 * of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+	 * The default key type is the column's phpname (e.g. 'AuthorId')
+	 *
+	 * @param      array  $arr     An array to populate the object from.
+	 * @param      string $keyType The type of keys the array uses.
+	 * @return     void
+	 */
+	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
+	{
+		$keys = SupplierPurchaseOrderItemPeer::getFieldNames($keyType);
+
+		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setProductid($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setSupplierpurchaseorderid($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setQuantity($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setPortid($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setIncotermid($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setPrice($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setDelivery($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setPackage($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setUnitlength($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setUnitwidth($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setUnitheight($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setUnitgrossweigth($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setUnitspercarton($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setCartons($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setCartonlength($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setCartonwidth($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setCartonheight($arr[$keys[17]]);
+		if (array_key_exists($keys[18], $arr)) $this->setCartongrossweigth($arr[$keys[18]]);
+	}
+
+	/**
 	 * Build a Criteria object containing the values of all modified columns in this object.
 	 *
 	 * @return     Criteria The Criteria object containing all modified values.
@@ -1206,7 +1485,6 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 	public function buildPkeyCriteria()
 	{
 		$criteria = new Criteria(SupplierPurchaseOrderItemPeer::DATABASE_NAME);
-
 		$criteria->add(SupplierPurchaseOrderItemPeer::ID, $this->id);
 
 		return $criteria;
@@ -1233,6 +1511,15 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 	}
 
 	/**
+	 * Returns true if the primary key for this object is null.
+	 * @return     boolean
+	 */
+	public function isPrimaryKeyNull()
+	{
+		return null === $this->getId();
+	}
+
+	/**
 	 * Sets contents of passed object to values from current object.
 	 *
 	 * If desired, this method can also make copies of all associated (fkey referrers)
@@ -1244,48 +1531,27 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-
 		$copyObj->setProductid($this->productid);
-
 		$copyObj->setSupplierpurchaseorderid($this->supplierpurchaseorderid);
-
 		$copyObj->setQuantity($this->quantity);
-
 		$copyObj->setPortid($this->portid);
-
 		$copyObj->setIncotermid($this->incotermid);
-
 		$copyObj->setPrice($this->price);
-
 		$copyObj->setDelivery($this->delivery);
-
 		$copyObj->setPackage($this->package);
-
 		$copyObj->setUnitlength($this->unitlength);
-
 		$copyObj->setUnitwidth($this->unitwidth);
-
 		$copyObj->setUnitheight($this->unitheight);
-
 		$copyObj->setUnitgrossweigth($this->unitgrossweigth);
-
 		$copyObj->setUnitspercarton($this->unitspercarton);
-
 		$copyObj->setCartons($this->cartons);
-
 		$copyObj->setCartonlength($this->cartonlength);
-
 		$copyObj->setCartonwidth($this->cartonwidth);
-
 		$copyObj->setCartonheight($this->cartonheight);
-
 		$copyObj->setCartongrossweigth($this->cartongrossweigth);
 
-
 		$copyObj->setNew(true);
-
 		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
-
 	}
 
 	/**
@@ -1363,7 +1629,7 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 	public function getProduct(PropelPDO $con = null)
 	{
 		if ($this->aProduct === null && ($this->productid !== null)) {
-			$this->aProduct = ProductPeer::retrieveByPK($this->productid, $con);
+			$this->aProduct = ProductQuery::create()->findPk($this->productid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1412,7 +1678,7 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 	public function getSupplierPurchaseOrder(PropelPDO $con = null)
 	{
 		if ($this->aSupplierPurchaseOrder === null && ($this->supplierpurchaseorderid !== null)) {
-			$this->aSupplierPurchaseOrder = SupplierPurchaseOrderPeer::retrieveByPK($this->supplierpurchaseorderid, $con);
+			$this->aSupplierPurchaseOrder = SupplierPurchaseOrderQuery::create()->findPk($this->supplierpurchaseorderid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1461,7 +1727,7 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 	public function getIncoterm(PropelPDO $con = null)
 	{
 		if ($this->aIncoterm === null && ($this->incotermid !== null)) {
-			$this->aIncoterm = IncotermPeer::retrieveByPK($this->incotermid, $con);
+			$this->aIncoterm = IncotermQuery::create()->findPk($this->incotermid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1510,7 +1776,7 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 	public function getPort(PropelPDO $con = null)
 	{
 		if ($this->aPort === null && ($this->portid !== null)) {
-			$this->aPort = PortPeer::retrieveByPK($this->portid, $con);
+			$this->aPort = PortQuery::create()->findPk($this->portid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1520,6 +1786,38 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 			 */
 		}
 		return $this->aPort;
+	}
+
+	/**
+	 * Clears the current object and sets all attributes to their default values
+	 */
+	public function clear()
+	{
+		$this->id = null;
+		$this->productid = null;
+		$this->supplierpurchaseorderid = null;
+		$this->quantity = null;
+		$this->portid = null;
+		$this->incotermid = null;
+		$this->price = null;
+		$this->delivery = null;
+		$this->package = null;
+		$this->unitlength = null;
+		$this->unitwidth = null;
+		$this->unitheight = null;
+		$this->unitgrossweigth = null;
+		$this->unitspercarton = null;
+		$this->cartons = null;
+		$this->cartonlength = null;
+		$this->cartonwidth = null;
+		$this->cartonheight = null;
+		$this->cartongrossweigth = null;
+		$this->alreadyInSave = false;
+		$this->alreadyInValidation = false;
+		$this->clearAllReferences();
+		$this->resetModified();
+		$this->setNew(true);
+		$this->setDeleted(false);
 	}
 
 	/**
@@ -1536,10 +1834,29 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 		if ($deep) {
 		} // if ($deep)
 
-			$this->aProduct = null;
-			$this->aSupplierPurchaseOrder = null;
-			$this->aIncoterm = null;
-			$this->aPort = null;
+		$this->aProduct = null;
+		$this->aSupplierPurchaseOrder = null;
+		$this->aIncoterm = null;
+		$this->aPort = null;
+	}
+
+	/**
+	 * Catches calls to virtual methods
+	 */
+	public function __call($name, $params)
+	{
+		if (preg_match('/get(\w+)/', $name, $matches)) {
+			$virtualColumn = $matches[1];
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+			// no lcfirst in php<5.3...
+			$virtualColumn[0] = strtolower($virtualColumn[0]);
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+		}
+		return parent::__call($name, $params);
 	}
 
 } // BaseSupplierPurchaseOrderItem

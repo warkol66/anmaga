@@ -1,14 +1,20 @@
 <?php
 
+
 /**
  * Base class that represents a row from the 'users_group' table.
  *
  * Groups
  *
- * @package    users.classes.om
+ * @package    propel.generator.users.classes.om
  */
-abstract class BaseGroup extends BaseObject  implements Persistent {
+abstract class BaseGroup extends BaseObject  implements Persistent
+{
 
+	/**
+	 * Peer class name
+	 */
+  const PEER = 'GroupPeer';
 
 	/**
 	 * The Peer class.
@@ -54,19 +60,9 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	protected $collGroupCategorys;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collGroupCategorys.
-	 */
-	private $lastGroupCategoryCriteria = null;
-
-	/**
 	 * @var        array UserGroup[] Collection to store aggregation of UserGroup objects.
 	 */
 	protected $collUserGroups;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collUserGroups.
-	 */
-	private $lastUserGroupCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -81,26 +77,6 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	 * @var        boolean
 	 */
 	protected $alreadyInValidation = false;
-
-	/**
-	 * Initializes internal state of BaseGroup object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
-
-	/**
-	 * Applies default values to this object.
-	 * This method should be called from the object's constructor (or
-	 * equivalent initialization method).
-	 * @see        __construct()
-	 */
-	public function applyDefaultValues()
-	{
-	}
 
 	/**
 	 * Get the [id] column value.
@@ -376,11 +352,6 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			// First, ensure that we don't have any columns that have been modified which aren't default columns.
-			if (array_diff($this->modifiedColumns, array())) {
-				return false;
-			}
-
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -416,7 +387,6 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 				$this->ensureConsistency();
 			}
 
-			// FIXME - using NUM_COLUMNS may be clearer.
 			return $startcol + 5; // 5 = GroupPeer::NUM_COLUMNS - GroupPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
@@ -480,10 +450,8 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->collGroupCategorys = null;
-			$this->lastGroupCategoryCriteria = null;
 
 			$this->collUserGroups = null;
-			$this->lastUserGroupCriteria = null;
 
 		} // if (deep)
 	}
@@ -509,9 +477,17 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 		
 		$con->beginTransaction();
 		try {
-			GroupPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
+			$ret = $this->preDelete($con);
+			if ($ret) {
+				GroupQuery::create()
+					->filterByPrimaryKey($this->getPrimaryKey())
+					->delete($con);
+				$this->postDelete($con);
+				$con->commit();
+				$this->setDeleted(true);
+			} else {
+				$con->commit();
+			}
 		} catch (PropelException $e) {
 			$con->rollBack();
 			throw $e;
@@ -542,10 +518,27 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 		}
 		
 		$con->beginTransaction();
+		$isInsert = $this->isNew();
 		try {
-			$affectedRows = $this->doSave($con);
+			$ret = $this->preSave($con);
+			if ($isInsert) {
+				$ret = $ret && $this->preInsert($con);
+			} else {
+				$ret = $ret && $this->preUpdate($con);
+			}
+			if ($ret) {
+				$affectedRows = $this->doSave($con);
+				if ($isInsert) {
+					$this->postInsert($con);
+				} else {
+					$this->postUpdate($con);
+				}
+				$this->postSave($con);
+				GroupPeer::addInstanceToPool($this);
+			} else {
+				$affectedRows = 0;
+			}
 			$con->commit();
-			GroupPeer::addInstanceToPool($this);
 			return $affectedRows;
 		} catch (PropelException $e) {
 			$con->rollBack();
@@ -577,16 +570,17 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = GroupPeer::doInsert($this, $con);
-					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
-										 // should always be true here (even though technically
-										 // BasePeer::doInsert() can insert multiple rows).
+					$criteria = $this->buildCriteria();
+					if ($criteria->keyContainsValue(GroupPeer::ID) ) {
+						throw new PropelException('Cannot insert a value for auto-increment primary key ('.GroupPeer::ID.')');
+					}
 
+					$pk = BasePeer::doInsert($criteria, $con);
+					$affectedRows = 1;
 					$this->setId($pk);  //[IMV] update autoincrement primary key
-
 					$this->setNew(false);
 				} else {
-					$affectedRows += GroupPeer::doUpdate($this, $con);
+					$affectedRows = GroupPeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
@@ -703,6 +697,152 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Retrieves a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name name
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     mixed Value of field.
+	 */
+	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = GroupPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$field = $this->getByPosition($pos);
+		return $field;
+	}
+
+	/**
+	 * Retrieves a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @return     mixed Value of field at $pos
+	 */
+	public function getByPosition($pos)
+	{
+		switch($pos) {
+			case 0:
+				return $this->getId();
+				break;
+			case 1:
+				return $this->getName();
+				break;
+			case 2:
+				return $this->getCreated();
+				break;
+			case 3:
+				return $this->getUpdated();
+				break;
+			case 4:
+				return $this->getBitlevel();
+				break;
+			default:
+				return null;
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Exports the object as an array.
+	 *
+	 * You can specify the key type of the array by passing one of the class
+	 * type constants.
+	 *
+	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    Defaults to BasePeer::TYPE_PHPNAME.
+	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 *
+	 * @return    array an associative array containing the field names (as keys) and field values
+	 */
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true)
+	{
+		$keys = GroupPeer::getFieldNames($keyType);
+		$result = array(
+			$keys[0] => $this->getId(),
+			$keys[1] => $this->getName(),
+			$keys[2] => $this->getCreated(),
+			$keys[3] => $this->getUpdated(),
+			$keys[4] => $this->getBitlevel(),
+		);
+		return $result;
+	}
+
+	/**
+	 * Sets a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name peer name
+	 * @param      mixed $value field value
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     void
+	 */
+	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = GroupPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		return $this->setByPosition($pos, $value);
+	}
+
+	/**
+	 * Sets a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @param      mixed $value field value
+	 * @return     void
+	 */
+	public function setByPosition($pos, $value)
+	{
+		switch($pos) {
+			case 0:
+				$this->setId($value);
+				break;
+			case 1:
+				$this->setName($value);
+				break;
+			case 2:
+				$this->setCreated($value);
+				break;
+			case 3:
+				$this->setUpdated($value);
+				break;
+			case 4:
+				$this->setBitlevel($value);
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Populates the object using an array.
+	 *
+	 * This is particularly useful when populating an object from one of the
+	 * request arrays (e.g. $_POST).  This method goes through the column
+	 * names, checking to see whether a matching key exists in populated
+	 * array. If so the setByName() method is called for that column.
+	 *
+	 * You can specify the key type of the array by additionally passing one
+	 * of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+	 * The default key type is the column's phpname (e.g. 'AuthorId')
+	 *
+	 * @param      array  $arr     An array to populate the object from.
+	 * @param      string $keyType The type of keys the array uses.
+	 * @return     void
+	 */
+	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
+	{
+		$keys = GroupPeer::getFieldNames($keyType);
+
+		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setCreated($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setUpdated($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setBitlevel($arr[$keys[4]]);
+	}
+
+	/**
 	 * Build a Criteria object containing the values of all modified columns in this object.
 	 *
 	 * @return     Criteria The Criteria object containing all modified values.
@@ -731,7 +871,6 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	public function buildPkeyCriteria()
 	{
 		$criteria = new Criteria(GroupPeer::DATABASE_NAME);
-
 		$criteria->add(GroupPeer::ID, $this->id);
 
 		return $criteria;
@@ -758,6 +897,15 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Returns true if the primary key for this object is null.
+	 * @return     boolean
+	 */
+	public function isPrimaryKeyNull()
+	{
+		return null === $this->getId();
+	}
+
+	/**
 	 * Sets contents of passed object to values from current object.
 	 *
 	 * If desired, this method can also make copies of all associated (fkey referrers)
@@ -769,15 +917,10 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-
 		$copyObj->setName($this->name);
-
 		$copyObj->setCreated($this->created);
-
 		$copyObj->setUpdated($this->updated);
-
 		$copyObj->setBitlevel($this->bitlevel);
-
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -800,9 +943,7 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 
 
 		$copyObj->setNew(true);
-
 		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
-
 	}
 
 	/**
@@ -844,7 +985,7 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collGroupCategorys collection (array).
+	 * Clears out the collGroupCategorys collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -858,7 +999,7 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collGroupCategorys collection (array).
+	 * Initializes the collGroupCategorys collection.
 	 *
 	 * By default this just sets the collGroupCategorys collection to an empty array (like clearcollGroupCategorys());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -868,59 +1009,40 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	 */
 	public function initGroupCategorys()
 	{
-		$this->collGroupCategorys = array();
+		$this->collGroupCategorys = new PropelObjectCollection();
+		$this->collGroupCategorys->setModel('GroupCategory');
 	}
 
 	/**
 	 * Gets an array of GroupCategory objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this Group has previously been saved, it will retrieve
-	 * related GroupCategorys from storage. If this Group is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Group is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array GroupCategory[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array GroupCategory[] List of GroupCategory objects
 	 * @throws     PropelException
 	 */
 	public function getGroupCategorys($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(GroupPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collGroupCategorys === null) {
-			if ($this->isNew()) {
-			   $this->collGroupCategorys = array();
+		if(null === $this->collGroupCategorys || null !== $criteria) {
+			if ($this->isNew() && null === $this->collGroupCategorys) {
+				// return empty collection
+				$this->initGroupCategorys();
 			} else {
-
-				$criteria->add(GroupCategoryPeer::GROUPID, $this->id);
-
-				GroupCategoryPeer::addSelectColumns($criteria);
-				$this->collGroupCategorys = GroupCategoryPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(GroupCategoryPeer::GROUPID, $this->id);
-
-				GroupCategoryPeer::addSelectColumns($criteria);
-				if (!isset($this->lastGroupCategoryCriteria) || !$this->lastGroupCategoryCriteria->equals($criteria)) {
-					$this->collGroupCategorys = GroupCategoryPeer::doSelect($criteria, $con);
+				$collGroupCategorys = GroupCategoryQuery::create(null, $criteria)
+					->filterByGroup($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collGroupCategorys;
 				}
+				$this->collGroupCategorys = $collGroupCategorys;
 			}
 		}
-		$this->lastGroupCategoryCriteria = $criteria;
 		return $this->collGroupCategorys;
 	}
 
@@ -935,48 +1057,21 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	 */
 	public function countGroupCategorys(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(GroupPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collGroupCategorys === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collGroupCategorys || null !== $criteria) {
+			if ($this->isNew() && null === $this->collGroupCategorys) {
+				return 0;
 			} else {
-
-				$criteria->add(GroupCategoryPeer::GROUPID, $this->id);
-
-				$count = GroupCategoryPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(GroupCategoryPeer::GROUPID, $this->id);
-
-				if (!isset($this->lastGroupCategoryCriteria) || !$this->lastGroupCategoryCriteria->equals($criteria)) {
-					$count = GroupCategoryPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collGroupCategorys);
+				$query = GroupCategoryQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collGroupCategorys);
+				return $query
+					->filterByGroup($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collGroupCategorys);
 		}
-		$this->lastGroupCategoryCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -992,8 +1087,8 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 		if ($this->collGroupCategorys === null) {
 			$this->initGroupCategorys();
 		}
-		if (!in_array($l, $this->collGroupCategorys, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collGroupCategorys, $l);
+		if (!$this->collGroupCategorys->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collGroupCategorys[]= $l;
 			$l->setGroup($this);
 		}
 	}
@@ -1009,44 +1104,22 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Group.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array GroupCategory[] List of GroupCategory objects
 	 */
 	public function getGroupCategorysJoinCategory($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(GroupPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = GroupCategoryQuery::create(null, $criteria);
+		$query->joinWith('Category', $join_behavior);
 
-		if ($this->collGroupCategorys === null) {
-			if ($this->isNew()) {
-				$this->collGroupCategorys = array();
-			} else {
-
-				$criteria->add(GroupCategoryPeer::GROUPID, $this->id);
-
-				$this->collGroupCategorys = GroupCategoryPeer::doSelectJoinCategory($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(GroupCategoryPeer::GROUPID, $this->id);
-
-			if (!isset($this->lastGroupCategoryCriteria) || !$this->lastGroupCategoryCriteria->equals($criteria)) {
-				$this->collGroupCategorys = GroupCategoryPeer::doSelectJoinCategory($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastGroupCategoryCriteria = $criteria;
-
-		return $this->collGroupCategorys;
+		return $this->getGroupCategorys($query, $con);
 	}
 
 	/**
-	 * Clears out the collUserGroups collection (array).
+	 * Clears out the collUserGroups collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -1060,7 +1133,7 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Initializes the collUserGroups collection (array).
+	 * Initializes the collUserGroups collection.
 	 *
 	 * By default this just sets the collUserGroups collection to an empty array (like clearcollUserGroups());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -1070,59 +1143,40 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	 */
 	public function initUserGroups()
 	{
-		$this->collUserGroups = array();
+		$this->collUserGroups = new PropelObjectCollection();
+		$this->collUserGroups->setModel('UserGroup');
 	}
 
 	/**
 	 * Gets an array of UserGroup objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this Group has previously been saved, it will retrieve
-	 * related UserGroups from storage. If this Group is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Group is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array UserGroup[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array UserGroup[] List of UserGroup objects
 	 * @throws     PropelException
 	 */
 	public function getUserGroups($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(GroupPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserGroups === null) {
-			if ($this->isNew()) {
-			   $this->collUserGroups = array();
+		if(null === $this->collUserGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collUserGroups) {
+				// return empty collection
+				$this->initUserGroups();
 			} else {
-
-				$criteria->add(UserGroupPeer::GROUPID, $this->id);
-
-				UserGroupPeer::addSelectColumns($criteria);
-				$this->collUserGroups = UserGroupPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(UserGroupPeer::GROUPID, $this->id);
-
-				UserGroupPeer::addSelectColumns($criteria);
-				if (!isset($this->lastUserGroupCriteria) || !$this->lastUserGroupCriteria->equals($criteria)) {
-					$this->collUserGroups = UserGroupPeer::doSelect($criteria, $con);
+				$collUserGroups = UserGroupQuery::create(null, $criteria)
+					->filterByGroup($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collUserGroups;
 				}
+				$this->collUserGroups = $collUserGroups;
 			}
 		}
-		$this->lastUserGroupCriteria = $criteria;
 		return $this->collUserGroups;
 	}
 
@@ -1137,48 +1191,21 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	 */
 	public function countUserGroups(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(GroupPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collUserGroups === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collUserGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collUserGroups) {
+				return 0;
 			} else {
-
-				$criteria->add(UserGroupPeer::GROUPID, $this->id);
-
-				$count = UserGroupPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(UserGroupPeer::GROUPID, $this->id);
-
-				if (!isset($this->lastUserGroupCriteria) || !$this->lastUserGroupCriteria->equals($criteria)) {
-					$count = UserGroupPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collUserGroups);
+				$query = UserGroupQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collUserGroups);
+				return $query
+					->filterByGroup($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collUserGroups);
 		}
-		$this->lastUserGroupCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -1194,8 +1221,8 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 		if ($this->collUserGroups === null) {
 			$this->initUserGroups();
 		}
-		if (!in_array($l, $this->collUserGroups, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collUserGroups, $l);
+		if (!$this->collUserGroups->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collUserGroups[]= $l;
 			$l->setGroup($this);
 		}
 	}
@@ -1211,40 +1238,36 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Group.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array UserGroup[] List of UserGroup objects
 	 */
 	public function getUserGroupsJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(GroupPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = UserGroupQuery::create(null, $criteria);
+		$query->joinWith('User', $join_behavior);
 
-		if ($this->collUserGroups === null) {
-			if ($this->isNew()) {
-				$this->collUserGroups = array();
-			} else {
+		return $this->getUserGroups($query, $con);
+	}
 
-				$criteria->add(UserGroupPeer::GROUPID, $this->id);
-
-				$this->collUserGroups = UserGroupPeer::doSelectJoinUser($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(UserGroupPeer::GROUPID, $this->id);
-
-			if (!isset($this->lastUserGroupCriteria) || !$this->lastUserGroupCriteria->equals($criteria)) {
-				$this->collUserGroups = UserGroupPeer::doSelectJoinUser($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastUserGroupCriteria = $criteria;
-
-		return $this->collUserGroups;
+	/**
+	 * Clears the current object and sets all attributes to their default values
+	 */
+	public function clear()
+	{
+		$this->id = null;
+		$this->name = null;
+		$this->created = null;
+		$this->updated = null;
+		$this->bitlevel = null;
+		$this->alreadyInSave = false;
+		$this->alreadyInValidation = false;
+		$this->clearAllReferences();
+		$this->resetModified();
+		$this->setNew(true);
+		$this->setDeleted(false);
 	}
 
 	/**
@@ -1273,6 +1296,25 @@ abstract class BaseGroup extends BaseObject  implements Persistent {
 
 		$this->collGroupCategorys = null;
 		$this->collUserGroups = null;
+	}
+
+	/**
+	 * Catches calls to virtual methods
+	 */
+	public function __call($name, $params)
+	{
+		if (preg_match('/get(\w+)/', $name, $matches)) {
+			$virtualColumn = $matches[1];
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+			// no lcfirst in php<5.3...
+			$virtualColumn[0] = strtolower($virtualColumn[0]);
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+		}
+		return parent::__call($name, $params);
 	}
 
 } // BaseGroup

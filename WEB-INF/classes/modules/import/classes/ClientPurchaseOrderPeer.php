@@ -175,7 +175,6 @@ class ClientPurchaseOrderPeer extends BaseClientPurchaseOrderPeer {
 	      $perPage = 	ClientPurchaseOrderPeer::getRowsPerPage();
 	    if (empty($page))
 	      $page = 1;
-	    require_once("propel/util/PropelPager.php");
 	    $cond = new Criteria();     
 	    $pager = new PropelPager($cond,"ClientPurchaseOrderPeer", "doSelect",$page,$perPage);
 	    return $pager;
@@ -195,7 +194,6 @@ class ClientPurchaseOrderPeer extends BaseClientPurchaseOrderPeer {
 	      $perPage = 	ClientPurchaseOrderPeer::getRowsPerPage();
 	    if (empty($page))
 	      $page = 1;
-	    require_once("propel/util/PropelPager.php");
 	    $cond = new Criteria();
 		$cond->add(ClientPurchaseOrderPeer::AFFILIATEID,$affiliate->getId());
 	    $pager = new PropelPager($cond,"ClientPurchaseOrderPeer", "doSelect",$page,$perPage);
@@ -215,7 +213,6 @@ class ClientPurchaseOrderPeer extends BaseClientPurchaseOrderPeer {
 	      $perPage = 	ClientPurchaseOrderPeer::getRowsPerPage();
 	    if (empty($page))
 	      $page = 1;
-	    require_once("propel/util/PropelPager.php");
 	    $cond = $this->getFilterCriteria();
 		$cond->add(ClientPurchaseOrderPeer::AFFILIATEID,$affiliate->getId());
 	    $pager = new PropelPager($cond,"ClientPurchaseOrderPeer", "doSelect",$page,$perPage);
@@ -281,7 +278,6 @@ class ClientPurchaseOrderPeer extends BaseClientPurchaseOrderPeer {
 	      $perPage = 	ClientPurchaseOrderPeer::getRowsPerPage();
 	    if (empty($page))
 	      $page = 1;
-	    require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 	    $pager = new PropelPager($cond,"ClientPurchaseOrderPeer","doSelect",$page,$perPage);
 	    return $pager;

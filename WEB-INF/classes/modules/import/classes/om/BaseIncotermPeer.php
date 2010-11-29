@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'import_incoterm' table.
  *
  * Incoterm
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
 abstract class BaseIncotermPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseIncotermPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'import_incoterm';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'Incoterm';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'import.classes.Incoterm';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'IncotermTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 4;
 
@@ -44,11 +51,6 @@ abstract class BaseIncotermPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -60,6 +62,7 @@ abstract class BaseIncotermPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Description', 'Active', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'description', 'active', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::DESCRIPTION, self::ACTIVE, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'DESCRIPTION', 'ACTIVE', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'description', 'active', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
@@ -74,21 +77,11 @@ abstract class BaseIncotermPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Description' => 2, 'Active' => 3, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'description' => 2, 'active' => 3, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::DESCRIPTION => 2, self::ACTIVE => 3, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'DESCRIPTION' => 2, 'ACTIVE' => 3, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'description' => 2, 'active' => 3, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new IncotermMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -150,21 +143,24 @@ abstract class BaseIncotermPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(IncotermPeer::ID);
-
-		$criteria->addSelectColumn(IncotermPeer::NAME);
-
-		$criteria->addSelectColumn(IncotermPeer::DESCRIPTION);
-
-		$criteria->addSelectColumn(IncotermPeer::ACTIVE);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(IncotermPeer::ID);
+			$criteria->addSelectColumn(IncotermPeer::NAME);
+			$criteria->addSelectColumn(IncotermPeer::DESCRIPTION);
+			$criteria->addSelectColumn(IncotermPeer::ACTIVE);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.DESCRIPTION');
+			$criteria->addSelectColumn($alias . '.ACTIVE');
+		}
 	}
 
 	/**
@@ -352,6 +348,14 @@ abstract class BaseIncotermPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to import_incoterm
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -364,12 +368,26 @@ abstract class BaseIncotermPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -382,18 +400,16 @@ abstract class BaseIncotermPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = IncotermPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = IncotermPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = IncotermPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = IncotermPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -402,6 +418,31 @@ abstract class BaseIncotermPeer {
 		}
 		$stmt->closeCursor();
 		return $results;
+	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (Incoterm object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = IncotermPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = IncotermPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + IncotermPeer::NUM_COLUMNS;
+		} else {
+			$cls = IncotermPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			IncotermPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
 	}
 	/**
 	 * Returns the TableMap related to this peer.
@@ -416,17 +457,31 @@ abstract class BaseIncotermPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseIncotermPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseIncotermPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new IncotermTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return IncotermPeer::CLASS_DEFAULT;
+		return $withPrefix ? IncotermPeer::CLASS_DEFAULT : IncotermPeer::OM_CLASS;
 	}
 
 	/**
@@ -493,7 +548,12 @@ abstract class BaseIncotermPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(IncotermPeer::ID);
-			$selectCriteria->add(IncotermPeer::ID, $criteria->remove(IncotermPeer::ID), $comparison);
+			$value = $criteria->remove(IncotermPeer::ID);
+			if ($value) {
+				$selectCriteria->add(IncotermPeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(IncotermPeer::TABLE_NAME);
+			}
 
 		} else { // $values is Incoterm object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -521,7 +581,12 @@ abstract class BaseIncotermPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(IncotermPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(IncotermPeer::TABLE_NAME, $con, IncotermPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			IncotermPeer::clearInstancePool();
+			IncotermPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -552,24 +617,18 @@ abstract class BaseIncotermPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			IncotermPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof Incoterm) {
+		} elseif ($values instanceof Incoterm) { // it's a model object
 			// invalidate the cache for this single object
 			IncotermPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(IncotermPeer::ID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				IncotermPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -585,7 +644,7 @@ abstract class BaseIncotermPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			IncotermPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -684,14 +743,7 @@ abstract class BaseIncotermPeer {
 
 } // BaseIncotermPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the IncotermPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the IncotermPeer class:
-//
-// Propel::getDatabaseMap(IncotermPeer::DATABASE_NAME)->addTableBuilder(IncotermPeer::TABLE_NAME, IncotermPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseIncotermPeer::DATABASE_NAME)->addTableBuilder(BaseIncotermPeer::TABLE_NAME, BaseIncotermPeer::getMapBuilder());
+BaseIncotermPeer::buildTableMap();
 

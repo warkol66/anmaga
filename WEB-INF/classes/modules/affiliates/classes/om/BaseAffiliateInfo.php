@@ -1,14 +1,20 @@
 <?php
 
+
 /**
  * Base class that represents a row from the 'affiliates_affiliateInfo' table.
  *
  * Informacion del afiliado
  *
- * @package    affiliates.classes.om
+ * @package    propel.generator.affiliates.classes.om
  */
-abstract class BaseAffiliateInfo extends BaseObject  implements Persistent {
+abstract class BaseAffiliateInfo extends BaseObject  implements Persistent
+{
 
+	/**
+	 * Peer class name
+	 */
+  const PEER = 'AffiliateInfoPeer';
 
 	/**
 	 * The Peer class.
@@ -85,26 +91,6 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent {
 	 * @var        boolean
 	 */
 	protected $alreadyInValidation = false;
-
-	/**
-	 * Initializes internal state of BaseAffiliateInfo object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
-
-	/**
-	 * Applies default values to this object.
-	 * This method should be called from the object's constructor (or
-	 * equivalent initialization method).
-	 * @see        __construct()
-	 */
-	public function applyDefaultValues()
-	{
-	}
 
 	/**
 	 * Get the [affiliateid] column value.
@@ -386,11 +372,6 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent {
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			// First, ensure that we don't have any columns that have been modified which aren't default columns.
-			if (array_diff($this->modifiedColumns, array())) {
-				return false;
-			}
-
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -430,7 +411,6 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent {
 				$this->ensureConsistency();
 			}
 
-			// FIXME - using NUM_COLUMNS may be clearer.
 			return $startcol + 9; // 9 = AffiliateInfoPeer::NUM_COLUMNS - AffiliateInfoPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
@@ -517,9 +497,17 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent {
 		
 		$con->beginTransaction();
 		try {
-			AffiliateInfoPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
+			$ret = $this->preDelete($con);
+			if ($ret) {
+				AffiliateInfoQuery::create()
+					->filterByPrimaryKey($this->getPrimaryKey())
+					->delete($con);
+				$this->postDelete($con);
+				$con->commit();
+				$this->setDeleted(true);
+			} else {
+				$con->commit();
+			}
 		} catch (PropelException $e) {
 			$con->rollBack();
 			throw $e;
@@ -550,10 +538,27 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent {
 		}
 		
 		$con->beginTransaction();
+		$isInsert = $this->isNew();
 		try {
-			$affectedRows = $this->doSave($con);
+			$ret = $this->preSave($con);
+			if ($isInsert) {
+				$ret = $ret && $this->preInsert($con);
+			} else {
+				$ret = $ret && $this->preUpdate($con);
+			}
+			if ($ret) {
+				$affectedRows = $this->doSave($con);
+				if ($isInsert) {
+					$this->postInsert($con);
+				} else {
+					$this->postUpdate($con);
+				}
+				$this->postSave($con);
+				AffiliateInfoPeer::addInstanceToPool($this);
+			} else {
+				$affectedRows = 0;
+			}
 			$con->commit();
-			AffiliateInfoPeer::addInstanceToPool($this);
 			return $affectedRows;
 		} catch (PropelException $e) {
 			$con->rollBack();
@@ -582,14 +587,12 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent {
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = AffiliateInfoPeer::doInsert($this, $con);
-					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
-										 // should always be true here (even though technically
-										 // BasePeer::doInsert() can insert multiple rows).
-
+					$criteria = $this->buildCriteria();
+					$pk = BasePeer::doInsert($criteria, $con);
+					$affectedRows = 1;
 					$this->setNew(false);
 				} else {
-					$affectedRows += AffiliateInfoPeer::doUpdate($this, $con);
+					$affectedRows = AffiliateInfoPeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
@@ -674,6 +677,184 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Retrieves a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name name
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     mixed Value of field.
+	 */
+	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = AffiliateInfoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$field = $this->getByPosition($pos);
+		return $field;
+	}
+
+	/**
+	 * Retrieves a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @return     mixed Value of field at $pos
+	 */
+	public function getByPosition($pos)
+	{
+		switch($pos) {
+			case 0:
+				return $this->getAffiliateid();
+				break;
+			case 1:
+				return $this->getAffiliateinternalnumber();
+				break;
+			case 2:
+				return $this->getAddress();
+				break;
+			case 3:
+				return $this->getPhone();
+				break;
+			case 4:
+				return $this->getEmail();
+				break;
+			case 5:
+				return $this->getContact();
+				break;
+			case 6:
+				return $this->getContactemail();
+				break;
+			case 7:
+				return $this->getWeb();
+				break;
+			case 8:
+				return $this->getMemo();
+				break;
+			default:
+				return null;
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Exports the object as an array.
+	 *
+	 * You can specify the key type of the array by passing one of the class
+	 * type constants.
+	 *
+	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    Defaults to BasePeer::TYPE_PHPNAME.
+	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 *
+	 * @return    array an associative array containing the field names (as keys) and field values
+	 */
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true)
+	{
+		$keys = AffiliateInfoPeer::getFieldNames($keyType);
+		$result = array(
+			$keys[0] => $this->getAffiliateid(),
+			$keys[1] => $this->getAffiliateinternalnumber(),
+			$keys[2] => $this->getAddress(),
+			$keys[3] => $this->getPhone(),
+			$keys[4] => $this->getEmail(),
+			$keys[5] => $this->getContact(),
+			$keys[6] => $this->getContactemail(),
+			$keys[7] => $this->getWeb(),
+			$keys[8] => $this->getMemo(),
+		);
+		return $result;
+	}
+
+	/**
+	 * Sets a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name peer name
+	 * @param      mixed $value field value
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     void
+	 */
+	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = AffiliateInfoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		return $this->setByPosition($pos, $value);
+	}
+
+	/**
+	 * Sets a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @param      mixed $value field value
+	 * @return     void
+	 */
+	public function setByPosition($pos, $value)
+	{
+		switch($pos) {
+			case 0:
+				$this->setAffiliateid($value);
+				break;
+			case 1:
+				$this->setAffiliateinternalnumber($value);
+				break;
+			case 2:
+				$this->setAddress($value);
+				break;
+			case 3:
+				$this->setPhone($value);
+				break;
+			case 4:
+				$this->setEmail($value);
+				break;
+			case 5:
+				$this->setContact($value);
+				break;
+			case 6:
+				$this->setContactemail($value);
+				break;
+			case 7:
+				$this->setWeb($value);
+				break;
+			case 8:
+				$this->setMemo($value);
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Populates the object using an array.
+	 *
+	 * This is particularly useful when populating an object from one of the
+	 * request arrays (e.g. $_POST).  This method goes through the column
+	 * names, checking to see whether a matching key exists in populated
+	 * array. If so the setByName() method is called for that column.
+	 *
+	 * You can specify the key type of the array by additionally passing one
+	 * of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+	 * The default key type is the column's phpname (e.g. 'AuthorId')
+	 *
+	 * @param      array  $arr     An array to populate the object from.
+	 * @param      string $keyType The type of keys the array uses.
+	 * @return     void
+	 */
+	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
+	{
+		$keys = AffiliateInfoPeer::getFieldNames($keyType);
+
+		if (array_key_exists($keys[0], $arr)) $this->setAffiliateid($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setAffiliateinternalnumber($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setAddress($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setPhone($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setEmail($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setContact($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setContactemail($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setWeb($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setMemo($arr[$keys[8]]);
+	}
+
+	/**
 	 * Build a Criteria object containing the values of all modified columns in this object.
 	 *
 	 * @return     Criteria The Criteria object containing all modified values.
@@ -706,7 +887,6 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent {
 	public function buildPkeyCriteria()
 	{
 		$criteria = new Criteria(AffiliateInfoPeer::DATABASE_NAME);
-
 		$criteria->add(AffiliateInfoPeer::AFFILIATEID, $this->affiliateid);
 
 		return $criteria;
@@ -733,6 +913,15 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Returns true if the primary key for this object is null.
+	 * @return     boolean
+	 */
+	public function isPrimaryKeyNull()
+	{
+		return null === $this->getAffiliateid();
+	}
+
+	/**
 	 * Sets contents of passed object to values from current object.
 	 *
 	 * If desired, this method can also make copies of all associated (fkey referrers)
@@ -744,28 +933,17 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent {
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-
 		$copyObj->setAffiliateid($this->affiliateid);
-
 		$copyObj->setAffiliateinternalnumber($this->affiliateinternalnumber);
-
 		$copyObj->setAddress($this->address);
-
 		$copyObj->setPhone($this->phone);
-
 		$copyObj->setEmail($this->email);
-
 		$copyObj->setContact($this->contact);
-
 		$copyObj->setContactemail($this->contactemail);
-
 		$copyObj->setWeb($this->web);
-
 		$copyObj->setMemo($this->memo);
 
-
 		$copyObj->setNew(true);
-
 	}
 
 	/**
@@ -807,6 +985,28 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Clears the current object and sets all attributes to their default values
+	 */
+	public function clear()
+	{
+		$this->affiliateid = null;
+		$this->affiliateinternalnumber = null;
+		$this->address = null;
+		$this->phone = null;
+		$this->email = null;
+		$this->contact = null;
+		$this->contactemail = null;
+		$this->web = null;
+		$this->memo = null;
+		$this->alreadyInSave = false;
+		$this->alreadyInValidation = false;
+		$this->clearAllReferences();
+		$this->resetModified();
+		$this->setNew(true);
+		$this->setDeleted(false);
+	}
+
+	/**
 	 * Resets all collections of referencing foreign keys.
 	 *
 	 * This method is a user-space workaround for PHP's inability to garbage collect objects
@@ -820,6 +1020,25 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent {
 		if ($deep) {
 		} // if ($deep)
 
+	}
+
+	/**
+	 * Catches calls to virtual methods
+	 */
+	public function __call($name, $params)
+	{
+		if (preg_match('/get(\w+)/', $name, $matches)) {
+			$virtualColumn = $matches[1];
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+			// no lcfirst in php<5.3...
+			$virtualColumn[0] = strtolower($virtualColumn[0]);
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+		}
+		return parent::__call($name, $params);
 	}
 
 } // BaseAffiliateInfo

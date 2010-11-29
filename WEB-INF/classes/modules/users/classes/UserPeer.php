@@ -55,7 +55,7 @@ class UserPeer extends BaseUserPeer {
   * @param string $username Nombre de usuario
   * @param string $name Nombre del usuario
   * @param string $surname Apellido del usuario
-  * @param string $pass Contraseña del usuario
+  * @param string $pass Contraseï¿½a del usuario
   * @param int $levelId Id del nivel de usuarios
   * @param string $mailAddress Email del usuario
   * @return boolean true si se creo el usuario correctamente, false sino
@@ -170,7 +170,7 @@ class UserPeer extends BaseUserPeer {
   * @param string $username Nombre de usuario
   * @param string $name Nombre del usuario
   * @param string $surname Apellido del usuario
-  * @param string $pass Contraseña del usuario
+  * @param string $pass Contraseï¿½a del usuario
   * @param int $levelId Id del nivel de usuarios
   * @param string $mailAddress Email del usuario
   * @return boolean true si se actualizo la informacion correctamente, false sino
@@ -231,7 +231,7 @@ class UserPeer extends BaseUserPeer {
 	* Autentica a un usuario.
 	*
 	* @param string $username Nombre de usuario
-	* @param string $password Contraseña 
+	* @param string $password Contraseï¿½a 
 	* @return User Informacion sobre el usuario, false si no fue exitosa la autenticacion
 	*/
   function auth($username,$password) {
@@ -282,10 +282,10 @@ class UserPeer extends BaseUserPeer {
   }
 
   /**
-  * Genera una nueva contraseña.
+  * Genera una nueva contraseï¿½a.
   *
-  * @param int $length [optional] Longitud de la contraseña
-  * @return string Contraseña
+  * @param int $length [optional] Longitud de la contraseï¿½a
+  * @return string Contraseï¿½a
   */
 	function getNewPassword($length = 8)
 	{
@@ -336,7 +336,6 @@ class UserPeer extends BaseUserPeer {
       $perPage = 	UserPeer::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->add(UserPeer::ACTIVE, 1);
 		$cond->addJoin(UserPeer::ID,UserInfoPeer::USERID,Criteria::LEFT_JOIN);

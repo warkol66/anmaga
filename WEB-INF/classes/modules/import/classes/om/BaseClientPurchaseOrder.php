@@ -1,14 +1,20 @@
 <?php
 
+
 /**
  * Base class that represents a row from the 'import_clientPurchaseOrder' table.
  *
  * Orden de Pedido a Cliente
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
-abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent {
+abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
+{
 
+	/**
+	 * Peer class name
+	 */
+  const PEER = 'ClientPurchaseOrderPeer';
 
 	/**
 	 * The Peer class.
@@ -92,19 +98,9 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	protected $collClientPurchaseOrderItems;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collClientPurchaseOrderItems.
-	 */
-	private $lastClientPurchaseOrderItemCriteria = null;
-
-	/**
 	 * @var        array ClientPurchaseOrderHistory[] Collection to store aggregation of ClientPurchaseOrderHistory objects.
 	 */
 	protected $collClientPurchaseOrderHistorys;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collClientPurchaseOrderHistorys.
-	 */
-	private $lastClientPurchaseOrderHistoryCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -119,26 +115,6 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	 * @var        boolean
 	 */
 	protected $alreadyInValidation = false;
-
-	/**
-	 * Initializes internal state of BaseClientPurchaseOrder object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
-
-	/**
-	 * Applies default values to this object.
-	 * This method should be called from the object's constructor (or
-	 * equivalent initialization method).
-	 * @see        __construct()
-	 */
-	public function applyDefaultValues()
-	{
-	}
 
 	/**
 	 * Get the [id] column value.
@@ -520,11 +496,6 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			// First, ensure that we don't have any columns that have been modified which aren't default columns.
-			if (array_diff($this->modifiedColumns, array())) {
-				return false;
-			}
-
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -563,7 +534,6 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			// FIXME - using NUM_COLUMNS may be clearer.
 			return $startcol + 8; // 8 = ClientPurchaseOrderPeer::NUM_COLUMNS - ClientPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
@@ -643,10 +613,8 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 			$this->aAffiliate = null;
 			$this->aAffiliateUser = null;
 			$this->collClientPurchaseOrderItems = null;
-			$this->lastClientPurchaseOrderItemCriteria = null;
 
 			$this->collClientPurchaseOrderHistorys = null;
-			$this->lastClientPurchaseOrderHistoryCriteria = null;
 
 		} // if (deep)
 	}
@@ -672,9 +640,17 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		
 		$con->beginTransaction();
 		try {
-			ClientPurchaseOrderPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
+			$ret = $this->preDelete($con);
+			if ($ret) {
+				ClientPurchaseOrderQuery::create()
+					->filterByPrimaryKey($this->getPrimaryKey())
+					->delete($con);
+				$this->postDelete($con);
+				$con->commit();
+				$this->setDeleted(true);
+			} else {
+				$con->commit();
+			}
 		} catch (PropelException $e) {
 			$con->rollBack();
 			throw $e;
@@ -705,10 +681,27 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		}
 		
 		$con->beginTransaction();
+		$isInsert = $this->isNew();
 		try {
-			$affectedRows = $this->doSave($con);
+			$ret = $this->preSave($con);
+			if ($isInsert) {
+				$ret = $ret && $this->preInsert($con);
+			} else {
+				$ret = $ret && $this->preUpdate($con);
+			}
+			if ($ret) {
+				$affectedRows = $this->doSave($con);
+				if ($isInsert) {
+					$this->postInsert($con);
+				} else {
+					$this->postUpdate($con);
+				}
+				$this->postSave($con);
+				ClientPurchaseOrderPeer::addInstanceToPool($this);
+			} else {
+				$affectedRows = 0;
+			}
 			$con->commit();
-			ClientPurchaseOrderPeer::addInstanceToPool($this);
 			return $affectedRows;
 		} catch (PropelException $e) {
 			$con->rollBack();
@@ -773,13 +766,14 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = ClientPurchaseOrderPeer::doInsert($this, $con);
-					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
-										 // should always be true here (even though technically
-										 // BasePeer::doInsert() can insert multiple rows).
+					$criteria = $this->buildCriteria();
+					if ($criteria->keyContainsValue(ClientPurchaseOrderPeer::ID) ) {
+						throw new PropelException('Cannot insert a value for auto-increment primary key ('.ClientPurchaseOrderPeer::ID.')');
+					}
 
+					$pk = BasePeer::doInsert($criteria, $con);
+					$affectedRows += 1;
 					$this->setId($pk);  //[IMV] update autoincrement primary key
-
 					$this->setNew(false);
 				} else {
 					$affectedRows += ClientPurchaseOrderPeer::doUpdate($this, $con);
@@ -929,6 +923,191 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Retrieves a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name name
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     mixed Value of field.
+	 */
+	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = ClientPurchaseOrderPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$field = $this->getByPosition($pos);
+		return $field;
+	}
+
+	/**
+	 * Retrieves a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @return     mixed Value of field at $pos
+	 */
+	public function getByPosition($pos)
+	{
+		switch($pos) {
+			case 0:
+				return $this->getId();
+				break;
+			case 1:
+				return $this->getCreatedat();
+				break;
+			case 2:
+				return $this->getStatus();
+				break;
+			case 3:
+				return $this->getTimestampstatus();
+				break;
+			case 4:
+				return $this->getClientquoteid();
+				break;
+			case 5:
+				return $this->getAffiliateid();
+				break;
+			case 6:
+				return $this->getAffiliateuserid();
+				break;
+			case 7:
+				return $this->getUserid();
+				break;
+			default:
+				return null;
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Exports the object as an array.
+	 *
+	 * You can specify the key type of the array by passing one of the class
+	 * type constants.
+	 *
+	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    Defaults to BasePeer::TYPE_PHPNAME.
+	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
+	 *
+	 * @return    array an associative array containing the field names (as keys) and field values
+	 */
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	{
+		$keys = ClientPurchaseOrderPeer::getFieldNames($keyType);
+		$result = array(
+			$keys[0] => $this->getId(),
+			$keys[1] => $this->getCreatedat(),
+			$keys[2] => $this->getStatus(),
+			$keys[3] => $this->getTimestampstatus(),
+			$keys[4] => $this->getClientquoteid(),
+			$keys[5] => $this->getAffiliateid(),
+			$keys[6] => $this->getAffiliateuserid(),
+			$keys[7] => $this->getUserid(),
+		);
+		if ($includeForeignObjects) {
+			if (null !== $this->aClientQuote) {
+				$result['ClientQuote'] = $this->aClientQuote->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aUser) {
+				$result['User'] = $this->aUser->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aAffiliate) {
+				$result['Affiliate'] = $this->aAffiliate->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aAffiliateUser) {
+				$result['AffiliateUser'] = $this->aAffiliateUser->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Sets a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name peer name
+	 * @param      mixed $value field value
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     void
+	 */
+	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = ClientPurchaseOrderPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		return $this->setByPosition($pos, $value);
+	}
+
+	/**
+	 * Sets a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @param      mixed $value field value
+	 * @return     void
+	 */
+	public function setByPosition($pos, $value)
+	{
+		switch($pos) {
+			case 0:
+				$this->setId($value);
+				break;
+			case 1:
+				$this->setCreatedat($value);
+				break;
+			case 2:
+				$this->setStatus($value);
+				break;
+			case 3:
+				$this->setTimestampstatus($value);
+				break;
+			case 4:
+				$this->setClientquoteid($value);
+				break;
+			case 5:
+				$this->setAffiliateid($value);
+				break;
+			case 6:
+				$this->setAffiliateuserid($value);
+				break;
+			case 7:
+				$this->setUserid($value);
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Populates the object using an array.
+	 *
+	 * This is particularly useful when populating an object from one of the
+	 * request arrays (e.g. $_POST).  This method goes through the column
+	 * names, checking to see whether a matching key exists in populated
+	 * array. If so the setByName() method is called for that column.
+	 *
+	 * You can specify the key type of the array by additionally passing one
+	 * of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+	 * The default key type is the column's phpname (e.g. 'AuthorId')
+	 *
+	 * @param      array  $arr     An array to populate the object from.
+	 * @param      string $keyType The type of keys the array uses.
+	 * @return     void
+	 */
+	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
+	{
+		$keys = ClientPurchaseOrderPeer::getFieldNames($keyType);
+
+		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setCreatedat($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setStatus($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setTimestampstatus($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setClientquoteid($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setAffiliateid($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setAffiliateuserid($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setUserid($arr[$keys[7]]);
+	}
+
+	/**
 	 * Build a Criteria object containing the values of all modified columns in this object.
 	 *
 	 * @return     Criteria The Criteria object containing all modified values.
@@ -960,7 +1139,6 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	public function buildPkeyCriteria()
 	{
 		$criteria = new Criteria(ClientPurchaseOrderPeer::DATABASE_NAME);
-
 		$criteria->add(ClientPurchaseOrderPeer::ID, $this->id);
 
 		return $criteria;
@@ -987,6 +1165,15 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Returns true if the primary key for this object is null.
+	 * @return     boolean
+	 */
+	public function isPrimaryKeyNull()
+	{
+		return null === $this->getId();
+	}
+
+	/**
 	 * Sets contents of passed object to values from current object.
 	 *
 	 * If desired, this method can also make copies of all associated (fkey referrers)
@@ -998,21 +1185,13 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-
 		$copyObj->setCreatedat($this->createdat);
-
 		$copyObj->setStatus($this->status);
-
 		$copyObj->setTimestampstatus($this->timestampstatus);
-
 		$copyObj->setClientquoteid($this->clientquoteid);
-
 		$copyObj->setAffiliateid($this->affiliateid);
-
 		$copyObj->setAffiliateuserid($this->affiliateuserid);
-
 		$copyObj->setUserid($this->userid);
-
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1035,9 +1214,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 
 		$copyObj->setNew(true);
-
 		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
-
 	}
 
 	/**
@@ -1115,7 +1292,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	public function getClientQuote(PropelPDO $con = null)
 	{
 		if ($this->aClientQuote === null && ($this->clientquoteid !== null)) {
-			$this->aClientQuote = ClientQuotePeer::retrieveByPK($this->clientquoteid, $con);
+			$this->aClientQuote = ClientQuoteQuery::create()->findPk($this->clientquoteid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1164,7 +1341,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	public function getUser(PropelPDO $con = null)
 	{
 		if ($this->aUser === null && ($this->userid !== null)) {
-			$this->aUser = UserPeer::retrieveByPK($this->userid, $con);
+			$this->aUser = UserQuery::create()->findPk($this->userid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1213,7 +1390,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	public function getAffiliate(PropelPDO $con = null)
 	{
 		if ($this->aAffiliate === null && ($this->affiliateid !== null)) {
-			$this->aAffiliate = AffiliatePeer::retrieveByPK($this->affiliateid, $con);
+			$this->aAffiliate = AffiliateQuery::create()->findPk($this->affiliateid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1262,7 +1439,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	public function getAffiliateUser(PropelPDO $con = null)
 	{
 		if ($this->aAffiliateUser === null && ($this->affiliateuserid !== null)) {
-			$this->aAffiliateUser = AffiliateUserPeer::retrieveByPK($this->affiliateuserid, $con);
+			$this->aAffiliateUser = AffiliateUserQuery::create()->findPk($this->affiliateuserid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1275,7 +1452,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Clears out the collClientPurchaseOrderItems collection (array).
+	 * Clears out the collClientPurchaseOrderItems collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -1289,7 +1466,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Initializes the collClientPurchaseOrderItems collection (array).
+	 * Initializes the collClientPurchaseOrderItems collection.
 	 *
 	 * By default this just sets the collClientPurchaseOrderItems collection to an empty array (like clearcollClientPurchaseOrderItems());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -1299,59 +1476,40 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	 */
 	public function initClientPurchaseOrderItems()
 	{
-		$this->collClientPurchaseOrderItems = array();
+		$this->collClientPurchaseOrderItems = new PropelObjectCollection();
+		$this->collClientPurchaseOrderItems->setModel('ClientPurchaseOrderItem');
 	}
 
 	/**
 	 * Gets an array of ClientPurchaseOrderItem objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this ClientPurchaseOrder has previously been saved, it will retrieve
-	 * related ClientPurchaseOrderItems from storage. If this ClientPurchaseOrder is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this ClientPurchaseOrder is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array ClientPurchaseOrderItem[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array ClientPurchaseOrderItem[] List of ClientPurchaseOrderItem objects
 	 * @throws     PropelException
 	 */
 	public function getClientPurchaseOrderItems($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(ClientPurchaseOrderPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collClientPurchaseOrderItems === null) {
-			if ($this->isNew()) {
-			   $this->collClientPurchaseOrderItems = array();
+		if(null === $this->collClientPurchaseOrderItems || null !== $criteria) {
+			if ($this->isNew() && null === $this->collClientPurchaseOrderItems) {
+				// return empty collection
+				$this->initClientPurchaseOrderItems();
 			} else {
-
-				$criteria->add(ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID, $this->id);
-
-				ClientPurchaseOrderItemPeer::addSelectColumns($criteria);
-				$this->collClientPurchaseOrderItems = ClientPurchaseOrderItemPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID, $this->id);
-
-				ClientPurchaseOrderItemPeer::addSelectColumns($criteria);
-				if (!isset($this->lastClientPurchaseOrderItemCriteria) || !$this->lastClientPurchaseOrderItemCriteria->equals($criteria)) {
-					$this->collClientPurchaseOrderItems = ClientPurchaseOrderItemPeer::doSelect($criteria, $con);
+				$collClientPurchaseOrderItems = ClientPurchaseOrderItemQuery::create(null, $criteria)
+					->filterByClientPurchaseOrder($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collClientPurchaseOrderItems;
 				}
+				$this->collClientPurchaseOrderItems = $collClientPurchaseOrderItems;
 			}
 		}
-		$this->lastClientPurchaseOrderItemCriteria = $criteria;
 		return $this->collClientPurchaseOrderItems;
 	}
 
@@ -1366,48 +1524,21 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	 */
 	public function countClientPurchaseOrderItems(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(ClientPurchaseOrderPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collClientPurchaseOrderItems === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collClientPurchaseOrderItems || null !== $criteria) {
+			if ($this->isNew() && null === $this->collClientPurchaseOrderItems) {
+				return 0;
 			} else {
-
-				$criteria->add(ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID, $this->id);
-
-				$count = ClientPurchaseOrderItemPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID, $this->id);
-
-				if (!isset($this->lastClientPurchaseOrderItemCriteria) || !$this->lastClientPurchaseOrderItemCriteria->equals($criteria)) {
-					$count = ClientPurchaseOrderItemPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collClientPurchaseOrderItems);
+				$query = ClientPurchaseOrderItemQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collClientPurchaseOrderItems);
+				return $query
+					->filterByClientPurchaseOrder($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collClientPurchaseOrderItems);
 		}
-		$this->lastClientPurchaseOrderItemCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -1423,8 +1554,8 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		if ($this->collClientPurchaseOrderItems === null) {
 			$this->initClientPurchaseOrderItems();
 		}
-		if (!in_array($l, $this->collClientPurchaseOrderItems, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collClientPurchaseOrderItems, $l);
+		if (!$this->collClientPurchaseOrderItems->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collClientPurchaseOrderItems[]= $l;
 			$l->setClientPurchaseOrder($this);
 		}
 	}
@@ -1440,44 +1571,22 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in ClientPurchaseOrder.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array ClientPurchaseOrderItem[] List of ClientPurchaseOrderItem objects
 	 */
 	public function getClientPurchaseOrderItemsJoinProduct($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(ClientPurchaseOrderPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
+		$query = ClientPurchaseOrderItemQuery::create(null, $criteria);
+		$query->joinWith('Product', $join_behavior);
 
-		if ($this->collClientPurchaseOrderItems === null) {
-			if ($this->isNew()) {
-				$this->collClientPurchaseOrderItems = array();
-			} else {
-
-				$criteria->add(ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID, $this->id);
-
-				$this->collClientPurchaseOrderItems = ClientPurchaseOrderItemPeer::doSelectJoinProduct($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(ClientPurchaseOrderItemPeer::CLIENTPURCHASEORDERID, $this->id);
-
-			if (!isset($this->lastClientPurchaseOrderItemCriteria) || !$this->lastClientPurchaseOrderItemCriteria->equals($criteria)) {
-				$this->collClientPurchaseOrderItems = ClientPurchaseOrderItemPeer::doSelectJoinProduct($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastClientPurchaseOrderItemCriteria = $criteria;
-
-		return $this->collClientPurchaseOrderItems;
+		return $this->getClientPurchaseOrderItems($query, $con);
 	}
 
 	/**
-	 * Clears out the collClientPurchaseOrderHistorys collection (array).
+	 * Clears out the collClientPurchaseOrderHistorys collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
@@ -1491,7 +1600,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Initializes the collClientPurchaseOrderHistorys collection (array).
+	 * Initializes the collClientPurchaseOrderHistorys collection.
 	 *
 	 * By default this just sets the collClientPurchaseOrderHistorys collection to an empty array (like clearcollClientPurchaseOrderHistorys());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
@@ -1501,59 +1610,40 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	 */
 	public function initClientPurchaseOrderHistorys()
 	{
-		$this->collClientPurchaseOrderHistorys = array();
+		$this->collClientPurchaseOrderHistorys = new PropelObjectCollection();
+		$this->collClientPurchaseOrderHistorys->setModel('ClientPurchaseOrderHistory');
 	}
 
 	/**
 	 * Gets an array of ClientPurchaseOrderHistory objects which contain a foreign key that references this object.
 	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this ClientPurchaseOrder has previously been saved, it will retrieve
-	 * related ClientPurchaseOrderHistorys from storage. If this ClientPurchaseOrder is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this ClientPurchaseOrder is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array ClientPurchaseOrderHistory[]
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array ClientPurchaseOrderHistory[] List of ClientPurchaseOrderHistory objects
 	 * @throws     PropelException
 	 */
 	public function getClientPurchaseOrderHistorys($criteria = null, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(ClientPurchaseOrderPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collClientPurchaseOrderHistorys === null) {
-			if ($this->isNew()) {
-			   $this->collClientPurchaseOrderHistorys = array();
+		if(null === $this->collClientPurchaseOrderHistorys || null !== $criteria) {
+			if ($this->isNew() && null === $this->collClientPurchaseOrderHistorys) {
+				// return empty collection
+				$this->initClientPurchaseOrderHistorys();
 			} else {
-
-				$criteria->add(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, $this->id);
-
-				ClientPurchaseOrderHistoryPeer::addSelectColumns($criteria);
-				$this->collClientPurchaseOrderHistorys = ClientPurchaseOrderHistoryPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, $this->id);
-
-				ClientPurchaseOrderHistoryPeer::addSelectColumns($criteria);
-				if (!isset($this->lastClientPurchaseOrderHistoryCriteria) || !$this->lastClientPurchaseOrderHistoryCriteria->equals($criteria)) {
-					$this->collClientPurchaseOrderHistorys = ClientPurchaseOrderHistoryPeer::doSelect($criteria, $con);
+				$collClientPurchaseOrderHistorys = ClientPurchaseOrderHistoryQuery::create(null, $criteria)
+					->filterByClientPurchaseOrder($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collClientPurchaseOrderHistorys;
 				}
+				$this->collClientPurchaseOrderHistorys = $collClientPurchaseOrderHistorys;
 			}
 		}
-		$this->lastClientPurchaseOrderHistoryCriteria = $criteria;
 		return $this->collClientPurchaseOrderHistorys;
 	}
 
@@ -1568,48 +1658,21 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	 */
 	public function countClientPurchaseOrderHistorys(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(ClientPurchaseOrderPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collClientPurchaseOrderHistorys === null) {
-			if ($this->isNew()) {
-				$count = 0;
+		if(null === $this->collClientPurchaseOrderHistorys || null !== $criteria) {
+			if ($this->isNew() && null === $this->collClientPurchaseOrderHistorys) {
+				return 0;
 			} else {
-
-				$criteria->add(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, $this->id);
-
-				$count = ClientPurchaseOrderHistoryPeer::doCount($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, $this->id);
-
-				if (!isset($this->lastClientPurchaseOrderHistoryCriteria) || !$this->lastClientPurchaseOrderHistoryCriteria->equals($criteria)) {
-					$count = ClientPurchaseOrderHistoryPeer::doCount($criteria, $con);
-				} else {
-					$count = count($this->collClientPurchaseOrderHistorys);
+				$query = ClientPurchaseOrderHistoryQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
 				}
-			} else {
-				$count = count($this->collClientPurchaseOrderHistorys);
+				return $query
+					->filterByClientPurchaseOrder($this)
+					->count($con);
 			}
+		} else {
+			return count($this->collClientPurchaseOrderHistorys);
 		}
-		$this->lastClientPurchaseOrderHistoryCriteria = $criteria;
-		return $count;
 	}
 
 	/**
@@ -1625,10 +1688,31 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		if ($this->collClientPurchaseOrderHistorys === null) {
 			$this->initClientPurchaseOrderHistorys();
 		}
-		if (!in_array($l, $this->collClientPurchaseOrderHistorys, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collClientPurchaseOrderHistorys, $l);
+		if (!$this->collClientPurchaseOrderHistorys->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collClientPurchaseOrderHistorys[]= $l;
 			$l->setClientPurchaseOrder($this);
 		}
+	}
+
+	/**
+	 * Clears the current object and sets all attributes to their default values
+	 */
+	public function clear()
+	{
+		$this->id = null;
+		$this->createdat = null;
+		$this->status = null;
+		$this->timestampstatus = null;
+		$this->clientquoteid = null;
+		$this->affiliateid = null;
+		$this->affiliateuserid = null;
+		$this->userid = null;
+		$this->alreadyInSave = false;
+		$this->alreadyInValidation = false;
+		$this->clearAllReferences();
+		$this->resetModified();
+		$this->setNew(true);
+		$this->setDeleted(false);
 	}
 
 	/**
@@ -1657,10 +1741,29 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 
 		$this->collClientPurchaseOrderItems = null;
 		$this->collClientPurchaseOrderHistorys = null;
-			$this->aClientQuote = null;
-			$this->aUser = null;
-			$this->aAffiliate = null;
-			$this->aAffiliateUser = null;
+		$this->aClientQuote = null;
+		$this->aUser = null;
+		$this->aAffiliate = null;
+		$this->aAffiliateUser = null;
+	}
+
+	/**
+	 * Catches calls to virtual methods
+	 */
+	public function __call($name, $params)
+	{
+		if (preg_match('/get(\w+)/', $name, $matches)) {
+			$virtualColumn = $matches[1];
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+			// no lcfirst in php<5.3...
+			$virtualColumn[0] = strtolower($virtualColumn[0]);
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+		}
+		return parent::__call($name, $params);
 	}
 
 } // BaseClientPurchaseOrder

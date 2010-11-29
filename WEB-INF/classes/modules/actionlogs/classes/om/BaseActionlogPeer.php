@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'actionlogs_log' table.
  *
  * logs del sistema
  *
- * @package    actionlogs.classes.om
+ * @package    propel.generator.actionlogs.classes.om
  */
 abstract class BaseActionlogPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseActionlogPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'actionlogs_log';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'Actionlog';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'actionlogs.classes.Actionlog';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'ActionlogTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 7;
 
@@ -53,11 +60,6 @@ abstract class BaseActionlogPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -69,6 +71,7 @@ abstract class BaseActionlogPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Userid', 'Affiliateid', 'Datetime', 'Action', 'Object', 'Forward', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userid', 'affiliateid', 'datetime', 'action', 'object', 'forward', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::USERID, self::AFFILIATEID, self::DATETIME, self::ACTION, self::OBJECT, self::FORWARD, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USERID', 'AFFILIATEID', 'DATETIME', 'ACTION', 'OBJECT', 'FORWARD', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'userId', 'affiliateId', 'datetime', 'action', 'object', 'forward', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
@@ -83,21 +86,11 @@ abstract class BaseActionlogPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Userid' => 1, 'Affiliateid' => 2, 'Datetime' => 3, 'Action' => 4, 'Object' => 5, 'Forward' => 6, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userid' => 1, 'affiliateid' => 2, 'datetime' => 3, 'action' => 4, 'object' => 5, 'forward' => 6, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USERID => 1, self::AFFILIATEID => 2, self::DATETIME => 3, self::ACTION => 4, self::OBJECT => 5, self::FORWARD => 6, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USERID' => 1, 'AFFILIATEID' => 2, 'DATETIME' => 3, 'ACTION' => 4, 'OBJECT' => 5, 'FORWARD' => 6, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'userId' => 1, 'affiliateId' => 2, 'datetime' => 3, 'action' => 4, 'object' => 5, 'forward' => 6, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new ActionlogMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -159,27 +152,30 @@ abstract class BaseActionlogPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(ActionlogPeer::ID);
-
-		$criteria->addSelectColumn(ActionlogPeer::USERID);
-
-		$criteria->addSelectColumn(ActionlogPeer::AFFILIATEID);
-
-		$criteria->addSelectColumn(ActionlogPeer::DATETIME);
-
-		$criteria->addSelectColumn(ActionlogPeer::ACTION);
-
-		$criteria->addSelectColumn(ActionlogPeer::OBJECT);
-
-		$criteria->addSelectColumn(ActionlogPeer::FORWARD);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(ActionlogPeer::ID);
+			$criteria->addSelectColumn(ActionlogPeer::USERID);
+			$criteria->addSelectColumn(ActionlogPeer::AFFILIATEID);
+			$criteria->addSelectColumn(ActionlogPeer::DATETIME);
+			$criteria->addSelectColumn(ActionlogPeer::ACTION);
+			$criteria->addSelectColumn(ActionlogPeer::OBJECT);
+			$criteria->addSelectColumn(ActionlogPeer::FORWARD);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.USERID');
+			$criteria->addSelectColumn($alias . '.AFFILIATEID');
+			$criteria->addSelectColumn($alias . '.DATETIME');
+			$criteria->addSelectColumn($alias . '.ACTION');
+			$criteria->addSelectColumn($alias . '.OBJECT');
+			$criteria->addSelectColumn($alias . '.FORWARD');
+		}
 	}
 
 	/**
@@ -367,6 +363,14 @@ abstract class BaseActionlogPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to actionlogs_log
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -379,12 +383,26 @@ abstract class BaseActionlogPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -397,18 +415,16 @@ abstract class BaseActionlogPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = ActionlogPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = ActionlogPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = ActionlogPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = ActionlogPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -418,11 +434,36 @@ abstract class BaseActionlogPeer {
 		$stmt->closeCursor();
 		return $results;
 	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (Actionlog object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = ActionlogPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = ActionlogPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + ActionlogPeer::NUM_COLUMNS;
+		} else {
+			$cls = ActionlogPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			ActionlogPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
+	}
 
 	/**
 	 * Returns the number of rows matching criteria, joining the related User table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -455,7 +496,8 @@ abstract class BaseActionlogPeer {
 			$con = Propel::getConnection(ActionlogPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ActionlogPeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$criteria->addJoin(ActionlogPeer::USERID, UserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -471,7 +513,7 @@ abstract class BaseActionlogPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related SecurityAction table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -504,7 +546,8 @@ abstract class BaseActionlogPeer {
 			$con = Propel::getConnection(ActionlogPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ActionlogPeer::ACTION,), array(SecurityActionPeer::ACTION,), $join_behavior);
+		$criteria->addJoin(ActionlogPeer::ACTION, SecurityActionPeer::ACTION, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -519,41 +562,41 @@ abstract class BaseActionlogPeer {
 
 	/**
 	 * Selects a collection of Actionlog objects pre-filled with their User objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of Actionlog objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ActionlogPeer::addSelectColumns($c);
+		ActionlogPeer::addSelectColumns($criteria);
 		$startcol = (ActionlogPeer::NUM_COLUMNS - ActionlogPeer::NUM_LAZY_LOAD_COLUMNS);
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(ActionlogPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ActionlogPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ActionlogPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ActionlogPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = ActionlogPeer::getOMClass();
+				$cls = ActionlogPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ActionlogPeer::addInstanceToPool($obj1, $key1);
@@ -564,9 +607,8 @@ abstract class BaseActionlogPeer {
 				$obj2 = UserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = UserPeer::getOMClass();
+					$cls = UserPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					UserPeer::addInstanceToPool($obj2, $key2);
@@ -586,41 +628,41 @@ abstract class BaseActionlogPeer {
 
 	/**
 	 * Selects a collection of Actionlog objects pre-filled with their SecurityAction objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of Actionlog objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinSecurityAction(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinSecurityAction(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ActionlogPeer::addSelectColumns($c);
+		ActionlogPeer::addSelectColumns($criteria);
 		$startcol = (ActionlogPeer::NUM_COLUMNS - ActionlogPeer::NUM_LAZY_LOAD_COLUMNS);
-		SecurityActionPeer::addSelectColumns($c);
+		SecurityActionPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(ActionlogPeer::ACTION,), array(SecurityActionPeer::ACTION,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ActionlogPeer::ACTION, SecurityActionPeer::ACTION, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ActionlogPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ActionlogPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = ActionlogPeer::getOMClass();
+				$cls = ActionlogPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ActionlogPeer::addInstanceToPool($obj1, $key1);
@@ -631,9 +673,8 @@ abstract class BaseActionlogPeer {
 				$obj2 = SecurityActionPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = SecurityActionPeer::getOMClass();
+					$cls = SecurityActionPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					SecurityActionPeer::addInstanceToPool($obj2, $key2);
@@ -654,7 +695,7 @@ abstract class BaseActionlogPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -687,8 +728,10 @@ abstract class BaseActionlogPeer {
 			$con = Propel::getConnection(ActionlogPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ActionlogPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$criteria->addJoin(array(ActionlogPeer::ACTION,), array(SecurityActionPeer::ACTION,), $join_behavior);
+		$criteria->addJoin(ActionlogPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(ActionlogPeer::ACTION, SecurityActionPeer::ACTION, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -703,46 +746,47 @@ abstract class BaseActionlogPeer {
 	/**
 	 * Selects a collection of Actionlog objects pre-filled with all related objects.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of Actionlog objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAll(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ActionlogPeer::addSelectColumns($c);
+		ActionlogPeer::addSelectColumns($criteria);
 		$startcol2 = (ActionlogPeer::NUM_COLUMNS - ActionlogPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SecurityActionPeer::addSelectColumns($c);
+		SecurityActionPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (SecurityActionPeer::NUM_COLUMNS - SecurityActionPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(ActionlogPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$c->addJoin(array(ActionlogPeer::ACTION,), array(SecurityActionPeer::ACTION,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ActionlogPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(ActionlogPeer::ACTION, SecurityActionPeer::ACTION, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ActionlogPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ActionlogPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = ActionlogPeer::getOMClass();
+				$cls = ActionlogPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ActionlogPeer::addInstanceToPool($obj1, $key1);
@@ -755,10 +799,8 @@ abstract class BaseActionlogPeer {
 				$obj2 = UserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = UserPeer::getOMClass();
+					$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					UserPeer::addInstanceToPool($obj2, $key2);
@@ -775,10 +817,8 @@ abstract class BaseActionlogPeer {
 				$obj3 = SecurityActionPeer::getInstanceFromPool($key3);
 				if (!$obj3) {
 
-					$omClass = SecurityActionPeer::getOMClass();
+					$cls = SecurityActionPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					SecurityActionPeer::addInstanceToPool($obj3, $key3);
@@ -798,7 +838,7 @@ abstract class BaseActionlogPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related User table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -831,7 +871,8 @@ abstract class BaseActionlogPeer {
 			$con = Propel::getConnection(ActionlogPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(ActionlogPeer::ACTION,), array(SecurityActionPeer::ACTION,), $join_behavior);
+		$criteria->addJoin(ActionlogPeer::ACTION, SecurityActionPeer::ACTION, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -847,7 +888,7 @@ abstract class BaseActionlogPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related SecurityAction table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -880,7 +921,8 @@ abstract class BaseActionlogPeer {
 			$con = Propel::getConnection(ActionlogPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(ActionlogPeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$criteria->addJoin(ActionlogPeer::USERID, UserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -896,45 +938,45 @@ abstract class BaseActionlogPeer {
 	/**
 	 * Selects a collection of Actionlog objects pre-filled with all related objects except User.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of Actionlog objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ActionlogPeer::addSelectColumns($c);
+		ActionlogPeer::addSelectColumns($criteria);
 		$startcol2 = (ActionlogPeer::NUM_COLUMNS - ActionlogPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SecurityActionPeer::addSelectColumns($c);
+		SecurityActionPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SecurityActionPeer::NUM_COLUMNS - SecurityActionPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(ActionlogPeer::ACTION,), array(SecurityActionPeer::ACTION,), $join_behavior);
+		$criteria->addJoin(ActionlogPeer::ACTION, SecurityActionPeer::ACTION, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ActionlogPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ActionlogPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = ActionlogPeer::getOMClass();
+				$cls = ActionlogPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ActionlogPeer::addInstanceToPool($obj1, $key1);
@@ -947,10 +989,8 @@ abstract class BaseActionlogPeer {
 					$obj2 = SecurityActionPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = SecurityActionPeer::getOMClass();
+						$cls = SecurityActionPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SecurityActionPeer::addInstanceToPool($obj2, $key2);
@@ -971,45 +1011,45 @@ abstract class BaseActionlogPeer {
 	/**
 	 * Selects a collection of Actionlog objects pre-filled with all related objects except SecurityAction.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of Actionlog objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptSecurityAction(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptSecurityAction(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ActionlogPeer::addSelectColumns($c);
+		ActionlogPeer::addSelectColumns($criteria);
 		$startcol2 = (ActionlogPeer::NUM_COLUMNS - ActionlogPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(ActionlogPeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$criteria->addJoin(ActionlogPeer::USERID, UserPeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ActionlogPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ActionlogPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = ActionlogPeer::getOMClass();
+				$cls = ActionlogPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ActionlogPeer::addInstanceToPool($obj1, $key1);
@@ -1022,10 +1062,8 @@ abstract class BaseActionlogPeer {
 					$obj2 = UserPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = UserPeer::getOMClass();
+						$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					UserPeer::addInstanceToPool($obj2, $key2);
@@ -1055,17 +1093,31 @@ abstract class BaseActionlogPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseActionlogPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseActionlogPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new ActionlogTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return ActionlogPeer::CLASS_DEFAULT;
+		return $withPrefix ? ActionlogPeer::CLASS_DEFAULT : ActionlogPeer::OM_CLASS;
 	}
 
 	/**
@@ -1132,7 +1184,12 @@ abstract class BaseActionlogPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(ActionlogPeer::ID);
-			$selectCriteria->add(ActionlogPeer::ID, $criteria->remove(ActionlogPeer::ID), $comparison);
+			$value = $criteria->remove(ActionlogPeer::ID);
+			if ($value) {
+				$selectCriteria->add(ActionlogPeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(ActionlogPeer::TABLE_NAME);
+			}
 
 		} else { // $values is Actionlog object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -1160,7 +1217,12 @@ abstract class BaseActionlogPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(ActionlogPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(ActionlogPeer::TABLE_NAME, $con, ActionlogPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			ActionlogPeer::clearInstancePool();
+			ActionlogPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1191,24 +1253,18 @@ abstract class BaseActionlogPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			ActionlogPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof Actionlog) {
+		} elseif ($values instanceof Actionlog) { // it's a model object
 			// invalidate the cache for this single object
 			ActionlogPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(ActionlogPeer::ID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				ActionlogPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -1224,7 +1280,7 @@ abstract class BaseActionlogPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			ActionlogPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1323,14 +1379,7 @@ abstract class BaseActionlogPeer {
 
 } // BaseActionlogPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the ActionlogPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the ActionlogPeer class:
-//
-// Propel::getDatabaseMap(ActionlogPeer::DATABASE_NAME)->addTableBuilder(ActionlogPeer::TABLE_NAME, ActionlogPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseActionlogPeer::DATABASE_NAME)->addTableBuilder(BaseActionlogPeer::TABLE_NAME, BaseActionlogPeer::getMapBuilder());
+BaseActionlogPeer::buildTableMap();
 
