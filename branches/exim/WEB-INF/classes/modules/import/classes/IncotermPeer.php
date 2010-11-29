@@ -113,7 +113,6 @@ class IncotermPeer extends BaseIncotermPeer {
       $perPage = 	IncotermPeer::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("propel/util/PropelPager.php");
     $cond = new Criteria();
     $cond->add(IncotermPeer::ACTIVE, '1');     
     $pager = new PropelPager($cond,"IncotermPeer", "doSelect",$page,$perPage);

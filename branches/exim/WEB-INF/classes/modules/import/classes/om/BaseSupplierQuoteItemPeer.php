@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'import_supplierQuoteItem' table.
  *
  * Elemento de Cotizacion de Proveedor
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
 abstract class BaseSupplierQuoteItemPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseSupplierQuoteItemPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'import_supplierQuoteItem';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'SupplierQuoteItem';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'import.classes.SupplierQuoteItem';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'SupplierQuoteItemTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 23;
 
@@ -101,11 +108,6 @@ abstract class BaseSupplierQuoteItemPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -117,6 +119,7 @@ abstract class BaseSupplierQuoteItemPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Supplierquoteid', 'Productid', 'Replacedproductid', 'Clientquoteitemid', 'Status', 'Quantity', 'Portid', 'Incotermid', 'Price', 'Suppliercomments', 'Delivery', 'Package', 'Unitlength', 'Unitwidth', 'Unitheight', 'Unitgrossweigth', 'Unitspercarton', 'Cartons', 'Cartonlength', 'Cartonwidth', 'Cartonheight', 'Cartongrossweigth', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'supplierquoteid', 'productid', 'replacedproductid', 'clientquoteitemid', 'status', 'quantity', 'portid', 'incotermid', 'price', 'suppliercomments', 'delivery', 'package', 'unitlength', 'unitwidth', 'unitheight', 'unitgrossweigth', 'unitspercarton', 'cartons', 'cartonlength', 'cartonwidth', 'cartonheight', 'cartongrossweigth', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::SUPPLIERQUOTEID, self::PRODUCTID, self::REPLACEDPRODUCTID, self::CLIENTQUOTEITEMID, self::STATUS, self::QUANTITY, self::PORTID, self::INCOTERMID, self::PRICE, self::SUPPLIERCOMMENTS, self::DELIVERY, self::PACKAGE, self::UNITLENGTH, self::UNITWIDTH, self::UNITHEIGHT, self::UNITGROSSWEIGTH, self::UNITSPERCARTON, self::CARTONS, self::CARTONLENGTH, self::CARTONWIDTH, self::CARTONHEIGHT, self::CARTONGROSSWEIGTH, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'SUPPLIERQUOTEID', 'PRODUCTID', 'REPLACEDPRODUCTID', 'CLIENTQUOTEITEMID', 'STATUS', 'QUANTITY', 'PORTID', 'INCOTERMID', 'PRICE', 'SUPPLIERCOMMENTS', 'DELIVERY', 'PACKAGE', 'UNITLENGTH', 'UNITWIDTH', 'UNITHEIGHT', 'UNITGROSSWEIGTH', 'UNITSPERCARTON', 'CARTONS', 'CARTONLENGTH', 'CARTONWIDTH', 'CARTONHEIGHT', 'CARTONGROSSWEIGTH', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'supplierQuoteId', 'productId', 'replacedProductId', 'clientQuoteItemId', 'status', 'quantity', 'portId', 'incotermId', 'price', 'supplierComments', 'delivery', 'package', 'unitLength', 'unitWidth', 'unitHeight', 'unitGrossWeigth', 'unitsPerCarton', 'cartons', 'cartonLength', 'cartonWidth', 'cartonHeight', 'cartonGrossWeigth', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
 	);
@@ -131,21 +134,11 @@ abstract class BaseSupplierQuoteItemPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Supplierquoteid' => 1, 'Productid' => 2, 'Replacedproductid' => 3, 'Clientquoteitemid' => 4, 'Status' => 5, 'Quantity' => 6, 'Portid' => 7, 'Incotermid' => 8, 'Price' => 9, 'Suppliercomments' => 10, 'Delivery' => 11, 'Package' => 12, 'Unitlength' => 13, 'Unitwidth' => 14, 'Unitheight' => 15, 'Unitgrossweigth' => 16, 'Unitspercarton' => 17, 'Cartons' => 18, 'Cartonlength' => 19, 'Cartonwidth' => 20, 'Cartonheight' => 21, 'Cartongrossweigth' => 22, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'supplierquoteid' => 1, 'productid' => 2, 'replacedproductid' => 3, 'clientquoteitemid' => 4, 'status' => 5, 'quantity' => 6, 'portid' => 7, 'incotermid' => 8, 'price' => 9, 'suppliercomments' => 10, 'delivery' => 11, 'package' => 12, 'unitlength' => 13, 'unitwidth' => 14, 'unitheight' => 15, 'unitgrossweigth' => 16, 'unitspercarton' => 17, 'cartons' => 18, 'cartonlength' => 19, 'cartonwidth' => 20, 'cartonheight' => 21, 'cartongrossweigth' => 22, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SUPPLIERQUOTEID => 1, self::PRODUCTID => 2, self::REPLACEDPRODUCTID => 3, self::CLIENTQUOTEITEMID => 4, self::STATUS => 5, self::QUANTITY => 6, self::PORTID => 7, self::INCOTERMID => 8, self::PRICE => 9, self::SUPPLIERCOMMENTS => 10, self::DELIVERY => 11, self::PACKAGE => 12, self::UNITLENGTH => 13, self::UNITWIDTH => 14, self::UNITHEIGHT => 15, self::UNITGROSSWEIGTH => 16, self::UNITSPERCARTON => 17, self::CARTONS => 18, self::CARTONLENGTH => 19, self::CARTONWIDTH => 20, self::CARTONHEIGHT => 21, self::CARTONGROSSWEIGTH => 22, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'SUPPLIERQUOTEID' => 1, 'PRODUCTID' => 2, 'REPLACEDPRODUCTID' => 3, 'CLIENTQUOTEITEMID' => 4, 'STATUS' => 5, 'QUANTITY' => 6, 'PORTID' => 7, 'INCOTERMID' => 8, 'PRICE' => 9, 'SUPPLIERCOMMENTS' => 10, 'DELIVERY' => 11, 'PACKAGE' => 12, 'UNITLENGTH' => 13, 'UNITWIDTH' => 14, 'UNITHEIGHT' => 15, 'UNITGROSSWEIGTH' => 16, 'UNITSPERCARTON' => 17, 'CARTONS' => 18, 'CARTONLENGTH' => 19, 'CARTONWIDTH' => 20, 'CARTONHEIGHT' => 21, 'CARTONGROSSWEIGTH' => 22, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'supplierQuoteId' => 1, 'productId' => 2, 'replacedProductId' => 3, 'clientQuoteItemId' => 4, 'status' => 5, 'quantity' => 6, 'portId' => 7, 'incotermId' => 8, 'price' => 9, 'supplierComments' => 10, 'delivery' => 11, 'package' => 12, 'unitLength' => 13, 'unitWidth' => 14, 'unitHeight' => 15, 'unitGrossWeigth' => 16, 'unitsPerCarton' => 17, 'cartons' => 18, 'cartonLength' => 19, 'cartonWidth' => 20, 'cartonHeight' => 21, 'cartonGrossWeigth' => 22, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new SupplierQuoteItemMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -207,59 +200,62 @@ abstract class BaseSupplierQuoteItemPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::ID);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::SUPPLIERQUOTEID);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::PRODUCTID);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::REPLACEDPRODUCTID);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::CLIENTQUOTEITEMID);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::STATUS);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::QUANTITY);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::PORTID);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::INCOTERMID);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::PRICE);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::SUPPLIERCOMMENTS);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::DELIVERY);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::PACKAGE);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::UNITLENGTH);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::UNITWIDTH);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::UNITHEIGHT);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::UNITGROSSWEIGTH);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::UNITSPERCARTON);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::CARTONS);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::CARTONLENGTH);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::CARTONWIDTH);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::CARTONHEIGHT);
-
-		$criteria->addSelectColumn(SupplierQuoteItemPeer::CARTONGROSSWEIGTH);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::ID);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::SUPPLIERQUOTEID);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::PRODUCTID);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::REPLACEDPRODUCTID);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::CLIENTQUOTEITEMID);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::STATUS);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::QUANTITY);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::PORTID);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::INCOTERMID);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::PRICE);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::SUPPLIERCOMMENTS);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::DELIVERY);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::PACKAGE);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::UNITLENGTH);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::UNITWIDTH);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::UNITHEIGHT);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::UNITGROSSWEIGTH);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::UNITSPERCARTON);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::CARTONS);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::CARTONLENGTH);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::CARTONWIDTH);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::CARTONHEIGHT);
+			$criteria->addSelectColumn(SupplierQuoteItemPeer::CARTONGROSSWEIGTH);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.SUPPLIERQUOTEID');
+			$criteria->addSelectColumn($alias . '.PRODUCTID');
+			$criteria->addSelectColumn($alias . '.REPLACEDPRODUCTID');
+			$criteria->addSelectColumn($alias . '.CLIENTQUOTEITEMID');
+			$criteria->addSelectColumn($alias . '.STATUS');
+			$criteria->addSelectColumn($alias . '.QUANTITY');
+			$criteria->addSelectColumn($alias . '.PORTID');
+			$criteria->addSelectColumn($alias . '.INCOTERMID');
+			$criteria->addSelectColumn($alias . '.PRICE');
+			$criteria->addSelectColumn($alias . '.SUPPLIERCOMMENTS');
+			$criteria->addSelectColumn($alias . '.DELIVERY');
+			$criteria->addSelectColumn($alias . '.PACKAGE');
+			$criteria->addSelectColumn($alias . '.UNITLENGTH');
+			$criteria->addSelectColumn($alias . '.UNITWIDTH');
+			$criteria->addSelectColumn($alias . '.UNITHEIGHT');
+			$criteria->addSelectColumn($alias . '.UNITGROSSWEIGTH');
+			$criteria->addSelectColumn($alias . '.UNITSPERCARTON');
+			$criteria->addSelectColumn($alias . '.CARTONS');
+			$criteria->addSelectColumn($alias . '.CARTONLENGTH');
+			$criteria->addSelectColumn($alias . '.CARTONWIDTH');
+			$criteria->addSelectColumn($alias . '.CARTONHEIGHT');
+			$criteria->addSelectColumn($alias . '.CARTONGROSSWEIGTH');
+		}
 	}
 
 	/**
@@ -447,6 +443,14 @@ abstract class BaseSupplierQuoteItemPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to import_supplierQuoteItem
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -459,12 +463,26 @@ abstract class BaseSupplierQuoteItemPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -477,18 +495,16 @@ abstract class BaseSupplierQuoteItemPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = SupplierQuoteItemPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = SupplierQuoteItemPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = SupplierQuoteItemPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -498,11 +514,36 @@ abstract class BaseSupplierQuoteItemPeer {
 		$stmt->closeCursor();
 		return $results;
 	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (SupplierQuoteItem object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = SupplierQuoteItemPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + SupplierQuoteItemPeer::NUM_COLUMNS;
+		} else {
+			$cls = SupplierQuoteItemPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			SupplierQuoteItemPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
+	}
 
 	/**
 	 * Returns the number of rows matching criteria, joining the related SupplierQuote table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -535,7 +576,8 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -551,7 +593,7 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related ClientQuoteItem table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -584,7 +626,8 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -600,7 +643,7 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related ProductRelatedByProductid table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -633,7 +676,8 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierQuoteItemPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -649,7 +693,7 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related ProductRelatedByReplacedproductid table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -682,7 +726,8 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierQuoteItemPeer::REPLACEDPRODUCTID,), array(ProductPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::REPLACEDPRODUCTID, ProductPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -698,7 +743,7 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Incoterm table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -731,7 +776,8 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -747,7 +793,7 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Port table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -780,7 +826,8 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -795,41 +842,41 @@ abstract class BaseSupplierQuoteItemPeer {
 
 	/**
 	 * Selects a collection of SupplierQuoteItem objects pre-filled with their SupplierQuote objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierQuoteItem objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinSupplierQuote(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinSupplierQuote(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierQuoteItemPeer::addSelectColumns($c);
+		SupplierQuoteItemPeer::addSelectColumns($criteria);
 		$startcol = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
-		SupplierQuotePeer::addSelectColumns($c);
+		SupplierQuotePeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierQuoteItemPeer::getOMClass();
+				$cls = SupplierQuoteItemPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
@@ -840,9 +887,8 @@ abstract class BaseSupplierQuoteItemPeer {
 				$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = SupplierQuotePeer::getOMClass();
+					$cls = SupplierQuotePeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
@@ -862,41 +908,41 @@ abstract class BaseSupplierQuoteItemPeer {
 
 	/**
 	 * Selects a collection of SupplierQuoteItem objects pre-filled with their ClientQuoteItem objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierQuoteItem objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinClientQuoteItem(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinClientQuoteItem(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierQuoteItemPeer::addSelectColumns($c);
+		SupplierQuoteItemPeer::addSelectColumns($criteria);
 		$startcol = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
-		ClientQuoteItemPeer::addSelectColumns($c);
+		ClientQuoteItemPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierQuoteItemPeer::getOMClass();
+				$cls = SupplierQuoteItemPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
@@ -907,9 +953,8 @@ abstract class BaseSupplierQuoteItemPeer {
 				$obj2 = ClientQuoteItemPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = ClientQuoteItemPeer::getOMClass();
+					$cls = ClientQuoteItemPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					ClientQuoteItemPeer::addInstanceToPool($obj2, $key2);
@@ -929,41 +974,41 @@ abstract class BaseSupplierQuoteItemPeer {
 
 	/**
 	 * Selects a collection of SupplierQuoteItem objects pre-filled with their Product objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierQuoteItem objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinProductRelatedByProductid(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinProductRelatedByProductid(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierQuoteItemPeer::addSelectColumns($c);
+		SupplierQuoteItemPeer::addSelectColumns($criteria);
 		$startcol = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
-		ProductPeer::addSelectColumns($c);
+		ProductPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierQuoteItemPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierQuoteItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierQuoteItemPeer::getOMClass();
+				$cls = SupplierQuoteItemPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
@@ -974,9 +1019,8 @@ abstract class BaseSupplierQuoteItemPeer {
 				$obj2 = ProductPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = ProductPeer::getOMClass();
+					$cls = ProductPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					ProductPeer::addInstanceToPool($obj2, $key2);
@@ -996,41 +1040,41 @@ abstract class BaseSupplierQuoteItemPeer {
 
 	/**
 	 * Selects a collection of SupplierQuoteItem objects pre-filled with their Product objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierQuoteItem objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinProductRelatedByReplacedproductid(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinProductRelatedByReplacedproductid(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierQuoteItemPeer::addSelectColumns($c);
+		SupplierQuoteItemPeer::addSelectColumns($criteria);
 		$startcol = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
-		ProductPeer::addSelectColumns($c);
+		ProductPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierQuoteItemPeer::REPLACEDPRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierQuoteItemPeer::REPLACEDPRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierQuoteItemPeer::getOMClass();
+				$cls = SupplierQuoteItemPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
@@ -1041,9 +1085,8 @@ abstract class BaseSupplierQuoteItemPeer {
 				$obj2 = ProductPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = ProductPeer::getOMClass();
+					$cls = ProductPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					ProductPeer::addInstanceToPool($obj2, $key2);
@@ -1063,41 +1106,41 @@ abstract class BaseSupplierQuoteItemPeer {
 
 	/**
 	 * Selects a collection of SupplierQuoteItem objects pre-filled with their Incoterm objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierQuoteItem objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinIncoterm(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinIncoterm(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierQuoteItemPeer::addSelectColumns($c);
+		SupplierQuoteItemPeer::addSelectColumns($criteria);
 		$startcol = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
-		IncotermPeer::addSelectColumns($c);
+		IncotermPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierQuoteItemPeer::getOMClass();
+				$cls = SupplierQuoteItemPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
@@ -1108,9 +1151,8 @@ abstract class BaseSupplierQuoteItemPeer {
 				$obj2 = IncotermPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = IncotermPeer::getOMClass();
+					$cls = IncotermPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					IncotermPeer::addInstanceToPool($obj2, $key2);
@@ -1130,41 +1172,41 @@ abstract class BaseSupplierQuoteItemPeer {
 
 	/**
 	 * Selects a collection of SupplierQuoteItem objects pre-filled with their Port objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierQuoteItem objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinPort(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinPort(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierQuoteItemPeer::addSelectColumns($c);
+		SupplierQuoteItemPeer::addSelectColumns($criteria);
 		$startcol = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
-		PortPeer::addSelectColumns($c);
+		PortPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierQuoteItemPeer::getOMClass();
+				$cls = SupplierQuoteItemPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
@@ -1175,9 +1217,8 @@ abstract class BaseSupplierQuoteItemPeer {
 				$obj2 = PortPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = PortPeer::getOMClass();
+					$cls = PortPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					PortPeer::addInstanceToPool($obj2, $key2);
@@ -1198,7 +1239,7 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1231,12 +1272,18 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-		$criteria->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
-		$criteria->addJoin(array(SupplierQuoteItemPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-		$criteria->addJoin(array(SupplierQuoteItemPeer::REPLACEDPRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-		$criteria->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
-		$criteria->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::REPLACEDPRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1251,62 +1298,67 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Selects a collection of SupplierQuoteItem objects pre-filled with all related objects.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierQuoteItem objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAll(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierQuoteItemPeer::addSelectColumns($c);
+		SupplierQuoteItemPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierQuotePeer::addSelectColumns($c);
+		SupplierQuotePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuoteItemPeer::addSelectColumns($c);
+		ClientQuoteItemPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (ClientQuoteItemPeer::NUM_COLUMNS - ClientQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ProductPeer::addSelectColumns($c);
+		ProductPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ProductPeer::addSelectColumns($c);
+		ProductPeer::addSelectColumns($criteria);
 		$startcol6 = $startcol5 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		IncotermPeer::addSelectColumns($c);
+		IncotermPeer::addSelectColumns($criteria);
 		$startcol7 = $startcol6 + (IncotermPeer::NUM_COLUMNS - IncotermPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		PortPeer::addSelectColumns($c);
+		PortPeer::addSelectColumns($criteria);
 		$startcol8 = $startcol7 + (PortPeer::NUM_COLUMNS - PortPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-		$c->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
-		$c->addJoin(array(SupplierQuoteItemPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-		$c->addJoin(array(SupplierQuoteItemPeer::REPLACEDPRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-		$c->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
-		$c->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::REPLACEDPRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierQuoteItemPeer::getOMClass();
+				$cls = SupplierQuoteItemPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
@@ -1319,10 +1371,8 @@ abstract class BaseSupplierQuoteItemPeer {
 				$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = SupplierQuotePeer::getOMClass();
+					$cls = SupplierQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
@@ -1339,10 +1389,8 @@ abstract class BaseSupplierQuoteItemPeer {
 				$obj3 = ClientQuoteItemPeer::getInstanceFromPool($key3);
 				if (!$obj3) {
 
-					$omClass = ClientQuoteItemPeer::getOMClass();
+					$cls = ClientQuoteItemPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					ClientQuoteItemPeer::addInstanceToPool($obj3, $key3);
@@ -1359,10 +1407,8 @@ abstract class BaseSupplierQuoteItemPeer {
 				$obj4 = ProductPeer::getInstanceFromPool($key4);
 				if (!$obj4) {
 
-					$omClass = ProductPeer::getOMClass();
+					$cls = ProductPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
 					ProductPeer::addInstanceToPool($obj4, $key4);
@@ -1379,10 +1425,8 @@ abstract class BaseSupplierQuoteItemPeer {
 				$obj5 = ProductPeer::getInstanceFromPool($key5);
 				if (!$obj5) {
 
-					$omClass = ProductPeer::getOMClass();
+					$cls = ProductPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj5 = new $cls();
 					$obj5->hydrate($row, $startcol5);
 					ProductPeer::addInstanceToPool($obj5, $key5);
@@ -1399,10 +1443,8 @@ abstract class BaseSupplierQuoteItemPeer {
 				$obj6 = IncotermPeer::getInstanceFromPool($key6);
 				if (!$obj6) {
 
-					$omClass = IncotermPeer::getOMClass();
+					$cls = IncotermPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj6 = new $cls();
 					$obj6->hydrate($row, $startcol6);
 					IncotermPeer::addInstanceToPool($obj6, $key6);
@@ -1419,10 +1461,8 @@ abstract class BaseSupplierQuoteItemPeer {
 				$obj7 = PortPeer::getInstanceFromPool($key7);
 				if (!$obj7) {
 
-					$omClass = PortPeer::getOMClass();
+					$cls = PortPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj7 = new $cls();
 					$obj7->hydrate($row, $startcol7);
 					PortPeer::addInstanceToPool($obj7, $key7);
@@ -1442,7 +1482,7 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related SupplierQuote table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1475,11 +1515,16 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::REPLACEDPRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::REPLACEDPRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1495,7 +1540,7 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related ClientQuoteItem table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1528,11 +1573,16 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::REPLACEDPRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::REPLACEDPRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1548,7 +1598,7 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related ProductRelatedByProductid table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1581,10 +1631,14 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1600,7 +1654,7 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related ProductRelatedByReplacedproductid table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1633,10 +1687,14 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1652,7 +1710,7 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Incoterm table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1685,11 +1743,16 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::REPLACEDPRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::REPLACEDPRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1705,7 +1768,7 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Port table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1738,11 +1801,16 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::REPLACEDPRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::REPLACEDPRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1758,61 +1826,65 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Selects a collection of SupplierQuoteItem objects pre-filled with all related objects except SupplierQuote.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierQuoteItem objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptSupplierQuote(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptSupplierQuote(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierQuoteItemPeer::addSelectColumns($c);
+		SupplierQuoteItemPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuoteItemPeer::addSelectColumns($c);
+		ClientQuoteItemPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (ClientQuoteItemPeer::NUM_COLUMNS - ClientQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ProductPeer::addSelectColumns($c);
+		ProductPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ProductPeer::addSelectColumns($c);
+		ProductPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		IncotermPeer::addSelectColumns($c);
+		IncotermPeer::addSelectColumns($criteria);
 		$startcol6 = $startcol5 + (IncotermPeer::NUM_COLUMNS - IncotermPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		PortPeer::addSelectColumns($c);
+		PortPeer::addSelectColumns($criteria);
 		$startcol7 = $startcol6 + (PortPeer::NUM_COLUMNS - PortPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::REPLACEDPRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierQuoteItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::REPLACEDPRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierQuoteItemPeer::getOMClass();
+				$cls = SupplierQuoteItemPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
@@ -1825,10 +1897,8 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj2 = ClientQuoteItemPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = ClientQuoteItemPeer::getOMClass();
+						$cls = ClientQuoteItemPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					ClientQuoteItemPeer::addInstanceToPool($obj2, $key2);
@@ -1846,17 +1916,15 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj3 = ProductPeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$omClass = ProductPeer::getOMClass();
+						$cls = ProductPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					ProductPeer::addInstanceToPool($obj3, $key3);
 				} // if $obj3 already loaded
 
 				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj3 (Product)
-				$obj3->addSupplierQuoteItem($obj1);
+				$obj3->addSupplierQuoteItemRelatedByProductid($obj1);
 
 			} // if joined row is not null
 
@@ -1867,17 +1935,15 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj4 = ProductPeer::getInstanceFromPool($key4);
 					if (!$obj4) {
 	
-						$omClass = ProductPeer::getOMClass();
+						$cls = ProductPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
 					ProductPeer::addInstanceToPool($obj4, $key4);
 				} // if $obj4 already loaded
 
 				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj4 (Product)
-				$obj4->addSupplierQuoteItem($obj1);
+				$obj4->addSupplierQuoteItemRelatedByReplacedproductid($obj1);
 
 			} // if joined row is not null
 
@@ -1888,10 +1954,8 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj5 = IncotermPeer::getInstanceFromPool($key5);
 					if (!$obj5) {
 	
-						$omClass = IncotermPeer::getOMClass();
+						$cls = IncotermPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj5 = new $cls();
 					$obj5->hydrate($row, $startcol5);
 					IncotermPeer::addInstanceToPool($obj5, $key5);
@@ -1909,10 +1973,8 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj6 = PortPeer::getInstanceFromPool($key6);
 					if (!$obj6) {
 	
-						$omClass = PortPeer::getOMClass();
+						$cls = PortPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj6 = new $cls();
 					$obj6->hydrate($row, $startcol6);
 					PortPeer::addInstanceToPool($obj6, $key6);
@@ -1933,61 +1995,65 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Selects a collection of SupplierQuoteItem objects pre-filled with all related objects except ClientQuoteItem.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierQuoteItem objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptClientQuoteItem(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptClientQuoteItem(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierQuoteItemPeer::addSelectColumns($c);
+		SupplierQuoteItemPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierQuotePeer::addSelectColumns($c);
+		SupplierQuotePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ProductPeer::addSelectColumns($c);
+		ProductPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ProductPeer::addSelectColumns($c);
+		ProductPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		IncotermPeer::addSelectColumns($c);
+		IncotermPeer::addSelectColumns($criteria);
 		$startcol6 = $startcol5 + (IncotermPeer::NUM_COLUMNS - IncotermPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		PortPeer::addSelectColumns($c);
+		PortPeer::addSelectColumns($criteria);
 		$startcol7 = $startcol6 + (PortPeer::NUM_COLUMNS - PortPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::REPLACEDPRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierQuoteItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::REPLACEDPRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierQuoteItemPeer::getOMClass();
+				$cls = SupplierQuoteItemPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
@@ -2000,10 +2066,8 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = SupplierQuotePeer::getOMClass();
+						$cls = SupplierQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
@@ -2021,17 +2085,15 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj3 = ProductPeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$omClass = ProductPeer::getOMClass();
+						$cls = ProductPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					ProductPeer::addInstanceToPool($obj3, $key3);
 				} // if $obj3 already loaded
 
 				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj3 (Product)
-				$obj3->addSupplierQuoteItem($obj1);
+				$obj3->addSupplierQuoteItemRelatedByProductid($obj1);
 
 			} // if joined row is not null
 
@@ -2042,17 +2104,15 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj4 = ProductPeer::getInstanceFromPool($key4);
 					if (!$obj4) {
 	
-						$omClass = ProductPeer::getOMClass();
+						$cls = ProductPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
 					ProductPeer::addInstanceToPool($obj4, $key4);
 				} // if $obj4 already loaded
 
 				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj4 (Product)
-				$obj4->addSupplierQuoteItem($obj1);
+				$obj4->addSupplierQuoteItemRelatedByReplacedproductid($obj1);
 
 			} // if joined row is not null
 
@@ -2063,10 +2123,8 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj5 = IncotermPeer::getInstanceFromPool($key5);
 					if (!$obj5) {
 	
-						$omClass = IncotermPeer::getOMClass();
+						$cls = IncotermPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj5 = new $cls();
 					$obj5->hydrate($row, $startcol5);
 					IncotermPeer::addInstanceToPool($obj5, $key5);
@@ -2084,10 +2142,8 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj6 = PortPeer::getInstanceFromPool($key6);
 					if (!$obj6) {
 	
-						$omClass = PortPeer::getOMClass();
+						$cls = PortPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj6 = new $cls();
 					$obj6->hydrate($row, $startcol6);
 					PortPeer::addInstanceToPool($obj6, $key6);
@@ -2108,57 +2164,60 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Selects a collection of SupplierQuoteItem objects pre-filled with all related objects except ProductRelatedByProductid.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierQuoteItem objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptProductRelatedByProductid(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptProductRelatedByProductid(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierQuoteItemPeer::addSelectColumns($c);
+		SupplierQuoteItemPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierQuotePeer::addSelectColumns($c);
+		SupplierQuotePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuoteItemPeer::addSelectColumns($c);
+		ClientQuoteItemPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (ClientQuoteItemPeer::NUM_COLUMNS - ClientQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		IncotermPeer::addSelectColumns($c);
+		IncotermPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (IncotermPeer::NUM_COLUMNS - IncotermPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		PortPeer::addSelectColumns($c);
+		PortPeer::addSelectColumns($criteria);
 		$startcol6 = $startcol5 + (PortPeer::NUM_COLUMNS - PortPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierQuoteItemPeer::getOMClass();
+				$cls = SupplierQuoteItemPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
@@ -2171,314 +2230,8 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = SupplierQuotePeer::getOMClass();
+						$cls = SupplierQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
-					$obj2 = new $cls();
-					$obj2->hydrate($row, $startcol2);
-					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
-				} // if $obj2 already loaded
-
-				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj2 (SupplierQuote)
-				$obj2->addSupplierQuoteItemRelatedByProductid($obj1);
-
-			} // if joined row is not null
-
-				// Add objects for joined ClientQuoteItem rows
-
-				$key3 = ClientQuoteItemPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-				if ($key3 !== null) {
-					$obj3 = ClientQuoteItemPeer::getInstanceFromPool($key3);
-					if (!$obj3) {
-	
-						$omClass = ClientQuoteItemPeer::getOMClass();
-
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
-					$obj3 = new $cls();
-					$obj3->hydrate($row, $startcol3);
-					ClientQuoteItemPeer::addInstanceToPool($obj3, $key3);
-				} // if $obj3 already loaded
-
-				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj3 (ClientQuoteItem)
-				$obj3->addSupplierQuoteItemRelatedByProductid($obj1);
-
-			} // if joined row is not null
-
-				// Add objects for joined Incoterm rows
-
-				$key4 = IncotermPeer::getPrimaryKeyHashFromRow($row, $startcol4);
-				if ($key4 !== null) {
-					$obj4 = IncotermPeer::getInstanceFromPool($key4);
-					if (!$obj4) {
-	
-						$omClass = IncotermPeer::getOMClass();
-
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
-					$obj4 = new $cls();
-					$obj4->hydrate($row, $startcol4);
-					IncotermPeer::addInstanceToPool($obj4, $key4);
-				} // if $obj4 already loaded
-
-				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj4 (Incoterm)
-				$obj4->addSupplierQuoteItemRelatedByProductid($obj1);
-
-			} // if joined row is not null
-
-				// Add objects for joined Port rows
-
-				$key5 = PortPeer::getPrimaryKeyHashFromRow($row, $startcol5);
-				if ($key5 !== null) {
-					$obj5 = PortPeer::getInstanceFromPool($key5);
-					if (!$obj5) {
-	
-						$omClass = PortPeer::getOMClass();
-
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
-					$obj5 = new $cls();
-					$obj5->hydrate($row, $startcol5);
-					PortPeer::addInstanceToPool($obj5, $key5);
-				} // if $obj5 already loaded
-
-				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj5 (Port)
-				$obj5->addSupplierQuoteItemRelatedByProductid($obj1);
-
-			} // if joined row is not null
-
-			$results[] = $obj1;
-		}
-		$stmt->closeCursor();
-		return $results;
-	}
-
-
-	/**
-	 * Selects a collection of SupplierQuoteItem objects pre-filled with all related objects except ProductRelatedByReplacedproductid.
-	 *
-	 * @param      Criteria  $c
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of SupplierQuoteItem objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinAllExceptProductRelatedByReplacedproductid(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$c = clone $c;
-
-		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
-		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
-		}
-
-		SupplierQuoteItemPeer::addSelectColumns($c);
-		$startcol2 = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		SupplierQuotePeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
-
-		ClientQuoteItemPeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + (ClientQuoteItemPeer::NUM_COLUMNS - ClientQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		IncotermPeer::addSelectColumns($c);
-		$startcol5 = $startcol4 + (IncotermPeer::NUM_COLUMNS - IncotermPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		PortPeer::addSelectColumns($c);
-		$startcol6 = $startcol5 + (PortPeer::NUM_COLUMNS - PortPeer::NUM_LAZY_LOAD_COLUMNS);
-
-				$c->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
-
-		$stmt = BasePeer::doSelect($c, $con);
-		$results = array();
-
-		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
-				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
-				// $obj1->hydrate($row, 0, true); // rehydrate
-			} else {
-				$omClass = SupplierQuoteItemPeer::getOMClass();
-
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
-				$obj1 = new $cls();
-				$obj1->hydrate($row);
-				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
-			} // if obj1 already loaded
-
-				// Add objects for joined SupplierQuote rows
-
-				$key2 = SupplierQuotePeer::getPrimaryKeyHashFromRow($row, $startcol2);
-				if ($key2 !== null) {
-					$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
-					if (!$obj2) {
-	
-						$omClass = SupplierQuotePeer::getOMClass();
-
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
-					$obj2 = new $cls();
-					$obj2->hydrate($row, $startcol2);
-					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
-				} // if $obj2 already loaded
-
-				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj2 (SupplierQuote)
-				$obj2->addSupplierQuoteItemRelatedByReplacedproductid($obj1);
-
-			} // if joined row is not null
-
-				// Add objects for joined ClientQuoteItem rows
-
-				$key3 = ClientQuoteItemPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-				if ($key3 !== null) {
-					$obj3 = ClientQuoteItemPeer::getInstanceFromPool($key3);
-					if (!$obj3) {
-	
-						$omClass = ClientQuoteItemPeer::getOMClass();
-
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
-					$obj3 = new $cls();
-					$obj3->hydrate($row, $startcol3);
-					ClientQuoteItemPeer::addInstanceToPool($obj3, $key3);
-				} // if $obj3 already loaded
-
-				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj3 (ClientQuoteItem)
-				$obj3->addSupplierQuoteItemRelatedByReplacedproductid($obj1);
-
-			} // if joined row is not null
-
-				// Add objects for joined Incoterm rows
-
-				$key4 = IncotermPeer::getPrimaryKeyHashFromRow($row, $startcol4);
-				if ($key4 !== null) {
-					$obj4 = IncotermPeer::getInstanceFromPool($key4);
-					if (!$obj4) {
-	
-						$omClass = IncotermPeer::getOMClass();
-
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
-					$obj4 = new $cls();
-					$obj4->hydrate($row, $startcol4);
-					IncotermPeer::addInstanceToPool($obj4, $key4);
-				} // if $obj4 already loaded
-
-				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj4 (Incoterm)
-				$obj4->addSupplierQuoteItemRelatedByReplacedproductid($obj1);
-
-			} // if joined row is not null
-
-				// Add objects for joined Port rows
-
-				$key5 = PortPeer::getPrimaryKeyHashFromRow($row, $startcol5);
-				if ($key5 !== null) {
-					$obj5 = PortPeer::getInstanceFromPool($key5);
-					if (!$obj5) {
-	
-						$omClass = PortPeer::getOMClass();
-
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
-					$obj5 = new $cls();
-					$obj5->hydrate($row, $startcol5);
-					PortPeer::addInstanceToPool($obj5, $key5);
-				} // if $obj5 already loaded
-
-				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj5 (Port)
-				$obj5->addSupplierQuoteItemRelatedByReplacedproductid($obj1);
-
-			} // if joined row is not null
-
-			$results[] = $obj1;
-		}
-		$stmt->closeCursor();
-		return $results;
-	}
-
-
-	/**
-	 * Selects a collection of SupplierQuoteItem objects pre-filled with all related objects except Incoterm.
-	 *
-	 * @param      Criteria  $c
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of SupplierQuoteItem objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinAllExceptIncoterm(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$c = clone $c;
-
-		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
-		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
-		}
-
-		SupplierQuoteItemPeer::addSelectColumns($c);
-		$startcol2 = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		SupplierQuotePeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
-
-		ClientQuoteItemPeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + (ClientQuoteItemPeer::NUM_COLUMNS - ClientQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		ProductPeer::addSelectColumns($c);
-		$startcol5 = $startcol4 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		ProductPeer::addSelectColumns($c);
-		$startcol6 = $startcol5 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		PortPeer::addSelectColumns($c);
-		$startcol7 = $startcol6 + (PortPeer::NUM_COLUMNS - PortPeer::NUM_LAZY_LOAD_COLUMNS);
-
-				$c->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::REPLACEDPRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::PORTID,), array(PortPeer::ID,), $join_behavior);
-
-		$stmt = BasePeer::doSelect($c, $con);
-		$results = array();
-
-		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
-				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
-				// $obj1->hydrate($row, 0, true); // rehydrate
-			} else {
-				$omClass = SupplierQuoteItemPeer::getOMClass();
-
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
-				$obj1 = new $cls();
-				$obj1->hydrate($row);
-				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
-			} // if obj1 already loaded
-
-				// Add objects for joined SupplierQuote rows
-
-				$key2 = SupplierQuotePeer::getPrimaryKeyHashFromRow($row, $startcol2);
-				if ($key2 !== null) {
-					$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
-					if (!$obj2) {
-	
-						$omClass = SupplierQuotePeer::getOMClass();
-
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
@@ -2496,10 +2249,303 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj3 = ClientQuoteItemPeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$omClass = ClientQuoteItemPeer::getOMClass();
+						$cls = ClientQuoteItemPeer::getOMClass(false);
+
+					$obj3 = new $cls();
+					$obj3->hydrate($row, $startcol3);
+					ClientQuoteItemPeer::addInstanceToPool($obj3, $key3);
+				} // if $obj3 already loaded
+
+				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj3 (ClientQuoteItem)
+				$obj3->addSupplierQuoteItem($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined Incoterm rows
+
+				$key4 = IncotermPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+				if ($key4 !== null) {
+					$obj4 = IncotermPeer::getInstanceFromPool($key4);
+					if (!$obj4) {
+	
+						$cls = IncotermPeer::getOMClass(false);
+
+					$obj4 = new $cls();
+					$obj4->hydrate($row, $startcol4);
+					IncotermPeer::addInstanceToPool($obj4, $key4);
+				} // if $obj4 already loaded
+
+				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj4 (Incoterm)
+				$obj4->addSupplierQuoteItem($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined Port rows
+
+				$key5 = PortPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+				if ($key5 !== null) {
+					$obj5 = PortPeer::getInstanceFromPool($key5);
+					if (!$obj5) {
+	
+						$cls = PortPeer::getOMClass(false);
+
+					$obj5 = new $cls();
+					$obj5->hydrate($row, $startcol5);
+					PortPeer::addInstanceToPool($obj5, $key5);
+				} // if $obj5 already loaded
+
+				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj5 (Port)
+				$obj5->addSupplierQuoteItem($obj1);
+
+			} // if joined row is not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
 
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
+	/**
+	 * Selects a collection of SupplierQuoteItem objects pre-filled with all related objects except ProductRelatedByReplacedproductid.
+	 *
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of SupplierQuoteItem objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptProductRelatedByReplacedproductid(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		// $criteria->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		SupplierQuoteItemPeer::addSelectColumns($criteria);
+		$startcol2 = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		SupplierQuotePeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
+
+		ClientQuoteItemPeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (ClientQuoteItemPeer::NUM_COLUMNS - ClientQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		IncotermPeer::addSelectColumns($criteria);
+		$startcol5 = $startcol4 + (IncotermPeer::NUM_COLUMNS - IncotermPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		PortPeer::addSelectColumns($criteria);
+		$startcol6 = $startcol5 + (PortPeer::NUM_COLUMNS - PortPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://www.propelorm.org/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+				$cls = SupplierQuoteItemPeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
+			} // if obj1 already loaded
+
+				// Add objects for joined SupplierQuote rows
+
+				$key2 = SupplierQuotePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				if ($key2 !== null) {
+					$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
+					if (!$obj2) {
+	
+						$cls = SupplierQuotePeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol2);
+					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
+				} // if $obj2 already loaded
+
+				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj2 (SupplierQuote)
+				$obj2->addSupplierQuoteItem($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined ClientQuoteItem rows
+
+				$key3 = ClientQuoteItemPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+				if ($key3 !== null) {
+					$obj3 = ClientQuoteItemPeer::getInstanceFromPool($key3);
+					if (!$obj3) {
+	
+						$cls = ClientQuoteItemPeer::getOMClass(false);
+
+					$obj3 = new $cls();
+					$obj3->hydrate($row, $startcol3);
+					ClientQuoteItemPeer::addInstanceToPool($obj3, $key3);
+				} // if $obj3 already loaded
+
+				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj3 (ClientQuoteItem)
+				$obj3->addSupplierQuoteItem($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined Incoterm rows
+
+				$key4 = IncotermPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+				if ($key4 !== null) {
+					$obj4 = IncotermPeer::getInstanceFromPool($key4);
+					if (!$obj4) {
+	
+						$cls = IncotermPeer::getOMClass(false);
+
+					$obj4 = new $cls();
+					$obj4->hydrate($row, $startcol4);
+					IncotermPeer::addInstanceToPool($obj4, $key4);
+				} // if $obj4 already loaded
+
+				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj4 (Incoterm)
+				$obj4->addSupplierQuoteItem($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined Port rows
+
+				$key5 = PortPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+				if ($key5 !== null) {
+					$obj5 = PortPeer::getInstanceFromPool($key5);
+					if (!$obj5) {
+	
+						$cls = PortPeer::getOMClass(false);
+
+					$obj5 = new $cls();
+					$obj5->hydrate($row, $startcol5);
+					PortPeer::addInstanceToPool($obj5, $key5);
+				} // if $obj5 already loaded
+
+				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj5 (Port)
+				$obj5->addSupplierQuoteItem($obj1);
+
+			} // if joined row is not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of SupplierQuoteItem objects pre-filled with all related objects except Incoterm.
+	 *
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of SupplierQuoteItem objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptIncoterm(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		// $criteria->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		SupplierQuoteItemPeer::addSelectColumns($criteria);
+		$startcol2 = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		SupplierQuotePeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
+
+		ClientQuoteItemPeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (ClientQuoteItemPeer::NUM_COLUMNS - ClientQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		ProductPeer::addSelectColumns($criteria);
+		$startcol5 = $startcol4 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		ProductPeer::addSelectColumns($criteria);
+		$startcol6 = $startcol5 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		PortPeer::addSelectColumns($criteria);
+		$startcol7 = $startcol6 + (PortPeer::NUM_COLUMNS - PortPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::REPLACEDPRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PORTID, PortPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://www.propelorm.org/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+				$cls = SupplierQuoteItemPeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
+			} // if obj1 already loaded
+
+				// Add objects for joined SupplierQuote rows
+
+				$key2 = SupplierQuotePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				if ($key2 !== null) {
+					$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
+					if (!$obj2) {
+	
+						$cls = SupplierQuotePeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol2);
+					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
+				} // if $obj2 already loaded
+
+				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj2 (SupplierQuote)
+				$obj2->addSupplierQuoteItem($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined ClientQuoteItem rows
+
+				$key3 = ClientQuoteItemPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+				if ($key3 !== null) {
+					$obj3 = ClientQuoteItemPeer::getInstanceFromPool($key3);
+					if (!$obj3) {
+	
+						$cls = ClientQuoteItemPeer::getOMClass(false);
+
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					ClientQuoteItemPeer::addInstanceToPool($obj3, $key3);
@@ -2517,17 +2563,15 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj4 = ProductPeer::getInstanceFromPool($key4);
 					if (!$obj4) {
 	
-						$omClass = ProductPeer::getOMClass();
+						$cls = ProductPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
 					ProductPeer::addInstanceToPool($obj4, $key4);
 				} // if $obj4 already loaded
 
 				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj4 (Product)
-				$obj4->addSupplierQuoteItem($obj1);
+				$obj4->addSupplierQuoteItemRelatedByProductid($obj1);
 
 			} // if joined row is not null
 
@@ -2538,17 +2582,15 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj5 = ProductPeer::getInstanceFromPool($key5);
 					if (!$obj5) {
 	
-						$omClass = ProductPeer::getOMClass();
+						$cls = ProductPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj5 = new $cls();
 					$obj5->hydrate($row, $startcol5);
 					ProductPeer::addInstanceToPool($obj5, $key5);
 				} // if $obj5 already loaded
 
 				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj5 (Product)
-				$obj5->addSupplierQuoteItem($obj1);
+				$obj5->addSupplierQuoteItemRelatedByReplacedproductid($obj1);
 
 			} // if joined row is not null
 
@@ -2559,10 +2601,8 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj6 = PortPeer::getInstanceFromPool($key6);
 					if (!$obj6) {
 	
-						$omClass = PortPeer::getOMClass();
+						$cls = PortPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj6 = new $cls();
 					$obj6->hydrate($row, $startcol6);
 					PortPeer::addInstanceToPool($obj6, $key6);
@@ -2583,61 +2623,65 @@ abstract class BaseSupplierQuoteItemPeer {
 	/**
 	 * Selects a collection of SupplierQuoteItem objects pre-filled with all related objects except Port.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierQuoteItem objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptPort(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptPort(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierQuoteItemPeer::addSelectColumns($c);
+		SupplierQuoteItemPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierQuoteItemPeer::NUM_COLUMNS - SupplierQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierQuotePeer::addSelectColumns($c);
+		SupplierQuotePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuoteItemPeer::addSelectColumns($c);
+		ClientQuoteItemPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (ClientQuoteItemPeer::NUM_COLUMNS - ClientQuoteItemPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ProductPeer::addSelectColumns($c);
+		ProductPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ProductPeer::addSelectColumns($c);
+		ProductPeer::addSelectColumns($criteria);
 		$startcol6 = $startcol5 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		IncotermPeer::addSelectColumns($c);
+		IncotermPeer::addSelectColumns($criteria);
 		$startcol7 = $startcol6 + (IncotermPeer::NUM_COLUMNS - IncotermPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(SupplierQuoteItemPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::CLIENTQUOTEITEMID,), array(ClientQuoteItemPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::PRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::REPLACEDPRODUCTID,), array(ProductPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierQuoteItemPeer::INCOTERMID,), array(IncotermPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierQuoteItemPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierQuoteItemPeer::CLIENTQUOTEITEMID, ClientQuoteItemPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::REPLACEDPRODUCTID, ProductPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierQuoteItemPeer::INCOTERMID, IncotermPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierQuoteItemPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierQuoteItemPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierQuoteItemPeer::getOMClass();
+				$cls = SupplierQuoteItemPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierQuoteItemPeer::addInstanceToPool($obj1, $key1);
@@ -2650,10 +2694,8 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = SupplierQuotePeer::getOMClass();
+						$cls = SupplierQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
@@ -2671,10 +2713,8 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj3 = ClientQuoteItemPeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$omClass = ClientQuoteItemPeer::getOMClass();
+						$cls = ClientQuoteItemPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					ClientQuoteItemPeer::addInstanceToPool($obj3, $key3);
@@ -2692,17 +2732,15 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj4 = ProductPeer::getInstanceFromPool($key4);
 					if (!$obj4) {
 	
-						$omClass = ProductPeer::getOMClass();
+						$cls = ProductPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
 					ProductPeer::addInstanceToPool($obj4, $key4);
 				} // if $obj4 already loaded
 
 				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj4 (Product)
-				$obj4->addSupplierQuoteItem($obj1);
+				$obj4->addSupplierQuoteItemRelatedByProductid($obj1);
 
 			} // if joined row is not null
 
@@ -2713,17 +2751,15 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj5 = ProductPeer::getInstanceFromPool($key5);
 					if (!$obj5) {
 	
-						$omClass = ProductPeer::getOMClass();
+						$cls = ProductPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj5 = new $cls();
 					$obj5->hydrate($row, $startcol5);
 					ProductPeer::addInstanceToPool($obj5, $key5);
 				} // if $obj5 already loaded
 
 				// Add the $obj1 (SupplierQuoteItem) to the collection in $obj5 (Product)
-				$obj5->addSupplierQuoteItem($obj1);
+				$obj5->addSupplierQuoteItemRelatedByReplacedproductid($obj1);
 
 			} // if joined row is not null
 
@@ -2734,10 +2770,8 @@ abstract class BaseSupplierQuoteItemPeer {
 					$obj6 = IncotermPeer::getInstanceFromPool($key6);
 					if (!$obj6) {
 	
-						$omClass = IncotermPeer::getOMClass();
+						$cls = IncotermPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj6 = new $cls();
 					$obj6->hydrate($row, $startcol6);
 					IncotermPeer::addInstanceToPool($obj6, $key6);
@@ -2767,17 +2801,31 @@ abstract class BaseSupplierQuoteItemPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseSupplierQuoteItemPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseSupplierQuoteItemPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new SupplierQuoteItemTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return SupplierQuoteItemPeer::CLASS_DEFAULT;
+		return $withPrefix ? SupplierQuoteItemPeer::CLASS_DEFAULT : SupplierQuoteItemPeer::OM_CLASS;
 	}
 
 	/**
@@ -2844,7 +2892,12 @@ abstract class BaseSupplierQuoteItemPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(SupplierQuoteItemPeer::ID);
-			$selectCriteria->add(SupplierQuoteItemPeer::ID, $criteria->remove(SupplierQuoteItemPeer::ID), $comparison);
+			$value = $criteria->remove(SupplierQuoteItemPeer::ID);
+			if ($value) {
+				$selectCriteria->add(SupplierQuoteItemPeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(SupplierQuoteItemPeer::TABLE_NAME);
+			}
 
 		} else { // $values is SupplierQuoteItem object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -2872,7 +2925,12 @@ abstract class BaseSupplierQuoteItemPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(SupplierQuoteItemPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(SupplierQuoteItemPeer::TABLE_NAME, $con, SupplierQuoteItemPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			SupplierQuoteItemPeer::clearInstancePool();
+			SupplierQuoteItemPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -2903,24 +2961,18 @@ abstract class BaseSupplierQuoteItemPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			SupplierQuoteItemPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof SupplierQuoteItem) {
+		} elseif ($values instanceof SupplierQuoteItem) { // it's a model object
 			// invalidate the cache for this single object
 			SupplierQuoteItemPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(SupplierQuoteItemPeer::ID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				SupplierQuoteItemPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -2936,7 +2988,7 @@ abstract class BaseSupplierQuoteItemPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			SupplierQuoteItemPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -3035,14 +3087,7 @@ abstract class BaseSupplierQuoteItemPeer {
 
 } // BaseSupplierQuoteItemPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the SupplierQuoteItemPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the SupplierQuoteItemPeer class:
-//
-// Propel::getDatabaseMap(SupplierQuoteItemPeer::DATABASE_NAME)->addTableBuilder(SupplierQuoteItemPeer::TABLE_NAME, SupplierQuoteItemPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseSupplierQuoteItemPeer::DATABASE_NAME)->addTableBuilder(BaseSupplierQuoteItemPeer::TABLE_NAME, BaseSupplierQuoteItemPeer::getMapBuilder());
+BaseSupplierQuoteItemPeer::buildTableMap();
 

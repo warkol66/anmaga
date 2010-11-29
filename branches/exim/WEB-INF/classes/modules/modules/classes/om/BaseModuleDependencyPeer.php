@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'modules_dependency' table.
  *
  * Dependencia de modulos 
  *
- * @package    modules.classes.om
+ * @package    propel.generator.modules.classes.om
  */
 abstract class BaseModuleDependencyPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseModuleDependencyPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'modules_dependency';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'ModuleDependency';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'modules.classes.ModuleDependency';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'ModuleDependencyTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 2;
 
@@ -38,11 +45,6 @@ abstract class BaseModuleDependencyPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -54,6 +56,7 @@ abstract class BaseModuleDependencyPeer {
 		BasePeer::TYPE_PHPNAME => array ('Modulename', 'Dependence', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('modulename', 'dependence', ),
 		BasePeer::TYPE_COLNAME => array (self::MODULENAME, self::DEPENDENCE, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('MODULENAME', 'DEPENDENCE', ),
 		BasePeer::TYPE_FIELDNAME => array ('moduleName', 'dependence', ),
 		BasePeer::TYPE_NUM => array (0, 1, )
 	);
@@ -68,21 +71,11 @@ abstract class BaseModuleDependencyPeer {
 		BasePeer::TYPE_PHPNAME => array ('Modulename' => 0, 'Dependence' => 1, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('modulename' => 0, 'dependence' => 1, ),
 		BasePeer::TYPE_COLNAME => array (self::MODULENAME => 0, self::DEPENDENCE => 1, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('MODULENAME' => 0, 'DEPENDENCE' => 1, ),
 		BasePeer::TYPE_FIELDNAME => array ('moduleName' => 0, 'dependence' => 1, ),
 		BasePeer::TYPE_NUM => array (0, 1, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new ModuleDependencyMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -144,17 +137,20 @@ abstract class BaseModuleDependencyPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(ModuleDependencyPeer::MODULENAME);
-
-		$criteria->addSelectColumn(ModuleDependencyPeer::DEPENDENCE);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(ModuleDependencyPeer::MODULENAME);
+			$criteria->addSelectColumn(ModuleDependencyPeer::DEPENDENCE);
+		} else {
+			$criteria->addSelectColumn($alias . '.MODULENAME');
+			$criteria->addSelectColumn($alias . '.DEPENDENCE');
+		}
 	}
 
 	/**
@@ -342,6 +338,14 @@ abstract class BaseModuleDependencyPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to modules_dependency
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -354,12 +358,26 @@ abstract class BaseModuleDependencyPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null && $row[$startcol + 1] === null) {
+		if ($row[$startcol] === null && $row[$startcol + 1] === null) {
 			return null;
 		}
-		return serialize(array((string) $row[$startcol + 0], (string) $row[$startcol + 1]));
+		return serialize(array((string) $row[$startcol], (string) $row[$startcol + 1]));
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return array((string) $row[$startcol], (string) $row[$startcol + 1]);
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -372,18 +390,16 @@ abstract class BaseModuleDependencyPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = ModuleDependencyPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = ModuleDependencyPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = ModuleDependencyPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = ModuleDependencyPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -393,11 +409,36 @@ abstract class BaseModuleDependencyPeer {
 		$stmt->closeCursor();
 		return $results;
 	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (ModuleDependency object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = ModuleDependencyPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = ModuleDependencyPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + ModuleDependencyPeer::NUM_COLUMNS;
+		} else {
+			$cls = ModuleDependencyPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			ModuleDependencyPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
+	}
 
 	/**
 	 * Returns the number of rows matching criteria, joining the related Module table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -430,7 +471,8 @@ abstract class BaseModuleDependencyPeer {
 			$con = Propel::getConnection(ModuleDependencyPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ModuleDependencyPeer::MODULENAME,), array(ModulePeer::NAME,), $join_behavior);
+		$criteria->addJoin(ModuleDependencyPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -445,41 +487,41 @@ abstract class BaseModuleDependencyPeer {
 
 	/**
 	 * Selects a collection of ModuleDependency objects pre-filled with their Module objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ModuleDependency objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinModule(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinModule(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ModuleDependencyPeer::addSelectColumns($c);
+		ModuleDependencyPeer::addSelectColumns($criteria);
 		$startcol = (ModuleDependencyPeer::NUM_COLUMNS - ModuleDependencyPeer::NUM_LAZY_LOAD_COLUMNS);
-		ModulePeer::addSelectColumns($c);
+		ModulePeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(ModuleDependencyPeer::MODULENAME,), array(ModulePeer::NAME,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ModuleDependencyPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ModuleDependencyPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ModuleDependencyPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = ModuleDependencyPeer::getOMClass();
+				$cls = ModuleDependencyPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ModuleDependencyPeer::addInstanceToPool($obj1, $key1);
@@ -490,9 +532,8 @@ abstract class BaseModuleDependencyPeer {
 				$obj2 = ModulePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = ModulePeer::getOMClass();
+					$cls = ModulePeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					ModulePeer::addInstanceToPool($obj2, $key2);
@@ -513,7 +554,7 @@ abstract class BaseModuleDependencyPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -546,7 +587,8 @@ abstract class BaseModuleDependencyPeer {
 			$con = Propel::getConnection(ModuleDependencyPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ModuleDependencyPeer::MODULENAME,), array(ModulePeer::NAME,), $join_behavior);
+		$criteria->addJoin(ModuleDependencyPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -561,42 +603,42 @@ abstract class BaseModuleDependencyPeer {
 	/**
 	 * Selects a collection of ModuleDependency objects pre-filled with all related objects.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ModuleDependency objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAll(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ModuleDependencyPeer::addSelectColumns($c);
+		ModuleDependencyPeer::addSelectColumns($criteria);
 		$startcol2 = (ModuleDependencyPeer::NUM_COLUMNS - ModuleDependencyPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ModulePeer::addSelectColumns($c);
+		ModulePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (ModulePeer::NUM_COLUMNS - ModulePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(ModuleDependencyPeer::MODULENAME,), array(ModulePeer::NAME,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ModuleDependencyPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ModuleDependencyPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ModuleDependencyPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = ModuleDependencyPeer::getOMClass();
+				$cls = ModuleDependencyPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ModuleDependencyPeer::addInstanceToPool($obj1, $key1);
@@ -609,10 +651,8 @@ abstract class BaseModuleDependencyPeer {
 				$obj2 = ModulePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = ModulePeer::getOMClass();
+					$cls = ModulePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					ModulePeer::addInstanceToPool($obj2, $key2);
@@ -641,17 +681,31 @@ abstract class BaseModuleDependencyPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseModuleDependencyPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseModuleDependencyPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new ModuleDependencyTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return ModuleDependencyPeer::CLASS_DEFAULT;
+		return $withPrefix ? ModuleDependencyPeer::CLASS_DEFAULT : ModuleDependencyPeer::OM_CLASS;
 	}
 
 	/**
@@ -714,10 +768,20 @@ abstract class BaseModuleDependencyPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(ModuleDependencyPeer::MODULENAME);
-			$selectCriteria->add(ModuleDependencyPeer::MODULENAME, $criteria->remove(ModuleDependencyPeer::MODULENAME), $comparison);
+			$value = $criteria->remove(ModuleDependencyPeer::MODULENAME);
+			if ($value) {
+				$selectCriteria->add(ModuleDependencyPeer::MODULENAME, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(ModuleDependencyPeer::TABLE_NAME);
+			}
 
 			$comparison = $criteria->getComparison(ModuleDependencyPeer::DEPENDENCE);
-			$selectCriteria->add(ModuleDependencyPeer::DEPENDENCE, $criteria->remove(ModuleDependencyPeer::DEPENDENCE), $comparison);
+			$value = $criteria->remove(ModuleDependencyPeer::DEPENDENCE);
+			if ($value) {
+				$selectCriteria->add(ModuleDependencyPeer::DEPENDENCE, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(ModuleDependencyPeer::TABLE_NAME);
+			}
 
 		} else { // $values is ModuleDependency object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -745,7 +809,12 @@ abstract class BaseModuleDependencyPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(ModuleDependencyPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(ModuleDependencyPeer::TABLE_NAME, $con, ModuleDependencyPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			ModuleDependencyPeer::clearInstancePool();
+			ModuleDependencyPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -776,34 +845,25 @@ abstract class BaseModuleDependencyPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			ModuleDependencyPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof ModuleDependency) {
+		} elseif ($values instanceof ModuleDependency) { // it's a model object
 			// invalidate the cache for this single object
 			ModuleDependencyPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			// primary key is composite; we therefore, expect
-			// the primary key passed to be an array of pkey
-			// values
+			// the primary key passed to be an array of pkey values
 			if (count($values) == count($values, COUNT_RECURSIVE)) {
 				// array is not multi-dimensional
 				$values = array($values);
 			}
-
 			foreach ($values as $value) {
-
 				$criterion = $criteria->getNewCriterion(ModuleDependencyPeer::MODULENAME, $value[0]);
 				$criterion->addAnd($criteria->getNewCriterion(ModuleDependencyPeer::DEPENDENCE, $value[1]));
 				$criteria->addOr($criterion);
-
 				// we can invalidate the cache for this single PK
 				ModuleDependencyPeer::removeInstanceFromPool($value);
 			}
@@ -820,7 +880,7 @@ abstract class BaseModuleDependencyPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			ModuleDependencyPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -869,14 +929,13 @@ abstract class BaseModuleDependencyPeer {
 	/**
 	 * Retrieve object using using composite pkey values.
 	 * @param      string $modulename
-	   @param      string $dependence
-	   
+	 * @param      string $dependence
 	 * @param      PropelPDO $con
 	 * @return     ModuleDependency
 	 */
 	public static function retrieveByPK($modulename, $dependence, PropelPDO $con = null) {
-		$key = serialize(array((string) $modulename, (string) $dependence));
- 		if (null !== ($obj = ModuleDependencyPeer::getInstanceFromPool($key))) {
+		$_instancePoolKey = serialize(array((string) $modulename, (string) $dependence));
+ 		if (null !== ($obj = ModuleDependencyPeer::getInstanceFromPool($_instancePoolKey))) {
  			return $obj;
 		}
 
@@ -892,14 +951,7 @@ abstract class BaseModuleDependencyPeer {
 	}
 } // BaseModuleDependencyPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the ModuleDependencyPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the ModuleDependencyPeer class:
-//
-// Propel::getDatabaseMap(ModuleDependencyPeer::DATABASE_NAME)->addTableBuilder(ModuleDependencyPeer::TABLE_NAME, ModuleDependencyPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseModuleDependencyPeer::DATABASE_NAME)->addTableBuilder(BaseModuleDependencyPeer::TABLE_NAME, BaseModuleDependencyPeer::getMapBuilder());
+BaseModuleDependencyPeer::buildTableMap();
 

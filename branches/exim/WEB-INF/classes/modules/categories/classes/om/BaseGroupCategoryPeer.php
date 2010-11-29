@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'users_groupCategory' table.
  *
  * Groups / Categories
  *
- * @package    categories.classes.om
+ * @package    propel.generator.categories.classes.om
  */
 abstract class BaseGroupCategoryPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseGroupCategoryPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'users_groupCategory';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'GroupCategory';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'categories.classes.GroupCategory';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'GroupCategoryTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 2;
 
@@ -38,11 +45,6 @@ abstract class BaseGroupCategoryPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -54,6 +56,7 @@ abstract class BaseGroupCategoryPeer {
 		BasePeer::TYPE_PHPNAME => array ('Groupid', 'Categoryid', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('groupid', 'categoryid', ),
 		BasePeer::TYPE_COLNAME => array (self::GROUPID, self::CATEGORYID, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('GROUPID', 'CATEGORYID', ),
 		BasePeer::TYPE_FIELDNAME => array ('groupId', 'categoryId', ),
 		BasePeer::TYPE_NUM => array (0, 1, )
 	);
@@ -68,21 +71,11 @@ abstract class BaseGroupCategoryPeer {
 		BasePeer::TYPE_PHPNAME => array ('Groupid' => 0, 'Categoryid' => 1, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('groupid' => 0, 'categoryid' => 1, ),
 		BasePeer::TYPE_COLNAME => array (self::GROUPID => 0, self::CATEGORYID => 1, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('GROUPID' => 0, 'CATEGORYID' => 1, ),
 		BasePeer::TYPE_FIELDNAME => array ('groupId' => 0, 'categoryId' => 1, ),
 		BasePeer::TYPE_NUM => array (0, 1, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new GroupCategoryMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -144,17 +137,20 @@ abstract class BaseGroupCategoryPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(GroupCategoryPeer::GROUPID);
-
-		$criteria->addSelectColumn(GroupCategoryPeer::CATEGORYID);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(GroupCategoryPeer::GROUPID);
+			$criteria->addSelectColumn(GroupCategoryPeer::CATEGORYID);
+		} else {
+			$criteria->addSelectColumn($alias . '.GROUPID');
+			$criteria->addSelectColumn($alias . '.CATEGORYID');
+		}
 	}
 
 	/**
@@ -342,6 +338,14 @@ abstract class BaseGroupCategoryPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to users_groupCategory
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -354,12 +358,26 @@ abstract class BaseGroupCategoryPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null && $row[$startcol + 1] === null) {
+		if ($row[$startcol] === null && $row[$startcol + 1] === null) {
 			return null;
 		}
-		return serialize(array((string) $row[$startcol + 0], (string) $row[$startcol + 1]));
+		return serialize(array((string) $row[$startcol], (string) $row[$startcol + 1]));
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return array((int) $row[$startcol], (int) $row[$startcol + 1]);
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -372,18 +390,16 @@ abstract class BaseGroupCategoryPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = GroupCategoryPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = GroupCategoryPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = GroupCategoryPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = GroupCategoryPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -393,11 +409,36 @@ abstract class BaseGroupCategoryPeer {
 		$stmt->closeCursor();
 		return $results;
 	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (GroupCategory object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = GroupCategoryPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = GroupCategoryPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + GroupCategoryPeer::NUM_COLUMNS;
+		} else {
+			$cls = GroupCategoryPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			GroupCategoryPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
+	}
 
 	/**
 	 * Returns the number of rows matching criteria, joining the related Group table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -430,7 +471,8 @@ abstract class BaseGroupCategoryPeer {
 			$con = Propel::getConnection(GroupCategoryPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(GroupCategoryPeer::GROUPID,), array(GroupPeer::ID,), $join_behavior);
+		$criteria->addJoin(GroupCategoryPeer::GROUPID, GroupPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -446,7 +488,7 @@ abstract class BaseGroupCategoryPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Category table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -479,7 +521,8 @@ abstract class BaseGroupCategoryPeer {
 			$con = Propel::getConnection(GroupCategoryPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(GroupCategoryPeer::CATEGORYID,), array(CategoryPeer::ID,), $join_behavior);
+		$criteria->addJoin(GroupCategoryPeer::CATEGORYID, CategoryPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -494,41 +537,41 @@ abstract class BaseGroupCategoryPeer {
 
 	/**
 	 * Selects a collection of GroupCategory objects pre-filled with their Group objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of GroupCategory objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinGroup(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinGroup(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		GroupCategoryPeer::addSelectColumns($c);
+		GroupCategoryPeer::addSelectColumns($criteria);
 		$startcol = (GroupCategoryPeer::NUM_COLUMNS - GroupCategoryPeer::NUM_LAZY_LOAD_COLUMNS);
-		GroupPeer::addSelectColumns($c);
+		GroupPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(GroupCategoryPeer::GROUPID,), array(GroupPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(GroupCategoryPeer::GROUPID, GroupPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = GroupCategoryPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = GroupCategoryPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = GroupCategoryPeer::getOMClass();
+				$cls = GroupCategoryPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				GroupCategoryPeer::addInstanceToPool($obj1, $key1);
@@ -539,9 +582,8 @@ abstract class BaseGroupCategoryPeer {
 				$obj2 = GroupPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = GroupPeer::getOMClass();
+					$cls = GroupPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					GroupPeer::addInstanceToPool($obj2, $key2);
@@ -561,41 +603,41 @@ abstract class BaseGroupCategoryPeer {
 
 	/**
 	 * Selects a collection of GroupCategory objects pre-filled with their Category objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of GroupCategory objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinCategory(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinCategory(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		GroupCategoryPeer::addSelectColumns($c);
+		GroupCategoryPeer::addSelectColumns($criteria);
 		$startcol = (GroupCategoryPeer::NUM_COLUMNS - GroupCategoryPeer::NUM_LAZY_LOAD_COLUMNS);
-		CategoryPeer::addSelectColumns($c);
+		CategoryPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(GroupCategoryPeer::CATEGORYID,), array(CategoryPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(GroupCategoryPeer::CATEGORYID, CategoryPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = GroupCategoryPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = GroupCategoryPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = GroupCategoryPeer::getOMClass();
+				$cls = GroupCategoryPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				GroupCategoryPeer::addInstanceToPool($obj1, $key1);
@@ -606,9 +648,8 @@ abstract class BaseGroupCategoryPeer {
 				$obj2 = CategoryPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = CategoryPeer::getOMClass();
+					$cls = CategoryPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					CategoryPeer::addInstanceToPool($obj2, $key2);
@@ -629,7 +670,7 @@ abstract class BaseGroupCategoryPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -662,8 +703,10 @@ abstract class BaseGroupCategoryPeer {
 			$con = Propel::getConnection(GroupCategoryPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(GroupCategoryPeer::GROUPID,), array(GroupPeer::ID,), $join_behavior);
-		$criteria->addJoin(array(GroupCategoryPeer::CATEGORYID,), array(CategoryPeer::ID,), $join_behavior);
+		$criteria->addJoin(GroupCategoryPeer::GROUPID, GroupPeer::ID, $join_behavior);
+
+		$criteria->addJoin(GroupCategoryPeer::CATEGORYID, CategoryPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -678,46 +721,47 @@ abstract class BaseGroupCategoryPeer {
 	/**
 	 * Selects a collection of GroupCategory objects pre-filled with all related objects.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of GroupCategory objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAll(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		GroupCategoryPeer::addSelectColumns($c);
+		GroupCategoryPeer::addSelectColumns($criteria);
 		$startcol2 = (GroupCategoryPeer::NUM_COLUMNS - GroupCategoryPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		GroupPeer::addSelectColumns($c);
+		GroupPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (GroupPeer::NUM_COLUMNS - GroupPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		CategoryPeer::addSelectColumns($c);
+		CategoryPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (CategoryPeer::NUM_COLUMNS - CategoryPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(GroupCategoryPeer::GROUPID,), array(GroupPeer::ID,), $join_behavior);
-		$c->addJoin(array(GroupCategoryPeer::CATEGORYID,), array(CategoryPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(GroupCategoryPeer::GROUPID, GroupPeer::ID, $join_behavior);
+
+		$criteria->addJoin(GroupCategoryPeer::CATEGORYID, CategoryPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = GroupCategoryPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = GroupCategoryPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = GroupCategoryPeer::getOMClass();
+				$cls = GroupCategoryPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				GroupCategoryPeer::addInstanceToPool($obj1, $key1);
@@ -730,10 +774,8 @@ abstract class BaseGroupCategoryPeer {
 				$obj2 = GroupPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = GroupPeer::getOMClass();
+					$cls = GroupPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					GroupPeer::addInstanceToPool($obj2, $key2);
@@ -750,10 +792,8 @@ abstract class BaseGroupCategoryPeer {
 				$obj3 = CategoryPeer::getInstanceFromPool($key3);
 				if (!$obj3) {
 
-					$omClass = CategoryPeer::getOMClass();
+					$cls = CategoryPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					CategoryPeer::addInstanceToPool($obj3, $key3);
@@ -773,7 +813,7 @@ abstract class BaseGroupCategoryPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Group table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -806,7 +846,8 @@ abstract class BaseGroupCategoryPeer {
 			$con = Propel::getConnection(GroupCategoryPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(GroupCategoryPeer::CATEGORYID,), array(CategoryPeer::ID,), $join_behavior);
+		$criteria->addJoin(GroupCategoryPeer::CATEGORYID, CategoryPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -822,7 +863,7 @@ abstract class BaseGroupCategoryPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Category table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -855,7 +896,8 @@ abstract class BaseGroupCategoryPeer {
 			$con = Propel::getConnection(GroupCategoryPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(GroupCategoryPeer::GROUPID,), array(GroupPeer::ID,), $join_behavior);
+		$criteria->addJoin(GroupCategoryPeer::GROUPID, GroupPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -871,45 +913,45 @@ abstract class BaseGroupCategoryPeer {
 	/**
 	 * Selects a collection of GroupCategory objects pre-filled with all related objects except Group.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of GroupCategory objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptGroup(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptGroup(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		GroupCategoryPeer::addSelectColumns($c);
+		GroupCategoryPeer::addSelectColumns($criteria);
 		$startcol2 = (GroupCategoryPeer::NUM_COLUMNS - GroupCategoryPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		CategoryPeer::addSelectColumns($c);
+		CategoryPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (CategoryPeer::NUM_COLUMNS - CategoryPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(GroupCategoryPeer::CATEGORYID,), array(CategoryPeer::ID,), $join_behavior);
+		$criteria->addJoin(GroupCategoryPeer::CATEGORYID, CategoryPeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = GroupCategoryPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = GroupCategoryPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = GroupCategoryPeer::getOMClass();
+				$cls = GroupCategoryPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				GroupCategoryPeer::addInstanceToPool($obj1, $key1);
@@ -922,10 +964,8 @@ abstract class BaseGroupCategoryPeer {
 					$obj2 = CategoryPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = CategoryPeer::getOMClass();
+						$cls = CategoryPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					CategoryPeer::addInstanceToPool($obj2, $key2);
@@ -946,45 +986,45 @@ abstract class BaseGroupCategoryPeer {
 	/**
 	 * Selects a collection of GroupCategory objects pre-filled with all related objects except Category.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of GroupCategory objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptCategory(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptCategory(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		GroupCategoryPeer::addSelectColumns($c);
+		GroupCategoryPeer::addSelectColumns($criteria);
 		$startcol2 = (GroupCategoryPeer::NUM_COLUMNS - GroupCategoryPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		GroupPeer::addSelectColumns($c);
+		GroupPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (GroupPeer::NUM_COLUMNS - GroupPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(GroupCategoryPeer::GROUPID,), array(GroupPeer::ID,), $join_behavior);
+		$criteria->addJoin(GroupCategoryPeer::GROUPID, GroupPeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = GroupCategoryPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = GroupCategoryPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = GroupCategoryPeer::getOMClass();
+				$cls = GroupCategoryPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				GroupCategoryPeer::addInstanceToPool($obj1, $key1);
@@ -997,10 +1037,8 @@ abstract class BaseGroupCategoryPeer {
 					$obj2 = GroupPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = GroupPeer::getOMClass();
+						$cls = GroupPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					GroupPeer::addInstanceToPool($obj2, $key2);
@@ -1030,17 +1068,31 @@ abstract class BaseGroupCategoryPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseGroupCategoryPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseGroupCategoryPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new GroupCategoryTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return GroupCategoryPeer::CLASS_DEFAULT;
+		return $withPrefix ? GroupCategoryPeer::CLASS_DEFAULT : GroupCategoryPeer::OM_CLASS;
 	}
 
 	/**
@@ -1103,10 +1155,20 @@ abstract class BaseGroupCategoryPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(GroupCategoryPeer::GROUPID);
-			$selectCriteria->add(GroupCategoryPeer::GROUPID, $criteria->remove(GroupCategoryPeer::GROUPID), $comparison);
+			$value = $criteria->remove(GroupCategoryPeer::GROUPID);
+			if ($value) {
+				$selectCriteria->add(GroupCategoryPeer::GROUPID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(GroupCategoryPeer::TABLE_NAME);
+			}
 
 			$comparison = $criteria->getComparison(GroupCategoryPeer::CATEGORYID);
-			$selectCriteria->add(GroupCategoryPeer::CATEGORYID, $criteria->remove(GroupCategoryPeer::CATEGORYID), $comparison);
+			$value = $criteria->remove(GroupCategoryPeer::CATEGORYID);
+			if ($value) {
+				$selectCriteria->add(GroupCategoryPeer::CATEGORYID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(GroupCategoryPeer::TABLE_NAME);
+			}
 
 		} else { // $values is GroupCategory object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -1134,7 +1196,12 @@ abstract class BaseGroupCategoryPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(GroupCategoryPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(GroupCategoryPeer::TABLE_NAME, $con, GroupCategoryPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			GroupCategoryPeer::clearInstancePool();
+			GroupCategoryPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1165,34 +1232,25 @@ abstract class BaseGroupCategoryPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			GroupCategoryPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof GroupCategory) {
+		} elseif ($values instanceof GroupCategory) { // it's a model object
 			// invalidate the cache for this single object
 			GroupCategoryPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			// primary key is composite; we therefore, expect
-			// the primary key passed to be an array of pkey
-			// values
+			// the primary key passed to be an array of pkey values
 			if (count($values) == count($values, COUNT_RECURSIVE)) {
 				// array is not multi-dimensional
 				$values = array($values);
 			}
-
 			foreach ($values as $value) {
-
 				$criterion = $criteria->getNewCriterion(GroupCategoryPeer::GROUPID, $value[0]);
 				$criterion->addAnd($criteria->getNewCriterion(GroupCategoryPeer::CATEGORYID, $value[1]));
 				$criteria->addOr($criterion);
-
 				// we can invalidate the cache for this single PK
 				GroupCategoryPeer::removeInstanceFromPool($value);
 			}
@@ -1209,7 +1267,7 @@ abstract class BaseGroupCategoryPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			GroupCategoryPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1258,14 +1316,13 @@ abstract class BaseGroupCategoryPeer {
 	/**
 	 * Retrieve object using using composite pkey values.
 	 * @param      int $groupid
-	   @param      int $categoryid
-	   
+	 * @param      int $categoryid
 	 * @param      PropelPDO $con
 	 * @return     GroupCategory
 	 */
 	public static function retrieveByPK($groupid, $categoryid, PropelPDO $con = null) {
-		$key = serialize(array((string) $groupid, (string) $categoryid));
- 		if (null !== ($obj = GroupCategoryPeer::getInstanceFromPool($key))) {
+		$_instancePoolKey = serialize(array((string) $groupid, (string) $categoryid));
+ 		if (null !== ($obj = GroupCategoryPeer::getInstanceFromPool($_instancePoolKey))) {
  			return $obj;
 		}
 
@@ -1281,14 +1338,7 @@ abstract class BaseGroupCategoryPeer {
 	}
 } // BaseGroupCategoryPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the GroupCategoryPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the GroupCategoryPeer class:
-//
-// Propel::getDatabaseMap(GroupCategoryPeer::DATABASE_NAME)->addTableBuilder(GroupCategoryPeer::TABLE_NAME, GroupCategoryPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseGroupCategoryPeer::DATABASE_NAME)->addTableBuilder(BaseGroupCategoryPeer::TABLE_NAME, BaseGroupCategoryPeer::getMapBuilder());
+BaseGroupCategoryPeer::buildTableMap();
 

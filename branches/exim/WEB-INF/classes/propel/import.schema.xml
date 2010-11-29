@@ -89,7 +89,7 @@
 		<column name="clientQuoteId" required="true" type="INTEGER" description="Id de cotizacion de cliente"/>
 		<column name="productId" required="true" type="INTEGER" description="Id producto"/>
 		<column name="price" type="FLOAT" description="precio de producto" />
-		<column name="quantity" require="true" type="INTEGER" description="cantidad de producto" />
+		<column name="quantity" required="true" type="INTEGER" description="cantidad de producto" />
 		
 		<foreign-key foreignTable="import_clientQuote" >
 		  <reference local="clientQuoteId" foreign="id" />
@@ -257,9 +257,9 @@
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id elemento de Orden de Pedido a Cliente" autoIncrement="true"/>
 		<column name="productId" required="true" type="INTEGER" description="Id producto"/>
 		<column name="clientPurchaseOrderId" required="true" type="INTEGER" description="Id producto"/>
-		<column name="quantity" type="INTEGER" require='true' description="Id producto" />
+		<column name="quantity" type="INTEGER" required='true' description="Id producto" />
 
-		<column name="price" type="FLOAT" require="true" description="precio de producto"/>
+		<column name="price" type="FLOAT" required="true" description="precio de producto"/>
 
 		<foreign-key foreignTable="import_product" >
 		  <reference local="productId" foreign="id" />
@@ -325,14 +325,14 @@
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id elemento de Orden de Pedido a Cliente" autoIncrement="true"/>
 		<column name="productId" required="true" type="INTEGER" description="Id producto"/>
 		<column name="supplierPurchaseOrderId" required="true" type="INTEGER" description="Id producto"/>
-		<column name="quantity" type="INTEGER" require='true' description="Id producto" />
+		<column name="quantity" type="INTEGER" required='true' description="Id producto" />
 
 		<column name="portId" type="INTEGER" description="id de puerto" required="true"/>
 		<column name="incotermId" type="INTEGER" description="id de incoterm" required="true"/>
 
-		<column name="price" type="FLOAT" require="true" description="precio de producto"/>
-		<column name="delivery" type="INTEGER" require="true" description="Tiempo en dias para la entrega del producto."/>
-		<column name="package" type="INTEGER" require="true" description="A seleccionar entre Unidades o Bultos"/>
+		<column name="price" type="FLOAT" required="true" description="precio de producto"/>
+		<column name="delivery" type="INTEGER" required="true" description="Tiempo en dias para la entrega del producto."/>
+		<column name="package" type="INTEGER" required="true" description="A seleccionar entre Unidades o Bultos"/>
 		<column name="unitLength" type="FLOAT" description="Largo del empaque de la unidad "/>
 		<column name="unitWidth" type="FLOAT" description="Ancho del empaque de la unidad "/>
 		<column name="unitHeight" type="FLOAT" description="Alto del empaque de la unidad "/>

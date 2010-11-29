@@ -1,5 +1,4 @@
 <?php
-require_once('import/classes/map/SupplierQuoteHistoryMapBuilder.php');
 require 'import/classes/om/BaseSupplierQuoteHistoryPeer.php';
 
 

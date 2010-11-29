@@ -1,11 +1,5 @@
 <?php
 
-require 'multilang/classes/map/MultilangLanguageMapBuilder.php';
-require 'multilang/classes/om/BaseMultilangLanguagePeer.php';
-require 'multilang/classes/MultilangLanguage.php';
-require 'multilang/classes/MultilangTextPeer.php';
-
-
 /**
  * Skeleton subclass for performing query and update operations on the 'multilang_language' table.
  *

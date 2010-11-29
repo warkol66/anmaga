@@ -1,6 +1,5 @@
 <?php
 
-require_once 'import/classes/map/ClientPurchaseOrderHistoryMapBuilder.php';
 require_once 'import/classes/ClientPurchaseOrderHistoryPeer.php';
 require_once 'import/classes/om/BaseClientPurchaseOrder.php';
 

@@ -171,7 +171,6 @@ class SupplierPurchaseOrderPeer extends BaseSupplierPurchaseOrderPeer {
       $perPage = 	SupplierPurchaseOrderPeer::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("propel/util/PropelPager.php");
     $cond = new Criteria();     
     $pager = new PropelPager($cond,"SupplierPurchaseOrderPeer", "doSelect",$page,$perPage);
     return $pager;
@@ -208,7 +207,6 @@ class SupplierPurchaseOrderPeer extends BaseSupplierPurchaseOrderPeer {
       $perPage = 	SupplierPurchaseOrderPeer::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("propel/util/PropelPager.php");
     $cond = $this->getFilterCriteria();   
     $pager = new PropelPager($cond,"SupplierPurchaseOrderPeer", "doSelect",$page,$perPage);
     return $pager;

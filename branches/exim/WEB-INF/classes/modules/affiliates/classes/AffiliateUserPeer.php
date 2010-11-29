@@ -81,7 +81,6 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
       $perPage = Common::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("propel/util/PropelPager.php");
     $cond = new Criteria();     
 		$cond->addAscendingOrderByColumn(AffiliateUserPeer::ID);
 
@@ -101,7 +100,6 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
       $perPage = 	Common::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("propel/util/PropelPager.php");
     $cond = $this->getCriteria();     
     $pager = new PropelPager($cond,"AffiliateUserPeer", "doSelect",$page,$perPage);
     return $pager;

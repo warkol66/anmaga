@@ -1,10 +1,5 @@
 <?php
 
-require 'multilang/classes/map/MultilangTextMapBuilder.php';
-require 'multilang/classes/om/BaseMultilangTextPeer.php';
-require 'multilang/classes/MultilangText.php';
-
-
 /**
  * Skeleton subclass for performing query and update operations on the 'multilang_text' table.
  *
@@ -281,7 +276,6 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 	function getAllOrderedPaginated($moduleName,$page=1,$perPage=10) {
 		if (empty($page))
 			$page = 1;
-		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->add(MultilangTextPeer::MODULENAME,$moduleName);
 		$cond->addAscendingOrderByColumn(MultilangTextPeer::ID);
@@ -305,7 +299,6 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 	function searchPaginated($moduleName,$langCode,$search,$page=1,$perPage=10) {
 		if (empty($page))
 			$page = 1;
-		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->add(MultilangTextPeer::MODULENAME,$moduleName);
 		$cond->addAscendingOrderByColumn(MultilangTextPeer::ID);
@@ -327,7 +320,6 @@ class MultilangTextPeer extends BaseMultilangTextPeer {
 	* @return array Informacion sobre todos los texts
 	*/
 	function search($moduleName,$langCode,$search) {
-		require_once("propel/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->add(MultilangTextPeer::MODULENAME,$moduleName);
 		$cond->addAscendingOrderByColumn(MultilangTextPeer::ID);

@@ -1,7 +1,6 @@
 <?php
 
 require_once('import/classes/ClientQuoteHistoryPeer.php');
-require_once('import/classes/map/ClientQuoteHistoryMapBuilder.php');
 require 'import/classes/om/BaseClientQuoteHistory.php';
 
 

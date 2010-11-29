@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'import_clientPurchaseOrderHistory' table.
  *
  * Historial de Estados por los que fue pasando la Orden de Pedido a Cliente
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
 abstract class BaseClientPurchaseOrderHistoryPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'import_clientPurchaseOrderHistory';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'ClientPurchaseOrderHistory';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'import.classes.ClientPurchaseOrderHistory';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'ClientPurchaseOrderHistoryTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 4;
 
@@ -44,11 +51,6 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -60,6 +62,7 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Clientpurchaseorderid', 'Status', 'Createdat', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'clientpurchaseorderid', 'status', 'createdat', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::CLIENTPURCHASEORDERID, self::STATUS, self::CREATEDAT, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CLIENTPURCHASEORDERID', 'STATUS', 'CREATEDAT', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'clientPurchaseOrderId', 'status', 'createdAt', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
@@ -74,21 +77,11 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Clientpurchaseorderid' => 1, 'Status' => 2, 'Createdat' => 3, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'clientpurchaseorderid' => 1, 'status' => 2, 'createdat' => 3, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CLIENTPURCHASEORDERID => 1, self::STATUS => 2, self::CREATEDAT => 3, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CLIENTPURCHASEORDERID' => 1, 'STATUS' => 2, 'CREATEDAT' => 3, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'clientPurchaseOrderId' => 1, 'status' => 2, 'createdAt' => 3, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new ClientPurchaseOrderHistoryMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -150,21 +143,24 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(ClientPurchaseOrderHistoryPeer::ID);
-
-		$criteria->addSelectColumn(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID);
-
-		$criteria->addSelectColumn(ClientPurchaseOrderHistoryPeer::STATUS);
-
-		$criteria->addSelectColumn(ClientPurchaseOrderHistoryPeer::CREATEDAT);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(ClientPurchaseOrderHistoryPeer::ID);
+			$criteria->addSelectColumn(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID);
+			$criteria->addSelectColumn(ClientPurchaseOrderHistoryPeer::STATUS);
+			$criteria->addSelectColumn(ClientPurchaseOrderHistoryPeer::CREATEDAT);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.CLIENTPURCHASEORDERID');
+			$criteria->addSelectColumn($alias . '.STATUS');
+			$criteria->addSelectColumn($alias . '.CREATEDAT');
+		}
 	}
 
 	/**
@@ -352,6 +348,14 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to import_clientPurchaseOrderHistory
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -364,12 +368,26 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -382,18 +400,16 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = ClientPurchaseOrderHistoryPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = ClientPurchaseOrderHistoryPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = ClientPurchaseOrderHistoryPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = ClientPurchaseOrderHistoryPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -403,11 +419,36 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 		$stmt->closeCursor();
 		return $results;
 	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (ClientPurchaseOrderHistory object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = ClientPurchaseOrderHistoryPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = ClientPurchaseOrderHistoryPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + ClientPurchaseOrderHistoryPeer::NUM_COLUMNS;
+		} else {
+			$cls = ClientPurchaseOrderHistoryPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			ClientPurchaseOrderHistoryPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
+	}
 
 	/**
 	 * Returns the number of rows matching criteria, joining the related ClientPurchaseOrder table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -440,7 +481,8 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 			$con = Propel::getConnection(ClientPurchaseOrderHistoryPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID,), array(ClientPurchaseOrderPeer::ID,), $join_behavior);
+		$criteria->addJoin(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, ClientPurchaseOrderPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -455,41 +497,41 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 
 	/**
 	 * Selects a collection of ClientPurchaseOrderHistory objects pre-filled with their ClientPurchaseOrder objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ClientPurchaseOrderHistory objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinClientPurchaseOrder(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinClientPurchaseOrder(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ClientPurchaseOrderHistoryPeer::addSelectColumns($c);
+		ClientPurchaseOrderHistoryPeer::addSelectColumns($criteria);
 		$startcol = (ClientPurchaseOrderHistoryPeer::NUM_COLUMNS - ClientPurchaseOrderHistoryPeer::NUM_LAZY_LOAD_COLUMNS);
-		ClientPurchaseOrderPeer::addSelectColumns($c);
+		ClientPurchaseOrderPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID,), array(ClientPurchaseOrderPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, ClientPurchaseOrderPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ClientPurchaseOrderHistoryPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ClientPurchaseOrderHistoryPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = ClientPurchaseOrderHistoryPeer::getOMClass();
+				$cls = ClientPurchaseOrderHistoryPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ClientPurchaseOrderHistoryPeer::addInstanceToPool($obj1, $key1);
@@ -500,9 +542,8 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 				$obj2 = ClientPurchaseOrderPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = ClientPurchaseOrderPeer::getOMClass();
+					$cls = ClientPurchaseOrderPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					ClientPurchaseOrderPeer::addInstanceToPool($obj2, $key2);
@@ -523,7 +564,7 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -556,7 +597,8 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 			$con = Propel::getConnection(ClientPurchaseOrderHistoryPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID,), array(ClientPurchaseOrderPeer::ID,), $join_behavior);
+		$criteria->addJoin(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, ClientPurchaseOrderPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -571,42 +613,42 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 	/**
 	 * Selects a collection of ClientPurchaseOrderHistory objects pre-filled with all related objects.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of ClientPurchaseOrderHistory objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAll(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ClientPurchaseOrderHistoryPeer::addSelectColumns($c);
+		ClientPurchaseOrderHistoryPeer::addSelectColumns($criteria);
 		$startcol2 = (ClientPurchaseOrderHistoryPeer::NUM_COLUMNS - ClientPurchaseOrderHistoryPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientPurchaseOrderPeer::addSelectColumns($c);
+		ClientPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (ClientPurchaseOrderPeer::NUM_COLUMNS - ClientPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID,), array(ClientPurchaseOrderPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(ClientPurchaseOrderHistoryPeer::CLIENTPURCHASEORDERID, ClientPurchaseOrderPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = ClientPurchaseOrderHistoryPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = ClientPurchaseOrderHistoryPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = ClientPurchaseOrderHistoryPeer::getOMClass();
+				$cls = ClientPurchaseOrderHistoryPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				ClientPurchaseOrderHistoryPeer::addInstanceToPool($obj1, $key1);
@@ -619,10 +661,8 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 				$obj2 = ClientPurchaseOrderPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = ClientPurchaseOrderPeer::getOMClass();
+					$cls = ClientPurchaseOrderPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					ClientPurchaseOrderPeer::addInstanceToPool($obj2, $key2);
@@ -651,17 +691,31 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseClientPurchaseOrderHistoryPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseClientPurchaseOrderHistoryPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new ClientPurchaseOrderHistoryTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return ClientPurchaseOrderHistoryPeer::CLASS_DEFAULT;
+		return $withPrefix ? ClientPurchaseOrderHistoryPeer::CLASS_DEFAULT : ClientPurchaseOrderHistoryPeer::OM_CLASS;
 	}
 
 	/**
@@ -728,7 +782,12 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(ClientPurchaseOrderHistoryPeer::ID);
-			$selectCriteria->add(ClientPurchaseOrderHistoryPeer::ID, $criteria->remove(ClientPurchaseOrderHistoryPeer::ID), $comparison);
+			$value = $criteria->remove(ClientPurchaseOrderHistoryPeer::ID);
+			if ($value) {
+				$selectCriteria->add(ClientPurchaseOrderHistoryPeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(ClientPurchaseOrderHistoryPeer::TABLE_NAME);
+			}
 
 		} else { // $values is ClientPurchaseOrderHistory object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -756,7 +815,12 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(ClientPurchaseOrderHistoryPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(ClientPurchaseOrderHistoryPeer::TABLE_NAME, $con, ClientPurchaseOrderHistoryPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			ClientPurchaseOrderHistoryPeer::clearInstancePool();
+			ClientPurchaseOrderHistoryPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -787,24 +851,18 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			ClientPurchaseOrderHistoryPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof ClientPurchaseOrderHistory) {
+		} elseif ($values instanceof ClientPurchaseOrderHistory) { // it's a model object
 			// invalidate the cache for this single object
 			ClientPurchaseOrderHistoryPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(ClientPurchaseOrderHistoryPeer::ID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				ClientPurchaseOrderHistoryPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -820,7 +878,7 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			ClientPurchaseOrderHistoryPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -919,14 +977,7 @@ abstract class BaseClientPurchaseOrderHistoryPeer {
 
 } // BaseClientPurchaseOrderHistoryPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the ClientPurchaseOrderHistoryPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the ClientPurchaseOrderHistoryPeer class:
-//
-// Propel::getDatabaseMap(ClientPurchaseOrderHistoryPeer::DATABASE_NAME)->addTableBuilder(ClientPurchaseOrderHistoryPeer::TABLE_NAME, ClientPurchaseOrderHistoryPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseClientPurchaseOrderHistoryPeer::DATABASE_NAME)->addTableBuilder(BaseClientPurchaseOrderHistoryPeer::TABLE_NAME, BaseClientPurchaseOrderHistoryPeer::getMapBuilder());
+BaseClientPurchaseOrderHistoryPeer::buildTableMap();
 

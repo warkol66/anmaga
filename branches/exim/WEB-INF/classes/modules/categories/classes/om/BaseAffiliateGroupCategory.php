@@ -1,14 +1,20 @@
 <?php
 
+
 /**
  * Base class that represents a row from the 'affiliates_groupCategory' table.
  *
  * Groups / Categories
  *
- * @package    categories.classes.om
+ * @package    propel.generator.categories.classes.om
  */
-abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persistent {
+abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persistent
+{
 
+	/**
+	 * Peer class name
+	 */
+  const PEER = 'AffiliateGroupCategoryPeer';
 
 	/**
 	 * The Peer class.
@@ -53,26 +59,6 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 	 * @var        boolean
 	 */
 	protected $alreadyInValidation = false;
-
-	/**
-	 * Initializes internal state of BaseAffiliateGroupCategory object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
-
-	/**
-	 * Applies default values to this object.
-	 * This method should be called from the object's constructor (or
-	 * equivalent initialization method).
-	 * @see        __construct()
-	 */
-	public function applyDefaultValues()
-	{
-	}
 
 	/**
 	 * Get the [groupid] column value.
@@ -152,11 +138,6 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			// First, ensure that we don't have any columns that have been modified which aren't default columns.
-			if (array_diff($this->modifiedColumns, array())) {
-				return false;
-			}
-
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -189,7 +170,6 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 				$this->ensureConsistency();
 			}
 
-			// FIXME - using NUM_COLUMNS may be clearer.
 			return $startcol + 2; // 2 = AffiliateGroupCategoryPeer::NUM_COLUMNS - AffiliateGroupCategoryPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
@@ -284,9 +264,17 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 		
 		$con->beginTransaction();
 		try {
-			AffiliateGroupCategoryPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
+			$ret = $this->preDelete($con);
+			if ($ret) {
+				AffiliateGroupCategoryQuery::create()
+					->filterByPrimaryKey($this->getPrimaryKey())
+					->delete($con);
+				$this->postDelete($con);
+				$con->commit();
+				$this->setDeleted(true);
+			} else {
+				$con->commit();
+			}
 		} catch (PropelException $e) {
 			$con->rollBack();
 			throw $e;
@@ -317,10 +305,27 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 		}
 		
 		$con->beginTransaction();
+		$isInsert = $this->isNew();
 		try {
-			$affectedRows = $this->doSave($con);
+			$ret = $this->preSave($con);
+			if ($isInsert) {
+				$ret = $ret && $this->preInsert($con);
+			} else {
+				$ret = $ret && $this->preUpdate($con);
+			}
+			if ($ret) {
+				$affectedRows = $this->doSave($con);
+				if ($isInsert) {
+					$this->postInsert($con);
+				} else {
+					$this->postUpdate($con);
+				}
+				$this->postSave($con);
+				AffiliateGroupCategoryPeer::addInstanceToPool($this);
+			} else {
+				$affectedRows = 0;
+			}
 			$con->commit();
-			AffiliateGroupCategoryPeer::addInstanceToPool($this);
 			return $affectedRows;
 		} catch (PropelException $e) {
 			$con->rollBack();
@@ -368,11 +373,9 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = AffiliateGroupCategoryPeer::doInsert($this, $con);
-					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
-										 // should always be true here (even though technically
-										 // BasePeer::doInsert() can insert multiple rows).
-
+					$criteria = $this->buildCriteria();
+					$pk = BasePeer::doInsert($criteria, $con);
+					$affectedRows += 1;
 					$this->setNew(false);
 				} else {
 					$affectedRows += AffiliateGroupCategoryPeer::doUpdate($this, $con);
@@ -478,6 +481,137 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 	}
 
 	/**
+	 * Retrieves a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name name
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     mixed Value of field.
+	 */
+	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = AffiliateGroupCategoryPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$field = $this->getByPosition($pos);
+		return $field;
+	}
+
+	/**
+	 * Retrieves a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @return     mixed Value of field at $pos
+	 */
+	public function getByPosition($pos)
+	{
+		switch($pos) {
+			case 0:
+				return $this->getGroupid();
+				break;
+			case 1:
+				return $this->getCategoryid();
+				break;
+			default:
+				return null;
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Exports the object as an array.
+	 *
+	 * You can specify the key type of the array by passing one of the class
+	 * type constants.
+	 *
+	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    Defaults to BasePeer::TYPE_PHPNAME.
+	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
+	 *
+	 * @return    array an associative array containing the field names (as keys) and field values
+	 */
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	{
+		$keys = AffiliateGroupCategoryPeer::getFieldNames($keyType);
+		$result = array(
+			$keys[0] => $this->getGroupid(),
+			$keys[1] => $this->getCategoryid(),
+		);
+		if ($includeForeignObjects) {
+			if (null !== $this->aAffiliateGroup) {
+				$result['AffiliateGroup'] = $this->aAffiliateGroup->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aCategory) {
+				$result['Category'] = $this->aCategory->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Sets a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name peer name
+	 * @param      mixed $value field value
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     void
+	 */
+	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = AffiliateGroupCategoryPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		return $this->setByPosition($pos, $value);
+	}
+
+	/**
+	 * Sets a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @param      mixed $value field value
+	 * @return     void
+	 */
+	public function setByPosition($pos, $value)
+	{
+		switch($pos) {
+			case 0:
+				$this->setGroupid($value);
+				break;
+			case 1:
+				$this->setCategoryid($value);
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Populates the object using an array.
+	 *
+	 * This is particularly useful when populating an object from one of the
+	 * request arrays (e.g. $_POST).  This method goes through the column
+	 * names, checking to see whether a matching key exists in populated
+	 * array. If so the setByName() method is called for that column.
+	 *
+	 * You can specify the key type of the array by additionally passing one
+	 * of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+	 * The default key type is the column's phpname (e.g. 'AuthorId')
+	 *
+	 * @param      array  $arr     An array to populate the object from.
+	 * @param      string $keyType The type of keys the array uses.
+	 * @return     void
+	 */
+	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
+	{
+		$keys = AffiliateGroupCategoryPeer::getFieldNames($keyType);
+
+		if (array_key_exists($keys[0], $arr)) $this->setGroupid($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setCategoryid($arr[$keys[1]]);
+	}
+
+	/**
 	 * Build a Criteria object containing the values of all modified columns in this object.
 	 *
 	 * @return     Criteria The Criteria object containing all modified values.
@@ -503,7 +637,6 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 	public function buildPkeyCriteria()
 	{
 		$criteria = new Criteria(AffiliateGroupCategoryPeer::DATABASE_NAME);
-
 		$criteria->add(AffiliateGroupCategoryPeer::GROUPID, $this->groupid);
 		$criteria->add(AffiliateGroupCategoryPeer::CATEGORYID, $this->categoryid);
 
@@ -518,11 +651,9 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 	public function getPrimaryKey()
 	{
 		$pks = array();
-
 		$pks[0] = $this->getGroupid();
-
 		$pks[1] = $this->getCategoryid();
-
+		
 		return $pks;
 	}
 
@@ -534,11 +665,17 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 	 */
 	public function setPrimaryKey($keys)
 	{
-
 		$this->setGroupid($keys[0]);
-
 		$this->setCategoryid($keys[1]);
+	}
 
+	/**
+	 * Returns true if the primary key for this object is null.
+	 * @return     boolean
+	 */
+	public function isPrimaryKeyNull()
+	{
+		return (null === $this->getGroupid()) && (null === $this->getCategoryid());
 	}
 
 	/**
@@ -553,14 +690,10 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-
 		$copyObj->setGroupid($this->groupid);
-
 		$copyObj->setCategoryid($this->categoryid);
 
-
 		$copyObj->setNew(true);
-
 	}
 
 	/**
@@ -638,7 +771,7 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 	public function getAffiliateGroup(PropelPDO $con = null)
 	{
 		if ($this->aAffiliateGroup === null && ($this->groupid !== null)) {
-			$this->aAffiliateGroup = AffiliateGroupPeer::retrieveByPK($this->groupid, $con);
+			$this->aAffiliateGroup = AffiliateGroupQuery::create()->findPk($this->groupid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -687,7 +820,7 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 	public function getCategory(PropelPDO $con = null)
 	{
 		if ($this->aCategory === null && ($this->categoryid !== null)) {
-			$this->aCategory = CategoryPeer::retrieveByPK($this->categoryid, $con);
+			$this->aCategory = CategoryQuery::create()->findPk($this->categoryid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -697,6 +830,21 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 			 */
 		}
 		return $this->aCategory;
+	}
+
+	/**
+	 * Clears the current object and sets all attributes to their default values
+	 */
+	public function clear()
+	{
+		$this->groupid = null;
+		$this->categoryid = null;
+		$this->alreadyInSave = false;
+		$this->alreadyInValidation = false;
+		$this->clearAllReferences();
+		$this->resetModified();
+		$this->setNew(true);
+		$this->setDeleted(false);
 	}
 
 	/**
@@ -713,8 +861,27 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 		if ($deep) {
 		} // if ($deep)
 
-			$this->aAffiliateGroup = null;
-			$this->aCategory = null;
+		$this->aAffiliateGroup = null;
+		$this->aCategory = null;
+	}
+
+	/**
+	 * Catches calls to virtual methods
+	 */
+	public function __call($name, $params)
+	{
+		if (preg_match('/get(\w+)/', $name, $matches)) {
+			$virtualColumn = $matches[1];
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+			// no lcfirst in php<5.3...
+			$virtualColumn[0] = strtolower($virtualColumn[0]);
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+		}
+		return parent::__call($name, $params);
 	}
 
 } // BaseAffiliateGroupCategory

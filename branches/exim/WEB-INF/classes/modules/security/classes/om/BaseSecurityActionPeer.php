@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'security_action' table.
  *
  * Actions del sistema
  *
- * @package    security.classes.om
+ * @package    propel.generator.security.classes.om
  */
 abstract class BaseSecurityActionPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseSecurityActionPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'security_action';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'SecurityAction';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'security.classes.SecurityAction';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'SecurityActionTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 9;
 
@@ -59,11 +66,6 @@ abstract class BaseSecurityActionPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -75,6 +77,7 @@ abstract class BaseSecurityActionPeer {
 		BasePeer::TYPE_PHPNAME => array ('Action', 'Module', 'Section', 'Access', 'Accessaffiliateuser', 'Accessregistrationuser', 'Active', 'Pair', 'Nochecklogin', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('action', 'module', 'section', 'access', 'accessaffiliateuser', 'accessregistrationuser', 'active', 'pair', 'nochecklogin', ),
 		BasePeer::TYPE_COLNAME => array (self::ACTION, self::MODULE, self::SECTION, self::ACCESS, self::ACCESSAFFILIATEUSER, self::ACCESSREGISTRATIONUSER, self::ACTIVE, self::PAIR, self::NOCHECKLOGIN, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ACTION', 'MODULE', 'SECTION', 'ACCESS', 'ACCESSAFFILIATEUSER', 'ACCESSREGISTRATIONUSER', 'ACTIVE', 'PAIR', 'NOCHECKLOGIN', ),
 		BasePeer::TYPE_FIELDNAME => array ('action', 'module', 'section', 'access', 'accessAffiliateUser', 'accessRegistrationUser', 'active', 'pair', 'noCheckLogin', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
@@ -89,21 +92,11 @@ abstract class BaseSecurityActionPeer {
 		BasePeer::TYPE_PHPNAME => array ('Action' => 0, 'Module' => 1, 'Section' => 2, 'Access' => 3, 'Accessaffiliateuser' => 4, 'Accessregistrationuser' => 5, 'Active' => 6, 'Pair' => 7, 'Nochecklogin' => 8, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('action' => 0, 'module' => 1, 'section' => 2, 'access' => 3, 'accessaffiliateuser' => 4, 'accessregistrationuser' => 5, 'active' => 6, 'pair' => 7, 'nochecklogin' => 8, ),
 		BasePeer::TYPE_COLNAME => array (self::ACTION => 0, self::MODULE => 1, self::SECTION => 2, self::ACCESS => 3, self::ACCESSAFFILIATEUSER => 4, self::ACCESSREGISTRATIONUSER => 5, self::ACTIVE => 6, self::PAIR => 7, self::NOCHECKLOGIN => 8, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ACTION' => 0, 'MODULE' => 1, 'SECTION' => 2, 'ACCESS' => 3, 'ACCESSAFFILIATEUSER' => 4, 'ACCESSREGISTRATIONUSER' => 5, 'ACTIVE' => 6, 'PAIR' => 7, 'NOCHECKLOGIN' => 8, ),
 		BasePeer::TYPE_FIELDNAME => array ('action' => 0, 'module' => 1, 'section' => 2, 'access' => 3, 'accessAffiliateUser' => 4, 'accessRegistrationUser' => 5, 'active' => 6, 'pair' => 7, 'noCheckLogin' => 8, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new SecurityActionMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -165,31 +158,34 @@ abstract class BaseSecurityActionPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(SecurityActionPeer::ACTION);
-
-		$criteria->addSelectColumn(SecurityActionPeer::MODULE);
-
-		$criteria->addSelectColumn(SecurityActionPeer::SECTION);
-
-		$criteria->addSelectColumn(SecurityActionPeer::ACCESS);
-
-		$criteria->addSelectColumn(SecurityActionPeer::ACCESSAFFILIATEUSER);
-
-		$criteria->addSelectColumn(SecurityActionPeer::ACCESSREGISTRATIONUSER);
-
-		$criteria->addSelectColumn(SecurityActionPeer::ACTIVE);
-
-		$criteria->addSelectColumn(SecurityActionPeer::PAIR);
-
-		$criteria->addSelectColumn(SecurityActionPeer::NOCHECKLOGIN);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(SecurityActionPeer::ACTION);
+			$criteria->addSelectColumn(SecurityActionPeer::MODULE);
+			$criteria->addSelectColumn(SecurityActionPeer::SECTION);
+			$criteria->addSelectColumn(SecurityActionPeer::ACCESS);
+			$criteria->addSelectColumn(SecurityActionPeer::ACCESSAFFILIATEUSER);
+			$criteria->addSelectColumn(SecurityActionPeer::ACCESSREGISTRATIONUSER);
+			$criteria->addSelectColumn(SecurityActionPeer::ACTIVE);
+			$criteria->addSelectColumn(SecurityActionPeer::PAIR);
+			$criteria->addSelectColumn(SecurityActionPeer::NOCHECKLOGIN);
+		} else {
+			$criteria->addSelectColumn($alias . '.ACTION');
+			$criteria->addSelectColumn($alias . '.MODULE');
+			$criteria->addSelectColumn($alias . '.SECTION');
+			$criteria->addSelectColumn($alias . '.ACCESS');
+			$criteria->addSelectColumn($alias . '.ACCESSAFFILIATEUSER');
+			$criteria->addSelectColumn($alias . '.ACCESSREGISTRATIONUSER');
+			$criteria->addSelectColumn($alias . '.ACTIVE');
+			$criteria->addSelectColumn($alias . '.PAIR');
+			$criteria->addSelectColumn($alias . '.NOCHECKLOGIN');
+		}
 	}
 
 	/**
@@ -377,6 +373,14 @@ abstract class BaseSecurityActionPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to security_action
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -389,12 +393,26 @@ abstract class BaseSecurityActionPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (string) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -407,18 +425,16 @@ abstract class BaseSecurityActionPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = SecurityActionPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = SecurityActionPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = SecurityActionPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = SecurityActionPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -428,11 +444,36 @@ abstract class BaseSecurityActionPeer {
 		$stmt->closeCursor();
 		return $results;
 	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (SecurityAction object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = SecurityActionPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = SecurityActionPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + SecurityActionPeer::NUM_COLUMNS;
+		} else {
+			$cls = SecurityActionPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			SecurityActionPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
+	}
 
 	/**
 	 * Returns the number of rows matching criteria, joining the related SecurityModule table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -465,7 +506,8 @@ abstract class BaseSecurityActionPeer {
 			$con = Propel::getConnection(SecurityActionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SecurityActionPeer::MODULE,), array(SecurityModulePeer::MODULE,), $join_behavior);
+		$criteria->addJoin(SecurityActionPeer::MODULE, SecurityModulePeer::MODULE, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -480,41 +522,41 @@ abstract class BaseSecurityActionPeer {
 
 	/**
 	 * Selects a collection of SecurityAction objects pre-filled with their SecurityModule objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SecurityAction objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinSecurityModule(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinSecurityModule(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SecurityActionPeer::addSelectColumns($c);
+		SecurityActionPeer::addSelectColumns($criteria);
 		$startcol = (SecurityActionPeer::NUM_COLUMNS - SecurityActionPeer::NUM_LAZY_LOAD_COLUMNS);
-		SecurityModulePeer::addSelectColumns($c);
+		SecurityModulePeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SecurityActionPeer::MODULE,), array(SecurityModulePeer::MODULE,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SecurityActionPeer::MODULE, SecurityModulePeer::MODULE, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SecurityActionPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SecurityActionPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SecurityActionPeer::getOMClass();
+				$cls = SecurityActionPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SecurityActionPeer::addInstanceToPool($obj1, $key1);
@@ -525,9 +567,8 @@ abstract class BaseSecurityActionPeer {
 				$obj2 = SecurityModulePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = SecurityModulePeer::getOMClass();
+					$cls = SecurityModulePeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					SecurityModulePeer::addInstanceToPool($obj2, $key2);
@@ -548,7 +589,7 @@ abstract class BaseSecurityActionPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -581,7 +622,8 @@ abstract class BaseSecurityActionPeer {
 			$con = Propel::getConnection(SecurityActionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SecurityActionPeer::MODULE,), array(SecurityModulePeer::MODULE,), $join_behavior);
+		$criteria->addJoin(SecurityActionPeer::MODULE, SecurityModulePeer::MODULE, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -596,42 +638,42 @@ abstract class BaseSecurityActionPeer {
 	/**
 	 * Selects a collection of SecurityAction objects pre-filled with all related objects.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SecurityAction objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAll(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SecurityActionPeer::addSelectColumns($c);
+		SecurityActionPeer::addSelectColumns($criteria);
 		$startcol2 = (SecurityActionPeer::NUM_COLUMNS - SecurityActionPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SecurityModulePeer::addSelectColumns($c);
+		SecurityModulePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SecurityModulePeer::NUM_COLUMNS - SecurityModulePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(SecurityActionPeer::MODULE,), array(SecurityModulePeer::MODULE,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SecurityActionPeer::MODULE, SecurityModulePeer::MODULE, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SecurityActionPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SecurityActionPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SecurityActionPeer::getOMClass();
+				$cls = SecurityActionPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SecurityActionPeer::addInstanceToPool($obj1, $key1);
@@ -644,10 +686,8 @@ abstract class BaseSecurityActionPeer {
 				$obj2 = SecurityModulePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = SecurityModulePeer::getOMClass();
+					$cls = SecurityModulePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SecurityModulePeer::addInstanceToPool($obj2, $key2);
@@ -676,17 +716,31 @@ abstract class BaseSecurityActionPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseSecurityActionPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseSecurityActionPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new SecurityActionTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return SecurityActionPeer::CLASS_DEFAULT;
+		return $withPrefix ? SecurityActionPeer::CLASS_DEFAULT : SecurityActionPeer::OM_CLASS;
 	}
 
 	/**
@@ -749,7 +803,12 @@ abstract class BaseSecurityActionPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(SecurityActionPeer::ACTION);
-			$selectCriteria->add(SecurityActionPeer::ACTION, $criteria->remove(SecurityActionPeer::ACTION), $comparison);
+			$value = $criteria->remove(SecurityActionPeer::ACTION);
+			if ($value) {
+				$selectCriteria->add(SecurityActionPeer::ACTION, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(SecurityActionPeer::TABLE_NAME);
+			}
 
 		} else { // $values is SecurityAction object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -777,7 +836,12 @@ abstract class BaseSecurityActionPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(SecurityActionPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(SecurityActionPeer::TABLE_NAME, $con, SecurityActionPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			SecurityActionPeer::clearInstancePool();
+			SecurityActionPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -808,24 +872,18 @@ abstract class BaseSecurityActionPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			SecurityActionPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof SecurityAction) {
+		} elseif ($values instanceof SecurityAction) { // it's a model object
 			// invalidate the cache for this single object
 			SecurityActionPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(SecurityActionPeer::ACTION, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				SecurityActionPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -841,7 +899,7 @@ abstract class BaseSecurityActionPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			SecurityActionPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -940,14 +998,7 @@ abstract class BaseSecurityActionPeer {
 
 } // BaseSecurityActionPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the SecurityActionPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the SecurityActionPeer class:
-//
-// Propel::getDatabaseMap(SecurityActionPeer::DATABASE_NAME)->addTableBuilder(SecurityActionPeer::TABLE_NAME, SecurityActionPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseSecurityActionPeer::DATABASE_NAME)->addTableBuilder(BaseSecurityActionPeer::TABLE_NAME, BaseSecurityActionPeer::getMapBuilder());
+BaseSecurityActionPeer::buildTableMap();
 

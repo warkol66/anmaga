@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'import_product' table.
  *
  * Productos
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
 abstract class BaseProductPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseProductPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'import_product';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'Product';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'import.classes.Product';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'ProductTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 9;
 
@@ -59,11 +66,6 @@ abstract class BaseProductPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -75,6 +77,7 @@ abstract class BaseProductPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Code', 'Name', 'Namespanish', 'Description', 'Descriptionspanish', 'Namechinese', 'Descriptionchinese', 'Status', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'code', 'name', 'namespanish', 'description', 'descriptionspanish', 'namechinese', 'descriptionchinese', 'status', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::CODE, self::NAME, self::NAMESPANISH, self::DESCRIPTION, self::DESCRIPTIONSPANISH, self::NAMECHINESE, self::DESCRIPTIONCHINESE, self::STATUS, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CODE', 'NAME', 'NAMESPANISH', 'DESCRIPTION', 'DESCRIPTIONSPANISH', 'NAMECHINESE', 'DESCRIPTIONCHINESE', 'STATUS', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'code', 'name', 'nameSpanish', 'description', 'descriptionSpanish', 'nameChinese', 'descriptionChinese', 'status', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
@@ -89,21 +92,11 @@ abstract class BaseProductPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Code' => 1, 'Name' => 2, 'Namespanish' => 3, 'Description' => 4, 'Descriptionspanish' => 5, 'Namechinese' => 6, 'Descriptionchinese' => 7, 'Status' => 8, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'namespanish' => 3, 'description' => 4, 'descriptionspanish' => 5, 'namechinese' => 6, 'descriptionchinese' => 7, 'status' => 8, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CODE => 1, self::NAME => 2, self::NAMESPANISH => 3, self::DESCRIPTION => 4, self::DESCRIPTIONSPANISH => 5, self::NAMECHINESE => 6, self::DESCRIPTIONCHINESE => 7, self::STATUS => 8, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CODE' => 1, 'NAME' => 2, 'NAMESPANISH' => 3, 'DESCRIPTION' => 4, 'DESCRIPTIONSPANISH' => 5, 'NAMECHINESE' => 6, 'DESCRIPTIONCHINESE' => 7, 'STATUS' => 8, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'nameSpanish' => 3, 'description' => 4, 'descriptionSpanish' => 5, 'nameChinese' => 6, 'descriptionChinese' => 7, 'status' => 8, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new ProductMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -165,31 +158,34 @@ abstract class BaseProductPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(ProductPeer::ID);
-
-		$criteria->addSelectColumn(ProductPeer::CODE);
-
-		$criteria->addSelectColumn(ProductPeer::NAME);
-
-		$criteria->addSelectColumn(ProductPeer::NAMESPANISH);
-
-		$criteria->addSelectColumn(ProductPeer::DESCRIPTION);
-
-		$criteria->addSelectColumn(ProductPeer::DESCRIPTIONSPANISH);
-
-		$criteria->addSelectColumn(ProductPeer::NAMECHINESE);
-
-		$criteria->addSelectColumn(ProductPeer::DESCRIPTIONCHINESE);
-
-		$criteria->addSelectColumn(ProductPeer::STATUS);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(ProductPeer::ID);
+			$criteria->addSelectColumn(ProductPeer::CODE);
+			$criteria->addSelectColumn(ProductPeer::NAME);
+			$criteria->addSelectColumn(ProductPeer::NAMESPANISH);
+			$criteria->addSelectColumn(ProductPeer::DESCRIPTION);
+			$criteria->addSelectColumn(ProductPeer::DESCRIPTIONSPANISH);
+			$criteria->addSelectColumn(ProductPeer::NAMECHINESE);
+			$criteria->addSelectColumn(ProductPeer::DESCRIPTIONCHINESE);
+			$criteria->addSelectColumn(ProductPeer::STATUS);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.CODE');
+			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.NAMESPANISH');
+			$criteria->addSelectColumn($alias . '.DESCRIPTION');
+			$criteria->addSelectColumn($alias . '.DESCRIPTIONSPANISH');
+			$criteria->addSelectColumn($alias . '.NAMECHINESE');
+			$criteria->addSelectColumn($alias . '.DESCRIPTIONCHINESE');
+			$criteria->addSelectColumn($alias . '.STATUS');
+		}
 	}
 
 	/**
@@ -377,6 +373,14 @@ abstract class BaseProductPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to import_product
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -389,12 +393,26 @@ abstract class BaseProductPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -407,18 +425,16 @@ abstract class BaseProductPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = ProductPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = ProductPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = ProductPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = ProductPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -427,6 +443,31 @@ abstract class BaseProductPeer {
 		}
 		$stmt->closeCursor();
 		return $results;
+	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (Product object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = ProductPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = ProductPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + ProductPeer::NUM_COLUMNS;
+		} else {
+			$cls = ProductPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			ProductPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
 	}
 	/**
 	 * Returns the TableMap related to this peer.
@@ -441,17 +482,31 @@ abstract class BaseProductPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseProductPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseProductPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new ProductTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return ProductPeer::CLASS_DEFAULT;
+		return $withPrefix ? ProductPeer::CLASS_DEFAULT : ProductPeer::OM_CLASS;
 	}
 
 	/**
@@ -518,7 +573,12 @@ abstract class BaseProductPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(ProductPeer::ID);
-			$selectCriteria->add(ProductPeer::ID, $criteria->remove(ProductPeer::ID), $comparison);
+			$value = $criteria->remove(ProductPeer::ID);
+			if ($value) {
+				$selectCriteria->add(ProductPeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(ProductPeer::TABLE_NAME);
+			}
 
 		} else { // $values is Product object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -546,7 +606,12 @@ abstract class BaseProductPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(ProductPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(ProductPeer::TABLE_NAME, $con, ProductPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			ProductPeer::clearInstancePool();
+			ProductPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -577,24 +642,18 @@ abstract class BaseProductPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			ProductPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof Product) {
+		} elseif ($values instanceof Product) { // it's a model object
 			// invalidate the cache for this single object
 			ProductPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(ProductPeer::ID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				ProductPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -610,7 +669,7 @@ abstract class BaseProductPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			ProductPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -709,14 +768,7 @@ abstract class BaseProductPeer {
 
 } // BaseProductPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the ProductPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the ProductPeer class:
-//
-// Propel::getDatabaseMap(ProductPeer::DATABASE_NAME)->addTableBuilder(ProductPeer::TABLE_NAME, ProductPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseProductPeer::DATABASE_NAME)->addTableBuilder(BaseProductPeer::TABLE_NAME, BaseProductPeer::getMapBuilder());
+BaseProductPeer::buildTableMap();
 

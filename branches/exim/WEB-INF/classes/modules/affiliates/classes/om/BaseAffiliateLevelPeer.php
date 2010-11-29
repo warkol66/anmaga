@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'affiliates_level' table.
  *
  * Levels
  *
- * @package    affiliates.classes.om
+ * @package    propel.generator.affiliates.classes.om
  */
 abstract class BaseAffiliateLevelPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseAffiliateLevelPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'affiliates_level';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'AffiliateLevel';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'affiliates.classes.AffiliateLevel';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'AffiliateLevelTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 3;
 
@@ -41,11 +48,6 @@ abstract class BaseAffiliateLevelPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -57,6 +59,7 @@ abstract class BaseAffiliateLevelPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Bitlevel', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'bitlevel', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::BITLEVEL, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'BITLEVEL', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'bitLevel', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
@@ -71,21 +74,11 @@ abstract class BaseAffiliateLevelPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Bitlevel' => 2, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'bitlevel' => 2, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::BITLEVEL => 2, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'BITLEVEL' => 2, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'bitLevel' => 2, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new AffiliateLevelMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -147,19 +140,22 @@ abstract class BaseAffiliateLevelPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(AffiliateLevelPeer::ID);
-
-		$criteria->addSelectColumn(AffiliateLevelPeer::NAME);
-
-		$criteria->addSelectColumn(AffiliateLevelPeer::BITLEVEL);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(AffiliateLevelPeer::ID);
+			$criteria->addSelectColumn(AffiliateLevelPeer::NAME);
+			$criteria->addSelectColumn(AffiliateLevelPeer::BITLEVEL);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.BITLEVEL');
+		}
 	}
 
 	/**
@@ -347,6 +343,14 @@ abstract class BaseAffiliateLevelPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to affiliates_level
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -359,12 +363,26 @@ abstract class BaseAffiliateLevelPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -377,18 +395,16 @@ abstract class BaseAffiliateLevelPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = AffiliateLevelPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = AffiliateLevelPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = AffiliateLevelPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = AffiliateLevelPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -397,6 +413,31 @@ abstract class BaseAffiliateLevelPeer {
 		}
 		$stmt->closeCursor();
 		return $results;
+	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (AffiliateLevel object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = AffiliateLevelPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = AffiliateLevelPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + AffiliateLevelPeer::NUM_COLUMNS;
+		} else {
+			$cls = AffiliateLevelPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			AffiliateLevelPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
 	}
 	/**
 	 * Returns the TableMap related to this peer.
@@ -411,17 +452,31 @@ abstract class BaseAffiliateLevelPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseAffiliateLevelPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseAffiliateLevelPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new AffiliateLevelTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return AffiliateLevelPeer::CLASS_DEFAULT;
+		return $withPrefix ? AffiliateLevelPeer::CLASS_DEFAULT : AffiliateLevelPeer::OM_CLASS;
 	}
 
 	/**
@@ -488,7 +543,12 @@ abstract class BaseAffiliateLevelPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(AffiliateLevelPeer::ID);
-			$selectCriteria->add(AffiliateLevelPeer::ID, $criteria->remove(AffiliateLevelPeer::ID), $comparison);
+			$value = $criteria->remove(AffiliateLevelPeer::ID);
+			if ($value) {
+				$selectCriteria->add(AffiliateLevelPeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(AffiliateLevelPeer::TABLE_NAME);
+			}
 
 		} else { // $values is AffiliateLevel object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -516,7 +576,12 @@ abstract class BaseAffiliateLevelPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(AffiliateLevelPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(AffiliateLevelPeer::TABLE_NAME, $con, AffiliateLevelPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			AffiliateLevelPeer::clearInstancePool();
+			AffiliateLevelPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -547,24 +612,18 @@ abstract class BaseAffiliateLevelPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			AffiliateLevelPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof AffiliateLevel) {
+		} elseif ($values instanceof AffiliateLevel) { // it's a model object
 			// invalidate the cache for this single object
 			AffiliateLevelPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(AffiliateLevelPeer::ID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				AffiliateLevelPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -580,7 +639,7 @@ abstract class BaseAffiliateLevelPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			AffiliateLevelPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -679,14 +738,7 @@ abstract class BaseAffiliateLevelPeer {
 
 } // BaseAffiliateLevelPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the AffiliateLevelPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the AffiliateLevelPeer class:
-//
-// Propel::getDatabaseMap(AffiliateLevelPeer::DATABASE_NAME)->addTableBuilder(AffiliateLevelPeer::TABLE_NAME, AffiliateLevelPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseAffiliateLevelPeer::DATABASE_NAME)->addTableBuilder(BaseAffiliateLevelPeer::TABLE_NAME, BaseAffiliateLevelPeer::getMapBuilder());
+BaseAffiliateLevelPeer::buildTableMap();
 

@@ -1,14 +1,20 @@
 <?php
 
+
 /**
  * Base class that represents a row from the 'import_supplierPurchaseOrderBankTransfer' table.
  *
  * Transferencias bancarias realizadas a esa orden de pedido a proveedor
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
-abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  implements Persistent {
+abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  implements Persistent
+{
 
+	/**
+	 * Peer class name
+	 */
+  const PEER = 'SupplierPurchaseOrderBankTransferPeer';
 
 	/**
 	 * The Peer class.
@@ -83,26 +89,6 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	 * @var        boolean
 	 */
 	protected $alreadyInValidation = false;
-
-	/**
-	 * Initializes internal state of BaseSupplierPurchaseOrderBankTransfer object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
-
-	/**
-	 * Applies default values to this object.
-	 * This method should be called from the object's constructor (or
-	 * equivalent initialization method).
-	 * @see        __construct()
-	 */
-	public function applyDefaultValues()
-	{
-	}
 
 	/**
 	 * Get the [id] column value.
@@ -389,11 +375,6 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			// First, ensure that we don't have any columns that have been modified which aren't default columns.
-			if (array_diff($this->modifiedColumns, array())) {
-				return false;
-			}
-
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -431,7 +412,6 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 				$this->ensureConsistency();
 			}
 
-			// FIXME - using NUM_COLUMNS may be clearer.
 			return $startcol + 7; // 7 = SupplierPurchaseOrderBankTransferPeer::NUM_COLUMNS - SupplierPurchaseOrderBankTransferPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
@@ -526,9 +506,17 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 		
 		$con->beginTransaction();
 		try {
-			SupplierPurchaseOrderBankTransferPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
+			$ret = $this->preDelete($con);
+			if ($ret) {
+				SupplierPurchaseOrderBankTransferQuery::create()
+					->filterByPrimaryKey($this->getPrimaryKey())
+					->delete($con);
+				$this->postDelete($con);
+				$con->commit();
+				$this->setDeleted(true);
+			} else {
+				$con->commit();
+			}
 		} catch (PropelException $e) {
 			$con->rollBack();
 			throw $e;
@@ -559,10 +547,27 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 		}
 		
 		$con->beginTransaction();
+		$isInsert = $this->isNew();
 		try {
-			$affectedRows = $this->doSave($con);
+			$ret = $this->preSave($con);
+			if ($isInsert) {
+				$ret = $ret && $this->preInsert($con);
+			} else {
+				$ret = $ret && $this->preUpdate($con);
+			}
+			if ($ret) {
+				$affectedRows = $this->doSave($con);
+				if ($isInsert) {
+					$this->postInsert($con);
+				} else {
+					$this->postUpdate($con);
+				}
+				$this->postSave($con);
+				SupplierPurchaseOrderBankTransferPeer::addInstanceToPool($this);
+			} else {
+				$affectedRows = 0;
+			}
 			$con->commit();
-			SupplierPurchaseOrderBankTransferPeer::addInstanceToPool($this);
 			return $affectedRows;
 		} catch (PropelException $e) {
 			$con->rollBack();
@@ -613,13 +618,14 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = SupplierPurchaseOrderBankTransferPeer::doInsert($this, $con);
-					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
-										 // should always be true here (even though technically
-										 // BasePeer::doInsert() can insert multiple rows).
+					$criteria = $this->buildCriteria();
+					if ($criteria->keyContainsValue(SupplierPurchaseOrderBankTransferPeer::ID) ) {
+						throw new PropelException('Cannot insert a value for auto-increment primary key ('.SupplierPurchaseOrderBankTransferPeer::ID.')');
+					}
 
+					$pk = BasePeer::doInsert($criteria, $con);
+					$affectedRows += 1;
 					$this->setId($pk);  //[IMV] update autoincrement primary key
-
 					$this->setNew(false);
 				} else {
 					$affectedRows += SupplierPurchaseOrderBankTransferPeer::doUpdate($this, $con);
@@ -725,6 +731,177 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	}
 
 	/**
+	 * Retrieves a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name name
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     mixed Value of field.
+	 */
+	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = SupplierPurchaseOrderBankTransferPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$field = $this->getByPosition($pos);
+		return $field;
+	}
+
+	/**
+	 * Retrieves a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @return     mixed Value of field at $pos
+	 */
+	public function getByPosition($pos)
+	{
+		switch($pos) {
+			case 0:
+				return $this->getId();
+				break;
+			case 1:
+				return $this->getSupplierpurchaseorderid();
+				break;
+			case 2:
+				return $this->getBanktransfernumber();
+				break;
+			case 3:
+				return $this->getAmount();
+				break;
+			case 4:
+				return $this->getAccountnumber();
+				break;
+			case 5:
+				return $this->getBankaccountid();
+				break;
+			case 6:
+				return $this->getCreatedat();
+				break;
+			default:
+				return null;
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Exports the object as an array.
+	 *
+	 * You can specify the key type of the array by passing one of the class
+	 * type constants.
+	 *
+	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    Defaults to BasePeer::TYPE_PHPNAME.
+	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
+	 *
+	 * @return    array an associative array containing the field names (as keys) and field values
+	 */
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	{
+		$keys = SupplierPurchaseOrderBankTransferPeer::getFieldNames($keyType);
+		$result = array(
+			$keys[0] => $this->getId(),
+			$keys[1] => $this->getSupplierpurchaseorderid(),
+			$keys[2] => $this->getBanktransfernumber(),
+			$keys[3] => $this->getAmount(),
+			$keys[4] => $this->getAccountnumber(),
+			$keys[5] => $this->getBankaccountid(),
+			$keys[6] => $this->getCreatedat(),
+		);
+		if ($includeForeignObjects) {
+			if (null !== $this->aSupplierPurchaseOrder) {
+				$result['SupplierPurchaseOrder'] = $this->aSupplierPurchaseOrder->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aBankAccount) {
+				$result['BankAccount'] = $this->aBankAccount->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Sets a field from the object by name passed in as a string.
+	 *
+	 * @param      string $name peer name
+	 * @param      mixed $value field value
+	 * @param      string $type The type of fieldname the $name is of:
+	 *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+	 *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
+	 * @return     void
+	 */
+	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
+	{
+		$pos = SupplierPurchaseOrderBankTransferPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		return $this->setByPosition($pos, $value);
+	}
+
+	/**
+	 * Sets a field from the object by Position as specified in the xml schema.
+	 * Zero-based.
+	 *
+	 * @param      int $pos position in xml schema
+	 * @param      mixed $value field value
+	 * @return     void
+	 */
+	public function setByPosition($pos, $value)
+	{
+		switch($pos) {
+			case 0:
+				$this->setId($value);
+				break;
+			case 1:
+				$this->setSupplierpurchaseorderid($value);
+				break;
+			case 2:
+				$this->setBanktransfernumber($value);
+				break;
+			case 3:
+				$this->setAmount($value);
+				break;
+			case 4:
+				$this->setAccountnumber($value);
+				break;
+			case 5:
+				$this->setBankaccountid($value);
+				break;
+			case 6:
+				$this->setCreatedat($value);
+				break;
+		} // switch()
+	}
+
+	/**
+	 * Populates the object using an array.
+	 *
+	 * This is particularly useful when populating an object from one of the
+	 * request arrays (e.g. $_POST).  This method goes through the column
+	 * names, checking to see whether a matching key exists in populated
+	 * array. If so the setByName() method is called for that column.
+	 *
+	 * You can specify the key type of the array by additionally passing one
+	 * of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+	 * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+	 * The default key type is the column's phpname (e.g. 'AuthorId')
+	 *
+	 * @param      array  $arr     An array to populate the object from.
+	 * @param      string $keyType The type of keys the array uses.
+	 * @return     void
+	 */
+	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
+	{
+		$keys = SupplierPurchaseOrderBankTransferPeer::getFieldNames($keyType);
+
+		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setSupplierpurchaseorderid($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setBanktransfernumber($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setAmount($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setAccountnumber($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setBankaccountid($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setCreatedat($arr[$keys[6]]);
+	}
+
+	/**
 	 * Build a Criteria object containing the values of all modified columns in this object.
 	 *
 	 * @return     Criteria The Criteria object containing all modified values.
@@ -755,7 +932,6 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	public function buildPkeyCriteria()
 	{
 		$criteria = new Criteria(SupplierPurchaseOrderBankTransferPeer::DATABASE_NAME);
-
 		$criteria->add(SupplierPurchaseOrderBankTransferPeer::ID, $this->id);
 
 		return $criteria;
@@ -782,6 +958,15 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	}
 
 	/**
+	 * Returns true if the primary key for this object is null.
+	 * @return     boolean
+	 */
+	public function isPrimaryKeyNull()
+	{
+		return null === $this->getId();
+	}
+
+	/**
 	 * Sets contents of passed object to values from current object.
 	 *
 	 * If desired, this method can also make copies of all associated (fkey referrers)
@@ -793,24 +978,15 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-
 		$copyObj->setSupplierpurchaseorderid($this->supplierpurchaseorderid);
-
 		$copyObj->setBanktransfernumber($this->banktransfernumber);
-
 		$copyObj->setAmount($this->amount);
-
 		$copyObj->setAccountnumber($this->accountnumber);
-
 		$copyObj->setBankaccountid($this->bankaccountid);
-
 		$copyObj->setCreatedat($this->createdat);
 
-
 		$copyObj->setNew(true);
-
 		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
-
 	}
 
 	/**
@@ -888,7 +1064,7 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	public function getSupplierPurchaseOrder(PropelPDO $con = null)
 	{
 		if ($this->aSupplierPurchaseOrder === null && ($this->supplierpurchaseorderid !== null)) {
-			$this->aSupplierPurchaseOrder = SupplierPurchaseOrderPeer::retrieveByPK($this->supplierpurchaseorderid, $con);
+			$this->aSupplierPurchaseOrder = SupplierPurchaseOrderQuery::create()->findPk($this->supplierpurchaseorderid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -937,7 +1113,7 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 	public function getBankAccount(PropelPDO $con = null)
 	{
 		if ($this->aBankAccount === null && ($this->bankaccountid !== null)) {
-			$this->aBankAccount = BankAccountPeer::retrieveByPK($this->bankaccountid, $con);
+			$this->aBankAccount = BankAccountQuery::create()->findPk($this->bankaccountid, $con);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -947,6 +1123,26 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 			 */
 		}
 		return $this->aBankAccount;
+	}
+
+	/**
+	 * Clears the current object and sets all attributes to their default values
+	 */
+	public function clear()
+	{
+		$this->id = null;
+		$this->supplierpurchaseorderid = null;
+		$this->banktransfernumber = null;
+		$this->amount = null;
+		$this->accountnumber = null;
+		$this->bankaccountid = null;
+		$this->createdat = null;
+		$this->alreadyInSave = false;
+		$this->alreadyInValidation = false;
+		$this->clearAllReferences();
+		$this->resetModified();
+		$this->setNew(true);
+		$this->setDeleted(false);
 	}
 
 	/**
@@ -963,8 +1159,27 @@ abstract class BaseSupplierPurchaseOrderBankTransfer extends BaseObject  impleme
 		if ($deep) {
 		} // if ($deep)
 
-			$this->aSupplierPurchaseOrder = null;
-			$this->aBankAccount = null;
+		$this->aSupplierPurchaseOrder = null;
+		$this->aBankAccount = null;
+	}
+
+	/**
+	 * Catches calls to virtual methods
+	 */
+	public function __call($name, $params)
+	{
+		if (preg_match('/get(\w+)/', $name, $matches)) {
+			$virtualColumn = $matches[1];
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+			// no lcfirst in php<5.3...
+			$virtualColumn[0] = strtolower($virtualColumn[0]);
+			if ($this->hasVirtualColumn($virtualColumn)) {
+				return $this->getVirtualColumn($virtualColumn);
+			}
+		}
+		return parent::__call($name, $params);
 	}
 
 } // BaseSupplierPurchaseOrderBankTransfer

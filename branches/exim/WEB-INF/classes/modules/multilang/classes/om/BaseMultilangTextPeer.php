@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'multilang_text' table.
  *
  * 
  *
- * @package    multilang.classes.om
+ * @package    propel.generator.multilang.classes.om
  */
 abstract class BaseMultilangTextPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseMultilangTextPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'multilang_text';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'MultilangText';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'multilang.classes.MultilangText';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'MultilangTextTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 4;
 
@@ -44,11 +51,6 @@ abstract class BaseMultilangTextPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -60,6 +62,7 @@ abstract class BaseMultilangTextPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Modulename', 'Languagecode', 'Text', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'modulename', 'languagecode', 'text', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::MODULENAME, self::LANGUAGECODE, self::TEXT, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'MODULENAME', 'LANGUAGECODE', 'TEXT', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'moduleName', 'languageCode', 'text', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
@@ -74,21 +77,11 @@ abstract class BaseMultilangTextPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Modulename' => 1, 'Languagecode' => 2, 'Text' => 3, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'modulename' => 1, 'languagecode' => 2, 'text' => 3, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::MODULENAME => 1, self::LANGUAGECODE => 2, self::TEXT => 3, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'MODULENAME' => 1, 'LANGUAGECODE' => 2, 'TEXT' => 3, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'moduleName' => 1, 'languageCode' => 2, 'text' => 3, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new MultilangTextMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -150,21 +143,24 @@ abstract class BaseMultilangTextPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(MultilangTextPeer::ID);
-
-		$criteria->addSelectColumn(MultilangTextPeer::MODULENAME);
-
-		$criteria->addSelectColumn(MultilangTextPeer::LANGUAGECODE);
-
-		$criteria->addSelectColumn(MultilangTextPeer::TEXT);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(MultilangTextPeer::ID);
+			$criteria->addSelectColumn(MultilangTextPeer::MODULENAME);
+			$criteria->addSelectColumn(MultilangTextPeer::LANGUAGECODE);
+			$criteria->addSelectColumn(MultilangTextPeer::TEXT);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.MODULENAME');
+			$criteria->addSelectColumn($alias . '.LANGUAGECODE');
+			$criteria->addSelectColumn($alias . '.TEXT');
+		}
 	}
 
 	/**
@@ -352,6 +348,14 @@ abstract class BaseMultilangTextPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to multilang_text
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -364,12 +368,26 @@ abstract class BaseMultilangTextPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null && $row[$startcol + 1] === null && $row[$startcol + 2] === null) {
+		if ($row[$startcol] === null && $row[$startcol + 1] === null && $row[$startcol + 2] === null) {
 			return null;
 		}
-		return serialize(array((string) $row[$startcol + 0], (string) $row[$startcol + 1], (string) $row[$startcol + 2]));
+		return serialize(array((string) $row[$startcol], (string) $row[$startcol + 1], (string) $row[$startcol + 2]));
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return array((int) $row[$startcol], (string) $row[$startcol + 1], (string) $row[$startcol + 2]);
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -382,18 +400,16 @@ abstract class BaseMultilangTextPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = MultilangTextPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = MultilangTextPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = MultilangTextPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = MultilangTextPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -403,11 +419,36 @@ abstract class BaseMultilangTextPeer {
 		$stmt->closeCursor();
 		return $results;
 	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (MultilangText object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = MultilangTextPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = MultilangTextPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + MultilangTextPeer::NUM_COLUMNS;
+		} else {
+			$cls = MultilangTextPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			MultilangTextPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
+	}
 
 	/**
 	 * Returns the number of rows matching criteria, joining the related MultilangLanguage table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -440,7 +481,8 @@ abstract class BaseMultilangTextPeer {
 			$con = Propel::getConnection(MultilangTextPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(MultilangTextPeer::LANGUAGECODE,), array(MultilangLanguagePeer::CODE,), $join_behavior);
+		$criteria->addJoin(MultilangTextPeer::LANGUAGECODE, MultilangLanguagePeer::CODE, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -456,7 +498,7 @@ abstract class BaseMultilangTextPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Module table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -489,7 +531,8 @@ abstract class BaseMultilangTextPeer {
 			$con = Propel::getConnection(MultilangTextPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(MultilangTextPeer::MODULENAME,), array(ModulePeer::NAME,), $join_behavior);
+		$criteria->addJoin(MultilangTextPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -504,41 +547,41 @@ abstract class BaseMultilangTextPeer {
 
 	/**
 	 * Selects a collection of MultilangText objects pre-filled with their MultilangLanguage objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of MultilangText objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinMultilangLanguage(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinMultilangLanguage(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		MultilangTextPeer::addSelectColumns($c);
+		MultilangTextPeer::addSelectColumns($criteria);
 		$startcol = (MultilangTextPeer::NUM_COLUMNS - MultilangTextPeer::NUM_LAZY_LOAD_COLUMNS);
-		MultilangLanguagePeer::addSelectColumns($c);
+		MultilangLanguagePeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(MultilangTextPeer::LANGUAGECODE,), array(MultilangLanguagePeer::CODE,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(MultilangTextPeer::LANGUAGECODE, MultilangLanguagePeer::CODE, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = MultilangTextPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = MultilangTextPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = MultilangTextPeer::getOMClass();
+				$cls = MultilangTextPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				MultilangTextPeer::addInstanceToPool($obj1, $key1);
@@ -549,9 +592,8 @@ abstract class BaseMultilangTextPeer {
 				$obj2 = MultilangLanguagePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = MultilangLanguagePeer::getOMClass();
+					$cls = MultilangLanguagePeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					MultilangLanguagePeer::addInstanceToPool($obj2, $key2);
@@ -571,41 +613,41 @@ abstract class BaseMultilangTextPeer {
 
 	/**
 	 * Selects a collection of MultilangText objects pre-filled with their Module objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of MultilangText objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinModule(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinModule(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		MultilangTextPeer::addSelectColumns($c);
+		MultilangTextPeer::addSelectColumns($criteria);
 		$startcol = (MultilangTextPeer::NUM_COLUMNS - MultilangTextPeer::NUM_LAZY_LOAD_COLUMNS);
-		ModulePeer::addSelectColumns($c);
+		ModulePeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(MultilangTextPeer::MODULENAME,), array(ModulePeer::NAME,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(MultilangTextPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = MultilangTextPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = MultilangTextPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = MultilangTextPeer::getOMClass();
+				$cls = MultilangTextPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				MultilangTextPeer::addInstanceToPool($obj1, $key1);
@@ -616,9 +658,8 @@ abstract class BaseMultilangTextPeer {
 				$obj2 = ModulePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = ModulePeer::getOMClass();
+					$cls = ModulePeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					ModulePeer::addInstanceToPool($obj2, $key2);
@@ -639,7 +680,7 @@ abstract class BaseMultilangTextPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -672,8 +713,10 @@ abstract class BaseMultilangTextPeer {
 			$con = Propel::getConnection(MultilangTextPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(MultilangTextPeer::LANGUAGECODE,), array(MultilangLanguagePeer::CODE,), $join_behavior);
-		$criteria->addJoin(array(MultilangTextPeer::MODULENAME,), array(ModulePeer::NAME,), $join_behavior);
+		$criteria->addJoin(MultilangTextPeer::LANGUAGECODE, MultilangLanguagePeer::CODE, $join_behavior);
+
+		$criteria->addJoin(MultilangTextPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -688,46 +731,47 @@ abstract class BaseMultilangTextPeer {
 	/**
 	 * Selects a collection of MultilangText objects pre-filled with all related objects.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of MultilangText objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAll(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		MultilangTextPeer::addSelectColumns($c);
+		MultilangTextPeer::addSelectColumns($criteria);
 		$startcol2 = (MultilangTextPeer::NUM_COLUMNS - MultilangTextPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		MultilangLanguagePeer::addSelectColumns($c);
+		MultilangLanguagePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (MultilangLanguagePeer::NUM_COLUMNS - MultilangLanguagePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ModulePeer::addSelectColumns($c);
+		ModulePeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (ModulePeer::NUM_COLUMNS - ModulePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(MultilangTextPeer::LANGUAGECODE,), array(MultilangLanguagePeer::CODE,), $join_behavior);
-		$c->addJoin(array(MultilangTextPeer::MODULENAME,), array(ModulePeer::NAME,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(MultilangTextPeer::LANGUAGECODE, MultilangLanguagePeer::CODE, $join_behavior);
+
+		$criteria->addJoin(MultilangTextPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = MultilangTextPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = MultilangTextPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = MultilangTextPeer::getOMClass();
+				$cls = MultilangTextPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				MultilangTextPeer::addInstanceToPool($obj1, $key1);
@@ -740,10 +784,8 @@ abstract class BaseMultilangTextPeer {
 				$obj2 = MultilangLanguagePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = MultilangLanguagePeer::getOMClass();
+					$cls = MultilangLanguagePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					MultilangLanguagePeer::addInstanceToPool($obj2, $key2);
@@ -760,10 +802,8 @@ abstract class BaseMultilangTextPeer {
 				$obj3 = ModulePeer::getInstanceFromPool($key3);
 				if (!$obj3) {
 
-					$omClass = ModulePeer::getOMClass();
+					$cls = ModulePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					ModulePeer::addInstanceToPool($obj3, $key3);
@@ -783,7 +823,7 @@ abstract class BaseMultilangTextPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related MultilangLanguage table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -816,7 +856,8 @@ abstract class BaseMultilangTextPeer {
 			$con = Propel::getConnection(MultilangTextPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(MultilangTextPeer::MODULENAME,), array(ModulePeer::NAME,), $join_behavior);
+		$criteria->addJoin(MultilangTextPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -832,7 +873,7 @@ abstract class BaseMultilangTextPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Module table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -865,7 +906,8 @@ abstract class BaseMultilangTextPeer {
 			$con = Propel::getConnection(MultilangTextPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(MultilangTextPeer::LANGUAGECODE,), array(MultilangLanguagePeer::CODE,), $join_behavior);
+		$criteria->addJoin(MultilangTextPeer::LANGUAGECODE, MultilangLanguagePeer::CODE, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -881,45 +923,45 @@ abstract class BaseMultilangTextPeer {
 	/**
 	 * Selects a collection of MultilangText objects pre-filled with all related objects except MultilangLanguage.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of MultilangText objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptMultilangLanguage(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptMultilangLanguage(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		MultilangTextPeer::addSelectColumns($c);
+		MultilangTextPeer::addSelectColumns($criteria);
 		$startcol2 = (MultilangTextPeer::NUM_COLUMNS - MultilangTextPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ModulePeer::addSelectColumns($c);
+		ModulePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (ModulePeer::NUM_COLUMNS - ModulePeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(MultilangTextPeer::MODULENAME,), array(ModulePeer::NAME,), $join_behavior);
+		$criteria->addJoin(MultilangTextPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = MultilangTextPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = MultilangTextPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = MultilangTextPeer::getOMClass();
+				$cls = MultilangTextPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				MultilangTextPeer::addInstanceToPool($obj1, $key1);
@@ -932,10 +974,8 @@ abstract class BaseMultilangTextPeer {
 					$obj2 = ModulePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = ModulePeer::getOMClass();
+						$cls = ModulePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					ModulePeer::addInstanceToPool($obj2, $key2);
@@ -956,45 +996,45 @@ abstract class BaseMultilangTextPeer {
 	/**
 	 * Selects a collection of MultilangText objects pre-filled with all related objects except Module.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of MultilangText objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptModule(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptModule(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		MultilangTextPeer::addSelectColumns($c);
+		MultilangTextPeer::addSelectColumns($criteria);
 		$startcol2 = (MultilangTextPeer::NUM_COLUMNS - MultilangTextPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		MultilangLanguagePeer::addSelectColumns($c);
+		MultilangLanguagePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (MultilangLanguagePeer::NUM_COLUMNS - MultilangLanguagePeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(MultilangTextPeer::LANGUAGECODE,), array(MultilangLanguagePeer::CODE,), $join_behavior);
+		$criteria->addJoin(MultilangTextPeer::LANGUAGECODE, MultilangLanguagePeer::CODE, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = MultilangTextPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = MultilangTextPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = MultilangTextPeer::getOMClass();
+				$cls = MultilangTextPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				MultilangTextPeer::addInstanceToPool($obj1, $key1);
@@ -1007,10 +1047,8 @@ abstract class BaseMultilangTextPeer {
 					$obj2 = MultilangLanguagePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = MultilangLanguagePeer::getOMClass();
+						$cls = MultilangLanguagePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					MultilangLanguagePeer::addInstanceToPool($obj2, $key2);
@@ -1040,17 +1078,31 @@ abstract class BaseMultilangTextPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseMultilangTextPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseMultilangTextPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new MultilangTextTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return MultilangTextPeer::CLASS_DEFAULT;
+		return $withPrefix ? MultilangTextPeer::CLASS_DEFAULT : MultilangTextPeer::OM_CLASS;
 	}
 
 	/**
@@ -1113,13 +1165,28 @@ abstract class BaseMultilangTextPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(MultilangTextPeer::ID);
-			$selectCriteria->add(MultilangTextPeer::ID, $criteria->remove(MultilangTextPeer::ID), $comparison);
+			$value = $criteria->remove(MultilangTextPeer::ID);
+			if ($value) {
+				$selectCriteria->add(MultilangTextPeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(MultilangTextPeer::TABLE_NAME);
+			}
 
 			$comparison = $criteria->getComparison(MultilangTextPeer::MODULENAME);
-			$selectCriteria->add(MultilangTextPeer::MODULENAME, $criteria->remove(MultilangTextPeer::MODULENAME), $comparison);
+			$value = $criteria->remove(MultilangTextPeer::MODULENAME);
+			if ($value) {
+				$selectCriteria->add(MultilangTextPeer::MODULENAME, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(MultilangTextPeer::TABLE_NAME);
+			}
 
 			$comparison = $criteria->getComparison(MultilangTextPeer::LANGUAGECODE);
-			$selectCriteria->add(MultilangTextPeer::LANGUAGECODE, $criteria->remove(MultilangTextPeer::LANGUAGECODE), $comparison);
+			$value = $criteria->remove(MultilangTextPeer::LANGUAGECODE);
+			if ($value) {
+				$selectCriteria->add(MultilangTextPeer::LANGUAGECODE, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(MultilangTextPeer::TABLE_NAME);
+			}
 
 		} else { // $values is MultilangText object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -1147,7 +1214,12 @@ abstract class BaseMultilangTextPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(MultilangTextPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(MultilangTextPeer::TABLE_NAME, $con, MultilangTextPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			MultilangTextPeer::clearInstancePool();
+			MultilangTextPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1178,35 +1250,26 @@ abstract class BaseMultilangTextPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			MultilangTextPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof MultilangText) {
+		} elseif ($values instanceof MultilangText) { // it's a model object
 			// invalidate the cache for this single object
 			MultilangTextPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			// primary key is composite; we therefore, expect
-			// the primary key passed to be an array of pkey
-			// values
+			// the primary key passed to be an array of pkey values
 			if (count($values) == count($values, COUNT_RECURSIVE)) {
 				// array is not multi-dimensional
 				$values = array($values);
 			}
-
 			foreach ($values as $value) {
-
 				$criterion = $criteria->getNewCriterion(MultilangTextPeer::ID, $value[0]);
 				$criterion->addAnd($criteria->getNewCriterion(MultilangTextPeer::MODULENAME, $value[1]));
 				$criterion->addAnd($criteria->getNewCriterion(MultilangTextPeer::LANGUAGECODE, $value[2]));
 				$criteria->addOr($criterion);
-
 				// we can invalidate the cache for this single PK
 				MultilangTextPeer::removeInstanceFromPool($value);
 			}
@@ -1223,7 +1286,7 @@ abstract class BaseMultilangTextPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			MultilangTextPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1272,15 +1335,14 @@ abstract class BaseMultilangTextPeer {
 	/**
 	 * Retrieve object using using composite pkey values.
 	 * @param      int $id
-	   @param      string $modulename
-	   @param      string $languagecode
-	   
+	 * @param      string $modulename
+	 * @param      string $languagecode
 	 * @param      PropelPDO $con
 	 * @return     MultilangText
 	 */
 	public static function retrieveByPK($id, $modulename, $languagecode, PropelPDO $con = null) {
-		$key = serialize(array((string) $id, (string) $modulename, (string) $languagecode));
- 		if (null !== ($obj = MultilangTextPeer::getInstanceFromPool($key))) {
+		$_instancePoolKey = serialize(array((string) $id, (string) $modulename, (string) $languagecode));
+ 		if (null !== ($obj = MultilangTextPeer::getInstanceFromPool($_instancePoolKey))) {
  			return $obj;
 		}
 
@@ -1297,14 +1359,7 @@ abstract class BaseMultilangTextPeer {
 	}
 } // BaseMultilangTextPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the MultilangTextPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the MultilangTextPeer class:
-//
-// Propel::getDatabaseMap(MultilangTextPeer::DATABASE_NAME)->addTableBuilder(MultilangTextPeer::TABLE_NAME, MultilangTextPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseMultilangTextPeer::DATABASE_NAME)->addTableBuilder(BaseMultilangTextPeer::TABLE_NAME, BaseMultilangTextPeer::getMapBuilder());
+BaseMultilangTextPeer::buildTableMap();
 

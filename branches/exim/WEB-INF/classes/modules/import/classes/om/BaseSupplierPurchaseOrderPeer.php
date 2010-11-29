@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'import_supplierPurchaseOrder' table.
  *
  * Orden de Pedido a Proveedor
  *
- * @package    import.classes.om
+ * @package    propel.generator.import.classes.om
  */
 abstract class BaseSupplierPurchaseOrderPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'import_supplierPurchaseOrder';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'SupplierPurchaseOrder';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'import.classes.SupplierPurchaseOrder';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'SupplierPurchaseOrderTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 10;
 
@@ -62,11 +69,6 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -78,6 +80,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Createdat', 'Supplierid', 'Status', 'Timestampstatus', 'Supplierquoteid', 'Clientquoteid', 'Affiliateid', 'Affiliateuserid', 'Userid', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdat', 'supplierid', 'status', 'timestampstatus', 'supplierquoteid', 'clientquoteid', 'affiliateid', 'affiliateuserid', 'userid', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATEDAT, self::SUPPLIERID, self::STATUS, self::TIMESTAMPSTATUS, self::SUPPLIERQUOTEID, self::CLIENTQUOTEID, self::AFFILIATEID, self::AFFILIATEUSERID, self::USERID, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CREATEDAT', 'SUPPLIERID', 'STATUS', 'TIMESTAMPSTATUS', 'SUPPLIERQUOTEID', 'CLIENTQUOTEID', 'AFFILIATEID', 'AFFILIATEUSERID', 'USERID', ),
 		BasePeer::TYPE_FIELDNAME => array ('id', 'createdAt', 'supplierId', 'status', 'timestampStatus', 'supplierQuoteId', 'clientQuoteId', 'affiliateId', 'affiliateUserId', 'userId', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
@@ -92,21 +95,11 @@ abstract class BaseSupplierPurchaseOrderPeer {
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Createdat' => 1, 'Supplierid' => 2, 'Status' => 3, 'Timestampstatus' => 4, 'Supplierquoteid' => 5, 'Clientquoteid' => 6, 'Affiliateid' => 7, 'Affiliateuserid' => 8, 'Userid' => 9, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdat' => 1, 'supplierid' => 2, 'status' => 3, 'timestampstatus' => 4, 'supplierquoteid' => 5, 'clientquoteid' => 6, 'affiliateid' => 7, 'affiliateuserid' => 8, 'userid' => 9, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATEDAT => 1, self::SUPPLIERID => 2, self::STATUS => 3, self::TIMESTAMPSTATUS => 4, self::SUPPLIERQUOTEID => 5, self::CLIENTQUOTEID => 6, self::AFFILIATEID => 7, self::AFFILIATEUSERID => 8, self::USERID => 9, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CREATEDAT' => 1, 'SUPPLIERID' => 2, 'STATUS' => 3, 'TIMESTAMPSTATUS' => 4, 'SUPPLIERQUOTEID' => 5, 'CLIENTQUOTEID' => 6, 'AFFILIATEID' => 7, 'AFFILIATEUSERID' => 8, 'USERID' => 9, ),
 		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'createdAt' => 1, 'supplierId' => 2, 'status' => 3, 'timestampStatus' => 4, 'supplierQuoteId' => 5, 'clientQuoteId' => 6, 'affiliateId' => 7, 'affiliateUserId' => 8, 'userId' => 9, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new SupplierPurchaseOrderMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -168,33 +161,36 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderPeer::ID);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderPeer::CREATEDAT);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderPeer::SUPPLIERID);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderPeer::STATUS);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderPeer::TIMESTAMPSTATUS);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderPeer::CLIENTQUOTEID);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderPeer::AFFILIATEID);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderPeer::AFFILIATEUSERID);
-
-		$criteria->addSelectColumn(SupplierPurchaseOrderPeer::USERID);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::ID);
+			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::CREATEDAT);
+			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::SUPPLIERID);
+			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::STATUS);
+			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::TIMESTAMPSTATUS);
+			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID);
+			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::CLIENTQUOTEID);
+			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::AFFILIATEID);
+			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::AFFILIATEUSERID);
+			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::USERID);
+		} else {
+			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.CREATEDAT');
+			$criteria->addSelectColumn($alias . '.SUPPLIERID');
+			$criteria->addSelectColumn($alias . '.STATUS');
+			$criteria->addSelectColumn($alias . '.TIMESTAMPSTATUS');
+			$criteria->addSelectColumn($alias . '.SUPPLIERQUOTEID');
+			$criteria->addSelectColumn($alias . '.CLIENTQUOTEID');
+			$criteria->addSelectColumn($alias . '.AFFILIATEID');
+			$criteria->addSelectColumn($alias . '.AFFILIATEUSERID');
+			$criteria->addSelectColumn($alias . '.USERID');
+		}
 	}
 
 	/**
@@ -382,6 +378,14 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to import_supplierPurchaseOrder
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -394,12 +398,26 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -412,18 +430,16 @@ abstract class BaseSupplierPurchaseOrderPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = SupplierPurchaseOrderPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = SupplierPurchaseOrderPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -433,11 +449,36 @@ abstract class BaseSupplierPurchaseOrderPeer {
 		$stmt->closeCursor();
 		return $results;
 	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (SupplierPurchaseOrder object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = SupplierPurchaseOrderPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + SupplierPurchaseOrderPeer::NUM_COLUMNS;
+		} else {
+			$cls = SupplierPurchaseOrderPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			SupplierPurchaseOrderPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
+	}
 
 	/**
 	 * Returns the number of rows matching criteria, joining the related SupplierQuote table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -470,7 +511,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -486,7 +528,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related ClientQuote table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -519,7 +561,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -535,7 +578,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Supplier table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -568,7 +611,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -584,7 +628,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related User table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -617,7 +661,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -633,7 +678,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Affiliate table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -666,7 +711,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -682,7 +728,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related AffiliateUser table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -715,7 +761,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -730,41 +777,41 @@ abstract class BaseSupplierPurchaseOrderPeer {
 
 	/**
 	 * Selects a collection of SupplierPurchaseOrder objects pre-filled with their SupplierQuote objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrder objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinSupplierQuote(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinSupplierQuote(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol = (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
-		SupplierQuotePeer::addSelectColumns($c);
+		SupplierQuotePeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierPurchaseOrderPeer::getOMClass();
+				$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
@@ -775,9 +822,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 				$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = SupplierQuotePeer::getOMClass();
+					$cls = SupplierQuotePeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
@@ -797,41 +843,41 @@ abstract class BaseSupplierPurchaseOrderPeer {
 
 	/**
 	 * Selects a collection of SupplierPurchaseOrder objects pre-filled with their ClientQuote objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrder objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinClientQuote(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinClientQuote(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol = (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierPurchaseOrderPeer::getOMClass();
+				$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
@@ -842,9 +888,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 				$obj2 = ClientQuotePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = ClientQuotePeer::getOMClass();
+					$cls = ClientQuotePeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					ClientQuotePeer::addInstanceToPool($obj2, $key2);
@@ -864,41 +909,41 @@ abstract class BaseSupplierPurchaseOrderPeer {
 
 	/**
 	 * Selects a collection of SupplierPurchaseOrder objects pre-filled with their Supplier objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrder objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinSupplier(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinSupplier(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol = (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
-		SupplierPeer::addSelectColumns($c);
+		SupplierPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierPurchaseOrderPeer::getOMClass();
+				$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
@@ -909,9 +954,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 				$obj2 = SupplierPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = SupplierPeer::getOMClass();
+					$cls = SupplierPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					SupplierPeer::addInstanceToPool($obj2, $key2);
@@ -931,41 +975,41 @@ abstract class BaseSupplierPurchaseOrderPeer {
 
 	/**
 	 * Selects a collection of SupplierPurchaseOrder objects pre-filled with their User objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrder objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol = (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierPurchaseOrderPeer::getOMClass();
+				$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
@@ -976,9 +1020,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 				$obj2 = UserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = UserPeer::getOMClass();
+					$cls = UserPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					UserPeer::addInstanceToPool($obj2, $key2);
@@ -998,41 +1041,41 @@ abstract class BaseSupplierPurchaseOrderPeer {
 
 	/**
 	 * Selects a collection of SupplierPurchaseOrder objects pre-filled with their Affiliate objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrder objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAffiliate(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAffiliate(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol = (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
-		AffiliatePeer::addSelectColumns($c);
+		AffiliatePeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierPurchaseOrderPeer::getOMClass();
+				$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
@@ -1043,9 +1086,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 				$obj2 = AffiliatePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = AffiliatePeer::getOMClass();
+					$cls = AffiliatePeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					AffiliatePeer::addInstanceToPool($obj2, $key2);
@@ -1065,41 +1107,41 @@ abstract class BaseSupplierPurchaseOrderPeer {
 
 	/**
 	 * Selects a collection of SupplierPurchaseOrder objects pre-filled with their AffiliateUser objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrder objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAffiliateUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAffiliateUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol = (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
-		AffiliateUserPeer::addSelectColumns($c);
+		AffiliateUserPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = SupplierPurchaseOrderPeer::getOMClass();
+				$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
@@ -1110,9 +1152,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 				$obj2 = AffiliateUserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = AffiliateUserPeer::getOMClass();
+					$cls = AffiliateUserPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					AffiliateUserPeer::addInstanceToPool($obj2, $key2);
@@ -1133,7 +1174,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1166,12 +1207,18 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-		$criteria->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
-		$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-		$criteria->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-		$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1186,62 +1233,67 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Selects a collection of SupplierPurchaseOrder objects pre-filled with all related objects.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrder objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAll(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierQuotePeer::addSelectColumns($c);
+		SupplierQuotePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierPeer::addSelectColumns($c);
+		SupplierPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (SupplierPeer::NUM_COLUMNS - SupplierPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol6 = $startcol5 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliatePeer::addSelectColumns($c);
+		AffiliatePeer::addSelectColumns($criteria);
 		$startcol7 = $startcol6 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliateUserPeer::addSelectColumns($c);
+		AffiliateUserPeer::addSelectColumns($criteria);
 		$startcol8 = $startcol7 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-		$c->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
-		$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-		$c->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-		$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierPurchaseOrderPeer::getOMClass();
+				$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
@@ -1254,10 +1306,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 				$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = SupplierQuotePeer::getOMClass();
+					$cls = SupplierQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
@@ -1274,10 +1324,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 				$obj3 = ClientQuotePeer::getInstanceFromPool($key3);
 				if (!$obj3) {
 
-					$omClass = ClientQuotePeer::getOMClass();
+					$cls = ClientQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					ClientQuotePeer::addInstanceToPool($obj3, $key3);
@@ -1294,10 +1342,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 				$obj4 = SupplierPeer::getInstanceFromPool($key4);
 				if (!$obj4) {
 
-					$omClass = SupplierPeer::getOMClass();
+					$cls = SupplierPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
 					SupplierPeer::addInstanceToPool($obj4, $key4);
@@ -1314,10 +1360,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 				$obj5 = UserPeer::getInstanceFromPool($key5);
 				if (!$obj5) {
 
-					$omClass = UserPeer::getOMClass();
+					$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj5 = new $cls();
 					$obj5->hydrate($row, $startcol5);
 					UserPeer::addInstanceToPool($obj5, $key5);
@@ -1334,10 +1378,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 				$obj6 = AffiliatePeer::getInstanceFromPool($key6);
 				if (!$obj6) {
 
-					$omClass = AffiliatePeer::getOMClass();
+					$cls = AffiliatePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj6 = new $cls();
 					$obj6->hydrate($row, $startcol6);
 					AffiliatePeer::addInstanceToPool($obj6, $key6);
@@ -1354,10 +1396,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 				$obj7 = AffiliateUserPeer::getInstanceFromPool($key7);
 				if (!$obj7) {
 
-					$omClass = AffiliateUserPeer::getOMClass();
+					$cls = AffiliateUserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj7 = new $cls();
 					$obj7->hydrate($row, $startcol7);
 					AffiliateUserPeer::addInstanceToPool($obj7, $key7);
@@ -1377,7 +1417,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related SupplierQuote table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1410,11 +1450,16 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1430,7 +1475,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related ClientQuote table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1463,11 +1508,16 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1483,7 +1533,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Supplier table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1516,11 +1566,16 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1536,7 +1591,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related User table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1569,11 +1624,16 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1589,7 +1649,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related Affiliate table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1622,11 +1682,16 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1642,7 +1707,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining the related AffiliateUser table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -1675,11 +1740,16 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$criteria->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1695,61 +1765,65 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Selects a collection of SupplierPurchaseOrder objects pre-filled with all related objects except SupplierQuote.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrder objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptSupplierQuote(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptSupplierQuote(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierPeer::addSelectColumns($c);
+		SupplierPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (SupplierPeer::NUM_COLUMNS - SupplierPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliatePeer::addSelectColumns($c);
+		AffiliatePeer::addSelectColumns($criteria);
 		$startcol6 = $startcol5 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliateUserPeer::addSelectColumns($c);
+		AffiliateUserPeer::addSelectColumns($criteria);
 		$startcol7 = $startcol6 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierPurchaseOrderPeer::getOMClass();
+				$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
@@ -1762,10 +1836,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj2 = ClientQuotePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = ClientQuotePeer::getOMClass();
+						$cls = ClientQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					ClientQuotePeer::addInstanceToPool($obj2, $key2);
@@ -1783,10 +1855,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj3 = SupplierPeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$omClass = SupplierPeer::getOMClass();
+						$cls = SupplierPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					SupplierPeer::addInstanceToPool($obj3, $key3);
@@ -1804,10 +1874,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj4 = UserPeer::getInstanceFromPool($key4);
 					if (!$obj4) {
 	
-						$omClass = UserPeer::getOMClass();
+						$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
 					UserPeer::addInstanceToPool($obj4, $key4);
@@ -1825,10 +1893,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj5 = AffiliatePeer::getInstanceFromPool($key5);
 					if (!$obj5) {
 	
-						$omClass = AffiliatePeer::getOMClass();
+						$cls = AffiliatePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj5 = new $cls();
 					$obj5->hydrate($row, $startcol5);
 					AffiliatePeer::addInstanceToPool($obj5, $key5);
@@ -1846,10 +1912,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj6 = AffiliateUserPeer::getInstanceFromPool($key6);
 					if (!$obj6) {
 	
-						$omClass = AffiliateUserPeer::getOMClass();
+						$cls = AffiliateUserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj6 = new $cls();
 					$obj6->hydrate($row, $startcol6);
 					AffiliateUserPeer::addInstanceToPool($obj6, $key6);
@@ -1870,61 +1934,65 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Selects a collection of SupplierPurchaseOrder objects pre-filled with all related objects except ClientQuote.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrder objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptClientQuote(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptClientQuote(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierQuotePeer::addSelectColumns($c);
+		SupplierQuotePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierPeer::addSelectColumns($c);
+		SupplierPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (SupplierPeer::NUM_COLUMNS - SupplierPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliatePeer::addSelectColumns($c);
+		AffiliatePeer::addSelectColumns($criteria);
 		$startcol6 = $startcol5 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliateUserPeer::addSelectColumns($c);
+		AffiliateUserPeer::addSelectColumns($criteria);
 		$startcol7 = $startcol6 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierPurchaseOrderPeer::getOMClass();
+				$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
@@ -1937,10 +2005,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = SupplierQuotePeer::getOMClass();
+						$cls = SupplierQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
@@ -1958,10 +2024,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj3 = SupplierPeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$omClass = SupplierPeer::getOMClass();
+						$cls = SupplierPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					SupplierPeer::addInstanceToPool($obj3, $key3);
@@ -1979,10 +2043,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj4 = UserPeer::getInstanceFromPool($key4);
 					if (!$obj4) {
 	
-						$omClass = UserPeer::getOMClass();
+						$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
 					UserPeer::addInstanceToPool($obj4, $key4);
@@ -2000,10 +2062,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj5 = AffiliatePeer::getInstanceFromPool($key5);
 					if (!$obj5) {
 	
-						$omClass = AffiliatePeer::getOMClass();
+						$cls = AffiliatePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj5 = new $cls();
 					$obj5->hydrate($row, $startcol5);
 					AffiliatePeer::addInstanceToPool($obj5, $key5);
@@ -2021,10 +2081,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj6 = AffiliateUserPeer::getInstanceFromPool($key6);
 					if (!$obj6) {
 	
-						$omClass = AffiliateUserPeer::getOMClass();
+						$cls = AffiliateUserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj6 = new $cls();
 					$obj6->hydrate($row, $startcol6);
 					AffiliateUserPeer::addInstanceToPool($obj6, $key6);
@@ -2045,61 +2103,65 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Selects a collection of SupplierPurchaseOrder objects pre-filled with all related objects except Supplier.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrder objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptSupplier(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptSupplier(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierQuotePeer::addSelectColumns($c);
+		SupplierQuotePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliatePeer::addSelectColumns($c);
+		AffiliatePeer::addSelectColumns($criteria);
 		$startcol6 = $startcol5 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliateUserPeer::addSelectColumns($c);
+		AffiliateUserPeer::addSelectColumns($criteria);
 		$startcol7 = $startcol6 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierPurchaseOrderPeer::getOMClass();
+				$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
@@ -2112,10 +2174,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = SupplierQuotePeer::getOMClass();
+						$cls = SupplierQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
@@ -2133,10 +2193,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj3 = ClientQuotePeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$omClass = ClientQuotePeer::getOMClass();
+						$cls = ClientQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					ClientQuotePeer::addInstanceToPool($obj3, $key3);
@@ -2154,10 +2212,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj4 = UserPeer::getInstanceFromPool($key4);
 					if (!$obj4) {
 	
-						$omClass = UserPeer::getOMClass();
+						$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
 					UserPeer::addInstanceToPool($obj4, $key4);
@@ -2175,10 +2231,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj5 = AffiliatePeer::getInstanceFromPool($key5);
 					if (!$obj5) {
 	
-						$omClass = AffiliatePeer::getOMClass();
+						$cls = AffiliatePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj5 = new $cls();
 					$obj5->hydrate($row, $startcol5);
 					AffiliatePeer::addInstanceToPool($obj5, $key5);
@@ -2196,10 +2250,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj6 = AffiliateUserPeer::getInstanceFromPool($key6);
 					if (!$obj6) {
 	
-						$omClass = AffiliateUserPeer::getOMClass();
+						$cls = AffiliateUserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj6 = new $cls();
 					$obj6->hydrate($row, $startcol6);
 					AffiliateUserPeer::addInstanceToPool($obj6, $key6);
@@ -2220,61 +2272,65 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Selects a collection of SupplierPurchaseOrder objects pre-filled with all related objects except User.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrder objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierQuotePeer::addSelectColumns($c);
+		SupplierQuotePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierPeer::addSelectColumns($c);
+		SupplierPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (SupplierPeer::NUM_COLUMNS - SupplierPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliatePeer::addSelectColumns($c);
+		AffiliatePeer::addSelectColumns($criteria);
 		$startcol6 = $startcol5 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliateUserPeer::addSelectColumns($c);
+		AffiliateUserPeer::addSelectColumns($criteria);
 		$startcol7 = $startcol6 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierPurchaseOrderPeer::getOMClass();
+				$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
@@ -2287,10 +2343,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = SupplierQuotePeer::getOMClass();
+						$cls = SupplierQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
@@ -2308,10 +2362,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj3 = ClientQuotePeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$omClass = ClientQuotePeer::getOMClass();
+						$cls = ClientQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					ClientQuotePeer::addInstanceToPool($obj3, $key3);
@@ -2329,10 +2381,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj4 = SupplierPeer::getInstanceFromPool($key4);
 					if (!$obj4) {
 	
-						$omClass = SupplierPeer::getOMClass();
+						$cls = SupplierPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
 					SupplierPeer::addInstanceToPool($obj4, $key4);
@@ -2350,10 +2400,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj5 = AffiliatePeer::getInstanceFromPool($key5);
 					if (!$obj5) {
 	
-						$omClass = AffiliatePeer::getOMClass();
+						$cls = AffiliatePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj5 = new $cls();
 					$obj5->hydrate($row, $startcol5);
 					AffiliatePeer::addInstanceToPool($obj5, $key5);
@@ -2371,10 +2419,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj6 = AffiliateUserPeer::getInstanceFromPool($key6);
 					if (!$obj6) {
 	
-						$omClass = AffiliateUserPeer::getOMClass();
+						$cls = AffiliateUserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj6 = new $cls();
 					$obj6->hydrate($row, $startcol6);
 					AffiliateUserPeer::addInstanceToPool($obj6, $key6);
@@ -2395,61 +2441,65 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Selects a collection of SupplierPurchaseOrder objects pre-filled with all related objects except Affiliate.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrder objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptAffiliate(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptAffiliate(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierQuotePeer::addSelectColumns($c);
+		SupplierQuotePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierPeer::addSelectColumns($c);
+		SupplierPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (SupplierPeer::NUM_COLUMNS - SupplierPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol6 = $startcol5 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliateUserPeer::addSelectColumns($c);
+		AffiliateUserPeer::addSelectColumns($criteria);
 		$startcol7 = $startcol6 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEUSERID,), array(AffiliateUserPeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEUSERID, AffiliateUserPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierPurchaseOrderPeer::getOMClass();
+				$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
@@ -2462,10 +2512,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = SupplierQuotePeer::getOMClass();
+						$cls = SupplierQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
@@ -2483,10 +2531,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj3 = ClientQuotePeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$omClass = ClientQuotePeer::getOMClass();
+						$cls = ClientQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					ClientQuotePeer::addInstanceToPool($obj3, $key3);
@@ -2504,10 +2550,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj4 = SupplierPeer::getInstanceFromPool($key4);
 					if (!$obj4) {
 	
-						$omClass = SupplierPeer::getOMClass();
+						$cls = SupplierPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
 					SupplierPeer::addInstanceToPool($obj4, $key4);
@@ -2525,10 +2569,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj5 = UserPeer::getInstanceFromPool($key5);
 					if (!$obj5) {
 	
-						$omClass = UserPeer::getOMClass();
+						$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj5 = new $cls();
 					$obj5->hydrate($row, $startcol5);
 					UserPeer::addInstanceToPool($obj5, $key5);
@@ -2546,10 +2588,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj6 = AffiliateUserPeer::getInstanceFromPool($key6);
 					if (!$obj6) {
 	
-						$omClass = AffiliateUserPeer::getOMClass();
+						$cls = AffiliateUserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj6 = new $cls();
 					$obj6->hydrate($row, $startcol6);
 					AffiliateUserPeer::addInstanceToPool($obj6, $key6);
@@ -2570,61 +2610,65 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	/**
 	 * Selects a collection of SupplierPurchaseOrder objects pre-filled with all related objects except AffiliateUser.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of SupplierPurchaseOrder objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptAffiliateUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptAffiliateUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		// $c->getDbName() will return the same object if not set to another value
+		// $criteria->getDbName() will return the same object if not set to another value
 		// so == check is okay and faster
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		SupplierPurchaseOrderPeer::addSelectColumns($c);
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol2 = (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierQuotePeer::addSelectColumns($c);
+		SupplierQuotePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierQuotePeer::NUM_COLUMNS - SupplierQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ClientQuotePeer::addSelectColumns($c);
+		ClientQuotePeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (ClientQuotePeer::NUM_COLUMNS - ClientQuotePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SupplierPeer::addSelectColumns($c);
+		SupplierPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (SupplierPeer::NUM_COLUMNS - SupplierPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol6 = $startcol5 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		AffiliatePeer::addSelectColumns($c);
+		AffiliatePeer::addSelectColumns($criteria);
 		$startcol7 = $startcol6 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
 
-				$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID,), array(SupplierQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::CLIENTQUOTEID,), array(ClientQuotePeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::SUPPLIERID,), array(SupplierPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-				$c->addJoin(array(SupplierPurchaseOrderPeer::AFFILIATEID,), array(AffiliatePeer::ID,), $join_behavior);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, SupplierQuotePeer::ID, $join_behavior);
 
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(SupplierPurchaseOrderPeer::CLIENTQUOTEID, ClientQuotePeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::SUPPLIERID, SupplierPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SupplierPurchaseOrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = SupplierPurchaseOrderPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = SupplierPurchaseOrderPeer::getOMClass();
+				$cls = SupplierPurchaseOrderPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				SupplierPurchaseOrderPeer::addInstanceToPool($obj1, $key1);
@@ -2637,10 +2681,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj2 = SupplierQuotePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$omClass = SupplierQuotePeer::getOMClass();
+						$cls = SupplierQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					SupplierQuotePeer::addInstanceToPool($obj2, $key2);
@@ -2658,10 +2700,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj3 = ClientQuotePeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$omClass = ClientQuotePeer::getOMClass();
+						$cls = ClientQuotePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
 					ClientQuotePeer::addInstanceToPool($obj3, $key3);
@@ -2679,10 +2719,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj4 = SupplierPeer::getInstanceFromPool($key4);
 					if (!$obj4) {
 	
-						$omClass = SupplierPeer::getOMClass();
+						$cls = SupplierPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
 					SupplierPeer::addInstanceToPool($obj4, $key4);
@@ -2700,10 +2738,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj5 = UserPeer::getInstanceFromPool($key5);
 					if (!$obj5) {
 	
-						$omClass = UserPeer::getOMClass();
+						$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj5 = new $cls();
 					$obj5->hydrate($row, $startcol5);
 					UserPeer::addInstanceToPool($obj5, $key5);
@@ -2721,10 +2757,8 @@ abstract class BaseSupplierPurchaseOrderPeer {
 					$obj6 = AffiliatePeer::getInstanceFromPool($key6);
 					if (!$obj6) {
 	
-						$omClass = AffiliatePeer::getOMClass();
+						$cls = AffiliatePeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj6 = new $cls();
 					$obj6->hydrate($row, $startcol6);
 					AffiliatePeer::addInstanceToPool($obj6, $key6);
@@ -2754,17 +2788,31 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseSupplierPurchaseOrderPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseSupplierPurchaseOrderPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new SupplierPurchaseOrderTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return SupplierPurchaseOrderPeer::CLASS_DEFAULT;
+		return $withPrefix ? SupplierPurchaseOrderPeer::CLASS_DEFAULT : SupplierPurchaseOrderPeer::OM_CLASS;
 	}
 
 	/**
@@ -2831,7 +2879,12 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(SupplierPurchaseOrderPeer::ID);
-			$selectCriteria->add(SupplierPurchaseOrderPeer::ID, $criteria->remove(SupplierPurchaseOrderPeer::ID), $comparison);
+			$value = $criteria->remove(SupplierPurchaseOrderPeer::ID);
+			if ($value) {
+				$selectCriteria->add(SupplierPurchaseOrderPeer::ID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(SupplierPurchaseOrderPeer::TABLE_NAME);
+			}
 
 		} else { // $values is SupplierPurchaseOrder object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -2859,7 +2912,12 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(SupplierPurchaseOrderPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(SupplierPurchaseOrderPeer::TABLE_NAME, $con, SupplierPurchaseOrderPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			SupplierPurchaseOrderPeer::clearInstancePool();
+			SupplierPurchaseOrderPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -2890,24 +2948,18 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			SupplierPurchaseOrderPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof SupplierPurchaseOrder) {
+		} elseif ($values instanceof SupplierPurchaseOrder) { // it's a model object
 			// invalidate the cache for this single object
 			SupplierPurchaseOrderPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(SupplierPurchaseOrderPeer::ID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				SupplierPurchaseOrderPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -2923,7 +2975,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			SupplierPurchaseOrderPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -3022,14 +3074,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 
 } // BaseSupplierPurchaseOrderPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the SupplierPurchaseOrderPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the SupplierPurchaseOrderPeer class:
-//
-// Propel::getDatabaseMap(SupplierPurchaseOrderPeer::DATABASE_NAME)->addTableBuilder(SupplierPurchaseOrderPeer::TABLE_NAME, SupplierPurchaseOrderPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseSupplierPurchaseOrderPeer::DATABASE_NAME)->addTableBuilder(BaseSupplierPurchaseOrderPeer::TABLE_NAME, BaseSupplierPurchaseOrderPeer::getMapBuilder());
+BaseSupplierPurchaseOrderPeer::buildTableMap();
 

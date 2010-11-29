@@ -1,11 +1,12 @@
 <?php
 
+
 /**
  * Base static class for performing query and update operations on the 'users_userInfo' table.
  *
  * Information about users
  *
- * @package    users.classes.om
+ * @package    propel.generator.users.classes.om
  */
 abstract class BaseUserInfoPeer {
 
@@ -15,9 +16,15 @@ abstract class BaseUserInfoPeer {
 	/** the table name for this class */
 	const TABLE_NAME = 'users_userInfo';
 
+	/** the related Propel class for this table */
+	const OM_CLASS = 'UserInfo';
+
 	/** A class that can be returned by this peer. */
 	const CLASS_DEFAULT = 'users.classes.UserInfo';
 
+	/** the related TableMap class for this table */
+	const TM_CLASS = 'UserInfoTableMap';
+	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 4;
 
@@ -44,11 +51,6 @@ abstract class BaseUserInfoPeer {
 	 */
 	public static $instances = array();
 
-	/**
-	 * The MapBuilder instance for this peer.
-	 * @var        MapBuilder
-	 */
-	private static $mapBuilder = null;
 
 	/**
 	 * holds an array of fieldnames
@@ -60,6 +62,7 @@ abstract class BaseUserInfoPeer {
 		BasePeer::TYPE_PHPNAME => array ('Userid', 'Name', 'Surname', 'Mailaddress', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('userid', 'name', 'surname', 'mailaddress', ),
 		BasePeer::TYPE_COLNAME => array (self::USERID, self::NAME, self::SURNAME, self::MAILADDRESS, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('USERID', 'NAME', 'SURNAME', 'MAILADDRESS', ),
 		BasePeer::TYPE_FIELDNAME => array ('userId', 'name', 'surname', 'mailAddress', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
@@ -74,21 +77,11 @@ abstract class BaseUserInfoPeer {
 		BasePeer::TYPE_PHPNAME => array ('Userid' => 0, 'Name' => 1, 'Surname' => 2, 'Mailaddress' => 3, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('userid' => 0, 'name' => 1, 'surname' => 2, 'mailaddress' => 3, ),
 		BasePeer::TYPE_COLNAME => array (self::USERID => 0, self::NAME => 1, self::SURNAME => 2, self::MAILADDRESS => 3, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('USERID' => 0, 'NAME' => 1, 'SURNAME' => 2, 'MAILADDRESS' => 3, ),
 		BasePeer::TYPE_FIELDNAME => array ('userId' => 0, 'name' => 1, 'surname' => 2, 'mailAddress' => 3, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
-	/**
-	 * Get a (singleton) instance of the MapBuilder for this peer class.
-	 * @return     MapBuilder The map builder for this peer
-	 */
-	public static function getMapBuilder()
-	{
-		if (self::$mapBuilder === null) {
-			self::$mapBuilder = new UserInfoMapBuilder();
-		}
-		return self::$mapBuilder;
-	}
 	/**
 	 * Translates a fieldname to another type
 	 *
@@ -150,21 +143,24 @@ abstract class BaseUserInfoPeer {
 	 * XML schema will not be added to the select list and only loaded
 	 * on demand.
 	 *
-	 * @param      criteria object containing the columns to add.
+	 * @param      Criteria $criteria object containing the columns to add.
+	 * @param      string   $alias    optional table alias
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function addSelectColumns(Criteria $criteria)
+	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
-
-		$criteria->addSelectColumn(UserInfoPeer::USERID);
-
-		$criteria->addSelectColumn(UserInfoPeer::NAME);
-
-		$criteria->addSelectColumn(UserInfoPeer::SURNAME);
-
-		$criteria->addSelectColumn(UserInfoPeer::MAILADDRESS);
-
+		if (null === $alias) {
+			$criteria->addSelectColumn(UserInfoPeer::USERID);
+			$criteria->addSelectColumn(UserInfoPeer::NAME);
+			$criteria->addSelectColumn(UserInfoPeer::SURNAME);
+			$criteria->addSelectColumn(UserInfoPeer::MAILADDRESS);
+		} else {
+			$criteria->addSelectColumn($alias . '.USERID');
+			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.SURNAME');
+			$criteria->addSelectColumn($alias . '.MAILADDRESS');
+		}
 	}
 
 	/**
@@ -352,6 +348,14 @@ abstract class BaseUserInfoPeer {
 	}
 	
 	/**
+	 * Method to invalidate the instance pool of all tables related to users_userInfo
+	 * by a foreign key with ON DELETE CASCADE
+	 */
+	public static function clearRelatedInstancePool()
+	{
+	}
+
+	/**
 	 * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
 	 *
 	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
@@ -364,12 +368,26 @@ abstract class BaseUserInfoPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 0] === null) {
+		if ($row[$startcol] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 0];
+		return (string) $row[$startcol];
 	}
 
+	/**
+	 * Retrieves the primary key from the DB resultset row 
+	 * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
+	 * a multi-column primary key, an array of the primary key columns will be returned.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @return     mixed The primary key of the row
+	 */
+	public static function getPrimaryKeyFromRow($row, $startcol = 0)
+	{
+		return (int) $row[$startcol];
+	}
+	
 	/**
 	 * The returned array will contain objects of the default type or
 	 * objects that inherit from the default.
@@ -382,18 +400,16 @@ abstract class BaseUserInfoPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = UserInfoPeer::getOMClass();
-		$cls = substr('.'.$cls, strrpos('.'.$cls, '.') + 1);
+		$cls = UserInfoPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key = UserInfoPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj = UserInfoPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
 				$results[] = $obj;
 			} else {
-		
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
@@ -403,11 +419,36 @@ abstract class BaseUserInfoPeer {
 		$stmt->closeCursor();
 		return $results;
 	}
+	/**
+	 * Populates an object of the default type or an object that inherit from the default.
+	 *
+	 * @param      array $row PropelPDO resultset row.
+	 * @param      int $startcol The 0-based offset for reading from the resultset row.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 * @return     array (UserInfo object, last column rank)
+	 */
+	public static function populateObject($row, $startcol = 0)
+	{
+		$key = UserInfoPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = UserInfoPeer::getInstanceFromPool($key))) {
+			// We no longer rehydrate the object, since this can cause data loss.
+			// See http://www.propelorm.org/ticket/509
+			// $obj->hydrate($row, $startcol, true); // rehydrate
+			$col = $startcol + UserInfoPeer::NUM_COLUMNS;
+		} else {
+			$cls = UserInfoPeer::OM_CLASS;
+			$obj = new $cls();
+			$col = $obj->hydrate($row, $startcol);
+			UserInfoPeer::addInstanceToPool($obj, $key);
+		}
+		return array($obj, $col);
+	}
 
 	/**
 	 * Returns the number of rows matching criteria, joining the related User table
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -440,7 +481,8 @@ abstract class BaseUserInfoPeer {
 			$con = Propel::getConnection(UserInfoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(UserInfoPeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$criteria->addJoin(UserInfoPeer::USERID, UserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -455,41 +497,41 @@ abstract class BaseUserInfoPeer {
 
 	/**
 	 * Selects a collection of UserInfo objects pre-filled with their User objects.
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of UserInfo objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinUser(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		UserInfoPeer::addSelectColumns($c);
+		UserInfoPeer::addSelectColumns($criteria);
 		$startcol = (UserInfoPeer::NUM_COLUMNS - UserInfoPeer::NUM_LAZY_LOAD_COLUMNS);
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 
-		$c->addJoin(array(UserInfoPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(UserInfoPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = UserInfoPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = UserInfoPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$omClass = UserInfoPeer::getOMClass();
+				$cls = UserInfoPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				UserInfoPeer::addInstanceToPool($obj1, $key1);
@@ -500,16 +542,16 @@ abstract class BaseUserInfoPeer {
 				$obj2 = UserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = UserPeer::getOMClass();
+					$cls = UserPeer::getOMClass(false);
 
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
 					UserPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 
 				// Add the $obj1 (UserInfo) to $obj2 (User)
-				$obj2->setUserInfo($obj1);
+				// one to one relationship
+				$obj1->setUser($obj2);
 
 			} // if joined row was not null
 
@@ -523,7 +565,7 @@ abstract class BaseUserInfoPeer {
 	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
-	 * @param      Criteria $c
+	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -556,7 +598,8 @@ abstract class BaseUserInfoPeer {
 			$con = Propel::getConnection(UserInfoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(array(UserInfoPeer::USERID,), array(UserPeer::ID,), $join_behavior);
+		$criteria->addJoin(UserInfoPeer::USERID, UserPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -571,42 +614,42 @@ abstract class BaseUserInfoPeer {
 	/**
 	 * Selects a collection of UserInfo objects pre-filled with all related objects.
 	 *
-	 * @param      Criteria  $c
+	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     array Array of UserInfo objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAll(Criteria $c, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$c = clone $c;
+		$criteria = clone $criteria;
 
 		// Set the correct dbName if it has not been overridden
-		if ($c->getDbName() == Propel::getDefaultDB()) {
-			$c->setDbName(self::DATABASE_NAME);
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		UserInfoPeer::addSelectColumns($c);
+		UserInfoPeer::addSelectColumns($criteria);
 		$startcol2 = (UserInfoPeer::NUM_COLUMNS - UserInfoPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($c);
+		UserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$c->addJoin(array(UserInfoPeer::USERID,), array(UserPeer::ID,), $join_behavior);
-		$stmt = BasePeer::doSelect($c, $con);
+		$criteria->addJoin(UserInfoPeer::USERID, UserPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 			$key1 = UserInfoPeer::getPrimaryKeyHashFromRow($row, 0);
 			if (null !== ($obj1 = UserInfoPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
+				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$omClass = UserInfoPeer::getOMClass();
+				$cls = UserInfoPeer::getOMClass(false);
 
-				$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
 				UserInfoPeer::addInstanceToPool($obj1, $key1);
@@ -619,10 +662,8 @@ abstract class BaseUserInfoPeer {
 				$obj2 = UserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$omClass = UserPeer::getOMClass();
+					$cls = UserPeer::getOMClass(false);
 
-
-					$cls = substr('.'.$omClass, strrpos('.'.$omClass, '.') + 1);
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
 					UserPeer::addInstanceToPool($obj2, $key2);
@@ -651,17 +692,31 @@ abstract class BaseUserInfoPeer {
 	}
 
 	/**
+	 * Add a TableMap instance to the database for this peer class.
+	 */
+	public static function buildTableMap()
+	{
+	  $dbMap = Propel::getDatabaseMap(BaseUserInfoPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseUserInfoPeer::TABLE_NAME))
+	  {
+	    $dbMap->addTableObject(new UserInfoTableMap());
+	  }
+	}
+
+	/**
 	 * The class that the Peer will make instances of.
 	 *
-	 * This uses a dot-path notation which is tranalted into a path
+	 * If $withPrefix is true, the returned path
+	 * uses a dot-path notation which is tranalted into a path
 	 * relative to a location on the PHP include_path.
 	 * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
 	 *
+	 * @param      boolean $withPrefix Whether or not to return the path with the class name
 	 * @return     string path.to.ClassName
 	 */
-	public static function getOMClass()
+	public static function getOMClass($withPrefix = true)
 	{
-		return UserInfoPeer::CLASS_DEFAULT;
+		return $withPrefix ? UserInfoPeer::CLASS_DEFAULT : UserInfoPeer::OM_CLASS;
 	}
 
 	/**
@@ -724,7 +779,12 @@ abstract class BaseUserInfoPeer {
 			$criteria = clone $values; // rename for clarity
 
 			$comparison = $criteria->getComparison(UserInfoPeer::USERID);
-			$selectCriteria->add(UserInfoPeer::USERID, $criteria->remove(UserInfoPeer::USERID), $comparison);
+			$value = $criteria->remove(UserInfoPeer::USERID);
+			if ($value) {
+				$selectCriteria->add(UserInfoPeer::USERID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(UserInfoPeer::TABLE_NAME);
+			}
 
 		} else { // $values is UserInfo object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -752,7 +812,12 @@ abstract class BaseUserInfoPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(UserInfoPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(UserInfoPeer::TABLE_NAME, $con, UserInfoPeer::DATABASE_NAME);
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			UserInfoPeer::clearInstancePool();
+			UserInfoPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -783,24 +848,18 @@ abstract class BaseUserInfoPeer {
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
 			UserInfoPeer::clearInstancePool();
-
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof UserInfo) {
+		} elseif ($values instanceof UserInfo) { // it's a model object
 			// invalidate the cache for this single object
 			UserInfoPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
-		} else {
-			// it must be the primary key
-
-
-
+		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(UserInfoPeer::USERID, (array) $values, Criteria::IN);
-
+			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				// we can invalidate the cache for this single object
 				UserInfoPeer::removeInstanceFromPool($singleval);
 			}
 		}
@@ -816,7 +875,7 @@ abstract class BaseUserInfoPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-
+			UserInfoPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -915,14 +974,7 @@ abstract class BaseUserInfoPeer {
 
 } // BaseUserInfoPeer
 
-// This is the static code needed to register the MapBuilder for this table with the main Propel class.
+// This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-// NOTE: This static code cannot call methods on the UserInfoPeer class, because it is not defined yet.
-// If you need to use overridden methods, you can add this code to the bottom of the UserInfoPeer class:
-//
-// Propel::getDatabaseMap(UserInfoPeer::DATABASE_NAME)->addTableBuilder(UserInfoPeer::TABLE_NAME, UserInfoPeer::getMapBuilder());
-//
-// Doing so will effectively overwrite the registration below.
-
-Propel::getDatabaseMap(BaseUserInfoPeer::DATABASE_NAME)->addTableBuilder(BaseUserInfoPeer::TABLE_NAME, BaseUserInfoPeer::getMapBuilder());
+BaseUserInfoPeer::buildTableMap();
 

@@ -13,11 +13,26 @@
     <!-- the Propel adapter (usually same as phptype of connection DSN) -->
     <adapter>mysql</adapter>
     <connection>
-     <dsn>mysql:host=localhost; dbname=anmagaex_export</dsn>
-     <user>anmagaex_anmaga</user>
-     <password>Anmaga</password>
+     <dsn>mysql:host=localhost; dbname=anmagaExim</dsn>
+     <user></user>
+     <password></password>
     </connection>
    </datasource>
   </datasources>
+  <debugpdo>
+		<logging>
+			<details>
+				<method>
+					<enabled>true</enabled>
+				</method>
+				<time>
+					<enabled>true</enabled>
+				</time>
+				<mem>
+					<enabled>true</enabled>
+				</mem>
+			</details>
+		</logging>
+   </debugpdo>
  </propel>
 </config>
