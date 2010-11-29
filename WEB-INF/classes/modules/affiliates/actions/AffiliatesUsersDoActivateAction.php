@@ -1,17 +1,18 @@
 <?php
+/** 
+ * AffiliatesUsersDoActivateAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("AffiliateUserPeer.php");
 
 class AffiliatesUsersDoActivateAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesUsersDoActivateAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -31,7 +32,7 @@ class AffiliatesUsersDoActivateAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -43,15 +44,18 @@ class AffiliatesUsersDoActivateAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
+		$section = "Users";
 
-    $userPeer = new AffiliateUserPeer();
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
-    if ( $userPeer->activate($_GET["user"]) )
+		$userPeer = new AffiliateUserPeer();
+
+		if ( $userPeer->activate($_GET["user"]) )
 			return $mapping->findForwardConfig('success');
 		else
-			return $mapping->findForwardConfig('failure');		
+			return $mapping->findForwardConfig('failure');
 
 	}
 
 }
-?>

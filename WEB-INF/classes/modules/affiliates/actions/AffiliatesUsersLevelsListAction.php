@@ -1,17 +1,18 @@
 <?php
+/** 
+ * AffiliatesUsersLevelsListAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("AffiliateLevelPeer.php");
 
 class AffiliatesUsersLevelsListAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesUsersLevelsListAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -31,7 +32,7 @@ class AffiliatesUsersLevelsListAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -44,24 +45,24 @@ class AffiliatesUsersLevelsListAction extends BaseAction {
 
 		$module = "Affiliates";
 		$section = "Levels";
-		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
 		$groupPeer = new GroupPeer();
 		$levels = AffiliateLevelPeer::getAll();
 		$smarty->assign("levels",$levels);
 
-    $smarty->assign("message",$_GET["message"]);
+		$smarty->assign("message",$_GET["message"]);
 
-    if ( !empty($_GET["level"]) ) {
+		if ( !empty($_GET["level"]) ) {
 			//voy a editar un level
 
 			try {
 				$level = AffiliateLevelPeer::get($_GET["level"]);
 				$smarty->assign("currentLevel",$level);
-	    	$smarty->assign("accion","edicion");
-	  	}
+				$smarty->assign("action","edit");
+			}
 			catch (PropelException $e) {
 			}
 		}
@@ -70,4 +71,3 @@ class AffiliatesUsersLevelsListAction extends BaseAction {
 	}
 
 }
-?>

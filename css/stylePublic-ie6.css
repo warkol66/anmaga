@@ -1,0 +1,29 @@
+div #logo1 a, div #logo2 a, div #footerInfo { 
+	behavior: url(css/iepngfix/iepngfix.htc) 
+}
+
+#searchbox { 
+ margin: 10px 10px 0px 130px;
+}
+#searchbox .textbox{
+	margin: 18px 10px 0px 60px;
+}
+#searchbox .button{
+	margin: 18px 10px 0px 0px;
+}
+#sloganLine div{
+	margin: 3px 50px 0px 15px;
+	color:#000000;
+	font-size:1.1em;
+	font-weight: bold;
+}
+.events { 
+	margin-left: 5px;
+}
+#divSearch{
+	margin: 10px 0px 0px 18px;
+}
+#rssSearchBox {
+	margin-top: 0px;
+	line-height: 26px;
+}

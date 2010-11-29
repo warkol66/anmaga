@@ -1,106 +1,81 @@
 |-if $loginUser neq ""-|
-<table width="150" border="0" cellpadding="0" cellspacing="0" class="menuCell">
-  <tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersWelcome">Ir al Inicio</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=catalogShow">Catálogo</a></td>
-  </tr>
-|-if $module|upper eq "CATALOG"-|
-	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=catalogProductCategoriesList">Administrar Catálogo</a>
-		<a class="menuSubButton" href="Main.php?do=catalogProductsList">Administrar Productos</a>
-		<a class="menuSubButton" href="Main.php?do=catalogUnitsList">Administrar Unidades de Venta</a>
-		<a class="menuSubButton" href="Main.php?do=catalogMeasureUnitsList">Administrar Unidades de Medida</a>
-		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductList">Ver lista de precio por cliente</a>
-		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductsImport">Administrar listas de precio por cliente</a>
-		
-		<a class="menuSubButton" href="Main.php?do=catalogAffiliateProductCodesList">Conversor de códigos</a></div>
-	</td>
-  </tr>
+	<ul>
+		<li class="menuLink"><a href="Main.php?do=usersWelcome">Ir al Inicio</a></li>
+	</ul>
+	<ul>
+		<li class="titleMenu"><a href="javascript:switch_vis('importMenu');" class="linkSwitchMenu">Exportaciones</a></li>
+	</ul>
+		<div id="importMenu" style="display:|-if $module|lower eq 'import' && ($section|lower neq 'products' && $section|lower neq 'suppliers' && $section|lower neq 'ports' && $section|lower neq 'incoterms')-|block|-else-|none|-/if-|;">
+			<ul>
+		|- if $loginUser->isAdmin()-|		
+				<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones de Clientes</a></li>
+				<li class="menuLink"><a href="Main.php?do=importSupplierQuoteList">Cotizaciones de Proveedores</a></li>
+				<li class="menuLink"><a href="Main.php?do=importClientOrderList">Pedidos de Cliente</a></li>
+				<li class="menuLink"><a href="Main.php?do=importSupplierOrderList">Pedidos a Proveedor</a></li>
+				<li class="menuLink"><a href="Main.php?do=importBankTransferList">Tranferencias Bancarias</a></li>
+				<li class="menuLink"><a href="Main.php?do=importShipmentList">Embarques</a></li>
+				<li class="menuLink"><a href="Main.php?do=importShipmentReleaseList">Nacionalizaciones</a></li>
+		|-/if-|
+			</ul>
+		</div>
+|- if $loginUser->isAdmin()-|		
+	<ul>
+		<li class="titleMenu"><a href="javascript:switch_vis('adminMenu');" class="linkSwitchMenu">Administración</a></li>
+	</ul>
+		<div id="adminMenu" style="display:|-if $module|lower eq 'users' || $module|lower eq 'security' || $module|lower eq 'backups' || $module|lower eq 'affiliates' || $module|lower eq 'categories' || $module|lower eq 'backup' || ($module|lower eq 'import' && ($section|lower eq 'products' || $section|lower eq 'suppliers' || $section|lower eq 'ports' || $section|lower eq 'incoterms'))-|block|-else-|none|-/if-|;">
+			<ul>
+				<li class="menuLink"><a href="Main.php?do=affiliatesList">Clientes</a></li>
+				<li class="menuLink"><a href="Main.php?do=affiliatesUsersList">Usuarios de Clientes</a></li>
+				<li class="menuLink"><a href="Main.php?do=importSuppliersList">Proveedores </a></li>
+				<li class="menuLink"><a href="Main.php?do=importProductsList">Productos</a></li>
+				<li class="menuLink"><a href="Main.php?do=importIncotermsList">Incoterms</a></li>
+				<li class="menuLink"><a href="Main.php?do=importBankAccountsList">Cuentas Bancarias</a></li>
+				<li class="menuLink"><a href="Main.php?do=importPortsList">Puertos</a></li>
+				<li class="menuLink"><a href="Main.php?do=usersList">Usuarios</a></li>
+				<li class="menuLink"><a href="Main.php?do=usersGroupsList">Grupos de Usuarios</a></li>
+				<li class="menuLink"><a href="Main.php?do=usersLevelsList">Niveles Usuarios</a></li>
+				<li class="menuLink"><a href="Main.php?do=categoriesList">Categorías</a></li>
+				<li class="menuLink"><a href="Main.php?do=backupList">Respaldos</a></li>
+			</ul>
+		</div>
+	<ul>
+		<li class="titleMenu"><a href="javascript:switch_vis('configMenu');" class="linkSwitchMenu">Configuración</a></li>
+	</ul>
+		<div id="configMenu" style="display:|-if $module|lower eq 'config' || $module|lower eq 'multilang'-|block|-else-|none|-/if-|;">
+			<ul>
+				<!-- <li class="menuLink"><a href="Main.php?do=configView">Ver Configuración</a></li> -->
+				<li class="menuLink"><a href="Main.php?do=configSet">Configurar Sistema</a></li>
+				<li class="menuLink"><a href="Main.php?do=configEdit">Editar Configuración</a></li>
+				<li class="menuLink"><a href="Main.php?do=multilangLanguagesList">Idiomas</a></li>
+				<li class="menuLink"><a href="Main.php?do=multilangTextsList">Textos</a></li>		
+				<li class="menuLink"><a href="Main.php?do=multilangTextsDump&amp;moduleName=|-$moduleName-|">Textos SQL</a></li>			
+			</ul>
+		</div>
 |-/if-|
-|-if $module|upper eq "CATALOG" || $module|upper eq "ORDERS" -|
-	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=ordersViewCart">Ver carrito de compras</a>
-		<a class="menuSubButton" href="Main.php?do=ordersList">Ver ordenes</a>
-		<a class="menuSubButton" href="Main.php?do=ordersTemplatesList">Ver plantillas de ordenes</a></div>
-	</td>
-  </tr>
-|-/if-|
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersList">Lista de Pedidos</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersImport">Importar Pedidos</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesList">Distribuidores / Mayoristas</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesBranchsList">Sucursales de Distribuidores / Mayoristas</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersList">Usuarios de Distribuidores / Mayoristas</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=configView">Configuración</a></td>
-  </tr>
-|-if $module|upper eq "CONFIG"-|
-	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=configSet">Cambiar Configuración</a>
-		<a class="menuSubButton" href="Main.php?do=configEdit">Editar Configuración</a></div></td>
-  </tr>
-|-/if-|
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersList">Administración de Usuarios</a></td>
-  </tr>
-|-if $module|upper eq "USERS"-|
-	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=usersLevelsList">Administrar Niveles de Usuario</a>
-		<a class="menuSubButton" href="Main.php?do=usersGroupsList">Administrar Grupos de Usuarios</a></div>
-	</td>
-  </tr>
-|-/if-|	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=modulesList">Administrar módulos</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
-  </tr>
-</table>
+<a href="Main.php?do=usersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")' id="logout"></a>
 |-/if-|
 |-if $loginAffiliateUser neq ""-|
-<table width="150" border="0" cellpadding="0" cellspacing="0" class="menuCell">
-  <tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersWelcome">Ir al Inicio</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=catalogShow">Catálogo</a></td>
-  </tr>
-|-if $module|upper eq "CATALOG" || $module|upper eq "ORDERS" -|
-	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=ordersViewCart">Ver carrito de compras</a>
-		<a class="menuSubButton" href="Main.php?do=ordersList">Ver ordenes</a>
-		<a class="menuSubButton" href="Main.php?do=ordersTemplatesList">Ver plantillas de ordenes</a></div>
-	</td>
-  </tr>
+  	<ul>
+		<li class="menuLink"><a href="Main.php?do=affiliatesUsersWelcome">Ir al Inicio</a></li>
+	</ul>
+	<ul>
+		<li class="titleMenu"><a href="javascript:switch_vis('importAffiliateMenu');" class="linkSwitchMenu">Importaciones</a></li>
+  	</ul>
+	<div id="importAffiliateMenu">
+		<ul>
+			<li class="menuLink"><a href="Main.php?do=importClientQuoteList">Cotizaciones</a></li>
+			<li class="menuLink"><a href="Main.php?do=importClientOrderList">Pedidos</a></li>
+		</ul>
+	</div>
+
+	<a href="Main.php?do=affiliatesUsersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")' id="logout"></a>
 |-/if-|
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersViewCart">Pedido en Proceso</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersList">Pedidos Procesados</a></td>
-  </tr>
-	<tr>
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersTemplatesList">Pedidos Almacenados</a></td>
-  </tr>
-	<tr>
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersList">Usuarios de Distribuidores / Mayoristas</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesBranchsList">Sucursales</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
-  </tr>
-</table>
-|-/if-|
+	<div id="setLanguage">
+		<ul>
+		|-if $languagesAvailable|@count gt 1-| 
+		|-foreach from=$languagesAvailable item=language name=foreachLanguage-||-if $language->getCode() ne $currentLanguageCode-| 
+			<li class="menuLink"><a href="Main.php?do=commonSetLanguage&languageCode=|-$language->getCode()-|">|-$language->getName()-|</a></li>
+		|-/if-||-/foreach-|
+		|-/if-|
+		</ul>
+	</div>

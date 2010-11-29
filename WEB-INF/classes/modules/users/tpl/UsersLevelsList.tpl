@@ -1,77 +1,55 @@
-<table border='0' cellpadding='0' cellspacing='0' width='100%'>
-	<tr>
-		<td class='title'>##40,Configuración del Sistema##</td>
-	</tr>
-	<tr>
-		<td class='underlineTitle'><img src="images/clear.gif" height='3' width='1'></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class='backgroundTitle'>Administración de Niveles de Usuarios</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>A continuación podrá editar la lista de niveles de usuarios.</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	|-if $accion eq "edicion"-|
-	<tr>
-		<td>Realice los cambios en el nivel de usuarios y haga click en "Aceptar" para guardar las modificaciones.</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	|-/if-|
-</table>
+<h2>##40,Configuración del Sistema##</h2>
+<h1>Administración de Niveles de Usuarios</h1>
+<!-- Link VOLVER -->
+<!-- /Link VOLVER -->
+|-if $accion eq "edicion"-|
+	<p>Realice los cambios en el nivel de usuarios y haga click en "Aceptar" para guardar las modificaciones.</p>
+|-else-|
+	<p>A continuación podrá editar la lista de niveles de usuarios.</p>
+|-/if-|
 |-if $message eq "deleted"-|
-<div align='center' class='errorMessage'>##181,Nivel de Usuarios eliminado##</div>
-|-/if-|
-|-if $message eq "errorUpdate"-|
-<div align='center' class='errorMessage'>##182,Ha ocurrido un error al intentar guardar la información del nivel de usuarios##</div>
-|-/if-|
-|-if $message eq "saved"-|
-<div align='center' class='errorMessage'>##183,Nivel de Usuarios guardado##</div>
-|-/if-|
-|-if $message eq "blankName"-|
-<div align='center' class='errorMessage'>##184,El Nivel de Usuarios debe tener un Nombre##</div>
+	<div class='successMessage'>##181,Nivel de Usuarios eliminado##</div>
+|-elseif $message eq "errorUpdate"-|
+	<div class='failureMessage'>##182,Ha ocurrido un error al intentar guardar la información del nivel de usuarios##</div>
+|-elseif $message eq "saved"-|
+	<div class='successMessage'>##183,Nivel de Usuarios guardado##</div>
+|-elseif $message eq "blankName"-|
+	<div class='failureMessage'>##184,El Nivel de Usuarios debe tener un Nombre##</div>
 |-/if-|
 |-if $accion eq "edicion"-|
+<fieldset title="Formulario de edición de niveles de usuarios del sistema">
+<legend>Editar nivel de usuario</legend>
 <form method='post' action='Main.php?do=usersLevelsDoEdit'>
 	<input type='hidden' name='id' value='|-$currentLevel->getId()-|' />
-	<table class='tableTdBorders' cellpadding='5' cellspacing='0'>
-		<tr>
-			<th colspan="2" class="thFillTitle">##187,Editar nombre del Nivel ##</th>
-		</tr>
-		<tr>
-			<td nowrap="nowrap" class='size2'>##196,Nombre del Nivel##</td>
-			<td class='size2'><input name='name' type='text'  class='textodato' value='|-$currentLevel->getName()-|' size="70" /></td>
-		</tr>
-		<tr>
-			<td class='buttonCell' colspan='2'><input type="hidden" name="accion" value="edicion" />
+	<p>##187,Editar nombre del Nivel ##</p>
+	<p><label for="name">##196,Nombre##</label>
+			<input name='name' type='text'  class='textodato' value='|-$currentLevel->getName()-|' size="45" />
+		</p>
+		<p><input type="hidden" name="accion" value="edicion" />
 				<input type='submit' name='guardar' value='##97,Guardar##'  class='button' />
 				&nbsp;&nbsp;
 				<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##' class='button'  />
-			</td>
-		</tr>
-	</table>
+			</p>
 </form>
-|-/if-| <br />
+</fieldset>
+|-/if-|
+<br />
+<fieldset title="Lista de niveles de usuarios del sistema">
+<legend>Niveles de Usuarios</legend>
 <table class='tableTdBorders' cellpadding='5' cellspacing='0' width='100%'>
 	<tr>
-		<th width="90%" nowrap="nowrap" class="thFillTitle">##194,Niveles de Usuarios del Sistema ##</th>
-		<th width="10%" class="thFillTitle">&nbsp;</th>
+		<th width="98%" nowrap="nowrap">##194,Niveles de Usuarios del Sistema ##</th>
+		<th width="2%">&nbsp;</th>
 	</tr>
 	|-foreach from=$levels item=level name=for_levels-|
 	<tr>
-		<td class="size2"><div class='titulo2'>|-$level->getName()-|</div></td>
-		<td class='tdSize1 cellTextOptions center' nowrap> [ <a href='Main.php?do=usersLevelsList&level=|-$level->getId()-|' class='edit'>##114,Editar##</a> ]
-			|-if $level->getId() gt 3-|[ <a href='Main.php?do=usersLevelsDoDelete&level=|-$level->getId()-|' class='delete' onclick="return confirm('##256,Esta opción elimina permanentemente a este Nivel. ¿Está seguro que desea eliminarlo?##');">##115,Eliminar##</a> ]|-else-|[ <span class='deactivated'>##115,Eliminar##</span> ] |-/if-|</td>
+		<td>|-$level->getName()-|</td>
+		<td nowrap='nowrap'><a href='Main.php?do=usersLevelsList&level=|-$level->getId()-|' alt='##114,Editar##' title='##114,Editar##'><img src="images/clear.png" class="linkImageEdit"></a>
+			|-if $level->getId() gt 3-|
+			<a href='Main.php?do=usersLevelsDoDelete&level=|-$level->getId()-|' title='##115,Eliminar##' alt='##115,Eliminar##' onclick="return confirm('##256,Esta opción elimina permanentemente a este Nivel. ¿Está seguro que desea eliminarlo?##');"><img src="images/clear.png" class="linkImageDelete"></a>
+			|-else-|
+			<img src="images/clear.png" class="linkImageDeleteDisabled" title="No se puede eliminar." alt="No se puede eliminar.">
+			|-/if-|</td>
 	</tr>
 	|-/foreach-|
 	<tr>
@@ -83,3 +61,4 @@
 			</form></td>
 	</tr>
 </table>
+</fieldset>

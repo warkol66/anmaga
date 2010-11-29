@@ -1,69 +1,42 @@
 <?php
-/**
-* DocumentsDoEditAction
-*
-*  Action que genera un cambio de estado en la base de datos, le llegan datos de
-*  un documento y los actualiza  en dicha base de datos.
-* 
-* @author documentacion: Marcos Meli
-* @author Archivo: Marcos Meli
-* @package mer_documents
-*/
+/** 
+ * AffiliatesDoEditInfoAction
+ *
+ * @package affiliates 
+ */
 
-
-require_once 'BaseAction.php';
+require_once("BaseAction.php");
 require_once("AffiliateInfoPeer.php");
 
-
-/**
-* DocumentsDoEditAction
-*
-*  Esta clase hereda la clase BaseAction
-* 
-*/
-
 class AffiliatesDoEditInfoAction extends BaseAction {
-
-
-	/**
-	* DocumentsDoEditAction
-	*
-	*  Constructor por defecto
-	*
-	*/
 
 	function AffiliatesDoEditInfoAction() {
 		;
 	}
 
+	// ----- Public Methods ------------------------------------------------- //
+
 	/**
-	* execute
+	* Process the specified HTTP request, and create the corresponding HTTP
+	* response (or forward to another web component that will create it).
+	* Return an <code>ActionForward</code> instance describing where and how
+	* control should be forwarded, or <code>NULL</code> if the response has
+	* already been completed.
 	*
-	* Procesa la solicitud HTTP solicitada, y crea su respectiva respuesta HTTP o
-	* bien lo manda hacia otra web en donde aqui la crea. Devuelve un 
-	* "ActionForward" describiendo donde y como se debe mandar la solicitud o
-	* NULL si la respuesta ha sido completada. 
-	* 
-	* 
-	* //@param ActionConfig		El ActionConfig (mapping) usado para seleccionar los sucesos
-	* //@param ActionForm			El opcional ActionForm con los contenidos de las peticiones
-	* //@param HttpRequestBase	El HTTP request de lo que se esta  procesando
-	* //@param HttpRequestBase	La respuesta HTTP de lo que estan creando
-	* //@public
-	* 
-	* 
-	* @param string $mapping una variable que muestra los sucesos
-	* @param array $form con todo el contenido a ejecutar
-	* @param pointer &$request puntero a un string de lo que se esta solicitando
-	* @param pointer &$response puntero a un string de la respuesta que ha dado el servidor
-	* @return ActionForward string $mapping con la cadena "sucess" o "failure"
-	*
+	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
+	* @param ActionForm			The optional ActionForm bean for this request (if any)
+	* @param HttpRequestBase	The HTTP request we are processing
+	* @param HttpRequestBase	The HTTP response we are creating
+	* @public
+	* @returns ActionForward
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
-
+		//////////
+		// Access the Smarty PlugIn instance
+		// Note the reference "=&"
 		$plugInKey = 'SMARTY_PLUGIN';
 		$smarty =& $this->actionServer->getPlugIn($plugInKey);
 		if($smarty == NULL) {
@@ -75,35 +48,15 @@ class AffiliatesDoEditInfoAction extends BaseAction {
 
 		$affiliateInfoPeer = new AffiliateInfoPeer();
 
-		
-		
-		////////////		
-		// obtengo el documento seleccionado
 		$id= $_POST["id"];
-	
 
-		/*print_r($_POST["flag"]);
-		*/
-		// 1 significaria que no tenia info interna
-		if($_POST["flag"]==1){
-	
+		if($_POST["flag"]==1)
 			$affiliate=$affiliateInfoPeer->add($id,$_POST["internalId"],$_POST["address"],$_POST["phone"],$_POST["mail"],$_POST["contact"],$_POST["contactEmail"],$_POST["web"],$_POST["memo"]);
-		}
-		else{
-		
-		$affiliate=$affiliateInfoPeer->update($id,$_POST["internalId"],$_POST["address"],$_POST["phone"],$_POST["mail"],$_POST["contact"],$_POST["contactEmail"],$_POST["web"],$_POST["memo"]);
+		else
+			$affiliate=$affiliateInfoPeer->update($id,$_POST["internalId"],$_POST["address"],$_POST["phone"],$_POST["mail"],$_POST["contact"],$_POST["contactEmail"],$_POST["web"],$_POST["memo"]);
 
-		}
-
-				
 		return $mapping->findForwardConfig('success');
-
-
-
-
-		
 
 	}
 
 }
-?>

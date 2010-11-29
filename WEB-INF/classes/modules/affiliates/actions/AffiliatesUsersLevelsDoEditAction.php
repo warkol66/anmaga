@@ -1,17 +1,18 @@
 <?php
+/** 
+ * AffiliatesUsersLevelsDoEditAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("AffiliateLevelPeer.php");
 
 class AffiliatesUsersLevelsDoEditAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesUsersLevelsDoEditAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -31,7 +32,7 @@ class AffiliatesUsersLevelsDoEditAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -44,25 +45,24 @@ class AffiliatesUsersLevelsDoEditAction extends BaseAction {
 
 		$module = "Affiliates";
 		$section = "Levels";
-		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
 		if ( !empty($_POST["id"]) ) {
 			//estoy editando un nivel de usuarios existente
 
 			if ( AffiliateLevelPeer::update($_POST["id"],$_POST["name"]) )
-  	   	return $mapping->findForwardConfig('success');
+				return $mapping->findForwardConfig('success');
 			else {
 				header("Location: Main.php?do=usersByAffiliateLevelsList&level=".$_POST["id"]."&message=errorUpdate");
 				exit;
 			}
 		}
 		else {
-		  //estoy creando un nuevo nivel de usuarios
+			//estoy creando un nuevo nivel de usuarios
 
 			if ( !empty($_POST["name"]) ) {
-
 				AffiliateLevelPeer::create($_POST["name"]);
 				return $mapping->findForwardConfig('success');
 			}
@@ -75,4 +75,3 @@ class AffiliatesUsersLevelsDoEditAction extends BaseAction {
 	}
 
 }
-?>

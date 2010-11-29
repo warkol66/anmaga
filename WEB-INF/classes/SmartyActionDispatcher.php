@@ -113,14 +113,45 @@ class SmartyActionDispatcher extends ActionDispatcher {
 
 		// The resource (page) to display
 		$requestURI = $this->uri;
-
+		
+		$found = false;
+		
+		//verifico si el tpl existe en path por default
+		if (!file_exists('WEB-INF/tpl/' . $requestURI)) {		
+			//si no existe en el path por default
+			//se determina si el tpl pertenece a un cierto modulo
+			//y arma la ruta hasta el mismo
+			$regs = array();
+			//obtenemos el nombre del modulo del tpl segun convencion
+			if (ereg('^([A-Z][a-z]*)[A-Z]',$requestURI,$regs)) {
+				$module = strtolower($regs[1]);
+				$modulePath = 'WEB-INF/classes/modules/';
+				$tplPath = $modulePath . '/' . $module . '/' . 'tpl';
+				$route = $tplPath . '/' . $requestURI;
+			
+				if (file_exists($route)) {
+					$found = true;	
+				}
+			
+			}
+		}
 
 		// Retrieve the requested page, to the $pageBuff
 		$pageBuff = '';
 		ob_start();
 
 			// Smarty way: Capture the Smarty output
-			$smarty->display($requestURI);
+			if (!$found)
+				//caso general usa template_dir
+				$smarty->display($requestURI);
+			else {
+				//caso modulo tpl en modulo
+				//armamos el path completo al template
+				global $moduleRootDir;
+				$fullPath = $moduleRootDir . '/' . $route;
+				$smarty->display('file:'.$fullPath);
+			}
+			
 			$pageBuff = ob_get_contents();
 
 		ob_end_clean();

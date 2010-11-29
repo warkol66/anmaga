@@ -1,6 +1,6 @@
-function changeAction(form) {
-	if ($('select').value == "affiliate")
-		form.action = "Main.php?do=affiliatesUsersDoLogin";
+function selectLoginAction(form) {
+	if ($('selectLoginMode').value != 'affiliateUser')
+		$('loginFormDo').value = 'usersDoLogin';
 	else
-		form.action = "Main.php?do=usersDoLogin";
+		$('loginFormDo').value = 'affiliatesUsersDoLogin';
 }

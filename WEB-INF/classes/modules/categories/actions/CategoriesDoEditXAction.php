@@ -33,7 +33,7 @@ class CategoriesDoEditXAction extends BaseAction {
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
-    
+
 		$this->template->template = "template_ajax.tpl";
 
 		//////////
@@ -47,24 +47,51 @@ class CategoriesDoEditXAction extends BaseAction {
 		
 		$module = "Categories";
 
-    $smarty->assign("module",$module);
+    	$smarty->assign("module",$module);
+
+		if (Common::isAffiliatedUser()) {
+		
+			$user = Common::getAffiliatedLogged();
+		
+		}
+		
+		if (Common::isAdmin()) {
+			
+				$user = Common::getAdminLogged();				
+
+		}
 
 		if ( $_POST["accion"] == "edicion" ) {
 			//estoy editando un category existente
 
-			CategoryPeer::update($_POST["id"],$_POST["name"]);
+			CategoryPeer::update($_POST["id"],$_POST["name"],$_POST['isPublic']);
       return $mapping->findForwardConfig('success');
 		}
 		else {
 		  //estoy creando un nuevo category
 
-			$categoryId = CategoryPeer::create($_POST["name"]);
-			//le asigno permisos a la categoria creada a todos los grupos al cual pertenece el usuario
-			$user = getLoginUser();
-			$user->setGroupsToCategory($categoryId);
+			if (empty($_POST['name'])) {
+				
+				$parentCategories = $user->getParentCategoriesByModule($_POST['module']);
+				$smarty->assign("parentUserCategories",$parentCategories);
+				return $mapping->findForwardConfig('failure');
+			}
 
-			$category = CategoryPeer::get($categoryId);
-			$smarty->assign("category",$category);
+			$categoryId = CategoryPeer::create($_POST["name"],$_POST['isPublic'],$_POST['module'],$_POST['parentId']);
+			
+			$newCategory = CategoryPeer::get($categoryId);
+			$smarty->assign("newCategory",$newCategory);
+			
+			$parentCategories = $user->getParentCategoriesByModule($_POST['module']);
+			$smarty->assign("parentUserCategories",$parentCategories);
+			
+			//le asigno permisos a la categoria creada a todos los grupos al cual pertenece el usuario
+			//separacion entre caso de usuario dependencia y usuario administrador	
+			if (isset($user)) {
+				$user->setGroupsToCategory($categoryId);
+			}
+			
+			
 			return $mapping->findForwardConfig('success');
 		}
 

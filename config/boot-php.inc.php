@@ -82,7 +82,6 @@ if($initXMLConfig == True OR $appXmlCfgs['config']['fc'] == True ) {
 	echo '<br><b>Loading XML Parser ...</b>';
 	include_once $appServerRootDir.'/WEB-INF/'.$globalPrependXML;
 }
-
 // Timer - Base Classes Load Time
 if($timerRun == True) printTime($start, 'Base Classes Load Time');
 
@@ -128,7 +127,6 @@ if($oApplicationConfig == NULL) {
 $request = new HttpRequestBase;
 $request->setAttribute(Action::getKey('APPLICATION_KEY'), $oApplicationConfig);
 $request->setRequestURI($_SERVER['PHP_SELF']);
-
 // Set the application context path:
 // Note: $_SERVER was introduced in 4.1.0. In earlier versions, use $HTTP_SERVER_VARS.
 $contextPath = substr($_SERVER["SCRIPT_NAME"], 0, strrpos($_SERVER["SCRIPT_NAME"], '/'));
@@ -156,7 +154,6 @@ $request->setAttribute('ACTION_DO_PATH', $doPath);
 // Setup HTTP Response and add request attributes
 $response = new HttpResponseBase;
 
-
 // Start processing the php.MVC Web application
 // Note: Usage of depreciated $HTTP_POST_VARS type variables
 //       will be eventually replaced with the new PHP Superglobals.
@@ -170,7 +167,7 @@ if((int)phpversion() > 4) {
 	// PHP 5
 	if( isset($_GET) ) {
 		$actionServer->doGet($request, $response, $_GET);
-	} elseif( isset($_POST) ) {
+	} elseif( isset($_POST) ) {		
 		$actionServer->doPost($request, $response, $_POST, $_FILES);
 	}
 } else {

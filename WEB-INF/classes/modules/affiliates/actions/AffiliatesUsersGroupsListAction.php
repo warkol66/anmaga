@@ -1,17 +1,18 @@
 <?php
+/** 
+ * AffiliatesUsersGroupsListAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("AffiliateGroupPeer.php");
 
 class AffiliatesUsersGroupsListAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesUsersGroupsListAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -31,7 +32,7 @@ class AffiliatesUsersGroupsListAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -44,16 +45,16 @@ class AffiliatesUsersGroupsListAction extends BaseAction {
 
 		$module = "Affiliates";
 		$section = "Groups";
-		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
 		$groups = AffiliateGroupPeer::getAll();
 		$smarty->assign("groups",$groups);
 
-    $smarty->assign("message",$_GET["message"]);
+		$smarty->assign("message",$_GET["message"]);
 
-    if ( !empty($_GET["group"]) ) {
+		if ( !empty($_GET["group"]) ) {
 			//voy a editar un grupo
 
 			try {
@@ -61,10 +62,10 @@ class AffiliatesUsersGroupsListAction extends BaseAction {
 				$smarty->assign("currentGroup",$group);
 				$groupCategories = $group->getCategories();
 				$smarty->assign("currentGroupCategories",$groupCategories);
-        $notAssignedCategories = $group->getNotAssignedCategories();
-		    $smarty->assign("categories",$notAssignedCategories);
-	    	$smarty->assign("accion","edicion");
-	  	}
+				$notAssignedCategories = $group->getNotAssignedCategories();
+				$smarty->assign("categories",$notAssignedCategories);
+				$smarty->assign("action","edit");
+			}
 			catch (PropelException $e) {
 			}
 		}
@@ -73,4 +74,3 @@ class AffiliatesUsersGroupsListAction extends BaseAction {
 	}
 
 }
-?>

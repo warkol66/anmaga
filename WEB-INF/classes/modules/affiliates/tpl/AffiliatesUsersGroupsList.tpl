@@ -1,28 +1,26 @@
 <h2>##40,Configuración del Sistema##</h2>
-	<h1>##178,Administración de Grupos de Usuarios##</h1>
+<h1>##178,Administración de Grupos de Usuarios#</h1>
+<!-- Link VOLVER -->
+<!-- /Link VOLVER -->
+|-if $action eq "edit"-|
+	<p class='paragraphEdit'>##180,Realice los cambios en el grupo de usuarios y haga click en "Aceptar" para guardar las modificaciones.##</p>
+|-else-|
 	<p>##179,A continuación podrá editar la lista de grupos de usuarios, permitiendo, al editar el grupo, modificar las categorías que pueden acceder los usuarios miembros del grupo.##</p>
-	|-if $accion eq "edicion"-|
-	<p>##180,Realice los cambios en el grupo de usuarios y haga click en "Aceptar" para guardar las modificaciones. ##</p>
-	|-/if-|
+|-/if-|
 |-if $message eq "deleted"-|
-<div align='center' class='textoerror'>##181,Grupo de Usuarios eliminado##</div>
+	<div class='successMessage'>##181,Grupo de Usuarios eliminado##</div>
+|-elseif $message eq "errorUpdate"-|
+	<div class='errorMessage'>##182,Ha ocurrido un error al intentar guardar la información del grupo de usuarios##</div>
+|-elseif $message eq "saved"-|
+	<div class='successMessage'>##183,Grupo de Usuarios guardado##</div>
+|-elseif $message eq "blankName"-|
+	<div class='errorMessage'>##184,El Grupo de Usuarios debe tener un Nombre##</div>
+|-elseif $message eq "notAddedToGroup"-|
+	<div class='errorMessage'>##185,Ha ocurrido un error al intentar agregar la categoría al grupo##</div>
+|-elseif $message eq "notRemovedFromGroup"-|
+	<div class='errorMessage'>##186,Ha ocurrido un error al intentar eliminar la categoría del grupo##</div>
 |-/if-|
-|-if $message eq "errorUpdate"-|
-<div align='center' class='textoerror'>##182,Ha ocurrido un error al intentar guardar la información del grupo de usuarios##</div>
-|-/if-|
-|-if $message eq "saved"-|
-<div align='center' class='textoerror'>##183,Grupo de Usuarios guardado##</div>
-|-/if-|
-|-if $message eq "blankName"-|
-<div align='center' class='textoerror'>##184,El Grupo de Usuarios debe tener un Nombre##</div>
-|-/if-|
-|-if $message eq "notAddedToGroup"-|
-<div align='center' class='textoerror'>##185,Ha ocurrido un error al intentar agregar la categoría al grupo##</div>
-|-/if-|
-|-if $message eq "notRemovedFromGroup"-|
-<div align='center' class='textoerror'>##186,Ha ocurrido un error al intentar eliminar la categoría del grupo##</div>
-|-/if-|
-|-if $accion eq "edicion"-|
+|-if $action eq "edit"-|
 <form method='post' action='Main.php?do=affiliatesUsersGroupsDoEdit'>
 	<input type='hidden' name='id' value='|-$currentGroup->getId()-|' />
 	<table class='tablaborde' cellpadding='5' cellspacing='1'>
@@ -34,7 +32,7 @@
 			<td class='celldato'><input name='name' type='text'  class='textodato' value='|-$currentGroup->getName()-|' size="70" /></td>
 		</tr>
 		<tr>
-			<td class='cellboton' colspan='2'><input type="hidden" name="accion" value="edicion" />
+			<td class='cellboton' colspan='2'><input type="hidden" name="action" value="edit" />
 				<input type='submit' name='guardar' value='##97,Guardar##'  class='boton' />
 				&nbsp;&nbsp;
 				<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##' class='boton'  />

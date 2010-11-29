@@ -3,44 +3,52 @@
  * Funciones y variables comunes al sistema
  *
  * @package Config
- */ 
+ */
 
-  require_once('Smarty_config.inc.php');
+	require_once('Smarty_config.inc.php');
 
-  include_once('Constants.inc.php');
-  define('MAXIMOS_RESULTADOS_POR_PAGINA',15);
+	include_once('Constants.inc.php');
+	define('MAXIMOS_RESULTADOS_POR_PAGINA',15);
+	ini_set("show_errors",true);
+	session_cache_limiter('nocache');
+	session_start();
+	extract($_SESSION,EXTR_PREFIX_ALL,'session');
+	extract($_GET,EXTR_PREFIX_ALL,'get');
+	extract($_POST,EXTR_PREFIX_ALL,'post');
+	
+	//Configuracion de Usuario en Caso de ejecucion por linea de comando
 
-  ini_set("show_errors",true);
-  session_cache_limiter('nocache');
-  session_start();
-  extract($_SESSION,EXTR_PREFIX_ALL,'session');
-  extract($_GET,EXTR_PREFIX_ALL,'get');
-  extract($_POST,EXTR_PREFIX_ALL,'post');
+	if ($_ENV['PHPMVC_MODE_CLI'] == true) {
+		//cargamos el usuario system modo supervisor para login de los actions
+		require_once('UserPeer.php');
+		$user = UserPeer::getByUsername('system');
+		$_SESSION["login_user"] = $user;
+		$_SESSION["loginUser"] = $user;
+	}
 
-  //Configuracion de Error Reporting
-  global $system;
-  if (isset($system)) {
-  	
+	//Configuracion de Error Reporting
+	global $system;
+	if (isset($system)) {
+
 	$conversionTable = array('E_ALL ^ E_NOTICE'=> 6135, 'E_ALL' => 6143, 'E_STRICT' => 2048);
-  	$level = $system["config"]["system"]["errorReporting"]["value"];
-  	
-  	if ($level == "") {
-  		ini_set("error_reporting",6143);
-  	}
-  	else {
-  		ini_set("error_reporting",$conversionTable[$level]);
-  	}
-  		
-  }
+		$level = $system["config"]["system"]["errorReporting"]["value"];
 
+		if ($level == "") {
+			ini_set("error_reporting",6143);
+		}
+		else {
+			ini_set("error_reporting",$conversionTable[$level]);
+		}
 
-  /**
-  * getBrowser
-  * 
-  * Obtiene las especificaciones del Browser
-  *
-  * @return array con nombre del browser y version
-  */
+	}
+
+	/**
+	* getBrowser
+	*
+	* Obtiene las especificaciones del Browser
+	*
+	* @return array con nombre del browser y version
+	*/
 	function getBrowser(){
 		if ($msie_p=strpos($_SERVER['HTTP_USER_AGENT'],'MSIE'))
 		{
@@ -66,29 +74,29 @@
 	$actpath=strtok($_SERVER['PHP_SELF'],'/');
 	set_error_handler("userErrorHandler");
 
-  /**
-  * makedate
-  * 
-  * makedate
-  *
-  * @return makedate
-  */
+	/**
+	* makedate
+	*
+	* makedate
+	*
+	* @return makedate
+	*/
 	function makedate($unit = '', $time = '', $mask = ''){
 		$validunit = '/^[-+]?\b[0-9]+\b$/';
 		$validtime = '/^\b(day|week|month|year)\b$/i';
 		$validmask = '/^(short|long|([dmy[:space:][:punct:]]+))$/i';
 
-		if (!preg_match($validunit,$unit)) 
+		if (!preg_match($validunit,$unit))
 		{
 			$unit = -1;
 		}
 
-		if (!preg_match($validtime,$time)) 
+		if (!preg_match($validtime,$time))
 		{
 			$time = 'day';
 		}
 
-		if (!preg_match($validmask,$mask)) 
+		if (!preg_match($validmask,$mask))
 		{
 			$mask = 'yyyymmdd';
 		}
@@ -102,7 +110,7 @@
 				$mask = "l, F j, Y";
 				break;
 			default:
-				if (preg_match('/([[:space:]]|[[:punct:]])/', $mask)) 
+				if (preg_match('/([[:space:]]|[[:punct:]])/', $mask))
 				{
 					$chars = preg_split
 					(
@@ -124,9 +132,9 @@
 						PREG_SPLIT_DELIM_CAPTURE
 					);
 				}
-				foreach ($chars as $key => $char) 
+				foreach ($chars as $key => $char)
 				{
-					switch (TRUE) 
+					switch (TRUE)
 					{
 						case eregi ("m{3,}",$chars[$key]): // 'mmmm' = month string
 							$chars[$key] = "F";
@@ -161,13 +169,13 @@
 		return $when;
 	}
 
-  /**
-  * userErrorHandler
-  * 
-  * userErrorHandler
-  *
-  * @return userErrorHandler
-  */
+	/**
+	* userErrorHandler
+	*
+	* userErrorHandler
+	*
+	* @return userErrorHandler
+	*/
 	function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars){
 		$dt = date("Y-m-d H:i:s (T)");
 		$errortype = array (
@@ -198,7 +206,7 @@
 			$err .= "\t<vartrace>" . wddx_serialize_value($vars, "Variables") . "</vartrace>\n";
 		}
 		$err .= "</errorentry>\n\n";
-		
+
 		if (!empty($errstr) && eregi('^(sql)$', $errstr)){
 			$MYSQL_ERRNO = mysql_errno();
 			$MYSQL_ERROR = mysql_error();
@@ -222,6 +230,7 @@
 		}
 	}
 
+
 class Common
 {
 	/**
@@ -232,127 +241,65 @@ class Common
 	function inMaintenance(){
 		global $system;
 		$maintenance = $system["config"]["system"]["parameters"]["underMaintenance"]["value"];
-		
+
 		//si no esta el sistema en mantenimiento, devolver false
 		if ($maintenance != "YES")
 			return false;
-		
+
 		$noCheckMaintenance = array();
-		$noCheckMaintenance[] = "maintenance";
+		$noCheckMaintenance[] = "commonMaintenance";
 		$noCheckMaintenance[] = "usersLoginMaintenance";
-		$noCheckMaintenance[] = "usersDoLogin";		
-		$noCheckMaintenance[] = "usersDoLogout";	
-		
+		$noCheckMaintenance[] = "usersDoLogin";
+		$noCheckMaintenance[] = "usersDoLogout";
+
 		$isNoCheckMaintenanceAction = array_search($_REQUEST["do"],$noCheckMaintenance);
 
 		//si es un action que no requiere chequeo de mantenimiento, devolver false
 		if ($isNoCheckMaintenanceAction !== false)
 			return false;
-			
+
 		$user = $_SESSION["loginUser"];
-				
+
 		if (!empty($user)) {
 			$level = $user->getLevel();
 			//si el usuario logueado tiene un nivel menor a 3 (supervisor y admin), devolver false
-			if ($level < 3) 
+			if ($level < 3)
 				return false;
 		}
-		
-		//si llego hasta aca, devolver true		
+
+		//si llego hasta aca, devolver true
 		return true;
 	}
 
-/*
-* Ejemplo: Common::debugger(dirname(__FILE__)."/archivo.sql","Query: ",$query);
-*
-*/
-	function debugger($file,$message,$variable){
-  	$handle = fopen($file, "a");
-		fwrite($handle, $message.$variable."\n");
-  	fclose($handle);
-	}
-
-
-	/**
-	* Devuelve la edad de una persona a partir de una fecha de nacimiento entregada
-	* @param string $birth fecha de nacimiento a calcular, el formato serÃ¡ aÃ±o-dia-mes
-	* @return int $ageYears edad de la fecha entregada
+	/*
+	* Ejemplo: Common::debugger(dirname(__FILE__)."/archivo.sql","Query: ",$query);
 	*
 	*/
+		function debugger($file,$message,$variable){
+			$handle = fopen($file, "a");
+			fwrite($handle, $message.$variable."\n");
+			fclose($handle);
+		}
 
-	function getAge($birth){
-	
-	///////////
-	/// el formato va a ser aÃ±o dia mes
-	///$birth='1985-29-11';
-		$birthday=explode("-",$birth);
-		
-		$ageTime = mktime(0, 0, 0, $birthday[2], $birthday[1], $birthday[0]);
-
-		$time = time(); 
-		$age = ($ageTime < 0) ? ( $time + ($ageTime * -1) ) : $time - $ageTime;
-		$year = 60 * 60 * 24 * 365;
-		$ageYears = $age / $year;
-		$ageYears=floor($ageYears);
-
-		//echo "Edad: $ageYears";
-
-		return ($ageYears);
-	}
-
-		///
-		///////////
-		
-
-
-	/**
-	* Devuelve la fecha minima en la que una persona pudo nacer a partir de una determinada edad
-	* @param string $age edad de la persona
-	* @return int $yearFilter su minima fecha de nacimiento
-	*
-	*/
-
-	function getDateOfBirth($age){
-		$year=date('Y');
-
-		$minYear=$year-$age;
-
-
-		//////////
-		// filtros de fechas usados para concatenar y para comparar
-		$filter=date("m-d");
-		$compareFilter=date("Y-m-d");
-
-		$yearFilter=$minYear."-".$filter;
-		//echo "menor aÃ±o $minYearFilter,, mayor aÃ±o $maxYearFilter";	
-
-		//////////
-		// adicionalmente se puede habilitar la comparacion
-		// $comparefilter contiene la fecha actual y $yearFilter la minima fecha de nacimiento de la persona
-
-
-		return $yearFilter;
-	}
-	
 	/**
 	*	Recibe una fecha en formato mm-dd-yyyy y la devuelve yyyy-mm-dd
-	* 
+	*
 	* @param string $usDate Fecha en formato mm-dd-yyyy
 	* @return string Fecha en formate yyyy-mm-dd
-  */
+	*/
 	function usDateToDbDate($usDate) {
 		$dateExplode = explode("-", $usDate);
 		$dbDate = date("Y-m-d",mktime(0,0,0,$dateExplode[1],$dateExplode[0],$dateExplode[2]));
 		return $dbDate;
- 	}	
+	}
 
 	/**
 	* obtiene el id de usuario y de afiliado
 	*
 	* @return array $info informacion encontrada
-	*/	
+	*/
 	function userInfoToDoLog(){
-			
+
 		$info = array();
 		if(!empty($_SESSION['loginUser'])){
 			$info["userId"] = $_SESSION['loginUser'];
@@ -360,14 +307,13 @@ class Common
 				$info["userId"]=$info["userId"]->getId();
 			$info["affiliateId"] = 0;
 		}
-		elseif(!empty($_SESSION['loginUserByRegistration'])){ 
+		elseif(!empty($_SESSION['loginUserByRegistration'])){
 			$info["userId"]=$_SESSION['loginUserByRegistration'];
 			$info["affiliateId"] =999999 ;
 
 		}
 		else{
 
-			
 			if(is_object($_SESSION["loginAffiliateUser"])){
 				//////////
 				// version con propel toma esta linea
@@ -383,124 +329,129 @@ class Common
 	}
 
 
-/**
-* Guarda un registro de log.
-* 
-* @param string $user datos del usuario
-* @param string $action nombre del action
-* @param string $forward tipo de forward (success, failure, errorLog, etc)
-* @param string $object objeto sobre el cual se realizÃ³ la acciÃ³n
-* @return void
-*/
-function doLog($forward,$object=null) {
+	/**
+	* Guarda un registro de log.
+	*
+	* @param string $user datos del usuario
+	* @param string $action nombre del action
+	* @param string $forward tipo de forward (success, failure, errorLog, etc)
+	* @param string $object objeto sobre el cual se realizó la acción
+	* @return void
+	*/
+	function doLog($forward,$object=null) {
 
-	include_once 'ActionLog.php';	
+		include_once 'Actionlog.php';
 
-	/*	@include_once('ActionLogLabelPeer.php');
-	if (class_exists('ActionLogLabelPeer')){
-		$actionLogLabel = new ActionLogLabelPeer();
-		$actionLogLabelObject=$actionLogLabel->getAllByActionLanguageEsp($_REQUEST['do'],$forward);
-	}*/
-	
-	//obtengo el action adonde se esta	
-	$action = strtoupper(substr($_REQUEST['do'],0,1)) . substr($_REQUEST['do'],1,strlen($_REQUEST['do']));
-	$userInfo = Common::userInfoToDoLog();
-	
-	try{
-		$logs = new ActionLog();
-		$logs->setUserId($userInfo["userId"]);
-		$logs->setAffiliateId($userInfo["affiliateId"]);
-		$logs->setDatetime(time());
-		$logs->setAction($action);
-		$logs->setObject($object);
-		$logs->setForward($forward);
-		$logs->save();
+		/*	@include_once('ActionlogLabelPeer.php');
+		if (class_exists('ActionlogLabelPeer')){
+			$actionLogLabel = new ActionlogLabelPeer();
+			$actionLogLabelObject=$actionLogLabel->getAllByActionLanguageEsp($_REQUEST['do'],$forward);
+		}*/
+
+		//obtengo el action adonde se esta
+//		$action = strtoupper(substr($_REQUEST['do'],0,1)) . substr($_REQUEST['do'],1,strlen($_REQUEST['do']));
+		$action = ucfirst($_REQUEST['do']);
+		$userInfo = Common::userInfoToDoLog();
+
+		try{
+			$logs = new Actionlog();
+			$logs->setUserId($userInfo["userId"]);
+			$logs->setAffiliateId($userInfo["affiliateId"]);
+			$logs->setDatetime(time());
+			$logs->setAction($action);
+			$logs->setObject($object);
+			$logs->setForward($forward);
+			$logs->save();
+		}
+		catch (PropelException $e) {
+			;
+		}
 	}
-	catch (PropelException $e) {
-		;	
+	/**
+	 * Indica si un usuario es afiliado.
+	 */
+	function isAffiliatedUser() {
+
+		if (isset($_SESSION["loginAffiliateUser"]))
+			return true;
+		return false;
+
 	}
-}
-/**
- * Indica si un usuario es afiliado.
- */
-function isAffiliatedUser() {
-	
-	if (isset($_SESSION["loginAffiliateUser"]))
-			return true;
-	return false;
-	
-}
 
-/**
- * Indica si es un usuario comun.
- */
-function isSystemUser() {
+	function getAffiliatedId() {
 
-	if (isset($_SESSION["loginUser"]))
-			return true;
-	return false;
+		$user = $_SESSION["loginAffiliateUser"];
+		return $user->getAffiliateId();
 
-}
+	}
 
-function getAffiliatedId() {
-	
-	$user = $_SESSION["loginAffiliateUser"];
-	return $user->getAffiliateId();
-	
-}
+	function isAdmin() {
 
-function isAdmin() {
+		if (!isset($_SESSION['loginUser']))
+			return false;
 
-	if (!isset($_SESSION['loginUser']))
+		$user = $_SESSION['loginUser'];
+		return $user->isAdmin();
+
+	}
+
+
+	function getAdminUserId() {
+
+		$user = $_SESSION["loginUser"];
+		return $user->getId();
+
+	}
+
+	function getAffiliatedLogged() {
+
+		return $_SESSION["loginAffiliateUser"];
+
+	}
+
+	function getAdminLogged() {
+
+		return $_SESSION["loginUser"];
+
+	}
+
+	function isSupplier() {
+
+		if (!isset($_SESSION['loginUser']))
+			return false;
+
+		$user = $_SESSION['loginUser'];
+		return $user->isSupplier();
+
+	}
+
+	function getSupplierUserId() {
+
+		$user = $_SESSION["loginUser"];
+		return $user->getId();
+
+	}
+
+	function isRegistrationUser() {
+
+		if (isset($_SESSION["loginRegistrationUser"]))
+				return true;
 		return false;
-	
-	$user = $_SESSION['loginUser'];
-	return $user->isAdmin();
 
-}
+	}
 
+	function getRegistrationUserLogged() {
 
-function getAdminUserId() {
+		return $_SESSION["loginRegistrationUser"];
 
-	$user = $_SESSION["loginUser"];
-	return $user->getId();
+	}
 
-}
-
-function getAffiliatedLogged() {
-
-	return $_SESSION["loginAffiliateUser"];
-
-}
-
-function getAdminLogged() {
-
-	return $_SESSION["loginUser"];
-
-}
-
-function isSupplier() {
-
-	if (!isset($_SESSION['loginUser']))
-		return false;
-	
-	$user = $_SESSION['loginUser'];
-	return $user->isSupplier();
-
-}
-
-function getSupplierUserId() {
-
-	$user = $_SESSION["loginUser"];
-	return $user->getId();
-
-}
 
 	/*
 	 * Conversion del numero al formato numerico de mysql
 	 *
 	 * @param string numero con separador de miles y decimal segun la configuracion del sistema
-	 * @return string con el formato 
+	 * @return string con el formato
 	 */
 	function convertToMysqlNumericFormat($number) {
 
@@ -508,26 +459,53 @@ function getSupplierUserId() {
 
 		$thousandsSeparator = $system['config']['system']['parameters']['thousandsSeparator'];
 		$decimalSeparator = $system['config']['system']['parameters']['decimalSeparator'];
-	
+
 		$number = str_replace($thousandsSeparator,'',$number);
-		//el separador de miles en MySQL es punto
+		//el separador de decimales en MySQL es punto
 		$number = str_replace($decimalSeparator,'.',$number);
-	
-		return $number;	
-	
+
+		return $number;
+
 	}
-	
+
+	/*
+	 * Conversion del fecha al formato numerico de mysql
+	 * El mismo tiene en cuenta el formato de fecha interno del sistema
+	 * @param string fecha
+	 * @return string con el formato
+	 */
+	function convertToMysqlDateFormat($date,$dateFormat='') {
+
+		global $system;
+
+		if (empty($dateFormat))
+			$dateFormat = $system['config']['system']['parameters']['dateFormat']['value'];
+
+		$dateFormat = str_replace('y','Y',$dateFormat);
+		$formatArray = split('-',$dateFormat);
+		$dateArray = split('-',$date);
+		$orderedDate = array();
+
+		for ($i=0; $i < count($formatArray); $i++) {
+			$orderedDate[$formatArray[$i]] = $dateArray[$i];
+		}
+
+		$mysqlDate =  $orderedDate['Y'] . '-' . $orderedDate['m'] . '-' . $orderedDate['d'];
+
+		return $mysqlDate;
+	}
+
 	/*
 	 * Devuelve el nombre corto del sistema
 	 * @return string nombre corto del sistema
 	 */
 	function getSiteShortName() {
-		
+
 		global $system;
 		return $system['config']['system']['parameters']['siteShortName'];
-		
+
 	}
-	
+
 	/**
 	 * Devuelve un datetime en la zona horaria del usuario actual
 	 * @param string datetime
@@ -537,10 +515,10 @@ function getSupplierUserId() {
 
 		require_once('TimezonePeer.php');
 
-/*		if (Common::isAdmin()) {
+		if (Common::isAdmin()) {
 			//es el caso de un usuario administrador el valor de su perfil
 			$user = Common::getAdminLogged();
-			$timezoneCode = $user->getTimezone();		
+			$timezoneCode = $user->getTimezone();
 
 		}
 
@@ -548,11 +526,11 @@ function getSupplierUserId() {
 			//es el caso de un usuario affiliado el valor de su perfil
 
 			$user = Common::getAffiliatedLogged();
-			$timezoneCode = $user->getTimezone();		
+			$timezoneCode = $user->getTimezone();
 
 		}
-*/
-		if (empty($timezoneCode) || $timezoneCode == "") {		
+
+		if (empty($timezoneCode) || $timezoneCode == "") {
 			//si no hubiera o no fuera un usuario administrador tomamos default de la aplicacion
 			global $system;
 			$timezoneCode = $system["config"]["system"]["parameters"]["applicationTimeZoneGMT"]["value"];
@@ -568,8 +546,294 @@ function getSupplierUserId() {
 		$timezonePeer = new TimezonePeer();
 
 		return $timezonePeer->getGMT0TimeOnTimezone($datetime,$timezoneCode);
-		
+
 	}
 
+	function validateCaptcha($field) {
+
+		if (empty($_SESSION['security_code']))
+			return false;
+		if ($field == $_SESSION['security_code']) {
+			unset($_SESSION['security_code']);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Indica si el sistema tiene activo el modulo de newsletter.
+	 *
+	 */
+	function systemHasNewsletter() {
+
+		global $system;
+
+		if ($system["config"]["registration"]["newsletterSubscription"]["value"] == 'YES')
+			$activeNewsletters = true;
+		else
+			$activeNewsletters = false;
+
+		$hasNewslettersModule = ModulePeer::hasNewslettersModule();
+		if ($hasNewslettersModule && $activeNewsletters) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Devuelve el modo de registracion habilitado en el Modulo de Registracion por
+	 * la configuracion.
+	 */
+	function getRegistrationMode() {
+
+		global $system;
+
+		return $system["config"]["registration"]["mode"]["value"];
+
+	}
+
+	/**
+	 * Devuelve si la validacion por captcha esta habilitada en la configuracion
+	 * del modulo de registracion
+	 */
+	function getRegistrationCaptchaUse() {
+
+		global $system;
+
+		return ($system["config"]["registration"]["useCaptcha"]["value"] == 'YES');
+
+
+	}
+
+	/**
+	 * Devuelve si la validacion por captcha esta habilitada en la configuracion
+	 * del modulo de encuestas
+	 */
+	function getSurveysCaptchaUse() {
+
+		global $system;
+
+		return ($system["config"]["surveys"]["useCaptcha"]["value"] == 'YES');
+
+
+	}
+
+
+	/**
+	 * Valida si una direccion de email es valida
+	 * @param string email a validar
+	 */
+	function validateEmail($email) {
+		return eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email);
+	}
+
+
+	/**
+	 * Indica si hay login unificado en la configuracion del sistema
+	 * @return boolean
+	 */
+	function hasUnifiedLogin() {
+
+		global $system;
+		$unifiedLogin = $system["config"]["system"]["parameters"]["affiliateUserLoginUnified"]["value"];
+
+		return ($unifiedLogin == "YES");
+
+	}
+
+	/**
+	 * Obtiene el valor de la opcion de login de la cookie
+	 * @return string El valor correspondiente o vacio si no esta seteada la cookie
+	 */
+	function getValueUnifiedLoginCookie() {
+
+		global $system;
+		$cookieName = $system["config"]["system"]["parameters"]['siteShortName'] . 'LoginOption';
+		return $_COOKIE[$cookieName];
+
+	}
+
+	function setValueUnifiedLoginCookie($value) {
+
+		global $system;
+		$cookieName = $system["config"]["system"]["parameters"]['siteShortName'] . 'LoginOption';
+		setcookie($cookieName,$value);
+
+	}
+
+
+	/*
+	 * Verifica si un email existe.
+	 *
+	 * @param string $email Email destino
+	 * @param string $mailAddress Email origen
+	 * @return boolean false si no existe, true si puede llegar a existir
+	 */
+	function verifyMailbox($email,$mailAddress="no-reply@no-mail.com") {
+		$before = microtime();
+		$err = false;
+		if (!preg_match('/([^\@]+)\@(.+)$/', $email, $matches)) {
+			 return false;
+		}
+		$user = $matches[1]; $domain = $matches[2];
+		if(!function_exists('checkdnsrr'))
+			return $err;
+		if(!function_exists('getmxrr'))
+			return $err;
+		// Get MX Records to find smtp servers handling this domain
+		if(getmxrr($domain, $mxhosts, $mxweight)) {
+			for($i=0;$i<count($mxhosts);$i++){
+					$mxs[$mxhosts[$i]] = $mxweight[$i];
+			}
+			asort($mxs);
+			$mailers = array_keys($mxs);
+		}elseif(checkdnsrr($domain, 'A')) {
+			$mailers[0] = gethostbyname($domain);
+		}else {
+			return false;
+		}
+		// Try to send to each mailserver
+		$total = count($mailers);
+		$ok = 0;
+		for($n=0; $n < $total; $n++) {
+			$timeout = 5;
+			$errno = 0; $errstr = 0;
+			if(!($sock = fsockopen($mailers[$n], 25, $errno , $errstr, $timeout))) {
+				continue;
+			}
+			$response = fgets($sock);
+			stream_set_timeout($sock, 5);
+			$meta = stream_get_meta_data($sock);
+			$cmds = array(
+				"HELO ".$_SERVER["SERVER_NAME"],
+				"MAIL FROM: <$mailAddress>",
+				"RCPT TO: <$email>",
+				"QUIT",
+			);
+			if(!$meta['timed_out'] && !preg_match('/^2\d\d[ -]/', $response)) {
+				break;
+			}
+			$success_ok = 1;
+			foreach($cmds as $cmd) {
+				fputs($sock, "$cmd\r\n");
+				$response = fgets($sock, 4096);
+				if(!$meta['timed_out'] && preg_match('/^5\d\d[ -]/', $response)) {
+					$success_ok = 0;
+					break;
+				}
+			}
+			fclose($sock);
+			if($success_ok){
+				$ok = 1;
+				break;
+			}
+		}
+		$after = microtime();
+		// Fail on error
+		if(!$ok)
+			return false;
+		// Return a positive value on success
+		return true;
+	}
+
+	/**
+	* Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
+	*
+	* @return int Cantidad de filas por pagina
+	*/
+	function getRowsPerPage() {
+		global $system;
+		return $system['config']['system']['rowsPerPage'];
+	}
+
+	/**
+	* Obtiene los idiomas disponibles en el sistema.
+	*
+	* @return Idiomas del sistema
+	*/
+	function getAllLanguages() {
+		require_once("MultilangLanguagePeer.php");
+		$languages = MultilangLanguagePeer::getAll();
+		return $languages;
+	}
+
+	function getTranslation($text,$moduleName) {
+		$languageCode = Common::getCurrentLanguageCode();
+		$translationObject = MultilangTextPeer::getByTextAndModuleNameAndCode($text,$moduleName,$languageCode);
+		if (empty($translationObject))
+			$translation = $text;
+		else
+			$translation = $translationObject->getText();
+		return $translation;
+	}
+
+	function getTranslationByLanguageCode($text,$moduleName,$languageCode) {
+		$translationObject = MultilangTextPeer::getByTextAndModuleNameAndCode($text,$moduleName,$languageCode);
+		if (empty($translationObject))
+			$translation = $text;
+		else
+			$translation = $translationObject->getText();
+		return $translation;
+	}
+
+	/**
+	 * Entrega el código de idioma por defecto del sistema
+	 * @return languageCode
+	 */	
+	function getSystemDefaultLanguageCode()
+	{
+		global $system;
+		return $system["config"]["multilang"]["language"];
+	}
+
+	/**
+	 * Entrega el código de idioma a utilizar por el sistema
+	 * @return languageCode
+	 */
+	function getCurrentLanguageCode() {
+		global $system;
+		$currentLanguageCode = $system["config"]["multilang"]["language"];
+
+		$cookieName = $system["config"]["system"]["parameters"]['siteShortName'] . 'languageCode';
+	
+	
+		if (isset($_COOKIE[$cookieName]))
+			$currentLanguageCode = $_COOKIE[$cookieName];
+		else
+			$currentLanguageCode = $system["config"]["multilang"]["language"];
+
+		if ($_SESSION['user']['languageCode']!= '')
+			$currentLanguageCode = $_SESSION['user']['languageCode'];
+		if ($_SESSION['languageCode'] != '')
+			$currentLanguageCode = $_SESSION['languageCode'];
+
+		return $currentLanguageCode;
+	}
+
+	/**
+	 * Indica si el los pedidos de cotizaciones manejan cantidades en el modulo import
+	 * @return boolean
+	 */
+	function setCurrentLanguageCode($languageCode) {
+		global $system;
+		$cookieName = $system["config"]["system"]["parameters"]['siteShortName'] . 'languageCode';
+		setcookie($cookieName,$languageCode);
+
+		$_SESSION['languageCode'] = $languageCode;
+	}
+
+	/**
+	 * Indica si el los pedidos de cotizaciones manejan cantidades en el modulo import
+	 * @return boolean
+	 */
+	function importQuotesHasQuantities() {
+
+		global $system;
+		return ($system['config']['import']['quantityOnQuote']['value'] == 'YES');
+
+	}
 
 }

@@ -1,74 +1,49 @@
 <script type="text/javascript" language="javascript" src="scripts/login.js"></script>
-<table width='760' border='0' cellpadding='0' cellspacing="0" class='fondoffffff'>
-	<tr> 
-		<td class="cabezal">&nbsp;</td> 
-	</tr> 
-	<tr> 
-		<td><!--fin encabezado --> 
-				<center> 
-			<table border='0' cellpadding='0' cellspacing='0' width='520' align='center'> 
-				<tr> 
-					<td>&nbsp;</td> 
-				</tr> 
-				<tr> 
-					<td class='backgroundTitle'>Bienvenido al Sistema |-$parameters.siteName-|</td> 
-				</tr> 
-				<tr> 
-					<td>&nbsp;</td> 
-				</tr> 
-				|-if $message eq "wrongUser"-|
-				<tr> 
-					<td><div align='center' class='errorMessage'>Usuario desconocido o contrase&ntilde;a incorrecta!. Intente nuevamente.</div></td> 
-				</tr> 
-				|-/if-|
-				|-if $message eq "passwordSent"-|
-				<tr>
-					<td><div align='center' class='errorMessage'>Se envio una nueva contrase&ntilde;a a su casilla de correo.</div></td> 
-				</tr> 
-				|-/if-|
-				<tr> 
-					<td>&nbsp;</td> 
-				</tr> 
-			</table> 
-			<form method='post' action="Main.php?do=usersDoLogin"> 
-					<table width='520' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'> 
-						<tr> 
-							<td colspan='2' class='tdTitle'>Ingrese su Identificaci&oacute;n de usuario y contrase&ntilde;a para ingresar al sistema</td> 
-						</tr> 
+<form method='post' action="Main.php"> 
+	<!-- Begin Login --> 
+	<div id="login"> 
+		 <!-- Begin LoginTop --> 
+		 <div id="loginTop"></div> 
+		 <!-- End LoginTop --> 
+		 <!-- Begin LoginContent --> 
+		 <div id="loginContent"><br>
+			<p>|- if isset($unifiedLogin) -|Selecciones el tipo de usuario e i|-else-|I|-/if-|ngrese su usuario y contraseña para ingresar al sistema</p> 
+			|-if $message eq "wrongUser"-|
+				<div align='center' class='errorMessage'>Usuario desconocido o contraseña incorrecta!. Intente nuevamente.</div> 
+			|-elseif $message eq "passwordSent"-|
+				<div align='center' class='successMessage'>Se envio una nueva contraseña a su casilla de correo.</div> 
+			|-/if-| 
 			|- if isset($unifiedLogin) -|
-				|-if !$onlyAdmin -|				
-						<tr>
-							<td nowrap class='tdTitle'>Tipo de Usuario</td>
-							<td class='tdData'>
-								<select id="select" name="select" onchange="javascript:changeAction(this.form)">
-			   						<option value="admin" selected="selected">Administrador&nbsp;&nbsp;&nbsp;</option>
-			   						<option value="affiliate">Mayorista&nbsp;&nbsp;&nbsp;</option>
-			   					</select>
-							</td>
-						</tr>
-			   |-/if-|
-			|-/if-|
-						<tr> 
-							<td width='20%' nowrap class='tdTitle'>Identificaci&oacute;n de Usuario</td> 
-							<td class='tdData'><input type='text' name='loginUsername' size='35' /></td> 
-						</tr> 
-						<tr> 
-							<td class='tdTitle'>Contrase&ntilde;a</td> 
-							<td class='tdData'><input type='password' name='loginPassword' size='20' /></td> 
-						</tr> 
-						<tr> 
-							<td colspan='2' class='buttonCell' align='center'><input type='submit' value='Ingresar' class='button' /></td> 
-						</tr> 
-					</table> 
-			</form> 
-				</center> 
-			<br /> 
-			<br /> 
-			<br /> 
-			<script>
+				|-if !$onlyAdmin -|
+				<p>Tipo de Usuario
+					 <select name="selectLoginMode" id="selectLoginMode" onChange="javascript:selectLoginAction(this.form)"> 
+						<option value="user" |-if $cookieSelection eq 'user'-|selected="selected"|-/if-|>Administrador</option> 
+						<option value="affiliateUser" |-if $cookieSelection eq 'affiliateUser'-|selected="selected"|-/if-|>Cliente</option> 
+					</select> 
+				 </p> 
+				|-/if-|
+				<input type="hidden" name="do" value="|-if $cookieSelection eq 'affiliateUser'-|affiliatesUsersDoLogin|-else-|usersDoLogin|-/if-|" id="loginFormDo" />
+			|-else-|
+				<input type="hidden" name="do" value="usersDoLogin" id="loginFormDo" />
+			|-/if-| 
+			<p></p> 
+			<h1>Usuario</h1> 
+			<p><input type='text' name='loginUsername' size='35' class="inputLogin" /> 
+			 </p> 
+			<h1>Contraseña</h1> 
+			<p><input type='password' name='loginPassword' size='20' class="inputLogin" /> 
+			 </p> 
+		</div> 
+		 <!-- End LoginContent --> 
+		 <!-- Begin LoginBottom --> 
+		 <div id="loginBottom">
+			<input type='submit' value='Ingresar' id="loginButton" /> 
+		</div> 
+		 <!-- End LoginBottom --> 
+	 </div> 
+	<!-- End Login --> 
+	<script>
 	self.moveTo(0,0); self.resizeTo(screen.availWidth,screen.availHeight)
 	self.focus()
 </script> 
-			<!--inicio de pie --> </td> 
-	</tr> 
-</table>
+</form> 

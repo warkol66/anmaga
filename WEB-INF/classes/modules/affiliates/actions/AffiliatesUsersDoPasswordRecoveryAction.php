@@ -1,12 +1,14 @@
 <?php
+/** 
+ * AffiliatesUsersDoPasswordRecoveryAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("UserPeer.php");
 
 class AffiliatesUsersDoPasswordRecoveryAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function AffiliatesUsersDoPasswordRecoveryAction() {
 		;
@@ -31,8 +33,8 @@ class AffiliatesUsersDoPasswordRecoveryAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
-    
+		BaseAction::execute($mapping, $form, $request, $response);
+
 		$this->template->template = "TemplateMail.tpl";
 
 		//////////
@@ -45,13 +47,14 @@ class AffiliatesUsersDoPasswordRecoveryAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
+		$smarty->assign("module",$module);
 
 		if ( !empty($_POST["username"]) && !empty($_POST["mailAddress"]) ) {
 			$userAndPassword = AffiliateUserPeer::generatePassword($_POST["username"],$_POST["mailAddress"]);
 			if ( !empty($userAndPassword) ) {
-        $smarty->assign("user",$userAndPassword[0]);
-        $smarty->assign("password",$userAndPassword[1]);
-        $body = $smarty->fetch("AffiliatePasswordRecoveryMail.tpl");
+				$smarty->assign("user",$userAndPassword[0]);
+				$smarty->assign("password",$userAndPassword[1]);
+				$body = $smarty->fetch("AffiliatePasswordRecoveryMail.tpl");
 
 				$userInfo = $userAndPassword[0]->getAffiliateUserInfo();
 				require_once("libmail.inc.php");
@@ -68,12 +71,11 @@ class AffiliatesUsersDoPasswordRecoveryAction extends BaseAction {
 				return $mapping->findForwardConfig('success');
 			}
 		}
-		
-		$this->template->template = "TemplateLogin.tpl";		
 
-    $smarty->assign("message","wrongUser");
+		$this->template->template = "TemplateLogin.tpl";
+
+		$smarty->assign("message","wrongUser");
 		return $mapping->findForwardConfig('failure');
 	}
 
 }
-?>

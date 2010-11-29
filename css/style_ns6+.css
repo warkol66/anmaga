@@ -30,3 +30,6 @@ body,td,input,textarea,.TXTnormal {
 	font-size: .80em;
 	height: 1.80em;
 }
+.mceExternalToolbar {
+	margin-left: 125px !Important;
+}

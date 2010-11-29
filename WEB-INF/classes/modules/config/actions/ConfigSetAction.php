@@ -1,36 +1,21 @@
 <?php
+/** 
+ * ConfigSetAction
+ *
+ * @package config 
+ */
 
 require_once("BaseAction.php");
 
 class ConfigSetAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function ConfigSetAction() {
 		;
 	}
 
-
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -42,8 +27,17 @@ class ConfigSetAction extends BaseAction {
 		}
 
 		$module = "Config";
+		$smarty->assign("module",$module);
 
-    $smarty->assign("module",$module);
+		//timezone
+		$timezonePeer = new TimezonePeer();
+		$smarty->assign("timezones",$timezonePeer->getAll());
+
+		$colorCodes = array(1,2,3,4,5,6,7,8,9,10);		
+		$smarty->assign("colorCodes",$colorCodes);
+
+		$smarty->assign("languages",common::getAllLanguages());
+
 		global $system;
 		$smarty->assign("selectedModule",$_GET["module"]);
 		if (!empty($_GET["module"])) {
@@ -59,4 +53,3 @@ class ConfigSetAction extends BaseAction {
 	}
 
 }
-?>

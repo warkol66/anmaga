@@ -1,17 +1,18 @@
 <?php
+/** 
+ * AffiliatesUsersGroupsDoRemCategoryAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("AffiliateGroupPeer.php");
 
 class AffiliatesUsersGroupsDoRemCategoryAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesUsersGroupsDoRemCategoryAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -31,7 +32,7 @@ class AffiliatesUsersGroupsDoRemCategoryAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -43,10 +44,14 @@ class AffiliatesUsersGroupsDoRemCategoryAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
+		$section = "Groups";
 
-    $groupPeer = new AffiliateGroupPeer();
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
-    if ( !empty($_GET["group"]) && !empty($_GET["category"]) ) {
+		$groupPeer = new AffiliateGroupPeer();
+
+		if ( !empty($_GET["group"]) && !empty($_GET["category"]) ) {
 			if ( $groupPeer->removeCategoryFromGroup($_GET["category"],$_GET["group"]) ) {
 				header("Location: Main.php?do=usersByAffiliateGroupsList&group=".$_GET["group"]);
 				exit;
@@ -59,4 +64,3 @@ class AffiliatesUsersGroupsDoRemCategoryAction extends BaseAction {
 	}
 
 }
-?>

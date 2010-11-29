@@ -1,0 +1,196 @@
+<!-- Module Security -->
+	<action-mappings module="Security">
+
+		<action    path = "securityNoPermission"
+							 type = "SecurityNoPermissionAction"
+							 name = "securityNoPermission"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityNoPermission.tpl" />
+		</action>
+
+		<action    path = "securityUsersEdit"
+							 type = "SecurityUsersEditAction"
+							 name = "securityUsersEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityUsersEdit.tpl" />
+		</action>
+
+		<action    path = "securityUsersDoEdit"
+							 type = "SecurityUsersDoEditAction"
+							 name = "securityUsersDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityUsersEdit&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityAffiliatesEdit"
+							 type = "SecurityAffiliatesEditAction"
+							 name = "securityAffiliatesEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityAffiliatesEdit.tpl" />
+		</action>
+
+		<action    path = "securityAffiliatesDoEdit"
+							 type = "SecurityAffiliatesDoEditAction"
+							 name = "securityAffiliatesDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityAffiliatesEdit&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityRegistrationEdit"
+							 type = "SecurityRegistrationEditAction"
+							 name = "securityRegistrationEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityRegistrationEdit.tpl" />
+		</action>
+
+		<action    path = "securityRegistrationDoEdit"
+							 type = "SecurityRegistrationDoEditAction"
+							 name = "securityRegistrationDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityRegistrationEdit&amp;message=saved" redirect='true'/>
+		</action>
+
+	</action-mappings>
+
+<!-- End Module Security -->
+
+<!-- Module Security  OLD -->
+	<action-mappings>
+
+		<action    path = "securityActionUsersList"
+							 type = "SecurityActionUsersListAction"
+							 name = "securityActionUsersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityActionUsersList.tpl" />
+		</action>
+
+		<action    path = "securityActionUsersDoSave"
+							 type = "SecurityActionUsersDoSaveAction"
+							 name = "securityActionUsersDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityActionUsersList&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityActionNoCheckLoginList"
+							 type = "SecurityActionNoCheckLoginListAction"
+							 name = "securityActionNoCheckLoginList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityActionNoCheckLoginList.tpl" />
+		</action>
+
+		<action    path = "securityActionAffiliateUsersList"
+							 type = "SecurityActionAffiliateUsersListAction"
+							 name = "securityActionAffiliateUsersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityActionAffiliateUsersList.tpl" />
+		</action>
+
+		<action    path = "securityActionAffiliateUsersDoSave"
+							 type = "SecurityActionAffiliateUsersDoSaveAction"
+							 name = "securityActionAffiliateUsersDoSaveAction"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityActionAffiliateUsersList&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityActionRegUsersList"
+							 type = "SecurityActionRegUsersListAction"
+							 name = "securityActionRegUsersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityActionRegUsersList.tpl" />
+		</action>
+
+		<action    path = "securityActionRegUsersDoSave"
+							 type = "SecurityActionRegUsersDoSaveAction"
+							 name = "securityActionRegUsersDoSaveAction"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityActionRegUsersList&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityActionNoCheckLoginDoSave"
+							 type = "SecurityActionNoCheckLoginDoSaveAction"
+							 name = "securityActionNoCheckLoginDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityActionNoCheckLoginList&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityModuleList"
+							 type = "SecurityModuleListAction"
+							 name = "securityModuleList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="SecurityModuleList.tpl" />
+		</action>
+
+		<action    path = "securityModuleDoSave"
+							 type = "SecurityModuleDoSaveAction"
+							 name = "securityModuleDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityModuleList" redirect='true'/>
+		</action>
+
+		<action    path = "securityModuleUsersList"
+							 type = "SecurityModuleUsersListAction"
+							 name = "securityModuleUsersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="SecurityModuleUsersList.tpl" />
+		</action>
+
+		<action    path = "securityModuleUsersDoSave"
+							 type = "SecurityModuleUsersDoSaveAction"
+							 name = "securityModuleUsersDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityModuleUsersList&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityModuleAffiliateUsersList"
+							 type = "SecurityModuleAffiliateUsersListAction"
+							 name = "securityModuleAffiliateUsersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="SecurityModuleAffiliateUsersList.tpl" />
+		</action>
+
+		<action    path = "securityModuleAffiliateUsersDoSave"
+							 type = "SecurityModuleAffiliateUsersDoSaveAction"
+							 name = "securityModuleAffiliateUsersDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityModuleAffiliateUsersList&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityModuleRegUsersList"
+							 type = "SecurityModuleRegUsersListAction"
+							 name = "securityModuleRegUsersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="SecurityModuleRegUsersList.tpl" />
+		</action>
+
+		<action    path = "securityModuleRegUsersDoSave"
+							 type = "SecurityModuleRegUsersDoSaveAction"
+							 name = "securityModuleRegUsersDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityModuleRegUsersList&amp;message=saved" redirect='true'/>
+		</action>
+
+	</action-mappings>
+<!-- End Module Security OLD-->

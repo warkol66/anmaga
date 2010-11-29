@@ -1,13 +1,13 @@
 function showProductAdd() {
 	$('product-add-box').show();
 	$('product-add-link').hide();
-	$('productQuantity').value = "0";
+	$('productQuantity').value = "1";
 }
 
 function cancelProductAdd() {
 	$('product-add-box').hide();
 	$('product-add-link').show();
-	$('productQuantity').value = "0";
+	$('productQuantity').value = "1";
 	
 }
 

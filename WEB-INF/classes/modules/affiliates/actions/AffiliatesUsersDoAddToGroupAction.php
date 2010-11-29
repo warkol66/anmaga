@@ -1,17 +1,18 @@
 <?php
+/** 
+ * AffiliatesUsersDoAddToGroupAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("AffiliateUserPeer.php");
 
 class AffiliatesUsersDoAddToGroupAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesUsersDoAddToGroupAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -31,7 +32,7 @@ class AffiliatesUsersDoAddToGroupAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -43,20 +44,23 @@ class AffiliatesUsersDoAddToGroupAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
+		$section = "Groups";
 
-    $userPeer = new AffiliateUserPeer();
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
-    if ( !empty($_POST["group"]) && !empty($_POST["user"]) ) {
+		$userPeer = new AffiliateUserPeer();
+
+		if ( !empty($_POST["group"]) && !empty($_POST["user"]) ) {
 			if ( $userPeer->addUserToGroup($_POST["user"],$_POST["group"]) ) {
 				header("Location: Main.php?do=usersByAffiliateList&user=".$_POST["user"]);
 				exit;
 		 }
 		}
-		
+
 		header("Location: Main.php?do=usersByAffiliateList&user=".$_POST["user"]."&message=notAddedToGroup");
 		exit;
 
 	}
 
 }
-?>

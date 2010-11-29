@@ -2,6 +2,7 @@
 
 require_once("BaseAction.php");
 require_once("CategoryPeer.php");
+require_once("ModulePeer.php");
 
 class CategoriesEditAction extends BaseAction {
 
@@ -54,6 +55,23 @@ class CategoriesEditAction extends BaseAction {
 			//voy a editar un category
 
 			$category = $categoryPeer->get($_GET["id"]);
+
+			if (Common::isAffiliatedUser()) {			
+				$user = Common::getAffiliatedLogged();
+			}
+			
+			if (Common::isAdmin()) {
+					$user = Common::getAdminLogged();
+			}
+
+
+			//categorias para select de categorias padre
+			$categories = $user->getCategoriesByModule($category->getModule());
+			$smarty->assign('categories',$categories);
+
+			//categoria para select de modulos
+			$modules = ModulePeer::getAll();
+			$smarty->assign('modules',$modules);
 
 			$smarty->assign("category",$category);
 

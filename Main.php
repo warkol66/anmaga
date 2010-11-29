@@ -29,7 +29,23 @@ error_reporting(E_ALL ^ E_NOTICE);
 $appDir = NULL;
 $appDir = dirname(__FILE__);
 
-// Load the application bootup file
+//processing using commandline
+if (!empty($argc)) {
+	foreach ($argv as $value) {
+		if ($value != 'Main.php') {
+			$division = split('=',$value);
+			$_REQUEST[$division[0]] = $division[1];
+			$_POST[$division[0]] = $division[1];
+			$_GET[$division[0]] = $division[1];
+		} 
+	}
+	$_ENV['PHPMVC_MODE_CLI'] = true;
+}
+else {
+	$_ENV['PHPMVC_MODE_CLI'] = false;
+}
+
+// Load the application bootup file on web mode
 include ("$appDir/config/boot-php.inc.php");
 
 ?>

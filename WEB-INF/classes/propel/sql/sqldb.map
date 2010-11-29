@@ -1,0 +1,11 @@
+# Sqlfile -> Database map
+actionLogs.classes.schema.sql=application
+affiliates.classes.schema.sql=application
+categories.classes.schema.sql=application
+import.classes.schema.sql=application
+mluse.classes.schema.sql=application
+modules.classes.schema.sql=application
+security.classes.schema.sql=application
+users.classes.schema.sql=application
+multilang.classes.schema.sql=application
+actionlogs.classes.schema.sql=application

@@ -1,16 +1,17 @@
 <?php
+/** 
+ * AffiliatesUsersDoLogoutAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 
 class AffiliatesUsersDoLogoutAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesUsersDoLogoutAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -30,7 +31,7 @@ class AffiliatesUsersDoLogoutAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -42,9 +43,10 @@ class AffiliatesUsersDoLogoutAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
+		$smarty->assign("module",$module);
 
 		unset($_SESSION["loginAffiliateUser"]);
-
+		
 		global $system;
 		$unifiedLogin = $system["config"]["system"]["parameters"]["affiliateUserLoginUnified"]["value"];
 		

@@ -13,15 +13,7 @@
 
 <phpmvc-config>
 
-<!-- ========== Form Bean Definitions =================================== -->
-
-	<form-beans>
-<!-- Smarty type form handling bean -->
-		<form-bean name="demoPage" 
-							 type="DemoPageForm"/>
-	</form-beans>
-
-<!-- ========== Action Mapping Definitions ============================== -->
+<!-- ========== Default Action Mapping Definitions ============================== -->
 
   <action-mappings>
     <action    path = "index"
@@ -45,13 +37,1745 @@
            validate = "true">
     <forward name="success" path="Welcome.tpl" />
     </action>
+    <action    path = "installGenerateConfig"
+               type = "InstallGenerateConfigAction"
+               name = "installGenerateConfig"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="InstallGenerateConfig.tpl" />
+    </action>    
     
 	</action-mappings>
 
-<!-- ========== Action Mapping Module Users  ============================== -->
+<!-- ========== Modules Action Mapping Definitions ====================== -->
+
+<!-- Module Actionlogs -->
+	<action-mappings module = "Actionlogs">
+
+		<action    path = "actionlogsList"
+					     type = "ActionlogsListAction"
+					     name = "actionlogsList"
+					    scope = "request"
+					 validate = "true">
+			<forward name="success" path="ActionlogsList.tpl"/>
+		</action>
+
+		<action    path = "actionlogsPurge"
+					     type = "ActionlogsPurgeAction"
+					     name = "actionlogsPurge"
+					    scope = "request"
+					 validate = "true">
+			<forward name="success" path="ActionlogsPurge.tpl"/>
+		</action>
+
+		<action    path = "actionlogsDoPurge"
+					     type = "ActionlogsDoPurgeAction"
+					     name = "actionlogsDoPurge"
+					    scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=actionlogsList&amp;message=purged" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Module Actionlogs -->
+
+
+
+<!-- Module Affiliates -->
+	<action-mappings module="Affiliates">
+
+		<action    path = "affiliatesList"
+							 type = "AffiliatesListAction"
+							 name = "affiliatesList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesList.tpl"/>
+		</action>
+
+		<action    path = "affiliatesEdit"
+							 type = "AffiliatesEditAction"
+							 name = "affiliatesEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesEdit.tpl"/>
+		</action>
+
+		<action    path = "affiliatesAddAffiliate"
+							 type = "AffiliatesAddAffiliateAction"
+							 name = "affiliatesAddAffiliate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesAdd.tpl"/>
+		</action>
+
+		<action    path = "affiliatesViewAffiliate"
+							 type = "AffiliatesViewAffiliateAction"
+							 name = "affiliatesViewAffiliate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesView.tpl"/>
+		</action>
+
+		<action    path = "affiliatesDoEdit"
+							 type = "AffiliatesDoEditAction"
+							 name = "affiliatesDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesList&amp;message=edited" redirect="true" />
+		</action>
+
+		<action    path = "affiliatesDoEditInfo"
+							 type = "AffiliatesDoEditInfoAction"
+							 name = "affiliatesDoEditInfo"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesList&amp;message=edited" redirect="true" />
+		</action>
+
+		<action    path = "affiliatesDoDelete"
+							 type = "AffiliatesDoDeleteAction"
+							 name = "affiliatesDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesList&amp;message=deleted" redirect="true" />
+			<forward name="failure" path="/Main.php?do=affiliatesList&amp;message=notdeleted" redirect="true" />
+		</action>
+
+		<action    path = "affiliatesDoAddAffiliate"
+							 type = "AffiliatesDoAddAffiliateAction"
+							 name = "affiliatesDoAddAffiliate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesList" redirect="true" />
+		</action>
+
+	</action-mappings>
+
+<!-- Section Branches -->
+	<action-mappings module="Affiliates" section="Branches">
+
+		<action    path = "affiliatesBranchesEdit"
+							 type = "AffiliatesBranchesEditAction"
+							 name = "affiliatesBranchesEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesBranchesEdit.tpl" />
+		</action>
+
+		<action    path = "affiliatesBranchesDoEdit"
+							 type = "AffiliatesBranchesDoEditAction"
+							 name = "affiliatesBranchesDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesBranchesList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="AffiliatesBranchesEdit.tpl" />
+		</action>
+
+		<action    path = "affiliatesBranchesList"
+							 type = "AffiliatesBranchesListAction"
+							 name = "affiliatesBranchesList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesBranchesList.tpl" />
+		</action>
+
+		<action    path = "affiliatesBranchesDoDelete"
+							 type = "AffiliatesBranchesDoDeleteAction"
+							 name = "affiliatesBranchesDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesBranchesList&amp;message=deleted_ok" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Section Branches -->
+
+<!-- Section Users -->
+	<action-mappings module="AffiliatesUsers" section="Users">
+
+		<action    path = "affiliatesUsersList"
+							 type = "AffiliatesUsersListAction"
+							 name = "affiliatesUsersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesUsersList.tpl"/>
+		</action>
+
+		<action    path = "affiliatesUsersDoEdit"
+							 type = "AffiliatesUsersDoEditAction"
+							 name = "affiliatesUsersDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesUsersList&amp;message=saved" redirect="true" />
+			<forward name="failure" path="/Main.php?do=affiliatesUsersList&amp;message=failure" redirect="true" />
+		</action>
+		
+
+		<action    path = "affiliatesUsersDoDelete"
+							 type = "AffiliatesUsersDoDeleteAction"
+							 name = "affiliatesUsersDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesUsersList&amp;message=deleted" redirect="true" />
+		</action>
+
+		<action    path = "affiliatesUsersLogin"
+							 type = "AffiliatesUsersLoginAction"
+							 name = "affiliatesUsersLogin"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesUsersLogin.tpl"/>
+		</action>
+
+		<action    path = "affiliatesUsersDoLogin"
+							 type = "AffiliatesUsersDoLoginAction"
+							 name = "affiliatesUsersDoLogin"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesUsersWelcome.tpl"/>
+			<forward name="failure-unified" path="UsersLogin.tpl"/>
+			<forward name="failure" path="AffiliatesUsersLogin.tpl"/>
+		</action>
+
+		<action    path = "affiliatesUsersWelcome"
+							 type = "AffiliatesUsersWelcomeAction"
+							 name = "affiliatesUsersWelcome"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesUsersWelcome.tpl"/>
+		</action>
+
+		<action    path = "affiliatesUsersDoLogout"
+							 type = "AffiliatesUsersDoLogoutAction"
+							 name = "affiliatesUsersDoLogout"
+							scope = "request"
+					 validate = "true">
+			<forward name="success-unified" path="/Main.php?do=usersLogin" redirect="true" />
+			<forward name="success" path="/Main.php?do=affiliatesUsersLogin" redirect="true" />
+		</action>
+
+		<action    path = "affiliatesUsersDoAddToGroup"
+							 type = "AffiliatesUsersDoAddToGroupAction"
+							 name = "affiliatesUsersDoAddToGroup"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesUsersList" redirect="true" />
+		</action>
+
+		<action    path = "affiliatesUsersDoActivate"
+							 type = "AffiliatesUsersDoActivateAction"
+							 name = "affiliatesUsersDoActivate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesUsersList&amp;message=activated" redirect="true" />
+			<forward name="failure" path="/Main.php?do=affiliatesUsersList&amp;message=notactivated" redirect="true" />
+		</action>
+
+		<action    path = "affiliatesUsersDoRemoveFromGroup"
+							 type = "AffiliatesUsersDoRemoveFromGroupAction"
+							 name = "affiliatesUsersDoRemoveFromGroup"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesUsersList" redirect="true" />
+		</action>
+
+		<action    path = "affiliatesUsersPasswordRecovery"
+							 type = "AffiliatesUsersPasswordRecoveryAction"
+							 name = "affiliatesUsersPasswordRecovery"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesUsersPasswordRecovery.tpl"/>
+		</action>
+
+		<action    path = "affiliatesUsersDoPasswordRecovery"
+							 type = "AffiliatesUsersDoPasswordRecoveryAction"
+							 name = "affiliatesUsersDoPasswordRecovery"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesUsersLogin&amp;message=passwordSent" redirect="true" />
+			<forward name="failure" path="AffiliatesUsersPasswordRecovery.tpl"/>
+		</action>
+
+	</action-mappings>
+<!-- End Section Users -->
+
+<!-- Section Levels -->
+	<action-mappings module="AffiliatesUsers" section="Levels">
+
+		<action    path = "affiliatesUsersLevelsList"
+							 type = "AffiliatesUsersLevelsListAction"
+							 name = "affiliatesUsersLevelsList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesUsersLevelsList.tpl"/>
+		</action>
+
+		<action    path = "affiliatesUsersLevelsDoEdit"
+							 type = "AffiliatesUsersLevelsDoEditAction"
+							 name = "affiliatesUsersLevelsDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesUsersLevelsList&amp;message=saved" redirect="true"/>
+			<forward name="blankName" path="/Main.php?do=affiliatesUsersLevelsList&amp;message=blankName" redirect="true"/>
+		</action>
+
+		<action    path = "affiliatesUsersLevelsDoDelete"
+							 type = "AffiliatesUsersLevelsDoDeleteAction"
+							 name = "affiliatesUsersLevelsDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesUsersLevelsList&amp;message=deleted" redirect="true" />
+			<forward name="failure" path="/Main.php?do=affiliatesUsersLevelsList&amp;message=notdeleted" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Section Levels -->
+
+<!-- Section Groups -->
+	<action-mappings module="AffiliatesUsers" section="Groups">
+
+		<action    path = "affiliatesUsersGroupsList"
+							 type = "AffiliatesUsersGroupsListAction"
+							 name = "affiliatesUsersGroupsList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesUsersGroupsList.tpl"/>
+		</action>
+
+		<action    path = "affiliatesUsersGroupsDoEdit"
+							 type = "AffiliatesUsersGroupsDoEditAction"
+							 name = "affiliatesUsersGroupsDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesUsersGroupsList&amp;message=saved" redirect="true"/>
+			<forward name="blankName" path="/Main.php?do=affiliatesUsersGroupsList&amp;message=blankName" redirect="true"/>
+		</action>
+
+		<action    path = "affiliatesUsersGroupsDoDelete"
+							 type = "AffiliatesUsersGroupsDoDeleteAction"
+							 name = "affiliatesUsersGroupsDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesUsersGroupsList&amp;message=deleted" redirect="true" />
+			<forward name="failure" path="/Main.php?do=affiliatesUsersGroupsList&amp;message=notdeleted" redirect="true" />
+		</action>
+
+		<action    path = "affiliatesUsersGroupsDoAddCategory"
+							 type = "AffiliatesUsersGroupsDoAddCategoryAction"
+							 name = "affiliatesUsersGroupsDoAddCategory"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesUsersGroupsList" redirect="true" />
+		</action>
+
+		<action    path = "affiliatesUsersGroupsDoRemCategory"
+							 type = "AffiliatesUsersGroupsDoRemCategoryAction"
+							 name = "affiliatesUsersGroupsDoRemCategory"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=affiliatesUsersGroupsList" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Section Groups -->
+
+<!-- End Module Affiliates -->
+
+
+
+<!-- Module Backup -->
+  <action-mappings>
+ 
+    <action    path = "backupList"
+               type = "BackupListAction"
+               name = "backupList"
+              scope = "request"
+           validate = "true">
+			<forward name="success" path="BackupList.tpl" />
+    </action>
+
+    <action    path = "backupCreate"
+               type = "BackupCreateAction"
+               name = "backupCreate"
+              scope = "request"
+           validate = "true">
+			<forward name="success" path="/Main.php?do=backupList&amp;message=created" redirect="true" />
+			<forward name="failure" path="/Main.php?do=backupList&amp;message=create_error" redirect="true" />
+    </action>
+
+    <action    path = "backupCreateToFile"
+               type = "BackupCreateToFileAction"
+               name = "backupCreateToFile"
+              scope = "request"
+           validate = "true">
+    </action>
+
+    <action    path = "backupRestore"
+               type = "BackupRestoreAction"
+               name = "backupRestore"
+              scope = "request"
+           validate = "true">
+			<forward name="success" path="/Main.php?do=backupList&amp;message=restored" redirect="true" />
+			<forward name="failure" path="/Main.php?do=backupList&amp;message=restore_error" redirect="true" />
+    </action>
+
+    <action    path = "backupRestoreFromFile"
+               type = "BackupRestoreFromFileAction"
+               name = "backupRestoreFromFile"
+              scope = "request"
+           validate = "true">
+			<forward name="success" path="/Main.php?do=backupList&amp;message=restored" redirect="true" />
+			<forward name="failure" path="/Main.php?do=backupList&amp;message=restore_error" redirect="true" />
+    </action>
+
+    <action    path = "backupDelete"
+               type = "BackupDeleteAction"
+               name = "backupDelete"
+              scope = "request"
+           validate = "true">
+			<forward name="success" path="/Main.php?do=backupList&amp;message=deleted" redirect="true" />
+			<forward name="failure" path="/Main.php?do=backupList&amp;message=delete_error" redirect="true" />
+    </action>
+
+    <action    path = "backupDownload"
+               type = "BackupDownloadAction"
+               name = "backupDownload"
+              scope = "request"
+           validate = "true">
+			<forward name="failure" path="/Main.php?do=backupList&amp;message=not_exists" redirect="true" />
+    </action>
+
+    <action    path = "backupSendByEmail"
+               type = "BackupSendByEmailAction"
+               name = "backupSendByEmail"
+              scope = "request"
+           validate = "true">
+			<forward name="success" path="/Main.php?do=backupList&amp;message=sent" redirect="true" />
+			<forward name="failure" path="/Main.php?do=backupList&amp;message=not_sent" redirect="true" />
+    </action>
+
+  </action-mappings>
+<!-- End Module Backup-->
+
+
+
+<!-- Module Categories -->
+	<action-mappings module="Categories">
+
+		<action    path = "categoriesEdit"
+							 type = "CategoriesEditAction"
+							 name = "categoriesEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="CategoriesEdit.tpl" />
+		</action>
+
+		<action    path = "categoriesDoEdit"
+							 type = "CategoriesDoEditAction"
+							 name = "categoriesDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=categoriesList" redirect="true" />
+			<forward name="failure" path="CategoriesEdit.tpl" />
+		</action>
+
+		<action    path = "categoriesDoEditX"
+							 type = "CategoriesDoEditXAction"
+							 name = "categoriesDoEditX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="CategoriesIncludeRow.tpl" />
+			<forward name="failure" path="CategoriesEdit.tpl" />
+		</action>
+
+		<action    path = "categoriesList"
+							 type = "CategoriesListAction"
+							 name = "categoriesList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="CategoriesList.tpl" />
+		</action>
+
+		<action    path = "categoriesDoDelete"
+							 type = "CategoriesDoDeleteAction"
+							 name = "categoriesDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=categoriesList" redirect="true" />
+			<forward name="failure" path="/Main.php?do=categoriesList&amp;message=notdeleted" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Categories -->
+
+
+
+<!-- Module Common -->
+  <action-mappings>
+    <action    path = "commonIndex"
+               type = "CommonIndexAction"
+               name = "commonIndex"
+              scope = "request"
+           validate = "true">
+    	<forward name="success" path="/Main.php?do=usersLogin" redirect="true" />
+    </action>
+    <action    path = "commonMaintenance"
+               type = "CommonMaintenanceAction"
+               name = "commonMaintenance"
+              scope = "request"
+           validate = "true">
+    	<forward name="success" path="CommonMaintenance.tpl" />
+    </action>
+
+    <action    path = "installGenerateConfig"
+               type = "InstallGenerateConfigAction"
+               name = "nstallGenerateConfig"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="InstallGenerateConfig.tpl" />
+    </action> 	
+	
+    <action    path = "js"
+               type = "JsAction"
+               name = "jsConfig"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Js.tpl" />
+    </action> 		
+    
+    <action    path = "commonSetLanguage"
+               type = "CommonSetLanguageAction"
+               name = "commonSetLanguage"
+              scope = "request"
+           validate = "true">
+    </action> 		
+
+	</action-mappings>
+<!-- End Common -->
+
+
+
+<!-- Module Config -->
+	<action-mappings module="Config">
+		<action    path = "configView"
+							 type = "ConfigViewAction"
+							 name = "configView"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ConfigView.tpl"/>
+		</action>
+
+		<action    path = "configEdit"
+							 type = "ConfigEditAction"
+							 name = "configEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ConfigEdit.tpl"/>
+		</action>
+		
+		<action    path = "configSet"
+							 type = "ConfigSetAction"
+							 name = "configSet"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ConfigSet.tpl"/>
+		</action>
+		
+		<action    path = "configDoSet"
+							 type = "ConfigDoSetAction"
+							 name = "configDoSet"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=configSet&amp;message=ok" redirect="true" />
+		</action>
+
+		<action    path = "configDoEdit"
+							 type = "ConfigDoEditAction"
+							 name = "configDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=configView&amp;message=ok" redirect="true" />
+		</action>
+	</action-mappings>
+<!-- End Module Config -->
+
+
+
+<!-- Module Import-->
+
+<!-- Section Products -->
+	<action-mappings>
+		<action    path = "importProductsEdit"
+							 type = "ImportProductsEditAction"
+							 name = "importProductsEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportProductsEdit.tpl" />
+		</action>
+
+		<action    path = "importProductsDoEdit"
+							 type = "ImportProductsDoEditAction"
+							 name = "importProductsDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importProductsList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="ImportProductsEdit.tpl" />
+		</action>
+
+		<action    path = "importProductsList"
+							 type = "ImportProductsListAction"
+							 name = "importProductsList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportProductsList.tpl" />
+		</action>
+
+		<action    path = "importProductsDoDelete"
+							 type = "ImportProductsDoDeleteAction"
+							 name = "importProductsDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importProductsList&amp;message=deleted_ok" redirect="true" />
+		</action>
+
+		 <action    path = "importProductsDoActivate"
+							 type = "ImportProductsDoActivateAction"
+							 name = "importProductsDoActivate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importProductsList&amp;message=activated_ok" redirect="true" />
+		</action>
+
+		<action    path = "importProductsReassign"
+							 type = "ImportProductsReassignAction"
+							 name = "importProductsReassign"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportProductsReassign.tpl" />
+		</action>
+
+		<action    path = "importProductsDoReassign"
+							 type = "ImportProductsDoReassignAction"
+							 name = "importProductsDoReassign"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importProductsList&amp;message=reassigned_ok" redirect="true" />
+		</action>
+
+		<action    path = "importProductsDoAssignCode"
+							 type = "ImportProductsDoAssignCodeAction"
+							 name = "importProductsDoAssignCode"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportProductsDoAssignCode.tpl" />
+		</action>
+
+	</action-mappings>
+<!-- End Section Products -->
+
+<!-- Section Suppliers -->
+	<action-mappings>
+
+		<action    path = "importSuppliersEdit"
+							 type = "ImportSuppliersEditAction"
+							 name = "importSuppliersEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSuppliersEdit.tpl" />
+		</action>
+
+		<action    path = "importSuppliersDoEdit"
+							 type = "ImportSuppliersDoEditAction"
+							 name = "importSuppliersDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importSuppliersList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="ImportSuppliersEdit.tpl" />
+		</action>
+
+		<action    path = "importSuppliersList"
+							 type = "ImportSuppliersListAction"
+							 name = "importSuppliersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSuppliersList.tpl" />
+		</action>
+
+		<action    path = "importSuppliersDoDelete"
+							 type = "ImportSuppliersDoDeleteAction"
+							 name = "importSuppliersDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importSuppliersList&amp;message=deleted_ok" redirect="true" />
+		</action>
+
+		<action    path = "importSuppliersDoActivate"
+							 type = "ImportSuppliersDoActivateAction"
+							 name = "importSuppliersDoActivate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importSuppliersList&amp;message=activated_ok" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Section Suppliers -->
+
+<!-- Section Ports -->
+	<action-mappings>
+
+		<action    path = "importPortsEdit"
+							 type = "ImportPortsEditAction"
+							 name = "importPortsEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportPortsEdit.tpl" />
+		</action>
+
+		<action    path = "importPortsDoEdit"
+							 type = "ImportPortsDoEditAction"
+							 name = "importPortsDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importPortsList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="ImportPortsEdit.tpl" />
+		</action>
+
+		<action    path = "importPortsList"
+							 type = "ImportPortsListAction"
+							 name = "importPortsList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportPortsList.tpl" />
+		</action>
+
+		<action    path = "importPortsDoDelete"
+							 type = "ImportPortsDoDeleteAction"
+							 name = "importPortsDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importPortsList&amp;message=deleted_ok" redirect="true" />
+		</action>
+
+		<action    path = "importPortsDoActivate"
+							 type = "ImportPortsDoActivateAction"
+							 name = "importPortsDoActivate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importPortsList&amp;message=activated_ok" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Secton Ports -->
+
+<!-- Section Incoterms -->
+	<action-mappings>
+
+		<action    path = "importIncotermsEdit"
+							 type = "ImportIncotermsEditAction"
+							 name = "importIncotermsEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportIncotermsEdit.tpl" />
+		</action>
+
+		<action    path = "importIncotermsDoEdit"
+							 type = "ImportIncotermsDoEditAction"
+							 name = "importIncotermsDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importIncotermsList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="ImportIncotermsEdit.tpl" />
+		</action>
+
+		<action    path = "importIncotermsList"
+							 type = "ImportIncotermsListAction"
+							 name = "importIncotermsList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportIncotermsList.tpl" />
+		</action>
+
+		<action    path = "importIncotermsDoDelete"
+							 type = "ImportIncotermsDoDeleteAction"
+							 name = "importIncotermsDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importIncotermsList&amp;message=deleted_ok" redirect="true" />
+		</action>
+
+		<action    path = "importIncotermsDoActivate"
+							 type = "ImportIncotermsDoActivateAction"
+							 name = "importIncotermsDoActivate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importIncotermsList&amp;message=activate_ok" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Secton Ports -->
+
+<!-- Section ClientQuote -->
+	<action-mappings>
+
+		<action    path = "importClientQuoteList"
+							 type = "ImportClientQuoteListAction"
+							 name = "importClientQuoteList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success-admin" path="ImportClientQuoteAdminList.tpl" />
+			<forward name="success-affiliate" path="ImportClientQuoteAffiliateList.tpl" />
+			<forward name="include" path="ImportClientQuoteAdminList.tpl" />
+		</action>
+
+		<action    path = "importClientQuoteCreate"
+							 type = "ImportClientQuoteCreateAction"
+							 name = "importClientQuoteCreate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=created" redirect="true" />
+			<forward name="failure" path="/Main.php?do=importClientQuoteList&amp;message=create-failed" redirect="true" />
+		</action>
+
+		<action    path = "importClientQuoteEdit"
+							 type = "ImportClientQuoteEditAction"
+							 name = "importClientQuoteEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success-admin" path="ImportClientQuoteAdminEdit.tpl" />
+			<forward name="success-affiliate" path="ImportClientQuoteAffiliateEdit.tpl" />
+		</action>
+
+		<action    path = "importClientQuoteAddItemX"
+							 type = "ImportClientQuoteAddItemXAction"
+							 name = "importClientQuoteAddItemX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportClientQuoteAddItemX.tpl" />
+		</action>
+
+		<action    path = "importClientQuoteDeleteItemX"
+							 type = "ImportClientQuoteDeleteItemXAction"
+							 name = "importClientQuoteDeleteItemX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportClientQuoteDeleteItemX.tpl" />
+		</action>
+
+		<action    path = "importClientQuoteConfirm"
+							 type = "ImportClientQuoteConfirmAction"
+							 name = "importClientQuoteConfirm"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importClientQuoteList&amp;message=confirmed" redirect="true"/>
+		</action>
+
+		<action    path = "importClientQuoteAdminConfirm"
+							 type = "ImportClientQuoteAdminConfirmAction"
+							 name = "importClientQuoteAdminConfirm"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importClientQuoteList&amp;message=quoted" redirect="true"/>
+		</action>
+
+		<action    path = "importClientQuoteHistory"
+							 type = "ImportClientQuoteHistoryAction"
+							 name = "importClientQuoteHistory"
+							scope = "request"
+					 validate = "true">
+			<forward name="success-admin" path="ImportClientQuoteAdminHistory.tpl" />
+			<forward name="success-affiliate" path="ImportClientQuoteAffiliateHistory.tpl" />
+		</action>
+
+		<action    path = "importSupplierQuoteCreate"
+							 type = "ImportSupplierQuoteCreateAction"
+							 name = "importSupplierQuoteCreate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=supplier-quote-created" redirect="true"/>
+		</action>
+
+		<action    path = "importProductSearchX"
+							 type = "ImportProductSearchXAction"
+							 name = "importProductSearchX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportProductSearchX.tpl" />
+		</action>
+
+		<action    path = "importClientQuoteItemSetPrice"
+							 type = "ImportClientQuoteItemSetPriceAction"
+							 name = "importClientQuoteItemSetPrice"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportClientQuoteItemSetPrice.tpl" />
+		</action>
+
+		<action    path = "importClientQuoteItemsSupplierX"
+							 type = "ImportClientQuoteItemsSupplierXAction"
+							 name = "importClientQuoteItemsSupplierX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportClientQuoteItemsSupplierX.tpl" />
+		</action>
+
+		<action    path = "importClientQuoteItemDoSetPrice"
+							 type = "ImportClientQuoteItemDoSetPriceAction"
+							 name = "importClientQuoteItemDoSetPrice"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=price-set" redirect="true"/>
+		</action>
+
+		<action    path = "importClientQuoteAccept"
+							 type = "ImportClientQuoteAcceptAction"
+							 name = "importClientQuoteAccept"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=accepted" redirect="true"/>
+		</action>
+
+		<action    path = "importClientQuoteReject"
+							 type = "ImportClientQuoteRejectAction"
+							 name = "importClientQuoteReject"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importClientQuoteEdit&amp;message=rejected" redirect="true"/>
+		</action>
+
+	</action-mappings>
+<!-- End Section ClientQuote -->
+
+<!-- Section SupplierQuote -->
+	<action-mappings>
+
+		<action    path = "importSupplierQuoteList"
+							 type = "ImportSupplierQuoteListAction"
+							 name = "importSupplierQuoteList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSupplierQuoteList.tpl" />
+		</action>
+
+		<action    path = "importSupplierQuoteEdit"
+							 type = "ImportSupplierQuoteEditAction"
+							 name = "importSupplierQuoteEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSupplierQuoteEdit.tpl" />
+		</action>
+
+		<action    path = "importSupplierQuoteAccess"
+							 type = "ImportSupplierQuoteAccessAction"
+							 name = "importSupplierQuoteAccess"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSupplierQuoteAccess.tpl" />
+			<forward name="failure" path="ImportSupplierQuoteAccessFailure.tpl" />
+		</action>
+
+		<action    path = "importSupplierQuoteItemAccess"
+							 type = "ImportSupplierQuoteItemAccessAction"
+							 name = "importSupplierQuoteItemAccess"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSupplierQuoteItemAccess.tpl" />
+			<forward name="failure" path="ImportSupplierQuoteAccessFailure.tpl" />
+		</action>
+
+		<action    path = "importSupplierQuoteItemReplace"
+							 type = "ImportSupplierQuoteItemReplaceAction"
+							 name = "importSupplierQuoteItemReplace"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSupplierQuoteItemReplace.tpl" />
+			<forward name="failure" path="ImportSupplierQuoteAccessFailure.tpl" />
+		</action>
+
+		<action    path = "importSupplierQuoteHistory"
+							 type = "ImportSupplierQuoteHistoryAction"
+							 name = "importSupplierQuoteHistoryConfirm"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSupplierQuoteHistory.tpl" />
+		</action>
+
+		<action    path = "importSupplierQuoteConfirm"
+							 type = "ImportSupplierQuoteConfirmAction"
+							 name = "importSupplierQuoteConfirm"
+							scope = "request"
+					 validate = "true">
+					<forward name="success" path="/Main.php?do=importSupplierQuoteAccess&amp;message=confirmed" redirect='true'/>
+		</action>
+
+		<action    path = "importSupplierQuoteDoEditItem"
+							 type = "ImportSupplierQuoteDoEditItemAction"
+							 name = "importSupplierQuoteDoEditItem"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importSupplierQuoteAccess&amp;message=quoted" redirect='true'/>
+			<forward name="failure" path="ImportSupplierQuoteAccessFailure.tpl" />
+		</action>
+
+		<action    path = "importSupplierQuoteDoReplaceItem"
+							 type = "ImportSupplierQuoteDoReplaceItemAction"
+							 name = "importSupplierQuoteDoReplaceItem"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importSupplierQuoteAccess&amp;message=replaced" redirect='true'/>
+			<forward name="failure" path="ImportSupplierQuoteAccessFailure.tpl" />
+		</action>
+
+	<action    path = "importSupplierQuoteResend"
+						 type = "ImportSupplierQuoteResendAction"
+						 name = "importSupplierQuoteResend"
+						scope = "request"
+				 validate = "true">
+		<forward name="success" path="/Main.php?do=importSupplierQuoteList&amp;message=resent" />
+		<forward name="success-multiple" path="/Main.php?do=importSupplierQuoteList&amp;message=resent-multiple" />
+		<forward name="failure" path="/Main.php?do=importSupplierQuoteList&amp;message=resent-failure" />
+	</action>
+
+		<action    path = "importSupplierQuoteItemsNegociate"
+							 type = "ImportSupplierQuoteItemsNegociateAction"
+							 name = "importSupplierQuoteItemsNegociate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSupplierQuoteItemsNegociate.tpl" />
+		</action>
+
+		<action    path = "importSupplierQuoteItemsDoNegociate"
+							 type = "ImportSupplierQuoteItemsDoNegociateAction"
+							 name = "importSupplierQuoteItemsDoNegociate"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importSupplierQuoteEdit&amp;message=negociate" redirect="true" />
+		</action>
+
+		<action    path = "importSupplierQuoteEdit"
+							 type = "ImportSupplierQuoteEditAction"
+							 name = "importSupplierQuoteEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSupplierQuoteEdit.tpl" />
+		</action>
+
+		<action    path = "importSupplierQuoteResend"
+							 type = "ImportSupplierQuoteResendAction"
+							 name = "importSupplierQuoteResend"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importSupplierQuoteList&amp;message=resent" />
+			<forward name="success-multiple" path="/Main.php?do=importSupplierQuoteList&amp;message=resent-multiple" />
+			<forward name="failure" path="/Main.php?do=importSupplierQuoteList&amp;message=resent-failure" />
+		</action>
+
+	</action-mappings>
+<!-- End Section SupplierQuote -->
+
+<!-- Section ClientOrder -->
+	<action-mappings>
+
+		<action    path = "importClientOrderList"
+							 type = "ImportClientOrderListAction"
+							 name = "importClientOrderList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success-admin" path="ImportClientOrderAdminList.tpl" />
+			<forward name="success-affiliate" path="ImportClientOrderAffiliateList.tpl" />
+		</action>
+
+		<action    path = "importClientOrderEdit"
+							 type = "ImportClientOrderEditAction"
+							 name = "importClientOrderEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success-admin" path="ImportClientOrderAdminEdit.tpl" />
+			<forward name="success-affiliate" path="ImportClientOrderAffiliateEdit.tpl" />
+		</action>
+
+			<action    path = "importClientOrderHistory"
+								 type = "ImportClientOrderHistoryAction"
+								 name = "importClientOrderHistory"
+								scope = "request"
+						 validate = "true">
+				<forward name="success-admin" path="ImportClientOrderAdminHistory.tpl" />
+				<forward name="success-affiliate" path="ImportClientOrderAffiliateHistory.tpl" />
+			</action>
+
+		</action-mappings>
+	<!-- End Section ClientOrder -->
+
+	<!-- Section SupplierOrder -->
+		<action-mappings>
+
+		<action    path = "importSupplierOrderList"
+							 type = "ImportSupplierOrderListAction"
+							 name = "importSupplierOrderList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSupplierOrderList.tpl" />
+		</action>
+
+		<action    path = "importSupplierOrderEdit"
+							 type = "ImportSupplierOrderEditAction"
+							 name = "importSupplierOrderEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSupplierOrderEdit.tpl" />
+		</action>
+
+		<action    path = "importSupplierOrderHistory"
+							 type = "ImportSupplierOrderHistoryAction"
+							 name = "importSupplierOrderHistory"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSupplierOrderHistory.tpl" />
+		</action>
+
+		<action    path = "importSupplierOrderGetX"
+							 type = "ImportSupplierOrderGetXAction"
+							 name = "importSupplierOrderGetX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSupplierOrderGetX.tpl" />
+		</action>
+
+		<action    path = "importSupplierOrderTracking"
+							 type = "ImportSupplierOrderTrackingAction"
+							 name = "importSupplierOrderTracking"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportSupplierOrderTracking.tpl" />
+		</action>
+
+		<action    path = "importSupplierOrderDoTracking"
+							 type = "ImportSupplierOrderDoTrackingAction"
+							 name = "importSupplierOrderDoTracking"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importSupplierOrderList&amp;message=tracked" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Section SupplierOrder -->
+
+<!-- Section BankTransfer -->
+	<action-mappings>
+
+		<action    path = "importBankTransferList"
+							 type = "ImportBankTransferListAction"
+							 name = "importBankTransferList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportBankTransferList.tpl" />
+		</action>
+
+		<action    path = "importBankTransferEdit"
+							 type = "ImportBankTransferEditAction"
+							 name = "importBankTransferEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportBankTransferEdit.tpl" />
+		</action>
+
+			<action    path = "importBankTransferDoEdit"
+								 type = "ImportBankTransferDoEditAction"
+								 name = "importBankTransferDoEdit"
+								scope = "request"
+						 validate = "true">
+				<forward name="success" path="/Main.php?do=importBankTransferList&amp;message=ok" redirect="true" />
+				<forward name="failure" path="ImportBankTransferEdit.tpl" />
+		</action>
+
+	</action-mappings>
+<!-- End Section BankTransfer -->
+
+<!-- Section BankAccounts -->
+	<action-mappings>
+
+		<action    path = "importBankAccountsEdit"
+							 type = "ImportBankAccountsEditAction"
+							 name = "importBankAccountsEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportBankAccountsEdit.tpl" />
+		</action>
+
+		<action    path = "importBankAccountsDoEdit"
+							 type = "ImportBankAccountsDoEditAction"
+							 name = "importBankAccountsDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importBankAccountsList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="ImportBankAccountsEdit.tpl" />
+		</action>
+
+		<action    path = "importBankAccountsList"
+							 type = "ImportBankAccountsListAction"
+							 name = "importBankAccountsList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportBankAccountsList.tpl" />
+		</action>
+
+		<action    path = "importBankAccountsDoDelete"
+							 type = "ImportBankAccountsDoDeleteAction"
+							 name = "importBankAccountsDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importBankAccountsList&amp;message=deleted_ok" redirect="true" />
+		</action>
+
+	</action-mappings>
+
+<!-- End Section BankAccounts -->
+
+<!-- Section Shipment -->
+	<action-mappings>
+
+		<action    path = "importShipmentList"
+							 type = "ImportShipmentListAction"
+							 name = "importShipmentList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportShipmentList.tpl" />
+		</action>
+
+		<action    path = "importShipmentEdit"
+							 type = "ImportShipmentEditAction"
+							 name = "importShipmentEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportShipmentEdit.tpl" />
+		</action>
+
+		<action    path = "importShipmentHistory"
+							 type = "ImportShipmentHistoryAction"
+							 name = "importShipmentHistory"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportShipmentHistory.tpl" />
+		</action>
+
+		<action    path = "importShipmentReleaseList"
+							 type = "ImportShipmentReleaseListAction"
+							 name = "importShipmentReleaseList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportShipmentReleaseList.tpl" />
+		</action>
+
+		<action    path = "importShipmentReleaseEdit"
+							 type = "ImportShipmentReleaseEditAction"
+							 name = "importShipmentReleaseEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportShipmentReleaseEdit.tpl" />
+		</action>
+
+		<action    path = "importShipmentReleaseHistory"
+							 type = "ImportShipmentReleaseHistoryAction"
+							 name = "importShipmentReleaseHistory"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ImportShipmentReleaseHistory.tpl" />
+		</action>
+
+	</action-mappings>
+<!-- End Section Shipment -->
+
+<!-- End Module Import -->
+
+
+
+<!-- Module Install -->
+	<action-mappings module="Install">
+
+		<action    path = "installList"
+							 type = "InstallListAction"
+							 name = "installList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallList.tpl" />
+		</action>
+
+		<action    path = "installSetupSelectLanguages"
+							 type = "InstallSetupSelectLanguagesAction"
+							 name = "installSetupSelectLanguages"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupSelectLanguages.tpl" />
+		</action>
+
+		<action    path = "installSetupModuleInformation"
+							 type = "InstallSetupModuleInformationAction"
+							 name = "installSetupModuleInformation"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupModuleInformation.tpl" />
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
+		</action>
+
+		<action    path = "installDoSetupModuleInformation"
+							 type = "InstallDoSetupModuleInformationAction"
+							 name = "installDoSetupModuleInformation"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="/Main.php?do=installSetupActionsLabel" />
+			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
+		</action>
+
+		<action    path = "installSetupActionsLabel"
+							 type = "InstallSetupActionsLabelAction"
+							 name = "installSetupActionsLabel"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupActionsLabel.tpl" />
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
+		</action>
+
+		<action    path = "installDoSetupActionsLabel"
+							 type = "InstallDoSetupActionsLabelAction"
+							 name = "installDoSetupActionsLabel"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="/Main.php?do=installSetupPermissions" redirect="true" />
+			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
+		</action>
+
+		<action    path = "installSetupPermissions"
+							 type = "InstallSetupPermissionsAction"
+							 name = "installSetupPermissions"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupPermissions.tpl" />
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
+		</action>
+
+		<action    path = "installDoSetupPermissions"
+							 type = "InstallDoSetupPermissionsAction"
+							 name = "installDoSetupPermissions"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="/Main.php?do=installSetupMessages" redirect="true" />
+			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
+		</action>
+
+		<action    path = "installSetupMessages"
+							 type = "InstallSetupMessagesAction"
+							 name = "installSetupMessages"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallSetupMessages.tpl" />
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
+		</action>
+
+		<action    path = "installDoSetupMessages"
+							 type = "InstallDoSetupMessagesAction"
+							 name = "installDoSetupMessages"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="/Main.php?do=installFileCheck" />
+			<forward name="success-step"  path="/Main.php?do=installList&amp;message=step-success" redirect="true"/>
+		</action>
+
+		<action    path = "installFileCheck"
+							 type = "InstallFileCheckAction"
+							 name = "installFileCheck"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="InstallFileCheck.tpl" />
+			<forward name="failure" path="/Main.php?do=installList" redirect="true"/>
+		</action>
+
+		<action    path = "installDoFileCheck"
+							 type = "InstallDoFileCheckAction"
+							 name = "installDoFileCheck"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="/Main.php?do=installList" />
+		</action>
+
+	</action-mappings>
+<!-- End Module Install -->
+
+
+
+<!-- Module Modules -->
+	<action-mappings module="Modules">
+		<action    path = "modulesList"
+							 type = "ModulesListAction"
+							 name = "modulesList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="ModulesList.tpl" />
+		</action>
+
+		<action    path = "modulesEdit"
+							 type = "ModulesEditAction"
+							 name = "modulesEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="ModulesEdit.tpl" />
+		</action>
+
+	<action    path = "modulesDoEdit"
+							 type = "ModulesDoEditAction"
+							 name = "modulesDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=modulesList" redirect='true'/>
+		</action>
+
+		<action    path = "modulesDoActivateX"
+							 type = "ModulesDoActivateXAction"
+							 name = "modulesDoActivateX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ModulesDoActivateXModuleSuccess.tpl"/>
+			<forward name="errorDependencyOff" path="ModulesDoActivateXModuleOff.tpl"/>
+			<forward name="errorDependencyOn" path="ModulesDoActivateXModuleOn.tpl"/>
+		</action>
+		<action    path = "modulesDoCreateXml"
+							 type = "ModulesDoCreateXml"
+							 name = "modulesDoCreateXml"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=modulesCreateXml&amp;message=ok" redirect="true" />
+		</action>
+		<action    path = "modulesCreateXml"
+							 type = "ModulesCreateXml"
+							 name = "modulesCreateXml"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="ModulesCreateXml.tpl" />
+		</action>
+	</action-mappings>
+<!-- End Module Modules -->
+
+
+
+<!-- Modulo Multilang -->
+
+<!-- Section Languages -->
+	<action-mappings>
+
+		<action    path = "multilangLanguagesEdit"
+							 type = "MultilangLanguagesEditAction"
+							 name = "multilangLanguagesEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="MultilangLanguagesEdit.tpl" />
+		</action>
+
+		<action    path = "multilangLanguagesDoEdit"
+							 type = "MultilangLanguagesDoEditAction"
+							 name = "multilangLanguagesDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=multilangLanguagesList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="MultilangLanguagesEdit.tpl" />
+		</action>
+
+		<action    path = "multilangLanguagesList"
+							 type = "MultilangLanguagesListAction"
+							 name = "multilangLanguagesList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="MultilangLanguagesList.tpl" />
+		</action>
+
+		<action    path = "multilangLanguagesDoDelete"
+							 type = "MultilangLanguagesDoDeleteAction"
+							 name = "multilangLanguagesDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=multilangLanguagesList&amp;message=deleted_ok" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Section Languages -->
+
+<!-- Seccion Texts -->
+	<action-mappings>
+
+		<action    path = "multilangTextsEdit"
+							 type = "MultilangTextsEditAction"
+							 name = "multilangTextsEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="MultilangTextsEdit.tpl" />
+		</action>
+
+		<action    path = "multilangTextsDoEdit"
+							 type = "MultilangTextsDoEditAction"
+							 name = "multilangTextsDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=multilangTextsList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="MultilangTextsEdit.tpl" />
+		</action>
+
+		<action    path = "multilangTextsEditBulk"
+							 type = "MultilangTextsEditBulkAction"
+							 name = "multilangTextsEditBulk"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="MultilangTextsEditBulk.tpl" />
+		</action>
+
+		<action    path = "multilangTextsDoEditBulk"
+							 type = "MultilangTextsDoEditBulkAction"
+							 name = "multilangTextsDoEditBulk"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=multilangTextsList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="MultilangTextsEditBulk.tpl" />
+		</action>
+
+		<action    path = "multilangTextsList"
+							 type = "MultilangTextsListAction"
+							 name = "multilangTextsList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="MultilangTextsList.tpl" />
+			<forward name="search" path="MultilangTextsListSearch.tpl" />
+		</action>
+
+		<action    path = "multilangTextsDump"
+							 type = "MultilangTextsDumpAction"
+							 name = "multilangTextsDump"
+							scope = "request"
+					 validate = "true">
+				<forward name="success" path="MultilangTextsDump.tpl" />
+				<forward name="successDump" path="MultilangTextsDoDump.tpl" />
+		</action>
+
+		<action    path = "multilangTextsDoDump"
+							 type = "MultilangTextsDoDumpAction"
+							 name = "multilangTextsDoDump"
+							scope = "request"
+					 validate = "true">
+				<forward name="success" path="MultilangTextsDoDump.tpl" />
+		</action>
+
+		<action    path = "multilangTextsDoDelete"
+							 type = "MultilangTextsDoDeleteAction"
+							 name = "multilangTextsDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=multilangTextsList&amp;message=deleted_ok" redirect="true" />
+		</action>
+
+	</action-mappings>
+<!-- End Section Texts -->
+
+<!-- End Module Multilang -->
+
+
+
+<!-- Module Security -->
+	<action-mappings module="Security">
+
+		<action    path = "securityNoPermission"
+							 type = "SecurityNoPermissionAction"
+							 name = "securityNoPermission"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityNoPermission.tpl" />
+		</action>
+
+		<action    path = "securityUsersEdit"
+							 type = "SecurityUsersEditAction"
+							 name = "securityUsersEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityUsersEdit.tpl" />
+		</action>
+
+		<action    path = "securityUsersDoEdit"
+							 type = "SecurityUsersDoEditAction"
+							 name = "securityUsersDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityUsersEdit&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityAffiliatesEdit"
+							 type = "SecurityAffiliatesEditAction"
+							 name = "securityAffiliatesEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityAffiliatesEdit.tpl" />
+		</action>
+
+		<action    path = "securityAffiliatesDoEdit"
+							 type = "SecurityAffiliatesDoEditAction"
+							 name = "securityAffiliatesDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityAffiliatesEdit&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityRegistrationEdit"
+							 type = "SecurityRegistrationEditAction"
+							 name = "securityRegistrationEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityRegistrationEdit.tpl" />
+		</action>
+
+		<action    path = "securityRegistrationDoEdit"
+							 type = "SecurityRegistrationDoEditAction"
+							 name = "securityRegistrationDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityRegistrationEdit&amp;message=saved" redirect='true'/>
+		</action>
+
+	</action-mappings>
+
+<!-- End Module Security -->
+
+<!-- Module Security  OLD -->
+	<action-mappings>
+
+		<action    path = "securityActionUsersList"
+							 type = "SecurityActionUsersListAction"
+							 name = "securityActionUsersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityActionUsersList.tpl" />
+		</action>
+
+		<action    path = "securityActionUsersDoSave"
+							 type = "SecurityActionUsersDoSaveAction"
+							 name = "securityActionUsersDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityActionUsersList&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityActionNoCheckLoginList"
+							 type = "SecurityActionNoCheckLoginListAction"
+							 name = "securityActionNoCheckLoginList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityActionNoCheckLoginList.tpl" />
+		</action>
+
+		<action    path = "securityActionAffiliateUsersList"
+							 type = "SecurityActionAffiliateUsersListAction"
+							 name = "securityActionAffiliateUsersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityActionAffiliateUsersList.tpl" />
+		</action>
+
+		<action    path = "securityActionAffiliateUsersDoSave"
+							 type = "SecurityActionAffiliateUsersDoSaveAction"
+							 name = "securityActionAffiliateUsersDoSaveAction"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityActionAffiliateUsersList&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityActionRegUsersList"
+							 type = "SecurityActionRegUsersListAction"
+							 name = "securityActionRegUsersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="SecurityActionRegUsersList.tpl" />
+		</action>
+
+		<action    path = "securityActionRegUsersDoSave"
+							 type = "SecurityActionRegUsersDoSaveAction"
+							 name = "securityActionRegUsersDoSaveAction"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityActionRegUsersList&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityActionNoCheckLoginDoSave"
+							 type = "SecurityActionNoCheckLoginDoSaveAction"
+							 name = "securityActionNoCheckLoginDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityActionNoCheckLoginList&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityModuleList"
+							 type = "SecurityModuleListAction"
+							 name = "securityModuleList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="SecurityModuleList.tpl" />
+		</action>
+
+		<action    path = "securityModuleDoSave"
+							 type = "SecurityModuleDoSaveAction"
+							 name = "securityModuleDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityModuleList" redirect='true'/>
+		</action>
+
+		<action    path = "securityModuleUsersList"
+							 type = "SecurityModuleUsersListAction"
+							 name = "securityModuleUsersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="SecurityModuleUsersList.tpl" />
+		</action>
+
+		<action    path = "securityModuleUsersDoSave"
+							 type = "SecurityModuleUsersDoSaveAction"
+							 name = "securityModuleUsersDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityModuleUsersList&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityModuleAffiliateUsersList"
+							 type = "SecurityModuleAffiliateUsersListAction"
+							 name = "securityModuleAffiliateUsersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="SecurityModuleAffiliateUsersList.tpl" />
+		</action>
+
+		<action    path = "securityModuleAffiliateUsersDoSave"
+							 type = "SecurityModuleAffiliateUsersDoSaveAction"
+							 name = "securityModuleAffiliateUsersDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityModuleAffiliateUsersList&amp;message=saved" redirect='true'/>
+		</action>
+
+		<action    path = "securityModuleRegUsersList"
+							 type = "SecurityModuleRegUsersListAction"
+							 name = "securityModuleRegUsersList"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="SecurityModuleRegUsersList.tpl" />
+		</action>
+
+		<action    path = "securityModuleRegUsersDoSave"
+							 type = "SecurityModuleRegUsersDoSaveAction"
+							 name = "securityModuleRegUsersDoSave"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=securityModuleRegUsersList&amp;message=saved" redirect='true'/>
+		</action>
+
+	</action-mappings>
+<!-- End Module Security OLD-->
+
+
 
 <!-- Module Users-->
 	<action-mappings module="Users">
+
 		<action    path = "usersLogin"
 							 type = "UsersLoginAction"
 							 name = "usersLogin"
@@ -109,7 +1833,7 @@
 							 name = "usersDoLogout"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="/Main.php?do=index" redirect="true"/>
+			<forward name="success" path="/Main.php?do=usersLogin" redirect="true"/>
 		</action>
 
 		<action    path = "usersList"
@@ -118,9 +1842,6 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="UsersList.tpl"/>
-			<forward name="include" path="UsersListInclude.tpl"/>
-			<forward name="includeLogged" path="UsersListIncludeLogged.tpl"/>
-			<forward name="includeNotLogged" path="UsersListIncludeNotLogged.tpl"/>
 		</action>
 
 		<action    path = "usersDoEdit"
@@ -129,7 +1850,17 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="/Main.php?do=usersList&amp;message=saved" redirect="true"/>
+			<forward name="successAdd" path="/Main.php?do=usersList&amp;message=added" redirect="true"/>
 		</action>
+
+		<action    path = "usersValidationUsernameX"
+							 type = "UsersValidationUsernameXAction"
+							 name = "usersValidationUsernameX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success"  path="UsersValidationUsername.tpl" />
+		</action>
+
 
 		<action    path = "usersDoDelete"
 							 type = "UsersDoDeleteAction"
@@ -148,6 +1879,15 @@
 			<forward name="success" path="/Main.php?do=usersList" redirect="true" />
 		</action>
 
+		<action    path = "usersDoLinkToSupplier"
+							 type = "UsersDoLinkToSupplierAction"
+							 name = "usersDoLinkToSupplier"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=usersList" redirect="true" />
+		</action>
+
+
 		<action    path = "usersDoRemoveFromGroup"
 							 type = "UsersDoRemoveFromGroupAction"
 							 name = "usersDoRemoveFromGroup"
@@ -164,10 +1904,12 @@
 			<forward name="success" path="/Main.php?do=usersList&amp;message=activated" redirect="true" />
 			<forward name="failure" path="/Main.php?do=usersList&amp;message=notactivated" redirect="true" />
 		</action>
+
 	</action-mappings>
 
-<!-- Module Users - Section Groups -->
+<!-- Section Groups -->
 	<action-mappings module="Users" section="Groups">
+
 		<action    path = "usersGroupsList"
 							 type = "UsersGroupsListAction"
 							 name = "usersGroupsList"
@@ -209,11 +1951,13 @@
 			<forward name="success" path="/Main.php?do=usersGroupsList&amp;message=deleted" redirect="true" />
 			<forward name="failure" path="/Main.php?do=usersGroupsList&amp;message=notdeleted" redirect="true" />
 		</action>
-	</action-mappings>
-<!-- End Section - Groups -->
 
-<!-- Module Users - Section Levels -->
+	</action-mappings>
+<!-- End Section Groups -->
+
+<!-- Section Levels -->
 	<action-mappings module="Users" section="Levels">
+
 		<action    path = "usersLevelsList"
 							 type = "UsersLevelsListAction"
 							 name = "usersLevelsList"
@@ -239,1265 +1983,41 @@
 			<forward name="success" path="/Main.php?do=usersLevelsList&amp;message=deleted" redirect="true" />
 			<forward name="failure" path="/Main.php?do=usersLevelsList&amp;message=notdeleted" redirect="true" />
 		</action>
+
 	</action-mappings>
-<!-- End Section - Levels -->
+<!-- End Section Levels -->
 
 <!-- End Module Users -->
 
-<!-- Module Htmls -->
-	<action-mappings  module="Htmls">
-		<action    path = "htmlsUpdate"
-							 type = "HtmlsUpdateAction"
-							 name = "htmlsUpdate"
+<!-- Module Validation -->
+	<action-mappings module="Validation">
+
+		<action    path = "validationExample"
+							 type = "ValidationExampleAction"
+							 name = "validationExample"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="HtmlsUpdate.tpl"/>
+			<forward name="success"  path="ValidationExample.tpl" />
 		</action>
 
-		<action    path = "htmlsDoUpdate"
-							 type = "HtmlsDoUpdateAction"
-							 name = "htmlsDoUpdate"
+		<action    path = "validationExampleDo"
+							 type = "ValidationExampleDoAction"
+							 name = "validationExampleDo"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="HtmlsUpdate.tpl"/>
-		</action>
-
-		<action    path = "htmlsShow"
-							 type = "HtmlsShowAction"
-							 name = "htmlsShow"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="HtmlsShow.tpl"/>
-		</action>
-
-		<action    path = "htmlsShowPrivate"
-							 type = "HtmlsShowPrivateAction"
-							 name = "htmlsShowPrivate"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="HtmlsShow.tpl"/>
-		</action>
-	</action-mappings>
-<!-- End Module Htmls -->
-
-
-<!-- Module Config -->
-	<action-mappings module="Config">
-		<action    path = "configView"
-							 type = "ConfigViewAction"
-							 name = "configView"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="ConfigView.tpl"/>
-		</action>
-
-		<action    path = "configEdit"
-							 type = "ConfigEditAction"
-							 name = "configEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="ConfigEdit.tpl"/>
+			<forward name="success"  path="ValidationExample.tpl" />
 		</action>
 		
-		<action    path = "configSet"
-							 type = "ConfigSetAction"
-							 name = "configSet"
+		<action    path = "validationAjaxExample"
+							 type = "ValidationAjaxExampleAction"
+							 name = "validationAjaxExample"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="ConfigSet.tpl"/>
-		</action>
-		
-		<action    path = "configDoSet"
-							 type = "ConfigDoSetAction"
-							 name = "configDoSet"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=configSet&amp;message=ok" redirect="true" />
-		</action>
-
-		<action    path = "configDoEdit"
-							 type = "ConfigDoEditAction"
-							 name = "configDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=configView&amp;message=ok" redirect="true" />
-		</action>
-
-		<action    path = "configCreateXmlForAction"
-							 type = "ConfigCreateXmlForAction"
-							 name = "configCreateXmlForAction"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="ConfigCreateXmlForAction.tpl"/>
-		</action>
-		<action    path = "configDoCreateXmlForAction"
-							 type = "ConfigDoCreateXmlForAction"
-							 name = "configDoCreateXmlForAction"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=configCreateXmlForAction&amp;message=ok" redirect="true" />
-		</action>
-	</action-mappings>
-<!-- End Module Config -->
-
-<!-- Module Affiliates -->
-	<action-mappings module="Affiliates">
-		<action    path = "affiliatesList"
-							 type = "AffiliatesListAction"
-							 name = "affiliatesList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="AffiliatesList.tpl"/>
-		</action>
-
-		<action    path = "affiliatesEdit"
-							 type = "AffiliatesEditAction"
-							 name = "affiliatesEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="AffiliatesEdit.tpl"/>
-		</action>
-
-		<action    path = "affiliatesAddAffiliate"
-							 type = "AffiliatesAddAffiliateAction"
-							 name = "affiliatesAddAffiliate"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="AffiliatesAdd.tpl"/>
-		</action>
-
-		<action    path = "affiliatesViewAffiliate"
-							 type = "AffiliatesViewAffiliateAction"
-							 name = "affiliatesViewAffiliate"
-							scope = "request"
-					 validate = "true">
-				<forward name="success" path="AffiliatesView.tpl"/>
-		</action>
-
-		<action    path = "affiliatesDoEdit"
-							 type = "AffiliatesDoEditAction"
-							 name = "affiliatesDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesList&amp;message=edited" redirect="true" />
-		</action>
-
-		<action    path = "affiliatesSetOwner"
-							 type = "AffiliatesSetOwnerAction"
-							 name = "affiliatesSetOwner"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersList&amp;message=ownerEdited" redirect="true" />
-			<forward name="failure" path="/Main.php?do=affiliatesUsersList&amp;message=ownerNotEdited" redirect="true" />
-		</action>
-
-		<action    path = "affiliatesDoEditInfo"
-							 type = "AffiliatesDoEditInfoAction"
-							 name = "affiliatesDoEditInfo"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesList&amp;message=edited" redirect="true" />
-		</action>
-
-		<action    path = "affiliatesDoDelete"
-							 type = "AffiliatesDoDeleteAction"
-							 name = "affiliatesDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesList&amp;message=deleted" redirect="true" />
-			<forward name="failure" path="/Main.php?do=affiliatesList&amp;message=notdeleted" redirect="true" />
-		</action>
-
-		<action    path = "affiliatesDoAddAffiliate"
-							 type = "AffiliatesDoAddAffiliateAction"
-							 name = "affiliatesDoAddAffiliate"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesList" redirect="true" />
-		</action>
-	</action-mappings>
-	
-<!-- Section Branches -->
-	<action-mappings module="Affiliates" section="Branches">
-		<action    path = "affiliatesBranchsEdit"
-							 type = "AffiliatesBranchsEditAction"
-							 name = "affiliatesBranchsEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="AffiliatesBranchsEdit.tpl" />
-		</action>
-
-		<action    path = "affiliatesBranchsDoEdit"
-							 type = "AffiliatesBranchsDoEditAction"
-							 name = "affiliatesBranchsDoEdit"
-							scope = "request"
-					 validate = "true">
-		<forward name="success" path="Main.php?do=affiliatesBranchsList&amp;message=ok" redirect="true" />
-		<forward name="failure" path="AffiliatesBranchsEdit.tpl" />
-		</action>
-
-		<action    path = "affiliatesBranchsList"
-							 type = "AffiliatesBranchsListAction"
-							 name = "affiliatesBranchsList"
-							scope = "request"
-					 validate = "true">
-		<forward name="success" path="AffiliatesBranchsList.tpl" />
-		</action>
-
-		<action    path = "affiliatesBranchsDoDelete"
-							 type = "AffiliatesBranchsDoDeleteAction"
-							 name = "affiliatesBranchsDoDelete"
-							scope = "request"
-					 validate = "true">
-		<forward name="success" path="Main.php?do=affiliatesBranchsList&amp;message=deleted_ok" redirect="true" />
-		</action>
-	</action-mappings>
-<!-- End Section Branches -->
-
-<!-- Section Users -->
-	<action-mappings module="AffiliatesUsers">
-		<action      path = "affiliatesUsersList"
-								 type = "AffiliatesUsersListAction"
-								 name = "affiliatesUsersList"
-								scope = "request"
-						 validate = "true">
-				<forward name="success" path="AffiliatesUsersList.tpl"/>
-		</action>
-
-		<action      path = "affiliatesUsersDoEditUser"
-								 type = "AffiliatesUsersDoEditUserAction"
-								 name = "affiliatesUsersDoEditUser"
-								scope = "request"
-						 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersList&amp;message=saved" redirect="true" />
-		</action>
-
-		<action      path = "affiliatesUsersDoDelete"
-								 type = "AffiliatesUsersDoDeleteAction"
-								 name = "affiliatesUsersDoDelete"
-								scope = "request"
-						 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersList&amp;message=deleted" redirect="true" />
-		</action>
-
-		<action      path = "affiliatesUsersLogin"
-								 type = "AffiliatesUsersLoginAction"
-								 name = "affiliatesUsersLogin"
-								scope = "request"
-						 validate = "true">
-				<description value="Modulo de ingreso"/>
-				<forward name="success" path="AffiliatesUsersLogin.tpl"/>
-		</action>
-
-		<action      path = "affiliatesUsersDoLogin"
-								 type = "AffiliatesUsersDoLoginAction"
-								 name = "affiliatesUsersDoLogin"
-								scope = "request"
-						 validate = "true">
-				<description value="Modulo de ingreso"/>
-				<forward name="success" path="AffiliatesUsersWelcome.tpl"/>
-				<forward name="failure" path="AffiliatesUsersLogin.tpl"/>
-				<forward name="failure-unified" path="UsersLogin.tpl"/>
-		</action>
-
-		<action      path = "affiliatesUsersWelcome"
-								 type = "AffiliatesUsersWelcomeAction"
-								 name = "affiliatesUsersWelcome"
-								scope = "request"
-						 validate = "true">
-				<description value="Página de bienvenida"/>
-				<forward name="success" path="AffiliatesUsersWelcome.tpl"/>
-		</action>
-
-		<action      path = "affiliatesUsersDoLogout"
-								 type = "AffiliatesUsersDoLogoutAction"
-								 name = "affiliatesUsersDoLogout"
-								scope = "request"
-						 validate = "true">
-				<forward name="success-unified" path="/Main.php?do=usersLogin" redirect="true" />
-				<forward name="success" path="/Main.php?do=affiliatesUsersLogin" redirect="true" />
-		</action>
-
-		<action    path = "affiliatesUsersDoAddToGroup"
-							 type = "AffiliatesUsersDoAddToGroupAction"
-							 name = "affiliatesUsersDoAddToGroup"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=affiliatesUsersList" redirect="true" />
-		</action>
-
-		<action    path = "affiliatesUsersDoActivate"
-							 type = "AffiliatesUsersDoActivateAction"
-							 name = "affiliatesUsersDoActivate"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersList&amp;message=activated" redirect="true" />
-			<forward name="failure" path="/Main.php?do=affiliatesUsersList&amp;message=notactivated" redirect="true" />
-		</action>
-
-		<action    path = "affiliatesUsersDoRemoveFromGroup"
-							 type = "AffiliatesUsersDoRemoveFromGroupAction"
-							 name = "affiliatesUsersDoRemoveFromGroup"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=affiliatesUsersList" redirect="true" />
-		</action>
-
-		<action    path = "affiliatesUsersPasswordRecovery"
-							 type = "AffiliatesUsersPasswordRecoveryAction"
-							 name = "affiliatesUsersPasswordRecovery"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="AffiliatesUsersPasswordRecovery.tpl"/>
-		</action>
-
-		<action    path = "affiliatesUsersDoPasswordRecovery"
-							 type = "AffiliatesUsersDoPasswordRecoveryAction"
-							 name = "affiliatesUsersDoPasswordRecovery"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersLogin&amp;message=passwordSent" redirect="true" />
-			<forward name="failure" path="AffiliatesUsersPasswordRecovery.tpl"/>
-		</action>
-	</action-mappings>    
-
-<!-- Module AffiliatesUsers - Section Levels -->
-	<action-mappings module="AffiliatesUsers" section="Levels">
-		<action    path = "affiliatesUsersLevelsList"
-							 type = "AffiliatesUsersLevelsListAction"
-							 name = "affiliatesUsersLevelsList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="AffiliatesUsersLevelsList.tpl"/>
-		</action>
-
-		<action    path = "affiliatesUsersLevelsDoEdit"
-							 type = "AffiliatesUsersLevelsDoEditAction"
-							 name = "affiliatesUsersLevelsDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersLevelsList&amp;message=saved" redirect="true"/>
-			<forward name="blankName" path="/Main.php?do=affiliatesUsersLevelsList&amp;message=blankName" redirect="true"/>
-		</action>
-
-		<action    path = "affiliatesUsersLevelsDoDelete"
-							 type = "AffiliatesUsersLevelsDoDeleteAction"
-							 name = "affiliatesUsersLevelsDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersLevelsList&amp;message=deleted" redirect="true" />
-			<forward name="failure" path="/Main.php?do=affiliatesUsersLevelsList&amp;message=notdeleted" redirect="true" />
-		</action>
-	</action-mappings>
-<!-- End Section - Levels -->
-
-<!-- Module AffiliatesUsers - Section Groups -->
-	<action-mappings module="AffiliatesUsers" section="Groups">
-		<action    path = "affiliatesUsersGroupsList"
-							 type = "AffiliatesUsersGroupsListAction"
-							 name = "affiliatesUsersGroupsList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="AffiliatesUsersGroupsList.tpl"/>
-		</action>
-
-		<action    path = "affiliatesUsersGroupsDoEdit"
-							 type = "AffiliatesUsersGroupsDoEditAction"
-							 name = "affiliatesUsersGroupsDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersGroupsList&amp;message=saved" redirect="true"/>
-			<forward name="blankName" path="/Main.php?do=affiliatesUsersGroupsList&amp;message=blankName" redirect="true"/>
-		</action>
-
-		<action    path = "affiliatesUsersGroupsDoDelete"
-							 type = "AffiliatesUsersGroupsDoDeleteAction"
-							 name = "affiliatesUsersGroupsDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersGroupsList&amp;message=deleted" redirect="true" />
-			<forward name="failure" path="/Main.php?do=affiliatesUsersGroupsList&amp;message=notdeleted" redirect="true" />
-		</action>
-
-		<action    path = "affiliatesUsersGroupsDoAddCategory"
-							 type = "AffiliatesUsersGroupsDoAddCategoryAction"
-							 name = "affiliatesUsersGroupsDoAddCategory"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersGroupsList" redirect="true" />
-		</action>
-
-		<action    path = "affiliatesUsersGroupsDoRemCategory"
-							 type = "AffiliatesUsersGroupsDoRemCategoryAction"
-							 name = "affiliatesUsersGroupsDoRemCategory"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersGroupsList" redirect="true" />
-		</action>
-	</action-mappings>
-<!-- End Section - Groups -->
-
-<!-- End Module Affiliates -->
-
-<!-- Module Categories -->
-	<action-mappings module="Categories">
-		<action    path = "categoriesEdit"
-							 type = "CategoriesEditAction"
-							 name = "categoriesEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="CategoriesEdit.tpl" />
-		</action>
-
-		<action    path = "categoriesDoEdit"
-							 type = "CategoriesDoEditAction"
-							 name = "categoriesDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=categoriesList" redirect="true" />
-			<forward name="failure" path="CategoriesEdit.tpl" />
-		</action>
-
-		<action    path = "categoriesDoEditX"
-							 type = "CategoriesDoEditXAction"
-							 name = "categoriesDoEditX"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="CategoriesIncludeRow.tpl" />
-			<forward name="failure" path="CategoriesEdit.tpl" />
-		</action>
-
-		<action    path = "categoriesList"
-							 type = "CategoriesListAction"
-							 name = "categoriesList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="CategoriesList.tpl" />
-		</action>
-
-		<action    path = "categoriesDoDelete"
-							 type = "CategoriesDoDeleteAction"
-							 name = "categoriesDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=categoriesList" redirect="true" />
-			<forward name="failure" path="/Main.php?do=categoriesList&amp;message=notdeleted" redirect="true" />
-		</action>
-	</action-mappings>
-<!-- End Categories -->
-
-<!-- Module Catalog -->
-	<action-mappings module="Catalog">
-		<action    path = "catalogShow"
-							 type = "CatalogShowAction"
-							 name = "catalogShow"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="CatalogShow.tpl" />
-		</action>
-	</action-mappings>
-
-<!-- Module Catalog - Section Products -->
-	<action-mappings module="Catalog" section="Products">
-		<action    path = "catalogProductsEdit"
-							 type = "CatalogProductsEditAction"
-							 name = "catalogProductsEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="CatalogProductsEdit.tpl" />
-		</action>
-
-		<action    path = "catalogProductsGetImage"
-							 type = "CatalogProductsGetImageAction"
-							 name = "catalogProductsGetImage"
-							scope = "request"
-					 validate = "true">
-		</action>
-
-		<action    path = "catalogProductsDoEdit"
-							 type = "CatalogProductsDoEditAction"
-							 name = "catalogProductsDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogProductsList&amp;message=ok" redirect="true" />
-			<forward name="failure" path="Main.php?do=catalogProductsEdit&amp;message=error" redirect="true" />
-		</action>
-		
-		<action    path = "catalogProductsDoLoadInCategory"
-							 type = "CatalogProductsDoLoadInCategoryAction"
-							 name = "catalogProductsDoLoadInCategory"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogProductCategoriesEdit" redirect="true" />
-		</action>
-
-		<action    path = "catalogProductsDoLoadWithCategory"
-							 type = "CatalogProductsDoLoadWithCategoryAction"
-							 name = "catalogProductsDoLoadWithCategory"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogProductCategoriesList" redirect="true" />
-		</action>
-
-		<action    path = "catalogProductsList"
-							 type = "CatalogProductsListAction"
-							 name = "catalogProductsList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="CatalogProductsList.tpl" />
-			<forward name="csv" path="CatalogProductsListCsv.tpl" />	
-		</action>
-
-		<action    path = "catalogProductsDoDelete"
-							 type = "CatalogProductsDoDeleteAction"
-							 name = "catalogProductsDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogProductsList&amp;message=deleted_ok" redirect="true" />
-		</action>
-	</action-mappings>
-<!-- End Section Products -->
-
-<!-- Module Catalog - Section ProductCategories -->
-	<action-mappings module="Catalog" section="ProductCategories">
-		<action    path = "catalogProductCategoriesEdit"
-							 type = "CatalogProductCategoriesEditAction"
-							 name = "catalogProductCategoriesEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="CatalogProductCategoriesEdit.tpl" />
-		</action>
-
-		<action    path = "catalogProductCategoriesGetImage"
-							 type = "CatalogProductCategoriesGetImageAction"
-							 name = "catalogProductCategoriesGetImage"
-							scope = "request"
-					 validate = "true">
-		</action>
-
-		<action    path = "catalogProductCategoriesDoEdit"
-							 type = "CatalogProductCategoriesDoEditAction"
-							 name = "catalogProductCategoriesDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogProductCategoriesList&amp;message=ok" redirect="true" />
-			<forward name="failure" path="CatalogProductCategoriesEdit.tpl" />
-		</action>
-
-		<action    path = "catalogProductCategoriesList"
-							 type = "CatalogProductCategoriesListAction"
-							 name = "catalogProductCategoriesList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="CatalogProductCategoriesList.tpl" />
-		</action>
-
-		<action    path = "catalogProductCategoriesDoDelete"
-							 type = "CatalogProductCategoriesDoDeleteAction"
-							 name = "catalogProductCategoriesDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogProductCategoriesList&amp;message=deleted_ok" redirect="true" />
-		</action>
-	</action-mappings>
-<!-- End Section ProductCategories -->
-
-<!-- Module Catalog - Section Units -->
-	<action-mappings module="Catalog" section="Units">
-		<action    path = "catalogUnitsEdit"
-							 type = "CatalogUnitsEditAction"
-							 name = "catalogUnitsEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="CatalogUnitsEdit.tpl" />
-		</action>
-
-		<action    path = "catalogUnitsDoEdit"
-							 type = "CatalogUnitsDoEditAction"
-							 name = "catalogUnitsDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogUnitsList&amp;message=ok" redirect="true" />
-			<forward name="failure" path="CatalogUnitsEdit.tpl" />
-		</action>
-
-		<action    path = "catalogUnitsList"
-							 type = "CatalogUnitsListAction"
-							 name = "catalogUnitsList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="CatalogUnitsList.tpl" />
-		</action>
-
-		<action    path = "catalogUnitsDoDelete"
-							 type = "CatalogUnitsDoDeleteAction"
-							 name = "catalogUnitsDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogUnitsList&amp;message=deleted_ok" redirect="true" />
-		</action>
-	</action-mappings>
-<!-- End Section Units -->
-
-<!-- Module Catalog - Section MeasureUnits -->
-	<action-mappings module="Catalog" section="MeasureUnits">
-		<action    path = "catalogMeasureUnitsEdit"
-							 type = "CatalogMeasureUnitsEditAction"
-							 name = "catalogMeasureUnitsEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="CatalogMeasureUnitsEdit.tpl" />
-		</action>
-
-		<action    path = "catalogMeasureUnitsDoEdit"
-							 type = "CatalogMeasureUnitsDoEditAction"
-							 name = "catalogMeasureUnitsDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogMeasureUnitsList&amp;message=ok" redirect="true" />
-			<forward name="failure" path="CatalogMeasureUnitsEdit.tpl" />
-		</action>
-
-		<action    path = "catalogMeasureUnitsList"
-							 type = "CatalogMeasureUnitsListAction"
-							 name = "catalogMeasureUnitsList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="CatalogMeasureUnitsList.tpl" />
-		</action>
-
-		<action    path = "catalogMeasureUnitsDoDelete"
-							 type = "CatalogMeasureUnitsDoDeleteAction"
-							 name = "catalogMeasureUnitsDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogMeasureUnitsList&amp;message=deleted_ok" redirect="true" />
-		</action>
-<!-- End Section MeasureUnits -->		
-<!-- Module Catalog - Section AffilateProductsImport -->
-
-    <action    path = "catalogAffiliateProductsImport"
-               type = "CatalogAffiliateProductsImportAction"
-               name = "catalogAffiliateProductsImport"
-              scope = "request"
-           validate = "true">
-		<forward name="success"  path="CatalogAffiliateProductsImport.tpl" />
-    </action>
- 
-   
-    <action    path = "catalogAffiliateProductsDoImport"
-               type = "CatalogAffiliateProductsDoImportAction"
-               name = "catalogAffiliateProductsDoImport"
-              scope = "request"
-           validate = "true">
-		<forward name="success"  path="CatalogAffiliateProductsImport.tpl" />
-    </action>
-
-<!-- End Section AffilateProductsImport -->
-
-<!-- Section AffiliateProductCodes -->
-    <action    path = "catalogAffiliateProductCodesEdit"
-               type = "CatalogAffiliateProductCodesEditAction"
-               name = "catalogAffiliateProductCodesEdit"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="CatalogAffiliateProductCodesEdit.tpl" />
-    </action>
-
-    <action    path = "catalogAffiliateProductCodesDoEdit"
-               type = "CatalogAffiliateProductCodesDoEditAction"
-               name = "catalogAffiliateProductCodesDoEdit"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="Main.php?do=catalogAffiliateProductCodesList&amp;message=ok" redirect="true" />
-    <forward name="failure" path="CatalogAffiliateProductCodesEdit.tpl" />
-    </action>
-
-    <action    path = "catalogAffiliateProductCodesList"
-               type = "CatalogAffiliateProductCodesListAction"
-               name = "catalogAffiliateProductCodesList"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="CatalogAffiliateProductCodesList.tpl" />
-    </action>
-
-    <action    path = "catalogAffiliateProductCodesDoDel"
-               type = "CatalogAffiliateProductCodesDoDelAction"
-               name = "catalogAffiliateProductCodesDoDel"
-              scope = "request"
-           validate = "true">
-    <forward name="success" path="Main.php?do=catalogAffiliateProductCodesList&amp;message=deleted_ok" redirect="true" />
-    </action>
-
-	<action    path = "catalogAffiliateProductList"
-						 type = "CatalogAffiliateProductListAction"
-						 name = "catalogAffiliateProductList"
-						scope = "request"
-				 validate = "true">
-		<forward name="success" path="CatalogAffiliateProductList.tpl" />
-	</action>
-
-	<action    path = "catalogPricesAutoUpdate"
-						 type = "CatalogPricesAutoUpdateAction"
-						 name = "catalogPricesAutoUpdate"
-						scope = "request"
-				 validate = "true">	
-	</action>
-	
-
-<!-- End Section AffiliateProductCodes -->
-	</action-mappings>
-
-<!-- End Module Catalog -->
-
-
-<!-- Module Documents -->
-	<action-mappings module="Documents">
-		<action    path = "documentsList"
-							 type = "DocumentsListAction"
-							 name = "documentsList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="documents_list.tpl"/>
-		</action>
-
-		<action    path = "documentsSelectCategory"
-							 type = "DocumentsSelectCategoryAction"
-							 name = "documentsSelectCategory"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="documents_select_category.tpl"/>
-		</action>
-
-		<action    path = "documentsEdit"
-							 type = "DocumentsEditAction"
-							 name = "documentsEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="documents_edit.tpl"/>
-		</action>
-
-		<action    path = "documentsUpload"
-							 type = "DocumentsUploadAction"
-							 name = "documentsUpload"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="documents_upload.tpl"/>
-		</action>
-
-		<action    path = "documentsDoUpload"
-							 type = "DocumentsDoUploadAction"
-							 name = "documentsDoUpload"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=documentsSelectCategory" redirect="true"/>
-		</action>
-
-		<action    path = "documentsDoDownload"
-							 type = "DocumentsDoDownloadAction"
-							 name = "documentsDoDownload"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=documentsSelectCategory" redirect="true"/>
-		</action>
-
-		<action    path = "documentsDoEdit"
-							 type = "DocumentsDoEditAction"
-							 name = "documentsDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=documentsSelectCategory" redirect="true"/>
-			<forward name="failure" path="documents_edit.tpl"/>
-		</action>
-
-		<action    path = "documentsDoDelete"
-							 type = "DocumentsDoDeleteAction"
-							 name = "documentsDoDeleteAction"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=documentsList" redirect="true"/>
-		</action>
-	</action-mappings>
-<!-- End Module Documents -->
-
-<!-- Module Modules -->
-	<action-mappings module="Modules">
-		<action    path = "modulesList"
-							 type = "ModulesListAction"
-							 name = "modulesList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="ModulesList.tpl" />
-		</action>
-
-		<action    path = "modulesEdit"
-							 type = "ModulesEditAction"
-							 name = "modulesEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="ModulesEdit.tpl" />
-		</action>
-
-	<action    path = "modulesDoEdit"
-							 type = "ModulesDoEditAction"
-							 name = "modulesDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=modulesList" redirect='true'/>
-		</action>
-
-		<action    path = "modulesDoActivateX"
-							 type = "ModulesDoActivateXAction"
-							 name = "modulesDoActivateX"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="ModulesDoActivateXModuleSuccess.tpl"/>
-			<forward name="errorDependencyOff" path="ModulesDoActivateXModuleOff.tpl"/>
-			<forward name="errorDependencyOn" path="ModulesDoActivateXModuleOn.tpl"/>
-		</action>
-		<action    path = "modulesDoCreateXml"
-							 type = "ModulesDoCreateXml"
-							 name = "modulesDoCreateXml"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=modulesCreateXml&amp;message=ok" redirect="true" />
-		</action>
-		<action    path = "modulesCreateXml"
-							 type = "ModulesCreateXml"
-							 name = "modulesCreateXml"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="ModulesCreateXml.tpl" />
-		</action>
-	</action-mappings>
-<!-- End Module Modules -->
-
-<!-- Module Orders -->
-	<action-mappings module="Orders">
-		<action    path = "ordersView"
-							 type = "OrdersViewAction"
-							 name = "ordersView"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersView.tpl" />
-			<forward name="notExists" path="NoPermission.tpl" />
-			<forward name="noPermission" path="NoPermission.tpl" />
-		</action>
-
-		<action    path = "ordersEdit"
-							 type = "OrdersEditAction"
-							 name = "ordersEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersEdit.tpl" />
-			<forward name="notExists" path="NoPermission.tpl" />
-			<forward name="noPermission" path="NoPermission.tpl" />
-		</action>
-
-		<action    path = "ordersDoEdit"
-							 type = "OrdersDoEditAction"
-							 name = "ordersDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=ordersList&amp;message=saved" redirect="true"/>
-			<forward name="error" path="OrdersEdit.tpl" />
-			<forward name="notExists" path="NoPermission.tpl" />
-			<forward name="noPermission" path="NoPermission.tpl" />
-		</action>
-
-		<action    path = "ordersItemsDoAddX"
-							 type = "OrdersItemsDoAddXAction"
-							 name = "ordersItemsDoAddX"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersItemsDoAddX.tpl" />
-			<forward name="failure" path="OrdersItemsDoAddXFailure.tpl" />
-			<forward name="notExists" path="NoPermission.tpl" />
-			<forward name="noPermission" path="NoPermission.tpl" />	
-		</action>
-		
-		<action    path = "ordersItemsDoDeleteX"
-							 type = "OrdersItemsDoDeleteXAction"
-							 name = "ordersItemsDoDeleteX"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersItemsDoDeleteX.tpl" />
-			<forward name="failure" path="OrdersItemsDoDeleteXFailure.tpl" />
-
-			
-		</action>
-
-		<action    path = "ordersItemsDoEditX"
-							 type = "OrdersItemsDoEditXAction"
-							 name = "ordersItemsDoEditX"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersItemsDoEditX.tpl" />
-			<forward name="failure" path="OrdersItemsDoEditX.tpl" />
-
-
-		</action>
-
-		<action    path = "ordersList"
-							 type = "OrdersListAction"
-							 name = "ordersList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersList.tpl" />
-		</action>
-
-		<action    path = "ordersCartDoDelete"
-							 type = "OrdersCartDoDeleteAction"
-							 name = "ordersCartDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=ordersViewCart&amp;message=deleted_ok" redirect="true" />
-		</action>
-
-		<action    path = "ordersAddItemToCartX"
-							 type = "OrdersAddItemToCartXAction"
-							 name = "ordersAddItemToCartX"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersAddItemToCartX.tpl" />
-		</action>
-
-		<action    path = "ordersChangeItemCartX"
-							 type = "OrdersChangeItemCartXAction"
-							 name = "ordersChangeItemCartX"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersChangeItemCartX.tpl" />
-		</action>
-
-		<action    path = "ordersRemoveItemCartX"
-							 type = "OrdersRemoveItemCartXAction"
-							 name = "ordersRemoveItemCartX"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersRemoveItemCartX.tpl" />
-		</action>
-
-		<action    path = "ordersStateDoChangeX"
-							 type = "OrdersStateDoChangeXAction"
-							 name = "ordersStateDoChangeX"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersStateDoChangeX.tpl" />
-			<forward name="failure" path="OrdersStateDoChangeXFailure.tpl" />
-			<forward name="notExists" path="NoPermission.tpl" />
-			<forward name="noPermission" path="NoPermission.tpl" />	
-		</action>
-
-		<action    path = "ordersViewCart"
-							 type = "OrdersViewCartAction"
-							 name = "ordersViewCart"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersViewCart.tpl" />
-		</action>
-
-		<action    path = "ordersConfirm"
-							 type = "OrdersConfirmAction"
-							 name = "ordersConfirm"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersConfirm.tpl" />  
-			<forward name="failure" path="Main.php?do=ordersViewCart&amp;message=error" redirect="true" />
-		</action>
-		
-		<action    path = "ordersExport"
-							 type = "OrdersExportAction"
-							 name = "ordersExport"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersExport.tpl" />
-		</action>
-		
-		<action    path = "ordersExportSaf"
-							 type = "OrdersExportSafAction"
-							 name = "ordersExportSaf"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersExportSaf.tpl" />
-		</action>
-
-		<action    path = "ordersDoDelete"
-						 type = "OrdersDoDeleteAction"
-						 name = "ordersDoDelete"
-						scope = "request"
-				 validate = "true">
-		<forward name="success" path="Main.php?do=ordersList&amp;message=orders_deleted_ok" redirect="true" />
-		</action>
-
-		<action    path = "ordersDoGenerate"
-							 type = "OrdersDoGenerateAction"
-							 name = "ordersDoGenerate"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=ordersList&amp;message=ok" redirect="true" />
-			<forward name="email" path="OrdersEmailView.tpl" />
-		</action>
-
-		<action    path = "ordersDoAddToCart"
-							 type = "OrdersDoAddToCartAction"
-							 name = "ordersDoAddToCart"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=ordersViewCart" redirect="true" />
-		</action>
-
-		<action    path = "ordersDoSave"
-							 type = "OrdersDoSaveAction"
-							 name = "ordersDoSave"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=ordersTemplatesList&amp;message=ok" redirect="true" />
-			<forward name="failure" path="Main.php?do=ordersViewCart&amp;message=error" redirect="true" />
-		</action>
-
-		<action    path = "ordersImport"
-							 type = "OrdersImportAction"
-							 name = "ordersImport"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersImport.tpl" />
-		</action>
-
-		<action    path = "ordersDoImport"
-							 type = "OrdersDoImportAction"
-							 name = "ordersDoImport"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersImport.tpl" />
-		</action>	
-	</action-mappings>
-
-<!-- Section OrderTemplates -->
-	<action-mappings  module="Orders" section="OrderTemplates">
-		<action    path = "ordersTemplatesView"
-							 type = "OrdersTemplatesViewAction"
-							 name = "ordersTemplatesView"
-							scope = "request"
-					 validate = "true">
-		<forward name="success" path="OrdersTemplatesView.tpl" />
-		</action>
-
-		<action    path = "ordersTemplatesList"
-							 type = "OrdersTemplatesListAction"
-							 name = "ordersTemplatesList"
-							scope = "request"
-					 validate = "true">
-		<forward name="success" path="OrdersTemplatesList.tpl" />
-		</action>
-
-		<action    path = "ordersTemplatesDoAddToCart"
-							 type = "OrdersTemplatesDoAddToCartAction"
-							 name = "ordersTemplatesDoAddToCart"
-							scope = "request"
-					 validate = "true">
-		<forward name="success" path="Main.php?do=ordersViewCart" redirect="true" />
-		</action>
-
-		<action    path = "ordersTemplatesDoDelete"
-							 type = "OrdersTemplatesDoDeleteAction"
-							 name = "ordersTemplatesDoDelete"
-							scope = "request"
-					 validate = "true">
-		<forward name="success" path="Main.php?do=ordersTemplatesList&amp;message=deleted_ok" redirect="true" />
-		</action>
-	</action-mappings>
-<!-- End Section OrderTemplates -->
-
-<!-- End Module Orders -->
-
-
-<!-- ========== Action Mapping Módulo Logs  ============================== -->
-
-	<action-mappings        module = "Logs">
-
-		<action    path = "logsList"
-					     type = "LogsListAction"
-					     name = "logsList"
-					    scope = "request"
-					 validate = "true">
-			<forward name="success" path="LogsList.tpl"/>
-			<forward name="failure" path="demoPageError.tpl"/>
-		</action>
-		<action    path = "logsPurge"
-					     type = "LogsPurgeAction"
-					     name = "logsPurge"
-					    scope = "request"
-					 validate = "true">
-			<forward name="success" path="LogsPurge.tpl"/>
-		</action>
-		<action    path = "logsDoPurge"
-					     type = "LogsDoPurgeAction"
-					     name = "logsDoPurge"
-					    scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=logsList" redirect="true" />
+			<forward name="success"  path="ValidationAjax.tpl" />
 		</action>
 
 	</action-mappings>
-
-<!-- ========== End Logs ================================================= -->->
-
-
-<!-- Module Security -->
-	<action-mappings module="Security">
-		<action    path = "noPermission"
-							 type = "NoPermissionAction"
-							 name = "noPermission"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="NoPermission.tpl" />
-		</action>
-
-		<action    path = "securityActionList"
-							 type = "SecurityActionListAction"
-							 name = "securityActionList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="SecurityActionList.tpl" />
-		</action>
-
-		<action    path = "securityActionListAffiliatesUsers"
-							 type = "SecurityActionListAffiliatesUsersAction"
-							 name = "securityActionListAffiliatesUsers"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="SecurityActionListAffiliatesUsers.tpl" />
-		</action>
-
-		<action    path = "securityActionDoSaveByAffiliate"
-							 type = "SecurityActionDoSaveByAffiliateAction"
-							 name = "securityActionDoSaveByAffiliateAction"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=securityActionListAffiliatesUsers" redirect='true'/>
-		</action>
-
-		<action    path = "securityActionDoSave"
-							 type = "SecurityActionDoSaveAction"
-							 name = "securityActionDoSave"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=securityActionList" redirect='true'/>
-		</action>
-
-	<action    path = "securityModuleList"
-							 type = "SecurityModuleListAction"
-							 name = "securityModuleList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="SecurityModuleList.tpl" />
-		</action>
-
-	<action    path = "securityModuleDoSave"
-							 type = "SecurityModuleDoSaveAction"
-							 name = "securityModuleDoSave"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=securityModuleList" redirect='true'/>
-		</action>
-	</action-mappings>
-<!-- End Module Security -->
-
-
-<!-- Module register-->
-	<action-mappings module="UsersByRegistration">
-		<action    path = "usersByRegistrationLogin"
-							 type = "UsersByRegistrationLoginAction"
-							 name = "usersByRegistrationLogin"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersByRegistrationLogin.tpl"/>
-			<forward name="maintenance" path="Maintenance.tpl"/>
-		</action>
-
-		<action    path = "usersByRegistrationDoLogin"
-							 type = "UsersByRegistrationDoLoginAction"
-							 name = "UsersByRegistrationDoLogin"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersByRegistrationWelcome.tpl"/>
-			<forward name="failure" path="UsersByRegistrationLogin.tpl"/>
-		</action>
-
-		<action    path = "usersByRegistrationPasswordRecovery"
-							 type = "UsersByRegistrationPasswordRecoveryAction"
-							 name = "usersByRegistrationPasswordRecovery"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersByRegistrationPasswordRecovery.tpl"/>
-		</action>
-		
-		<action    path = "usersByRegistrationDoPassRecovery"
-							 type = "UsersByRegistrationDoPassRecoveryAction"
-							 name = "usersByRegistrationDoPassRecovery"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=usersByRegistrationLogin&amp;message=passwordSent" redirect="true" />
-			<forward name="failure" path="UsersByRegistrationPasswordRecovery.tpl"/>
-		</action>
-		
-		
-		<action    path = "usersByRegistrationDoEdit"
-							 type = "UsersByRegistrationDoEditAction"
-							 name = "usersByRegistrationDoEdit"
-							scope = "request"
-					 validate = "true">
-			<!-- casos de edicion de usuario existente -->
-			<forward name="success_admin" path="/Main.php?do=usersByRegistrationList&amp;message=saved" redirect="true"/>
-			<forward name="failure_admin" path="UsersByRegistrationEdit.tpl"/>
-			<!-- casos de creacion de nuevo usuario -->
-			<forward name="success" path="/Main.php?do=usersByRegistrationLogin&amp;message=user_created" redirect="true" />
-			<forward name="failure" path="UsersByRegistrationEdit.tpl" />
-			<forward name="success_user" path="/Main.php?do=usersByRegistrationDoLogin" redirect="true"/>
-		</action>
-
-		<action    path = "usersByRegistrationEdit"
-						 type = "UsersByRegistrationEditAction"
-						 name = "usersByRegistrationEdit"
-						scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersByRegistrationEdit.tpl"/>
-
-		</action>
-
-		<action    path = "usersByRegistrationDoDelete"
-							 type = "UsersByRegistrationDoDeleteAction"
-							 name = "usersByRegistrationDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersByRegistrationList&amp;message=deleted" redirect="true" />
-			<forward name="failure" path="/Main.php?do=usersByRegistrationList&amp;message=notdeleted" redirect="true" />
-		</action>
-
-		<action    path = "usersByRegistrationDoLogout"
-							 type = "UsersByRegistrationDoLogoutAction"
-							 name = "usersByRegistrationDoLogout"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersByRegistrationLogin" redirect="true"/>
-		</action>
-		<action    path = "usersByRegistrationList"
-							 type = "UsersByRegistrationListAction"
-							 name = "usersByRegistrationList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersByRegistrationList.tpl"/>
-			<forward name="failure" path="/Main.php?do=usersLogin" redirect="true" />
-						
-		</action>
-
-	</action-mappings>
-<!-- End Module register -->
-
-
-<!-- instalation tag-->
-<!-- Do not remove these lines-->
+<!-- End Module Validation -->
 
 <!-- ========== PlugIns ================================================= -->
 

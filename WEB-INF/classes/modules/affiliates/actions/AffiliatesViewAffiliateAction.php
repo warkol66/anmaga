@@ -1,4 +1,9 @@
 <?php
+/** 
+ * AffiliatesViewAffiliateAction
+ *
+ * @package affiliates 
+ */
 
 require_once("BaseAction.php");
 require_once("AffiliateInfoPeer.php");
@@ -7,13 +12,9 @@ require_once("AffiliatePeer.php");
 
 class AffiliatesViewAffiliateAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function AffiliatesViewAffiliateAction() {
 		;
 	}
-
 
 	// ----- Public Methods ------------------------------------------------- //
 
@@ -33,7 +34,7 @@ class AffiliatesViewAffiliateAction extends BaseAction {
 	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -46,25 +47,19 @@ class AffiliatesViewAffiliateAction extends BaseAction {
 
 		$module = "Affiliates";
 		$section = "";
-		
+
 		$smarty->assign("module",$module);
 		$smarty->assign("section",$section);
 
-		$affiliateInfoPeer= new AffiliateInfoPeer();
-		$affiliatePeer= new AffiliatePeer();	
+		$affiliateInfoPeer = new AffiliateInfoPeer();
+		$affiliatePeer = new AffiliatePeer();
 
-		$id=$_GET["id"];
+		$id = $_GET["id"];
 
-		$affInfo=$affiliateInfoPeer->get($id);
-		$affiliate=$affiliatePeer->get($id);
-		
-		// para que no tire error el tpl si affiliate info esta vacio o sea no tiene datos internos
-		if(empty($affInfo)){
-			$flag=1;
-			$smarty->assign("flag",$flag);
-		}
-		
-		$smarty->assign("affiliateInfo",$affInfo);
+		$affiliateInfo = $affiliateInfoPeer->get($id);
+		$affiliate = $affiliatePeer->get($id);
+
+		$smarty->assign("affiliateInfo",$affiliateInfo);
 
 		$smarty->assign("affiliate",$affiliate);
 
@@ -72,4 +67,3 @@ class AffiliatesViewAffiliateAction extends BaseAction {
 	}
 
 }
-?>

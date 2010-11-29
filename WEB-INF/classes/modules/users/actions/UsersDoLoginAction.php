@@ -1,4 +1,9 @@
 <?php
+/** 
+ * UsersDoLoginAction
+ *
+ * @package users 
+ */
 
 require_once("BaseAction.php");
 require_once("UserPeer.php");
@@ -43,6 +48,11 @@ class UsersDoLoginAction extends BaseAction {
 		}
 
 		$module = "Users";
+		
+		if (Common::hasUnifiedLogin()) {
+			$smarty->assign("unifiedLogin",true);
+			Common::setValueUnifiedLoginCookie($_POST['select']);			
+		}		
 
 		if ( !empty($_POST["loginUsername"]) && !empty($_POST["loginPassword"]) ) {
 			$user = UserPeer::auth($_POST["loginUsername"],$_POST["loginPassword"]);
@@ -50,7 +60,7 @@ class UsersDoLoginAction extends BaseAction {
 				$_SESSION["login_user"] = $user;
 				$_SESSION["loginUser"] = $user;
 				$smarty->assign("loginUser",$user);
-
+				
 				Common::doLog('success','username: ' . $_POST["loginUsername"]);
 
 				return $mapping->findForwardConfig('success');
@@ -59,24 +69,21 @@ class UsersDoLoginAction extends BaseAction {
 
 		$this->template->template = "TemplateLogin.tpl";
 		
-    $smarty->assign("message","wrongUser");
+    	$smarty->assign("message","wrongUser");
+		
 		global $system;
 		$maintenance = $system["config"]["system"]["parameters"]["underMaintenance"]["value"];
 
 		if ($maintenance == "YES")
 			$smarty->assign("onlyAdmin",true);
 
-		global $system;
-		$unifiedLogin = $system["config"]["system"]["parameters"]["affiliateUserLoginUnified"]["value"];
-		
-		if ($unifiedLogin == "YES") {
-			$smarty->assign("unifiedLogin",true);
+		if (Common::hasUnifiedLogin()) {
+			//si hay unificado, obligamos a la opcion que se intento loguear
+			$smarty->assign('cookieSelection','admin');
 		}
-
 
 		Common::doLog('failure','username: ' . $_POST["loginUsername"]);
 		return $mapping->findForwardConfig('failure');
 	}
 
 }
-

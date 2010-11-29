@@ -1,36 +1,24 @@
 <?php
+/** 
+ * UsersListAction
+ *
+ * @package users 
+ */
 
 require_once("BaseAction.php");
 require_once("UserPeer.php");
+require_once("UserInfoPeer.php");
+require_once("UserGroupPeer.php");
 require_once("GroupPeer.php");
 require_once("LevelPeer.php");
+require_once("TimezonePeer.php");
 
 class UsersListAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function UsersListAction() {
 		;
 	}
 
-
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
@@ -47,12 +35,19 @@ class UsersListAction extends BaseAction {
 		$module = "Users";
 		$section = "Users";
 		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
+		//timezone
+		$timezonePeer = new TimezonePeer();
+		$smarty->assign("timezones",$timezonePeer->getAll());
 		$userPeer = new UserPeer();
-		$users = $userPeer->getAll();
-		$smarty->assign("users",$users);
+		$pager = $userPeer->getAllPaginated($_GET["page"]);
+		$smarty->assign("users",$pager->getResult());
+		$smarty->assign("pager",$pager);
+		$url = "Main.php?do=usersList";
+		$smarty->assign("url",$url);				
+	
 		$deletedUsers = $userPeer->getDeleteds();
 		$smarty->assign("deletedUsers",$deletedUsers);
 
@@ -63,6 +58,7 @@ class UsersListAction extends BaseAction {
 
 			try {
 				$user = $userPeer->get($_GET["user"]);
+				
 				$smarty->assign("currentUser",$user);
 				$groups = $userPeer->getGroupsByUser($_GET["user"]);
 				$smarty->assign("currentUserGroups",$groups);
@@ -71,10 +67,10 @@ class UsersListAction extends BaseAction {
 				$smarty->assign("groups",$groups);
 				$levels = LevelPeer::getAll();
 				$smarty->assign("levels",$levels);
-	    	$smarty->assign("accion","edicion");
+	    	$smarty->assign("action","edit");
 	  	}
 		catch (PropelException $e) {
-			$smarty->assign("accion","creacion");
+			$smarty->assign("action","add");
 			}
 		}
 		else if ( isset($_GET["user"]) && empty($_GET["user"]) ) {
@@ -83,7 +79,7 @@ class UsersListAction extends BaseAction {
 			$levels = LevelPeer::getAll();
 			$smarty->assign("levels",$levels);
 
-			$smarty->assign("accion","creacion");
+			$smarty->assign("action","add");
 		}
 		
 		$activeUsersCount = count($users);
@@ -97,4 +93,3 @@ class UsersListAction extends BaseAction {
 	}
 
 }
-?>

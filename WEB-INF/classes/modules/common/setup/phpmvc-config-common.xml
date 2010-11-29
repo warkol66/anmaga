@@ -1,0 +1,42 @@
+<!-- Module Common -->
+  <action-mappings>
+    <action    path = "commonIndex"
+               type = "CommonIndexAction"
+               name = "commonIndex"
+              scope = "request"
+           validate = "true">
+    	<forward name="success" path="/Main.php?do=usersLogin" redirect="true" />
+    </action>
+    <action    path = "commonMaintenance"
+               type = "CommonMaintenanceAction"
+               name = "commonMaintenance"
+              scope = "request"
+           validate = "true">
+    	<forward name="success" path="CommonMaintenance.tpl" />
+    </action>
+
+    <action    path = "installGenerateConfig"
+               type = "InstallGenerateConfigAction"
+               name = "nstallGenerateConfig"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="InstallGenerateConfig.tpl" />
+    </action> 	
+	
+    <action    path = "js"
+               type = "JsAction"
+               name = "jsConfig"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Js.tpl" />
+    </action> 		
+    
+    <action    path = "commonSetLanguage"
+               type = "CommonSetLanguageAction"
+               name = "commonSetLanguage"
+              scope = "request"
+           validate = "true">
+    </action> 		
+
+	</action-mappings>
+<!-- End Common -->
