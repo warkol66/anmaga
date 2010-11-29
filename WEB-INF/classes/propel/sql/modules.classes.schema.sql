@@ -17,7 +17,7 @@ CREATE TABLE `modules_module`
 	`alwaysActive` TINYINT default 0 NOT NULL COMMENT 'Modulo siempre activo',
 	`hasCategories` TINYINT default 0 NOT NULL COMMENT 'El Modulo tiene categorias relacionadas?',
 	PRIMARY KEY (`name`)
-)Type=MyISAM COMMENT=' Registro de modulos';
+) ENGINE=MyISAM COMMENT=' Registro de modulos';
 
 #-----------------------------------------------------------------------------
 #-- modules_dependency
@@ -35,7 +35,7 @@ CREATE TABLE `modules_dependency`
 		FOREIGN KEY (`moduleName`)
 		REFERENCES `modules_module` (`name`)
 		ON DELETE CASCADE
-)Type=MyISAM COMMENT='Dependencia de modulos ';
+) ENGINE=MyISAM COMMENT='Dependencia de modulos ';
 
 #-----------------------------------------------------------------------------
 #-- modules_label
@@ -57,7 +57,7 @@ CREATE TABLE `modules_label`
 		FOREIGN KEY (`name`)
 		REFERENCES `modules_module` (`name`)
 		ON DELETE CASCADE
-)Type=MyISAM COMMENT='Etiquetas de modulos ';
+) ENGINE=MyISAM COMMENT='Etiquetas de modulos ';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

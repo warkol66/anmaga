@@ -27,7 +27,7 @@ CREATE TABLE `users_user`
 	CONSTRAINT `users_user_FK_1`
 		FOREIGN KEY (`levelId`)
 		REFERENCES `users_level` (`id`)
-)Type=MyISAM COMMENT='Users';
+) ENGINE=MyISAM COMMENT='Users';
 
 #-----------------------------------------------------------------------------
 #-- users_userInfo
@@ -46,7 +46,7 @@ CREATE TABLE `users_userInfo`
 	CONSTRAINT `users_userInfo_FK_1`
 		FOREIGN KEY (`userId`)
 		REFERENCES `users_user` (`id`)
-)Type=MyISAM COMMENT='Information about users';
+) ENGINE=MyISAM COMMENT='Information about users';
 
 #-----------------------------------------------------------------------------
 #-- users_userGroup
@@ -68,7 +68,7 @@ CREATE TABLE `users_userGroup`
 		FOREIGN KEY (`groupId`)
 		REFERENCES `users_group` (`id`)
 		ON DELETE CASCADE
-)Type=MyISAM COMMENT='Users / Groups';
+) ENGINE=MyISAM COMMENT='Users / Groups';
 
 #-----------------------------------------------------------------------------
 #-- users_group
@@ -86,7 +86,7 @@ CREATE TABLE `users_group`
 	`bitLevel` INTEGER COMMENT 'Nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `users_group_U_1` (`name`)
-)Type=MyISAM COMMENT='Groups';
+) ENGINE=MyISAM COMMENT='Groups';
 
 #-----------------------------------------------------------------------------
 #-- users_level
@@ -102,7 +102,7 @@ CREATE TABLE `users_level`
 	`bitLevel` INTEGER COMMENT 'Bit del nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `users_level_U_1` (`name`)
-)Type=MyISAM COMMENT='Levels';
+) ENGINE=MyISAM COMMENT='Levels';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
