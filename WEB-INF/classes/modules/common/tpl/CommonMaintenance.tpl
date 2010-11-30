@@ -1,11 +1,11 @@
- 
+<div id="loginWrapper"> 
 <!-- Begin Login --> 
 <div id="login"> 
 	 <!-- Begin LoginTop --> 
 	 <div id="loginTop"></div> 
 	 <!-- End LoginTop --> 
 	 <!-- Begin LoginContent --> 
-	 <div id="loginContent"><br>
+	 <div id="loginContentMaintenance"><br>
 		 <p></p> 
 		 <p></p> 
 			<p>|-$parameters.maintenanceMessage-|</p> 
@@ -20,7 +20,4 @@
 		 <!-- End LoginBottom --> 
 	 </div> 
 	<!-- End Login --> 
-<script>
-	self.moveTo(0,0); self.resizeTo(screen.availWidth,screen.availHeight)
-	self.focus()
-	</script> 
+</div>
