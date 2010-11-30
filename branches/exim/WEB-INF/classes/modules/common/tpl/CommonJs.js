@@ -1,3 +1,47 @@
+function setClass(elementId,className){
+	var element = document.getElementById(elementId);
+	element.className = className;
+}
+function setClassMultiple(elements,className){
+	var i=0;
+	for(i=0; i<elements.length; i++){
+		setClass(elements[i],className);
+	}
+}
+function setElementClass(elementId,className) {
+	var element = document.getElementById(elementId);
+	element.className = className;
+}
+
+function switchDisplay(element,display){
+	var element_ref = "";
+	var undefinedDisplayValue = 0;
+	var switchDisplayValue = "";
+	element_ref=document.getElementById(element);
+	if (display == undefined){
+		undefinedDisplayValue = 1;
+	}
+	if (element_ref.style.display != 'none' && element_ref.style.display != "" && display == undefined){
+		display = 'none';
+	}
+	else{
+		if (undefinedDisplayValue == 1 && switchDisplayValue != display) {
+			display = switchDisplayValue;
+		}
+	}
+	element_ref.style.display=display;
+}
+
+function switchDisplayMultiple(elements,display){
+	if (display == undefined){
+		switchDisplayValue = 'none';
+	}
+	var i=0;
+	for(i=0; i<elements.length; i++){
+		switchDisplay(elements[i],display);
+	}
+}
+
 function cambiaclase(element,clase) {
 	var NAME = document.getElementById(element);
 	NAME.className=clase;
@@ -28,7 +72,6 @@ function check(field) {
 }
 //  End -->
 
-
 function switch_vis(element,display){
 	var e_ref="";
 	var ant="";
@@ -43,6 +86,26 @@ function switch_vis(element,display){
 	else{
 		display=display;
 	}
+	e_ref.style.display=display;
+}
+
+function switch_vis_mult(elements) {
+	var i=0;
+	for(i=0; i<elements.length; i++){
+		switch_vis(elements[i],'none');
+	}
+}
+function switch_class_mult(elements,className) {
+	var i=0;
+	for(i=0; i<elements.length; i++){
+		setClass(elements[i],className);
+	}
+}
+
+function elementShow(element){
+	var e_ref="";
+	var display="block";
+	e_ref=document.getElementById(element);
 	e_ref.style.display=display;
 }
 
@@ -61,35 +124,6 @@ function switch_value(element,value){
 		value=value;
 	}
 	e_ref.value=value;
-}
-
-function switch_vis_mult(elements) {
-	var i=0;
-	for(i=0; i<elements.length; i++){
-		switch_vis(elements[i],'none');
-	}
-}
-
-function addConfigAttribute(li) {
-	ul = document.getElementById(li.id+"_ul");
-	newName=window.prompt("Nombre del nuevo atributo:",'');
-	ul.innerHTML += "<li>"+newName+": <input type='text' name='"+li.id+"["+newName+"]' value='' />"+
-		'<a href="#" onclick="javascript:deleteConfigAttribute(this.parentNode)"><img src="images/delete-comment-blue.gif" class="configLinkImage" alt="Eliminar" title="Eliminar" /></a></li>';
-}
-
-function addConfigSection(li) {
-	ul = document.getElementById(li.id+"_ul");
-	newName=window.prompt("Nombre de la nueva sección:",'');
-	ul.innerHTML += "<li id='"+li.id+"["+newName+"]'>"+newName+
-		' <a href="#" onclick="javascript:addConfigAttribute(this.parentNode)"><img src="images/add-comment-blue.gif" class="configLinkImage" alt="Agregar Atributo" title="Agregar Atributo" /></a>'+
-		' <a href="#" onclick="javascript:addConfigSection(this.parentNode)"><img src="images/add-folder-green.gif" class="configLinkImage" alt="Agregar Sección" title="Agregar Sección" /></a>'+
-		' <a href="#" onclick="javascript:deleteConfigAttribute(this.parentNode)"><img src="images/delete-folder-green.gif" class="configLinkImage" alt="Eliminar" title="Eliminar" /></a>'+
-		"<ul id='"+li.id+"["+newName+"]_ul'></ul></li>";
-}
-
-function deleteConfigAttribute(li) {
-	ul = li.parentNode;
-	ul.removeChild(li);
 }
 
 var myGlobalHandlers = {
@@ -124,111 +158,12 @@ function categoriesDoEditX() {
 	$('name').value = "";
 }
 
-function modulesDoActivateX(form) {
-	var pars = 'do=modulesDoActivateX';
-	var fields = Form.serialize(form);
-
-	var myAjax = new Ajax.Updater(
-				{success: 'message'},
-				url,
-				{
-					method: 'post',
-					parameters: pars,
-					postBody: fields,
-					evalScripts: true
-				});
-		$('messageResult').innerHTML = "";
-		$('messageMod').innerHTML = "<div class='inProgress'>Actualizando módulo...</div>";
-}
-
-
-function ordersAddItemToCartX(form) {
-	var fields = Form.serialize(form);
-
-	var myAjax = new Ajax.Updater(
-				{success: 'messageCart'},
-				url,
-				{
-					method: 'post',
-					postBody: fields
-				});
-	$('messageCart').innerHTML = "<div class='inProgress'>Adding to cart...</div>";
-}
-
-function ordersChangeItemCartX(form) {
-	var fields = Form.serialize(form);
-
-	var myAjax = new Ajax.Updater(
-				{success: 'messageCart'},
-				url,
-				{
-					method: 'post',
-					postBody: fields
-				});
-	$('messageCart').innerHTML = "<div class='inProgress'>Modifing cart...</div>";
-}
-
-function ordersRemoveItemCartX(form) {
-	var fields = Form.serialize(form);
-
-	var myAjax = new Ajax.Updater(
-				{success: 'messageCart'},
-				url,
-				{
-					method: 'post',
-					postBody: fields,
-					evalScripts: true
-				});
-	$('messageCart').innerHTML = "<div class='inProgress'>Removing product from cart...</div>";
-}
-
-function ordersStateDoChangeX(form) {
-	var newState = $('state').value;
-	if (newState != "") {
-		var fields = Form.serialize(form);
-
-		var myAjax = new Ajax.Updater(
-				{success: 'stateChanges'},
-				url,
-				{
-					method: 'post',
-					postBody: fields,
-					evalScripts: true,
-					insertion: Insertion.Bottom
-				});
-		$('messageState').innerHTML = "<div class='inProgress'>Changing state...</div>";
-	}
-	else {
-		alert("Select new state!");
+function CheckAllBoxes(fmobj) {
+	for (var i=0;i<fmobj.elements.length;i++) {
+		var e = fmobj.elements[i];
+		if ( (e.name != 'allbox') && (e.type=='checkbox') && (!e.disabled) ) {
+			e.checked = fmobj.allbox.checked;
+		}
 	}
 }
-
-function ordersSendOrdersExport(form) {
-
-	$('do').value = "ordersExport";
-	form.submit();
-
-	return true;
-} // End of ordersSendOrdersExport
-
-function ordersSendOrdersDelete(form) {
-
-	$('do').value = "ordersDoDelete";
-	form.submit();
-
-	return true;
-} // End of ordersSendOrdersExport
-
-
-//Multilang Module
-
-function addTraduction(a) {
-	var div = $$("#textsBulkEdit div:first")[0];
-	$(a).insert({
-		before: "<div>"+div.innerHTML+"</div>"
-	});
-
-	return false;
-}
-
 

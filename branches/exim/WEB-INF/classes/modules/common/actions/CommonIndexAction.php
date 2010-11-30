@@ -19,7 +19,7 @@ class CommonIndexAction extends BaseAction {
 
 		//////////
 		// Use a different template
-		$this->template->template = "TemplateIndex.tpl";
+		$this->template->template = "TemplatePlain.tpl";
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
