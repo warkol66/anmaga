@@ -15,14 +15,10 @@ else {
 	  $xml = file_get_contents("config/config.xml");
 	  $system = $converter->xml2array($xml);
 	  file_put_contents("config/config.data",serialize($system));
-	  //echo "data creado";
 	}
 	// sino uso el data guardado
 	else {
 		$data = file_get_contents("config/config.data");
 		$system = unserialize($data);
-		//echo "data cargado";
 	}
 }
-
-?>
