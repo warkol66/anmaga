@@ -7,12 +7,13 @@
 * @public
 */
 
+include_once("Include.inc.php");
+include_once("TimezonePeer.php");
+include_once("Common.class.php");
 include_once("Action.php");
+require_once("Smarty_config.inc.php");
+
 include_once("common.inc.php");
-include_once("Paginado.class.php");
-require_once("SecurityActionPeer.php");
-require_once("GroupPeer.php");
-require_once("MultilangLanguagePeer.php");
 
 /**
 * Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
