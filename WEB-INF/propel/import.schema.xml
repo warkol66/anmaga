@@ -378,9 +378,9 @@
 	<table name="import_supplierPurchaseOrderBankTransfer" phpName='SupplierPurchaseOrderBankTransfer' description="Transferencias bancarias realizadas a esa orden de pedido a proveedor">
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id" autoIncrement="true"/>
 		<column name="supplierPurchaseOrderId" required="true" type="INTEGER" description="Id de orden de pedido a proveedor"/>
-	  	<column name="bankTransferNumber" required="true" type="VARCHAR" size="255" description="numero de transferencia bancaria." />
+		<column name="bankTransferNumber" required="true" type="VARCHAR" size="255" description="numero de transferencia bancaria." />
 		<column name="amount" type="FLOAT" required="true" description="monto de la transferencia bancaria." />
-	  	<column name="accountNumber" required="true" type="VARCHAR" size="255" description="Numero de cuenta bancaria destino" />
+		<column name="accountNumber" required="true" type="VARCHAR" size="255" description="Numero de cuenta bancaria destino" />
 		<column name="bankAccountId" required="true" type="INTEGER" description="Cuenta bancaria origen"/>
 		<column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
 
@@ -396,29 +396,29 @@
 
 	<table name="import_bankAccount" phpName='BankAccount' description="Cuentas bancarias">
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id" autoIncrement="true"/>
-	  	<column name="accountNumber" required="true" type="VARCHAR" size="255" description="Numero de cuenta bancaria" />
-	  	<column name="bank" required="true" type="VARCHAR" size="255" description="Banco" />
+		<column name="accountNumber" required="true" type="VARCHAR" size="255" description="Numero de cuenta bancaria" />
+		<column name="bank" required="true" type="VARCHAR" size="255" description="Banco" />
 		 <column type="BOOLEAN" name="active" required="true" description="Is product active?" />
 	</table>
 	
-	<table name="import_shipment" phpName="Shipment" description="Datos de envío">
+	<table name="import_shipment" phpName="Shipment" description="Datos de envio">
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id del envio" autoIncrement="true"/>
 		<column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
 		<column name="supplierPurchaseOrderId" type="INTEGER" description="Supplier Purchase Order" required="true" />
 		<column name="containersRealCount" type="INTEGER" description="Cantidad real de containers" />
-		<column name="containersNumbers" type="TEXT" description="Numeros de los contenedores" />
-		<column name="pickupDate" typ="DATE" description="Fecha de retiro de la mercancia" />
-		<column name="shipmentDate" typ="DATE" description="Fecha de embarque" />
-		<column name="blNumber" typ="INTEGER" descripction="BL Hawb" />
-		<column name="vesselName" typ="VARCHAR" size="255" description="Nombre del buque" />
-		<column name="estimatedDepartureDate" typ="DATE" description="Fecha estimada de partida del buque" />
-		<column name="departureDate" typ="DATE" description="Fecha de partida del buque" />
-		<column name="arrivalPortName" typ="VARCHAR" size="255" description="Nombre del puerto de llegada" />
-		<column name="arrivalToPanamaDate" typ="DATE" description="Fecha de llegada a Panama" />
-		<column name="transshipmentDate" typ="DATE" description="Fecha de transbordo" />
-		<column name="telexRelease" typ="TINYINT" description="Telex release" />
-		<column name="estimatedArrivalDate" typ="DATE" description="Fecha estimada de llegada del buque a puerto" />
-		<column name="arrivalDate" typ="DATE" description="Fecha de llegada a puerto" />
+		<column name="containersNumbers" type="LONGVARCHAR" description="Numeros de los contenedores" />
+		<column name="pickupDate" type="DATE" description="Fecha de retiro de la mercancia" />
+		<column name="shipmentDate" type="DATE" description="Fecha de embarque" />
+		<column name="blNumber" type="INTEGER" description="BL Hawb" />
+		<column name="vesselName" type="VARCHAR" size="255" description="Nombre del buque" />
+		<column name="estimatedDepartureDate" type="DATE" description="Fecha estimada de partida del buque" />
+		<column name="departureDate" type="DATE" description="Fecha de partida del buque" />
+		<column name="arrivalPortName" type="VARCHAR" size="255" description="Nombre del puerto de llegada" />
+		<column name="arrivalToPanamaDate" type="DATE" description="Fecha de llegada a Panama" />
+		<column name="transshipmentDate" type="DATE" description="Fecha de transbordo" />
+		<column name="telexRelease" type="TINYINT" description="Telex release" />
+		<column name="estimatedArrivalDate" type="DATE" description="Fecha estimada de llegada del buque a puerto" />
+		<column name="arrivalDate" type="DATE" description="Fecha de llegada a puerto" />
 	
 		<foreign-key foreignTable="import_supplierPurchaseOrder" >
 		  <reference local="supplierPurchaseOrderId" foreign="id" />
@@ -429,17 +429,17 @@
 	<table name="import_shipmentRelease" phpName="ShipmentRelease" description="Datos de nacionalizacion">
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id del envio" autoIncrement="true"/>
 		<column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
-		<column name="transportId" type="INTEGER" description="Transport Info" required="true" />
-		<column name="documentsPresentationDate" typ="DATE" description="Presentación de documentos aduanales" />
-		<column name="bankTariffsPaymentDate" typ="DATE" description="Pago al banco de aranceles" />
-		<column name="physicalRecognitionDate" typ="DATE" description="Reconocimiento físico de la mercancía" />
-		<column name="documentsValidationDate" typ="DATE" description="Validación de los documentos" />
-		<column name="expensesPaymentDate" typ="DATE" description="Pago de gastos (almacenes, manejo, etc)" />
-		<column name="loadingOrderDate" typ="DATE" description="Orden de carga (El agente aduanal elabora)" />
-		<column name="containersLoadingDate" typ="TINYINT" description="Carga de los containers" />
-		<column name="estimatedMovementToStorehouseDate" typ="DATE" description="Fecha estimada de Transporte desde la aduana al almacén" />
-		<column name="arrivalToStorehouseTimestamp" typ="TIMESTAMP" description="Fecha y hora de llegada del container al almacen" />
-		<column name="containterReceiptOnStorehouseDate" typ="DATE" description="Recepción del container en almacén" />
+		<column name="shipmentId" type="INTEGER" description="Transport Info" required="true" />
+		<column name="documentsPresentationDate" type="DATE" description="Presentacion de documentos aduanales" />
+		<column name="bankTariffsPaymentDate" type="DATE" description="Pago al banco de aranceles" />
+		<column name="physicalRecognitionDate" type="DATE" description="Reconocimiento fisico de la mercancia" />
+		<column name="documentsValidationDate" type="DATE" description="Validacion de los documentos" />
+		<column name="expensesPaymentDate" type="DATE" description="Pago de gastos (almacenes, manejo, etc)" />
+		<column name="loadingOrderDate" type="DATE" description="Orden de carga (El agente aduanal elabora)" />
+		<column name="containersLoadingDate" type="TINYINT" description="Carga de los containers" />
+		<column name="estimatedMovementToStorehouseDate" type="DATE" description="Fecha estimada de Transporte desde la aduana al almacen" />
+		<column name="arrivalToStorehouseTimestamp" type="TIMESTAMP" description="Fecha y hora de llegada del container al almacen" />
+		<column name="containterReceiptOnStorehouseDate" type="DATE" description="Recepcion del container en almacen" />
 
 		<foreign-key foreignTable="import_shipment" >
 		  <reference local="shipmentId" foreign="id" />
