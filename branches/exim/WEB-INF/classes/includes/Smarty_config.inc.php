@@ -1,6 +1,6 @@
 <?php
 /*
- * Configuraci�n del Smarty Templates
+ * Configuración del Smarty Templates
  *
  * @package Config
  */
@@ -14,7 +14,7 @@ class SmartyOutputFilter{
 	 *
 	 * @var string
 	 */
-	public $template = 'template.tpl';
+	public $template = 'Template.tpl';
 	/**
 	 * Smarty postfilter
 	 *
@@ -31,4 +31,3 @@ class SmartyOutputFilter{
    		return $html;
    	}
 }
-?>
