@@ -23,7 +23,7 @@
 
 // Set error reporting level. See PHP manual: XXVI. Error Handling and Logging Functions
 // Note: E_STRICT  (PHP5 compliance) will cause the PHP4 code base to fail.
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting('E_ALL & ~E_NOTICE ~E_WARNING');
 
 // The application root directory
 $appDir = NULL;
