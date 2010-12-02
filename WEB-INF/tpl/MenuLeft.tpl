@@ -14,7 +14,7 @@
 				<li class="menuLink"><a href="Main.php?do=importSupplierOrderList">Pedidos a Proveedor</a></li>
 				<li class="menuLink"><a href="Main.php?do=importBankTransferList">Tranferencias Bancarias</a></li>
 				<li class="menuLink"><a href="Main.php?do=importShipmentsList">Embarques</a></li>
-				<li class="menuLink"><a href="Main.php?do=importShipmentsReleasesList">Nacionalizaciones</a></li>
+				<li class="menuLink"><a href="Main.php?do=importShipmentReleasesList">Nacionalizaciones</a></li>
 		|-/if-|
 			</ul>
 		</div>
