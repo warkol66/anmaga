@@ -103,7 +103,7 @@
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importShipmentsEdit" />
 						<input type="hidden" name="supplierPurchaseOrderId" value="|-$order->getid()-|" />
-						<input type="submit" name="submit_go_edit_shipment" value="Crear información de embarque" class="buttonImageHistory" title="Crear información de embarque" alt="Crear información de embarque" />
+						<input type="submit" name="submit_go_edit_shipment" value="Crear información de embarque" class="buttonImageEdit" title="Crear información de embarque" alt="Crear información de embarque" />
 					</form>
 				</td>
 			</tr>
