@@ -5,6 +5,7 @@
  * @package backup 
  */
 
+set_time_limit(360);
 require_once("BaseAction.php");
 require_once("BackupPeer.php");
 
