@@ -57,7 +57,6 @@ class SupplierTableMap extends TableMap {
     $this->addRelation('SupplierQuote', 'SupplierQuote', RelationMap::ONE_TO_MANY, array('id' => 'supplierId', ), null, null);
     $this->addRelation('SupplierQuoteItemComment', 'SupplierQuoteItemComment', RelationMap::ONE_TO_MANY, array('id' => 'supplierId', ), null, null);
     $this->addRelation('SupplierPurchaseOrder', 'SupplierPurchaseOrder', RelationMap::ONE_TO_MANY, array('id' => 'supplierId', ), null, null);
-    $this->addRelation('Shipment', 'Shipment', RelationMap::ONE_TO_MANY, array('id' => 'supplierId', ), null, null);
 	} // buildRelations()
 
 } // SupplierTableMap

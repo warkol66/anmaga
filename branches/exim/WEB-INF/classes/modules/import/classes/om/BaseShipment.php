@@ -14,7 +14,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'ShipmentPeer';
+	const PEER = 'ShipmentPeer';
 
 	/**
 	 * The Peer class.
@@ -37,55 +37,99 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	protected $createdat;
 
 	/**
-	 * The value for the supplierid field.
-	 * @var        int
-	 */
-	protected $supplierid;
-
-	/**
-	 * The value for the status field.
-	 * @var        int
-	 */
-	protected $status;
-
-	/**
-	 * The value for the timestampstatus field.
-	 * @var        string
-	 */
-	protected $timestampstatus;
-
-	/**
 	 * The value for the supplierpurchaseorderid field.
 	 * @var        int
 	 */
 	protected $supplierpurchaseorderid;
 
 	/**
-	 * The value for the clientquoteid field.
+	 * The value for the containersrealcount field.
 	 * @var        int
 	 */
-	protected $clientquoteid;
+	protected $containersrealcount;
 
 	/**
-	 * The value for the affiliateid field.
+	 * The value for the containersnumbers field.
+	 * @var        string
+	 */
+	protected $containersnumbers;
+
+	/**
+	 * The value for the pickupdate field.
+	 * @var        string
+	 */
+	protected $pickupdate;
+
+	/**
+	 * The value for the shipmentdate field.
+	 * @var        string
+	 */
+	protected $shipmentdate;
+
+	/**
+	 * The value for the blnumber field.
 	 * @var        int
 	 */
-	protected $affiliateid;
+	protected $blnumber;
+
+	/**
+	 * The value for the vesselname field.
+	 * @var        string
+	 */
+	protected $vesselname;
+
+	/**
+	 * The value for the estimateddeparturedate field.
+	 * @var        string
+	 */
+	protected $estimateddeparturedate;
+
+	/**
+	 * The value for the departuredate field.
+	 * @var        string
+	 */
+	protected $departuredate;
+
+	/**
+	 * The value for the arrivalportname field.
+	 * @var        string
+	 */
+	protected $arrivalportname;
+
+	/**
+	 * The value for the arrivaltopanamadate field.
+	 * @var        string
+	 */
+	protected $arrivaltopanamadate;
+
+	/**
+	 * The value for the transshipmentdate field.
+	 * @var        string
+	 */
+	protected $transshipmentdate;
+
+	/**
+	 * The value for the telexrelease field.
+	 * @var        int
+	 */
+	protected $telexrelease;
+
+	/**
+	 * The value for the estimatedarrivaldate field.
+	 * @var        string
+	 */
+	protected $estimatedarrivaldate;
+
+	/**
+	 * The value for the arrivaldate field.
+	 * @var        string
+	 */
+	protected $arrivaldate;
 
 	/**
 	 * @var        SupplierPurchaseOrder
 	 */
 	protected $aSupplierPurchaseOrder;
-
-	/**
-	 * @var        Supplier
-	 */
-	protected $aSupplier;
-
-	/**
-	 * @var        Affiliate
-	 */
-	protected $aAffiliate;
 
 	/**
 	 * @var        array ShipmentRelease[] Collection to store aggregation of ShipmentRelease objects.
@@ -155,50 +199,60 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [supplierid] column value.
-	 * Supplier
+	 * Get the [supplierpurchaseorderid] column value.
+	 * Supplier Purchase Order
 	 * @return     int
 	 */
-	public function getSupplierid()
+	public function getSupplierpurchaseorderid()
 	{
-		return $this->supplierid;
+		return $this->supplierpurchaseorderid;
 	}
 
 	/**
-	 * Get the [status] column value.
-	 * Status del envio
+	 * Get the [containersrealcount] column value.
+	 * Cantidad real de containers
 	 * @return     int
 	 */
-	public function getStatus()
+	public function getContainersrealcount()
 	{
-		return $this->status;
+		return $this->containersrealcount;
 	}
 
 	/**
-	 * Get the [optionally formatted] temporal [timestampstatus] column value.
-	 * Fecha del ultimo cambio de status
+	 * Get the [containersnumbers] column value.
+	 * Numeros de los contenedores
+	 * @return     string
+	 */
+	public function getContainersnumbers()
+	{
+		return $this->containersnumbers;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [pickupdate] column value.
+	 * Fecha de retiro de la mercancia
 	 *
 	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
 	 *							If format is NULL, then the raw DateTime object will be returned.
-	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
 	 * @throws     PropelException - if unable to parse/validate the date/time value.
 	 */
-	public function getTimestampstatus($format = 'Y-m-d H:i:s')
+	public function getPickupdate($format = '%Y/%m/%d')
 	{
-		if ($this->timestampstatus === null) {
+		if ($this->pickupdate === null) {
 			return null;
 		}
 
 
-		if ($this->timestampstatus === '0000-00-00 00:00:00') {
+		if ($this->pickupdate === '0000-00-00') {
 			// while technically this is not a default value of NULL,
 			// this seems to be closest in meaning.
 			return null;
 		} else {
 			try {
-				$dt = new DateTime($this->timestampstatus);
+				$dt = new DateTime($this->pickupdate);
 			} catch (Exception $x) {
-				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->timestampstatus, true), $x);
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->pickupdate, true), $x);
 			}
 		}
 
@@ -213,33 +267,309 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [supplierpurchaseorderid] column value.
-	 * id de cotizacion de proveedor relacionada
-	 * @return     int
+	 * Get the [optionally formatted] temporal [shipmentdate] column value.
+	 * Fecha de embarque
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
 	 */
-	public function getSupplierpurchaseorderid()
+	public function getShipmentdate($format = '%Y/%m/%d')
 	{
-		return $this->supplierpurchaseorderid;
+		if ($this->shipmentdate === null) {
+			return null;
+		}
+
+
+		if ($this->shipmentdate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->shipmentdate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->shipmentdate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
 	}
 
 	/**
-	 * Get the [clientquoteid] column value.
-	 * id de cotizacion a cliente relacionada
+	 * Get the [blnumber] column value.
+	 * BL Hawb
 	 * @return     int
 	 */
-	public function getClientquoteid()
+	public function getBlnumber()
 	{
-		return $this->clientquoteid;
+		return $this->blnumber;
 	}
 
 	/**
-	 * Get the [affiliateid] column value.
-	 * Afiliado
+	 * Get the [vesselname] column value.
+	 * Nombre del buque
+	 * @return     string
+	 */
+	public function getVesselname()
+	{
+		return $this->vesselname;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [estimateddeparturedate] column value.
+	 * Fecha estimada de partida del buque
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getEstimateddeparturedate($format = '%Y/%m/%d')
+	{
+		if ($this->estimateddeparturedate === null) {
+			return null;
+		}
+
+
+		if ($this->estimateddeparturedate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->estimateddeparturedate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->estimateddeparturedate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [departuredate] column value.
+	 * Fecha de partida del buque
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getDeparturedate($format = '%Y/%m/%d')
+	{
+		if ($this->departuredate === null) {
+			return null;
+		}
+
+
+		if ($this->departuredate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->departuredate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->departuredate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [arrivalportname] column value.
+	 * Nombre del puerto de llegada
+	 * @return     string
+	 */
+	public function getArrivalportname()
+	{
+		return $this->arrivalportname;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [arrivaltopanamadate] column value.
+	 * Fecha de llegada a Panama
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getArrivaltopanamadate($format = '%Y/%m/%d')
+	{
+		if ($this->arrivaltopanamadate === null) {
+			return null;
+		}
+
+
+		if ($this->arrivaltopanamadate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->arrivaltopanamadate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->arrivaltopanamadate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [transshipmentdate] column value.
+	 * Fecha de transbordo
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getTransshipmentdate($format = '%Y/%m/%d')
+	{
+		if ($this->transshipmentdate === null) {
+			return null;
+		}
+
+
+		if ($this->transshipmentdate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->transshipmentdate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->transshipmentdate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [telexrelease] column value.
+	 * Telex release
 	 * @return     int
 	 */
-	public function getAffiliateid()
+	public function getTelexrelease()
 	{
-		return $this->affiliateid;
+		return $this->telexrelease;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [estimatedarrivaldate] column value.
+	 * Fecha estimada de llegada del buque a puerto
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getEstimatedarrivaldate($format = '%Y/%m/%d')
+	{
+		if ($this->estimatedarrivaldate === null) {
+			return null;
+		}
+
+
+		if ($this->estimatedarrivaldate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->estimatedarrivaldate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->estimatedarrivaldate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [arrivaldate] column value.
+	 * Fecha de llegada a puerto
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getArrivaldate($format = '%Y/%m/%d')
+	{
+		if ($this->arrivaldate === null) {
+			return null;
+		}
+
+
+		if ($this->arrivaldate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->arrivaldate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->arrivaldate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
 	}
 
 	/**
@@ -312,57 +642,77 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	} // setCreatedat()
 
 	/**
-	 * Set the value of [supplierid] column.
-	 * Supplier
+	 * Set the value of [supplierpurchaseorderid] column.
+	 * Supplier Purchase Order
 	 * @param      int $v new value
 	 * @return     Shipment The current object (for fluent API support)
 	 */
-	public function setSupplierid($v)
+	public function setSupplierpurchaseorderid($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->supplierid !== $v) {
-			$this->supplierid = $v;
-			$this->modifiedColumns[] = ShipmentPeer::SUPPLIERID;
+		if ($this->supplierpurchaseorderid !== $v) {
+			$this->supplierpurchaseorderid = $v;
+			$this->modifiedColumns[] = ShipmentPeer::SUPPLIERPURCHASEORDERID;
 		}
 
-		if ($this->aSupplier !== null && $this->aSupplier->getId() !== $v) {
-			$this->aSupplier = null;
+		if ($this->aSupplierPurchaseOrder !== null && $this->aSupplierPurchaseOrder->getId() !== $v) {
+			$this->aSupplierPurchaseOrder = null;
 		}
 
 		return $this;
-	} // setSupplierid()
+	} // setSupplierpurchaseorderid()
 
 	/**
-	 * Set the value of [status] column.
-	 * Status del envio
+	 * Set the value of [containersrealcount] column.
+	 * Cantidad real de containers
 	 * @param      int $v new value
 	 * @return     Shipment The current object (for fluent API support)
 	 */
-	public function setStatus($v)
+	public function setContainersrealcount($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->status !== $v) {
-			$this->status = $v;
-			$this->modifiedColumns[] = ShipmentPeer::STATUS;
+		if ($this->containersrealcount !== $v) {
+			$this->containersrealcount = $v;
+			$this->modifiedColumns[] = ShipmentPeer::CONTAINERSREALCOUNT;
 		}
 
 		return $this;
-	} // setStatus()
+	} // setContainersrealcount()
 
 	/**
-	 * Sets the value of [timestampstatus] column to a normalized version of the date/time value specified.
-	 * Fecha del ultimo cambio de status
+	 * Set the value of [containersnumbers] column.
+	 * Numeros de los contenedores
+	 * @param      string $v new value
+	 * @return     Shipment The current object (for fluent API support)
+	 */
+	public function setContainersnumbers($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->containersnumbers !== $v) {
+			$this->containersnumbers = $v;
+			$this->modifiedColumns[] = ShipmentPeer::CONTAINERSNUMBERS;
+		}
+
+		return $this;
+	} // setContainersnumbers()
+
+	/**
+	 * Sets the value of [pickupdate] column to a normalized version of the date/time value specified.
+	 * Fecha de retiro de la mercancia
 	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
 	 *						be treated as NULL for temporal objects.
 	 * @return     Shipment The current object (for fluent API support)
 	 */
-	public function setTimestampstatus($v)
+	public function setPickupdate($v)
 	{
 		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
 		// -- which is unexpected, to say the least.
@@ -387,90 +737,445 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 			}
 		}
 
-		if ( $this->timestampstatus !== null || $dt !== null ) {
+		if ( $this->pickupdate !== null || $dt !== null ) {
 			// (nested ifs are a little easier to read in this case)
 
-			$currNorm = ($this->timestampstatus !== null && $tmpDt = new DateTime($this->timestampstatus)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
+			$currNorm = ($this->pickupdate !== null && $tmpDt = new DateTime($this->pickupdate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
 
 			if ( ($currNorm !== $newNorm) // normalized values don't match 
 					)
 			{
-				$this->timestampstatus = ($dt ? $dt->format('Y-m-d H:i:s') : null);
-				$this->modifiedColumns[] = ShipmentPeer::TIMESTAMPSTATUS;
+				$this->pickupdate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentPeer::PICKUPDATE;
 			}
 		} // if either are not null
 
 		return $this;
-	} // setTimestampstatus()
+	} // setPickupdate()
 
 	/**
-	 * Set the value of [supplierpurchaseorderid] column.
-	 * id de cotizacion de proveedor relacionada
+	 * Sets the value of [shipmentdate] column to a normalized version of the date/time value specified.
+	 * Fecha de embarque
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     Shipment The current object (for fluent API support)
+	 */
+	public function setShipmentdate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->shipmentdate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->shipmentdate !== null && $tmpDt = new DateTime($this->shipmentdate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->shipmentdate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentPeer::SHIPMENTDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setShipmentdate()
+
+	/**
+	 * Set the value of [blnumber] column.
+	 * BL Hawb
 	 * @param      int $v new value
 	 * @return     Shipment The current object (for fluent API support)
 	 */
-	public function setSupplierpurchaseorderid($v)
+	public function setBlnumber($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->supplierpurchaseorderid !== $v) {
-			$this->supplierpurchaseorderid = $v;
-			$this->modifiedColumns[] = ShipmentPeer::SUPPLIERPURCHASEORDERID;
-		}
-
-		if ($this->aSupplierPurchaseOrder !== null && $this->aSupplierPurchaseOrder->getId() !== $v) {
-			$this->aSupplierPurchaseOrder = null;
+		if ($this->blnumber !== $v) {
+			$this->blnumber = $v;
+			$this->modifiedColumns[] = ShipmentPeer::BLNUMBER;
 		}
 
 		return $this;
-	} // setSupplierpurchaseorderid()
+	} // setBlnumber()
 
 	/**
-	 * Set the value of [clientquoteid] column.
-	 * id de cotizacion a cliente relacionada
+	 * Set the value of [vesselname] column.
+	 * Nombre del buque
+	 * @param      string $v new value
+	 * @return     Shipment The current object (for fluent API support)
+	 */
+	public function setVesselname($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->vesselname !== $v) {
+			$this->vesselname = $v;
+			$this->modifiedColumns[] = ShipmentPeer::VESSELNAME;
+		}
+
+		return $this;
+	} // setVesselname()
+
+	/**
+	 * Sets the value of [estimateddeparturedate] column to a normalized version of the date/time value specified.
+	 * Fecha estimada de partida del buque
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     Shipment The current object (for fluent API support)
+	 */
+	public function setEstimateddeparturedate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->estimateddeparturedate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->estimateddeparturedate !== null && $tmpDt = new DateTime($this->estimateddeparturedate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->estimateddeparturedate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentPeer::ESTIMATEDDEPARTUREDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setEstimateddeparturedate()
+
+	/**
+	 * Sets the value of [departuredate] column to a normalized version of the date/time value specified.
+	 * Fecha de partida del buque
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     Shipment The current object (for fluent API support)
+	 */
+	public function setDeparturedate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->departuredate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->departuredate !== null && $tmpDt = new DateTime($this->departuredate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->departuredate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentPeer::DEPARTUREDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setDeparturedate()
+
+	/**
+	 * Set the value of [arrivalportname] column.
+	 * Nombre del puerto de llegada
+	 * @param      string $v new value
+	 * @return     Shipment The current object (for fluent API support)
+	 */
+	public function setArrivalportname($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->arrivalportname !== $v) {
+			$this->arrivalportname = $v;
+			$this->modifiedColumns[] = ShipmentPeer::ARRIVALPORTNAME;
+		}
+
+		return $this;
+	} // setArrivalportname()
+
+	/**
+	 * Sets the value of [arrivaltopanamadate] column to a normalized version of the date/time value specified.
+	 * Fecha de llegada a Panama
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     Shipment The current object (for fluent API support)
+	 */
+	public function setArrivaltopanamadate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->arrivaltopanamadate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->arrivaltopanamadate !== null && $tmpDt = new DateTime($this->arrivaltopanamadate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->arrivaltopanamadate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentPeer::ARRIVALTOPANAMADATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setArrivaltopanamadate()
+
+	/**
+	 * Sets the value of [transshipmentdate] column to a normalized version of the date/time value specified.
+	 * Fecha de transbordo
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     Shipment The current object (for fluent API support)
+	 */
+	public function setTransshipmentdate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->transshipmentdate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->transshipmentdate !== null && $tmpDt = new DateTime($this->transshipmentdate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->transshipmentdate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentPeer::TRANSSHIPMENTDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setTransshipmentdate()
+
+	/**
+	 * Set the value of [telexrelease] column.
+	 * Telex release
 	 * @param      int $v new value
 	 * @return     Shipment The current object (for fluent API support)
 	 */
-	public function setClientquoteid($v)
+	public function setTelexrelease($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->clientquoteid !== $v) {
-			$this->clientquoteid = $v;
-			$this->modifiedColumns[] = ShipmentPeer::CLIENTQUOTEID;
+		if ($this->telexrelease !== $v) {
+			$this->telexrelease = $v;
+			$this->modifiedColumns[] = ShipmentPeer::TELEXRELEASE;
 		}
 
 		return $this;
-	} // setClientquoteid()
+	} // setTelexrelease()
 
 	/**
-	 * Set the value of [affiliateid] column.
-	 * Afiliado
-	 * @param      int $v new value
+	 * Sets the value of [estimatedarrivaldate] column to a normalized version of the date/time value specified.
+	 * Fecha estimada de llegada del buque a puerto
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
 	 * @return     Shipment The current object (for fluent API support)
 	 */
-	public function setAffiliateid($v)
+	public function setEstimatedarrivaldate($v)
 	{
-		if ($v !== null) {
-			$v = (int) $v;
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
 		}
 
-		if ($this->affiliateid !== $v) {
-			$this->affiliateid = $v;
-			$this->modifiedColumns[] = ShipmentPeer::AFFILIATEID;
-		}
+		if ( $this->estimatedarrivaldate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
 
-		if ($this->aAffiliate !== null && $this->aAffiliate->getId() !== $v) {
-			$this->aAffiliate = null;
-		}
+			$currNorm = ($this->estimatedarrivaldate !== null && $tmpDt = new DateTime($this->estimatedarrivaldate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->estimatedarrivaldate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentPeer::ESTIMATEDARRIVALDATE;
+			}
+		} // if either are not null
 
 		return $this;
-	} // setAffiliateid()
+	} // setEstimatedarrivaldate()
+
+	/**
+	 * Sets the value of [arrivaldate] column to a normalized version of the date/time value specified.
+	 * Fecha de llegada a puerto
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     Shipment The current object (for fluent API support)
+	 */
+	public function setArrivaldate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->arrivaldate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->arrivaldate !== null && $tmpDt = new DateTime($this->arrivaldate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->arrivaldate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentPeer::ARRIVALDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setArrivaldate()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -506,12 +1211,21 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->createdat = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-			$this->supplierid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-			$this->status = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-			$this->timestampstatus = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-			$this->supplierpurchaseorderid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-			$this->clientquoteid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-			$this->affiliateid = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+			$this->supplierpurchaseorderid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->containersrealcount = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+			$this->containersnumbers = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->pickupdate = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->shipmentdate = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->blnumber = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+			$this->vesselname = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->estimateddeparturedate = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->departuredate = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+			$this->arrivalportname = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->arrivaltopanamadate = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+			$this->transshipmentdate = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+			$this->telexrelease = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
+			$this->estimatedarrivaldate = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+			$this->arrivaldate = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -520,7 +1234,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 8; // 8 = ShipmentPeer::NUM_COLUMNS - ShipmentPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 17; // 17 = ShipmentPeer::NUM_COLUMNS - ShipmentPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Shipment object", $e);
@@ -543,14 +1257,8 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	public function ensureConsistency()
 	{
 
-		if ($this->aSupplier !== null && $this->supplierid !== $this->aSupplier->getId()) {
-			$this->aSupplier = null;
-		}
 		if ($this->aSupplierPurchaseOrder !== null && $this->supplierpurchaseorderid !== $this->aSupplierPurchaseOrder->getId()) {
 			$this->aSupplierPurchaseOrder = null;
-		}
-		if ($this->aAffiliate !== null && $this->affiliateid !== $this->aAffiliate->getId()) {
-			$this->aAffiliate = null;
 		}
 	} // ensureConsistency
 
@@ -592,8 +1300,6 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->aSupplierPurchaseOrder = null;
-			$this->aSupplier = null;
-			$this->aAffiliate = null;
 			$this->collShipmentReleases = null;
 
 		} // if (deep)
@@ -617,7 +1323,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(ShipmentPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -659,7 +1365,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(ShipmentPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -716,20 +1422,6 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 					$affectedRows += $this->aSupplierPurchaseOrder->save($con);
 				}
 				$this->setSupplierPurchaseOrder($this->aSupplierPurchaseOrder);
-			}
-
-			if ($this->aSupplier !== null) {
-				if ($this->aSupplier->isModified() || $this->aSupplier->isNew()) {
-					$affectedRows += $this->aSupplier->save($con);
-				}
-				$this->setSupplier($this->aSupplier);
-			}
-
-			if ($this->aAffiliate !== null) {
-				if ($this->aAffiliate->isModified() || $this->aAffiliate->isNew()) {
-					$affectedRows += $this->aAffiliate->save($con);
-				}
-				$this->setAffiliate($this->aAffiliate);
 			}
 
 			if ($this->isNew() ) {
@@ -840,18 +1532,6 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 				}
 			}
 
-			if ($this->aSupplier !== null) {
-				if (!$this->aSupplier->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aSupplier->getValidationFailures());
-				}
-			}
-
-			if ($this->aAffiliate !== null) {
-				if (!$this->aAffiliate->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aAffiliate->getValidationFailures());
-				}
-			}
-
 
 			if (($retval = ShipmentPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
@@ -906,22 +1586,49 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 				return $this->getCreatedat();
 				break;
 			case 2:
-				return $this->getSupplierid();
-				break;
-			case 3:
-				return $this->getStatus();
-				break;
-			case 4:
-				return $this->getTimestampstatus();
-				break;
-			case 5:
 				return $this->getSupplierpurchaseorderid();
 				break;
+			case 3:
+				return $this->getContainersrealcount();
+				break;
+			case 4:
+				return $this->getContainersnumbers();
+				break;
+			case 5:
+				return $this->getPickupdate();
+				break;
 			case 6:
-				return $this->getClientquoteid();
+				return $this->getShipmentdate();
 				break;
 			case 7:
-				return $this->getAffiliateid();
+				return $this->getBlnumber();
+				break;
+			case 8:
+				return $this->getVesselname();
+				break;
+			case 9:
+				return $this->getEstimateddeparturedate();
+				break;
+			case 10:
+				return $this->getDeparturedate();
+				break;
+			case 11:
+				return $this->getArrivalportname();
+				break;
+			case 12:
+				return $this->getArrivaltopanamadate();
+				break;
+			case 13:
+				return $this->getTransshipmentdate();
+				break;
+			case 14:
+				return $this->getTelexrelease();
+				break;
+			case 15:
+				return $this->getEstimatedarrivaldate();
+				break;
+			case 16:
+				return $this->getArrivaldate();
 				break;
 			default:
 				return null;
@@ -936,7 +1643,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -949,22 +1656,25 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getCreatedat(),
-			$keys[2] => $this->getSupplierid(),
-			$keys[3] => $this->getStatus(),
-			$keys[4] => $this->getTimestampstatus(),
-			$keys[5] => $this->getSupplierpurchaseorderid(),
-			$keys[6] => $this->getClientquoteid(),
-			$keys[7] => $this->getAffiliateid(),
+			$keys[2] => $this->getSupplierpurchaseorderid(),
+			$keys[3] => $this->getContainersrealcount(),
+			$keys[4] => $this->getContainersnumbers(),
+			$keys[5] => $this->getPickupdate(),
+			$keys[6] => $this->getShipmentdate(),
+			$keys[7] => $this->getBlnumber(),
+			$keys[8] => $this->getVesselname(),
+			$keys[9] => $this->getEstimateddeparturedate(),
+			$keys[10] => $this->getDeparturedate(),
+			$keys[11] => $this->getArrivalportname(),
+			$keys[12] => $this->getArrivaltopanamadate(),
+			$keys[13] => $this->getTransshipmentdate(),
+			$keys[14] => $this->getTelexrelease(),
+			$keys[15] => $this->getEstimatedarrivaldate(),
+			$keys[16] => $this->getArrivaldate(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aSupplierPurchaseOrder) {
 				$result['SupplierPurchaseOrder'] = $this->aSupplierPurchaseOrder->toArray($keyType, $includeLazyLoadColumns, true);
-			}
-			if (null !== $this->aSupplier) {
-				$result['Supplier'] = $this->aSupplier->toArray($keyType, $includeLazyLoadColumns, true);
-			}
-			if (null !== $this->aAffiliate) {
-				$result['Affiliate'] = $this->aAffiliate->toArray($keyType, $includeLazyLoadColumns, true);
 			}
 		}
 		return $result;
@@ -1004,22 +1714,49 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 				$this->setCreatedat($value);
 				break;
 			case 2:
-				$this->setSupplierid($value);
-				break;
-			case 3:
-				$this->setStatus($value);
-				break;
-			case 4:
-				$this->setTimestampstatus($value);
-				break;
-			case 5:
 				$this->setSupplierpurchaseorderid($value);
 				break;
+			case 3:
+				$this->setContainersrealcount($value);
+				break;
+			case 4:
+				$this->setContainersnumbers($value);
+				break;
+			case 5:
+				$this->setPickupdate($value);
+				break;
 			case 6:
-				$this->setClientquoteid($value);
+				$this->setShipmentdate($value);
 				break;
 			case 7:
-				$this->setAffiliateid($value);
+				$this->setBlnumber($value);
+				break;
+			case 8:
+				$this->setVesselname($value);
+				break;
+			case 9:
+				$this->setEstimateddeparturedate($value);
+				break;
+			case 10:
+				$this->setDeparturedate($value);
+				break;
+			case 11:
+				$this->setArrivalportname($value);
+				break;
+			case 12:
+				$this->setArrivaltopanamadate($value);
+				break;
+			case 13:
+				$this->setTransshipmentdate($value);
+				break;
+			case 14:
+				$this->setTelexrelease($value);
+				break;
+			case 15:
+				$this->setEstimatedarrivaldate($value);
+				break;
+			case 16:
+				$this->setArrivaldate($value);
 				break;
 		} // switch()
 	}
@@ -1047,12 +1784,21 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setCreatedat($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setSupplierid($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setStatus($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setTimestampstatus($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setSupplierpurchaseorderid($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setClientquoteid($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setAffiliateid($arr[$keys[7]]);
+		if (array_key_exists($keys[2], $arr)) $this->setSupplierpurchaseorderid($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setContainersrealcount($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setContainersnumbers($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setPickupdate($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setShipmentdate($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setBlnumber($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setVesselname($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setEstimateddeparturedate($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setDeparturedate($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setArrivalportname($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setArrivaltopanamadate($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setTransshipmentdate($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setTelexrelease($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setEstimatedarrivaldate($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setArrivaldate($arr[$keys[16]]);
 	}
 
 	/**
@@ -1066,12 +1812,21 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 
 		if ($this->isColumnModified(ShipmentPeer::ID)) $criteria->add(ShipmentPeer::ID, $this->id);
 		if ($this->isColumnModified(ShipmentPeer::CREATEDAT)) $criteria->add(ShipmentPeer::CREATEDAT, $this->createdat);
-		if ($this->isColumnModified(ShipmentPeer::SUPPLIERID)) $criteria->add(ShipmentPeer::SUPPLIERID, $this->supplierid);
-		if ($this->isColumnModified(ShipmentPeer::STATUS)) $criteria->add(ShipmentPeer::STATUS, $this->status);
-		if ($this->isColumnModified(ShipmentPeer::TIMESTAMPSTATUS)) $criteria->add(ShipmentPeer::TIMESTAMPSTATUS, $this->timestampstatus);
 		if ($this->isColumnModified(ShipmentPeer::SUPPLIERPURCHASEORDERID)) $criteria->add(ShipmentPeer::SUPPLIERPURCHASEORDERID, $this->supplierpurchaseorderid);
-		if ($this->isColumnModified(ShipmentPeer::CLIENTQUOTEID)) $criteria->add(ShipmentPeer::CLIENTQUOTEID, $this->clientquoteid);
-		if ($this->isColumnModified(ShipmentPeer::AFFILIATEID)) $criteria->add(ShipmentPeer::AFFILIATEID, $this->affiliateid);
+		if ($this->isColumnModified(ShipmentPeer::CONTAINERSREALCOUNT)) $criteria->add(ShipmentPeer::CONTAINERSREALCOUNT, $this->containersrealcount);
+		if ($this->isColumnModified(ShipmentPeer::CONTAINERSNUMBERS)) $criteria->add(ShipmentPeer::CONTAINERSNUMBERS, $this->containersnumbers);
+		if ($this->isColumnModified(ShipmentPeer::PICKUPDATE)) $criteria->add(ShipmentPeer::PICKUPDATE, $this->pickupdate);
+		if ($this->isColumnModified(ShipmentPeer::SHIPMENTDATE)) $criteria->add(ShipmentPeer::SHIPMENTDATE, $this->shipmentdate);
+		if ($this->isColumnModified(ShipmentPeer::BLNUMBER)) $criteria->add(ShipmentPeer::BLNUMBER, $this->blnumber);
+		if ($this->isColumnModified(ShipmentPeer::VESSELNAME)) $criteria->add(ShipmentPeer::VESSELNAME, $this->vesselname);
+		if ($this->isColumnModified(ShipmentPeer::ESTIMATEDDEPARTUREDATE)) $criteria->add(ShipmentPeer::ESTIMATEDDEPARTUREDATE, $this->estimateddeparturedate);
+		if ($this->isColumnModified(ShipmentPeer::DEPARTUREDATE)) $criteria->add(ShipmentPeer::DEPARTUREDATE, $this->departuredate);
+		if ($this->isColumnModified(ShipmentPeer::ARRIVALPORTNAME)) $criteria->add(ShipmentPeer::ARRIVALPORTNAME, $this->arrivalportname);
+		if ($this->isColumnModified(ShipmentPeer::ARRIVALTOPANAMADATE)) $criteria->add(ShipmentPeer::ARRIVALTOPANAMADATE, $this->arrivaltopanamadate);
+		if ($this->isColumnModified(ShipmentPeer::TRANSSHIPMENTDATE)) $criteria->add(ShipmentPeer::TRANSSHIPMENTDATE, $this->transshipmentdate);
+		if ($this->isColumnModified(ShipmentPeer::TELEXRELEASE)) $criteria->add(ShipmentPeer::TELEXRELEASE, $this->telexrelease);
+		if ($this->isColumnModified(ShipmentPeer::ESTIMATEDARRIVALDATE)) $criteria->add(ShipmentPeer::ESTIMATEDARRIVALDATE, $this->estimatedarrivaldate);
+		if ($this->isColumnModified(ShipmentPeer::ARRIVALDATE)) $criteria->add(ShipmentPeer::ARRIVALDATE, $this->arrivaldate);
 
 		return $criteria;
 	}
@@ -1134,12 +1889,21 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 		$copyObj->setCreatedat($this->createdat);
-		$copyObj->setSupplierid($this->supplierid);
-		$copyObj->setStatus($this->status);
-		$copyObj->setTimestampstatus($this->timestampstatus);
 		$copyObj->setSupplierpurchaseorderid($this->supplierpurchaseorderid);
-		$copyObj->setClientquoteid($this->clientquoteid);
-		$copyObj->setAffiliateid($this->affiliateid);
+		$copyObj->setContainersrealcount($this->containersrealcount);
+		$copyObj->setContainersnumbers($this->containersnumbers);
+		$copyObj->setPickupdate($this->pickupdate);
+		$copyObj->setShipmentdate($this->shipmentdate);
+		$copyObj->setBlnumber($this->blnumber);
+		$copyObj->setVesselname($this->vesselname);
+		$copyObj->setEstimateddeparturedate($this->estimateddeparturedate);
+		$copyObj->setDeparturedate($this->departuredate);
+		$copyObj->setArrivalportname($this->arrivalportname);
+		$copyObj->setArrivaltopanamadate($this->arrivaltopanamadate);
+		$copyObj->setTransshipmentdate($this->transshipmentdate);
+		$copyObj->setTelexrelease($this->telexrelease);
+		$copyObj->setEstimatedarrivaldate($this->estimatedarrivaldate);
+		$copyObj->setArrivaldate($this->arrivaldate);
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1236,112 +2000,14 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		if ($this->aSupplierPurchaseOrder === null && ($this->supplierpurchaseorderid !== null)) {
 			$this->aSupplierPurchaseOrder = SupplierPurchaseOrderQuery::create()->findPk($this->supplierpurchaseorderid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aSupplierPurchaseOrder->addShipments($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aSupplierPurchaseOrder->addShipments($this);
 			 */
 		}
 		return $this->aSupplierPurchaseOrder;
-	}
-
-	/**
-	 * Declares an association between this object and a Supplier object.
-	 *
-	 * @param      Supplier $v
-	 * @return     Shipment The current object (for fluent API support)
-	 * @throws     PropelException
-	 */
-	public function setSupplier(Supplier $v = null)
-	{
-		if ($v === null) {
-			$this->setSupplierid(NULL);
-		} else {
-			$this->setSupplierid($v->getId());
-		}
-
-		$this->aSupplier = $v;
-
-		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the Supplier object, it will not be re-added.
-		if ($v !== null) {
-			$v->addShipment($this);
-		}
-
-		return $this;
-	}
-
-
-	/**
-	 * Get the associated Supplier object
-	 *
-	 * @param      PropelPDO Optional Connection object.
-	 * @return     Supplier The associated Supplier object.
-	 * @throws     PropelException
-	 */
-	public function getSupplier(PropelPDO $con = null)
-	{
-		if ($this->aSupplier === null && ($this->supplierid !== null)) {
-			$this->aSupplier = SupplierQuery::create()->findPk($this->supplierid, $con);
-			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aSupplier->addShipments($this);
-			 */
-		}
-		return $this->aSupplier;
-	}
-
-	/**
-	 * Declares an association between this object and a Affiliate object.
-	 *
-	 * @param      Affiliate $v
-	 * @return     Shipment The current object (for fluent API support)
-	 * @throws     PropelException
-	 */
-	public function setAffiliate(Affiliate $v = null)
-	{
-		if ($v === null) {
-			$this->setAffiliateid(NULL);
-		} else {
-			$this->setAffiliateid($v->getId());
-		}
-
-		$this->aAffiliate = $v;
-
-		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the Affiliate object, it will not be re-added.
-		if ($v !== null) {
-			$v->addShipment($this);
-		}
-
-		return $this;
-	}
-
-
-	/**
-	 * Get the associated Affiliate object
-	 *
-	 * @param      PropelPDO Optional Connection object.
-	 * @return     Affiliate The associated Affiliate object.
-	 * @throws     PropelException
-	 */
-	public function getAffiliate(PropelPDO $con = null)
-	{
-		if ($this->aAffiliate === null && ($this->affiliateid !== null)) {
-			$this->aAffiliate = AffiliateQuery::create()->findPk($this->affiliateid, $con);
-			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aAffiliate->addShipments($this);
-			 */
-		}
-		return $this->aAffiliate;
 	}
 
 	/**
@@ -1460,12 +2126,21 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	{
 		$this->id = null;
 		$this->createdat = null;
-		$this->supplierid = null;
-		$this->status = null;
-		$this->timestampstatus = null;
 		$this->supplierpurchaseorderid = null;
-		$this->clientquoteid = null;
-		$this->affiliateid = null;
+		$this->containersrealcount = null;
+		$this->containersnumbers = null;
+		$this->pickupdate = null;
+		$this->shipmentdate = null;
+		$this->blnumber = null;
+		$this->vesselname = null;
+		$this->estimateddeparturedate = null;
+		$this->departuredate = null;
+		$this->arrivalportname = null;
+		$this->arrivaltopanamadate = null;
+		$this->transshipmentdate = null;
+		$this->telexrelease = null;
+		$this->estimatedarrivaldate = null;
+		$this->arrivaldate = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
@@ -1495,8 +2170,6 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 
 		$this->collShipmentReleases = null;
 		$this->aSupplierPurchaseOrder = null;
-		$this->aSupplier = null;
-		$this->aAffiliate = null;
 	}
 
 	/**

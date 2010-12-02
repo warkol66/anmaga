@@ -14,7 +14,7 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'MultilangTextPeer';
+	const PEER = 'MultilangTextPeer';
 
 	/**
 	 * The Peer class.
@@ -335,7 +335,7 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(MultilangTextPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -377,7 +377,7 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(MultilangTextPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -605,7 +605,7 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -747,7 +747,7 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent
 		$pks[0] = $this->getId();
 		$pks[1] = $this->getModulename();
 		$pks[2] = $this->getLanguagecode();
-		
+
 		return $pks;
 	}
 
@@ -872,11 +872,11 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent
 				->filterByMultilangText($this) // here
 				->findOne($con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aMultilangLanguage->addMultilangTexts($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aMultilangLanguage->addMultilangTexts($this);
 			 */
 		}
 		return $this->aMultilangLanguage;
@@ -921,11 +921,11 @@ abstract class BaseMultilangText extends BaseObject  implements Persistent
 		if ($this->aModule === null && (($this->modulename !== "" && $this->modulename !== null))) {
 			$this->aModule = ModuleQuery::create()->findPk($this->modulename, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aModule->addMultilangTexts($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aModule->addMultilangTexts($this);
 			 */
 		}
 		return $this->aModule;

@@ -14,7 +14,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'UserPeer';
+	const PEER = 'UserPeer';
 
 	/**
 	 * The Peer class.
@@ -84,6 +84,11 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	protected $aLevel;
 
 	/**
+	 * @var        array Actionlog[] Collection to store aggregation of Actionlog objects.
+	 */
+	protected $collActionlogs;
+
+	/**
 	 * @var        array ClientQuote[] Collection to store aggregation of ClientQuote objects.
 	 */
 	protected $collClientQuotes;
@@ -112,11 +117,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	 * @var        array UserGroup[] Collection to store aggregation of UserGroup objects.
 	 */
 	protected $collUserGroups;
-
-	/**
-	 * @var        array Actionlog[] Collection to store aggregation of Actionlog objects.
-	 */
-	protected $collActionlogs;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -692,6 +692,8 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->aLevel = null;
+			$this->collActionlogs = null;
+
 			$this->collClientQuotes = null;
 
 			$this->collSupplierQuoteItemComments = null;
@@ -703,8 +705,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$this->singleUserInfo = null;
 
 			$this->collUserGroups = null;
-
-			$this->collActionlogs = null;
 
 		} // if (deep)
 	}
@@ -727,7 +727,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -769,7 +769,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -851,6 +851,14 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
+			if ($this->collActionlogs !== null) {
+				foreach ($this->collActionlogs as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collClientQuotes !== null) {
 				foreach ($this->collClientQuotes as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -891,14 +899,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 			if ($this->collUserGroups !== null) {
 				foreach ($this->collUserGroups as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collActionlogs !== null) {
-				foreach ($this->collActionlogs as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -988,6 +988,14 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			}
 
 
+				if ($this->collActionlogs !== null) {
+					foreach ($this->collActionlogs as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 				if ($this->collClientQuotes !== null) {
 					foreach ($this->collClientQuotes as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
@@ -1028,14 +1036,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 				if ($this->collUserGroups !== null) {
 					foreach ($this->collUserGroups as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collActionlogs !== null) {
-					foreach ($this->collActionlogs as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1115,7 +1115,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -1326,6 +1326,12 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
+			foreach ($this->getActionlogs() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addActionlog($relObj->copy($deepCopy));
+				}
+			}
+
 			foreach ($this->getClientQuotes() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addClientQuote($relObj->copy($deepCopy));
@@ -1358,12 +1364,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			foreach ($this->getUserGroups() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addUserGroup($relObj->copy($deepCopy));
-				}
-			}
-
-			foreach ($this->getActionlogs() as $relObj) {
-				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addActionlog($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1451,14 +1451,148 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($this->aLevel === null && ($this->levelid !== null)) {
 			$this->aLevel = LevelQuery::create()->findPk($this->levelid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aLevel->addUsers($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aLevel->addUsers($this);
 			 */
 		}
 		return $this->aLevel;
+	}
+
+	/**
+	 * Clears out the collActionlogs collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addActionlogs()
+	 */
+	public function clearActionlogs()
+	{
+		$this->collActionlogs = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collActionlogs collection.
+	 *
+	 * By default this just sets the collActionlogs collection to an empty array (like clearcollActionlogs());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initActionlogs()
+	{
+		$this->collActionlogs = new PropelObjectCollection();
+		$this->collActionlogs->setModel('Actionlog');
+	}
+
+	/**
+	 * Gets an array of Actionlog objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array Actionlog[] List of Actionlog objects
+	 * @throws     PropelException
+	 */
+	public function getActionlogs($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collActionlogs || null !== $criteria) {
+			if ($this->isNew() && null === $this->collActionlogs) {
+				// return empty collection
+				$this->initActionlogs();
+			} else {
+				$collActionlogs = ActionlogQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collActionlogs;
+				}
+				$this->collActionlogs = $collActionlogs;
+			}
+		}
+		return $this->collActionlogs;
+	}
+
+	/**
+	 * Returns the number of related Actionlog objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related Actionlog objects.
+	 * @throws     PropelException
+	 */
+	public function countActionlogs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collActionlogs || null !== $criteria) {
+			if ($this->isNew() && null === $this->collActionlogs) {
+				return 0;
+			} else {
+				$query = ActionlogQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByUser($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collActionlogs);
+		}
+	}
+
+	/**
+	 * Method called to associate a Actionlog object to this object
+	 * through the Actionlog foreign key attribute.
+	 *
+	 * @param      Actionlog $l Actionlog
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addActionlog(Actionlog $l)
+	{
+		if ($this->collActionlogs === null) {
+			$this->initActionlogs();
+		}
+		if (!$this->collActionlogs->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collActionlogs[]= $l;
+			$l->setUser($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this User is new, it will return
+	 * an empty collection; or if this User has previously
+	 * been saved, it will retrieve related Actionlogs from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array Actionlog[] List of Actionlog objects
+	 */
+	public function getActionlogsJoinSecurityAction($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = ActionlogQuery::create(null, $criteria);
+		$query->joinWith('SecurityAction', $join_behavior);
+
+		return $this->getActionlogs($query, $con);
 	}
 
 	/**
@@ -2368,140 +2502,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Clears out the collActionlogs collection
-	 *
-	 * This does not modify the database; however, it will remove any associated objects, causing
-	 * them to be refetched by subsequent calls to accessor method.
-	 *
-	 * @return     void
-	 * @see        addActionlogs()
-	 */
-	public function clearActionlogs()
-	{
-		$this->collActionlogs = null; // important to set this to NULL since that means it is uninitialized
-	}
-
-	/**
-	 * Initializes the collActionlogs collection.
-	 *
-	 * By default this just sets the collActionlogs collection to an empty array (like clearcollActionlogs());
-	 * however, you may wish to override this method in your stub class to provide setting appropriate
-	 * to your application -- for example, setting the initial array to the values stored in database.
-	 *
-	 * @return     void
-	 */
-	public function initActionlogs()
-	{
-		$this->collActionlogs = new PropelObjectCollection();
-		$this->collActionlogs->setModel('Actionlog');
-	}
-
-	/**
-	 * Gets an array of Actionlog objects which contain a foreign key that references this object.
-	 *
-	 * If the $criteria is not null, it is used to always fetch the results from the database.
-	 * Otherwise the results are fetched from the database the first time, then cached.
-	 * Next time the same method is called without $criteria, the cached collection is returned.
-	 * If this User is new, it will return
-	 * an empty collection or the current collection; the criteria is ignored on a new object.
-	 *
-	 * @param      Criteria $criteria optional Criteria object to narrow the query
-	 * @param      PropelPDO $con optional connection object
-	 * @return     PropelCollection|array Actionlog[] List of Actionlog objects
-	 * @throws     PropelException
-	 */
-	public function getActionlogs($criteria = null, PropelPDO $con = null)
-	{
-		if(null === $this->collActionlogs || null !== $criteria) {
-			if ($this->isNew() && null === $this->collActionlogs) {
-				// return empty collection
-				$this->initActionlogs();
-			} else {
-				$collActionlogs = ActionlogQuery::create(null, $criteria)
-					->filterByUser($this)
-					->find($con);
-				if (null !== $criteria) {
-					return $collActionlogs;
-				}
-				$this->collActionlogs = $collActionlogs;
-			}
-		}
-		return $this->collActionlogs;
-	}
-
-	/**
-	 * Returns the number of related Actionlog objects.
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct
-	 * @param      PropelPDO $con
-	 * @return     int Count of related Actionlog objects.
-	 * @throws     PropelException
-	 */
-	public function countActionlogs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-	{
-		if(null === $this->collActionlogs || null !== $criteria) {
-			if ($this->isNew() && null === $this->collActionlogs) {
-				return 0;
-			} else {
-				$query = ActionlogQuery::create(null, $criteria);
-				if($distinct) {
-					$query->distinct();
-				}
-				return $query
-					->filterByUser($this)
-					->count($con);
-			}
-		} else {
-			return count($this->collActionlogs);
-		}
-	}
-
-	/**
-	 * Method called to associate a Actionlog object to this object
-	 * through the Actionlog foreign key attribute.
-	 *
-	 * @param      Actionlog $l Actionlog
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function addActionlog(Actionlog $l)
-	{
-		if ($this->collActionlogs === null) {
-			$this->initActionlogs();
-		}
-		if (!$this->collActionlogs->contains($l)) { // only add it if the **same** object is not already associated
-			$this->collActionlogs[]= $l;
-			$l->setUser($this);
-		}
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this User is new, it will return
-	 * an empty collection; or if this User has previously
-	 * been saved, it will retrieve related Actionlogs from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in User.
-	 *
-	 * @param      Criteria $criteria optional Criteria object to narrow the query
-	 * @param      PropelPDO $con optional connection object
-	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-	 * @return     PropelCollection|array Actionlog[] List of Actionlog objects
-	 */
-	public function getActionlogsJoinSecurityAction($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$query = ActionlogQuery::create(null, $criteria);
-		$query->joinWith('SecurityAction', $join_behavior);
-
-		return $this->getActionlogs($query, $con);
-	}
-
-	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
 	public function clear()
@@ -2535,6 +2535,11 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
+			if ($this->collActionlogs) {
+				foreach ((array) $this->collActionlogs as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 			if ($this->collClientQuotes) {
 				foreach ((array) $this->collClientQuotes as $o) {
 					$o->clearAllReferences($deep);
@@ -2563,20 +2568,15 @@ abstract class BaseUser extends BaseObject  implements Persistent
 					$o->clearAllReferences($deep);
 				}
 			}
-			if ($this->collActionlogs) {
-				foreach ((array) $this->collActionlogs as $o) {
-					$o->clearAllReferences($deep);
-				}
-			}
 		} // if ($deep)
 
+		$this->collActionlogs = null;
 		$this->collClientQuotes = null;
 		$this->collSupplierQuoteItemComments = null;
 		$this->collClientPurchaseOrders = null;
 		$this->collSupplierPurchaseOrders = null;
 		$this->singleUserInfo = null;
 		$this->collUserGroups = null;
-		$this->collActionlogs = null;
 		$this->aLevel = null;
 	}
 

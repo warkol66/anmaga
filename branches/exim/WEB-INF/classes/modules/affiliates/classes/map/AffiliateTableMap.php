@@ -53,7 +53,6 @@ class AffiliateTableMap extends TableMap {
     $this->addRelation('ClientQuote', 'ClientQuote', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('ClientPurchaseOrder', 'ClientPurchaseOrder', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('SupplierPurchaseOrder', 'SupplierPurchaseOrder', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
-    $this->addRelation('Shipment', 'Shipment', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
 	} // buildRelations()
 
 } // AffiliateTableMap

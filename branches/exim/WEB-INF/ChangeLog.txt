@@ -1,3 +1,64 @@
 -- ===========================
--- Revisión
+-- Revisión 587 - Fecha 20101202
 -- ---------------------------
+#-----------------------------------------------------------------------------
+#-- import_shipment
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `import_shipment`;
+
+
+CREATE TABLE `import_shipment`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del envio',
+	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
+	`supplierPurchaseOrderId` INTEGER  NOT NULL COMMENT 'Supplier Purchase Order',
+	`containersRealCount` INTEGER   COMMENT 'Cantidad real de containers',
+	`containersNumbers` TEXT   COMMENT 'Numeros de los contenedores',
+	`pickupDate` DATE   COMMENT 'Fecha de retiro de la mercancia',
+	`shipmentDate` DATE   COMMENT 'Fecha de embarque',
+	`blNumber` INTEGER   COMMENT 'BL Hawb',
+	`vesselName` VARCHAR(255)   COMMENT 'Nombre del buque',
+	`estimatedDepartureDate` DATE   COMMENT 'Fecha estimada de partida del buque',
+	`departureDate` DATE   COMMENT 'Fecha de partida del buque',
+	`arrivalPortName` VARCHAR(255)   COMMENT 'Nombre del puerto de llegada',
+	`arrivalToPanamaDate` DATE   COMMENT 'Fecha de llegada a Panama',
+	`transshipmentDate` DATE   COMMENT 'Fecha de transbordo',
+	`telexRelease` TINYINT   COMMENT 'Telex release',
+	`estimatedArrivalDate` DATE   COMMENT 'Fecha estimada de llegada del buque a puerto',
+	`arrivalDate` DATE   COMMENT 'Fecha de llegada a puerto',
+	PRIMARY KEY (`id`),
+	INDEX `import_shipment_FI_1` (`supplierPurchaseOrderId`),
+	CONSTRAINT `import_shipment_FK_1`
+		FOREIGN KEY (`supplierPurchaseOrderId`)
+		REFERENCES `import_supplierPurchaseOrder` (`id`)
+) ENGINE=MyISAM COMMENT='Datos de envio';
+
+#-----------------------------------------------------------------------------
+#-- import_shipmentRelease
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `import_shipmentRelease`;
+
+
+CREATE TABLE `import_shipmentRelease`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del envio',
+	`createdAt` DATETIME  NOT NULL COMMENT 'Creation date for',
+	`shipmentId` INTEGER  NOT NULL COMMENT 'Transport Info',
+	`documentsPresentationDate` DATE   COMMENT 'Presentacion de documentos aduanales',
+	`bankTariffsPaymentDate` DATE   COMMENT 'Pago al banco de aranceles',
+	`physicalRecognitionDate` DATE   COMMENT 'Reconocimiento fisico de la mercancia',
+	`documentsValidationDate` DATE   COMMENT 'Validacion de los documentos',
+	`expensesPaymentDate` DATE   COMMENT 'Pago de gastos (almacenes, manejo, etc)',
+	`loadingOrderDate` DATE   COMMENT 'Orden de carga (El agente aduanal elabora)',
+	`containersLoadingDate` TINYINT   COMMENT 'Carga de los containers',
+	`estimatedMovementToStorehouseDate` DATE   COMMENT 'Fecha estimada de Transporte desde la aduana al almacen',
+	`arrivalToStorehouseTimestamp` DATETIME   COMMENT 'Fecha y hora de llegada del container al almacen',
+	`containterReceiptOnStorehouseDate` DATE   COMMENT 'Recepcion del container en almacen',
+	PRIMARY KEY (`id`),
+	INDEX `import_shipmentRelease_FI_1` (`shipmentId`),
+	CONSTRAINT `import_shipmentRelease_FK_1`
+		FOREIGN KEY (`shipmentId`)
+		REFERENCES `import_shipment` (`id`)
+) ENGINE=MyISAM COMMENT='Datos de nacionalizacion';

@@ -38,10 +38,6 @@
  * @method     AffiliateQuery rightJoinSupplierPurchaseOrder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SupplierPurchaseOrder relation
  * @method     AffiliateQuery innerJoinSupplierPurchaseOrder($relationAlias = null) Adds a INNER JOIN clause to the query using the SupplierPurchaseOrder relation
  *
- * @method     AffiliateQuery leftJoinShipment($relationAlias = null) Adds a LEFT JOIN clause to the query using the Shipment relation
- * @method     AffiliateQuery rightJoinShipment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Shipment relation
- * @method     AffiliateQuery innerJoinShipment($relationAlias = null) Adds a INNER JOIN clause to the query using the Shipment relation
- *
  * @method     Affiliate findOne(PropelPDO $con = null) Return the first Affiliate matching the query
  * @method     Affiliate findOneOrCreate(PropelPDO $con = null) Return the first Affiliate matching the query, or a new Affiliate object populated from the query conditions when no match is found
  *
@@ -549,70 +545,6 @@ abstract class BaseAffiliateQuery extends ModelCriteria
 		return $this
 			->joinSupplierPurchaseOrder($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'SupplierPurchaseOrder', 'SupplierPurchaseOrderQuery');
-	}
-
-	/**
-	 * Filter the query by a related Shipment object
-	 *
-	 * @param     Shipment $shipment  the related object to use as filter
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    AffiliateQuery The current query, for fluid interface
-	 */
-	public function filterByShipment($shipment, $comparison = null)
-	{
-		return $this
-			->addUsingAlias(AffiliatePeer::ID, $shipment->getAffiliateid(), $comparison);
-	}
-
-	/**
-	 * Adds a JOIN clause to the query using the Shipment relation
-	 * 
-	 * @param     string $relationAlias optional alias for the relation
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    AffiliateQuery The current query, for fluid interface
-	 */
-	public function joinShipment($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('Shipment');
-		
-		// create a ModelJoin object for this join
-		$join = new ModelJoin();
-		$join->setJoinType($joinType);
-		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-		if ($previousJoin = $this->getPreviousJoin()) {
-			$join->setPreviousJoin($previousJoin);
-		}
-		
-		// add the ModelJoin to the current object
-		if($relationAlias) {
-			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-			$this->addJoinObject($join, $relationAlias);
-		} else {
-			$this->addJoinObject($join, 'Shipment');
-		}
-		
-		return $this;
-	}
-
-	/**
-	 * Use the Shipment relation Shipment object
-	 *
-	 * @see       useQuery()
-	 * 
-	 * @param     string $relationAlias optional alias for the relation,
-	 *                                   to be used as main alias in the secondary query
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    ShipmentQuery A secondary query class using the current class as primary query
-	 */
-	public function useShipmentQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		return $this
-			->joinShipment($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'Shipment', 'ShipmentQuery');
 	}
 
 	/**

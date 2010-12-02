@@ -15,7 +15,7 @@ CREATE TABLE `categories_category`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`parentId` INTEGER default 0 NOT NULL COMMENT 'Parent Category if it has',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Category name',
-	`module` VARCHAR(255) default '' COMMENT 'Module name if it is for a module',
+	`module` VARCHAR(255) default ''  COMMENT 'Module name if it is for a module',
 	`active` TINYINT  NOT NULL COMMENT 'Is category active?',
 	`isPublic` TINYINT default 0 NOT NULL COMMENT 'Is category public?',
 	PRIMARY KEY (`id`)

@@ -14,7 +14,7 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'SupplierPurchaseOrderItemPeer';
+	const PEER = 'SupplierPurchaseOrderItemPeer';
 
 	/**
 	 * The Peer class.
@@ -916,7 +916,7 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 		if ($con === null) {
 			$con = Propel::getConnection(SupplierPurchaseOrderItemPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -958,7 +958,7 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 		if ($con === null) {
 			$con = Propel::getConnection(SupplierPurchaseOrderItemPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -1265,7 +1265,7 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -1631,11 +1631,11 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 		if ($this->aProduct === null && ($this->productid !== null)) {
 			$this->aProduct = ProductQuery::create()->findPk($this->productid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aProduct->addSupplierPurchaseOrderItems($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aProduct->addSupplierPurchaseOrderItems($this);
 			 */
 		}
 		return $this->aProduct;
@@ -1680,11 +1680,11 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 		if ($this->aSupplierPurchaseOrder === null && ($this->supplierpurchaseorderid !== null)) {
 			$this->aSupplierPurchaseOrder = SupplierPurchaseOrderQuery::create()->findPk($this->supplierpurchaseorderid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aSupplierPurchaseOrder->addSupplierPurchaseOrderItems($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aSupplierPurchaseOrder->addSupplierPurchaseOrderItems($this);
 			 */
 		}
 		return $this->aSupplierPurchaseOrder;
@@ -1729,11 +1729,11 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 		if ($this->aIncoterm === null && ($this->incotermid !== null)) {
 			$this->aIncoterm = IncotermQuery::create()->findPk($this->incotermid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aIncoterm->addSupplierPurchaseOrderItems($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aIncoterm->addSupplierPurchaseOrderItems($this);
 			 */
 		}
 		return $this->aIncoterm;
@@ -1778,11 +1778,11 @@ abstract class BaseSupplierPurchaseOrderItem extends BaseObject  implements Pers
 		if ($this->aPort === null && ($this->portid !== null)) {
 			$this->aPort = PortQuery::create()->findPk($this->portid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aPort->addSupplierPurchaseOrderItems($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aPort->addSupplierPurchaseOrderItems($this);
 			 */
 		}
 		return $this->aPort;

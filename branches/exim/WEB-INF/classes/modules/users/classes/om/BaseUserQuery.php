@@ -34,6 +34,10 @@
  * @method     UserQuery rightJoinLevel($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Level relation
  * @method     UserQuery innerJoinLevel($relationAlias = null) Adds a INNER JOIN clause to the query using the Level relation
  *
+ * @method     UserQuery leftJoinActionlog($relationAlias = null) Adds a LEFT JOIN clause to the query using the Actionlog relation
+ * @method     UserQuery rightJoinActionlog($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Actionlog relation
+ * @method     UserQuery innerJoinActionlog($relationAlias = null) Adds a INNER JOIN clause to the query using the Actionlog relation
+ *
  * @method     UserQuery leftJoinClientQuote($relationAlias = null) Adds a LEFT JOIN clause to the query using the ClientQuote relation
  * @method     UserQuery rightJoinClientQuote($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ClientQuote relation
  * @method     UserQuery innerJoinClientQuote($relationAlias = null) Adds a INNER JOIN clause to the query using the ClientQuote relation
@@ -57,10 +61,6 @@
  * @method     UserQuery leftJoinUserGroup($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserGroup relation
  * @method     UserQuery rightJoinUserGroup($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserGroup relation
  * @method     UserQuery innerJoinUserGroup($relationAlias = null) Adds a INNER JOIN clause to the query using the UserGroup relation
- *
- * @method     UserQuery leftJoinActionlog($relationAlias = null) Adds a LEFT JOIN clause to the query using the Actionlog relation
- * @method     UserQuery rightJoinActionlog($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Actionlog relation
- * @method     UserQuery innerJoinActionlog($relationAlias = null) Adds a INNER JOIN clause to the query using the Actionlog relation
  *
  * @method     User findOne(PropelPDO $con = null) Return the first User matching the query
  * @method     User findOneOrCreate(PropelPDO $con = null) Return the first User matching the query, or a new User object populated from the query conditions when no match is found
@@ -482,6 +482,70 @@ abstract class BaseUserQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query by a related Actionlog object
+	 *
+	 * @param     Actionlog $actionlog  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByActionlog($actionlog, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(UserPeer::ID, $actionlog->getUserid(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the Actionlog relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function joinActionlog($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('Actionlog');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'Actionlog');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the Actionlog relation Actionlog object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ActionlogQuery A secondary query class using the current class as primary query
+	 */
+	public function useActionlogQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		return $this
+			->joinActionlog($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'Actionlog', 'ActionlogQuery');
+	}
+
+	/**
 	 * Filter the query by a related ClientQuote object
 	 *
 	 * @param     ClientQuote $clientQuote  the related object to use as filter
@@ -863,70 +927,6 @@ abstract class BaseUserQuery extends ModelCriteria
 		return $this
 			->joinUserGroup($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'UserGroup', 'UserGroupQuery');
-	}
-
-	/**
-	 * Filter the query by a related Actionlog object
-	 *
-	 * @param     Actionlog $actionlog  the related object to use as filter
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    UserQuery The current query, for fluid interface
-	 */
-	public function filterByActionlog($actionlog, $comparison = null)
-	{
-		return $this
-			->addUsingAlias(UserPeer::ID, $actionlog->getUserid(), $comparison);
-	}
-
-	/**
-	 * Adds a JOIN clause to the query using the Actionlog relation
-	 * 
-	 * @param     string $relationAlias optional alias for the relation
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    UserQuery The current query, for fluid interface
-	 */
-	public function joinActionlog($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('Actionlog');
-		
-		// create a ModelJoin object for this join
-		$join = new ModelJoin();
-		$join->setJoinType($joinType);
-		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-		if ($previousJoin = $this->getPreviousJoin()) {
-			$join->setPreviousJoin($previousJoin);
-		}
-		
-		// add the ModelJoin to the current object
-		if($relationAlias) {
-			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-			$this->addJoinObject($join, $relationAlias);
-		} else {
-			$this->addJoinObject($join, 'Actionlog');
-		}
-		
-		return $this;
-	}
-
-	/**
-	 * Use the Actionlog relation Actionlog object
-	 *
-	 * @see       useQuery()
-	 * 
-	 * @param     string $relationAlias optional alias for the relation,
-	 *                                   to be used as main alias in the secondary query
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    ActionlogQuery A secondary query class using the current class as primary query
-	 */
-	public function useActionlogQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		return $this
-			->joinActionlog($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'Actionlog', 'ActionlogQuery');
 	}
 
 	/**

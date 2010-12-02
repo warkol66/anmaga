@@ -14,7 +14,7 @@ CREATE TABLE `affiliates_affiliate`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id afiliado',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'nombre afiliado',
-	`ownerId` INTEGER COMMENT 'Id del usuario administrador del afiliado',
+	`ownerId` INTEGER   COMMENT 'Id del usuario administrador del afiliado',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `affiliates_affiliate_U_1` (`name`)
 ) ENGINE=MyISAM COMMENT='Afiliados';
@@ -30,13 +30,13 @@ CREATE TABLE `affiliates_affiliateInfo`
 (
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Id afiliado',
 	`affiliateInternalNumber` INTEGER  NOT NULL COMMENT 'Id interno',
-	`address` VARCHAR(255) COMMENT 'Direccion afiliado',
-	`phone` VARCHAR(50) COMMENT 'Telefono afiliado',
-	`email` VARCHAR(50) COMMENT 'Email afiliado',
-	`contact` VARCHAR(50) COMMENT 'Nombre de persona de contacto',
-	`contactEmail` VARCHAR(100) COMMENT 'Email de persona de contacto',
-	`web` VARCHAR(255) COMMENT 'Direccion web del afiliado',
-	`memo` TEXT COMMENT 'Informacion adicional del afiliado',
+	`address` VARCHAR(255)   COMMENT 'Direccion afiliado',
+	`phone` VARCHAR(50)   COMMENT 'Telefono afiliado',
+	`email` VARCHAR(50)   COMMENT 'Email afiliado',
+	`contact` VARCHAR(50)   COMMENT 'Nombre de persona de contacto',
+	`contactEmail` VARCHAR(100)   COMMENT 'Email de persona de contacto',
+	`web` VARCHAR(255)   COMMENT 'Direccion web del afiliado',
+	`memo` TEXT   COMMENT 'Informacion adicional del afiliado',
 	PRIMARY KEY (`affiliateId`)
 ) ENGINE=MyISAM COMMENT='Informacion del afiliado';
 
@@ -56,9 +56,9 @@ CREATE TABLE `affiliates_user`
 	`active` TINYINT  NOT NULL COMMENT 'Is user active?',
 	`created` DATETIME  NOT NULL COMMENT 'Creation date for',
 	`updated` DATETIME  NOT NULL COMMENT 'Last update date',
-	`timezone` VARCHAR(100) COMMENT 'Timezone GMT del usuario afiliado',
-	`levelId` INTEGER COMMENT 'User Level',
-	`lastLogin` DATETIME COMMENT 'Fecha del ultimo login del usuario',
+	`timezone` VARCHAR(100)   COMMENT 'Timezone GMT del usuario afiliado',
+	`levelId` INTEGER   COMMENT 'User Level',
+	`lastLogin` DATETIME   COMMENT 'Fecha del ultimo login del usuario',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `affiliates_user_U_1` (`username`),
 	INDEX `affiliates_user_FI_1` (`levelId`),
@@ -81,9 +81,9 @@ DROP TABLE IF EXISTS `affiliates_userInfo`;
 CREATE TABLE `affiliates_userInfo`
 (
 	`userId` INTEGER  NOT NULL COMMENT 'User Id',
-	`name` VARCHAR(255) COMMENT 'name',
-	`surname` VARCHAR(255) COMMENT 'surname',
-	`mailAddress` VARCHAR(255) COMMENT 'Email',
+	`name` VARCHAR(255)   COMMENT 'name',
+	`surname` VARCHAR(255)   COMMENT 'surname',
+	`mailAddress` VARCHAR(255)   COMMENT 'Email',
 	PRIMARY KEY (`userId`),
 	CONSTRAINT `affiliates_userInfo_FK_1`
 		FOREIGN KEY (`userId`)
@@ -101,7 +101,7 @@ CREATE TABLE `affiliates_level`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Level ID',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Level Name',
-	`bitLevel` INTEGER COMMENT 'Bit del nivel',
+	`bitLevel` INTEGER   COMMENT 'Bit del nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `affiliates_level_U_1` (`name`)
 ) ENGINE=MyISAM COMMENT='Levels';
@@ -141,7 +141,7 @@ CREATE TABLE `affiliates_group`
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Group Name',
 	`created` DATETIME  NOT NULL COMMENT 'Creation date for',
 	`updated` DATETIME  NOT NULL COMMENT 'Last update date',
-	`bitLevel` INTEGER COMMENT 'Nivel',
+	`bitLevel` INTEGER   COMMENT 'Nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `affiliates_group_U_1` (`name`)
 ) ENGINE=MyISAM COMMENT='Groups';
@@ -158,12 +158,12 @@ CREATE TABLE `affiliates_branch`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de la sucursal',
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Id del afiliado',
 	`number` INTEGER  NOT NULL COMMENT 'Numero de la sucursal',
-	`code` VARCHAR(20) COMMENT 'Codigo de la sucursal',
-	`name` VARCHAR(255) COMMENT 'Nombre de la sucursal',
-	`phone` VARCHAR(100) COMMENT 'Telefono de la sucursal',
-	`contact` VARCHAR(50) COMMENT 'Nombre de persona de contacto',
-	`contactEmail` VARCHAR(100) COMMENT 'Email de persona de contacto',
-	`memo` TEXT COMMENT 'Informacion adicional de la sucursal',
+	`code` VARCHAR(20)   COMMENT 'Codigo de la sucursal',
+	`name` VARCHAR(255)   COMMENT 'Nombre de la sucursal',
+	`phone` VARCHAR(100)   COMMENT 'Telefono de la sucursal',
+	`contact` VARCHAR(50)   COMMENT 'Nombre de persona de contacto',
+	`contactEmail` VARCHAR(100)   COMMENT 'Email de persona de contacto',
+	`memo` TEXT   COMMENT 'Informacion adicional de la sucursal',
 	PRIMARY KEY (`id`),
 	INDEX `affiliates_branch_FI_1` (`affiliateId`),
 	CONSTRAINT `affiliates_branch_FK_1`

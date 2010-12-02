@@ -14,7 +14,7 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'ClientPurchaseOrderItemPeer';
+	const PEER = 'ClientPurchaseOrderItemPeer';
 
 	/**
 	 * The Peer class.
@@ -372,7 +372,7 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 		if ($con === null) {
 			$con = Propel::getConnection(ClientPurchaseOrderItemPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -414,7 +414,7 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 		if ($con === null) {
 			$con = Propel::getConnection(ClientPurchaseOrderItemPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -653,7 +653,7 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -915,11 +915,11 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 		if ($this->aProduct === null && ($this->productid !== null)) {
 			$this->aProduct = ProductQuery::create()->findPk($this->productid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aProduct->addClientPurchaseOrderItems($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aProduct->addClientPurchaseOrderItems($this);
 			 */
 		}
 		return $this->aProduct;
@@ -964,11 +964,11 @@ abstract class BaseClientPurchaseOrderItem extends BaseObject  implements Persis
 		if ($this->aClientPurchaseOrder === null && ($this->clientpurchaseorderid !== null)) {
 			$this->aClientPurchaseOrder = ClientPurchaseOrderQuery::create()->findPk($this->clientpurchaseorderid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aClientPurchaseOrder->addClientPurchaseOrderItems($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aClientPurchaseOrder->addClientPurchaseOrderItems($this);
 			 */
 		}
 		return $this->aClientPurchaseOrder;

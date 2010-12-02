@@ -8,21 +8,39 @@
  *
  * @method     ShipmentQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ShipmentQuery orderByCreatedat($order = Criteria::ASC) Order by the createdAt column
- * @method     ShipmentQuery orderBySupplierid($order = Criteria::ASC) Order by the supplierId column
- * @method     ShipmentQuery orderByStatus($order = Criteria::ASC) Order by the status column
- * @method     ShipmentQuery orderByTimestampstatus($order = Criteria::ASC) Order by the timestampStatus column
  * @method     ShipmentQuery orderBySupplierpurchaseorderid($order = Criteria::ASC) Order by the supplierPurchaseOrderId column
- * @method     ShipmentQuery orderByClientquoteid($order = Criteria::ASC) Order by the clientQuoteId column
- * @method     ShipmentQuery orderByAffiliateid($order = Criteria::ASC) Order by the affiliateId column
+ * @method     ShipmentQuery orderByContainersrealcount($order = Criteria::ASC) Order by the containersRealCount column
+ * @method     ShipmentQuery orderByContainersnumbers($order = Criteria::ASC) Order by the containersNumbers column
+ * @method     ShipmentQuery orderByPickupdate($order = Criteria::ASC) Order by the pickupDate column
+ * @method     ShipmentQuery orderByShipmentdate($order = Criteria::ASC) Order by the shipmentDate column
+ * @method     ShipmentQuery orderByBlnumber($order = Criteria::ASC) Order by the blNumber column
+ * @method     ShipmentQuery orderByVesselname($order = Criteria::ASC) Order by the vesselName column
+ * @method     ShipmentQuery orderByEstimateddeparturedate($order = Criteria::ASC) Order by the estimatedDepartureDate column
+ * @method     ShipmentQuery orderByDeparturedate($order = Criteria::ASC) Order by the departureDate column
+ * @method     ShipmentQuery orderByArrivalportname($order = Criteria::ASC) Order by the arrivalPortName column
+ * @method     ShipmentQuery orderByArrivaltopanamadate($order = Criteria::ASC) Order by the arrivalToPanamaDate column
+ * @method     ShipmentQuery orderByTransshipmentdate($order = Criteria::ASC) Order by the transshipmentDate column
+ * @method     ShipmentQuery orderByTelexrelease($order = Criteria::ASC) Order by the telexRelease column
+ * @method     ShipmentQuery orderByEstimatedarrivaldate($order = Criteria::ASC) Order by the estimatedArrivalDate column
+ * @method     ShipmentQuery orderByArrivaldate($order = Criteria::ASC) Order by the arrivalDate column
  *
  * @method     ShipmentQuery groupById() Group by the id column
  * @method     ShipmentQuery groupByCreatedat() Group by the createdAt column
- * @method     ShipmentQuery groupBySupplierid() Group by the supplierId column
- * @method     ShipmentQuery groupByStatus() Group by the status column
- * @method     ShipmentQuery groupByTimestampstatus() Group by the timestampStatus column
  * @method     ShipmentQuery groupBySupplierpurchaseorderid() Group by the supplierPurchaseOrderId column
- * @method     ShipmentQuery groupByClientquoteid() Group by the clientQuoteId column
- * @method     ShipmentQuery groupByAffiliateid() Group by the affiliateId column
+ * @method     ShipmentQuery groupByContainersrealcount() Group by the containersRealCount column
+ * @method     ShipmentQuery groupByContainersnumbers() Group by the containersNumbers column
+ * @method     ShipmentQuery groupByPickupdate() Group by the pickupDate column
+ * @method     ShipmentQuery groupByShipmentdate() Group by the shipmentDate column
+ * @method     ShipmentQuery groupByBlnumber() Group by the blNumber column
+ * @method     ShipmentQuery groupByVesselname() Group by the vesselName column
+ * @method     ShipmentQuery groupByEstimateddeparturedate() Group by the estimatedDepartureDate column
+ * @method     ShipmentQuery groupByDeparturedate() Group by the departureDate column
+ * @method     ShipmentQuery groupByArrivalportname() Group by the arrivalPortName column
+ * @method     ShipmentQuery groupByArrivaltopanamadate() Group by the arrivalToPanamaDate column
+ * @method     ShipmentQuery groupByTransshipmentdate() Group by the transshipmentDate column
+ * @method     ShipmentQuery groupByTelexrelease() Group by the telexRelease column
+ * @method     ShipmentQuery groupByEstimatedarrivaldate() Group by the estimatedArrivalDate column
+ * @method     ShipmentQuery groupByArrivaldate() Group by the arrivalDate column
  *
  * @method     ShipmentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ShipmentQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -31,14 +49,6 @@
  * @method     ShipmentQuery leftJoinSupplierPurchaseOrder($relationAlias = null) Adds a LEFT JOIN clause to the query using the SupplierPurchaseOrder relation
  * @method     ShipmentQuery rightJoinSupplierPurchaseOrder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SupplierPurchaseOrder relation
  * @method     ShipmentQuery innerJoinSupplierPurchaseOrder($relationAlias = null) Adds a INNER JOIN clause to the query using the SupplierPurchaseOrder relation
- *
- * @method     ShipmentQuery leftJoinSupplier($relationAlias = null) Adds a LEFT JOIN clause to the query using the Supplier relation
- * @method     ShipmentQuery rightJoinSupplier($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Supplier relation
- * @method     ShipmentQuery innerJoinSupplier($relationAlias = null) Adds a INNER JOIN clause to the query using the Supplier relation
- *
- * @method     ShipmentQuery leftJoinAffiliate($relationAlias = null) Adds a LEFT JOIN clause to the query using the Affiliate relation
- * @method     ShipmentQuery rightJoinAffiliate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Affiliate relation
- * @method     ShipmentQuery innerJoinAffiliate($relationAlias = null) Adds a INNER JOIN clause to the query using the Affiliate relation
  *
  * @method     ShipmentQuery leftJoinShipmentRelease($relationAlias = null) Adds a LEFT JOIN clause to the query using the ShipmentRelease relation
  * @method     ShipmentQuery rightJoinShipmentRelease($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ShipmentRelease relation
@@ -49,21 +59,39 @@
  *
  * @method     Shipment findOneById(int $id) Return the first Shipment filtered by the id column
  * @method     Shipment findOneByCreatedat(string $createdAt) Return the first Shipment filtered by the createdAt column
- * @method     Shipment findOneBySupplierid(int $supplierId) Return the first Shipment filtered by the supplierId column
- * @method     Shipment findOneByStatus(int $status) Return the first Shipment filtered by the status column
- * @method     Shipment findOneByTimestampstatus(string $timestampStatus) Return the first Shipment filtered by the timestampStatus column
  * @method     Shipment findOneBySupplierpurchaseorderid(int $supplierPurchaseOrderId) Return the first Shipment filtered by the supplierPurchaseOrderId column
- * @method     Shipment findOneByClientquoteid(int $clientQuoteId) Return the first Shipment filtered by the clientQuoteId column
- * @method     Shipment findOneByAffiliateid(int $affiliateId) Return the first Shipment filtered by the affiliateId column
+ * @method     Shipment findOneByContainersrealcount(int $containersRealCount) Return the first Shipment filtered by the containersRealCount column
+ * @method     Shipment findOneByContainersnumbers(string $containersNumbers) Return the first Shipment filtered by the containersNumbers column
+ * @method     Shipment findOneByPickupdate(string $pickupDate) Return the first Shipment filtered by the pickupDate column
+ * @method     Shipment findOneByShipmentdate(string $shipmentDate) Return the first Shipment filtered by the shipmentDate column
+ * @method     Shipment findOneByBlnumber(int $blNumber) Return the first Shipment filtered by the blNumber column
+ * @method     Shipment findOneByVesselname(string $vesselName) Return the first Shipment filtered by the vesselName column
+ * @method     Shipment findOneByEstimateddeparturedate(string $estimatedDepartureDate) Return the first Shipment filtered by the estimatedDepartureDate column
+ * @method     Shipment findOneByDeparturedate(string $departureDate) Return the first Shipment filtered by the departureDate column
+ * @method     Shipment findOneByArrivalportname(string $arrivalPortName) Return the first Shipment filtered by the arrivalPortName column
+ * @method     Shipment findOneByArrivaltopanamadate(string $arrivalToPanamaDate) Return the first Shipment filtered by the arrivalToPanamaDate column
+ * @method     Shipment findOneByTransshipmentdate(string $transshipmentDate) Return the first Shipment filtered by the transshipmentDate column
+ * @method     Shipment findOneByTelexrelease(int $telexRelease) Return the first Shipment filtered by the telexRelease column
+ * @method     Shipment findOneByEstimatedarrivaldate(string $estimatedArrivalDate) Return the first Shipment filtered by the estimatedArrivalDate column
+ * @method     Shipment findOneByArrivaldate(string $arrivalDate) Return the first Shipment filtered by the arrivalDate column
  *
  * @method     array findById(int $id) Return Shipment objects filtered by the id column
  * @method     array findByCreatedat(string $createdAt) Return Shipment objects filtered by the createdAt column
- * @method     array findBySupplierid(int $supplierId) Return Shipment objects filtered by the supplierId column
- * @method     array findByStatus(int $status) Return Shipment objects filtered by the status column
- * @method     array findByTimestampstatus(string $timestampStatus) Return Shipment objects filtered by the timestampStatus column
  * @method     array findBySupplierpurchaseorderid(int $supplierPurchaseOrderId) Return Shipment objects filtered by the supplierPurchaseOrderId column
- * @method     array findByClientquoteid(int $clientQuoteId) Return Shipment objects filtered by the clientQuoteId column
- * @method     array findByAffiliateid(int $affiliateId) Return Shipment objects filtered by the affiliateId column
+ * @method     array findByContainersrealcount(int $containersRealCount) Return Shipment objects filtered by the containersRealCount column
+ * @method     array findByContainersnumbers(string $containersNumbers) Return Shipment objects filtered by the containersNumbers column
+ * @method     array findByPickupdate(string $pickupDate) Return Shipment objects filtered by the pickupDate column
+ * @method     array findByShipmentdate(string $shipmentDate) Return Shipment objects filtered by the shipmentDate column
+ * @method     array findByBlnumber(int $blNumber) Return Shipment objects filtered by the blNumber column
+ * @method     array findByVesselname(string $vesselName) Return Shipment objects filtered by the vesselName column
+ * @method     array findByEstimateddeparturedate(string $estimatedDepartureDate) Return Shipment objects filtered by the estimatedDepartureDate column
+ * @method     array findByDeparturedate(string $departureDate) Return Shipment objects filtered by the departureDate column
+ * @method     array findByArrivalportname(string $arrivalPortName) Return Shipment objects filtered by the arrivalPortName column
+ * @method     array findByArrivaltopanamadate(string $arrivalToPanamaDate) Return Shipment objects filtered by the arrivalToPanamaDate column
+ * @method     array findByTransshipmentdate(string $transshipmentDate) Return Shipment objects filtered by the transshipmentDate column
+ * @method     array findByTelexrelease(int $telexRelease) Return Shipment objects filtered by the telexRelease column
+ * @method     array findByEstimatedarrivaldate(string $estimatedArrivalDate) Return Shipment objects filtered by the estimatedArrivalDate column
+ * @method     array findByArrivaldate(string $arrivalDate) Return Shipment objects filtered by the arrivalDate column
  *
  * @package    propel.generator.import.classes.om
  */
@@ -222,99 +250,6 @@ abstract class BaseShipmentQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query on the supplierId column
-	 * 
-	 * @param     int|array $supplierid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    ShipmentQuery The current query, for fluid interface
-	 */
-	public function filterBySupplierid($supplierid = null, $comparison = null)
-	{
-		if (is_array($supplierid)) {
-			$useMinMax = false;
-			if (isset($supplierid['min'])) {
-				$this->addUsingAlias(ShipmentPeer::SUPPLIERID, $supplierid['min'], Criteria::GREATER_EQUAL);
-				$useMinMax = true;
-			}
-			if (isset($supplierid['max'])) {
-				$this->addUsingAlias(ShipmentPeer::SUPPLIERID, $supplierid['max'], Criteria::LESS_EQUAL);
-				$useMinMax = true;
-			}
-			if ($useMinMax) {
-				return $this;
-			}
-			if (null === $comparison) {
-				$comparison = Criteria::IN;
-			}
-		}
-		return $this->addUsingAlias(ShipmentPeer::SUPPLIERID, $supplierid, $comparison);
-	}
-
-	/**
-	 * Filter the query on the status column
-	 * 
-	 * @param     int|array $status The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    ShipmentQuery The current query, for fluid interface
-	 */
-	public function filterByStatus($status = null, $comparison = null)
-	{
-		if (is_array($status)) {
-			$useMinMax = false;
-			if (isset($status['min'])) {
-				$this->addUsingAlias(ShipmentPeer::STATUS, $status['min'], Criteria::GREATER_EQUAL);
-				$useMinMax = true;
-			}
-			if (isset($status['max'])) {
-				$this->addUsingAlias(ShipmentPeer::STATUS, $status['max'], Criteria::LESS_EQUAL);
-				$useMinMax = true;
-			}
-			if ($useMinMax) {
-				return $this;
-			}
-			if (null === $comparison) {
-				$comparison = Criteria::IN;
-			}
-		}
-		return $this->addUsingAlias(ShipmentPeer::STATUS, $status, $comparison);
-	}
-
-	/**
-	 * Filter the query on the timestampStatus column
-	 * 
-	 * @param     string|array $timestampstatus The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    ShipmentQuery The current query, for fluid interface
-	 */
-	public function filterByTimestampstatus($timestampstatus = null, $comparison = null)
-	{
-		if (is_array($timestampstatus)) {
-			$useMinMax = false;
-			if (isset($timestampstatus['min'])) {
-				$this->addUsingAlias(ShipmentPeer::TIMESTAMPSTATUS, $timestampstatus['min'], Criteria::GREATER_EQUAL);
-				$useMinMax = true;
-			}
-			if (isset($timestampstatus['max'])) {
-				$this->addUsingAlias(ShipmentPeer::TIMESTAMPSTATUS, $timestampstatus['max'], Criteria::LESS_EQUAL);
-				$useMinMax = true;
-			}
-			if ($useMinMax) {
-				return $this;
-			}
-			if (null === $comparison) {
-				$comparison = Criteria::IN;
-			}
-		}
-		return $this->addUsingAlias(ShipmentPeer::TIMESTAMPSTATUS, $timestampstatus, $comparison);
-	}
-
-	/**
 	 * Filter the query on the supplierPurchaseOrderId column
 	 * 
 	 * @param     int|array $supplierpurchaseorderid The value to use as filter.
@@ -346,24 +281,24 @@ abstract class BaseShipmentQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query on the clientQuoteId column
+	 * Filter the query on the containersRealCount column
 	 * 
-	 * @param     int|array $clientquoteid The value to use as filter.
+	 * @param     int|array $containersrealcount The value to use as filter.
 	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ShipmentQuery The current query, for fluid interface
 	 */
-	public function filterByClientquoteid($clientquoteid = null, $comparison = null)
+	public function filterByContainersrealcount($containersrealcount = null, $comparison = null)
 	{
-		if (is_array($clientquoteid)) {
+		if (is_array($containersrealcount)) {
 			$useMinMax = false;
-			if (isset($clientquoteid['min'])) {
-				$this->addUsingAlias(ShipmentPeer::CLIENTQUOTEID, $clientquoteid['min'], Criteria::GREATER_EQUAL);
+			if (isset($containersrealcount['min'])) {
+				$this->addUsingAlias(ShipmentPeer::CONTAINERSREALCOUNT, $containersrealcount['min'], Criteria::GREATER_EQUAL);
 				$useMinMax = true;
 			}
-			if (isset($clientquoteid['max'])) {
-				$this->addUsingAlias(ShipmentPeer::CLIENTQUOTEID, $clientquoteid['max'], Criteria::LESS_EQUAL);
+			if (isset($containersrealcount['max'])) {
+				$this->addUsingAlias(ShipmentPeer::CONTAINERSREALCOUNT, $containersrealcount['max'], Criteria::LESS_EQUAL);
 				$useMinMax = true;
 			}
 			if ($useMinMax) {
@@ -373,28 +308,50 @@ abstract class BaseShipmentQuery extends ModelCriteria
 				$comparison = Criteria::IN;
 			}
 		}
-		return $this->addUsingAlias(ShipmentPeer::CLIENTQUOTEID, $clientquoteid, $comparison);
+		return $this->addUsingAlias(ShipmentPeer::CONTAINERSREALCOUNT, $containersrealcount, $comparison);
 	}
 
 	/**
-	 * Filter the query on the affiliateId column
+	 * Filter the query on the containersNumbers column
 	 * 
-	 * @param     int|array $affiliateid The value to use as filter.
+	 * @param     string $containersnumbers The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByContainersnumbers($containersnumbers = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($containersnumbers)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $containersnumbers)) {
+				$containersnumbers = str_replace('*', '%', $containersnumbers);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::CONTAINERSNUMBERS, $containersnumbers, $comparison);
+	}
+
+	/**
+	 * Filter the query on the pickupDate column
+	 * 
+	 * @param     string|array $pickupdate The value to use as filter.
 	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ShipmentQuery The current query, for fluid interface
 	 */
-	public function filterByAffiliateid($affiliateid = null, $comparison = null)
+	public function filterByPickupdate($pickupdate = null, $comparison = null)
 	{
-		if (is_array($affiliateid)) {
+		if (is_array($pickupdate)) {
 			$useMinMax = false;
-			if (isset($affiliateid['min'])) {
-				$this->addUsingAlias(ShipmentPeer::AFFILIATEID, $affiliateid['min'], Criteria::GREATER_EQUAL);
+			if (isset($pickupdate['min'])) {
+				$this->addUsingAlias(ShipmentPeer::PICKUPDATE, $pickupdate['min'], Criteria::GREATER_EQUAL);
 				$useMinMax = true;
 			}
-			if (isset($affiliateid['max'])) {
-				$this->addUsingAlias(ShipmentPeer::AFFILIATEID, $affiliateid['max'], Criteria::LESS_EQUAL);
+			if (isset($pickupdate['max'])) {
+				$this->addUsingAlias(ShipmentPeer::PICKUPDATE, $pickupdate['max'], Criteria::LESS_EQUAL);
 				$useMinMax = true;
 			}
 			if ($useMinMax) {
@@ -404,7 +361,330 @@ abstract class BaseShipmentQuery extends ModelCriteria
 				$comparison = Criteria::IN;
 			}
 		}
-		return $this->addUsingAlias(ShipmentPeer::AFFILIATEID, $affiliateid, $comparison);
+		return $this->addUsingAlias(ShipmentPeer::PICKUPDATE, $pickupdate, $comparison);
+	}
+
+	/**
+	 * Filter the query on the shipmentDate column
+	 * 
+	 * @param     string|array $shipmentdate The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByShipmentdate($shipmentdate = null, $comparison = null)
+	{
+		if (is_array($shipmentdate)) {
+			$useMinMax = false;
+			if (isset($shipmentdate['min'])) {
+				$this->addUsingAlias(ShipmentPeer::SHIPMENTDATE, $shipmentdate['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($shipmentdate['max'])) {
+				$this->addUsingAlias(ShipmentPeer::SHIPMENTDATE, $shipmentdate['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::SHIPMENTDATE, $shipmentdate, $comparison);
+	}
+
+	/**
+	 * Filter the query on the blNumber column
+	 * 
+	 * @param     int|array $blnumber The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByBlnumber($blnumber = null, $comparison = null)
+	{
+		if (is_array($blnumber)) {
+			$useMinMax = false;
+			if (isset($blnumber['min'])) {
+				$this->addUsingAlias(ShipmentPeer::BLNUMBER, $blnumber['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($blnumber['max'])) {
+				$this->addUsingAlias(ShipmentPeer::BLNUMBER, $blnumber['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::BLNUMBER, $blnumber, $comparison);
+	}
+
+	/**
+	 * Filter the query on the vesselName column
+	 * 
+	 * @param     string $vesselname The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByVesselname($vesselname = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($vesselname)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $vesselname)) {
+				$vesselname = str_replace('*', '%', $vesselname);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::VESSELNAME, $vesselname, $comparison);
+	}
+
+	/**
+	 * Filter the query on the estimatedDepartureDate column
+	 * 
+	 * @param     string|array $estimateddeparturedate The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByEstimateddeparturedate($estimateddeparturedate = null, $comparison = null)
+	{
+		if (is_array($estimateddeparturedate)) {
+			$useMinMax = false;
+			if (isset($estimateddeparturedate['min'])) {
+				$this->addUsingAlias(ShipmentPeer::ESTIMATEDDEPARTUREDATE, $estimateddeparturedate['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($estimateddeparturedate['max'])) {
+				$this->addUsingAlias(ShipmentPeer::ESTIMATEDDEPARTUREDATE, $estimateddeparturedate['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::ESTIMATEDDEPARTUREDATE, $estimateddeparturedate, $comparison);
+	}
+
+	/**
+	 * Filter the query on the departureDate column
+	 * 
+	 * @param     string|array $departuredate The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByDeparturedate($departuredate = null, $comparison = null)
+	{
+		if (is_array($departuredate)) {
+			$useMinMax = false;
+			if (isset($departuredate['min'])) {
+				$this->addUsingAlias(ShipmentPeer::DEPARTUREDATE, $departuredate['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($departuredate['max'])) {
+				$this->addUsingAlias(ShipmentPeer::DEPARTUREDATE, $departuredate['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::DEPARTUREDATE, $departuredate, $comparison);
+	}
+
+	/**
+	 * Filter the query on the arrivalPortName column
+	 * 
+	 * @param     string $arrivalportname The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByArrivalportname($arrivalportname = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($arrivalportname)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $arrivalportname)) {
+				$arrivalportname = str_replace('*', '%', $arrivalportname);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::ARRIVALPORTNAME, $arrivalportname, $comparison);
+	}
+
+	/**
+	 * Filter the query on the arrivalToPanamaDate column
+	 * 
+	 * @param     string|array $arrivaltopanamadate The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByArrivaltopanamadate($arrivaltopanamadate = null, $comparison = null)
+	{
+		if (is_array($arrivaltopanamadate)) {
+			$useMinMax = false;
+			if (isset($arrivaltopanamadate['min'])) {
+				$this->addUsingAlias(ShipmentPeer::ARRIVALTOPANAMADATE, $arrivaltopanamadate['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($arrivaltopanamadate['max'])) {
+				$this->addUsingAlias(ShipmentPeer::ARRIVALTOPANAMADATE, $arrivaltopanamadate['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::ARRIVALTOPANAMADATE, $arrivaltopanamadate, $comparison);
+	}
+
+	/**
+	 * Filter the query on the transshipmentDate column
+	 * 
+	 * @param     string|array $transshipmentdate The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByTransshipmentdate($transshipmentdate = null, $comparison = null)
+	{
+		if (is_array($transshipmentdate)) {
+			$useMinMax = false;
+			if (isset($transshipmentdate['min'])) {
+				$this->addUsingAlias(ShipmentPeer::TRANSSHIPMENTDATE, $transshipmentdate['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($transshipmentdate['max'])) {
+				$this->addUsingAlias(ShipmentPeer::TRANSSHIPMENTDATE, $transshipmentdate['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::TRANSSHIPMENTDATE, $transshipmentdate, $comparison);
+	}
+
+	/**
+	 * Filter the query on the telexRelease column
+	 * 
+	 * @param     int|array $telexrelease The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByTelexrelease($telexrelease = null, $comparison = null)
+	{
+		if (is_array($telexrelease)) {
+			$useMinMax = false;
+			if (isset($telexrelease['min'])) {
+				$this->addUsingAlias(ShipmentPeer::TELEXRELEASE, $telexrelease['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($telexrelease['max'])) {
+				$this->addUsingAlias(ShipmentPeer::TELEXRELEASE, $telexrelease['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::TELEXRELEASE, $telexrelease, $comparison);
+	}
+
+	/**
+	 * Filter the query on the estimatedArrivalDate column
+	 * 
+	 * @param     string|array $estimatedarrivaldate The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByEstimatedarrivaldate($estimatedarrivaldate = null, $comparison = null)
+	{
+		if (is_array($estimatedarrivaldate)) {
+			$useMinMax = false;
+			if (isset($estimatedarrivaldate['min'])) {
+				$this->addUsingAlias(ShipmentPeer::ESTIMATEDARRIVALDATE, $estimatedarrivaldate['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($estimatedarrivaldate['max'])) {
+				$this->addUsingAlias(ShipmentPeer::ESTIMATEDARRIVALDATE, $estimatedarrivaldate['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::ESTIMATEDARRIVALDATE, $estimatedarrivaldate, $comparison);
+	}
+
+	/**
+	 * Filter the query on the arrivalDate column
+	 * 
+	 * @param     string|array $arrivaldate The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByArrivaldate($arrivaldate = null, $comparison = null)
+	{
+		if (is_array($arrivaldate)) {
+			$useMinMax = false;
+			if (isset($arrivaldate['min'])) {
+				$this->addUsingAlias(ShipmentPeer::ARRIVALDATE, $arrivaldate['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($arrivaldate['max'])) {
+				$this->addUsingAlias(ShipmentPeer::ARRIVALDATE, $arrivaldate['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::ARRIVALDATE, $arrivaldate, $comparison);
 	}
 
 	/**
@@ -469,134 +749,6 @@ abstract class BaseShipmentQuery extends ModelCriteria
 		return $this
 			->joinSupplierPurchaseOrder($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'SupplierPurchaseOrder', 'SupplierPurchaseOrderQuery');
-	}
-
-	/**
-	 * Filter the query by a related Supplier object
-	 *
-	 * @param     Supplier $supplier  the related object to use as filter
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    ShipmentQuery The current query, for fluid interface
-	 */
-	public function filterBySupplier($supplier, $comparison = null)
-	{
-		return $this
-			->addUsingAlias(ShipmentPeer::SUPPLIERID, $supplier->getId(), $comparison);
-	}
-
-	/**
-	 * Adds a JOIN clause to the query using the Supplier relation
-	 * 
-	 * @param     string $relationAlias optional alias for the relation
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    ShipmentQuery The current query, for fluid interface
-	 */
-	public function joinSupplier($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('Supplier');
-		
-		// create a ModelJoin object for this join
-		$join = new ModelJoin();
-		$join->setJoinType($joinType);
-		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-		if ($previousJoin = $this->getPreviousJoin()) {
-			$join->setPreviousJoin($previousJoin);
-		}
-		
-		// add the ModelJoin to the current object
-		if($relationAlias) {
-			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-			$this->addJoinObject($join, $relationAlias);
-		} else {
-			$this->addJoinObject($join, 'Supplier');
-		}
-		
-		return $this;
-	}
-
-	/**
-	 * Use the Supplier relation Supplier object
-	 *
-	 * @see       useQuery()
-	 * 
-	 * @param     string $relationAlias optional alias for the relation,
-	 *                                   to be used as main alias in the secondary query
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    SupplierQuery A secondary query class using the current class as primary query
-	 */
-	public function useSupplierQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		return $this
-			->joinSupplier($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'Supplier', 'SupplierQuery');
-	}
-
-	/**
-	 * Filter the query by a related Affiliate object
-	 *
-	 * @param     Affiliate $affiliate  the related object to use as filter
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    ShipmentQuery The current query, for fluid interface
-	 */
-	public function filterByAffiliate($affiliate, $comparison = null)
-	{
-		return $this
-			->addUsingAlias(ShipmentPeer::AFFILIATEID, $affiliate->getId(), $comparison);
-	}
-
-	/**
-	 * Adds a JOIN clause to the query using the Affiliate relation
-	 * 
-	 * @param     string $relationAlias optional alias for the relation
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    ShipmentQuery The current query, for fluid interface
-	 */
-	public function joinAffiliate($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('Affiliate');
-		
-		// create a ModelJoin object for this join
-		$join = new ModelJoin();
-		$join->setJoinType($joinType);
-		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-		if ($previousJoin = $this->getPreviousJoin()) {
-			$join->setPreviousJoin($previousJoin);
-		}
-		
-		// add the ModelJoin to the current object
-		if($relationAlias) {
-			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-			$this->addJoinObject($join, $relationAlias);
-		} else {
-			$this->addJoinObject($join, 'Affiliate');
-		}
-		
-		return $this;
-	}
-
-	/**
-	 * Use the Affiliate relation Affiliate object
-	 *
-	 * @see       useQuery()
-	 * 
-	 * @param     string $relationAlias optional alias for the relation,
-	 *                                   to be used as main alias in the secondary query
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    AffiliateQuery A secondary query class using the current class as primary query
-	 */
-	public function useAffiliateQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		return $this
-			->joinAffiliate($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'Affiliate', 'AffiliateQuery');
 	}
 
 	/**

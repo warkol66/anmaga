@@ -48,9 +48,9 @@ CREATE TABLE `modules_label`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id module label',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'nombre del modulo',
-	`label` VARCHAR(255) COMMENT 'Etiqueta',
-	`description` VARCHAR(255) COMMENT 'Descripcion del modulo',
-	`language` VARCHAR(100) COMMENT 'idioma de la etiqueta',
+	`label` VARCHAR(255)   COMMENT 'Etiqueta',
+	`description` VARCHAR(255)   COMMENT 'Descripcion del modulo',
+	`language` VARCHAR(100)   COMMENT 'idioma de la etiqueta',
 	PRIMARY KEY (`id`,`name`),
 	INDEX `modules_label_FI_1` (`name`),
 	CONSTRAINT `modules_label_FK_1`
