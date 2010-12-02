@@ -22,3 +22,5 @@ else {
 		$system = unserialize($data);
 	}
 }
+
+require "config_module.php";

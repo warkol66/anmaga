@@ -13,8 +13,6 @@ include_once("Common.class.php");
 include_once("Action.php");
 require_once("Smarty_config.inc.php");
 
-include_once("common.inc.php");
-
 /**
 * Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
 * compiling PHP template engine within php.MVC.
@@ -128,7 +126,7 @@ class BaseAction extends Action {
 		$smarty->assign("loginRegistrationUser",$loginRegistrationUser);
 		$smarty->assign("currentLanguageCode",Common::getCurrentLanguageCode());
 
-		$smarty->assign("Browser",getBrowser());
+		$smarty->assign("Browser",Common::getBrowser());
 
 
 		$this->template = new SmartyOutputFilter();
