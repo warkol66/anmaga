@@ -1,15 +1,9 @@
 <?php
 /*
-* Filename        : Boot.php
-* Build Date      : 3-Oct-2006
+* Boot-php.inc
+* @package phpMVCconfig
 * 
-*
-* $Header$
-* $Revision$
-* $Date$
-*
 */
-
 
 // Variable definitions
 $mPath					= NULL;	// Application defined class paths
@@ -40,7 +34,7 @@ $timerRun				= NULL;	// Timer switch. Boolean 1=on, 0=off
 $start					= NULL;	// Timer start time
 $end						= NULL;	// Timer end time
 $run						= NULL;	// Timer run time
-
+$propelVersion  = NULL; // Version de propel
 
 // Include the bootup config file [WEB-INF\boot.xml]
 include 'boot.ini.php';
@@ -61,6 +55,7 @@ $gPath = ClassPath::getClassPath($appServerRootDir, $globalPaths, $osType);
 // Setup the module paths
 include $moduleRootDir.$modulePath;
 $modulePaths = ModulePaths::getModulePaths();
+
 $mPath = ClassPath::getClassPath($moduleRootDir, $modulePaths, $osType);
 $cPath = ClassPath::concatPaths($gPath, $mPath, $osType);
 
@@ -137,7 +132,7 @@ $request->setContextPath($contextPath);
 // Note: $_REQUEST was introduced in 4.1.0. There is no equivalent array in earlier versions.
 if($_REQUEST != '') {
 	// Retrieve the 'action path'. Eg: index.php?do=[logonForm]
-	$doPath = BOOTUtils::getActionPath($_REQUEST, $actionID);
+	$doPath = BOOTUtils::getActionPath($_REQUEST, $actionID, 2, 64);
 } else {
 	//	kill !!!
 }
@@ -222,4 +217,3 @@ function CheckConfigDataFile($configPath, $phpmvcConfigDataFile, $phpmvcConfigXM
 
 	return $initXMLConfig;
 }
-?>

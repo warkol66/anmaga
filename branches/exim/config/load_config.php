@@ -1,4 +1,9 @@
 <?php
+/*
+* Loadconfig
+* @package phpMVCconfig
+* 
+*/
 
 if (!file_exists("config/config.xml"))
 	echo "No existe config.xml";
@@ -10,7 +15,7 @@ else {
 	$timeXML = filemtime("config/config.xml");
 	//Si el XML fue modificado despues de crear el data, tengo que generar el data
 	if ($timeXML > $timeData) {
-		require_once('WEB-INF/classes/includes/assoc_array2xml.php');
+		require_once("WEB-INF/classes/includes/assoc_array2xml.php");
 		$converter= new assoc_array2xml;
 	  $xml = file_get_contents("config/config.xml");
 	  $system = $converter->xml2array($xml);
