@@ -7,6 +7,8 @@
 
 require_once('config/DBConnection.inc.php');
 require_once('includes/mysql_dump.inc.php');
+require_once("xml2ary.php");
+
 	/**
 	 * Generacion de Backups de la base
 	 * Tanto para PHP4 como PHP5, y no tiene dependencias con propel
@@ -64,7 +66,7 @@ class BackupPeer {
 	
 		while ($file = readdir($dir)) {
 		
-			if (eregi("\.zip",$file)) {
+			if (preg_match("/\.zip/i",$file)) {
 				$filename    = $path . $file;
         $file_object = array(
                                 'name' => $file,
@@ -101,7 +103,13 @@ class BackupPeer {
 		if (($tablePrefix = BackupPeer::configHasPrefix()) != false)
 			$dumper->setTablePrefix($tablePrefix);
 		
-		$filecontents = $dumper->doDumpToString();
+		$headerAndFooter = $this->getDumpHeaderAndFooter();
+		$header = $headerAndFooter["header"];
+		$footer = $headerAndFooter["footer"];				
+		
+		$filecontent = $dumper->doDumpToString();
+		
+		$filecontents = $header.$filecontent.$footer;
 
 		mysql_close($connection);
 		
@@ -170,7 +178,7 @@ class BackupPeer {
 		$filecontents = BackupPeer::buildDataBackup($filename,$path);
 		
 		BackupPeer::writeToBackupLog('Se ha creado un backup completo en el servidor');
-					
+
 		$zipContents = BackupPeer::getCompleteBackupZipFromDataFile($filecontents);	
 		
 		if ($fp = fopen($path . $filename, 'a')) {
@@ -194,7 +202,7 @@ class BackupPeer {
 		//$sql = str_replace("\n","",$sql);
 		$db = new DBConnection();
 		$connection = @mysql_connect($db->Host,$db->User,$db->Password);
-		$queries = split(";\n",$sqlQuery);
+		$queries = explode(";\n",$sqlQuery);
 	
 		//guardamos una copia actual del contenido de la base de datos en el servidor en /backups/restore		
 		$this->setTableHeader('actionLogs_');
@@ -239,7 +247,7 @@ class BackupPeer {
 					$path = '';
 				}
 				else {
-					$clearRoute = split('\.\/files\/',$filea['dir']);
+					$clearRoute = explode('\.\/files\/',$filea['dir']);
 					$path = $clearRoute[1] . '/';
 				}
 				//guardamos el archivo en su ubicacion
@@ -253,7 +261,7 @@ class BackupPeer {
 		}
 		
 		//obtencion de filename sin ruta
-		$parts = split('/',$zipFilename);
+		$parts = explode('/',$zipFilename);
 		$filename = $parts[count($parts)-1];
 		
 		$text = 'Se ha restaurado el backup en el servidor de nombre de archivo: ' . $filename;
@@ -291,7 +299,7 @@ class BackupPeer {
 		$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . 'zip';
 
 		$filecontents = BackupPeer::buildDataBackup($filename);
-		
+
 		BackupPeer::writeToBackupLog('Se ha creado un backup para descarga');
 					
 		return BackupPeer::getZipFromDataFile($filecontents);				
@@ -309,7 +317,7 @@ class BackupPeer {
 		$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . '.zip';
 
 		$filecontents = BackupPeer::buildDataBackup($filename);
-		
+
 		BackupPeer::writeToBackupLog('Se ha creado un backup para descarga');
 					
 		return BackupPeer::getCompleteBackupZipFromDataFile($filecontents);				
@@ -356,18 +364,20 @@ class BackupPeer {
 		
 		foreach ($listing as $route) {				
 			
-			$clearRoute = split('WEB-INF/../',$route);
+			$clearRoute = explode('WEB-INF/../',$route);
 
 			if (!BackupPeer::routeHasToBeIgnored($clearRoute[1])) {
-			
+
 				if (is_dir($route)) {
 					$zipfile->create_dir("./files/" . $clearRoute[1]);
 				}
 			
 				if (is_file($route)) {
-					$zipfile->create_file(file_get_contents($route),'./files/' . $clearRoute[1]);
+					$contents = file_get_contents($route);
+					$zipfile->create_file($contents,'./files/' . $clearRoute[1]);
 				}
 			}
+
 		}
 
 		return $zipfile->zipped_file(); 			
@@ -440,71 +450,60 @@ class BackupPeer {
 		return true;
 		
 	}
-	
-	/**
-	 * Envio de un BackupExistente Por Email
-	 * @param string nombre del archivo a enviar
-	 * @param string email del destinatario
+
+	/*
+	 * Obtiene el header y el footer del dump, con los drop tables y rename con las tablas con camelcase.
+	 * 
+	 * @return array Header en elemento "header" y footer en elemento "footer"
 	 */
-	function sendBackupToEmail($filename,$email) {
-		
-		if (file_exists('WEB-INF/../backups/' . $filename) == false)
-			return false;
+	function getDumpHeaderAndFooter() {
+		global $moduleRootDir,$osType;
+		$header = "";
+		$footer = "";
+		if ($osType == "WINDOWS" || $osType == "WINNT" || $osType == "WIN") {
+			$pathToXml = $moduleRootDir.'/WEB-INF/classes/propel/schema.xml';
 
-		require_once('EmailManagement.php');
+			//Path a schemas
+			$path = "WEB-INF/propel";
+			$schemasFile = scandir($path);
+			
+			$schemas = Array();
+			
+			foreach ($schemasFile as $schema) {
+				if (substr($schema, -3) == "xml") {
+					$schemas[] = $schema; 
+				}		
+			}
 
-		global $system;
+			$tables = array();
 
-		$subject = 'Envio de Backup ' . $filename;
-		$destination = $email;
-		$mailFrom = $system["config"]["system"]["parameters"]["fromEmail"];
-		$text = 'Adjunto a este mensaje se encuentra el backup ' . $filename . ' enviado.';
-		$manager = new EmailManagement();
+			foreach ($schemas as $schema) {		
+				$xml = file_get_contents($path."/".$schema);
+				
+				$xml2ary = new Xml2ary();
+				$array = $xml2ary->getArray($xml);
+				
+				$arrayTables = $array["database"]["_c"]["table"];
 
-		//creamos el mensaje multipart
-		$message = $manager->createMultipartMessage($subject,$text);
-		
-		//creamos el file utilizando el wrapper de archivo de Swift.
-		$attachmentFile = new Swift_File('WEB-INF/../backups/' . $filename)	;
-		$attachment = new Swift_Message_Attachment($attachmentFile, $filename, "application/zip");
-		$message->attach($attachment);
+				foreach ($arrayTables as $tableElement) {
+					$tableName = $tableElement["_a"]["name"];
+					if (ereg("[A-Z]",$tableName))
+						$tables[] = $tableName;
+				}
+			}
+			
+			$header = "#Eliminacion de tablas con camelcase.\n";
+			$footer = "#Renombre de tablas con camelcase.\n";
 
-		//realizamos el envio
-		$result = $manager->sendMessage($destination,$mailFrom,$message);
-		
-		return $result;
-		
-		
-	}
+			foreach ($tables as $table) {
+				$header .= "DROP TABLE ". $table .";\n";
+				$footer .= "RENAME TABLE ". strtolower($table) . " TO " . $table .";\n";
+			}			
 
-	/**
-	 * Envio del contenido de un backup por Email
-	 * @param string buffer con el contenido del backup (el mismo estara comprimido en zip)
-	 * @param string email del destinatario
-	 */
-	function sendBackupContentToEmail($content,$email) {
-
-		require_once('EmailManagement.php');
-
-		global $system;
-
-		$subject = 'Envio de Backup Generado Por Sistema';
-		$destination = $email;
-		$mailFrom = $system["config"]["system"]["parameters"]["fromEmail"];
-		$text = 'Adjunto a este mensaje se encuentra el backup enviado.';
-		$manager = new EmailManagement();
-
-		//creamos el mensaje multipart
-		$message = $manager->createMultipartMessage($subject,$text);
-		
-		$attachment = new Swift_Message_Attachment($content, $filename, "application/zip");
-		$message->attach($attachment);
-
-		//realizamos el envio
-		$result = $manager->sendMessage($destination,$mailFrom,$message);
-		
-		return $result;
-
+			$header .= "\n\n";
+			$footer .= "\n\n";			
+		}
+		return array("header"=>$header, "footer"=>$footer);
 	}
 
 }

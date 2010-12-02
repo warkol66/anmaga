@@ -4,7 +4,7 @@
  *
  * @package backup 
  */
-
+set_time_limit(360);
 require_once("BaseAction.php");
 require_once("BackupPeer.php");
 
@@ -52,7 +52,7 @@ class BackupCreateAction extends BaseAction {
 		}
 
 		$backupPeer = new BackupPeer();
-		
+
 		if ($_GET['mode'] == 'data') {
 		
 			if ($backupPeer->createDataBackup()) {
