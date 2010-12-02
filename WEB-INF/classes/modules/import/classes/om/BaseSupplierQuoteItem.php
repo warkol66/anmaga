@@ -14,7 +14,7 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'SupplierQuoteItemPeer';
+	const PEER = 'SupplierQuoteItemPeer';
 
 	/**
 	 * The Peer class.
@@ -1097,7 +1097,7 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -1139,7 +1139,7 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(SupplierQuoteItemPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -1500,7 +1500,7 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -1914,11 +1914,11 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent
 		if ($this->aSupplierQuote === null && ($this->supplierquoteid !== null)) {
 			$this->aSupplierQuote = SupplierQuoteQuery::create()->findPk($this->supplierquoteid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aSupplierQuote->addSupplierQuoteItems($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aSupplierQuote->addSupplierQuoteItems($this);
 			 */
 		}
 		return $this->aSupplierQuote;
@@ -1963,11 +1963,11 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent
 		if ($this->aClientQuoteItem === null && ($this->clientquoteitemid !== null)) {
 			$this->aClientQuoteItem = ClientQuoteItemQuery::create()->findPk($this->clientquoteitemid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aClientQuoteItem->addSupplierQuoteItems($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aClientQuoteItem->addSupplierQuoteItems($this);
 			 */
 		}
 		return $this->aClientQuoteItem;
@@ -2012,11 +2012,11 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent
 		if ($this->aProductRelatedByProductid === null && ($this->productid !== null)) {
 			$this->aProductRelatedByProductid = ProductQuery::create()->findPk($this->productid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aProductRelatedByProductid->addSupplierQuoteItemsRelatedByProductid($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aProductRelatedByProductid->addSupplierQuoteItemsRelatedByProductid($this);
 			 */
 		}
 		return $this->aProductRelatedByProductid;
@@ -2061,11 +2061,11 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent
 		if ($this->aProductRelatedByReplacedproductid === null && ($this->replacedproductid !== null)) {
 			$this->aProductRelatedByReplacedproductid = ProductQuery::create()->findPk($this->replacedproductid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aProductRelatedByReplacedproductid->addSupplierQuoteItemsRelatedByReplacedproductid($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aProductRelatedByReplacedproductid->addSupplierQuoteItemsRelatedByReplacedproductid($this);
 			 */
 		}
 		return $this->aProductRelatedByReplacedproductid;
@@ -2110,11 +2110,11 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent
 		if ($this->aIncoterm === null && ($this->incotermid !== null)) {
 			$this->aIncoterm = IncotermQuery::create()->findPk($this->incotermid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aIncoterm->addSupplierQuoteItems($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aIncoterm->addSupplierQuoteItems($this);
 			 */
 		}
 		return $this->aIncoterm;
@@ -2159,11 +2159,11 @@ abstract class BaseSupplierQuoteItem extends BaseObject  implements Persistent
 		if ($this->aPort === null && ($this->portid !== null)) {
 			$this->aPort = PortQuery::create()->findPk($this->portid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aPort->addSupplierQuoteItems($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aPort->addSupplierQuoteItems($this);
 			 */
 		}
 		return $this->aPort;

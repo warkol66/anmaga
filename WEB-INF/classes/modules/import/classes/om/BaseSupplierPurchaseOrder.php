@@ -14,7 +14,7 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'SupplierPurchaseOrderPeer';
+	const PEER = 'SupplierPurchaseOrderPeer';
 
 	/**
 	 * The Peer class.
@@ -751,7 +751,7 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		if ($con === null) {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -793,7 +793,7 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		if ($con === null) {
 			$con = Propel::getConnection(SupplierPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -1163,7 +1163,7 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -1504,11 +1504,11 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		if ($this->aSupplierQuote === null && ($this->supplierquoteid !== null)) {
 			$this->aSupplierQuote = SupplierQuoteQuery::create()->findPk($this->supplierquoteid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aSupplierQuote->addSupplierPurchaseOrders($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aSupplierQuote->addSupplierPurchaseOrders($this);
 			 */
 		}
 		return $this->aSupplierQuote;
@@ -1553,11 +1553,11 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		if ($this->aClientQuote === null && ($this->clientquoteid !== null)) {
 			$this->aClientQuote = ClientQuoteQuery::create()->findPk($this->clientquoteid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aClientQuote->addSupplierPurchaseOrders($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aClientQuote->addSupplierPurchaseOrders($this);
 			 */
 		}
 		return $this->aClientQuote;
@@ -1602,11 +1602,11 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		if ($this->aSupplier === null && ($this->supplierid !== null)) {
 			$this->aSupplier = SupplierQuery::create()->findPk($this->supplierid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aSupplier->addSupplierPurchaseOrders($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aSupplier->addSupplierPurchaseOrders($this);
 			 */
 		}
 		return $this->aSupplier;
@@ -1651,11 +1651,11 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		if ($this->aUser === null && ($this->userid !== null)) {
 			$this->aUser = UserQuery::create()->findPk($this->userid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aUser->addSupplierPurchaseOrders($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aUser->addSupplierPurchaseOrders($this);
 			 */
 		}
 		return $this->aUser;
@@ -1700,11 +1700,11 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		if ($this->aAffiliate === null && ($this->affiliateid !== null)) {
 			$this->aAffiliate = AffiliateQuery::create()->findPk($this->affiliateid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aAffiliate->addSupplierPurchaseOrders($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aAffiliate->addSupplierPurchaseOrders($this);
 			 */
 		}
 		return $this->aAffiliate;
@@ -1749,11 +1749,11 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		if ($this->aAffiliateUser === null && ($this->affiliateuserid !== null)) {
 			$this->aAffiliateUser = AffiliateUserQuery::create()->findPk($this->affiliateuserid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aAffiliateUser->addSupplierPurchaseOrders($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aAffiliateUser->addSupplierPurchaseOrders($this);
 			 */
 		}
 		return $this->aAffiliateUser;
@@ -2293,56 +2293,6 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 			$this->collShipments[]= $l;
 			$l->setSupplierPurchaseOrder($this);
 		}
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this SupplierPurchaseOrder is new, it will return
-	 * an empty collection; or if this SupplierPurchaseOrder has previously
-	 * been saved, it will retrieve related Shipments from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in SupplierPurchaseOrder.
-	 *
-	 * @param      Criteria $criteria optional Criteria object to narrow the query
-	 * @param      PropelPDO $con optional connection object
-	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-	 * @return     PropelCollection|array Shipment[] List of Shipment objects
-	 */
-	public function getShipmentsJoinSupplier($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$query = ShipmentQuery::create(null, $criteria);
-		$query->joinWith('Supplier', $join_behavior);
-
-		return $this->getShipments($query, $con);
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this SupplierPurchaseOrder is new, it will return
-	 * an empty collection; or if this SupplierPurchaseOrder has previously
-	 * been saved, it will retrieve related Shipments from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in SupplierPurchaseOrder.
-	 *
-	 * @param      Criteria $criteria optional Criteria object to narrow the query
-	 * @param      PropelPDO $con optional connection object
-	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-	 * @return     PropelCollection|array Shipment[] List of Shipment objects
-	 */
-	public function getShipmentsJoinAffiliate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$query = ShipmentQuery::create(null, $criteria);
-		$query->joinWith('Affiliate', $join_behavior);
-
-		return $this->getShipments($query, $con);
 	}
 
 	/**

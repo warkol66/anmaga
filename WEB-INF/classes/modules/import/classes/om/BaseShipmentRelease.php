@@ -14,7 +14,7 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'ShipmentReleasePeer';
+	const PEER = 'ShipmentReleasePeer';
 
 	/**
 	 * The Peer class.
@@ -31,22 +31,76 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 	protected $id;
 
 	/**
+	 * The value for the createdat field.
+	 * @var        string
+	 */
+	protected $createdat;
+
+	/**
 	 * The value for the shipmentid field.
 	 * @var        int
 	 */
 	protected $shipmentid;
 
 	/**
-	 * The value for the status field.
-	 * @var        int
-	 */
-	protected $status;
-
-	/**
-	 * The value for the timestampstatus field.
+	 * The value for the documentspresentationdate field.
 	 * @var        string
 	 */
-	protected $timestampstatus;
+	protected $documentspresentationdate;
+
+	/**
+	 * The value for the banktariffspaymentdate field.
+	 * @var        string
+	 */
+	protected $banktariffspaymentdate;
+
+	/**
+	 * The value for the physicalrecognitiondate field.
+	 * @var        string
+	 */
+	protected $physicalrecognitiondate;
+
+	/**
+	 * The value for the documentsvalidationdate field.
+	 * @var        string
+	 */
+	protected $documentsvalidationdate;
+
+	/**
+	 * The value for the expensespaymentdate field.
+	 * @var        string
+	 */
+	protected $expensespaymentdate;
+
+	/**
+	 * The value for the loadingorderdate field.
+	 * @var        string
+	 */
+	protected $loadingorderdate;
+
+	/**
+	 * The value for the containersloadingdate field.
+	 * @var        int
+	 */
+	protected $containersloadingdate;
+
+	/**
+	 * The value for the estimatedmovementtostorehousedate field.
+	 * @var        string
+	 */
+	protected $estimatedmovementtostorehousedate;
+
+	/**
+	 * The value for the arrivaltostorehousetimestamp field.
+	 * @var        string
+	 */
+	protected $arrivaltostorehousetimestamp;
+
+	/**
+	 * The value for the containterreceiptonstorehousedate field.
+	 * @var        string
+	 */
+	protected $containterreceiptonstorehousedate;
 
 	/**
 	 * @var        Shipment
@@ -78,8 +132,46 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Get the [optionally formatted] temporal [createdat] column value.
+	 * Creation date for
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getCreatedat($format = 'Y-m-d H:i:s')
+	{
+		if ($this->createdat === null) {
+			return null;
+		}
+
+
+		if ($this->createdat === '0000-00-00 00:00:00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->createdat);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->createdat, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
 	 * Get the [shipmentid] column value.
-	 * Envio
+	 * Transport Info
 	 * @return     int
 	 */
 	public function getShipmentid()
@@ -88,40 +180,344 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [status] column value.
-	 * Status del envio
-	 * @return     int
+	 * Get the [optionally formatted] temporal [documentspresentationdate] column value.
+	 * Presentacion de documentos aduanales
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
 	 */
-	public function getStatus()
+	public function getDocumentspresentationdate($format = '%Y/%m/%d')
 	{
-		return $this->status;
+		if ($this->documentspresentationdate === null) {
+			return null;
+		}
+
+
+		if ($this->documentspresentationdate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->documentspresentationdate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->documentspresentationdate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
 	}
 
 	/**
-	 * Get the [optionally formatted] temporal [timestampstatus] column value.
-	 * Fecha del ultimo cambio de status
+	 * Get the [optionally formatted] temporal [banktariffspaymentdate] column value.
+	 * Pago al banco de aranceles
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getBanktariffspaymentdate($format = '%Y/%m/%d')
+	{
+		if ($this->banktariffspaymentdate === null) {
+			return null;
+		}
+
+
+		if ($this->banktariffspaymentdate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->banktariffspaymentdate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->banktariffspaymentdate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [physicalrecognitiondate] column value.
+	 * Reconocimiento fisico de la mercancia
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getPhysicalrecognitiondate($format = '%Y/%m/%d')
+	{
+		if ($this->physicalrecognitiondate === null) {
+			return null;
+		}
+
+
+		if ($this->physicalrecognitiondate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->physicalrecognitiondate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->physicalrecognitiondate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [documentsvalidationdate] column value.
+	 * Validacion de los documentos
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getDocumentsvalidationdate($format = '%Y/%m/%d')
+	{
+		if ($this->documentsvalidationdate === null) {
+			return null;
+		}
+
+
+		if ($this->documentsvalidationdate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->documentsvalidationdate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->documentsvalidationdate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [expensespaymentdate] column value.
+	 * Pago de gastos (almacenes, manejo, etc)
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getExpensespaymentdate($format = '%Y/%m/%d')
+	{
+		if ($this->expensespaymentdate === null) {
+			return null;
+		}
+
+
+		if ($this->expensespaymentdate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->expensespaymentdate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->expensespaymentdate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [loadingorderdate] column value.
+	 * Orden de carga (El agente aduanal elabora)
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getLoadingorderdate($format = '%Y/%m/%d')
+	{
+		if ($this->loadingorderdate === null) {
+			return null;
+		}
+
+
+		if ($this->loadingorderdate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->loadingorderdate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->loadingorderdate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [containersloadingdate] column value.
+	 * Carga de los containers
+	 * @return     int
+	 */
+	public function getContainersloadingdate()
+	{
+		return $this->containersloadingdate;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [estimatedmovementtostorehousedate] column value.
+	 * Fecha estimada de Transporte desde la aduana al almacen
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getEstimatedmovementtostorehousedate($format = '%Y/%m/%d')
+	{
+		if ($this->estimatedmovementtostorehousedate === null) {
+			return null;
+		}
+
+
+		if ($this->estimatedmovementtostorehousedate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->estimatedmovementtostorehousedate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->estimatedmovementtostorehousedate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [arrivaltostorehousetimestamp] column value.
+	 * Fecha y hora de llegada del container al almacen
 	 *
 	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
 	 *							If format is NULL, then the raw DateTime object will be returned.
 	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
 	 * @throws     PropelException - if unable to parse/validate the date/time value.
 	 */
-	public function getTimestampstatus($format = 'Y-m-d H:i:s')
+	public function getArrivaltostorehousetimestamp($format = 'Y-m-d H:i:s')
 	{
-		if ($this->timestampstatus === null) {
+		if ($this->arrivaltostorehousetimestamp === null) {
 			return null;
 		}
 
 
-		if ($this->timestampstatus === '0000-00-00 00:00:00') {
+		if ($this->arrivaltostorehousetimestamp === '0000-00-00 00:00:00') {
 			// while technically this is not a default value of NULL,
 			// this seems to be closest in meaning.
 			return null;
 		} else {
 			try {
-				$dt = new DateTime($this->timestampstatus);
+				$dt = new DateTime($this->arrivaltostorehousetimestamp);
 			} catch (Exception $x) {
-				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->timestampstatus, true), $x);
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->arrivaltostorehousetimestamp, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [containterreceiptonstorehousedate] column value.
+	 * Recepcion del container en almacen
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getContainterreceiptonstorehousedate($format = '%Y/%m/%d')
+	{
+		if ($this->containterreceiptonstorehousedate === null) {
+			return null;
+		}
+
+
+		if ($this->containterreceiptonstorehousedate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->containterreceiptonstorehousedate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->containterreceiptonstorehousedate, true), $x);
 			}
 		}
 
@@ -156,57 +552,13 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 	} // setId()
 
 	/**
-	 * Set the value of [shipmentid] column.
-	 * Envio
-	 * @param      int $v new value
-	 * @return     ShipmentRelease The current object (for fluent API support)
-	 */
-	public function setShipmentid($v)
-	{
-		if ($v !== null) {
-			$v = (int) $v;
-		}
-
-		if ($this->shipmentid !== $v) {
-			$this->shipmentid = $v;
-			$this->modifiedColumns[] = ShipmentReleasePeer::SHIPMENTID;
-		}
-
-		if ($this->aShipment !== null && $this->aShipment->getId() !== $v) {
-			$this->aShipment = null;
-		}
-
-		return $this;
-	} // setShipmentid()
-
-	/**
-	 * Set the value of [status] column.
-	 * Status del envio
-	 * @param      int $v new value
-	 * @return     ShipmentRelease The current object (for fluent API support)
-	 */
-	public function setStatus($v)
-	{
-		if ($v !== null) {
-			$v = (int) $v;
-		}
-
-		if ($this->status !== $v) {
-			$this->status = $v;
-			$this->modifiedColumns[] = ShipmentReleasePeer::STATUS;
-		}
-
-		return $this;
-	} // setStatus()
-
-	/**
-	 * Sets the value of [timestampstatus] column to a normalized version of the date/time value specified.
-	 * Fecha del ultimo cambio de status
+	 * Sets the value of [createdat] column to a normalized version of the date/time value specified.
+	 * Creation date for
 	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
 	 *						be treated as NULL for temporal objects.
 	 * @return     ShipmentRelease The current object (for fluent API support)
 	 */
-	public function setTimestampstatus($v)
+	public function setCreatedat($v)
 	{
 		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
 		// -- which is unexpected, to say the least.
@@ -231,22 +583,507 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 			}
 		}
 
-		if ( $this->timestampstatus !== null || $dt !== null ) {
+		if ( $this->createdat !== null || $dt !== null ) {
 			// (nested ifs are a little easier to read in this case)
 
-			$currNorm = ($this->timestampstatus !== null && $tmpDt = new DateTime($this->timestampstatus)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$currNorm = ($this->createdat !== null && $tmpDt = new DateTime($this->createdat)) ? $tmpDt->format('Y-m-d H:i:s') : null;
 			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
 
 			if ( ($currNorm !== $newNorm) // normalized values don't match 
 					)
 			{
-				$this->timestampstatus = ($dt ? $dt->format('Y-m-d H:i:s') : null);
-				$this->modifiedColumns[] = ShipmentReleasePeer::TIMESTAMPSTATUS;
+				$this->createdat = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+				$this->modifiedColumns[] = ShipmentReleasePeer::CREATEDAT;
 			}
 		} // if either are not null
 
 		return $this;
-	} // setTimestampstatus()
+	} // setCreatedat()
+
+	/**
+	 * Set the value of [shipmentid] column.
+	 * Transport Info
+	 * @param      int $v new value
+	 * @return     ShipmentRelease The current object (for fluent API support)
+	 */
+	public function setShipmentid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->shipmentid !== $v) {
+			$this->shipmentid = $v;
+			$this->modifiedColumns[] = ShipmentReleasePeer::SHIPMENTID;
+		}
+
+		if ($this->aShipment !== null && $this->aShipment->getId() !== $v) {
+			$this->aShipment = null;
+		}
+
+		return $this;
+	} // setShipmentid()
+
+	/**
+	 * Sets the value of [documentspresentationdate] column to a normalized version of the date/time value specified.
+	 * Presentacion de documentos aduanales
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     ShipmentRelease The current object (for fluent API support)
+	 */
+	public function setDocumentspresentationdate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->documentspresentationdate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->documentspresentationdate !== null && $tmpDt = new DateTime($this->documentspresentationdate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->documentspresentationdate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentReleasePeer::DOCUMENTSPRESENTATIONDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setDocumentspresentationdate()
+
+	/**
+	 * Sets the value of [banktariffspaymentdate] column to a normalized version of the date/time value specified.
+	 * Pago al banco de aranceles
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     ShipmentRelease The current object (for fluent API support)
+	 */
+	public function setBanktariffspaymentdate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->banktariffspaymentdate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->banktariffspaymentdate !== null && $tmpDt = new DateTime($this->banktariffspaymentdate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->banktariffspaymentdate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentReleasePeer::BANKTARIFFSPAYMENTDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setBanktariffspaymentdate()
+
+	/**
+	 * Sets the value of [physicalrecognitiondate] column to a normalized version of the date/time value specified.
+	 * Reconocimiento fisico de la mercancia
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     ShipmentRelease The current object (for fluent API support)
+	 */
+	public function setPhysicalrecognitiondate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->physicalrecognitiondate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->physicalrecognitiondate !== null && $tmpDt = new DateTime($this->physicalrecognitiondate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->physicalrecognitiondate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentReleasePeer::PHYSICALRECOGNITIONDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setPhysicalrecognitiondate()
+
+	/**
+	 * Sets the value of [documentsvalidationdate] column to a normalized version of the date/time value specified.
+	 * Validacion de los documentos
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     ShipmentRelease The current object (for fluent API support)
+	 */
+	public function setDocumentsvalidationdate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->documentsvalidationdate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->documentsvalidationdate !== null && $tmpDt = new DateTime($this->documentsvalidationdate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->documentsvalidationdate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentReleasePeer::DOCUMENTSVALIDATIONDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setDocumentsvalidationdate()
+
+	/**
+	 * Sets the value of [expensespaymentdate] column to a normalized version of the date/time value specified.
+	 * Pago de gastos (almacenes, manejo, etc)
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     ShipmentRelease The current object (for fluent API support)
+	 */
+	public function setExpensespaymentdate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->expensespaymentdate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->expensespaymentdate !== null && $tmpDt = new DateTime($this->expensespaymentdate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->expensespaymentdate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentReleasePeer::EXPENSESPAYMENTDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setExpensespaymentdate()
+
+	/**
+	 * Sets the value of [loadingorderdate] column to a normalized version of the date/time value specified.
+	 * Orden de carga (El agente aduanal elabora)
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     ShipmentRelease The current object (for fluent API support)
+	 */
+	public function setLoadingorderdate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->loadingorderdate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->loadingorderdate !== null && $tmpDt = new DateTime($this->loadingorderdate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->loadingorderdate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentReleasePeer::LOADINGORDERDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setLoadingorderdate()
+
+	/**
+	 * Set the value of [containersloadingdate] column.
+	 * Carga de los containers
+	 * @param      int $v new value
+	 * @return     ShipmentRelease The current object (for fluent API support)
+	 */
+	public function setContainersloadingdate($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->containersloadingdate !== $v) {
+			$this->containersloadingdate = $v;
+			$this->modifiedColumns[] = ShipmentReleasePeer::CONTAINERSLOADINGDATE;
+		}
+
+		return $this;
+	} // setContainersloadingdate()
+
+	/**
+	 * Sets the value of [estimatedmovementtostorehousedate] column to a normalized version of the date/time value specified.
+	 * Fecha estimada de Transporte desde la aduana al almacen
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     ShipmentRelease The current object (for fluent API support)
+	 */
+	public function setEstimatedmovementtostorehousedate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->estimatedmovementtostorehousedate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->estimatedmovementtostorehousedate !== null && $tmpDt = new DateTime($this->estimatedmovementtostorehousedate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->estimatedmovementtostorehousedate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentReleasePeer::ESTIMATEDMOVEMENTTOSTOREHOUSEDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setEstimatedmovementtostorehousedate()
+
+	/**
+	 * Sets the value of [arrivaltostorehousetimestamp] column to a normalized version of the date/time value specified.
+	 * Fecha y hora de llegada del container al almacen
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     ShipmentRelease The current object (for fluent API support)
+	 */
+	public function setArrivaltostorehousetimestamp($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->arrivaltostorehousetimestamp !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->arrivaltostorehousetimestamp !== null && $tmpDt = new DateTime($this->arrivaltostorehousetimestamp)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->arrivaltostorehousetimestamp = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+				$this->modifiedColumns[] = ShipmentReleasePeer::ARRIVALTOSTOREHOUSETIMESTAMP;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setArrivaltostorehousetimestamp()
+
+	/**
+	 * Sets the value of [containterreceiptonstorehousedate] column to a normalized version of the date/time value specified.
+	 * Recepcion del container en almacen
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     ShipmentRelease The current object (for fluent API support)
+	 */
+	public function setContainterreceiptonstorehousedate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->containterreceiptonstorehousedate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->containterreceiptonstorehousedate !== null && $tmpDt = new DateTime($this->containterreceiptonstorehousedate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->containterreceiptonstorehousedate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = ShipmentReleasePeer::CONTAINTERRECEIPTONSTOREHOUSEDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setContainterreceiptonstorehousedate()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -281,9 +1118,18 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 		try {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-			$this->shipmentid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-			$this->status = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-			$this->timestampstatus = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->createdat = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+			$this->shipmentid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->documentspresentationdate = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->banktariffspaymentdate = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->physicalrecognitiondate = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->documentsvalidationdate = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->expensespaymentdate = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->loadingorderdate = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->containersloadingdate = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+			$this->estimatedmovementtostorehousedate = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+			$this->arrivaltostorehousetimestamp = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->containterreceiptonstorehousedate = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -292,7 +1138,7 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 4; // 4 = ShipmentReleasePeer::NUM_COLUMNS - ShipmentReleasePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 13; // 13 = ShipmentReleasePeer::NUM_COLUMNS - ShipmentReleasePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ShipmentRelease object", $e);
@@ -379,7 +1225,7 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(ShipmentReleasePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -421,7 +1267,7 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(ShipmentReleasePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -623,13 +1469,40 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 				return $this->getId();
 				break;
 			case 1:
-				return $this->getShipmentid();
+				return $this->getCreatedat();
 				break;
 			case 2:
-				return $this->getStatus();
+				return $this->getShipmentid();
 				break;
 			case 3:
-				return $this->getTimestampstatus();
+				return $this->getDocumentspresentationdate();
+				break;
+			case 4:
+				return $this->getBanktariffspaymentdate();
+				break;
+			case 5:
+				return $this->getPhysicalrecognitiondate();
+				break;
+			case 6:
+				return $this->getDocumentsvalidationdate();
+				break;
+			case 7:
+				return $this->getExpensespaymentdate();
+				break;
+			case 8:
+				return $this->getLoadingorderdate();
+				break;
+			case 9:
+				return $this->getContainersloadingdate();
+				break;
+			case 10:
+				return $this->getEstimatedmovementtostorehousedate();
+				break;
+			case 11:
+				return $this->getArrivaltostorehousetimestamp();
+				break;
+			case 12:
+				return $this->getContainterreceiptonstorehousedate();
 				break;
 			default:
 				return null;
@@ -644,7 +1517,7 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -656,9 +1529,18 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 		$keys = ShipmentReleasePeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
-			$keys[1] => $this->getShipmentid(),
-			$keys[2] => $this->getStatus(),
-			$keys[3] => $this->getTimestampstatus(),
+			$keys[1] => $this->getCreatedat(),
+			$keys[2] => $this->getShipmentid(),
+			$keys[3] => $this->getDocumentspresentationdate(),
+			$keys[4] => $this->getBanktariffspaymentdate(),
+			$keys[5] => $this->getPhysicalrecognitiondate(),
+			$keys[6] => $this->getDocumentsvalidationdate(),
+			$keys[7] => $this->getExpensespaymentdate(),
+			$keys[8] => $this->getLoadingorderdate(),
+			$keys[9] => $this->getContainersloadingdate(),
+			$keys[10] => $this->getEstimatedmovementtostorehousedate(),
+			$keys[11] => $this->getArrivaltostorehousetimestamp(),
+			$keys[12] => $this->getContainterreceiptonstorehousedate(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aShipment) {
@@ -699,13 +1581,40 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 				$this->setId($value);
 				break;
 			case 1:
-				$this->setShipmentid($value);
+				$this->setCreatedat($value);
 				break;
 			case 2:
-				$this->setStatus($value);
+				$this->setShipmentid($value);
 				break;
 			case 3:
-				$this->setTimestampstatus($value);
+				$this->setDocumentspresentationdate($value);
+				break;
+			case 4:
+				$this->setBanktariffspaymentdate($value);
+				break;
+			case 5:
+				$this->setPhysicalrecognitiondate($value);
+				break;
+			case 6:
+				$this->setDocumentsvalidationdate($value);
+				break;
+			case 7:
+				$this->setExpensespaymentdate($value);
+				break;
+			case 8:
+				$this->setLoadingorderdate($value);
+				break;
+			case 9:
+				$this->setContainersloadingdate($value);
+				break;
+			case 10:
+				$this->setEstimatedmovementtostorehousedate($value);
+				break;
+			case 11:
+				$this->setArrivaltostorehousetimestamp($value);
+				break;
+			case 12:
+				$this->setContainterreceiptonstorehousedate($value);
 				break;
 		} // switch()
 	}
@@ -732,9 +1641,18 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 		$keys = ShipmentReleasePeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setShipmentid($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setStatus($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setTimestampstatus($arr[$keys[3]]);
+		if (array_key_exists($keys[1], $arr)) $this->setCreatedat($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setShipmentid($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setDocumentspresentationdate($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setBanktariffspaymentdate($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setPhysicalrecognitiondate($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setDocumentsvalidationdate($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setExpensespaymentdate($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setLoadingorderdate($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setContainersloadingdate($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setEstimatedmovementtostorehousedate($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setArrivaltostorehousetimestamp($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setContainterreceiptonstorehousedate($arr[$keys[12]]);
 	}
 
 	/**
@@ -747,9 +1665,18 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 		$criteria = new Criteria(ShipmentReleasePeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(ShipmentReleasePeer::ID)) $criteria->add(ShipmentReleasePeer::ID, $this->id);
+		if ($this->isColumnModified(ShipmentReleasePeer::CREATEDAT)) $criteria->add(ShipmentReleasePeer::CREATEDAT, $this->createdat);
 		if ($this->isColumnModified(ShipmentReleasePeer::SHIPMENTID)) $criteria->add(ShipmentReleasePeer::SHIPMENTID, $this->shipmentid);
-		if ($this->isColumnModified(ShipmentReleasePeer::STATUS)) $criteria->add(ShipmentReleasePeer::STATUS, $this->status);
-		if ($this->isColumnModified(ShipmentReleasePeer::TIMESTAMPSTATUS)) $criteria->add(ShipmentReleasePeer::TIMESTAMPSTATUS, $this->timestampstatus);
+		if ($this->isColumnModified(ShipmentReleasePeer::DOCUMENTSPRESENTATIONDATE)) $criteria->add(ShipmentReleasePeer::DOCUMENTSPRESENTATIONDATE, $this->documentspresentationdate);
+		if ($this->isColumnModified(ShipmentReleasePeer::BANKTARIFFSPAYMENTDATE)) $criteria->add(ShipmentReleasePeer::BANKTARIFFSPAYMENTDATE, $this->banktariffspaymentdate);
+		if ($this->isColumnModified(ShipmentReleasePeer::PHYSICALRECOGNITIONDATE)) $criteria->add(ShipmentReleasePeer::PHYSICALRECOGNITIONDATE, $this->physicalrecognitiondate);
+		if ($this->isColumnModified(ShipmentReleasePeer::DOCUMENTSVALIDATIONDATE)) $criteria->add(ShipmentReleasePeer::DOCUMENTSVALIDATIONDATE, $this->documentsvalidationdate);
+		if ($this->isColumnModified(ShipmentReleasePeer::EXPENSESPAYMENTDATE)) $criteria->add(ShipmentReleasePeer::EXPENSESPAYMENTDATE, $this->expensespaymentdate);
+		if ($this->isColumnModified(ShipmentReleasePeer::LOADINGORDERDATE)) $criteria->add(ShipmentReleasePeer::LOADINGORDERDATE, $this->loadingorderdate);
+		if ($this->isColumnModified(ShipmentReleasePeer::CONTAINERSLOADINGDATE)) $criteria->add(ShipmentReleasePeer::CONTAINERSLOADINGDATE, $this->containersloadingdate);
+		if ($this->isColumnModified(ShipmentReleasePeer::ESTIMATEDMOVEMENTTOSTOREHOUSEDATE)) $criteria->add(ShipmentReleasePeer::ESTIMATEDMOVEMENTTOSTOREHOUSEDATE, $this->estimatedmovementtostorehousedate);
+		if ($this->isColumnModified(ShipmentReleasePeer::ARRIVALTOSTOREHOUSETIMESTAMP)) $criteria->add(ShipmentReleasePeer::ARRIVALTOSTOREHOUSETIMESTAMP, $this->arrivaltostorehousetimestamp);
+		if ($this->isColumnModified(ShipmentReleasePeer::CONTAINTERRECEIPTONSTOREHOUSEDATE)) $criteria->add(ShipmentReleasePeer::CONTAINTERRECEIPTONSTOREHOUSEDATE, $this->containterreceiptonstorehousedate);
 
 		return $criteria;
 	}
@@ -811,9 +1738,18 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
+		$copyObj->setCreatedat($this->createdat);
 		$copyObj->setShipmentid($this->shipmentid);
-		$copyObj->setStatus($this->status);
-		$copyObj->setTimestampstatus($this->timestampstatus);
+		$copyObj->setDocumentspresentationdate($this->documentspresentationdate);
+		$copyObj->setBanktariffspaymentdate($this->banktariffspaymentdate);
+		$copyObj->setPhysicalrecognitiondate($this->physicalrecognitiondate);
+		$copyObj->setDocumentsvalidationdate($this->documentsvalidationdate);
+		$copyObj->setExpensespaymentdate($this->expensespaymentdate);
+		$copyObj->setLoadingorderdate($this->loadingorderdate);
+		$copyObj->setContainersloadingdate($this->containersloadingdate);
+		$copyObj->setEstimatedmovementtostorehousedate($this->estimatedmovementtostorehousedate);
+		$copyObj->setArrivaltostorehousetimestamp($this->arrivaltostorehousetimestamp);
+		$copyObj->setContainterreceiptonstorehousedate($this->containterreceiptonstorehousedate);
 
 		$copyObj->setNew(true);
 		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -896,11 +1832,11 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 		if ($this->aShipment === null && ($this->shipmentid !== null)) {
 			$this->aShipment = ShipmentQuery::create()->findPk($this->shipmentid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aShipment->addShipmentReleases($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aShipment->addShipmentReleases($this);
 			 */
 		}
 		return $this->aShipment;
@@ -912,9 +1848,18 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 	public function clear()
 	{
 		$this->id = null;
+		$this->createdat = null;
 		$this->shipmentid = null;
-		$this->status = null;
-		$this->timestampstatus = null;
+		$this->documentspresentationdate = null;
+		$this->banktariffspaymentdate = null;
+		$this->physicalrecognitiondate = null;
+		$this->documentsvalidationdate = null;
+		$this->expensespaymentdate = null;
+		$this->loadingorderdate = null;
+		$this->containersloadingdate = null;
+		$this->estimatedmovementtostorehousedate = null;
+		$this->arrivaltostorehousetimestamp = null;
+		$this->containterreceiptonstorehousedate = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();

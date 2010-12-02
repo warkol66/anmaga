@@ -38,9 +38,18 @@ class ShipmentReleaseTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+		$this->addColumn('CREATEDAT', 'Createdat', 'TIMESTAMP', true, null, null);
 		$this->addForeignKey('SHIPMENTID', 'Shipmentid', 'INTEGER', 'import_shipment', 'ID', true, null, null);
-		$this->addColumn('STATUS', 'Status', 'INTEGER', true, null, null);
-		$this->addColumn('TIMESTAMPSTATUS', 'Timestampstatus', 'TIMESTAMP', false, null, null);
+		$this->addColumn('DOCUMENTSPRESENTATIONDATE', 'Documentspresentationdate', 'DATE', false, null, null);
+		$this->addColumn('BANKTARIFFSPAYMENTDATE', 'Banktariffspaymentdate', 'DATE', false, null, null);
+		$this->addColumn('PHYSICALRECOGNITIONDATE', 'Physicalrecognitiondate', 'DATE', false, null, null);
+		$this->addColumn('DOCUMENTSVALIDATIONDATE', 'Documentsvalidationdate', 'DATE', false, null, null);
+		$this->addColumn('EXPENSESPAYMENTDATE', 'Expensespaymentdate', 'DATE', false, null, null);
+		$this->addColumn('LOADINGORDERDATE', 'Loadingorderdate', 'DATE', false, null, null);
+		$this->addColumn('CONTAINERSLOADINGDATE', 'Containersloadingdate', 'TINYINT', false, null, null);
+		$this->addColumn('ESTIMATEDMOVEMENTTOSTOREHOUSEDATE', 'Estimatedmovementtostorehousedate', 'DATE', false, null, null);
+		$this->addColumn('ARRIVALTOSTOREHOUSETIMESTAMP', 'Arrivaltostorehousetimestamp', 'TIMESTAMP', false, null, null);
+		$this->addColumn('CONTAINTERRECEIPTONSTOREHOUSEDATE', 'Containterreceiptonstorehousedate', 'DATE', false, null, null);
 		// validators
 	} // initialize()
 

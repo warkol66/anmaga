@@ -39,12 +39,21 @@ class ShipmentTableMap extends TableMap {
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('CREATEDAT', 'Createdat', 'TIMESTAMP', true, null, null);
-		$this->addForeignKey('SUPPLIERID', 'Supplierid', 'INTEGER', 'import_supplier', 'ID', true, null, null);
-		$this->addColumn('STATUS', 'Status', 'INTEGER', true, null, null);
-		$this->addColumn('TIMESTAMPSTATUS', 'Timestampstatus', 'TIMESTAMP', false, null, null);
 		$this->addForeignKey('SUPPLIERPURCHASEORDERID', 'Supplierpurchaseorderid', 'INTEGER', 'import_supplierPurchaseOrder', 'ID', true, null, null);
-		$this->addColumn('CLIENTQUOTEID', 'Clientquoteid', 'INTEGER', true, null, null);
-		$this->addForeignKey('AFFILIATEID', 'Affiliateid', 'INTEGER', 'affiliates_affiliate', 'ID', true, null, null);
+		$this->addColumn('CONTAINERSREALCOUNT', 'Containersrealcount', 'INTEGER', false, null, null);
+		$this->addColumn('CONTAINERSNUMBERS', 'Containersnumbers', 'LONGVARCHAR', false, null, null);
+		$this->addColumn('PICKUPDATE', 'Pickupdate', 'DATE', false, null, null);
+		$this->addColumn('SHIPMENTDATE', 'Shipmentdate', 'DATE', false, null, null);
+		$this->addColumn('BLNUMBER', 'Blnumber', 'INTEGER', false, null, null);
+		$this->addColumn('VESSELNAME', 'Vesselname', 'VARCHAR', false, 255, null);
+		$this->addColumn('ESTIMATEDDEPARTUREDATE', 'Estimateddeparturedate', 'DATE', false, null, null);
+		$this->addColumn('DEPARTUREDATE', 'Departuredate', 'DATE', false, null, null);
+		$this->addColumn('ARRIVALPORTNAME', 'Arrivalportname', 'VARCHAR', false, 255, null);
+		$this->addColumn('ARRIVALTOPANAMADATE', 'Arrivaltopanamadate', 'DATE', false, null, null);
+		$this->addColumn('TRANSSHIPMENTDATE', 'Transshipmentdate', 'DATE', false, null, null);
+		$this->addColumn('TELEXRELEASE', 'Telexrelease', 'TINYINT', false, null, null);
+		$this->addColumn('ESTIMATEDARRIVALDATE', 'Estimatedarrivaldate', 'DATE', false, null, null);
+		$this->addColumn('ARRIVALDATE', 'Arrivaldate', 'DATE', false, null, null);
 		// validators
 	} // initialize()
 
@@ -54,8 +63,6 @@ class ShipmentTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('SupplierPurchaseOrder', 'SupplierPurchaseOrder', RelationMap::MANY_TO_ONE, array('supplierPurchaseOrderId' => 'id', ), null, null);
-    $this->addRelation('Supplier', 'Supplier', RelationMap::MANY_TO_ONE, array('supplierId' => 'id', ), null, null);
-    $this->addRelation('Affiliate', 'Affiliate', RelationMap::MANY_TO_ONE, array('affiliateId' => 'id', ), null, null);
     $this->addRelation('ShipmentRelease', 'ShipmentRelease', RelationMap::ONE_TO_MANY, array('id' => 'shipmentId', ), null, null);
 	} // buildRelations()
 

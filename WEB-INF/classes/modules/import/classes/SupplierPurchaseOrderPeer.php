@@ -189,7 +189,7 @@ class SupplierPurchaseOrderPeer extends BaseSupplierPurchaseOrderPeer {
 	
 	if (!empty($this->status)) {
 		$status = $this->statusNames[$this->status];
-		$criteria->add($this->processStatus($criteria,$status));
+		$criteria->add($this->processStatus($criteria,$status)); // FIXME: el estado no va a estar persistido. Va a ser un calculable posiblemente.
 	}
 
 	return $criteria;

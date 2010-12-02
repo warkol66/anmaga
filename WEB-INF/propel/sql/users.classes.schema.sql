@@ -18,9 +18,9 @@ CREATE TABLE `users_user`
 	`active` TINYINT  NOT NULL COMMENT 'Is user active?',
 	`created` DATETIME  NOT NULL COMMENT 'Creation date for',
 	`updated` DATETIME  NOT NULL COMMENT 'Last update date',
-	`levelId` INTEGER COMMENT 'User Level',
-	`lastLogin` DATETIME COMMENT 'Fecha del ultimo login del usuario',
-	`timezone` VARCHAR(100) COMMENT 'Timezone GMT del usuario',
+	`levelId` INTEGER   COMMENT 'User Level',
+	`lastLogin` DATETIME   COMMENT 'Fecha del ultimo login del usuario',
+	`timezone` VARCHAR(100)   COMMENT 'Timezone GMT del usuario',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `users_user_U_1` (`username`),
 	INDEX `users_user_FI_1` (`levelId`),
@@ -39,9 +39,9 @@ DROP TABLE IF EXISTS `users_userInfo`;
 CREATE TABLE `users_userInfo`
 (
 	`userId` INTEGER  NOT NULL COMMENT 'User Id',
-	`name` VARCHAR(255) COMMENT 'name',
-	`surname` VARCHAR(255) COMMENT 'surname',
-	`mailAddress` VARCHAR(255) COMMENT 'Email',
+	`name` VARCHAR(255)   COMMENT 'name',
+	`surname` VARCHAR(255)   COMMENT 'surname',
+	`mailAddress` VARCHAR(255)   COMMENT 'Email',
 	PRIMARY KEY (`userId`),
 	CONSTRAINT `users_userInfo_FK_1`
 		FOREIGN KEY (`userId`)
@@ -83,7 +83,7 @@ CREATE TABLE `users_group`
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Group Name',
 	`created` DATETIME  NOT NULL COMMENT 'Creation date for',
 	`updated` DATETIME  NOT NULL COMMENT 'Last update date',
-	`bitLevel` INTEGER COMMENT 'Nivel',
+	`bitLevel` INTEGER   COMMENT 'Nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `users_group_U_1` (`name`)
 ) ENGINE=MyISAM COMMENT='Groups';
@@ -99,7 +99,7 @@ CREATE TABLE `users_level`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Level ID',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Level Name',
-	`bitLevel` INTEGER COMMENT 'Bit del nivel',
+	`bitLevel` INTEGER   COMMENT 'Bit del nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `users_level_U_1` (`name`)
 ) ENGINE=MyISAM COMMENT='Levels';

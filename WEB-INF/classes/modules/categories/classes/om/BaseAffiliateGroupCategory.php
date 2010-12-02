@@ -14,7 +14,7 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'AffiliateGroupCategoryPeer';
+	const PEER = 'AffiliateGroupCategoryPeer';
 
 	/**
 	 * The Peer class.
@@ -261,7 +261,7 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 		if ($con === null) {
 			$con = Propel::getConnection(AffiliateGroupCategoryPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -303,7 +303,7 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 		if ($con === null) {
 			$con = Propel::getConnection(AffiliateGroupCategoryPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -525,7 +525,7 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -653,7 +653,7 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 		$pks = array();
 		$pks[0] = $this->getGroupid();
 		$pks[1] = $this->getCategoryid();
-		
+
 		return $pks;
 	}
 
@@ -773,11 +773,11 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 		if ($this->aAffiliateGroup === null && ($this->groupid !== null)) {
 			$this->aAffiliateGroup = AffiliateGroupQuery::create()->findPk($this->groupid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aAffiliateGroup->addAffiliateGroupCategorys($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aAffiliateGroup->addAffiliateGroupCategorys($this);
 			 */
 		}
 		return $this->aAffiliateGroup;
@@ -822,11 +822,11 @@ abstract class BaseAffiliateGroupCategory extends BaseObject  implements Persist
 		if ($this->aCategory === null && ($this->categoryid !== null)) {
 			$this->aCategory = CategoryQuery::create()->findPk($this->categoryid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aCategory->addAffiliateGroupCategorys($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aCategory->addAffiliateGroupCategorys($this);
 			 */
 		}
 		return $this->aCategory;

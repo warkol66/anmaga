@@ -18,7 +18,7 @@ CREATE TABLE `actionlogs_log`
 	`datetime` DATETIME  NOT NULL COMMENT 'Fecha en que se logueo el dato',
 	`action` VARCHAR(100)  NOT NULL COMMENT 'action en que se logueo el dato',
 	`object` VARCHAR(100)  NOT NULL COMMENT 'objeto sobre el cual se realizo la accion',
-	`forward` VARCHAR(100) COMMENT 'tipo de accion de la etiqueta',
+	`forward` VARCHAR(100)   COMMENT 'tipo de accion de la etiqueta',
 	PRIMARY KEY (`id`),
 	INDEX `actionlogs_log_FI_1` (`userId`),
 	CONSTRAINT `actionlogs_log_FK_1`
@@ -42,8 +42,8 @@ CREATE TABLE `actionlogs_label`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id Label',
 	`action` VARCHAR(100)  NOT NULL COMMENT 'action en que se loguea el dato',
 	`label` VARCHAR(100)  NOT NULL COMMENT 'mensaje del log',
-	`language` VARCHAR(100) COMMENT 'idioma de la etiqueta',
-	`forward` VARCHAR(100) COMMENT 'tipo de accion de la etiqueta',
+	`language` VARCHAR(100)   COMMENT 'idioma de la etiqueta',
+	`forward` VARCHAR(100)   COMMENT 'tipo de accion de la etiqueta',
 	PRIMARY KEY (`id`,`action`)
 ) ENGINE=MyISAM COMMENT='Etiquetas de logueo';
 

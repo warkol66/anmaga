@@ -14,7 +14,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'ClientPurchaseOrderPeer';
+	const PEER = 'ClientPurchaseOrderPeer';
 
 	/**
 	 * The Peer class.
@@ -637,7 +637,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(ClientPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -679,7 +679,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(ClientPurchaseOrderPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -985,7 +985,7 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -1294,11 +1294,11 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		if ($this->aClientQuote === null && ($this->clientquoteid !== null)) {
 			$this->aClientQuote = ClientQuoteQuery::create()->findPk($this->clientquoteid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aClientQuote->addClientPurchaseOrders($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aClientQuote->addClientPurchaseOrders($this);
 			 */
 		}
 		return $this->aClientQuote;
@@ -1343,11 +1343,11 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		if ($this->aUser === null && ($this->userid !== null)) {
 			$this->aUser = UserQuery::create()->findPk($this->userid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aUser->addClientPurchaseOrders($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aUser->addClientPurchaseOrders($this);
 			 */
 		}
 		return $this->aUser;
@@ -1392,11 +1392,11 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		if ($this->aAffiliate === null && ($this->affiliateid !== null)) {
 			$this->aAffiliate = AffiliateQuery::create()->findPk($this->affiliateid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aAffiliate->addClientPurchaseOrders($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aAffiliate->addClientPurchaseOrders($this);
 			 */
 		}
 		return $this->aAffiliate;
@@ -1441,11 +1441,11 @@ abstract class BaseClientPurchaseOrder extends BaseObject  implements Persistent
 		if ($this->aAffiliateUser === null && ($this->affiliateuserid !== null)) {
 			$this->aAffiliateUser = AffiliateUserQuery::create()->findPk($this->affiliateuserid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aAffiliateUser->addClientPurchaseOrders($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aAffiliateUser->addClientPurchaseOrders($this);
 			 */
 		}
 		return $this->aAffiliateUser;

@@ -26,7 +26,7 @@ abstract class BaseShipmentReleasePeer {
 	const TM_CLASS = 'ShipmentReleaseTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 4;
+	const NUM_COLUMNS = 13;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -34,14 +34,41 @@ abstract class BaseShipmentReleasePeer {
 	/** the column name for the ID field */
 	const ID = 'import_shipmentRelease.ID';
 
+	/** the column name for the CREATEDAT field */
+	const CREATEDAT = 'import_shipmentRelease.CREATEDAT';
+
 	/** the column name for the SHIPMENTID field */
 	const SHIPMENTID = 'import_shipmentRelease.SHIPMENTID';
 
-	/** the column name for the STATUS field */
-	const STATUS = 'import_shipmentRelease.STATUS';
+	/** the column name for the DOCUMENTSPRESENTATIONDATE field */
+	const DOCUMENTSPRESENTATIONDATE = 'import_shipmentRelease.DOCUMENTSPRESENTATIONDATE';
 
-	/** the column name for the TIMESTAMPSTATUS field */
-	const TIMESTAMPSTATUS = 'import_shipmentRelease.TIMESTAMPSTATUS';
+	/** the column name for the BANKTARIFFSPAYMENTDATE field */
+	const BANKTARIFFSPAYMENTDATE = 'import_shipmentRelease.BANKTARIFFSPAYMENTDATE';
+
+	/** the column name for the PHYSICALRECOGNITIONDATE field */
+	const PHYSICALRECOGNITIONDATE = 'import_shipmentRelease.PHYSICALRECOGNITIONDATE';
+
+	/** the column name for the DOCUMENTSVALIDATIONDATE field */
+	const DOCUMENTSVALIDATIONDATE = 'import_shipmentRelease.DOCUMENTSVALIDATIONDATE';
+
+	/** the column name for the EXPENSESPAYMENTDATE field */
+	const EXPENSESPAYMENTDATE = 'import_shipmentRelease.EXPENSESPAYMENTDATE';
+
+	/** the column name for the LOADINGORDERDATE field */
+	const LOADINGORDERDATE = 'import_shipmentRelease.LOADINGORDERDATE';
+
+	/** the column name for the CONTAINERSLOADINGDATE field */
+	const CONTAINERSLOADINGDATE = 'import_shipmentRelease.CONTAINERSLOADINGDATE';
+
+	/** the column name for the ESTIMATEDMOVEMENTTOSTOREHOUSEDATE field */
+	const ESTIMATEDMOVEMENTTOSTOREHOUSEDATE = 'import_shipmentRelease.ESTIMATEDMOVEMENTTOSTOREHOUSEDATE';
+
+	/** the column name for the ARRIVALTOSTOREHOUSETIMESTAMP field */
+	const ARRIVALTOSTOREHOUSETIMESTAMP = 'import_shipmentRelease.ARRIVALTOSTOREHOUSETIMESTAMP';
+
+	/** the column name for the CONTAINTERRECEIPTONSTOREHOUSEDATE field */
+	const CONTAINTERRECEIPTONSTOREHOUSEDATE = 'import_shipmentRelease.CONTAINTERRECEIPTONSTOREHOUSEDATE';
 
 	/**
 	 * An identiy map to hold any loaded instances of ShipmentRelease objects.
@@ -59,12 +86,12 @@ abstract class BaseShipmentReleasePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Shipmentid', 'Status', 'Timestampstatus', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'shipmentid', 'status', 'timestampstatus', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::SHIPMENTID, self::STATUS, self::TIMESTAMPSTATUS, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'SHIPMENTID', 'STATUS', 'TIMESTAMPSTATUS', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'shipmentId', 'status', 'timestampStatus', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Createdat', 'Shipmentid', 'Documentspresentationdate', 'Banktariffspaymentdate', 'Physicalrecognitiondate', 'Documentsvalidationdate', 'Expensespaymentdate', 'Loadingorderdate', 'Containersloadingdate', 'Estimatedmovementtostorehousedate', 'Arrivaltostorehousetimestamp', 'Containterreceiptonstorehousedate', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdat', 'shipmentid', 'documentspresentationdate', 'banktariffspaymentdate', 'physicalrecognitiondate', 'documentsvalidationdate', 'expensespaymentdate', 'loadingorderdate', 'containersloadingdate', 'estimatedmovementtostorehousedate', 'arrivaltostorehousetimestamp', 'containterreceiptonstorehousedate', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATEDAT, self::SHIPMENTID, self::DOCUMENTSPRESENTATIONDATE, self::BANKTARIFFSPAYMENTDATE, self::PHYSICALRECOGNITIONDATE, self::DOCUMENTSVALIDATIONDATE, self::EXPENSESPAYMENTDATE, self::LOADINGORDERDATE, self::CONTAINERSLOADINGDATE, self::ESTIMATEDMOVEMENTTOSTOREHOUSEDATE, self::ARRIVALTOSTOREHOUSETIMESTAMP, self::CONTAINTERRECEIPTONSTOREHOUSEDATE, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CREATEDAT', 'SHIPMENTID', 'DOCUMENTSPRESENTATIONDATE', 'BANKTARIFFSPAYMENTDATE', 'PHYSICALRECOGNITIONDATE', 'DOCUMENTSVALIDATIONDATE', 'EXPENSESPAYMENTDATE', 'LOADINGORDERDATE', 'CONTAINERSLOADINGDATE', 'ESTIMATEDMOVEMENTTOSTOREHOUSEDATE', 'ARRIVALTOSTOREHOUSETIMESTAMP', 'CONTAINTERRECEIPTONSTOREHOUSEDATE', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'createdAt', 'shipmentId', 'documentsPresentationDate', 'bankTariffsPaymentDate', 'physicalRecognitionDate', 'documentsValidationDate', 'expensesPaymentDate', 'loadingOrderDate', 'containersLoadingDate', 'estimatedMovementToStorehouseDate', 'arrivalToStorehouseTimestamp', 'containterReceiptOnStorehouseDate', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
 	);
 
 	/**
@@ -74,12 +101,12 @@ abstract class BaseShipmentReleasePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Shipmentid' => 1, 'Status' => 2, 'Timestampstatus' => 3, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'shipmentid' => 1, 'status' => 2, 'timestampstatus' => 3, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SHIPMENTID => 1, self::STATUS => 2, self::TIMESTAMPSTATUS => 3, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'SHIPMENTID' => 1, 'STATUS' => 2, 'TIMESTAMPSTATUS' => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'shipmentId' => 1, 'status' => 2, 'timestampStatus' => 3, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Createdat' => 1, 'Shipmentid' => 2, 'Documentspresentationdate' => 3, 'Banktariffspaymentdate' => 4, 'Physicalrecognitiondate' => 5, 'Documentsvalidationdate' => 6, 'Expensespaymentdate' => 7, 'Loadingorderdate' => 8, 'Containersloadingdate' => 9, 'Estimatedmovementtostorehousedate' => 10, 'Arrivaltostorehousetimestamp' => 11, 'Containterreceiptonstorehousedate' => 12, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdat' => 1, 'shipmentid' => 2, 'documentspresentationdate' => 3, 'banktariffspaymentdate' => 4, 'physicalrecognitiondate' => 5, 'documentsvalidationdate' => 6, 'expensespaymentdate' => 7, 'loadingorderdate' => 8, 'containersloadingdate' => 9, 'estimatedmovementtostorehousedate' => 10, 'arrivaltostorehousetimestamp' => 11, 'containterreceiptonstorehousedate' => 12, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATEDAT => 1, self::SHIPMENTID => 2, self::DOCUMENTSPRESENTATIONDATE => 3, self::BANKTARIFFSPAYMENTDATE => 4, self::PHYSICALRECOGNITIONDATE => 5, self::DOCUMENTSVALIDATIONDATE => 6, self::EXPENSESPAYMENTDATE => 7, self::LOADINGORDERDATE => 8, self::CONTAINERSLOADINGDATE => 9, self::ESTIMATEDMOVEMENTTOSTOREHOUSEDATE => 10, self::ARRIVALTOSTOREHOUSETIMESTAMP => 11, self::CONTAINTERRECEIPTONSTOREHOUSEDATE => 12, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CREATEDAT' => 1, 'SHIPMENTID' => 2, 'DOCUMENTSPRESENTATIONDATE' => 3, 'BANKTARIFFSPAYMENTDATE' => 4, 'PHYSICALRECOGNITIONDATE' => 5, 'DOCUMENTSVALIDATIONDATE' => 6, 'EXPENSESPAYMENTDATE' => 7, 'LOADINGORDERDATE' => 8, 'CONTAINERSLOADINGDATE' => 9, 'ESTIMATEDMOVEMENTTOSTOREHOUSEDATE' => 10, 'ARRIVALTOSTOREHOUSETIMESTAMP' => 11, 'CONTAINTERRECEIPTONSTOREHOUSEDATE' => 12, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'createdAt' => 1, 'shipmentId' => 2, 'documentsPresentationDate' => 3, 'bankTariffsPaymentDate' => 4, 'physicalRecognitionDate' => 5, 'documentsValidationDate' => 6, 'expensesPaymentDate' => 7, 'loadingOrderDate' => 8, 'containersLoadingDate' => 9, 'estimatedMovementToStorehouseDate' => 10, 'arrivalToStorehouseTimestamp' => 11, 'containterReceiptOnStorehouseDate' => 12, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
 	);
 
 	/**
@@ -152,14 +179,32 @@ abstract class BaseShipmentReleasePeer {
 	{
 		if (null === $alias) {
 			$criteria->addSelectColumn(ShipmentReleasePeer::ID);
+			$criteria->addSelectColumn(ShipmentReleasePeer::CREATEDAT);
 			$criteria->addSelectColumn(ShipmentReleasePeer::SHIPMENTID);
-			$criteria->addSelectColumn(ShipmentReleasePeer::STATUS);
-			$criteria->addSelectColumn(ShipmentReleasePeer::TIMESTAMPSTATUS);
+			$criteria->addSelectColumn(ShipmentReleasePeer::DOCUMENTSPRESENTATIONDATE);
+			$criteria->addSelectColumn(ShipmentReleasePeer::BANKTARIFFSPAYMENTDATE);
+			$criteria->addSelectColumn(ShipmentReleasePeer::PHYSICALRECOGNITIONDATE);
+			$criteria->addSelectColumn(ShipmentReleasePeer::DOCUMENTSVALIDATIONDATE);
+			$criteria->addSelectColumn(ShipmentReleasePeer::EXPENSESPAYMENTDATE);
+			$criteria->addSelectColumn(ShipmentReleasePeer::LOADINGORDERDATE);
+			$criteria->addSelectColumn(ShipmentReleasePeer::CONTAINERSLOADINGDATE);
+			$criteria->addSelectColumn(ShipmentReleasePeer::ESTIMATEDMOVEMENTTOSTOREHOUSEDATE);
+			$criteria->addSelectColumn(ShipmentReleasePeer::ARRIVALTOSTOREHOUSETIMESTAMP);
+			$criteria->addSelectColumn(ShipmentReleasePeer::CONTAINTERRECEIPTONSTOREHOUSEDATE);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
+			$criteria->addSelectColumn($alias . '.CREATEDAT');
 			$criteria->addSelectColumn($alias . '.SHIPMENTID');
-			$criteria->addSelectColumn($alias . '.STATUS');
-			$criteria->addSelectColumn($alias . '.TIMESTAMPSTATUS');
+			$criteria->addSelectColumn($alias . '.DOCUMENTSPRESENTATIONDATE');
+			$criteria->addSelectColumn($alias . '.BANKTARIFFSPAYMENTDATE');
+			$criteria->addSelectColumn($alias . '.PHYSICALRECOGNITIONDATE');
+			$criteria->addSelectColumn($alias . '.DOCUMENTSVALIDATIONDATE');
+			$criteria->addSelectColumn($alias . '.EXPENSESPAYMENTDATE');
+			$criteria->addSelectColumn($alias . '.LOADINGORDERDATE');
+			$criteria->addSelectColumn($alias . '.CONTAINERSLOADINGDATE');
+			$criteria->addSelectColumn($alias . '.ESTIMATEDMOVEMENTTOSTOREHOUSEDATE');
+			$criteria->addSelectColumn($alias . '.ARRIVALTOSTOREHOUSETIMESTAMP');
+			$criteria->addSelectColumn($alias . '.CONTAINTERRECEIPTONSTOREHOUSEDATE');
 		}
 	}
 

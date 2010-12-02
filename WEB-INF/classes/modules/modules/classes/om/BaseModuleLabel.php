@@ -14,7 +14,7 @@ abstract class BaseModuleLabel extends BaseObject  implements Persistent
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'ModuleLabelPeer';
+	const PEER = 'ModuleLabelPeer';
 
 	/**
 	 * The Peer class.
@@ -359,7 +359,7 @@ abstract class BaseModuleLabel extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(ModuleLabelPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -401,7 +401,7 @@ abstract class BaseModuleLabel extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(ModuleLabelPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -627,7 +627,7 @@ abstract class BaseModuleLabel extends BaseObject  implements Persistent
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -770,7 +770,7 @@ abstract class BaseModuleLabel extends BaseObject  implements Persistent
 		$pks = array();
 		$pks[0] = $this->getId();
 		$pks[1] = $this->getName();
-		
+
 		return $pks;
 	}
 
@@ -893,11 +893,11 @@ abstract class BaseModuleLabel extends BaseObject  implements Persistent
 		if ($this->aModule === null && (($this->name !== "" && $this->name !== null))) {
 			$this->aModule = ModuleQuery::create()->findPk($this->name, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aModule->addModuleLabels($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aModule->addModuleLabels($this);
 			 */
 		}
 		return $this->aModule;

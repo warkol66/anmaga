@@ -1158,5 +1158,16 @@ class Common {
 		$smarty->assign("filters",$filters);
 		return $smarty;
 	}
+	
+	/**
+	 * Indica si el los pedidos de cotizaciones manejan cantidades en el modulo import
+	 * @return boolean
+	 */
+	function importQuotesHasQuantities() {
+
+		global $system;
+		return ($system['config']['import']['quantityOnQuote']['value'] == 'YES');
+
+	}
 
 } // end of class

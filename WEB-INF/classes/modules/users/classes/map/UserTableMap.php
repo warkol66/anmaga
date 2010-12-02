@@ -55,13 +55,13 @@ class UserTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('Level', 'Level', RelationMap::MANY_TO_ONE, array('levelId' => 'id', ), null, null);
+    $this->addRelation('Actionlog', 'Actionlog', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('ClientQuote', 'ClientQuote', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('SupplierQuoteItemComment', 'SupplierQuoteItemComment', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('ClientPurchaseOrder', 'ClientPurchaseOrder', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('SupplierPurchaseOrder', 'SupplierPurchaseOrder', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('UserInfo', 'UserInfo', RelationMap::ONE_TO_ONE, array('id' => 'userId', ), null, null);
     $this->addRelation('UserGroup', 'UserGroup', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
-    $this->addRelation('Actionlog', 'Actionlog', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
 	} // buildRelations()
 
 } // UserTableMap
