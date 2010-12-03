@@ -64,6 +64,11 @@ abstract class BasePort extends BaseObject  implements Persistent
 	protected $collSupplierPurchaseOrderItems;
 
 	/**
+	 * @var        array Shipment[] Collection to store aggregation of Shipment objects.
+	 */
+	protected $collShipments;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -309,6 +314,8 @@ abstract class BasePort extends BaseObject  implements Persistent
 
 			$this->collSupplierPurchaseOrderItems = null;
 
+			$this->collShipments = null;
+
 		} // if (deep)
 	}
 
@@ -466,6 +473,14 @@ abstract class BasePort extends BaseObject  implements Persistent
 				}
 			}
 
+			if ($this->collShipments !== null) {
+				foreach ($this->collShipments as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 
 		}
@@ -555,6 +570,14 @@ abstract class BasePort extends BaseObject  implements Persistent
 
 				if ($this->collSupplierPurchaseOrderItems !== null) {
 					foreach ($this->collSupplierPurchaseOrderItems as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collShipments !== null) {
+					foreach ($this->collShipments as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -804,6 +827,12 @@ abstract class BasePort extends BaseObject  implements Persistent
 			foreach ($this->getSupplierPurchaseOrderItems() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addSupplierPurchaseOrderItem($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getShipments() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addShipment($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1405,6 +1434,140 @@ abstract class BasePort extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Clears out the collShipments collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addShipments()
+	 */
+	public function clearShipments()
+	{
+		$this->collShipments = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collShipments collection.
+	 *
+	 * By default this just sets the collShipments collection to an empty array (like clearcollShipments());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initShipments()
+	{
+		$this->collShipments = new PropelObjectCollection();
+		$this->collShipments->setModel('Shipment');
+	}
+
+	/**
+	 * Gets an array of Shipment objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Port is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array Shipment[] List of Shipment objects
+	 * @throws     PropelException
+	 */
+	public function getShipments($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collShipments || null !== $criteria) {
+			if ($this->isNew() && null === $this->collShipments) {
+				// return empty collection
+				$this->initShipments();
+			} else {
+				$collShipments = ShipmentQuery::create(null, $criteria)
+					->filterByPort($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collShipments;
+				}
+				$this->collShipments = $collShipments;
+			}
+		}
+		return $this->collShipments;
+	}
+
+	/**
+	 * Returns the number of related Shipment objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related Shipment objects.
+	 * @throws     PropelException
+	 */
+	public function countShipments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collShipments || null !== $criteria) {
+			if ($this->isNew() && null === $this->collShipments) {
+				return 0;
+			} else {
+				$query = ShipmentQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByPort($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collShipments);
+		}
+	}
+
+	/**
+	 * Method called to associate a Shipment object to this object
+	 * through the Shipment foreign key attribute.
+	 *
+	 * @param      Shipment $l Shipment
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addShipment(Shipment $l)
+	{
+		if ($this->collShipments === null) {
+			$this->initShipments();
+		}
+		if (!$this->collShipments->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collShipments[]= $l;
+			$l->setPort($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Port is new, it will return
+	 * an empty collection; or if this Port has previously
+	 * been saved, it will retrieve related Shipments from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Port.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array Shipment[] List of Shipment objects
+	 */
+	public function getShipmentsJoinSupplierPurchaseOrder($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = ShipmentQuery::create(null, $criteria);
+		$query->joinWith('SupplierPurchaseOrder', $join_behavior);
+
+		return $this->getShipments($query, $con);
+	}
+
+	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
 	public function clear()
@@ -1448,11 +1611,17 @@ abstract class BasePort extends BaseObject  implements Persistent
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collShipments) {
+				foreach ((array) $this->collShipments as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
 		$this->collSuppliers = null;
 		$this->collSupplierQuoteItems = null;
 		$this->collSupplierPurchaseOrderItems = null;
+		$this->collShipments = null;
 	}
 
 	/**

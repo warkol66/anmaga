@@ -577,7 +577,7 @@ CREATE TABLE `import_shipment`
 	`vesselName` VARCHAR(255)   COMMENT 'Nombre del buque',
 	`estimatedDepartureDate` DATE   COMMENT 'Fecha estimada de partida del buque',
 	`departureDate` DATE   COMMENT 'Fecha de partida del buque',
-	`arrivalPortName` VARCHAR(255)   COMMENT 'Nombre del puerto de llegada',
+	`arrivalPortId` INTEGER   COMMENT 'Puerto de llegada',
 	`arrivalToPanamaDate` DATE   COMMENT 'Fecha de llegada a Panama',
 	`transshipmentDate` DATE   COMMENT 'Fecha de transbordo',
 	`telexRelease` TINYINT   COMMENT 'Telex release',
@@ -587,7 +587,11 @@ CREATE TABLE `import_shipment`
 	INDEX `import_shipment_FI_1` (`supplierPurchaseOrderId`),
 	CONSTRAINT `import_shipment_FK_1`
 		FOREIGN KEY (`supplierPurchaseOrderId`)
-		REFERENCES `import_supplierPurchaseOrder` (`id`)
+		REFERENCES `import_supplierPurchaseOrder` (`id`),
+	INDEX `import_shipment_FI_2` (`arrivalPortId`),
+	CONSTRAINT `import_shipment_FK_2`
+		FOREIGN KEY (`arrivalPortId`)
+		REFERENCES `import_port` (`id`)
 ) ENGINE=MyISAM COMMENT='Datos de envio';
 
 #-----------------------------------------------------------------------------

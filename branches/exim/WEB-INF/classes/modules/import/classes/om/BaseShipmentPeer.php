@@ -64,8 +64,8 @@ abstract class BaseShipmentPeer {
 	/** the column name for the DEPARTUREDATE field */
 	const DEPARTUREDATE = 'import_shipment.DEPARTUREDATE';
 
-	/** the column name for the ARRIVALPORTNAME field */
-	const ARRIVALPORTNAME = 'import_shipment.ARRIVALPORTNAME';
+	/** the column name for the ARRIVALPORTID field */
+	const ARRIVALPORTID = 'import_shipment.ARRIVALPORTID';
 
 	/** the column name for the ARRIVALTOPANAMADATE field */
 	const ARRIVALTOPANAMADATE = 'import_shipment.ARRIVALTOPANAMADATE';
@@ -98,11 +98,11 @@ abstract class BaseShipmentPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Createdat', 'Supplierpurchaseorderid', 'Containersrealcount', 'Containersnumbers', 'Pickupdate', 'Shipmentdate', 'Blnumber', 'Vesselname', 'Estimateddeparturedate', 'Departuredate', 'Arrivalportname', 'Arrivaltopanamadate', 'Transshipmentdate', 'Telexrelease', 'Estimatedarrivaldate', 'Arrivaldate', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdat', 'supplierpurchaseorderid', 'containersrealcount', 'containersnumbers', 'pickupdate', 'shipmentdate', 'blnumber', 'vesselname', 'estimateddeparturedate', 'departuredate', 'arrivalportname', 'arrivaltopanamadate', 'transshipmentdate', 'telexrelease', 'estimatedarrivaldate', 'arrivaldate', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATEDAT, self::SUPPLIERPURCHASEORDERID, self::CONTAINERSREALCOUNT, self::CONTAINERSNUMBERS, self::PICKUPDATE, self::SHIPMENTDATE, self::BLNUMBER, self::VESSELNAME, self::ESTIMATEDDEPARTUREDATE, self::DEPARTUREDATE, self::ARRIVALPORTNAME, self::ARRIVALTOPANAMADATE, self::TRANSSHIPMENTDATE, self::TELEXRELEASE, self::ESTIMATEDARRIVALDATE, self::ARRIVALDATE, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CREATEDAT', 'SUPPLIERPURCHASEORDERID', 'CONTAINERSREALCOUNT', 'CONTAINERSNUMBERS', 'PICKUPDATE', 'SHIPMENTDATE', 'BLNUMBER', 'VESSELNAME', 'ESTIMATEDDEPARTUREDATE', 'DEPARTUREDATE', 'ARRIVALPORTNAME', 'ARRIVALTOPANAMADATE', 'TRANSSHIPMENTDATE', 'TELEXRELEASE', 'ESTIMATEDARRIVALDATE', 'ARRIVALDATE', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'createdAt', 'supplierPurchaseOrderId', 'containersRealCount', 'containersNumbers', 'pickupDate', 'shipmentDate', 'blNumber', 'vesselName', 'estimatedDepartureDate', 'departureDate', 'arrivalPortName', 'arrivalToPanamaDate', 'transshipmentDate', 'telexRelease', 'estimatedArrivalDate', 'arrivalDate', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Createdat', 'Supplierpurchaseorderid', 'Containersrealcount', 'Containersnumbers', 'Pickupdate', 'Shipmentdate', 'Blnumber', 'Vesselname', 'Estimateddeparturedate', 'Departuredate', 'Arrivalportid', 'Arrivaltopanamadate', 'Transshipmentdate', 'Telexrelease', 'Estimatedarrivaldate', 'Arrivaldate', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdat', 'supplierpurchaseorderid', 'containersrealcount', 'containersnumbers', 'pickupdate', 'shipmentdate', 'blnumber', 'vesselname', 'estimateddeparturedate', 'departuredate', 'arrivalportid', 'arrivaltopanamadate', 'transshipmentdate', 'telexrelease', 'estimatedarrivaldate', 'arrivaldate', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATEDAT, self::SUPPLIERPURCHASEORDERID, self::CONTAINERSREALCOUNT, self::CONTAINERSNUMBERS, self::PICKUPDATE, self::SHIPMENTDATE, self::BLNUMBER, self::VESSELNAME, self::ESTIMATEDDEPARTUREDATE, self::DEPARTUREDATE, self::ARRIVALPORTID, self::ARRIVALTOPANAMADATE, self::TRANSSHIPMENTDATE, self::TELEXRELEASE, self::ESTIMATEDARRIVALDATE, self::ARRIVALDATE, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CREATEDAT', 'SUPPLIERPURCHASEORDERID', 'CONTAINERSREALCOUNT', 'CONTAINERSNUMBERS', 'PICKUPDATE', 'SHIPMENTDATE', 'BLNUMBER', 'VESSELNAME', 'ESTIMATEDDEPARTUREDATE', 'DEPARTUREDATE', 'ARRIVALPORTID', 'ARRIVALTOPANAMADATE', 'TRANSSHIPMENTDATE', 'TELEXRELEASE', 'ESTIMATEDARRIVALDATE', 'ARRIVALDATE', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'createdAt', 'supplierPurchaseOrderId', 'containersRealCount', 'containersNumbers', 'pickupDate', 'shipmentDate', 'blNumber', 'vesselName', 'estimatedDepartureDate', 'departureDate', 'arrivalPortId', 'arrivalToPanamaDate', 'transshipmentDate', 'telexRelease', 'estimatedArrivalDate', 'arrivalDate', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
 	);
 
@@ -113,11 +113,11 @@ abstract class BaseShipmentPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Createdat' => 1, 'Supplierpurchaseorderid' => 2, 'Containersrealcount' => 3, 'Containersnumbers' => 4, 'Pickupdate' => 5, 'Shipmentdate' => 6, 'Blnumber' => 7, 'Vesselname' => 8, 'Estimateddeparturedate' => 9, 'Departuredate' => 10, 'Arrivalportname' => 11, 'Arrivaltopanamadate' => 12, 'Transshipmentdate' => 13, 'Telexrelease' => 14, 'Estimatedarrivaldate' => 15, 'Arrivaldate' => 16, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdat' => 1, 'supplierpurchaseorderid' => 2, 'containersrealcount' => 3, 'containersnumbers' => 4, 'pickupdate' => 5, 'shipmentdate' => 6, 'blnumber' => 7, 'vesselname' => 8, 'estimateddeparturedate' => 9, 'departuredate' => 10, 'arrivalportname' => 11, 'arrivaltopanamadate' => 12, 'transshipmentdate' => 13, 'telexrelease' => 14, 'estimatedarrivaldate' => 15, 'arrivaldate' => 16, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATEDAT => 1, self::SUPPLIERPURCHASEORDERID => 2, self::CONTAINERSREALCOUNT => 3, self::CONTAINERSNUMBERS => 4, self::PICKUPDATE => 5, self::SHIPMENTDATE => 6, self::BLNUMBER => 7, self::VESSELNAME => 8, self::ESTIMATEDDEPARTUREDATE => 9, self::DEPARTUREDATE => 10, self::ARRIVALPORTNAME => 11, self::ARRIVALTOPANAMADATE => 12, self::TRANSSHIPMENTDATE => 13, self::TELEXRELEASE => 14, self::ESTIMATEDARRIVALDATE => 15, self::ARRIVALDATE => 16, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CREATEDAT' => 1, 'SUPPLIERPURCHASEORDERID' => 2, 'CONTAINERSREALCOUNT' => 3, 'CONTAINERSNUMBERS' => 4, 'PICKUPDATE' => 5, 'SHIPMENTDATE' => 6, 'BLNUMBER' => 7, 'VESSELNAME' => 8, 'ESTIMATEDDEPARTUREDATE' => 9, 'DEPARTUREDATE' => 10, 'ARRIVALPORTNAME' => 11, 'ARRIVALTOPANAMADATE' => 12, 'TRANSSHIPMENTDATE' => 13, 'TELEXRELEASE' => 14, 'ESTIMATEDARRIVALDATE' => 15, 'ARRIVALDATE' => 16, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'createdAt' => 1, 'supplierPurchaseOrderId' => 2, 'containersRealCount' => 3, 'containersNumbers' => 4, 'pickupDate' => 5, 'shipmentDate' => 6, 'blNumber' => 7, 'vesselName' => 8, 'estimatedDepartureDate' => 9, 'departureDate' => 10, 'arrivalPortName' => 11, 'arrivalToPanamaDate' => 12, 'transshipmentDate' => 13, 'telexRelease' => 14, 'estimatedArrivalDate' => 15, 'arrivalDate' => 16, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Createdat' => 1, 'Supplierpurchaseorderid' => 2, 'Containersrealcount' => 3, 'Containersnumbers' => 4, 'Pickupdate' => 5, 'Shipmentdate' => 6, 'Blnumber' => 7, 'Vesselname' => 8, 'Estimateddeparturedate' => 9, 'Departuredate' => 10, 'Arrivalportid' => 11, 'Arrivaltopanamadate' => 12, 'Transshipmentdate' => 13, 'Telexrelease' => 14, 'Estimatedarrivaldate' => 15, 'Arrivaldate' => 16, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdat' => 1, 'supplierpurchaseorderid' => 2, 'containersrealcount' => 3, 'containersnumbers' => 4, 'pickupdate' => 5, 'shipmentdate' => 6, 'blnumber' => 7, 'vesselname' => 8, 'estimateddeparturedate' => 9, 'departuredate' => 10, 'arrivalportid' => 11, 'arrivaltopanamadate' => 12, 'transshipmentdate' => 13, 'telexrelease' => 14, 'estimatedarrivaldate' => 15, 'arrivaldate' => 16, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATEDAT => 1, self::SUPPLIERPURCHASEORDERID => 2, self::CONTAINERSREALCOUNT => 3, self::CONTAINERSNUMBERS => 4, self::PICKUPDATE => 5, self::SHIPMENTDATE => 6, self::BLNUMBER => 7, self::VESSELNAME => 8, self::ESTIMATEDDEPARTUREDATE => 9, self::DEPARTUREDATE => 10, self::ARRIVALPORTID => 11, self::ARRIVALTOPANAMADATE => 12, self::TRANSSHIPMENTDATE => 13, self::TELEXRELEASE => 14, self::ESTIMATEDARRIVALDATE => 15, self::ARRIVALDATE => 16, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CREATEDAT' => 1, 'SUPPLIERPURCHASEORDERID' => 2, 'CONTAINERSREALCOUNT' => 3, 'CONTAINERSNUMBERS' => 4, 'PICKUPDATE' => 5, 'SHIPMENTDATE' => 6, 'BLNUMBER' => 7, 'VESSELNAME' => 8, 'ESTIMATEDDEPARTUREDATE' => 9, 'DEPARTUREDATE' => 10, 'ARRIVALPORTID' => 11, 'ARRIVALTOPANAMADATE' => 12, 'TRANSSHIPMENTDATE' => 13, 'TELEXRELEASE' => 14, 'ESTIMATEDARRIVALDATE' => 15, 'ARRIVALDATE' => 16, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'createdAt' => 1, 'supplierPurchaseOrderId' => 2, 'containersRealCount' => 3, 'containersNumbers' => 4, 'pickupDate' => 5, 'shipmentDate' => 6, 'blNumber' => 7, 'vesselName' => 8, 'estimatedDepartureDate' => 9, 'departureDate' => 10, 'arrivalPortId' => 11, 'arrivalToPanamaDate' => 12, 'transshipmentDate' => 13, 'telexRelease' => 14, 'estimatedArrivalDate' => 15, 'arrivalDate' => 16, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
 	);
 
@@ -201,7 +201,7 @@ abstract class BaseShipmentPeer {
 			$criteria->addSelectColumn(ShipmentPeer::VESSELNAME);
 			$criteria->addSelectColumn(ShipmentPeer::ESTIMATEDDEPARTUREDATE);
 			$criteria->addSelectColumn(ShipmentPeer::DEPARTUREDATE);
-			$criteria->addSelectColumn(ShipmentPeer::ARRIVALPORTNAME);
+			$criteria->addSelectColumn(ShipmentPeer::ARRIVALPORTID);
 			$criteria->addSelectColumn(ShipmentPeer::ARRIVALTOPANAMADATE);
 			$criteria->addSelectColumn(ShipmentPeer::TRANSSHIPMENTDATE);
 			$criteria->addSelectColumn(ShipmentPeer::TELEXRELEASE);
@@ -219,7 +219,7 @@ abstract class BaseShipmentPeer {
 			$criteria->addSelectColumn($alias . '.VESSELNAME');
 			$criteria->addSelectColumn($alias . '.ESTIMATEDDEPARTUREDATE');
 			$criteria->addSelectColumn($alias . '.DEPARTUREDATE');
-			$criteria->addSelectColumn($alias . '.ARRIVALPORTNAME');
+			$criteria->addSelectColumn($alias . '.ARRIVALPORTID');
 			$criteria->addSelectColumn($alias . '.ARRIVALTOPANAMADATE');
 			$criteria->addSelectColumn($alias . '.TRANSSHIPMENTDATE');
 			$criteria->addSelectColumn($alias . '.TELEXRELEASE');
@@ -561,6 +561,56 @@ abstract class BaseShipmentPeer {
 
 
 	/**
+	 * Returns the number of rows matching criteria, joining the related Port table
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinPort(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// We need to set the primary table name, since in the case that there are no WHERE columns
+		// it will be impossible for the BasePeer::createSelectSql() method to determine which
+		// tables go into the FROM clause.
+		$criteria->setPrimaryTableName(ShipmentPeer::TABLE_NAME);
+
+		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->setDistinct();
+		}
+
+		if (!$criteria->hasSelectClause()) {
+			ShipmentPeer::addSelectColumns($criteria);
+		}
+		
+		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+		
+		// Set the correct dbName
+		$criteria->setDbName(self::DATABASE_NAME);
+
+		if ($con === null) {
+			$con = Propel::getConnection(ShipmentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+
+		$criteria->addJoin(ShipmentPeer::ARRIVALPORTID, PortPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doCount($criteria, $con);
+
+		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$count = (int) $row[0];
+		} else {
+			$count = 0; // no rows returned; we infer that means 0 matches.
+		}
+		$stmt->closeCursor();
+		return $count;
+	}
+
+
+	/**
 	 * Selects a collection of Shipment objects pre-filled with their SupplierPurchaseOrder objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -627,6 +677,72 @@ abstract class BaseShipmentPeer {
 
 
 	/**
+	 * Selects a collection of Shipment objects pre-filled with their Port objects.
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of Shipment objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinPort(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		ShipmentPeer::addSelectColumns($criteria);
+		$startcol = (ShipmentPeer::NUM_COLUMNS - ShipmentPeer::NUM_LAZY_LOAD_COLUMNS);
+		PortPeer::addSelectColumns($criteria);
+
+		$criteria->addJoin(ShipmentPeer::ARRIVALPORTID, PortPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = ShipmentPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = ShipmentPeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://www.propelorm.org/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+
+				$cls = ShipmentPeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				ShipmentPeer::addInstanceToPool($obj1, $key1);
+			} // if $obj1 already loaded
+
+			$key2 = PortPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			if ($key2 !== null) {
+				$obj2 = PortPeer::getInstanceFromPool($key2);
+				if (!$obj2) {
+
+					$cls = PortPeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol);
+					PortPeer::addInstanceToPool($obj2, $key2);
+				} // if obj2 already loaded
+
+				// Add the $obj1 (Shipment) to $obj2 (Port)
+				$obj2->addShipment($obj1);
+
+			} // if joined row was not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
+
+
+	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
 	 * @param      Criteria $criteria
@@ -664,6 +780,8 @@ abstract class BaseShipmentPeer {
 
 		$criteria->addJoin(ShipmentPeer::SUPPLIERPURCHASEORDERID, SupplierPurchaseOrderPeer::ID, $join_behavior);
 
+		$criteria->addJoin(ShipmentPeer::ARRIVALPORTID, PortPeer::ID, $join_behavior);
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -700,7 +818,12 @@ abstract class BaseShipmentPeer {
 		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
 
+		PortPeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (PortPeer::NUM_COLUMNS - PortPeer::NUM_LAZY_LOAD_COLUMNS);
+
 		$criteria->addJoin(ShipmentPeer::SUPPLIERPURCHASEORDERID, SupplierPurchaseOrderPeer::ID, $join_behavior);
+
+		$criteria->addJoin(ShipmentPeer::ARRIVALPORTID, PortPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -736,6 +859,270 @@ abstract class BaseShipmentPeer {
 				// Add the $obj1 (Shipment) to the collection in $obj2 (SupplierPurchaseOrder)
 				$obj2->addShipment($obj1);
 			} // if joined row not null
+
+			// Add objects for joined Port rows
+
+			$key3 = PortPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+			if ($key3 !== null) {
+				$obj3 = PortPeer::getInstanceFromPool($key3);
+				if (!$obj3) {
+
+					$cls = PortPeer::getOMClass(false);
+
+					$obj3 = new $cls();
+					$obj3->hydrate($row, $startcol3);
+					PortPeer::addInstanceToPool($obj3, $key3);
+				} // if obj3 loaded
+
+				// Add the $obj1 (Shipment) to the collection in $obj3 (Port)
+				$obj3->addShipment($obj1);
+			} // if joined row not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related SupplierPurchaseOrder table
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptSupplierPurchaseOrder(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// We need to set the primary table name, since in the case that there are no WHERE columns
+		// it will be impossible for the BasePeer::createSelectSql() method to determine which
+		// tables go into the FROM clause.
+		$criteria->setPrimaryTableName(ShipmentPeer::TABLE_NAME);
+		
+		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->setDistinct();
+		}
+
+		if (!$criteria->hasSelectClause()) {
+			ShipmentPeer::addSelectColumns($criteria);
+		}
+		
+		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
+		
+		// Set the correct dbName
+		$criteria->setDbName(self::DATABASE_NAME);
+
+		if ($con === null) {
+			$con = Propel::getConnection(ShipmentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+	
+		$criteria->addJoin(ShipmentPeer::ARRIVALPORTID, PortPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doCount($criteria, $con);
+
+		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$count = (int) $row[0];
+		} else {
+			$count = 0; // no rows returned; we infer that means 0 matches.
+		}
+		$stmt->closeCursor();
+		return $count;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related Port table
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptPort(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// We need to set the primary table name, since in the case that there are no WHERE columns
+		// it will be impossible for the BasePeer::createSelectSql() method to determine which
+		// tables go into the FROM clause.
+		$criteria->setPrimaryTableName(ShipmentPeer::TABLE_NAME);
+		
+		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->setDistinct();
+		}
+
+		if (!$criteria->hasSelectClause()) {
+			ShipmentPeer::addSelectColumns($criteria);
+		}
+		
+		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
+		
+		// Set the correct dbName
+		$criteria->setDbName(self::DATABASE_NAME);
+
+		if ($con === null) {
+			$con = Propel::getConnection(ShipmentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+	
+		$criteria->addJoin(ShipmentPeer::SUPPLIERPURCHASEORDERID, SupplierPurchaseOrderPeer::ID, $join_behavior);
+
+		$stmt = BasePeer::doCount($criteria, $con);
+
+		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$count = (int) $row[0];
+		} else {
+			$count = 0; // no rows returned; we infer that means 0 matches.
+		}
+		$stmt->closeCursor();
+		return $count;
+	}
+
+
+	/**
+	 * Selects a collection of Shipment objects pre-filled with all related objects except SupplierPurchaseOrder.
+	 *
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of Shipment objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptSupplierPurchaseOrder(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		// $criteria->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		ShipmentPeer::addSelectColumns($criteria);
+		$startcol2 = (ShipmentPeer::NUM_COLUMNS - ShipmentPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		PortPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (PortPeer::NUM_COLUMNS - PortPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		$criteria->addJoin(ShipmentPeer::ARRIVALPORTID, PortPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = ShipmentPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = ShipmentPeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://www.propelorm.org/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+				$cls = ShipmentPeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				ShipmentPeer::addInstanceToPool($obj1, $key1);
+			} // if obj1 already loaded
+
+				// Add objects for joined Port rows
+
+				$key2 = PortPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				if ($key2 !== null) {
+					$obj2 = PortPeer::getInstanceFromPool($key2);
+					if (!$obj2) {
+	
+						$cls = PortPeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol2);
+					PortPeer::addInstanceToPool($obj2, $key2);
+				} // if $obj2 already loaded
+
+				// Add the $obj1 (Shipment) to the collection in $obj2 (Port)
+				$obj2->addShipment($obj1);
+
+			} // if joined row is not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Shipment objects pre-filled with all related objects except Port.
+	 *
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of Shipment objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptPort(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		// $criteria->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		ShipmentPeer::addSelectColumns($criteria);
+		$startcol2 = (ShipmentPeer::NUM_COLUMNS - ShipmentPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		SupplierPurchaseOrderPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		$criteria->addJoin(ShipmentPeer::SUPPLIERPURCHASEORDERID, SupplierPurchaseOrderPeer::ID, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = ShipmentPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = ShipmentPeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://www.propelorm.org/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+				$cls = ShipmentPeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				ShipmentPeer::addInstanceToPool($obj1, $key1);
+			} // if obj1 already loaded
+
+				// Add objects for joined SupplierPurchaseOrder rows
+
+				$key2 = SupplierPurchaseOrderPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				if ($key2 !== null) {
+					$obj2 = SupplierPurchaseOrderPeer::getInstanceFromPool($key2);
+					if (!$obj2) {
+	
+						$cls = SupplierPurchaseOrderPeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol2);
+					SupplierPurchaseOrderPeer::addInstanceToPool($obj2, $key2);
+				} // if $obj2 already loaded
+
+				// Add the $obj1 (Shipment) to the collection in $obj2 (SupplierPurchaseOrder)
+				$obj2->addShipment($obj1);
+
+			} // if joined row is not null
 
 			$results[] = $obj1;
 		}

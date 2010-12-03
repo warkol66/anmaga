@@ -1,3 +1,8 @@
+ALTER TABLE  `import_shipment` DROP  `arrivalPortName`;
+ALTER TABLE `import_shipment` ADD `arrivalPortId` INTEGER   COMMENT 'Puerto de llegada';
+ALTER TABLE `import_shipment` ADD INDEX `import_shipment_FI_2` (`arrivalPortId`);
+ALTER TABLE `import_shipment` ADD CONSTRAINT `import_shipment_FK_2` FOREIGN KEY (`arrivalPortId`) REFERENCES `import_port` (`id`);
+
 -- =============================
 -- Revisión 590 - Fecha 20101203
 -- -----------------------------
