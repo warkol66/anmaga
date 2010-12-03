@@ -12,6 +12,7 @@
  * @method     SupplierPurchaseOrderQuery orderByStatus($order = Criteria::ASC) Order by the status column
  * @method     SupplierPurchaseOrderQuery orderByTimestampstatus($order = Criteria::ASC) Order by the timestampStatus column
  * @method     SupplierPurchaseOrderQuery orderBySupplierquoteid($order = Criteria::ASC) Order by the supplierQuoteId column
+ * @method     SupplierPurchaseOrderQuery orderByEstimateddeliverydate($order = Criteria::ASC) Order by the estimatedDeliveryDate column
  * @method     SupplierPurchaseOrderQuery orderByClientquoteid($order = Criteria::ASC) Order by the clientQuoteId column
  * @method     SupplierPurchaseOrderQuery orderByAffiliateid($order = Criteria::ASC) Order by the affiliateId column
  * @method     SupplierPurchaseOrderQuery orderByAffiliateuserid($order = Criteria::ASC) Order by the affiliateUserId column
@@ -23,6 +24,7 @@
  * @method     SupplierPurchaseOrderQuery groupByStatus() Group by the status column
  * @method     SupplierPurchaseOrderQuery groupByTimestampstatus() Group by the timestampStatus column
  * @method     SupplierPurchaseOrderQuery groupBySupplierquoteid() Group by the supplierQuoteId column
+ * @method     SupplierPurchaseOrderQuery groupByEstimateddeliverydate() Group by the estimatedDeliveryDate column
  * @method     SupplierPurchaseOrderQuery groupByClientquoteid() Group by the clientQuoteId column
  * @method     SupplierPurchaseOrderQuery groupByAffiliateid() Group by the affiliateId column
  * @method     SupplierPurchaseOrderQuery groupByAffiliateuserid() Group by the affiliateUserId column
@@ -81,6 +83,7 @@
  * @method     SupplierPurchaseOrder findOneByStatus(int $status) Return the first SupplierPurchaseOrder filtered by the status column
  * @method     SupplierPurchaseOrder findOneByTimestampstatus(string $timestampStatus) Return the first SupplierPurchaseOrder filtered by the timestampStatus column
  * @method     SupplierPurchaseOrder findOneBySupplierquoteid(int $supplierQuoteId) Return the first SupplierPurchaseOrder filtered by the supplierQuoteId column
+ * @method     SupplierPurchaseOrder findOneByEstimateddeliverydate(string $estimatedDeliveryDate) Return the first SupplierPurchaseOrder filtered by the estimatedDeliveryDate column
  * @method     SupplierPurchaseOrder findOneByClientquoteid(int $clientQuoteId) Return the first SupplierPurchaseOrder filtered by the clientQuoteId column
  * @method     SupplierPurchaseOrder findOneByAffiliateid(int $affiliateId) Return the first SupplierPurchaseOrder filtered by the affiliateId column
  * @method     SupplierPurchaseOrder findOneByAffiliateuserid(int $affiliateUserId) Return the first SupplierPurchaseOrder filtered by the affiliateUserId column
@@ -92,6 +95,7 @@
  * @method     array findByStatus(int $status) Return SupplierPurchaseOrder objects filtered by the status column
  * @method     array findByTimestampstatus(string $timestampStatus) Return SupplierPurchaseOrder objects filtered by the timestampStatus column
  * @method     array findBySupplierquoteid(int $supplierQuoteId) Return SupplierPurchaseOrder objects filtered by the supplierQuoteId column
+ * @method     array findByEstimateddeliverydate(string $estimatedDeliveryDate) Return SupplierPurchaseOrder objects filtered by the estimatedDeliveryDate column
  * @method     array findByClientquoteid(int $clientQuoteId) Return SupplierPurchaseOrder objects filtered by the clientQuoteId column
  * @method     array findByAffiliateid(int $affiliateId) Return SupplierPurchaseOrder objects filtered by the affiliateId column
  * @method     array findByAffiliateuserid(int $affiliateUserId) Return SupplierPurchaseOrder objects filtered by the affiliateUserId column
@@ -375,6 +379,37 @@ abstract class BaseSupplierPurchaseOrderQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $supplierquoteid, $comparison);
+	}
+
+	/**
+	 * Filter the query on the estimatedDeliveryDate column
+	 * 
+	 * @param     string|array $estimateddeliverydate The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    SupplierPurchaseOrderQuery The current query, for fluid interface
+	 */
+	public function filterByEstimateddeliverydate($estimateddeliverydate = null, $comparison = null)
+	{
+		if (is_array($estimateddeliverydate)) {
+			$useMinMax = false;
+			if (isset($estimateddeliverydate['min'])) {
+				$this->addUsingAlias(SupplierPurchaseOrderPeer::ESTIMATEDDELIVERYDATE, $estimateddeliverydate['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($estimateddeliverydate['max'])) {
+				$this->addUsingAlias(SupplierPurchaseOrderPeer::ESTIMATEDDELIVERYDATE, $estimateddeliverydate['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(SupplierPurchaseOrderPeer::ESTIMATEDDELIVERYDATE, $estimateddeliverydate, $comparison);
 	}
 
 	/**

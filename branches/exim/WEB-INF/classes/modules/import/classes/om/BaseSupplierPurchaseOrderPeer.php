@@ -26,7 +26,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	const TM_CLASS = 'SupplierPurchaseOrderTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 10;
+	const NUM_COLUMNS = 11;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -48,6 +48,9 @@ abstract class BaseSupplierPurchaseOrderPeer {
 
 	/** the column name for the SUPPLIERQUOTEID field */
 	const SUPPLIERQUOTEID = 'import_supplierPurchaseOrder.SUPPLIERQUOTEID';
+
+	/** the column name for the ESTIMATEDDELIVERYDATE field */
+	const ESTIMATEDDELIVERYDATE = 'import_supplierPurchaseOrder.ESTIMATEDDELIVERYDATE';
 
 	/** the column name for the CLIENTQUOTEID field */
 	const CLIENTQUOTEID = 'import_supplierPurchaseOrder.CLIENTQUOTEID';
@@ -77,12 +80,12 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Createdat', 'Supplierid', 'Status', 'Timestampstatus', 'Supplierquoteid', 'Clientquoteid', 'Affiliateid', 'Affiliateuserid', 'Userid', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdat', 'supplierid', 'status', 'timestampstatus', 'supplierquoteid', 'clientquoteid', 'affiliateid', 'affiliateuserid', 'userid', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATEDAT, self::SUPPLIERID, self::STATUS, self::TIMESTAMPSTATUS, self::SUPPLIERQUOTEID, self::CLIENTQUOTEID, self::AFFILIATEID, self::AFFILIATEUSERID, self::USERID, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CREATEDAT', 'SUPPLIERID', 'STATUS', 'TIMESTAMPSTATUS', 'SUPPLIERQUOTEID', 'CLIENTQUOTEID', 'AFFILIATEID', 'AFFILIATEUSERID', 'USERID', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'createdAt', 'supplierId', 'status', 'timestampStatus', 'supplierQuoteId', 'clientQuoteId', 'affiliateId', 'affiliateUserId', 'userId', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Createdat', 'Supplierid', 'Status', 'Timestampstatus', 'Supplierquoteid', 'Estimateddeliverydate', 'Clientquoteid', 'Affiliateid', 'Affiliateuserid', 'Userid', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdat', 'supplierid', 'status', 'timestampstatus', 'supplierquoteid', 'estimateddeliverydate', 'clientquoteid', 'affiliateid', 'affiliateuserid', 'userid', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATEDAT, self::SUPPLIERID, self::STATUS, self::TIMESTAMPSTATUS, self::SUPPLIERQUOTEID, self::ESTIMATEDDELIVERYDATE, self::CLIENTQUOTEID, self::AFFILIATEID, self::AFFILIATEUSERID, self::USERID, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CREATEDAT', 'SUPPLIERID', 'STATUS', 'TIMESTAMPSTATUS', 'SUPPLIERQUOTEID', 'ESTIMATEDDELIVERYDATE', 'CLIENTQUOTEID', 'AFFILIATEID', 'AFFILIATEUSERID', 'USERID', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'createdAt', 'supplierId', 'status', 'timestampStatus', 'supplierQuoteId', 'estimatedDeliveryDate', 'clientQuoteId', 'affiliateId', 'affiliateUserId', 'userId', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
 	);
 
 	/**
@@ -92,12 +95,12 @@ abstract class BaseSupplierPurchaseOrderPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Createdat' => 1, 'Supplierid' => 2, 'Status' => 3, 'Timestampstatus' => 4, 'Supplierquoteid' => 5, 'Clientquoteid' => 6, 'Affiliateid' => 7, 'Affiliateuserid' => 8, 'Userid' => 9, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdat' => 1, 'supplierid' => 2, 'status' => 3, 'timestampstatus' => 4, 'supplierquoteid' => 5, 'clientquoteid' => 6, 'affiliateid' => 7, 'affiliateuserid' => 8, 'userid' => 9, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATEDAT => 1, self::SUPPLIERID => 2, self::STATUS => 3, self::TIMESTAMPSTATUS => 4, self::SUPPLIERQUOTEID => 5, self::CLIENTQUOTEID => 6, self::AFFILIATEID => 7, self::AFFILIATEUSERID => 8, self::USERID => 9, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CREATEDAT' => 1, 'SUPPLIERID' => 2, 'STATUS' => 3, 'TIMESTAMPSTATUS' => 4, 'SUPPLIERQUOTEID' => 5, 'CLIENTQUOTEID' => 6, 'AFFILIATEID' => 7, 'AFFILIATEUSERID' => 8, 'USERID' => 9, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'createdAt' => 1, 'supplierId' => 2, 'status' => 3, 'timestampStatus' => 4, 'supplierQuoteId' => 5, 'clientQuoteId' => 6, 'affiliateId' => 7, 'affiliateUserId' => 8, 'userId' => 9, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Createdat' => 1, 'Supplierid' => 2, 'Status' => 3, 'Timestampstatus' => 4, 'Supplierquoteid' => 5, 'Estimateddeliverydate' => 6, 'Clientquoteid' => 7, 'Affiliateid' => 8, 'Affiliateuserid' => 9, 'Userid' => 10, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdat' => 1, 'supplierid' => 2, 'status' => 3, 'timestampstatus' => 4, 'supplierquoteid' => 5, 'estimateddeliverydate' => 6, 'clientquoteid' => 7, 'affiliateid' => 8, 'affiliateuserid' => 9, 'userid' => 10, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATEDAT => 1, self::SUPPLIERID => 2, self::STATUS => 3, self::TIMESTAMPSTATUS => 4, self::SUPPLIERQUOTEID => 5, self::ESTIMATEDDELIVERYDATE => 6, self::CLIENTQUOTEID => 7, self::AFFILIATEID => 8, self::AFFILIATEUSERID => 9, self::USERID => 10, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CREATEDAT' => 1, 'SUPPLIERID' => 2, 'STATUS' => 3, 'TIMESTAMPSTATUS' => 4, 'SUPPLIERQUOTEID' => 5, 'ESTIMATEDDELIVERYDATE' => 6, 'CLIENTQUOTEID' => 7, 'AFFILIATEID' => 8, 'AFFILIATEUSERID' => 9, 'USERID' => 10, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'createdAt' => 1, 'supplierId' => 2, 'status' => 3, 'timestampStatus' => 4, 'supplierQuoteId' => 5, 'estimatedDeliveryDate' => 6, 'clientQuoteId' => 7, 'affiliateId' => 8, 'affiliateUserId' => 9, 'userId' => 10, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
 	);
 
 	/**
@@ -175,6 +178,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::STATUS);
 			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::TIMESTAMPSTATUS);
 			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID);
+			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::ESTIMATEDDELIVERYDATE);
 			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::CLIENTQUOTEID);
 			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::AFFILIATEID);
 			$criteria->addSelectColumn(SupplierPurchaseOrderPeer::AFFILIATEUSERID);
@@ -186,6 +190,7 @@ abstract class BaseSupplierPurchaseOrderPeer {
 			$criteria->addSelectColumn($alias . '.STATUS');
 			$criteria->addSelectColumn($alias . '.TIMESTAMPSTATUS');
 			$criteria->addSelectColumn($alias . '.SUPPLIERQUOTEID');
+			$criteria->addSelectColumn($alias . '.ESTIMATEDDELIVERYDATE');
 			$criteria->addSelectColumn($alias . '.CLIENTQUOTEID');
 			$criteria->addSelectColumn($alias . '.AFFILIATEID');
 			$criteria->addSelectColumn($alias . '.AFFILIATEUSERID');

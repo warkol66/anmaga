@@ -414,6 +414,7 @@ CREATE TABLE `import_supplierPurchaseOrder`
 	`status` INTEGER  NOT NULL COMMENT 'Status de Cotizacion',
 	`timestampStatus` DATETIME   COMMENT 'Fecha del ultimo cambio de status',
 	`supplierQuoteId` INTEGER  NOT NULL COMMENT 'id de cotizacion de proveedor relacionada',
+	`estimatedDeliveryDate` DATE   COMMENT 'Fecha estimada de entrega',
 	`clientQuoteId` INTEGER  NOT NULL COMMENT 'id de cotizacion a cliente relacionada',
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Afiliado',
 	`affiliateUserId` INTEGER   COMMENT 'usuario del afiliado si creo la cotizacion',
