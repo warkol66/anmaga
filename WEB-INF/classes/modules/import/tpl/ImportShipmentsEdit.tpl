@@ -120,7 +120,7 @@
 			</p>
 			
 			<p>
-				<input type="hidden" name="shipment[id]" id="shipment[id]" value="|-$shipment->getid()-|" />
+				<input type="hidden" name="id" id="id" value="|-$shipment->getid()-|" />
 				<input type="hidden" name="shipment[supplierPurchaseOrderId]" id="shipment[supplierPurchaseOrderId]" value="|-$shipment->getSupplierPurchaseOrderId()-|" />
 				<input type="hidden" name="do" id="do" value="importShipmentsDoEdit" />
 				<input type="submit" id="button_edit_shipment" name="button_edit_shipment" title="Aceptar" value="Aceptar" />

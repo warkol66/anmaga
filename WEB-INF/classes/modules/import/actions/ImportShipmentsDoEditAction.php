@@ -41,13 +41,11 @@ class ImportShipmentsDoEditAction extends BaseAction {
 		
 		$shipmentParams = $_POST['shipment'];
 		
-		if ( !empty($shipmentParams['id']) )
-			$shipment = ShipmentPeer::get($shipmentParams['id']);
+		if ( !empty($_POST['id']) )
+			$shipment = ShipmentPeer::get($_POST['id']);
 		
-		if (empty($shipment)) {
+		if (empty($shipment))
 			$shipment = new Shipment();
-			$shipment->setCreatedAt(time()); //TODO: esto hay que sacarlo en cuanto implementemos los behavior de timestampable
-		}
 			
 		Common::setObjectFromParams($shipment, $shipmentParams);
 		
@@ -57,4 +55,4 @@ class ImportShipmentsDoEditAction extends BaseAction {
 		return $mapping->findForwardConfig('failure');
 	}
 }
-?>
+
