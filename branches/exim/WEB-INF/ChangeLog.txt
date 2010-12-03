@@ -1,3 +1,6 @@
+-- =============================
+-- Revisión 593 - Fecha 20101203
+-- -----------------------------
 ALTER TABLE  `import_shipment` DROP  `arrivalPortName`;
 ALTER TABLE `import_shipment` ADD `arrivalPortId` INTEGER   COMMENT 'Puerto de llegada';
 ALTER TABLE `import_shipment` ADD INDEX `import_shipment_FI_2` (`arrivalPortId`);
