@@ -32,6 +32,10 @@
  * @method     PortQuery rightJoinSupplierPurchaseOrderItem($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SupplierPurchaseOrderItem relation
  * @method     PortQuery innerJoinSupplierPurchaseOrderItem($relationAlias = null) Adds a INNER JOIN clause to the query using the SupplierPurchaseOrderItem relation
  *
+ * @method     PortQuery leftJoinShipment($relationAlias = null) Adds a LEFT JOIN clause to the query using the Shipment relation
+ * @method     PortQuery rightJoinShipment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Shipment relation
+ * @method     PortQuery innerJoinShipment($relationAlias = null) Adds a INNER JOIN clause to the query using the Shipment relation
+ *
  * @method     Port findOne(PropelPDO $con = null) Return the first Port matching the query
  * @method     Port findOneOrCreate(PropelPDO $con = null) Return the first Port matching the query, or a new Port object populated from the query conditions when no match is found
  *
@@ -421,6 +425,70 @@ abstract class BasePortQuery extends ModelCriteria
 		return $this
 			->joinSupplierPurchaseOrderItem($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'SupplierPurchaseOrderItem', 'SupplierPurchaseOrderItemQuery');
+	}
+
+	/**
+	 * Filter the query by a related Shipment object
+	 *
+	 * @param     Shipment $shipment  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    PortQuery The current query, for fluid interface
+	 */
+	public function filterByShipment($shipment, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(PortPeer::ID, $shipment->getArrivalportid(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the Shipment relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    PortQuery The current query, for fluid interface
+	 */
+	public function joinShipment($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('Shipment');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'Shipment');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the Shipment relation Shipment object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ShipmentQuery A secondary query class using the current class as primary query
+	 */
+	public function useShipmentQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		return $this
+			->joinShipment($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'Shipment', 'ShipmentQuery');
 	}
 
 	/**

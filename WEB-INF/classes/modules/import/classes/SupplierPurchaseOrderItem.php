@@ -27,5 +27,9 @@ class SupplierPurchaseOrderItem extends BaseSupplierPurchaseOrderItem {
 		// is where any default values for this object are set.
 		parent::__construct();
 	}
+	
+	public function getVolume() {
+		return $this->getUnitLength() * $this->getUnitWidth() * $this->getUnitHeight();
+	}
 
 } // SupplierPurchaseOrderItem

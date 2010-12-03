@@ -20,22 +20,36 @@
 				<label for="supplier">Proveedor</label>
 				<span id="order_numer" title="Proveedor" >|-$supplier->getName()-|</span>
 			</p>
-			<!-- TODO: ver que mostrar acá
-			<p>
-				<label for="product">Producto</label>
-				<span id="product" value="" title="Producto" />
-			</p>
-			<p>
-				<label for="weight">Peso</label>
-				<span id="weight" value="" title="Peso" />
-			</p>
-			<p>
-				<label for="dimension">Volumen</label>
-				<span id="dimension" value="" title="Volumen" />
-			</p>															
+			
+			|-foreach from=$supplierPurchaseOrder->getSupplierPurchaseOrderItems() item=item-|
+				|-assign var=product value=$item->getProduct()-|
+				|-assign var=port value=$item->getPort()-|
+				<div id="item_|-$item->getId()-|" class="item">
+					<p>
+						<label for="product">Producto</label>
+						<span id="product" title="Producto" >|-$product->getName()-|</span>
+						<a href="#" onClick="$$('#item_|-$item->getId()-| > div.itemInfo')[0].toggle(); return false;">Ver Detalle</a>
+					</p>
+					<div class="itemInfo" style="display: none;">
+						<p>
+							<label for="weight">Peso</label>
+							<span id="weight" title="Peso" >|-$item->getUnitGrossWeigth()-|</span>
+						</p>
+						<p>
+							<label for="volume">Volumen</label>
+							<span id="volume" title="Volumen" >|-$item->getVolume()-|</span>
+						</p>	
+						<p>
+							<label for="departurePortName">Puerto de salida</label>
+							<span id="departurePortName" title="Puerto de salida">|-$port->getName()-|</span>
+						</p>														
+					</div>
+				</div>
+			|-/foreach-|
+			<!-- TODO: ver como se hace este cálculo 
 			<p>
 				<label for="estimatedRequiredContainers">Containers requeridos (estimados)</label>
-				<span id="estimatedRequiredContainers" value="" title="Containers requeridos (estimados)" />
+				<span id="estimatedRequiredContainers" title="Containers requeridos (estimados)" ></span>
 			</p>
 			-->
 			<p>
@@ -46,11 +60,12 @@
 				<label for="containersNumbers">Números de los contenedores</label>
 				<textarea name="shipment[containersNumbers]" cols="60" rows="7" wrap="virtual" id="containersNumbers" title="Números de los contenedores" >|-$shipment->getContainersNumbers()-|</textarea>
 			</p>
-			<!-- TODO: ver que mostrar acá															
+																		
 			<p>
 				<label for="estimatedFactoryDate">Fecha estimada de la conclusión de la fabricación</label>
-				<span id="estimatedFactoryDate" value="" title="Fecha estimada de la conclusión de la fabricación" />
+				<span id="estimatedFactoryDate" title="Fecha estimada de la conclusión de la fabricación" >|-$supplierPurchaseOrder->getEstimatedDeliveryDate()-|</span>
 			</p>	
+			<!-- TODO: ver que mostrar acá
 			<p>
 				<label for="factoryDate">Fecha de conclusión de fabricación</label>
 				<span id="factoryDate" value="" title="Fecha de conclusión de fabricación" />
@@ -85,15 +100,14 @@
 				<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('shipment[departureDate]', false, '|-$parameters.dateFormat.value|lower|replace:'-':''-|', '-');" title="Seleccione la fecha">
 			</p>
 			<p>
-				<label for="arrivalPortName">Puerto de llegada</label>
-				<input type="text" name="shipment[arrivalPortName]" cols="70" rows="7" wrap="virtual" id="arrivalPortName" title="Puerto de llegada" value="|-$shipment->getArrivalPortName()-|"/>
+				<label for="arrivalPort">Puerto de llegada</label>
+				<select id="arrivalPort" name="shipment[arrivalPort]" title="Puerto de llegada">
+					<option value="0">-- Selecciones uno --</option>
+					|-foreach from=$ports item=port-|
+						<option value="|-$port->getId()-|">|-$port->getName()-|</option>
+					|-/foreach-|
+				</select>
 			</p>
-			<!-- TODO: ver que mostrar acá
-			<p>
-				<label for="departurePortName">Puerto de salida</label>
-				<span id="departurePortName" title="Puerto de salida"></span>
-			</p>
-			-->
 			<p>
 				<label for="arrivalToPanamaDate">Fecha de llegada a Panama</label>
 				<input type="text" name="shipment[arrivalToPanamaDate]" cols="70" rows="7" wrap="virtual" id="arrivalToPanamaDate" title="Fecha de llegada a Panama" value="|-$shipment->getArrivalToPanamaDate()|date_format:"%d-%m-%Y"-|"/>

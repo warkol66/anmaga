@@ -1,13 +1,14 @@
 <?php
 
-class ImportShipmentsEditAction extends BaseAction {
+class ImportShipmentReleasesListAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportShipmentsEditAction() {
+	function ImportShipmentReleasesListAction() {
 		;
 	}
+
 
 
 	// ----- Public Methods ------------------------------------------------- //
@@ -36,29 +37,26 @@ class ImportShipmentsEditAction extends BaseAction {
 		$smarty =& $this->actionServer->getPlugIn($plugInKey);
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
-		}
+		}		
+	
+		$shipmentReleasesPeer = new ShipmentReleasePeer();
 
-		$shipmentPeer = new ShipmentPeer();
-		$supplierPurchaseOrderPeer = new SupplierPurchaseOrderPeer();
+		$filterValues = array('supplierId','adminStatus');
+		$shipmentReleasesPeer = $this->processFilters($shipmentReleasesPeer,$filterValues,$smarty);
 
-		if (!empty($_GET["id"])) {
-			$shipment = $shipmentPeer->get($_GET["id"]);
-		} else {
-			$shipment = new Shipment();
-			if (!empty($_GET["supplierPurchaseOrderId"])) {
-				$supplierPurchaseOrder = $supplierPurchaseOrderPeer->get($_GET["supplierPurchaseOrderId"]);
-				$shipment->setSupplierPurchaseOrder($supplierPurchaseOrder);
-			} else {
-				return $mapping->findForwardConfig('failure');
-			}
-		}
-		
-		// Preparamos los puertos
-		$ports = PortPeer::getAll();
-		$smarty->assign('ports',$ports);
-		
-		$smarty->assign('shipment',$shipment);
+		$pager = $shipmentReleasesPeer->getAllPaginatedFiltered($_GET["page"]);
 
-		return $mapping->findForwardConfig('success');	
+		$suppliers = SupplierPeer::getAll();
+	
+		$url = "Main.php?do=importShipmentReleasesList";			
+		$url = $this->addFiltersToUrl($url);
+		$smarty->assign("url",$url);
+
+		$smarty->assign("shipmentReleases",$pager->getResult());
+		$smarty->assign("suppliers",$suppliers);
+		$smarty->assign("status",$shipmentReleasesPeer->getStatusNames());
+		$smarty->assign("pager",$pager);
+
+		return $mapping->findForwardConfig('success');
 	}
 }

@@ -17,7 +17,7 @@
  * @method     ShipmentQuery orderByVesselname($order = Criteria::ASC) Order by the vesselName column
  * @method     ShipmentQuery orderByEstimateddeparturedate($order = Criteria::ASC) Order by the estimatedDepartureDate column
  * @method     ShipmentQuery orderByDeparturedate($order = Criteria::ASC) Order by the departureDate column
- * @method     ShipmentQuery orderByArrivalportname($order = Criteria::ASC) Order by the arrivalPortName column
+ * @method     ShipmentQuery orderByArrivalportid($order = Criteria::ASC) Order by the arrivalPortId column
  * @method     ShipmentQuery orderByArrivaltopanamadate($order = Criteria::ASC) Order by the arrivalToPanamaDate column
  * @method     ShipmentQuery orderByTransshipmentdate($order = Criteria::ASC) Order by the transshipmentDate column
  * @method     ShipmentQuery orderByTelexrelease($order = Criteria::ASC) Order by the telexRelease column
@@ -35,7 +35,7 @@
  * @method     ShipmentQuery groupByVesselname() Group by the vesselName column
  * @method     ShipmentQuery groupByEstimateddeparturedate() Group by the estimatedDepartureDate column
  * @method     ShipmentQuery groupByDeparturedate() Group by the departureDate column
- * @method     ShipmentQuery groupByArrivalportname() Group by the arrivalPortName column
+ * @method     ShipmentQuery groupByArrivalportid() Group by the arrivalPortId column
  * @method     ShipmentQuery groupByArrivaltopanamadate() Group by the arrivalToPanamaDate column
  * @method     ShipmentQuery groupByTransshipmentdate() Group by the transshipmentDate column
  * @method     ShipmentQuery groupByTelexrelease() Group by the telexRelease column
@@ -49,6 +49,10 @@
  * @method     ShipmentQuery leftJoinSupplierPurchaseOrder($relationAlias = null) Adds a LEFT JOIN clause to the query using the SupplierPurchaseOrder relation
  * @method     ShipmentQuery rightJoinSupplierPurchaseOrder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SupplierPurchaseOrder relation
  * @method     ShipmentQuery innerJoinSupplierPurchaseOrder($relationAlias = null) Adds a INNER JOIN clause to the query using the SupplierPurchaseOrder relation
+ *
+ * @method     ShipmentQuery leftJoinPort($relationAlias = null) Adds a LEFT JOIN clause to the query using the Port relation
+ * @method     ShipmentQuery rightJoinPort($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Port relation
+ * @method     ShipmentQuery innerJoinPort($relationAlias = null) Adds a INNER JOIN clause to the query using the Port relation
  *
  * @method     ShipmentQuery leftJoinShipmentRelease($relationAlias = null) Adds a LEFT JOIN clause to the query using the ShipmentRelease relation
  * @method     ShipmentQuery rightJoinShipmentRelease($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ShipmentRelease relation
@@ -68,7 +72,7 @@
  * @method     Shipment findOneByVesselname(string $vesselName) Return the first Shipment filtered by the vesselName column
  * @method     Shipment findOneByEstimateddeparturedate(string $estimatedDepartureDate) Return the first Shipment filtered by the estimatedDepartureDate column
  * @method     Shipment findOneByDeparturedate(string $departureDate) Return the first Shipment filtered by the departureDate column
- * @method     Shipment findOneByArrivalportname(string $arrivalPortName) Return the first Shipment filtered by the arrivalPortName column
+ * @method     Shipment findOneByArrivalportid(int $arrivalPortId) Return the first Shipment filtered by the arrivalPortId column
  * @method     Shipment findOneByArrivaltopanamadate(string $arrivalToPanamaDate) Return the first Shipment filtered by the arrivalToPanamaDate column
  * @method     Shipment findOneByTransshipmentdate(string $transshipmentDate) Return the first Shipment filtered by the transshipmentDate column
  * @method     Shipment findOneByTelexrelease(int $telexRelease) Return the first Shipment filtered by the telexRelease column
@@ -86,7 +90,7 @@
  * @method     array findByVesselname(string $vesselName) Return Shipment objects filtered by the vesselName column
  * @method     array findByEstimateddeparturedate(string $estimatedDepartureDate) Return Shipment objects filtered by the estimatedDepartureDate column
  * @method     array findByDeparturedate(string $departureDate) Return Shipment objects filtered by the departureDate column
- * @method     array findByArrivalportname(string $arrivalPortName) Return Shipment objects filtered by the arrivalPortName column
+ * @method     array findByArrivalportid(int $arrivalPortId) Return Shipment objects filtered by the arrivalPortId column
  * @method     array findByArrivaltopanamadate(string $arrivalToPanamaDate) Return Shipment objects filtered by the arrivalToPanamaDate column
  * @method     array findByTransshipmentdate(string $transshipmentDate) Return Shipment objects filtered by the transshipmentDate column
  * @method     array findByTelexrelease(int $telexRelease) Return Shipment objects filtered by the telexRelease column
@@ -511,25 +515,34 @@ abstract class BaseShipmentQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query on the arrivalPortName column
+	 * Filter the query on the arrivalPortId column
 	 * 
-	 * @param     string $arrivalportname The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     int|array $arrivalportid The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ShipmentQuery The current query, for fluid interface
 	 */
-	public function filterByArrivalportname($arrivalportname = null, $comparison = null)
+	public function filterByArrivalportid($arrivalportid = null, $comparison = null)
 	{
-		if (null === $comparison) {
-			if (is_array($arrivalportname)) {
+		if (is_array($arrivalportid)) {
+			$useMinMax = false;
+			if (isset($arrivalportid['min'])) {
+				$this->addUsingAlias(ShipmentPeer::ARRIVALPORTID, $arrivalportid['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($arrivalportid['max'])) {
+				$this->addUsingAlias(ShipmentPeer::ARRIVALPORTID, $arrivalportid['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
 				$comparison = Criteria::IN;
-			} elseif (preg_match('/[\%\*]/', $arrivalportname)) {
-				$arrivalportname = str_replace('*', '%', $arrivalportname);
-				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(ShipmentPeer::ARRIVALPORTNAME, $arrivalportname, $comparison);
+		return $this->addUsingAlias(ShipmentPeer::ARRIVALPORTID, $arrivalportid, $comparison);
 	}
 
 	/**
@@ -749,6 +762,70 @@ abstract class BaseShipmentQuery extends ModelCriteria
 		return $this
 			->joinSupplierPurchaseOrder($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'SupplierPurchaseOrder', 'SupplierPurchaseOrderQuery');
+	}
+
+	/**
+	 * Filter the query by a related Port object
+	 *
+	 * @param     Port $port  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByPort($port, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(ShipmentPeer::ARRIVALPORTID, $port->getId(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the Port relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function joinPort($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('Port');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'Port');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the Port relation Port object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    PortQuery A secondary query class using the current class as primary query
+	 */
+	public function usePortQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		return $this
+			->joinPort($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'Port', 'PortQuery');
 	}
 
 	/**

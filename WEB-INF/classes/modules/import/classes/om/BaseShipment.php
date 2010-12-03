@@ -91,10 +91,10 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	protected $departuredate;
 
 	/**
-	 * The value for the arrivalportname field.
-	 * @var        string
+	 * The value for the arrivalportid field.
+	 * @var        int
 	 */
-	protected $arrivalportname;
+	protected $arrivalportid;
 
 	/**
 	 * The value for the arrivaltopanamadate field.
@@ -130,6 +130,11 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	 * @var        SupplierPurchaseOrder
 	 */
 	protected $aSupplierPurchaseOrder;
+
+	/**
+	 * @var        Port
+	 */
+	protected $aPort;
 
 	/**
 	 * @var        array ShipmentRelease[] Collection to store aggregation of ShipmentRelease objects.
@@ -401,13 +406,13 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [arrivalportname] column value.
-	 * Nombre del puerto de llegada
-	 * @return     string
+	 * Get the [arrivalportid] column value.
+	 * Puerto de llegada
+	 * @return     int
 	 */
-	public function getArrivalportname()
+	public function getArrivalportid()
 	{
-		return $this->arrivalportname;
+		return $this->arrivalportid;
 	}
 
 	/**
@@ -942,24 +947,28 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	} // setDeparturedate()
 
 	/**
-	 * Set the value of [arrivalportname] column.
-	 * Nombre del puerto de llegada
-	 * @param      string $v new value
+	 * Set the value of [arrivalportid] column.
+	 * Puerto de llegada
+	 * @param      int $v new value
 	 * @return     Shipment The current object (for fluent API support)
 	 */
-	public function setArrivalportname($v)
+	public function setArrivalportid($v)
 	{
 		if ($v !== null) {
-			$v = (string) $v;
+			$v = (int) $v;
 		}
 
-		if ($this->arrivalportname !== $v) {
-			$this->arrivalportname = $v;
-			$this->modifiedColumns[] = ShipmentPeer::ARRIVALPORTNAME;
+		if ($this->arrivalportid !== $v) {
+			$this->arrivalportid = $v;
+			$this->modifiedColumns[] = ShipmentPeer::ARRIVALPORTID;
+		}
+
+		if ($this->aPort !== null && $this->aPort->getId() !== $v) {
+			$this->aPort = null;
 		}
 
 		return $this;
-	} // setArrivalportname()
+	} // setArrivalportid()
 
 	/**
 	 * Sets the value of [arrivaltopanamadate] column to a normalized version of the date/time value specified.
@@ -1220,7 +1229,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 			$this->vesselname = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
 			$this->estimateddeparturedate = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
 			$this->departuredate = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-			$this->arrivalportname = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->arrivalportid = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
 			$this->arrivaltopanamadate = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
 			$this->transshipmentdate = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
 			$this->telexrelease = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
@@ -1259,6 +1268,9 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 
 		if ($this->aSupplierPurchaseOrder !== null && $this->supplierpurchaseorderid !== $this->aSupplierPurchaseOrder->getId()) {
 			$this->aSupplierPurchaseOrder = null;
+		}
+		if ($this->aPort !== null && $this->arrivalportid !== $this->aPort->getId()) {
+			$this->aPort = null;
 		}
 	} // ensureConsistency
 
@@ -1300,6 +1312,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->aSupplierPurchaseOrder = null;
+			$this->aPort = null;
 			$this->collShipmentReleases = null;
 
 		} // if (deep)
@@ -1424,6 +1437,13 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 				$this->setSupplierPurchaseOrder($this->aSupplierPurchaseOrder);
 			}
 
+			if ($this->aPort !== null) {
+				if ($this->aPort->isModified() || $this->aPort->isNew()) {
+					$affectedRows += $this->aPort->save($con);
+				}
+				$this->setPort($this->aPort);
+			}
+
 			if ($this->isNew() ) {
 				$this->modifiedColumns[] = ShipmentPeer::ID;
 			}
@@ -1532,6 +1552,12 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 				}
 			}
 
+			if ($this->aPort !== null) {
+				if (!$this->aPort->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aPort->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = ShipmentPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
@@ -1613,7 +1639,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 				return $this->getDeparturedate();
 				break;
 			case 11:
-				return $this->getArrivalportname();
+				return $this->getArrivalportid();
 				break;
 			case 12:
 				return $this->getArrivaltopanamadate();
@@ -1665,7 +1691,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 			$keys[8] => $this->getVesselname(),
 			$keys[9] => $this->getEstimateddeparturedate(),
 			$keys[10] => $this->getDeparturedate(),
-			$keys[11] => $this->getArrivalportname(),
+			$keys[11] => $this->getArrivalportid(),
 			$keys[12] => $this->getArrivaltopanamadate(),
 			$keys[13] => $this->getTransshipmentdate(),
 			$keys[14] => $this->getTelexrelease(),
@@ -1675,6 +1701,9 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		if ($includeForeignObjects) {
 			if (null !== $this->aSupplierPurchaseOrder) {
 				$result['SupplierPurchaseOrder'] = $this->aSupplierPurchaseOrder->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aPort) {
+				$result['Port'] = $this->aPort->toArray($keyType, $includeLazyLoadColumns, true);
 			}
 		}
 		return $result;
@@ -1741,7 +1770,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 				$this->setDeparturedate($value);
 				break;
 			case 11:
-				$this->setArrivalportname($value);
+				$this->setArrivalportid($value);
 				break;
 			case 12:
 				$this->setArrivaltopanamadate($value);
@@ -1793,7 +1822,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		if (array_key_exists($keys[8], $arr)) $this->setVesselname($arr[$keys[8]]);
 		if (array_key_exists($keys[9], $arr)) $this->setEstimateddeparturedate($arr[$keys[9]]);
 		if (array_key_exists($keys[10], $arr)) $this->setDeparturedate($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setArrivalportname($arr[$keys[11]]);
+		if (array_key_exists($keys[11], $arr)) $this->setArrivalportid($arr[$keys[11]]);
 		if (array_key_exists($keys[12], $arr)) $this->setArrivaltopanamadate($arr[$keys[12]]);
 		if (array_key_exists($keys[13], $arr)) $this->setTransshipmentdate($arr[$keys[13]]);
 		if (array_key_exists($keys[14], $arr)) $this->setTelexrelease($arr[$keys[14]]);
@@ -1821,7 +1850,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ShipmentPeer::VESSELNAME)) $criteria->add(ShipmentPeer::VESSELNAME, $this->vesselname);
 		if ($this->isColumnModified(ShipmentPeer::ESTIMATEDDEPARTUREDATE)) $criteria->add(ShipmentPeer::ESTIMATEDDEPARTUREDATE, $this->estimateddeparturedate);
 		if ($this->isColumnModified(ShipmentPeer::DEPARTUREDATE)) $criteria->add(ShipmentPeer::DEPARTUREDATE, $this->departuredate);
-		if ($this->isColumnModified(ShipmentPeer::ARRIVALPORTNAME)) $criteria->add(ShipmentPeer::ARRIVALPORTNAME, $this->arrivalportname);
+		if ($this->isColumnModified(ShipmentPeer::ARRIVALPORTID)) $criteria->add(ShipmentPeer::ARRIVALPORTID, $this->arrivalportid);
 		if ($this->isColumnModified(ShipmentPeer::ARRIVALTOPANAMADATE)) $criteria->add(ShipmentPeer::ARRIVALTOPANAMADATE, $this->arrivaltopanamadate);
 		if ($this->isColumnModified(ShipmentPeer::TRANSSHIPMENTDATE)) $criteria->add(ShipmentPeer::TRANSSHIPMENTDATE, $this->transshipmentdate);
 		if ($this->isColumnModified(ShipmentPeer::TELEXRELEASE)) $criteria->add(ShipmentPeer::TELEXRELEASE, $this->telexrelease);
@@ -1898,7 +1927,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		$copyObj->setVesselname($this->vesselname);
 		$copyObj->setEstimateddeparturedate($this->estimateddeparturedate);
 		$copyObj->setDeparturedate($this->departuredate);
-		$copyObj->setArrivalportname($this->arrivalportname);
+		$copyObj->setArrivalportid($this->arrivalportid);
 		$copyObj->setArrivaltopanamadate($this->arrivaltopanamadate);
 		$copyObj->setTransshipmentdate($this->transshipmentdate);
 		$copyObj->setTelexrelease($this->telexrelease);
@@ -2008,6 +2037,55 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 			 */
 		}
 		return $this->aSupplierPurchaseOrder;
+	}
+
+	/**
+	 * Declares an association between this object and a Port object.
+	 *
+	 * @param      Port $v
+	 * @return     Shipment The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setPort(Port $v = null)
+	{
+		if ($v === null) {
+			$this->setArrivalportid(NULL);
+		} else {
+			$this->setArrivalportid($v->getId());
+		}
+
+		$this->aPort = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Port object, it will not be re-added.
+		if ($v !== null) {
+			$v->addShipment($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Port object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Port The associated Port object.
+	 * @throws     PropelException
+	 */
+	public function getPort(PropelPDO $con = null)
+	{
+		if ($this->aPort === null && ($this->arrivalportid !== null)) {
+			$this->aPort = PortQuery::create()->findPk($this->arrivalportid, $con);
+			/* The following can be used additionally to
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aPort->addShipments($this);
+			 */
+		}
+		return $this->aPort;
 	}
 
 	/**
@@ -2135,7 +2213,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		$this->vesselname = null;
 		$this->estimateddeparturedate = null;
 		$this->departuredate = null;
-		$this->arrivalportname = null;
+		$this->arrivalportid = null;
 		$this->arrivaltopanamadate = null;
 		$this->transshipmentdate = null;
 		$this->telexrelease = null;
@@ -2170,6 +2248,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 
 		$this->collShipmentReleases = null;
 		$this->aSupplierPurchaseOrder = null;
+		$this->aPort = null;
 	}
 
 	/**

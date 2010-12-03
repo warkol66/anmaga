@@ -414,7 +414,7 @@
 		<column name="vesselName" type="VARCHAR" size="255" description="Nombre del buque" />
 		<column name="estimatedDepartureDate" type="DATE" description="Fecha estimada de partida del buque" />
 		<column name="departureDate" type="DATE" description="Fecha de partida del buque" />
-		<column name="arrivalPortName" type="VARCHAR" size="255" description="Nombre del puerto de llegada" />
+		<column name="arrivalPortId" type="INTEGER" description="Puerto de llegada" />
 		<column name="arrivalToPanamaDate" type="DATE" description="Fecha de llegada a Panama" />
 		<column name="transshipmentDate" type="DATE" description="Fecha de transbordo" />
 		<column name="telexRelease" type="TINYINT" description="Telex release" />
@@ -423,6 +423,10 @@
 	
 		<foreign-key foreignTable="import_supplierPurchaseOrder" >
 		  <reference local="supplierPurchaseOrderId" foreign="id" />
+		</foreign-key>
+		
+		<foreign-key foreignTable="import_port" >
+		  <reference local="arrivalPortId" foreign="id" />
 		</foreign-key>
 	
 	</table>

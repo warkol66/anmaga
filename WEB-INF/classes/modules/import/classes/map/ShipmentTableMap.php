@@ -48,7 +48,7 @@ class ShipmentTableMap extends TableMap {
 		$this->addColumn('VESSELNAME', 'Vesselname', 'VARCHAR', false, 255, null);
 		$this->addColumn('ESTIMATEDDEPARTUREDATE', 'Estimateddeparturedate', 'DATE', false, null, null);
 		$this->addColumn('DEPARTUREDATE', 'Departuredate', 'DATE', false, null, null);
-		$this->addColumn('ARRIVALPORTNAME', 'Arrivalportname', 'VARCHAR', false, 255, null);
+		$this->addForeignKey('ARRIVALPORTID', 'Arrivalportid', 'INTEGER', 'import_port', 'ID', false, null, null);
 		$this->addColumn('ARRIVALTOPANAMADATE', 'Arrivaltopanamadate', 'DATE', false, null, null);
 		$this->addColumn('TRANSSHIPMENTDATE', 'Transshipmentdate', 'DATE', false, null, null);
 		$this->addColumn('TELEXRELEASE', 'Telexrelease', 'TINYINT', false, null, null);
@@ -63,6 +63,7 @@ class ShipmentTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('SupplierPurchaseOrder', 'SupplierPurchaseOrder', RelationMap::MANY_TO_ONE, array('supplierPurchaseOrderId' => 'id', ), null, null);
+    $this->addRelation('Port', 'Port', RelationMap::MANY_TO_ONE, array('arrivalPortId' => 'id', ), null, null);
     $this->addRelation('ShipmentRelease', 'ShipmentRelease', RelationMap::ONE_TO_MANY, array('id' => 'shipmentId', ), null, null);
 	} // buildRelations()
 

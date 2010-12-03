@@ -14,5 +14,32 @@
  * @package    propel.generator.import.classes
  */
 class ShipmentRelease extends BaseShipmentRelease {
-
+	const STATUS_PENDING = 1;
+	const STATUS_COMPLETE = 2;
+	
+	//nombre de los estados para los clientes
+	private $statusNames = array(
+		ShipmentRelease::STATUS_PENDING => 'Pending',
+		ShipmentRelease::STATUS_COMPLETE => 'Complete',
+	);
+	
+	public function save(PropelPDO $con = null) {
+		try {
+			if ($this->validate()) { 
+				parent::save($con);
+				return true;
+			} else {
+				return false;
+			}
+		}
+		catch (PropelException $exp) {
+			if (ConfigModule::get("global","showPropelExceptions"))
+				print_r($exp->getMessage());
+			return false;
+		}
+	}
+	
+	public function getStatusName() {
+		//TODO implementar esto
+	}
 } // ShipmentRelease

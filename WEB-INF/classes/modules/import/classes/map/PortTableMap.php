@@ -52,6 +52,7 @@ class PortTableMap extends TableMap {
     $this->addRelation('Supplier', 'Supplier', RelationMap::ONE_TO_MANY, array('id' => 'defaultPortId', ), null, null);
     $this->addRelation('SupplierQuoteItem', 'SupplierQuoteItem', RelationMap::ONE_TO_MANY, array('id' => 'portId', ), null, null);
     $this->addRelation('SupplierPurchaseOrderItem', 'SupplierPurchaseOrderItem', RelationMap::ONE_TO_MANY, array('id' => 'portId', ), null, null);
+    $this->addRelation('Shipment', 'Shipment', RelationMap::ONE_TO_MANY, array('id' => 'arrivalPortId', ), null, null);
 	} // buildRelations()
 
 } // PortTableMap
