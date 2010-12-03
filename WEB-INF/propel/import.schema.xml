@@ -289,7 +289,8 @@
 		<column name="supplierId" type="INTEGER" description="Supplier" required="true" />
 		<column name="status" type="INTEGER" description="Status de Cotizacion" required="true" />
 		<column name="timestampStatus" type="TIMESTAMP" description="Fecha del ultimo cambio de status" />
-	  	<column name="supplierQuoteId" required="true" type="INTEGER" description="id de cotizacion de proveedor relacionada" />
+  	<column name="supplierQuoteId" required="true" type="INTEGER" description="id de cotizacion de proveedor relacionada" />
+		<column name="estimatedDeliveryDate" type="DATE" description="Fecha estimada de entrega" />
 		<column name="clientQuoteId" type="INTEGER" required="true" description="id de cotizacion a cliente relacionada" />
 		<column name="affiliateId" type="INTEGER" description="Afiliado" required="true" />
 		<column name="affiliateUserId" type="INTEGER" description="usuario del afiliado si creo la cotizacion" />

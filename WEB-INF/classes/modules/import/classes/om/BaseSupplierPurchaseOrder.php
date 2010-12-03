@@ -61,6 +61,12 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	protected $supplierquoteid;
 
 	/**
+	 * The value for the estimateddeliverydate field.
+	 * @var        string
+	 */
+	protected $estimateddeliverydate;
+
+	/**
 	 * The value for the clientquoteid field.
 	 * @var        int
 	 */
@@ -262,6 +268,44 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	public function getSupplierquoteid()
 	{
 		return $this->supplierquoteid;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [estimateddeliverydate] column value.
+	 * Fecha estimada de entrega
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getEstimateddeliverydate($format = '%Y/%m/%d')
+	{
+		if ($this->estimateddeliverydate === null) {
+			return null;
+		}
+
+
+		if ($this->estimateddeliverydate === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->estimateddeliverydate);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->estimateddeliverydate, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
 	}
 
 	/**
@@ -491,6 +535,55 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 	} // setSupplierquoteid()
 
 	/**
+	 * Sets the value of [estimateddeliverydate] column to a normalized version of the date/time value specified.
+	 * Fecha estimada de entrega
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     SupplierPurchaseOrder The current object (for fluent API support)
+	 */
+	public function setEstimateddeliverydate($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->estimateddeliverydate !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->estimateddeliverydate !== null && $tmpDt = new DateTime($this->estimateddeliverydate)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->estimateddeliverydate = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = SupplierPurchaseOrderPeer::ESTIMATEDDELIVERYDATE;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setEstimateddeliverydate()
+
+	/**
 	 * Set the value of [clientquoteid] column.
 	 * id de cotizacion a cliente relacionada
 	 * @param      int $v new value
@@ -624,10 +717,11 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 			$this->status = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
 			$this->timestampstatus = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
 			$this->supplierquoteid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-			$this->clientquoteid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-			$this->affiliateid = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-			$this->affiliateuserid = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-			$this->userid = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+			$this->estimateddeliverydate = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->clientquoteid = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+			$this->affiliateid = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+			$this->affiliateuserid = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+			$this->userid = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -636,7 +730,7 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 10; // 10 = SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 11; // 11 = SupplierPurchaseOrderPeer::NUM_COLUMNS - SupplierPurchaseOrderPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating SupplierPurchaseOrder object", $e);
@@ -1139,15 +1233,18 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 				return $this->getSupplierquoteid();
 				break;
 			case 6:
-				return $this->getClientquoteid();
+				return $this->getEstimateddeliverydate();
 				break;
 			case 7:
-				return $this->getAffiliateid();
+				return $this->getClientquoteid();
 				break;
 			case 8:
-				return $this->getAffiliateuserid();
+				return $this->getAffiliateid();
 				break;
 			case 9:
+				return $this->getAffiliateuserid();
+				break;
+			case 10:
 				return $this->getUserid();
 				break;
 			default:
@@ -1180,10 +1277,11 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 			$keys[3] => $this->getStatus(),
 			$keys[4] => $this->getTimestampstatus(),
 			$keys[5] => $this->getSupplierquoteid(),
-			$keys[6] => $this->getClientquoteid(),
-			$keys[7] => $this->getAffiliateid(),
-			$keys[8] => $this->getAffiliateuserid(),
-			$keys[9] => $this->getUserid(),
+			$keys[6] => $this->getEstimateddeliverydate(),
+			$keys[7] => $this->getClientquoteid(),
+			$keys[8] => $this->getAffiliateid(),
+			$keys[9] => $this->getAffiliateuserid(),
+			$keys[10] => $this->getUserid(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aSupplierQuote) {
@@ -1254,15 +1352,18 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 				$this->setSupplierquoteid($value);
 				break;
 			case 6:
-				$this->setClientquoteid($value);
+				$this->setEstimateddeliverydate($value);
 				break;
 			case 7:
-				$this->setAffiliateid($value);
+				$this->setClientquoteid($value);
 				break;
 			case 8:
-				$this->setAffiliateuserid($value);
+				$this->setAffiliateid($value);
 				break;
 			case 9:
+				$this->setAffiliateuserid($value);
+				break;
+			case 10:
 				$this->setUserid($value);
 				break;
 		} // switch()
@@ -1295,10 +1396,11 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		if (array_key_exists($keys[3], $arr)) $this->setStatus($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setTimestampstatus($arr[$keys[4]]);
 		if (array_key_exists($keys[5], $arr)) $this->setSupplierquoteid($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setClientquoteid($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setAffiliateid($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setAffiliateuserid($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setUserid($arr[$keys[9]]);
+		if (array_key_exists($keys[6], $arr)) $this->setEstimateddeliverydate($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setClientquoteid($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setAffiliateid($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setAffiliateuserid($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setUserid($arr[$keys[10]]);
 	}
 
 	/**
@@ -1316,6 +1418,7 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::STATUS)) $criteria->add(SupplierPurchaseOrderPeer::STATUS, $this->status);
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::TIMESTAMPSTATUS)) $criteria->add(SupplierPurchaseOrderPeer::TIMESTAMPSTATUS, $this->timestampstatus);
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID)) $criteria->add(SupplierPurchaseOrderPeer::SUPPLIERQUOTEID, $this->supplierquoteid);
+		if ($this->isColumnModified(SupplierPurchaseOrderPeer::ESTIMATEDDELIVERYDATE)) $criteria->add(SupplierPurchaseOrderPeer::ESTIMATEDDELIVERYDATE, $this->estimateddeliverydate);
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::CLIENTQUOTEID)) $criteria->add(SupplierPurchaseOrderPeer::CLIENTQUOTEID, $this->clientquoteid);
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::AFFILIATEID)) $criteria->add(SupplierPurchaseOrderPeer::AFFILIATEID, $this->affiliateid);
 		if ($this->isColumnModified(SupplierPurchaseOrderPeer::AFFILIATEUSERID)) $criteria->add(SupplierPurchaseOrderPeer::AFFILIATEUSERID, $this->affiliateuserid);
@@ -1386,6 +1489,7 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		$copyObj->setStatus($this->status);
 		$copyObj->setTimestampstatus($this->timestampstatus);
 		$copyObj->setSupplierquoteid($this->supplierquoteid);
+		$copyObj->setEstimateddeliverydate($this->estimateddeliverydate);
 		$copyObj->setClientquoteid($this->clientquoteid);
 		$copyObj->setAffiliateid($this->affiliateid);
 		$copyObj->setAffiliateuserid($this->affiliateuserid);
@@ -2306,6 +2410,7 @@ abstract class BaseSupplierPurchaseOrder extends BaseObject  implements Persiste
 		$this->status = null;
 		$this->timestampstatus = null;
 		$this->supplierquoteid = null;
+		$this->estimateddeliverydate = null;
 		$this->clientquoteid = null;
 		$this->affiliateid = null;
 		$this->affiliateuserid = null;
