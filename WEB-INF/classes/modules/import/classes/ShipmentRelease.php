@@ -39,7 +39,18 @@ class ShipmentRelease extends BaseShipmentRelease {
 		}
 	}
 	
+	public function isComplete() {
+		$arrivalToStorehouseTimestamp = $this->getArrivalToStorehouseTimestamp('U');
+		$currentTimestamp = time();
+		if (!empty($arrivalToStorehouseTimestamp))
+			return $arrivalToStorehouseTimestamp <= $currentTimestamp;
+		return false;
+	}
+	
 	public function getStatusName() {
-		//TODO implementar esto
+		if ($this->isComplete())
+			return $this->statusNames[ShipmentRelease::STATUS_COMPLETE];
+		
+		return $this->statusNames[ShipmentRelease::STATUS_PENDING];
 	}
 } // ShipmentRelease
