@@ -7,20 +7,20 @@
 		<div class="successMessage">Se ha guardado el comentario de seguimiento exitosamente.</div>
 	|-/if-|
 </div>
-<!-- Falta implementar para que funcione esto
+
 <div id="div_filters">
 	<form action="Main.php" method="get">
 		<fieldset>
 		<p>
-			<label for="filters[supplierId]">Proveedor</label>
-			<select name="filters[supplierId]">
+			<label for="filters[searchSupplierId]">Proveedor</label>
+			<select name="filters[searchSupplierId]">
 					<option value="">Seleccione Un Proveedor</option>
 				|-foreach from=$suppliers item=supplier name=for_suppliers-|
-					<option value="|-$supplier->getId()-|" |-if $filters neq '' and $filters.supplierId eq $supplier->getId() -|selected="selected"|-/if-|>|-$supplier->getName()-|</option>
+					<option value="|-$supplier->getId()-|" |-if $filters neq '' and $filters.searchSupplierId eq $supplier->getId() -|selected="selected"|-/if-|>|-$supplier->getName()-|</option>
 				|-/foreach-|
 			</select>
 		</p>
-		
+		<!-- Falta implementar para que funcione esto
 		<p>
 			<label for="filters[adminStatus]">Estado</label>
 			<select name="filters[adminStatus]">
@@ -30,14 +30,15 @@
 				|-/foreach-|
 			</select>
 		</p> 
+		-->
 		<p>
-			<input type="hidden" name="do" value="importShipmentsList" />
+			<input type="hidden" name="do" value="importShipmentReleasesList" />
 			<input type="submit" value="Aplicar Filtro"/>
 		</p>
 		</fieldset>
 	</form>
 </div>
--->
+
 
 <div id="div_orders">
 	<table cellpadding="4" cellspacing="0" class="tableTdBorders" id="table-shipments">
