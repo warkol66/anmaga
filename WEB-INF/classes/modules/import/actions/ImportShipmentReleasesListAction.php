@@ -41,7 +41,7 @@ class ImportShipmentReleasesListAction extends BaseAction {
 	
 		$shipmentReleasesPeer = new ShipmentReleasePeer();
 
-		$filterValues = array('supplierId','adminStatus');
+		$filterValues = array('searchSupplierId','searchStatus');
 		$shipmentReleasesPeer = $this->processFilters($shipmentReleasesPeer,$filterValues,$smarty);
 
 		$pager = $shipmentReleasesPeer->getAllPaginatedFiltered($_GET["page"]);

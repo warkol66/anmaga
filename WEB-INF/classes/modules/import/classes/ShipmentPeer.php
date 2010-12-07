@@ -113,10 +113,10 @@ class ShipmentPeer extends BaseShipmentPeer {
    * @return Criteria instancia de criteria
    */
   private function getFilterCriteria() {
-	$criteria = New Criteria();
+	$criteria = new ShipmentQuery();
 
 	if (!empty($this->searchSupplierId)) {
-		$criteria->add(ShipmentPeer::SUPPLIERID,$this->searchSupplierId);
+		$criteria->filterBySupplierId($this->searchSupplierId);
 	}
 	
 	if (!empty($this->searchStatus)) {
@@ -143,5 +143,4 @@ class ShipmentPeer extends BaseShipmentPeer {
     $pager = new PropelPager($cond,"ShipmentPeer", "doSelect",$page,$perPage);
     return $pager;
    }
-
 } // ShipmentPeer

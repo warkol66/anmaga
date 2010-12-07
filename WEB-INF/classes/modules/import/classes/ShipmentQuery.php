@@ -14,5 +14,11 @@
  * @package    propel.generator.import.classes
  */
 class ShipmentQuery extends BaseShipmentQuery {
-
+	public function filterBySupplierId($supplierId = null, $comparison = null)
+	{
+		return $this->join('SupplierPurchaseOrder')
+				 ->useQuery('SupplierPurchaseOrder')
+				 	->filterBySupplierId($supplierId, $comparison)
+				 ->endUse();
+	}
 } // ShipmentQuery

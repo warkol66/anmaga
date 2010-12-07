@@ -12,11 +12,11 @@
 	<form action="Main.php" method="get">
 		<fieldset>
 		<p>
-			<label for="filters[supplierId]">Proveedor</label>
-			<select name="filters[supplierId]">
+			<label for="filters[searchSupplierId]">Proveedor</label>
+			<select name="filters[searchSupplierId]">
 					<option value="">Seleccione Un Proveedor</option>
 				|-foreach from=$suppliers item=supplier name=for_suppliers-|
-					<option value="|-$supplier->getId()-|" |-if $filters neq '' and $filters.supplierId eq $supplier->getId() -|selected="selected"|-/if-|>|-$supplier->getName()-|</option>
+					<option value="|-$supplier->getId()-|" |-if $filters neq '' and $filters.searchSupplierId eq $supplier->getId() -|selected="selected"|-/if-|>|-$supplier->getName()-|</option>
 				|-/foreach-|
 			</select>
 		</p>

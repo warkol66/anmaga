@@ -112,10 +112,10 @@ class ShipmentReleasePeer extends BaseShipmentReleasePeer {
    * @return Criteria instancia de criteria
    */
   private function getFilterCriteria() {
-	$criteria = New Criteria();
+	$criteria = new ShipmentReleaseQuery();
 
 	if (!empty($this->searchSupplierId)) {
-		$criteria->add(ShipmentReleasePeer::SUPPLIERID,$this->searchSupplierId);
+		$criteria->filterBySupplierId($this->searchSupplierId);
 	}
 	
 	if (!empty($this->searchStatus)) {
@@ -141,6 +141,6 @@ class ShipmentReleasePeer extends BaseShipmentReleasePeer {
     $cond = $this->getFilterCriteria();   
     $pager = new PropelPager($cond,"ShipmentReleasePeer", "doSelect",$page,$perPage);
     return $pager;
-   }
+  }
 	
 } // ShipmentReleasePeer
