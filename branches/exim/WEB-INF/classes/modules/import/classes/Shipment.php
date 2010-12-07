@@ -42,8 +42,30 @@ class Shipment extends BaseShipment {
 		}
 	}
 	
+	public function isArrived() {
+		$arrivalTimestamp = $this->getArrivalDate('U');
+		$currentTimestamp = time();
+		if (!empty($arrivalTimestamp))
+			return $arrivalTimestamp <= $currentTimestamp;
+		return false;		
+	}
+	
+	public function isOnRoute() {
+		$shipmentTimestamp = $this->getShipmentDate('U');
+		$currentTimestamp = time();
+		if (!empty($shipmentTimestamp))
+			return $shipmentTimestamp <= $currentTimestamp;
+		return false;
+	}
+	
 	public function getStatusName() {
-		//TODO implementar esto
+		if ($this->isArrived())
+			return $this->statusNames[Shipment::STATUS_ARRIVED];
+			
+		if ($this->isOnRoute())
+			return $this->statusNames[Shipment::STATUS_ON_ROUTE];
+			
+		return $this->statusNames[Shipment::STATUS_WAITING_FOR_TRANSPORT];
 	}
 
 } // Shipment

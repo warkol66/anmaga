@@ -98,7 +98,7 @@
 
 			<p>
 				<label for="arrivalToStorehouseTimestamp">Fecha y hora de llegada del container al almacen</label>
-				<input type="text" name="shipmentRelease[arrivalToStorehouseTimestamp]" cols="70" rows="7" wrap="virtual" id="arrivalToStorehouseTimestamp" title="Fecha y hora de llegada del container al almacen" value="|-$shipmentRelease->getArrivalToStorehouseTimestamp()|date_format:"%d-%m-%Y"-|"/>
+				<input type="text" name="shipmentRelease[arrivalToStorehouseTimestamp]" cols="70" rows="7" wrap="virtual" id="arrivalToStorehouseTimestamp" title="Fecha y hora de llegada del container al almacen" value="|-$shipmentRelease->getArrivalToStorehouseTimestamp()|date_format:"%d-%m-%Y %T"-|"/>
 				<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('shipmentRelease[arrivalToStorehouseTimestamp]', false, '|-$parameters.dateFormat.value|lower|replace:'-':''-|', '-');" title="Seleccione la fecha">
 			</p>
 			<p>
