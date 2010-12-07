@@ -1,11 +1,11 @@
 <?php
 
-class ImportShipmentsEditAction extends BaseAction {
+class ImportShipmentReleasesEditAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function ImportShipmentsEditAction() {
+	function ImportShipmentReleasesEditAction() {
 		;
 	}
 
@@ -38,27 +38,23 @@ class ImportShipmentsEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
+		$shipmentReleasePeer = new ShipmentReleasePeer();
 		$shipmentPeer = new ShipmentPeer();
-		$supplierPurchaseOrderPeer = new SupplierPurchaseOrderPeer();
 
 		if (!empty($_GET["id"])) {
-			$shipment = $shipmentPeer->get($_GET["id"]);
+			$shipmentRelease = $shipmentReleasePeer->get($_GET["id"]);
 			$smarty->assign('action', 'edit');
 		} else {
-			$shipment = new Shipment();
-			if (!empty($_GET["supplierPurchaseOrderId"])) {
-				$supplierPurchaseOrder = $supplierPurchaseOrderPeer->get($_GET["supplierPurchaseOrderId"]);
-				$shipment->setSupplierPurchaseOrder($supplierPurchaseOrder);
+			$shipmentRelease = new ShipmentRelease();
+			if (!empty($_GET["shipmentId"])) {
+				$shipment = $shipmentPeer->get($_GET["shipmentId"]);
+				$shipmentRelease->setShipment($shipment);
 			} else {
 				return $mapping->findForwardConfig('failure');
 			}
 		}
 		
-		// Preparamos los puertos
-		$ports = PortPeer::getAll();
-		$smarty->assign('ports',$ports);
-		
-		$smarty->assign('shipment',$shipment);
+		$smarty->assign('shipmentRelease',$shipmentRelease);
 
 		return $mapping->findForwardConfig('success');	
 	}

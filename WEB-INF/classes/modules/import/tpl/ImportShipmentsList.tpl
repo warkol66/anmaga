@@ -90,6 +90,11 @@
 						<input type="hidden" name="id" value="|-$shipment->getid()-|" />
 						<input type="submit" name="submit_go_delete_shipment" value="Eliminar" class="buttonImageDelete" title="Eliminar" alt="Eliminar" onClick="return confirm('¿Está seguro que desea eliminar la información de embarque?');" />
 					</form>
+					<form action="Main.php" method="get">						
+						<input type="hidden" name="do" value="importShipmentReleasesEdit" />
+						<input type="hidden" name="shipmentId" value="|-$shipment->getid()-|" />
+						<input type="submit" name="submit_go_edit_shipment_release" value="Crear información de nacionalización" class="buttonImageEdit" title="Crear información de nacionalización" alt="Crear información de nacionalización" />
+					</form>
 				</td>
 			</tr>
 		|-/foreach-|						

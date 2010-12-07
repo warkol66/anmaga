@@ -57,7 +57,7 @@
 			</tr>
 		</thead>
 		<tbody>
-		|-foreach from=$shipmentReleaseReleases item=shipmentRelease name=for_orders-|
+		|-foreach from=$shipmentReleases item=shipmentRelease name=for_orders-|
 			|-assign var=shipment value=$shipmentRelease->getShipment()-|
 			|-assign var=supplierPurchaseOrder value=$shipment->getSupplierPurchaseOrder()-|
 			<tr valign="top">
@@ -79,7 +79,7 @@
 					|-$shipment->getContainersRealCount()-|
 				</td>
 				<td>
-					|-$shipment->getContainersNumber()-|
+					|-$shipment->getContainersNumbers()-|
 				</td>
 				<td>|-$shipmentRelease->getStatusName()|multilang_get_translation:"import"-|</td>
 				<td nowrap="nowrap">

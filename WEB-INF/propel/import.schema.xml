@@ -446,7 +446,7 @@
 		<column name="arrivalToStorehouseTimestamp" type="TIMESTAMP" description="Fecha y hora de llegada del container al almacen" />
 		<column name="containterReceiptOnStorehouseDate" type="DATE" description="Recepcion del container en almacen" />
 
-		<foreign-key foreignTable="import_shipment" >
+		<foreign-key foreignTable="import_shipment" onDelete="CASCADE">
 		  <reference local="shipmentId" foreign="id" />
 		</foreign-key>
 
