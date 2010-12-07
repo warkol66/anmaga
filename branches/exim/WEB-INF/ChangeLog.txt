@@ -1,4 +1,13 @@
 -- =============================
+-- Revisión 595 - Fecha 20101207
+-- -----------------------------
+ALTER TABLE `import_shipmentRelease` DROP INDEX `import_shipmentRelease_FI_1`;
+ALTER TABLE `import_shipmentRelease` ADD INDEX `import_shipmentRelease_FI_1` (`shipmentId`);
+ALTER TABLE `import_shipmentRelease` ADD CONSTRAINT `import_shipmentRelease_FK_1`
+		FOREIGN KEY (`shipmentId`)
+		REFERENCES `import_shipment` (`id`)
+		ON DELETE CASCADE;
+-- =============================
 -- Revisión 593 - Fecha 20101203
 -- -----------------------------
 ALTER TABLE  `import_shipment` DROP  `arrivalPortName`;

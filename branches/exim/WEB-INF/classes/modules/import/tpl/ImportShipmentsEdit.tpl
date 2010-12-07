@@ -6,10 +6,10 @@
 		|-if $message eq "error"-|
 			<div class="failureMessage">Ha ocurrido un error al intentar guardar el embarque</div>
 		|-/if-|
-		<p>|-if $action eq 'edit'-|Modifique los datos del Embarque y haga click en "Aceptar" para guardar el cambio|-else-|Ingrese los datos del Embarque y haga click en "Aceptar" para guardar el cambio|-/if-|.
+		<p>|-if $action eq 'edit'-|Modifique los datos del Embarque y haga click en "Aceptar" para guardar el cambio|-else-|Ingrese los datos del Embarque y haga click en "Aceptar"|-/if-|.
 		</p>
 		<fieldset title="Formulario de edición de datos de un embarque">
-		<legend>Embarques</legend>
+		<legend>Embarque</legend>
 			|-assign var=supplierPurchaseOrder value=$shipment->getSupplierPurchaseOrder()-|
 			|-assign var=supplier value=$supplierPurchaseOrder->getSupplier()-|
 			<p>

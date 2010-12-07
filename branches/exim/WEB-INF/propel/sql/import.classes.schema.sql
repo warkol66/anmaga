@@ -621,6 +621,7 @@ CREATE TABLE `import_shipmentRelease`
 	CONSTRAINT `import_shipmentRelease_FK_1`
 		FOREIGN KEY (`shipmentId`)
 		REFERENCES `import_shipment` (`id`)
+		ON DELETE CASCADE
 ) ENGINE=MyISAM COMMENT='Datos de nacionalizacion';
 
 # This restores the fkey checks, after having unset them earlier

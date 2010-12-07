@@ -58,7 +58,7 @@ class ShipmentReleaseTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('Shipment', 'Shipment', RelationMap::MANY_TO_ONE, array('shipmentId' => 'id', ), null, null);
+    $this->addRelation('Shipment', 'Shipment', RelationMap::MANY_TO_ONE, array('shipmentId' => 'id', ), 'CASCADE', null);
 	} // buildRelations()
 
 } // ShipmentReleaseTableMap
