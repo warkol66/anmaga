@@ -1,9 +1,4 @@
 <?php
-// The parent class
-require_once 'users/classes/om/BaseLevelPeer.php';
-
-// The object class
-include_once 'Level.php';
 
 /** 
  *

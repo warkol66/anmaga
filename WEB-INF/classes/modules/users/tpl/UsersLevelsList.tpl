@@ -1,4 +1,4 @@
-<h2>##40,Configuración del Sistema##</h2>
+<h2>##common,18,Configuración del Sistema##</h2>
 <h1>Administración de Niveles de Usuarios</h1>
 <!-- Link VOLVER -->
 <!-- /Link VOLVER -->
@@ -23,7 +23,7 @@
 	<input type='hidden' name='id' value='|-$currentLevel->getId()-|' />
 	<p>##187,Editar nombre del Nivel ##</p>
 	<p><label for="name">##196,Nombre##</label>
-			<input name='name' type='text'  class='textodato' value='|-$currentLevel->getName()-|' size="45" />
+			<input name='name' type='text' value='|-$currentLevel->getName()-|' size="45" />
 		</p>
 		<p><input type="hidden" name="accion" value="edicion" />
 				<input type='submit' name='guardar' value='##97,Guardar##'  class='button' />

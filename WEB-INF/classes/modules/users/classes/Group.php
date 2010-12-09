@@ -1,7 +1,4 @@
 <?php
-require_once 'users/classes/om/BaseGroup.php';
-
-require_once("CategoryPeer.php");
 
 /** 
  *

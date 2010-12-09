@@ -1,15 +1,22 @@
 <?php
-// The parent class
-require_once 'users/classes/om/BaseUserGroupPeer.php';
-
-// The object class
-include_once 'UserGroup.php';
-
-/** 
+ 
+/**
  *
  * @package    users
- * @subpackage groups 
+ * @subpackage groups
  */
+
 class UserGroupPeer extends BaseUserGroupPeer {
+
+	/**
+	* Obtiene la informacion de un grupo.
+	*
+	* @param int $id Id del grupo
+	* @return array Grupo
+	*/
+	function get($id){
+		$group = GroupPeer::retrieveByPK($id);
+		return $group;
+	}
 
 }

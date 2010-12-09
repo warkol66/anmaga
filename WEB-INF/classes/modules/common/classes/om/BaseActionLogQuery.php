@@ -7,8 +7,8 @@
  * logs de acciones del sistema
  *
  * @method     ActionLogQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ActionLogQuery orderByObjecttype($order = Criteria::ASC) Order by the objectType column
- * @method     ActionLogQuery orderByObjectid($order = Criteria::ASC) Order by the objectId column
+ * @method     ActionLogQuery orderByUserobjecttype($order = Criteria::ASC) Order by the userObjectType column
+ * @method     ActionLogQuery orderByUserobjectid($order = Criteria::ASC) Order by the userObjectId column
  * @method     ActionLogQuery orderByUserid($order = Criteria::ASC) Order by the userId column
  * @method     ActionLogQuery orderByAffiliateid($order = Criteria::ASC) Order by the affiliateId column
  * @method     ActionLogQuery orderByDatetime($order = Criteria::ASC) Order by the datetime column
@@ -17,8 +17,8 @@
  * @method     ActionLogQuery orderByForward($order = Criteria::ASC) Order by the forward column
  *
  * @method     ActionLogQuery groupById() Group by the id column
- * @method     ActionLogQuery groupByObjecttype() Group by the objectType column
- * @method     ActionLogQuery groupByObjectid() Group by the objectId column
+ * @method     ActionLogQuery groupByUserobjecttype() Group by the userObjectType column
+ * @method     ActionLogQuery groupByUserobjectid() Group by the userObjectId column
  * @method     ActionLogQuery groupByUserid() Group by the userId column
  * @method     ActionLogQuery groupByAffiliateid() Group by the affiliateId column
  * @method     ActionLogQuery groupByDatetime() Group by the datetime column
@@ -42,8 +42,8 @@
  * @method     ActionLog findOneOrCreate(PropelPDO $con = null) Return the first ActionLog matching the query, or a new ActionLog object populated from the query conditions when no match is found
  *
  * @method     ActionLog findOneById(int $id) Return the first ActionLog filtered by the id column
- * @method     ActionLog findOneByObjecttype(string $objectType) Return the first ActionLog filtered by the objectType column
- * @method     ActionLog findOneByObjectid(int $objectId) Return the first ActionLog filtered by the objectId column
+ * @method     ActionLog findOneByUserobjecttype(string $userObjectType) Return the first ActionLog filtered by the userObjectType column
+ * @method     ActionLog findOneByUserobjectid(int $userObjectId) Return the first ActionLog filtered by the userObjectId column
  * @method     ActionLog findOneByUserid(int $userId) Return the first ActionLog filtered by the userId column
  * @method     ActionLog findOneByAffiliateid(int $affiliateId) Return the first ActionLog filtered by the affiliateId column
  * @method     ActionLog findOneByDatetime(string $datetime) Return the first ActionLog filtered by the datetime column
@@ -52,8 +52,8 @@
  * @method     ActionLog findOneByForward(string $forward) Return the first ActionLog filtered by the forward column
  *
  * @method     array findById(int $id) Return ActionLog objects filtered by the id column
- * @method     array findByObjecttype(string $objectType) Return ActionLog objects filtered by the objectType column
- * @method     array findByObjectid(int $objectId) Return ActionLog objects filtered by the objectId column
+ * @method     array findByUserobjecttype(string $userObjectType) Return ActionLog objects filtered by the userObjectType column
+ * @method     array findByUserobjectid(int $userObjectId) Return ActionLog objects filtered by the userObjectId column
  * @method     array findByUserid(int $userId) Return ActionLog objects filtered by the userId column
  * @method     array findByAffiliateid(int $affiliateId) Return ActionLog objects filtered by the affiliateId column
  * @method     array findByDatetime(string $datetime) Return ActionLog objects filtered by the datetime column
@@ -187,46 +187,46 @@ abstract class BaseActionLogQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query on the objectType column
+	 * Filter the query on the userObjectType column
 	 * 
-	 * @param     string $objecttype The value to use as filter.
+	 * @param     string $userobjecttype The value to use as filter.
 	 *            Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ActionLogQuery The current query, for fluid interface
 	 */
-	public function filterByObjecttype($objecttype = null, $comparison = null)
+	public function filterByUserobjecttype($userobjecttype = null, $comparison = null)
 	{
 		if (null === $comparison) {
-			if (is_array($objecttype)) {
+			if (is_array($userobjecttype)) {
 				$comparison = Criteria::IN;
-			} elseif (preg_match('/[\%\*]/', $objecttype)) {
-				$objecttype = str_replace('*', '%', $objecttype);
+			} elseif (preg_match('/[\%\*]/', $userobjecttype)) {
+				$userobjecttype = str_replace('*', '%', $userobjecttype);
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(ActionLogPeer::OBJECTTYPE, $objecttype, $comparison);
+		return $this->addUsingAlias(ActionLogPeer::USEROBJECTTYPE, $userobjecttype, $comparison);
 	}
 
 	/**
-	 * Filter the query on the objectId column
+	 * Filter the query on the userObjectId column
 	 * 
-	 * @param     int|array $objectid The value to use as filter.
+	 * @param     int|array $userobjectid The value to use as filter.
 	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ActionLogQuery The current query, for fluid interface
 	 */
-	public function filterByObjectid($objectid = null, $comparison = null)
+	public function filterByUserobjectid($userobjectid = null, $comparison = null)
 	{
-		if (is_array($objectid)) {
+		if (is_array($userobjectid)) {
 			$useMinMax = false;
-			if (isset($objectid['min'])) {
-				$this->addUsingAlias(ActionLogPeer::OBJECTID, $objectid['min'], Criteria::GREATER_EQUAL);
+			if (isset($userobjectid['min'])) {
+				$this->addUsingAlias(ActionLogPeer::USEROBJECTID, $userobjectid['min'], Criteria::GREATER_EQUAL);
 				$useMinMax = true;
 			}
-			if (isset($objectid['max'])) {
-				$this->addUsingAlias(ActionLogPeer::OBJECTID, $objectid['max'], Criteria::LESS_EQUAL);
+			if (isset($userobjectid['max'])) {
+				$this->addUsingAlias(ActionLogPeer::USEROBJECTID, $userobjectid['max'], Criteria::LESS_EQUAL);
 				$useMinMax = true;
 			}
 			if ($useMinMax) {
@@ -236,7 +236,7 @@ abstract class BaseActionLogQuery extends ModelCriteria
 				$comparison = Criteria::IN;
 			}
 		}
-		return $this->addUsingAlias(ActionLogPeer::OBJECTID, $objectid, $comparison);
+		return $this->addUsingAlias(ActionLogPeer::USEROBJECTID, $userobjectid, $comparison);
 	}
 
 	/**

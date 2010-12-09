@@ -51,6 +51,7 @@ class ModuleTableMap extends TableMap {
 	{
     $this->addRelation('ModuleDependency', 'ModuleDependency', RelationMap::ONE_TO_MANY, array('name' => 'moduleName', ), 'CASCADE', null);
     $this->addRelation('ModuleLabel', 'ModuleLabel', RelationMap::ONE_TO_MANY, array('name' => 'name', ), 'CASCADE', null);
+    $this->addRelation('ModuleEntity', 'ModuleEntity', RelationMap::ONE_TO_MANY, array('name' => 'moduleName', ), null, null);
     $this->addRelation('MultilangText', 'MultilangText', RelationMap::ONE_TO_MANY, array('name' => 'moduleName', ), null, null);
 	} // buildRelations()
 

@@ -32,7 +32,7 @@
 			<th scope="row">
 				|-$moduleSelected->getModule()-|
 			</th> 
-			<td class="celldato">
+			<td>
 				<input type="checkbox" name="access" value="1"|-if $moduleSelected->getAccessRegistrationUser() eq "1"-| checked="checked"|-/if-| />
 			</td>
 		</tr>		

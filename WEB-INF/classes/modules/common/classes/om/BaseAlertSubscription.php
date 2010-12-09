@@ -14,7 +14,7 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'AlertSubscriptionPeer';
+	const PEER = 'AlertSubscriptionPeer';
 
 	/**
 	 * The Peer class.
@@ -450,6 +450,7 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 			$this->aModuleEntityFieldRelatedByEntitynamefielduniquename = null;
 			$this->collAlertSubscriptionUsers = null;
 
+			$this->collUsers = null;
 		} // if (deep)
 	}
 
@@ -471,7 +472,7 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(AlertSubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -513,7 +514,7 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(AlertSubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -787,7 +788,7 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -1080,11 +1081,11 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 		if ($this->aModuleEntity === null && (($this->entityname !== "" && $this->entityname !== null))) {
 			$this->aModuleEntity = ModuleEntityQuery::create()->findPk($this->entityname, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aModuleEntity->addAlertSubscriptions($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aModuleEntity->addAlertSubscriptions($this);
 			 */
 		}
 		return $this->aModuleEntity;
@@ -1129,11 +1130,11 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 		if ($this->aModuleEntityFieldRelatedByEntityfielduniquename === null && (($this->entityfielduniquename !== "" && $this->entityfielduniquename !== null))) {
 			$this->aModuleEntityFieldRelatedByEntityfielduniquename = ModuleEntityFieldQuery::create()->findPk($this->entityfielduniquename, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aModuleEntityFieldRelatedByEntityfielduniquename->addAlertSubscriptionsRelatedByEntityfielduniquename($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aModuleEntityFieldRelatedByEntityfielduniquename->addAlertSubscriptionsRelatedByEntityfielduniquename($this);
 			 */
 		}
 		return $this->aModuleEntityFieldRelatedByEntityfielduniquename;
@@ -1178,11 +1179,11 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 		if ($this->aModuleEntityFieldRelatedByEntitynamefielduniquename === null && (($this->entitynamefielduniquename !== "" && $this->entitynamefielduniquename !== null))) {
 			$this->aModuleEntityFieldRelatedByEntitynamefielduniquename = ModuleEntityFieldQuery::create()->findPk($this->entitynamefielduniquename, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aModuleEntityFieldRelatedByEntitynamefielduniquename->addAlertSubscriptionsRelatedByEntitynamefielduniquename($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aModuleEntityFieldRelatedByEntitynamefielduniquename->addAlertSubscriptionsRelatedByEntitynamefielduniquename($this);
 			 */
 		}
 		return $this->aModuleEntityFieldRelatedByEntitynamefielduniquename;
@@ -1430,7 +1431,7 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 			$alertSubscriptionUser = new AlertSubscriptionUser();
 			$alertSubscriptionUser->setUser($user);
 			$this->addAlertSubscriptionUser($alertSubscriptionUser);
-			
+
 			$this->collUsers[]= $user;
 		}
 	}

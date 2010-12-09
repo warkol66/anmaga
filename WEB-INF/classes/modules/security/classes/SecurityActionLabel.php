@@ -1,6 +1,7 @@
 <?php
 
-require_once 'om/BaseSecurityActionLabel.php';
+  // include base peer class
+  require_once 'security/classes/om/BaseSecurityActionLabel.php';
 
 
 /**
@@ -14,16 +15,15 @@ class SecurityActionLabel extends BaseSecurityActionLabel {
 
 	function getSQLInsert() {
 
-		$query = "INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('" . $this->getAction() . "', '" . $this->getLabel() . "', '" . $this->getLanguage() . "');";
+		$sql = "INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('" . $this->getAction() . "', '" . $this->getLabel() . "', '" . $this->getLanguage() . "');";
 
-		return $query;
+		return $sql;
 	}	
 
-	function getSQLCleanup($module) {
-
-		$query = "DELETE FROM `security_actionLabel` WHERE `action` LIKE '" . ucfirst($module) . "%' and `language` = '" . $this->getLanguage() . "';";
-
-		return $query;
+	function getSQLCleanup($module,$languageCode) {
+		$sql = "DELETE FROM `security_actionLabel` WHERE `action` LIKE '" . ucfirst($module) . "%' AND `language` = '" . $languageCode . "';\n";
+		$sql .= "OPTIMIZE TABLE `security_actionLabel`;";
+		return $sql;
 	}	
 
 } // SecurityActionLabel

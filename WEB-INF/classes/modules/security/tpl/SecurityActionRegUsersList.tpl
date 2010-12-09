@@ -36,7 +36,7 @@
 				<input type="hidden" name="actions[]" value="|-$action->getAction()-|" />
 			</th> 
 			<td>|-$action->getLabel()-|</td>
-			<td class="celldato">
+			<td>
 				<input type="checkbox" name="access[|-$action->getAction()-|]" value="1"|-if $action->getAccessRegistrationUser() eq "1"-| checked="checked"|-/if-| />
 			</td>
 		</tr>		

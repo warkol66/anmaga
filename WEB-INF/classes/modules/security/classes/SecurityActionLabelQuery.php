@@ -1,7 +1,6 @@
 <?php
 
 
-
 /**
  * Skeleton subclass for performing query and update operations on the 'security_actionLabel' table.
  *
@@ -14,5 +13,25 @@
  * @package    propel.generator.security.classes
  */
 class SecurityActionLabelQuery extends BaseSecurityActionLabelQuery {
+
+	/**
+	 * Returns a new SecurityActionLabelQuery object.
+	 *
+	 * @param     string $modelAlias The alias of a model in the query
+	 * @param     Criteria $criteria Optional Criteria to build the query from
+	 *
+	 * @return    SecurityActionLabelQuery
+	 */
+	public static function create($modelAlias = null, $criteria = null)
+	{
+		if ($criteria instanceof SecurityActionLabelQuery) {
+			return $criteria;
+		}
+		$query = new self('application', 'SecurityActionLabel', $modelAlias);
+		if ($criteria instanceof Criteria) {
+			$query->mergeWith($criteria);
+		}
+		return $query;
+	}
 
 } // SecurityActionLabelQuery

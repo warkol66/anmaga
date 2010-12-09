@@ -1,14 +1,9 @@
 <?php
-/** 
+/**
  * UsersListAction
  *
- * @package users 
+ * @package users
  */
-
-require_once("BaseAction.php");
-require_once("UserPeer.php");
-require_once("UserInfoPeer.php");
-require_once("UserGroupPeer.php");
 
 class UsersDoEditAction extends BaseAction {
 
@@ -18,7 +13,7 @@ class UsersDoEditAction extends BaseAction {
 
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -31,52 +26,68 @@ class UsersDoEditAction extends BaseAction {
 
 		$module = "Users";
 
-    $userPeer = new UserPeer();
+		if ($_POST["page"] > 0)
+			$params["page"] = $_POST["page"];
 
-		if ( $_POST["accion"] == "edit" ) {
+		if (!empty($_POST["filters"]))
+			$filters = $_POST["filters"];
+
+		if ($_POST["accion"] == "edit" && !empty($_POST["id"])) {
 			//estoy editando un usuario existente
+			$params["id"] = $_POST["id"];
 
-			if ( $_POST["pass"] == $_POST["pass2"] ) {
+			if ($_POST["pass"] == $_POST["pass2"]) {
 
-				if ( $userPeer->update($_POST["id"],$_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"],$_POST['timezone']) ) {
-					
-					Common::doLog('success','username: ' . $_POST["username"] . ' action: edit');
-  	    			return $mapping->findForwardConfig('success');
-  	    		}
-				else {
-					header("Location: Main.php?do=usersList&user=".$_POST["id"]."&message=errorUpdate");
-					exit;
+				$userObj = UserPeer::get($_POST["id"]);
+				$userObj = Common::setObjectFromParams($userObj,$_POST["userParams"]);
+
+				if(!empty($_POST["pass"])) {
+					$userObj->setPasswordString($_POST["pass"]);
+					$userObj->setPasswordUpdatedTime();
 				}
+				if ($userObj->save()) {
+					$logSufix = ', ' . Common::getTranslation("action: edit","common");
+					Common::doLog('success','username: ' . $_POST["userParams"]["username"] . $logSufix);
+					return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'success-edit');
+				}
+				else
+					return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'failure');
 			}
 			else {
-				header("Location: Main.php?do=usersList&user=".$_POST["id"]."&message=wrongPassword");
+				header("Location: Main.php?do=usersEdit&user=".$_POST["id"]."&message=wrongPassword");
 				exit;
 			}
-
 		}
 		else {
-		  //estoy creando un nuevo usuario
-		  
-			if ( !empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"] ) {
+			//estoy creando un nuevo usuario
 
-				if (empty($_POST["levelId"]))
-					$_POST["levelId"]=3;
-				if ($userPeer->create($_POST["username"],$_POST["name"],$_POST["surname"],$_POST["pass"],$_POST["levelId"],$_POST["mailAddress"],$_POST['timezone'])) {
-					Common::doLog('successAdd',$_POST["username"]);
-					return $mapping->findForwardConfig('successAdd');
+			if (!empty($_POST["pass"]) && $_POST["pass"] == $_POST["pass2"]) {
+
+				$userObj = new User();
+
+				$userObj = Common::setObjectFromParams($userObj,$_POST["userParams"]);
+
+				$userObj->setPasswordString($_POST["pass"]);
+				$userObj->setPasswordUpdatedTime();
+				$userObj->setActiveUser();
+				$userObj->setCreatedTime();
+
+				if (empty($_POST["userParams"]["levelId"]))
+					$userObj->setLevelId('3');
+
+				if(!$userObj->save()) {
+					$smarty->assign("user",$userObj);
+					$smarty->assign("message","error");
+					return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'failure');
 				}
-				else {
-					header("Location: Main.php?do=usersList&user=&message=errorUpdate");
-					exit;
+				else{
+					$params["id"] = $userObj->getId();
+					$logSufix = ', ' . Common::getTranslation("action: create","common");
+					Common::doLog('success-add',$_POST["userParams"]["username"]. $logSufix);
+					return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'success-add');
 				}
-			}
-			else {
-				header("Location: Main.php?do=usersList&user=&message=wrongPassword");
-				exit;
 			}
 		}
-		Common::doLog('successAdd',$_POST["username"]);
-		return $mapping->findForwardConfig('successAdd');
 	}
 
 }

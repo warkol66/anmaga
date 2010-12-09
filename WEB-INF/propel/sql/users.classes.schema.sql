@@ -15,38 +15,27 @@ CREATE TABLE `users_user`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'User Id',
 	`username` VARCHAR(255)  NOT NULL COMMENT 'username',
 	`password` VARCHAR(255)  NOT NULL COMMENT 'password',
-	`active` TINYINT  NOT NULL COMMENT 'Is user active?',
-	`created` DATETIME  NOT NULL COMMENT 'Creation date for',
-	`updated` DATETIME  NOT NULL COMMENT 'Last update date',
-	`levelId` INTEGER   COMMENT 'User Level',
+	`passwordUpdated` DATE   COMMENT 'Fecha de actualizacion de la clave',
+	`active` BOOL  NOT NULL COMMENT 'Is user active?',
+	`levelId` INTEGER(4)   COMMENT 'User Level',
 	`lastLogin` DATETIME   COMMENT 'Fecha del ultimo login del usuario',
-	`timezone` VARCHAR(100)   COMMENT 'Timezone GMT del usuario',
+	`timezone` VARCHAR(25)   COMMENT 'Timezone GMT del usuario',
+	`recoveryHash` VARCHAR(255)   COMMENT 'Hash enviado para la recuperacion de clave',
+	`recoveryHashCreatedOn` DATETIME   COMMENT 'Momento de la solicitud para la recuperacion de clave',
+	`name` VARCHAR(90)   COMMENT 'Nombre',
+	`surname` VARCHAR(90)   COMMENT 'Apellido',
+	`mailAddress` VARCHAR(90)   COMMENT 'Direccion electronica',
+	`mailAddressAlt` VARCHAR(90)   COMMENT 'Direccion electronica alternativa',
+	`deleted_at` DATETIME,
+	`created_at` DATETIME,
+	`updated_at` DATETIME,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `users_user_U_1` (`username`),
 	INDEX `users_user_FI_1` (`levelId`),
 	CONSTRAINT `users_user_FK_1`
 		FOREIGN KEY (`levelId`)
 		REFERENCES `users_level` (`id`)
-) ENGINE=MyISAM COMMENT='Users';
-
-#-----------------------------------------------------------------------------
-#-- users_userInfo
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `users_userInfo`;
-
-
-CREATE TABLE `users_userInfo`
-(
-	`userId` INTEGER  NOT NULL COMMENT 'User Id',
-	`name` VARCHAR(255)   COMMENT 'name',
-	`surname` VARCHAR(255)   COMMENT 'surname',
-	`mailAddress` VARCHAR(255)   COMMENT 'Email',
-	PRIMARY KEY (`userId`),
-	CONSTRAINT `users_userInfo_FK_1`
-		FOREIGN KEY (`userId`)
-		REFERENCES `users_user` (`id`)
-) ENGINE=MyISAM COMMENT='Information about users';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Users';
 
 #-----------------------------------------------------------------------------
 #-- users_userGroup
@@ -57,7 +46,7 @@ DROP TABLE IF EXISTS `users_userGroup`;
 
 CREATE TABLE `users_userGroup`
 (
-	`userId` INTEGER  NOT NULL COMMENT 'Group ID',
+	`userId` INTEGER  NOT NULL COMMENT 'User ID',
 	`groupId` INTEGER  NOT NULL COMMENT 'Group ID',
 	PRIMARY KEY (`userId`,`groupId`),
 	CONSTRAINT `users_userGroup_FK_1`
@@ -67,8 +56,7 @@ CREATE TABLE `users_userGroup`
 	CONSTRAINT `users_userGroup_FK_2`
 		FOREIGN KEY (`groupId`)
 		REFERENCES `users_group` (`id`)
-		ON DELETE CASCADE
-) ENGINE=MyISAM COMMENT='Users / Groups';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Users / Groups';
 
 #-----------------------------------------------------------------------------
 #-- users_group
@@ -86,7 +74,7 @@ CREATE TABLE `users_group`
 	`bitLevel` INTEGER   COMMENT 'Nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `users_group_U_1` (`name`)
-) ENGINE=MyISAM COMMENT='Groups';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Groups';
 
 #-----------------------------------------------------------------------------
 #-- users_level
@@ -102,7 +90,7 @@ CREATE TABLE `users_level`
 	`bitLevel` INTEGER   COMMENT 'Bit del nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `users_level_U_1` (`name`)
-) ENGINE=MyISAM COMMENT='Levels';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Levels';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

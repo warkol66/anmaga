@@ -48,7 +48,7 @@ class UserGroupTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('userId' => 'id', ), null, null);
-    $this->addRelation('Group', 'Group', RelationMap::MANY_TO_ONE, array('groupId' => 'id', ), 'CASCADE', null);
+    $this->addRelation('Group', 'Group', RelationMap::MANY_TO_ONE, array('groupId' => 'id', ), null, null);
 	} // buildRelations()
 
 } // UserGroupTableMap

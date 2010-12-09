@@ -40,12 +40,20 @@ class UserTableMap extends TableMap {
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('USERNAME', 'Username', 'VARCHAR', true, 255, null);
 		$this->addColumn('PASSWORD', 'Password', 'VARCHAR', true, 255, null);
+		$this->addColumn('PASSWORDUPDATED', 'Passwordupdated', 'DATE', false, null, null);
 		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null, null);
-		$this->addColumn('CREATED', 'Created', 'TIMESTAMP', true, null, null);
-		$this->addColumn('UPDATED', 'Updated', 'TIMESTAMP', true, null, null);
-		$this->addForeignKey('LEVELID', 'Levelid', 'INTEGER', 'users_level', 'ID', false, null, null);
+		$this->addForeignKey('LEVELID', 'Levelid', 'INTEGER', 'users_level', 'ID', false, 4, null);
 		$this->addColumn('LASTLOGIN', 'Lastlogin', 'TIMESTAMP', false, null, null);
-		$this->addColumn('TIMEZONE', 'Timezone', 'VARCHAR', false, 100, null);
+		$this->addColumn('TIMEZONE', 'Timezone', 'VARCHAR', false, 25, null);
+		$this->addColumn('RECOVERYHASH', 'Recoveryhash', 'VARCHAR', false, 255, null);
+		$this->addColumn('RECOVERYHASHCREATEDON', 'Recoveryhashcreatedon', 'TIMESTAMP', false, null, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 90, null);
+		$this->addColumn('SURNAME', 'Surname', 'VARCHAR', false, 90, null);
+		$this->addColumn('MAILADDRESS', 'Mailaddress', 'VARCHAR', false, 90, null);
+		$this->addColumn('MAILADDRESSALT', 'Mailaddressalt', 'VARCHAR', false, 90, null);
+		$this->addColumn('DELETED_AT', 'DeletedAt', 'TIMESTAMP', false, null, null);
+		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
+		$this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
 		// validators
 	} // initialize()
 
@@ -55,13 +63,29 @@ class UserTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('Level', 'Level', RelationMap::MANY_TO_ONE, array('levelId' => 'id', ), null, null);
-    $this->addRelation('Actionlog', 'Actionlog', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
+    $this->addRelation('ActionLog', 'ActionLog', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
+    $this->addRelation('AlertSubscriptionUser', 'AlertSubscriptionUser', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), 'CASCADE', null);
     $this->addRelation('ClientQuote', 'ClientQuote', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('SupplierQuoteItemComment', 'SupplierQuoteItemComment', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('ClientPurchaseOrder', 'ClientPurchaseOrder', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('SupplierPurchaseOrder', 'SupplierPurchaseOrder', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
-    $this->addRelation('UserInfo', 'UserInfo', RelationMap::ONE_TO_ONE, array('id' => 'userId', ), null, null);
     $this->addRelation('UserGroup', 'UserGroup', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
+    $this->addRelation('AlertSubscription', 'AlertSubscription', RelationMap::MANY_TO_MANY, array(), null, null);
+    $this->addRelation('Group', 'Group', RelationMap::MANY_TO_MANY, array(), null, null);
 	} // buildRelations()
+
+	/**
+	 * 
+	 * Gets the list of behaviors registered for this table
+	 * 
+	 * @return array Associative array (name => parameters) of behaviors
+	 */
+	public function getBehaviors()
+	{
+		return array(
+			'soft_delete' => array('deleted_column' => 'deleted_at', ),
+			'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
+		);
+	} // getBehaviors()
 
 } // UserTableMap

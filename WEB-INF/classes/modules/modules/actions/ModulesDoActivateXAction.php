@@ -1,47 +1,16 @@
 <?php
-
-require_once("BaseAction.php");
-require_once("ModulePeer.php");
-require_once("ModuleDependencyPeer.php");
-/**
-* Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
-* compiling PHP template engine within php.MVC.
-*
-* @author John C Wildenauer
-* @version 1.0
-* @public
-*/
+//TODO: REVISAR!!!!!!!
 class ModulesDoActivateXAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function ModulesDoActivateXAction() {
 		;
 	}
 
-
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
 
-			$this->template->template = "TemplateAjax.tpl";
+		$this->template->template = "TemplateAjax.tpl";
 		
 		//////////
 		// Access the Smarty PlugIn instance
@@ -54,19 +23,17 @@ class ModulesDoActivateXAction extends BaseAction {
 
 		//asigno modulo y seccion
 		$module = "Modules";
-
-
 		$smarty->assign("module",$module);
 
 		$modulePeer = new ModulePeer();
 		$moduleDependencyPeer = new ModuleDependencyPeer();
 		
-		$moduleName=$_POST["module"];
+		$moduleName = $_POST["module"];
 		$smarty->assign("moduleName",$moduleName);
-		if(!$activeModule=$_POST["activeModule"]) $activeModule=0;
+		if(!$activeModule = $_POST["activeModule"]) 
+			$activeModule = 0;
 
-
-		
+	
 		$savedModules= $modulePeer->getAll();
 		
 		//if (isset($_POST["activar"]) ){
@@ -75,7 +42,7 @@ class ModulesDoActivateXAction extends BaseAction {
 				$dependencies=$moduleDependencyPeer->get($moduleName);
 
 			if( empty($dependencies) )
-				$assignedModules= $modulePeer->setActive($moduleName,$activeModule);
+				$assignedModules = $modulePeer->setActive($moduleName,$activeModule);
 			
 			else {
 				$i=0;
@@ -115,14 +82,8 @@ class ModulesDoActivateXAction extends BaseAction {
 			} //else dependencies
 	//	} //isset
 
-		//doLogV2('success');
-		//////////
-		// Forward control to the specified success URI
 		return $mapping->findForwardConfig('success');
-
-
 
 	}
 
 }
-?>

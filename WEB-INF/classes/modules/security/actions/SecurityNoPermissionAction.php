@@ -50,12 +50,11 @@ class SecurityNoPermissionAction extends BaseAction {
 		else {
 			//////////
 			// Use a different template
-			$this->template->template = "TemplateLogin.tpl";
+			$this->template->template = "TemplatePublic.tpl";
 		}
 		
 		//asigno module y seccion
 		$module = "Security";
-
 		$smarty->assign("module",$module);
 
 		return $mapping->findForwardConfig('success');

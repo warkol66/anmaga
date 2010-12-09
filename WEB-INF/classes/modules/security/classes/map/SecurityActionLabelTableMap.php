@@ -41,6 +41,7 @@ class SecurityActionLabelTableMap extends TableMap {
 		$this->addPrimaryKey('ACTION', 'Action', 'VARCHAR', true, 100, null);
 		$this->addColumn('LANGUAGE', 'Language', 'VARCHAR', false, 100, null);
 		$this->addColumn('LABEL', 'Label', 'VARCHAR', false, 100, null);
+		$this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
 		// validators
 	} // initialize()
 

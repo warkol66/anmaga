@@ -46,7 +46,7 @@ class UsersLoginAction extends BaseAction {
 
 			$value = Common::getValueUnifiedLoginCookie();
 
-			if (!empty($value)) {
+			if (!empty($value) || $value == "0") {
 				$smarty->assign('cookieSelection',$value);
 			}
 		}

@@ -28,6 +28,10 @@
  * @method     ModuleQuery rightJoinModuleLabel($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ModuleLabel relation
  * @method     ModuleQuery innerJoinModuleLabel($relationAlias = null) Adds a INNER JOIN clause to the query using the ModuleLabel relation
  *
+ * @method     ModuleQuery leftJoinModuleEntity($relationAlias = null) Adds a LEFT JOIN clause to the query using the ModuleEntity relation
+ * @method     ModuleQuery rightJoinModuleEntity($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ModuleEntity relation
+ * @method     ModuleQuery innerJoinModuleEntity($relationAlias = null) Adds a INNER JOIN clause to the query using the ModuleEntity relation
+ *
  * @method     ModuleQuery leftJoinMultilangText($relationAlias = null) Adds a LEFT JOIN clause to the query using the MultilangText relation
  * @method     ModuleQuery rightJoinMultilangText($relationAlias = null) Adds a RIGHT JOIN clause to the query using the MultilangText relation
  * @method     ModuleQuery innerJoinMultilangText($relationAlias = null) Adds a INNER JOIN clause to the query using the MultilangText relation
@@ -352,6 +356,70 @@ abstract class BaseModuleQuery extends ModelCriteria
 		return $this
 			->joinModuleLabel($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'ModuleLabel', 'ModuleLabelQuery');
+	}
+
+	/**
+	 * Filter the query by a related ModuleEntity object
+	 *
+	 * @param     ModuleEntity $moduleEntity  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ModuleQuery The current query, for fluid interface
+	 */
+	public function filterByModuleEntity($moduleEntity, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(ModulePeer::NAME, $moduleEntity->getModulename(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the ModuleEntity relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ModuleQuery The current query, for fluid interface
+	 */
+	public function joinModuleEntity($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('ModuleEntity');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'ModuleEntity');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the ModuleEntity relation ModuleEntity object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ModuleEntityQuery A secondary query class using the current class as primary query
+	 */
+	public function useModuleEntityQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		return $this
+			->joinModuleEntity($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'ModuleEntity', 'ModuleEntityQuery');
 	}
 
 	/**

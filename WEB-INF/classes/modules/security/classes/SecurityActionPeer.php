@@ -237,13 +237,13 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	*/
 	function getByNameOrPair($action) {
 		$criteria = new Criteria();
-		$criteria->setIgnoreCase();
-		$cton1 = $criteria->getNewCriterion(SecurityActionPeer::ACTION, $action, Criteria::EQUAL); 
-		$cton2 = $criteria->getNewCriterion(SecurityActionPeer::PAIR, $action, Criteria::EQUAL);
-		$cton1->addOr($cton2);
-		$criteria->add($cton1);		
-		$action = SecurityActionPeer::doSelectOne($criteria);
-		return $action;
+		$criteria->setIgnoreCase(true);
+		$criteriOn1 = $criteria->getNewCriterion(SecurityActionPeer::ACTION, $action); 
+		$criteriOn2 = $criteria->getNewCriterion(SecurityActionPeer::PAIR, $action);
+		$criteriOn1->addOr($criteriOn2);
+		$criteria->add($criteriOn1);
+		$securityObj = SecurityActionPeer::doSelectOne($criteria);
+		return $securityObj;
 	}	
 
 	/**
@@ -307,17 +307,19 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	}	
 
 	/**
-	* Verifico si un action est� o no
+	* Verifico si un action está o no
 	* @param string $action nombre del action
 	* @return true si se encuentra
 	*/
-	function getAllByAction($action) {
+	function getAllByAction($action) 
+	{
 		$criteria = new Criteria();
 		$criteria->setIgnoreCase();
 		$criteria->add(SecurityActionPeer::ACTION, $action);
-    if( $obj = SecurityActionPeer::doSelect($criteria) )
+    if ($obj = SecurityActionPeer::doSelect($criteria))
 			return true;
-			else    return false;
+		else
+			return false;
 	}
 	
 	/**
@@ -325,7 +327,8 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	* @param string $pair nombre del action par
 	* @return object $obj si lo encontró
 	*/
-	function getByPair($pair) {
+	function getByPair($pair) 
+	{
 		$criteria = new Criteria();
 		$criteria->setIgnoreCase();
 		$criteria->add(SecurityActionPeer::PAIR, $pair);
@@ -414,12 +417,13 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	* @param string $action nombre del action
 	* @return string $module nombre del modulo del action
 	*/
-	function getModuleByAction($action) {
+	function getModuleByAction($action)
+	{
 		$criteria = new Criteria();
+		$criteria->setIgnoreCase(true);
 		$criteria->add(SecurityActionPeer::ACTION, $action);
 		$obj = SecurityActionPeer::doSelectOne($criteria);
 		return $obj->getModule();
-
 	}
 
 	/**
@@ -429,7 +433,8 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	 * @param int $paramModule bit del modulo
 	 * @return 1 si un numero se incluye en otro
 	 */
-	function checkAccessBitToBit($paramUser,$paramModule){
+	function checkAccessBitToBit($paramUser,$paramModule)
+	{
 		if ((intval($paramModule) & intval($paramUser)) > 0 )
 			return 1;
 		else
@@ -441,34 +446,27 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	*
 	* @return array $info informacion encontrada
 	*/	
-	function userInfoToSecurity(){
-			
+	function userInfoToSecurity()
+	{
 		$info = array();
-		if(!empty($_SESSION['loginUser'])){
+		if (!empty($_SESSION['loginUser'])){
 			$info["levelId"] = $_SESSION['loginUser'];
 			$info["userType"] = 0;
-			if(is_object($info["levelId"]))
-				$info["levelId"]=$info["levelId"]->getLevelId();
-				$info["userType"] = 0;
+			if (is_object($info["levelId"]))
+				$info["levelId"] = $info["levelId"]->getLevelId();
 		}
-		elseif(!empty($_SESSION['loginRegistrationUser'])){ 
-			$info["levelId"]=$_SESSION['loginRegistrationUser'];
+		else if (!empty($_SESSION['loginRegistrationUser'])){ 
+			$info["levelId"] = $_SESSION['loginRegistrationUser'];
 			$info["userType"] =999999 ;
-
 		}
-		else{
-
-			
+		else {
 			if(is_object($_SESSION["loginAffiliateUser"])){
-				//////////
-				// version con propel toma esta linea
 				$info["levelId"]=$_SESSION["loginAffiliateUser"]->getLevelId();
 				$info["userType"]=$_SESSION["loginAffiliateUser"]->getAffiliateId();
 			}
-
-				//////////
-				// version sin propel toma esta linea
-			else $info["levelId"]=$_SESSION["loginAffiliateUser"];
+			// version sin propel toma esta linea
+			else 
+				$info["levelId"]=$_SESSION["loginAffiliateUser"];
 		}
 		return $info;
 	}
@@ -477,8 +475,10 @@ class SecurityActionPeer extends BaseSecurityActionPeer {
 	 * genera el codigo SQL de limpieza de las tablas afectadas al modulo.
 	 * @return string SQL
 	 */	
-	function getSQLCleanup($module) {
-		$sql = "DELETE FROM `security_action` WHERE `module` = '" . $module . "';";
+	function getSQLCleanup($module) 
+	{
+		$sql = "DELETE FROM `security_action` WHERE `module` = '" . $module . "';\n";
+		$sql .= "OPTIMIZE TABLE `security_action`;";
 		return  $sql;
 	}
 

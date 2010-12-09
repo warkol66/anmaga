@@ -62,6 +62,11 @@ abstract class BaseModule extends BaseObject  implements Persistent
 	protected $collModuleLabels;
 
 	/**
+	 * @var        array ModuleEntity[] Collection to store aggregation of ModuleEntity objects.
+	 */
+	protected $collModuleEntitys;
+
+	/**
 	 * @var        array MultilangText[] Collection to store aggregation of MultilangText objects.
 	 */
 	protected $collMultilangTexts;
@@ -345,6 +350,8 @@ abstract class BaseModule extends BaseObject  implements Persistent
 
 			$this->collModuleLabels = null;
 
+			$this->collModuleEntitys = null;
+
 			$this->collMultilangTexts = null;
 
 		} // if (deep)
@@ -488,6 +495,14 @@ abstract class BaseModule extends BaseObject  implements Persistent
 				}
 			}
 
+			if ($this->collModuleEntitys !== null) {
+				foreach ($this->collModuleEntitys as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collMultilangTexts !== null) {
 				foreach ($this->collMultilangTexts as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -577,6 +592,14 @@ abstract class BaseModule extends BaseObject  implements Persistent
 
 				if ($this->collModuleLabels !== null) {
 					foreach ($this->collModuleLabels as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collModuleEntitys !== null) {
+					foreach ($this->collModuleEntitys as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -829,6 +852,12 @@ abstract class BaseModule extends BaseObject  implements Persistent
 			foreach ($this->getModuleLabels() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addModuleLabel($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getModuleEntitys() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addModuleEntity($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1101,6 +1130,140 @@ abstract class BaseModule extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Clears out the collModuleEntitys collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addModuleEntitys()
+	 */
+	public function clearModuleEntitys()
+	{
+		$this->collModuleEntitys = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collModuleEntitys collection.
+	 *
+	 * By default this just sets the collModuleEntitys collection to an empty array (like clearcollModuleEntitys());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initModuleEntitys()
+	{
+		$this->collModuleEntitys = new PropelObjectCollection();
+		$this->collModuleEntitys->setModel('ModuleEntity');
+	}
+
+	/**
+	 * Gets an array of ModuleEntity objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Module is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array ModuleEntity[] List of ModuleEntity objects
+	 * @throws     PropelException
+	 */
+	public function getModuleEntitys($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collModuleEntitys || null !== $criteria) {
+			if ($this->isNew() && null === $this->collModuleEntitys) {
+				// return empty collection
+				$this->initModuleEntitys();
+			} else {
+				$collModuleEntitys = ModuleEntityQuery::create(null, $criteria)
+					->filterByModule($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collModuleEntitys;
+				}
+				$this->collModuleEntitys = $collModuleEntitys;
+			}
+		}
+		return $this->collModuleEntitys;
+	}
+
+	/**
+	 * Returns the number of related ModuleEntity objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related ModuleEntity objects.
+	 * @throws     PropelException
+	 */
+	public function countModuleEntitys(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collModuleEntitys || null !== $criteria) {
+			if ($this->isNew() && null === $this->collModuleEntitys) {
+				return 0;
+			} else {
+				$query = ModuleEntityQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByModule($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collModuleEntitys);
+		}
+	}
+
+	/**
+	 * Method called to associate a ModuleEntity object to this object
+	 * through the ModuleEntity foreign key attribute.
+	 *
+	 * @param      ModuleEntity $l ModuleEntity
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addModuleEntity(ModuleEntity $l)
+	{
+		if ($this->collModuleEntitys === null) {
+			$this->initModuleEntitys();
+		}
+		if (!$this->collModuleEntitys->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collModuleEntitys[]= $l;
+			$l->setModule($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Module is new, it will return
+	 * an empty collection; or if this Module has previously
+	 * been saved, it will retrieve related ModuleEntitys from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Module.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array ModuleEntity[] List of ModuleEntity objects
+	 */
+	public function getModuleEntitysJoinModuleEntityFieldRelatedByScopefielduniquename($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = ModuleEntityQuery::create(null, $criteria);
+		$query->joinWith('ModuleEntityFieldRelatedByScopefielduniquename', $join_behavior);
+
+		return $this->getModuleEntitys($query, $con);
+	}
+
+	/**
 	 * Clears out the collMultilangTexts collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
@@ -1274,6 +1437,11 @@ abstract class BaseModule extends BaseObject  implements Persistent
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collModuleEntitys) {
+				foreach ((array) $this->collModuleEntitys as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 			if ($this->collMultilangTexts) {
 				foreach ((array) $this->collMultilangTexts as $o) {
 					$o->clearAllReferences($deep);
@@ -1283,6 +1451,7 @@ abstract class BaseModule extends BaseObject  implements Persistent
 
 		$this->collModuleDependencys = null;
 		$this->collModuleLabels = null;
+		$this->collModuleEntitys = null;
 		$this->collMultilangTexts = null;
 	}
 

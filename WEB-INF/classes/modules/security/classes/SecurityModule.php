@@ -1,7 +1,7 @@
 <?php
 
-require_once 'om/BaseSecurityModule.php';
-
+  // include base peer class
+  require_once 'security/classes/om/BaseSecurityModule.php';
 
 /**
  * Skeleton subclass for representing a row from the 'security_module' table.
@@ -74,7 +74,8 @@ class SecurityModule extends BaseSecurityModule {
 	 * @return string SQL
 	 */	
 	function getSQLCleanup() {
-		$sql = "DELETE FROM `security_module` WHERE `module` = '" . $this->getModule() . "';";
+		$sql = "DELETE FROM `security_module` WHERE `module` = '" . $this->getModule() . "';\n";
+		$sql .= "OPTIMIZE TABLE `security_module`;";
 		return  $sql;
 	}
 	
