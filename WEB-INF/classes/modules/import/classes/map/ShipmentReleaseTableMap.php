@@ -40,6 +40,7 @@ class ShipmentReleaseTableMap extends TableMap {
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('CREATEDAT', 'Createdat', 'TIMESTAMP', true, null, null);
 		$this->addForeignKey('SHIPMENTID', 'Shipmentid', 'INTEGER', 'import_shipment', 'ID', true, null, null);
+		$this->addColumn('STATUS', 'Status', 'INTEGER', true, null, null);
 		$this->addColumn('DOCUMENTSPRESENTATIONDATE', 'Documentspresentationdate', 'DATE', false, null, null);
 		$this->addColumn('BANKTARIFFSPAYMENTDATE', 'Banktariffspaymentdate', 'DATE', false, null, null);
 		$this->addColumn('PHYSICALRECOGNITIONDATE', 'Physicalrecognitiondate', 'DATE', false, null, null);

@@ -9,6 +9,7 @@
  * @method     ShipmentReleaseQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ShipmentReleaseQuery orderByCreatedat($order = Criteria::ASC) Order by the createdAt column
  * @method     ShipmentReleaseQuery orderByShipmentid($order = Criteria::ASC) Order by the shipmentId column
+ * @method     ShipmentReleaseQuery orderByStatus($order = Criteria::ASC) Order by the status column
  * @method     ShipmentReleaseQuery orderByDocumentspresentationdate($order = Criteria::ASC) Order by the documentsPresentationDate column
  * @method     ShipmentReleaseQuery orderByBanktariffspaymentdate($order = Criteria::ASC) Order by the bankTariffsPaymentDate column
  * @method     ShipmentReleaseQuery orderByPhysicalrecognitiondate($order = Criteria::ASC) Order by the physicalRecognitionDate column
@@ -23,6 +24,7 @@
  * @method     ShipmentReleaseQuery groupById() Group by the id column
  * @method     ShipmentReleaseQuery groupByCreatedat() Group by the createdAt column
  * @method     ShipmentReleaseQuery groupByShipmentid() Group by the shipmentId column
+ * @method     ShipmentReleaseQuery groupByStatus() Group by the status column
  * @method     ShipmentReleaseQuery groupByDocumentspresentationdate() Group by the documentsPresentationDate column
  * @method     ShipmentReleaseQuery groupByBanktariffspaymentdate() Group by the bankTariffsPaymentDate column
  * @method     ShipmentReleaseQuery groupByPhysicalrecognitiondate() Group by the physicalRecognitionDate column
@@ -48,6 +50,7 @@
  * @method     ShipmentRelease findOneById(int $id) Return the first ShipmentRelease filtered by the id column
  * @method     ShipmentRelease findOneByCreatedat(string $createdAt) Return the first ShipmentRelease filtered by the createdAt column
  * @method     ShipmentRelease findOneByShipmentid(int $shipmentId) Return the first ShipmentRelease filtered by the shipmentId column
+ * @method     ShipmentRelease findOneByStatus(int $status) Return the first ShipmentRelease filtered by the status column
  * @method     ShipmentRelease findOneByDocumentspresentationdate(string $documentsPresentationDate) Return the first ShipmentRelease filtered by the documentsPresentationDate column
  * @method     ShipmentRelease findOneByBanktariffspaymentdate(string $bankTariffsPaymentDate) Return the first ShipmentRelease filtered by the bankTariffsPaymentDate column
  * @method     ShipmentRelease findOneByPhysicalrecognitiondate(string $physicalRecognitionDate) Return the first ShipmentRelease filtered by the physicalRecognitionDate column
@@ -62,6 +65,7 @@
  * @method     array findById(int $id) Return ShipmentRelease objects filtered by the id column
  * @method     array findByCreatedat(string $createdAt) Return ShipmentRelease objects filtered by the createdAt column
  * @method     array findByShipmentid(int $shipmentId) Return ShipmentRelease objects filtered by the shipmentId column
+ * @method     array findByStatus(int $status) Return ShipmentRelease objects filtered by the status column
  * @method     array findByDocumentspresentationdate(string $documentsPresentationDate) Return ShipmentRelease objects filtered by the documentsPresentationDate column
  * @method     array findByBanktariffspaymentdate(string $bankTariffsPaymentDate) Return ShipmentRelease objects filtered by the bankTariffsPaymentDate column
  * @method     array findByPhysicalrecognitiondate(string $physicalRecognitionDate) Return ShipmentRelease objects filtered by the physicalRecognitionDate column
@@ -258,6 +262,37 @@ abstract class BaseShipmentReleaseQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(ShipmentReleasePeer::SHIPMENTID, $shipmentid, $comparison);
+	}
+
+	/**
+	 * Filter the query on the status column
+	 * 
+	 * @param     int|array $status The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentReleaseQuery The current query, for fluid interface
+	 */
+	public function filterByStatus($status = null, $comparison = null)
+	{
+		if (is_array($status)) {
+			$useMinMax = false;
+			if (isset($status['min'])) {
+				$this->addUsingAlias(ShipmentReleasePeer::STATUS, $status['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($status['max'])) {
+				$this->addUsingAlias(ShipmentReleasePeer::STATUS, $status['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ShipmentReleasePeer::STATUS, $status, $comparison);
 	}
 
 	/**

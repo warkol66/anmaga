@@ -23,6 +23,20 @@ class ShipmentRelease extends BaseShipmentRelease {
 		ShipmentRelease::STATUS_COMPLETE => 'Complete',
 	);
 	
+    /**
+     * Code to be run before persisting the object
+     * @param PropelPDO $con 
+     * @return bloolean 
+     */
+    public function preSave(PropelPDO $con = null) {
+    	$ret = parent::preSave($con);
+    	if ($ret) {
+    		//Mantenemos la concistencia del status (campo calculable).
+    		$this->setStatus($this->calculateStatus());
+    	}
+        return $ret;
+    }
+	
 	public function save(PropelPDO $con = null) {
 		try {
 			if ($this->validate()) { 
@@ -47,10 +61,20 @@ class ShipmentRelease extends BaseShipmentRelease {
 		return false;
 	}
 	
-	public function getStatusName() {
+	/**
+	 * Calcula el estado actual en base a los campos correspondientes.
+	 * Usar esta función en lugar de getStatus() siempre que se tenga
+	 * un objeto modificado que aún no fue guardado para garantizar la
+	 * consistencia de la información.
+	 */
+	public function calculateStatus() {
 		if ($this->isComplete())
-			return $this->statusNames[ShipmentRelease::STATUS_COMPLETE];
+			return ShipmentRelease::STATUS_COMPLETE;
 		
-		return $this->statusNames[ShipmentRelease::STATUS_PENDING];
+		return ShipmentRelease::STATUS_PENDING;
+	}
+		
+	public function getStatusName() {		
+		return $this->statusNames[$this->calculateStatus()];
 	}
 } // ShipmentRelease

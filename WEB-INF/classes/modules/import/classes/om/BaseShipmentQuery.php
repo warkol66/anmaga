@@ -9,6 +9,7 @@
  * @method     ShipmentQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ShipmentQuery orderByCreatedat($order = Criteria::ASC) Order by the createdAt column
  * @method     ShipmentQuery orderBySupplierpurchaseorderid($order = Criteria::ASC) Order by the supplierPurchaseOrderId column
+ * @method     ShipmentQuery orderByStatus($order = Criteria::ASC) Order by the status column
  * @method     ShipmentQuery orderByContainersrealcount20($order = Criteria::ASC) Order by the containersRealCount20 column
  * @method     ShipmentQuery orderByContainersrealcount40($order = Criteria::ASC) Order by the containersRealCount40 column
  * @method     ShipmentQuery orderByContainersnumbers($order = Criteria::ASC) Order by the containersNumbers column
@@ -28,6 +29,7 @@
  * @method     ShipmentQuery groupById() Group by the id column
  * @method     ShipmentQuery groupByCreatedat() Group by the createdAt column
  * @method     ShipmentQuery groupBySupplierpurchaseorderid() Group by the supplierPurchaseOrderId column
+ * @method     ShipmentQuery groupByStatus() Group by the status column
  * @method     ShipmentQuery groupByContainersrealcount20() Group by the containersRealCount20 column
  * @method     ShipmentQuery groupByContainersrealcount40() Group by the containersRealCount40 column
  * @method     ShipmentQuery groupByContainersnumbers() Group by the containersNumbers column
@@ -66,6 +68,7 @@
  * @method     Shipment findOneById(int $id) Return the first Shipment filtered by the id column
  * @method     Shipment findOneByCreatedat(string $createdAt) Return the first Shipment filtered by the createdAt column
  * @method     Shipment findOneBySupplierpurchaseorderid(int $supplierPurchaseOrderId) Return the first Shipment filtered by the supplierPurchaseOrderId column
+ * @method     Shipment findOneByStatus(int $status) Return the first Shipment filtered by the status column
  * @method     Shipment findOneByContainersrealcount20(int $containersRealCount20) Return the first Shipment filtered by the containersRealCount20 column
  * @method     Shipment findOneByContainersrealcount40(int $containersRealCount40) Return the first Shipment filtered by the containersRealCount40 column
  * @method     Shipment findOneByContainersnumbers(string $containersNumbers) Return the first Shipment filtered by the containersNumbers column
@@ -85,6 +88,7 @@
  * @method     array findById(int $id) Return Shipment objects filtered by the id column
  * @method     array findByCreatedat(string $createdAt) Return Shipment objects filtered by the createdAt column
  * @method     array findBySupplierpurchaseorderid(int $supplierPurchaseOrderId) Return Shipment objects filtered by the supplierPurchaseOrderId column
+ * @method     array findByStatus(int $status) Return Shipment objects filtered by the status column
  * @method     array findByContainersrealcount20(int $containersRealCount20) Return Shipment objects filtered by the containersRealCount20 column
  * @method     array findByContainersrealcount40(int $containersRealCount40) Return Shipment objects filtered by the containersRealCount40 column
  * @method     array findByContainersnumbers(string $containersNumbers) Return Shipment objects filtered by the containersNumbers column
@@ -286,6 +290,37 @@ abstract class BaseShipmentQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(ShipmentPeer::SUPPLIERPURCHASEORDERID, $supplierpurchaseorderid, $comparison);
+	}
+
+	/**
+	 * Filter the query on the status column
+	 * 
+	 * @param     int|array $status The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByStatus($status = null, $comparison = null)
+	{
+		if (is_array($status)) {
+			$useMinMax = false;
+			if (isset($status['min'])) {
+				$this->addUsingAlias(ShipmentPeer::STATUS, $status['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($status['max'])) {
+				$this->addUsingAlias(ShipmentPeer::STATUS, $status['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::STATUS, $status, $comparison);
 	}
 
 	/**

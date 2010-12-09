@@ -120,8 +120,7 @@ class ShipmentPeer extends BaseShipmentPeer {
 	}
 	
 	if (!empty($this->searchStatus)) {
-		$status = $this->statusNames[$this->searchStatus];
-		$criteria->add($this->processStatus($criteria,$status));
+		$criteria->filterByStatus($this->searchStatus);
 	}
 
 	return $criteria;

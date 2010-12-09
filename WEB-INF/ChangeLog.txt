@@ -1,7 +1,12 @@
 -- =============================
--- Revisión 6.. - Fecha 20101209
+-- Revisión 601 - Fecha 20101209
 -- -----------------------------
+ALTER TABLE `import_shipment` ADD `status` INTEGER  NOT NULL COMMENT 'Status de Embarque';
+ALTER TABLE `import_shipmentRelease` ADD `status` INTEGER  NOT NULL COMMENT 'Status de Nacionalizacion';
 
+-- =============================
+-- Revisión 600 - Fecha 20101209
+-- -----------------------------
 ALTER TABLE users_user
 ADD 	`passwordUpdated` DATE   COMMENT 'Fecha de actualizacion de la clave',
 ADD 	`recoveryHash` VARCHAR(255)   COMMENT 'Hash enviado para la recuperacion de clave',

@@ -43,6 +43,12 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 	protected $shipmentid;
 
 	/**
+	 * The value for the status field.
+	 * @var        int
+	 */
+	protected $status;
+
+	/**
 	 * The value for the documentspresentationdate field.
 	 * @var        string
 	 */
@@ -177,6 +183,16 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 	public function getShipmentid()
 	{
 		return $this->shipmentid;
+	}
+
+	/**
+	 * Get the [status] column value.
+	 * Status de Nacionalizacion
+	 * @return     int
+	 */
+	public function getStatus()
+	{
+		return $this->status;
 	}
 
 	/**
@@ -623,6 +639,26 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 
 		return $this;
 	} // setShipmentid()
+
+	/**
+	 * Set the value of [status] column.
+	 * Status de Nacionalizacion
+	 * @param      int $v new value
+	 * @return     ShipmentRelease The current object (for fluent API support)
+	 */
+	public function setStatus($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->status !== $v) {
+			$this->status = $v;
+			$this->modifiedColumns[] = ShipmentReleasePeer::STATUS;
+		}
+
+		return $this;
+	} // setStatus()
 
 	/**
 	 * Sets the value of [documentspresentationdate] column to a normalized version of the date/time value specified.
@@ -1120,16 +1156,17 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->createdat = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->shipmentid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-			$this->documentspresentationdate = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-			$this->banktariffspaymentdate = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-			$this->physicalrecognitiondate = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-			$this->documentsvalidationdate = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-			$this->expensespaymentdate = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-			$this->loadingorderdate = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-			$this->containersloadingdate = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
-			$this->estimatedmovementtostorehousedate = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-			$this->arrivaltostorehousetimestamp = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-			$this->containterreceiptonstorehousedate = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+			$this->status = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+			$this->documentspresentationdate = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->banktariffspaymentdate = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->physicalrecognitiondate = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->documentsvalidationdate = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->expensespaymentdate = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->loadingorderdate = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->containersloadingdate = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+			$this->estimatedmovementtostorehousedate = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->arrivaltostorehousetimestamp = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+			$this->containterreceiptonstorehousedate = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -1138,7 +1175,7 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 13; // 13 = ShipmentReleasePeer::NUM_COLUMNS - ShipmentReleasePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 14; // 14 = ShipmentReleasePeer::NUM_COLUMNS - ShipmentReleasePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ShipmentRelease object", $e);
@@ -1475,33 +1512,36 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 				return $this->getShipmentid();
 				break;
 			case 3:
-				return $this->getDocumentspresentationdate();
+				return $this->getStatus();
 				break;
 			case 4:
-				return $this->getBanktariffspaymentdate();
+				return $this->getDocumentspresentationdate();
 				break;
 			case 5:
-				return $this->getPhysicalrecognitiondate();
+				return $this->getBanktariffspaymentdate();
 				break;
 			case 6:
-				return $this->getDocumentsvalidationdate();
+				return $this->getPhysicalrecognitiondate();
 				break;
 			case 7:
-				return $this->getExpensespaymentdate();
+				return $this->getDocumentsvalidationdate();
 				break;
 			case 8:
-				return $this->getLoadingorderdate();
+				return $this->getExpensespaymentdate();
 				break;
 			case 9:
-				return $this->getContainersloadingdate();
+				return $this->getLoadingorderdate();
 				break;
 			case 10:
-				return $this->getEstimatedmovementtostorehousedate();
+				return $this->getContainersloadingdate();
 				break;
 			case 11:
-				return $this->getArrivaltostorehousetimestamp();
+				return $this->getEstimatedmovementtostorehousedate();
 				break;
 			case 12:
+				return $this->getArrivaltostorehousetimestamp();
+				break;
+			case 13:
 				return $this->getContainterreceiptonstorehousedate();
 				break;
 			default:
@@ -1531,16 +1571,17 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getCreatedat(),
 			$keys[2] => $this->getShipmentid(),
-			$keys[3] => $this->getDocumentspresentationdate(),
-			$keys[4] => $this->getBanktariffspaymentdate(),
-			$keys[5] => $this->getPhysicalrecognitiondate(),
-			$keys[6] => $this->getDocumentsvalidationdate(),
-			$keys[7] => $this->getExpensespaymentdate(),
-			$keys[8] => $this->getLoadingorderdate(),
-			$keys[9] => $this->getContainersloadingdate(),
-			$keys[10] => $this->getEstimatedmovementtostorehousedate(),
-			$keys[11] => $this->getArrivaltostorehousetimestamp(),
-			$keys[12] => $this->getContainterreceiptonstorehousedate(),
+			$keys[3] => $this->getStatus(),
+			$keys[4] => $this->getDocumentspresentationdate(),
+			$keys[5] => $this->getBanktariffspaymentdate(),
+			$keys[6] => $this->getPhysicalrecognitiondate(),
+			$keys[7] => $this->getDocumentsvalidationdate(),
+			$keys[8] => $this->getExpensespaymentdate(),
+			$keys[9] => $this->getLoadingorderdate(),
+			$keys[10] => $this->getContainersloadingdate(),
+			$keys[11] => $this->getEstimatedmovementtostorehousedate(),
+			$keys[12] => $this->getArrivaltostorehousetimestamp(),
+			$keys[13] => $this->getContainterreceiptonstorehousedate(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aShipment) {
@@ -1587,33 +1628,36 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 				$this->setShipmentid($value);
 				break;
 			case 3:
-				$this->setDocumentspresentationdate($value);
+				$this->setStatus($value);
 				break;
 			case 4:
-				$this->setBanktariffspaymentdate($value);
+				$this->setDocumentspresentationdate($value);
 				break;
 			case 5:
-				$this->setPhysicalrecognitiondate($value);
+				$this->setBanktariffspaymentdate($value);
 				break;
 			case 6:
-				$this->setDocumentsvalidationdate($value);
+				$this->setPhysicalrecognitiondate($value);
 				break;
 			case 7:
-				$this->setExpensespaymentdate($value);
+				$this->setDocumentsvalidationdate($value);
 				break;
 			case 8:
-				$this->setLoadingorderdate($value);
+				$this->setExpensespaymentdate($value);
 				break;
 			case 9:
-				$this->setContainersloadingdate($value);
+				$this->setLoadingorderdate($value);
 				break;
 			case 10:
-				$this->setEstimatedmovementtostorehousedate($value);
+				$this->setContainersloadingdate($value);
 				break;
 			case 11:
-				$this->setArrivaltostorehousetimestamp($value);
+				$this->setEstimatedmovementtostorehousedate($value);
 				break;
 			case 12:
+				$this->setArrivaltostorehousetimestamp($value);
+				break;
+			case 13:
 				$this->setContainterreceiptonstorehousedate($value);
 				break;
 		} // switch()
@@ -1643,16 +1687,17 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setCreatedat($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setShipmentid($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setDocumentspresentationdate($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setBanktariffspaymentdate($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setPhysicalrecognitiondate($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setDocumentsvalidationdate($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setExpensespaymentdate($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setLoadingorderdate($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setContainersloadingdate($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setEstimatedmovementtostorehousedate($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setArrivaltostorehousetimestamp($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setContainterreceiptonstorehousedate($arr[$keys[12]]);
+		if (array_key_exists($keys[3], $arr)) $this->setStatus($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setDocumentspresentationdate($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setBanktariffspaymentdate($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setPhysicalrecognitiondate($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setDocumentsvalidationdate($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setExpensespaymentdate($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setLoadingorderdate($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setContainersloadingdate($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setEstimatedmovementtostorehousedate($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setArrivaltostorehousetimestamp($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setContainterreceiptonstorehousedate($arr[$keys[13]]);
 	}
 
 	/**
@@ -1667,6 +1712,7 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ShipmentReleasePeer::ID)) $criteria->add(ShipmentReleasePeer::ID, $this->id);
 		if ($this->isColumnModified(ShipmentReleasePeer::CREATEDAT)) $criteria->add(ShipmentReleasePeer::CREATEDAT, $this->createdat);
 		if ($this->isColumnModified(ShipmentReleasePeer::SHIPMENTID)) $criteria->add(ShipmentReleasePeer::SHIPMENTID, $this->shipmentid);
+		if ($this->isColumnModified(ShipmentReleasePeer::STATUS)) $criteria->add(ShipmentReleasePeer::STATUS, $this->status);
 		if ($this->isColumnModified(ShipmentReleasePeer::DOCUMENTSPRESENTATIONDATE)) $criteria->add(ShipmentReleasePeer::DOCUMENTSPRESENTATIONDATE, $this->documentspresentationdate);
 		if ($this->isColumnModified(ShipmentReleasePeer::BANKTARIFFSPAYMENTDATE)) $criteria->add(ShipmentReleasePeer::BANKTARIFFSPAYMENTDATE, $this->banktariffspaymentdate);
 		if ($this->isColumnModified(ShipmentReleasePeer::PHYSICALRECOGNITIONDATE)) $criteria->add(ShipmentReleasePeer::PHYSICALRECOGNITIONDATE, $this->physicalrecognitiondate);
@@ -1740,6 +1786,7 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 	{
 		$copyObj->setCreatedat($this->createdat);
 		$copyObj->setShipmentid($this->shipmentid);
+		$copyObj->setStatus($this->status);
 		$copyObj->setDocumentspresentationdate($this->documentspresentationdate);
 		$copyObj->setBanktariffspaymentdate($this->banktariffspaymentdate);
 		$copyObj->setPhysicalrecognitiondate($this->physicalrecognitiondate);
@@ -1850,6 +1897,7 @@ abstract class BaseShipmentRelease extends BaseObject  implements Persistent
 		$this->id = null;
 		$this->createdat = null;
 		$this->shipmentid = null;
+		$this->status = null;
 		$this->documentspresentationdate = null;
 		$this->banktariffspaymentdate = null;
 		$this->physicalrecognitiondate = null;
