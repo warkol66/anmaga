@@ -26,7 +26,7 @@ abstract class BaseShipmentPeer {
 	const TM_CLASS = 'ShipmentTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 17;
+	const NUM_COLUMNS = 18;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -40,8 +40,11 @@ abstract class BaseShipmentPeer {
 	/** the column name for the SUPPLIERPURCHASEORDERID field */
 	const SUPPLIERPURCHASEORDERID = 'import_shipment.SUPPLIERPURCHASEORDERID';
 
-	/** the column name for the CONTAINERSREALCOUNT field */
-	const CONTAINERSREALCOUNT = 'import_shipment.CONTAINERSREALCOUNT';
+	/** the column name for the CONTAINERSREALCOUNT20 field */
+	const CONTAINERSREALCOUNT20 = 'import_shipment.CONTAINERSREALCOUNT20';
+
+	/** the column name for the CONTAINERSREALCOUNT40 field */
+	const CONTAINERSREALCOUNT40 = 'import_shipment.CONTAINERSREALCOUNT40';
 
 	/** the column name for the CONTAINERSNUMBERS field */
 	const CONTAINERSNUMBERS = 'import_shipment.CONTAINERSNUMBERS';
@@ -98,12 +101,12 @@ abstract class BaseShipmentPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Createdat', 'Supplierpurchaseorderid', 'Containersrealcount', 'Containersnumbers', 'Pickupdate', 'Shipmentdate', 'Blnumber', 'Vesselname', 'Estimateddeparturedate', 'Departuredate', 'Arrivalportid', 'Arrivaltopanamadate', 'Transshipmentdate', 'Telexrelease', 'Estimatedarrivaldate', 'Arrivaldate', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdat', 'supplierpurchaseorderid', 'containersrealcount', 'containersnumbers', 'pickupdate', 'shipmentdate', 'blnumber', 'vesselname', 'estimateddeparturedate', 'departuredate', 'arrivalportid', 'arrivaltopanamadate', 'transshipmentdate', 'telexrelease', 'estimatedarrivaldate', 'arrivaldate', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATEDAT, self::SUPPLIERPURCHASEORDERID, self::CONTAINERSREALCOUNT, self::CONTAINERSNUMBERS, self::PICKUPDATE, self::SHIPMENTDATE, self::BLNUMBER, self::VESSELNAME, self::ESTIMATEDDEPARTUREDATE, self::DEPARTUREDATE, self::ARRIVALPORTID, self::ARRIVALTOPANAMADATE, self::TRANSSHIPMENTDATE, self::TELEXRELEASE, self::ESTIMATEDARRIVALDATE, self::ARRIVALDATE, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CREATEDAT', 'SUPPLIERPURCHASEORDERID', 'CONTAINERSREALCOUNT', 'CONTAINERSNUMBERS', 'PICKUPDATE', 'SHIPMENTDATE', 'BLNUMBER', 'VESSELNAME', 'ESTIMATEDDEPARTUREDATE', 'DEPARTUREDATE', 'ARRIVALPORTID', 'ARRIVALTOPANAMADATE', 'TRANSSHIPMENTDATE', 'TELEXRELEASE', 'ESTIMATEDARRIVALDATE', 'ARRIVALDATE', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'createdAt', 'supplierPurchaseOrderId', 'containersRealCount', 'containersNumbers', 'pickupDate', 'shipmentDate', 'blNumber', 'vesselName', 'estimatedDepartureDate', 'departureDate', 'arrivalPortId', 'arrivalToPanamaDate', 'transshipmentDate', 'telexRelease', 'estimatedArrivalDate', 'arrivalDate', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Createdat', 'Supplierpurchaseorderid', 'Containersrealcount20', 'Containersrealcount40', 'Containersnumbers', 'Pickupdate', 'Shipmentdate', 'Blnumber', 'Vesselname', 'Estimateddeparturedate', 'Departuredate', 'Arrivalportid', 'Arrivaltopanamadate', 'Transshipmentdate', 'Telexrelease', 'Estimatedarrivaldate', 'Arrivaldate', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'createdat', 'supplierpurchaseorderid', 'containersrealcount20', 'containersrealcount40', 'containersnumbers', 'pickupdate', 'shipmentdate', 'blnumber', 'vesselname', 'estimateddeparturedate', 'departuredate', 'arrivalportid', 'arrivaltopanamadate', 'transshipmentdate', 'telexrelease', 'estimatedarrivaldate', 'arrivaldate', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATEDAT, self::SUPPLIERPURCHASEORDERID, self::CONTAINERSREALCOUNT20, self::CONTAINERSREALCOUNT40, self::CONTAINERSNUMBERS, self::PICKUPDATE, self::SHIPMENTDATE, self::BLNUMBER, self::VESSELNAME, self::ESTIMATEDDEPARTUREDATE, self::DEPARTUREDATE, self::ARRIVALPORTID, self::ARRIVALTOPANAMADATE, self::TRANSSHIPMENTDATE, self::TELEXRELEASE, self::ESTIMATEDARRIVALDATE, self::ARRIVALDATE, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CREATEDAT', 'SUPPLIERPURCHASEORDERID', 'CONTAINERSREALCOUNT20', 'CONTAINERSREALCOUNT40', 'CONTAINERSNUMBERS', 'PICKUPDATE', 'SHIPMENTDATE', 'BLNUMBER', 'VESSELNAME', 'ESTIMATEDDEPARTUREDATE', 'DEPARTUREDATE', 'ARRIVALPORTID', 'ARRIVALTOPANAMADATE', 'TRANSSHIPMENTDATE', 'TELEXRELEASE', 'ESTIMATEDARRIVALDATE', 'ARRIVALDATE', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'createdAt', 'supplierPurchaseOrderId', 'containersRealCount20', 'containersRealCount40', 'containersNumbers', 'pickupDate', 'shipmentDate', 'blNumber', 'vesselName', 'estimatedDepartureDate', 'departureDate', 'arrivalPortId', 'arrivalToPanamaDate', 'transshipmentDate', 'telexRelease', 'estimatedArrivalDate', 'arrivalDate', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
 	);
 
 	/**
@@ -113,12 +116,12 @@ abstract class BaseShipmentPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Createdat' => 1, 'Supplierpurchaseorderid' => 2, 'Containersrealcount' => 3, 'Containersnumbers' => 4, 'Pickupdate' => 5, 'Shipmentdate' => 6, 'Blnumber' => 7, 'Vesselname' => 8, 'Estimateddeparturedate' => 9, 'Departuredate' => 10, 'Arrivalportid' => 11, 'Arrivaltopanamadate' => 12, 'Transshipmentdate' => 13, 'Telexrelease' => 14, 'Estimatedarrivaldate' => 15, 'Arrivaldate' => 16, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdat' => 1, 'supplierpurchaseorderid' => 2, 'containersrealcount' => 3, 'containersnumbers' => 4, 'pickupdate' => 5, 'shipmentdate' => 6, 'blnumber' => 7, 'vesselname' => 8, 'estimateddeparturedate' => 9, 'departuredate' => 10, 'arrivalportid' => 11, 'arrivaltopanamadate' => 12, 'transshipmentdate' => 13, 'telexrelease' => 14, 'estimatedarrivaldate' => 15, 'arrivaldate' => 16, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATEDAT => 1, self::SUPPLIERPURCHASEORDERID => 2, self::CONTAINERSREALCOUNT => 3, self::CONTAINERSNUMBERS => 4, self::PICKUPDATE => 5, self::SHIPMENTDATE => 6, self::BLNUMBER => 7, self::VESSELNAME => 8, self::ESTIMATEDDEPARTUREDATE => 9, self::DEPARTUREDATE => 10, self::ARRIVALPORTID => 11, self::ARRIVALTOPANAMADATE => 12, self::TRANSSHIPMENTDATE => 13, self::TELEXRELEASE => 14, self::ESTIMATEDARRIVALDATE => 15, self::ARRIVALDATE => 16, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CREATEDAT' => 1, 'SUPPLIERPURCHASEORDERID' => 2, 'CONTAINERSREALCOUNT' => 3, 'CONTAINERSNUMBERS' => 4, 'PICKUPDATE' => 5, 'SHIPMENTDATE' => 6, 'BLNUMBER' => 7, 'VESSELNAME' => 8, 'ESTIMATEDDEPARTUREDATE' => 9, 'DEPARTUREDATE' => 10, 'ARRIVALPORTID' => 11, 'ARRIVALTOPANAMADATE' => 12, 'TRANSSHIPMENTDATE' => 13, 'TELEXRELEASE' => 14, 'ESTIMATEDARRIVALDATE' => 15, 'ARRIVALDATE' => 16, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'createdAt' => 1, 'supplierPurchaseOrderId' => 2, 'containersRealCount' => 3, 'containersNumbers' => 4, 'pickupDate' => 5, 'shipmentDate' => 6, 'blNumber' => 7, 'vesselName' => 8, 'estimatedDepartureDate' => 9, 'departureDate' => 10, 'arrivalPortId' => 11, 'arrivalToPanamaDate' => 12, 'transshipmentDate' => 13, 'telexRelease' => 14, 'estimatedArrivalDate' => 15, 'arrivalDate' => 16, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Createdat' => 1, 'Supplierpurchaseorderid' => 2, 'Containersrealcount20' => 3, 'Containersrealcount40' => 4, 'Containersnumbers' => 5, 'Pickupdate' => 6, 'Shipmentdate' => 7, 'Blnumber' => 8, 'Vesselname' => 9, 'Estimateddeparturedate' => 10, 'Departuredate' => 11, 'Arrivalportid' => 12, 'Arrivaltopanamadate' => 13, 'Transshipmentdate' => 14, 'Telexrelease' => 15, 'Estimatedarrivaldate' => 16, 'Arrivaldate' => 17, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'createdat' => 1, 'supplierpurchaseorderid' => 2, 'containersrealcount20' => 3, 'containersrealcount40' => 4, 'containersnumbers' => 5, 'pickupdate' => 6, 'shipmentdate' => 7, 'blnumber' => 8, 'vesselname' => 9, 'estimateddeparturedate' => 10, 'departuredate' => 11, 'arrivalportid' => 12, 'arrivaltopanamadate' => 13, 'transshipmentdate' => 14, 'telexrelease' => 15, 'estimatedarrivaldate' => 16, 'arrivaldate' => 17, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATEDAT => 1, self::SUPPLIERPURCHASEORDERID => 2, self::CONTAINERSREALCOUNT20 => 3, self::CONTAINERSREALCOUNT40 => 4, self::CONTAINERSNUMBERS => 5, self::PICKUPDATE => 6, self::SHIPMENTDATE => 7, self::BLNUMBER => 8, self::VESSELNAME => 9, self::ESTIMATEDDEPARTUREDATE => 10, self::DEPARTUREDATE => 11, self::ARRIVALPORTID => 12, self::ARRIVALTOPANAMADATE => 13, self::TRANSSHIPMENTDATE => 14, self::TELEXRELEASE => 15, self::ESTIMATEDARRIVALDATE => 16, self::ARRIVALDATE => 17, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CREATEDAT' => 1, 'SUPPLIERPURCHASEORDERID' => 2, 'CONTAINERSREALCOUNT20' => 3, 'CONTAINERSREALCOUNT40' => 4, 'CONTAINERSNUMBERS' => 5, 'PICKUPDATE' => 6, 'SHIPMENTDATE' => 7, 'BLNUMBER' => 8, 'VESSELNAME' => 9, 'ESTIMATEDDEPARTUREDATE' => 10, 'DEPARTUREDATE' => 11, 'ARRIVALPORTID' => 12, 'ARRIVALTOPANAMADATE' => 13, 'TRANSSHIPMENTDATE' => 14, 'TELEXRELEASE' => 15, 'ESTIMATEDARRIVALDATE' => 16, 'ARRIVALDATE' => 17, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'createdAt' => 1, 'supplierPurchaseOrderId' => 2, 'containersRealCount20' => 3, 'containersRealCount40' => 4, 'containersNumbers' => 5, 'pickupDate' => 6, 'shipmentDate' => 7, 'blNumber' => 8, 'vesselName' => 9, 'estimatedDepartureDate' => 10, 'departureDate' => 11, 'arrivalPortId' => 12, 'arrivalToPanamaDate' => 13, 'transshipmentDate' => 14, 'telexRelease' => 15, 'estimatedArrivalDate' => 16, 'arrivalDate' => 17, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
 	);
 
 	/**
@@ -193,7 +196,8 @@ abstract class BaseShipmentPeer {
 			$criteria->addSelectColumn(ShipmentPeer::ID);
 			$criteria->addSelectColumn(ShipmentPeer::CREATEDAT);
 			$criteria->addSelectColumn(ShipmentPeer::SUPPLIERPURCHASEORDERID);
-			$criteria->addSelectColumn(ShipmentPeer::CONTAINERSREALCOUNT);
+			$criteria->addSelectColumn(ShipmentPeer::CONTAINERSREALCOUNT20);
+			$criteria->addSelectColumn(ShipmentPeer::CONTAINERSREALCOUNT40);
 			$criteria->addSelectColumn(ShipmentPeer::CONTAINERSNUMBERS);
 			$criteria->addSelectColumn(ShipmentPeer::PICKUPDATE);
 			$criteria->addSelectColumn(ShipmentPeer::SHIPMENTDATE);
@@ -211,7 +215,8 @@ abstract class BaseShipmentPeer {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.CREATEDAT');
 			$criteria->addSelectColumn($alias . '.SUPPLIERPURCHASEORDERID');
-			$criteria->addSelectColumn($alias . '.CONTAINERSREALCOUNT');
+			$criteria->addSelectColumn($alias . '.CONTAINERSREALCOUNT20');
+			$criteria->addSelectColumn($alias . '.CONTAINERSREALCOUNT40');
 			$criteria->addSelectColumn($alias . '.CONTAINERSNUMBERS');
 			$criteria->addSelectColumn($alias . '.PICKUPDATE');
 			$criteria->addSelectColumn($alias . '.SHIPMENTDATE');

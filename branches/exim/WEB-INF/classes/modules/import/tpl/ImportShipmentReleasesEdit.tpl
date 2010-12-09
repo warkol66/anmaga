@@ -28,12 +28,16 @@
 					</p>
 					<div class="itemInfo" style="display: none;">
 						<p>
-							<label for="weight">Peso</label>
-							<span id="weight" title="Peso" >|-$item->getUnitGrossWeigth()-|</span>
+							<label for="quantity_|-$item->getId()-|">Cantidad</label>
+							<span id="quantity_|-$item->getId()-|" title="Cantidad" >|-$item->getQuantity()-|</span>
 						</p>
 						<p>
-							<label for="volume">Volumen</label>
-							<span id="volume" title="Volumen" >|-$item->getVolume()-|</span>
+							<label for="weight_|-$item->getId()-|">Peso Total</label>
+							<span id="weight_|-$item->getId()-|" title="Peso Total" >|-$item->getTotalWeigth()-|</span>
+						</p>
+						<p>
+							<label for="volume_|-$item->getId()-|">Volumen Total</label>
+							<span id="volume_|-$item->getId()-|" title="Volumen Total" >|-$item->getTotalVolume()-|</span>
 						</p>	
 					</div>
 				</div>

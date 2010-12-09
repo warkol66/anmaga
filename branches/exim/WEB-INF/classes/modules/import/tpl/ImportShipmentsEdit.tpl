@@ -32,29 +32,45 @@
 					</p>
 					<div class="itemInfo" style="display: none;">
 						<p>
-							<label for="weight">Peso</label>
-							<span id="weight" title="Peso" >|-$item->getUnitGrossWeigth()-|</span>
+							<label for="quantity_|-$item->getId()-|">Cantidad</label>
+							<span id="quantity_|-$item->getId()-|" title="Cantidad" >|-$item->getQuantity()-|</span>
 						</p>
 						<p>
-							<label for="volume">Volumen</label>
-							<span id="volume" title="Volumen" >|-$item->getVolume()-|</span>
+							<label for="weight_|-$item->getId()-|">Peso Total</label>
+							<span id="weight_|-$item->getId()-|" title="Peso Total" >|-$item->getTotalWeigth()-|</span>
+						</p>
+						<p>
+							<label for="volume_|-$item->getId()-|">Volumen Total</label>
+							<span id="volume_|-$item->getId()-|" title="Volumen Total" >|-$item->getTotalVolume()-|</span>
 						</p>	
 						<p>
-							<label for="departurePortName">Puerto de salida</label>
-							<span id="departurePortName" title="Puerto de salida">|-$port->getName()-|</span>
-						</p>														
+							<label for="departurePortName_|-$item->getId()-|">Puerto de salida</label>
+							<span id="departurePortName_|-$item->getId()-|" title="Puerto de salida">|-$port->getName()-|</span>
+						</p>
+						<p>
+						|-assign var=container value=$item->getRecommendedContainer()-|	
+							<label for="estimatedRequiredContainers_|-$item->getId()-|">Containers requeridos (estimados)</label>
+							<span id="estimatedRequiredContainers_|-$item->getId()-|" title="Containers requeridos (estimados)" >|-$item->getRecommendedContainersQuantity()|number_format:3:",":"."-| contenedores de |-$container.type-|</span>
+						</p>
 					</div>
 				</div>
 			|-/foreach-|
-			<!-- TODO: ver como se hace este cálculo 
+			|-assign var=totalContainersQuantity value=$supplierPurchaseOrder->getContainersQuantityAssoc()-|	
 			<p>
 				<label for="estimatedRequiredContainers">Containers requeridos (estimados)</label>
-				<span id="estimatedRequiredContainers" title="Containers requeridos (estimados)" ></span>
+				<span id="estimatedRequiredContainers" title="Containers requeridos (estimados)" >
+				|-foreach from=$totalContainersQuantity key=type item=quantity-|
+					|-$quantity|number_format:3:",":"."-| contenedores de |-$type-|<br />
+				|-/foreach-|
+				</span>
 			</p>
-			-->
 			<p>
-				<label for="requiredContainers">Containers utilizados (reales)</label>
-				<input type="text" name="shipment[containersRealCount]" cols="70" rows="7" wrap="virtual" id="requiredContainers" title="Containers utilizados (reales)" value="|-$shipment->getContainersRealCount()-|"/>
+				<label for="requiredContainers20">Containers utilizados (reales) de 20'</label>
+				<input type="text" name="shipment[containersRealCount20]" cols="70" rows="7" wrap="virtual" id="requiredContainers20" title="Containers utilizados (reales) de 20'" value="|-$shipment->getContainersRealCount20()-|"/>
+			</p>
+			<p>
+				<label for="requiredContainers40">Containers utilizados (reales) de 40'</label>
+				<input type="text" name="shipment[containersRealCount40]" cols="70" rows="7" wrap="virtual" id="requiredContainers40" title="Containers utilizados (reales) de 40'" value="|-$shipment->getContainersRealCount40()-|"/>
 			</p>
 			<p>
 				<label for="containersNumbers">Números de los contenedores</label>

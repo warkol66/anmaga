@@ -43,10 +43,16 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	protected $supplierpurchaseorderid;
 
 	/**
-	 * The value for the containersrealcount field.
+	 * The value for the containersrealcount20 field.
 	 * @var        int
 	 */
-	protected $containersrealcount;
+	protected $containersrealcount20;
+
+	/**
+	 * The value for the containersrealcount40 field.
+	 * @var        int
+	 */
+	protected $containersrealcount40;
 
 	/**
 	 * The value for the containersnumbers field.
@@ -214,13 +220,23 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [containersrealcount] column value.
-	 * Cantidad real de containers
+	 * Get the [containersrealcount20] column value.
+	 * Cantidad real de containers de 20'
 	 * @return     int
 	 */
-	public function getContainersrealcount()
+	public function getContainersrealcount20()
 	{
-		return $this->containersrealcount;
+		return $this->containersrealcount20;
+	}
+
+	/**
+	 * Get the [containersrealcount40] column value.
+	 * Cantidad real de containers de 40'
+	 * @return     int
+	 */
+	public function getContainersrealcount40()
+	{
+		return $this->containersrealcount40;
 	}
 
 	/**
@@ -671,24 +687,44 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	} // setSupplierpurchaseorderid()
 
 	/**
-	 * Set the value of [containersrealcount] column.
-	 * Cantidad real de containers
+	 * Set the value of [containersrealcount20] column.
+	 * Cantidad real de containers de 20'
 	 * @param      int $v new value
 	 * @return     Shipment The current object (for fluent API support)
 	 */
-	public function setContainersrealcount($v)
+	public function setContainersrealcount20($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->containersrealcount !== $v) {
-			$this->containersrealcount = $v;
-			$this->modifiedColumns[] = ShipmentPeer::CONTAINERSREALCOUNT;
+		if ($this->containersrealcount20 !== $v) {
+			$this->containersrealcount20 = $v;
+			$this->modifiedColumns[] = ShipmentPeer::CONTAINERSREALCOUNT20;
 		}
 
 		return $this;
-	} // setContainersrealcount()
+	} // setContainersrealcount20()
+
+	/**
+	 * Set the value of [containersrealcount40] column.
+	 * Cantidad real de containers de 40'
+	 * @param      int $v new value
+	 * @return     Shipment The current object (for fluent API support)
+	 */
+	public function setContainersrealcount40($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->containersrealcount40 !== $v) {
+			$this->containersrealcount40 = $v;
+			$this->modifiedColumns[] = ShipmentPeer::CONTAINERSREALCOUNT40;
+		}
+
+		return $this;
+	} // setContainersrealcount40()
 
 	/**
 	 * Set the value of [containersnumbers] column.
@@ -1221,20 +1257,21 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->createdat = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->supplierpurchaseorderid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-			$this->containersrealcount = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-			$this->containersnumbers = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-			$this->pickupdate = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-			$this->shipmentdate = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-			$this->blnumber = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-			$this->vesselname = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-			$this->estimateddeparturedate = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-			$this->departuredate = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-			$this->arrivalportid = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
-			$this->arrivaltopanamadate = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-			$this->transshipmentdate = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-			$this->telexrelease = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-			$this->estimatedarrivaldate = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-			$this->arrivaldate = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+			$this->containersrealcount20 = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+			$this->containersrealcount40 = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->containersnumbers = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->pickupdate = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->shipmentdate = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->blnumber = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+			$this->vesselname = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->estimateddeparturedate = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+			$this->departuredate = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->arrivalportid = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
+			$this->arrivaltopanamadate = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+			$this->transshipmentdate = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+			$this->telexrelease = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+			$this->estimatedarrivaldate = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+			$this->arrivaldate = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -1243,7 +1280,7 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 17; // 17 = ShipmentPeer::NUM_COLUMNS - ShipmentPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 18; // 18 = ShipmentPeer::NUM_COLUMNS - ShipmentPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Shipment object", $e);
@@ -1615,45 +1652,48 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 				return $this->getSupplierpurchaseorderid();
 				break;
 			case 3:
-				return $this->getContainersrealcount();
+				return $this->getContainersrealcount20();
 				break;
 			case 4:
-				return $this->getContainersnumbers();
+				return $this->getContainersrealcount40();
 				break;
 			case 5:
-				return $this->getPickupdate();
+				return $this->getContainersnumbers();
 				break;
 			case 6:
-				return $this->getShipmentdate();
+				return $this->getPickupdate();
 				break;
 			case 7:
-				return $this->getBlnumber();
+				return $this->getShipmentdate();
 				break;
 			case 8:
-				return $this->getVesselname();
+				return $this->getBlnumber();
 				break;
 			case 9:
-				return $this->getEstimateddeparturedate();
+				return $this->getVesselname();
 				break;
 			case 10:
-				return $this->getDeparturedate();
+				return $this->getEstimateddeparturedate();
 				break;
 			case 11:
-				return $this->getArrivalportid();
+				return $this->getDeparturedate();
 				break;
 			case 12:
-				return $this->getArrivaltopanamadate();
+				return $this->getArrivalportid();
 				break;
 			case 13:
-				return $this->getTransshipmentdate();
+				return $this->getArrivaltopanamadate();
 				break;
 			case 14:
-				return $this->getTelexrelease();
+				return $this->getTransshipmentdate();
 				break;
 			case 15:
-				return $this->getEstimatedarrivaldate();
+				return $this->getTelexrelease();
 				break;
 			case 16:
+				return $this->getEstimatedarrivaldate();
+				break;
+			case 17:
 				return $this->getArrivaldate();
 				break;
 			default:
@@ -1683,20 +1723,21 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getCreatedat(),
 			$keys[2] => $this->getSupplierpurchaseorderid(),
-			$keys[3] => $this->getContainersrealcount(),
-			$keys[4] => $this->getContainersnumbers(),
-			$keys[5] => $this->getPickupdate(),
-			$keys[6] => $this->getShipmentdate(),
-			$keys[7] => $this->getBlnumber(),
-			$keys[8] => $this->getVesselname(),
-			$keys[9] => $this->getEstimateddeparturedate(),
-			$keys[10] => $this->getDeparturedate(),
-			$keys[11] => $this->getArrivalportid(),
-			$keys[12] => $this->getArrivaltopanamadate(),
-			$keys[13] => $this->getTransshipmentdate(),
-			$keys[14] => $this->getTelexrelease(),
-			$keys[15] => $this->getEstimatedarrivaldate(),
-			$keys[16] => $this->getArrivaldate(),
+			$keys[3] => $this->getContainersrealcount20(),
+			$keys[4] => $this->getContainersrealcount40(),
+			$keys[5] => $this->getContainersnumbers(),
+			$keys[6] => $this->getPickupdate(),
+			$keys[7] => $this->getShipmentdate(),
+			$keys[8] => $this->getBlnumber(),
+			$keys[9] => $this->getVesselname(),
+			$keys[10] => $this->getEstimateddeparturedate(),
+			$keys[11] => $this->getDeparturedate(),
+			$keys[12] => $this->getArrivalportid(),
+			$keys[13] => $this->getArrivaltopanamadate(),
+			$keys[14] => $this->getTransshipmentdate(),
+			$keys[15] => $this->getTelexrelease(),
+			$keys[16] => $this->getEstimatedarrivaldate(),
+			$keys[17] => $this->getArrivaldate(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aSupplierPurchaseOrder) {
@@ -1746,45 +1787,48 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 				$this->setSupplierpurchaseorderid($value);
 				break;
 			case 3:
-				$this->setContainersrealcount($value);
+				$this->setContainersrealcount20($value);
 				break;
 			case 4:
-				$this->setContainersnumbers($value);
+				$this->setContainersrealcount40($value);
 				break;
 			case 5:
-				$this->setPickupdate($value);
+				$this->setContainersnumbers($value);
 				break;
 			case 6:
-				$this->setShipmentdate($value);
+				$this->setPickupdate($value);
 				break;
 			case 7:
-				$this->setBlnumber($value);
+				$this->setShipmentdate($value);
 				break;
 			case 8:
-				$this->setVesselname($value);
+				$this->setBlnumber($value);
 				break;
 			case 9:
-				$this->setEstimateddeparturedate($value);
+				$this->setVesselname($value);
 				break;
 			case 10:
-				$this->setDeparturedate($value);
+				$this->setEstimateddeparturedate($value);
 				break;
 			case 11:
-				$this->setArrivalportid($value);
+				$this->setDeparturedate($value);
 				break;
 			case 12:
-				$this->setArrivaltopanamadate($value);
+				$this->setArrivalportid($value);
 				break;
 			case 13:
-				$this->setTransshipmentdate($value);
+				$this->setArrivaltopanamadate($value);
 				break;
 			case 14:
-				$this->setTelexrelease($value);
+				$this->setTransshipmentdate($value);
 				break;
 			case 15:
-				$this->setEstimatedarrivaldate($value);
+				$this->setTelexrelease($value);
 				break;
 			case 16:
+				$this->setEstimatedarrivaldate($value);
+				break;
+			case 17:
 				$this->setArrivaldate($value);
 				break;
 		} // switch()
@@ -1814,20 +1858,21 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setCreatedat($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setSupplierpurchaseorderid($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setContainersrealcount($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setContainersnumbers($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setPickupdate($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setShipmentdate($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setBlnumber($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setVesselname($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setEstimateddeparturedate($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setDeparturedate($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setArrivalportid($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setArrivaltopanamadate($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setTransshipmentdate($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setTelexrelease($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setEstimatedarrivaldate($arr[$keys[15]]);
-		if (array_key_exists($keys[16], $arr)) $this->setArrivaldate($arr[$keys[16]]);
+		if (array_key_exists($keys[3], $arr)) $this->setContainersrealcount20($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setContainersrealcount40($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setContainersnumbers($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setPickupdate($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setShipmentdate($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setBlnumber($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setVesselname($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setEstimateddeparturedate($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setDeparturedate($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setArrivalportid($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setArrivaltopanamadate($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setTransshipmentdate($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setTelexrelease($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setEstimatedarrivaldate($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setArrivaldate($arr[$keys[17]]);
 	}
 
 	/**
@@ -1842,7 +1887,8 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ShipmentPeer::ID)) $criteria->add(ShipmentPeer::ID, $this->id);
 		if ($this->isColumnModified(ShipmentPeer::CREATEDAT)) $criteria->add(ShipmentPeer::CREATEDAT, $this->createdat);
 		if ($this->isColumnModified(ShipmentPeer::SUPPLIERPURCHASEORDERID)) $criteria->add(ShipmentPeer::SUPPLIERPURCHASEORDERID, $this->supplierpurchaseorderid);
-		if ($this->isColumnModified(ShipmentPeer::CONTAINERSREALCOUNT)) $criteria->add(ShipmentPeer::CONTAINERSREALCOUNT, $this->containersrealcount);
+		if ($this->isColumnModified(ShipmentPeer::CONTAINERSREALCOUNT20)) $criteria->add(ShipmentPeer::CONTAINERSREALCOUNT20, $this->containersrealcount20);
+		if ($this->isColumnModified(ShipmentPeer::CONTAINERSREALCOUNT40)) $criteria->add(ShipmentPeer::CONTAINERSREALCOUNT40, $this->containersrealcount40);
 		if ($this->isColumnModified(ShipmentPeer::CONTAINERSNUMBERS)) $criteria->add(ShipmentPeer::CONTAINERSNUMBERS, $this->containersnumbers);
 		if ($this->isColumnModified(ShipmentPeer::PICKUPDATE)) $criteria->add(ShipmentPeer::PICKUPDATE, $this->pickupdate);
 		if ($this->isColumnModified(ShipmentPeer::SHIPMENTDATE)) $criteria->add(ShipmentPeer::SHIPMENTDATE, $this->shipmentdate);
@@ -1919,7 +1965,8 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 	{
 		$copyObj->setCreatedat($this->createdat);
 		$copyObj->setSupplierpurchaseorderid($this->supplierpurchaseorderid);
-		$copyObj->setContainersrealcount($this->containersrealcount);
+		$copyObj->setContainersrealcount20($this->containersrealcount20);
+		$copyObj->setContainersrealcount40($this->containersrealcount40);
 		$copyObj->setContainersnumbers($this->containersnumbers);
 		$copyObj->setPickupdate($this->pickupdate);
 		$copyObj->setShipmentdate($this->shipmentdate);
@@ -2205,7 +2252,8 @@ abstract class BaseShipment extends BaseObject  implements Persistent
 		$this->id = null;
 		$this->createdat = null;
 		$this->supplierpurchaseorderid = null;
-		$this->containersrealcount = null;
+		$this->containersrealcount20 = null;
+		$this->containersrealcount40 = null;
 		$this->containersnumbers = null;
 		$this->pickupdate = null;
 		$this->shipmentdate = null;

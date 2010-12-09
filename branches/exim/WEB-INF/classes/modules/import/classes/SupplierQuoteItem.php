@@ -29,10 +29,18 @@ class SupplierQuoteItem extends BaseSupplierQuoteItem {
 								SupplierQuoteItem::STATUS_NEW => 'New',
 								SupplierQuoteItem::STATUS_QUOTED => 'Quoted',
 								SupplierQuoteItem::STATUS_FEEDBACK => 'Feedback'								
-							);	
-	
+							);
+
+	private $containers;
+							
 	const PACKAGE_BY_UNIT = 1;
 	const PACKAGE_BY_CARTON = 2;
+	
+	function __construct() {
+		parent::__construct();
+		global $system;
+		$this->containers = $system["config"]["import"]["containers"];
+	}
 	
 	/**
 	 * Calcula el volumen en m3 segun la informacion ingresada en la cotizacion sobre la unidad
@@ -219,6 +227,45 @@ class SupplierQuoteItem extends BaseSupplierQuoteItem {
 	public function hasProductBeingReplaced() {
 		$replacedProduct = $this->getReplacedProduct();
 		return (!empty($replacedProduct));
+	}
+	
+	/**
+	 * Devuelve la densidad unitaria si no es 0, en caso contrario devuelve
+	 * la densidad por bulto.
+	 */
+	public function getDensity() {
+		$density = $this->getUnitDensity();
+		if ($density != 0)
+			return $density;
+		return $this->getCartonDensity();
+	}
+	
+	/**
+	 * Devuelve un array asociativo teniendo type, weightCap y volumeCap.
+	 */
+	public function getRecommendedContainer() {
+		$density = $this->getDensity();
+		if ($density > $this->containers['densityThreshold'])
+			return $this->containers['container1'];
+		return $this->containers['container2'];
+	}
+	
+	public function getRecommendedContainersQuantityByWeight() {
+		$container = $this->getRecommendedContainer();
+		$weigthCap = $container['weightCap'];
+		$totalWeigth = $this->getTotalWeigth();
+		return $totalWeigth / $weigthCap;
+	}
+	
+	public function getRecommendedContainersQuantityByVolume() {
+		$container = $this->getRecommendedContainer();
+		$volumeCap = $container['volumeCap'];
+		$totalVolume = $this->getTotalVolume();
+		return $totalVolume / $volumeCap;
+	}
+	
+	public function getRecommendedContainersQuantity() {
+		return max($this->getRecommendedContainersQuantityByWeight(), $this->getRecommendedContainersQuantityByVolume());
 	}
 
 } // SupplierQuoteItem
