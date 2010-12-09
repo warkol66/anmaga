@@ -26,6 +26,20 @@ class Shipment extends BaseShipment {
 		Shipment::STATUS_ARRIVED => 'Arrived'
 	);
 	
+    /**
+     * Code to be run before persisting the object
+     * @param PropelPDO $con 
+     * @return bloolean 
+     */
+    public function preSave(PropelPDO $con = null) {
+    	$ret = parent::preSave($con);
+    	if ($ret) {
+    		//Mantenemos la concistencia del status (campo calculable).
+    		$this->setStatus($this->calculateStatus());
+    	}
+        return $ret;
+    }
+    
 	public function save(PropelPDO $con = null) {
 		try {
 			if ($this->validate()) { 
@@ -58,14 +72,23 @@ class Shipment extends BaseShipment {
 		return false;
 	}
 	
-	public function getStatusName() {
+	/**
+	 * Calcula el estado actual en base a los campos correspondientes.
+	 * Usar esta función en lugar de getStatus() siempre que se tenga
+	 * un objeto modificado que aún no fue guardado para garantizar la
+	 * consistencia de la información.
+	 */
+	public function calculateStatus() {
 		if ($this->isArrived())
-			return $this->statusNames[Shipment::STATUS_ARRIVED];
+			return Shipment::STATUS_ARRIVED;
 			
 		if ($this->isOnRoute())
-			return $this->statusNames[Shipment::STATUS_ON_ROUTE];
+			return Shipment::STATUS_ON_ROUTE;
 			
-		return $this->statusNames[Shipment::STATUS_WAITING_FOR_TRANSPORT];
+		return Shipment::STATUS_WAITING_FOR_TRANSPORT;
 	}
-
+	
+	public function getStatusName() {		
+		return $this->statusNames[$this->calculateStatus()];
+	}
 } // Shipment

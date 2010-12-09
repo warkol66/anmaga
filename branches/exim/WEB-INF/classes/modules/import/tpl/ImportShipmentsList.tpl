@@ -20,16 +20,15 @@
 				|-/foreach-|
 			</select>
 		</p>
-		<!-- Falta implementar para que funcione esto
 		<p>
-			<label for="filters[adminStatus]">Estado</label>
-			<select name="filters[adminStatus]">
+			<label for="filters[searchStatus]">Estado</label>
+			<select name="filters[searchStatus]">
 					<option value="">Seleccione Un Estado</option>
-				|-foreach from=$status item=stat name=for_status-|
-					<option value="|-$stat-|" |-if $filters neq '' and $filters.adminStatus eq $stat -|selected="selected"|-/if-|>|-$stat|multilang_get_translation:"import"-|</option>
+				|-foreach from=$status key=key item=stat name=for_status-|
+					<option value="|-$key-|" |-if $filters neq '' and $filters.searchStatus eq $key -|selected="selected"|-/if-|>|-$stat|multilang_get_translation:"import"-|</option>
 				|-/foreach-|
 			</select>
-		</p> -->
+		</p>
 		<p>
 			<input type="hidden" name="do" value="importShipmentsList" />
 			<input type="submit" value="Aplicar Filtro"/>

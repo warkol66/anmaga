@@ -40,6 +40,7 @@ class ShipmentTableMap extends TableMap {
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('CREATEDAT', 'Createdat', 'TIMESTAMP', true, null, null);
 		$this->addForeignKey('SUPPLIERPURCHASEORDERID', 'Supplierpurchaseorderid', 'INTEGER', 'import_supplierPurchaseOrder', 'ID', true, null, null);
+		$this->addColumn('STATUS', 'Status', 'INTEGER', true, null, null);
 		$this->addColumn('CONTAINERSREALCOUNT20', 'Containersrealcount20', 'INTEGER', false, null, null);
 		$this->addColumn('CONTAINERSREALCOUNT40', 'Containersrealcount40', 'INTEGER', false, null, null);
 		$this->addColumn('CONTAINERSNUMBERS', 'Containersnumbers', 'LONGVARCHAR', false, null, null);
