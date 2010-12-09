@@ -406,7 +406,8 @@
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id del envio" autoIncrement="true"/>
 		<column name="createdAt" required="true"  type="TIMESTAMP"  description="Creation date for"/>
 		<column name="supplierPurchaseOrderId" type="INTEGER" description="Supplier Purchase Order" required="true" />
-		<column name="containersRealCount" type="INTEGER" description="Cantidad real de containers" />
+		<column name="containersRealCount20" type="INTEGER" description="Cantidad real de containers de 20'" />
+		<column name="containersRealCount40" type="INTEGER" description="Cantidad real de containers de 40'" />
 		<column name="containersNumbers" type="LONGVARCHAR" description="Numeros de los contenedores" />
 		<column name="pickupDate" type="DATE" description="Fecha de retiro de la mercancia" />
 		<column name="shipmentDate" type="DATE" description="Fecha de embarque" />

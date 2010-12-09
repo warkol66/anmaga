@@ -161,5 +161,18 @@
 			<value>NO</value>
 			<element_type>YES/NO</element_type>
 		</quantityOnQuote>
+		<containers>
+			<densityThreshold>320</densityThreshold>
+			<container1>
+				<type>20'</type>
+				<weightCap>21800</weightCap>
+				<volumeCap>33</volumeCap>
+			</container1>
+			<container2>
+				<type>40'</type>
+				<weightCap>26000</weightCap>
+				<volumeCap>67</volumeCap>			
+			</container2>
+		</containers>
 	</import>
 </config>

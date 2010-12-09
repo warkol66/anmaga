@@ -1,4 +1,11 @@
 -- =============================
+-- Revisión 598 - Fecha 20101209
+-- -----------------------------
+ALTER TABLE `import_shipment` DROP `containersRealCount`;
+ALTER TABLE `import_shipment` ADD `containersRealCount20` INTEGER   COMMENT 'Cantidad real de containers de 20\'';
+ALTER TABLE `import_shipment` ADD `containersRealCount40` INTEGER   COMMENT 'Cantidad real de containers de 40\'';
+
+-- =============================
 -- Revisión 595 - Fecha 20101207
 -- -----------------------------
 ALTER TABLE `import_shipmentRelease` DROP INDEX `import_shipmentRelease_FI_1`;

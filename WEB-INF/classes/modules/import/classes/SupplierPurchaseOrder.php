@@ -115,6 +115,24 @@ class SupplierPurchaseOrder extends BaseSupplierPurchaseOrder {
 		$status = $this->getStatus();
 		$result = ($status == SupplierPurchaseOrder::STATUS_FABRICATION_NON_INITIATED || $status == SupplierPurchaseOrder::STATUS_FABRICATION_ON_TIME || $status == SupplierPurchaseOrder::STATUS_FABRICATION_DELAYED || $status == SupplierPurchaseOrder::STATUS_FABRICATION_STOPPED);
 		return $result;
-	}	
+	}
+
+	/**
+	 * Devuelve un array asociativo con la cantidad de containers recomendada
+	 * de cada tipo para toda la carga de la orden.
+	 */
+	public function getContainersQuantityAssoc() {
+		global $system;
+		$items = $this->getSupplierPurchaseOrderItems();
+		$containers = $system["config"]["import"]["containers"];
+		$totalContainersQuantity = array($containers['container1']['type'] => 0, $containers['container2']['type'] => 0);
+		foreach ($items as $item) {
+			$recommendedContainer = $item->getRecommendedContainer();
+			$recommendedContainerType = $recommendedContainer['type'];
+			$recommendedContainersQuantity = $item->getRecommendedContainersQuantity();
+			$totalContainersQuantity[$recommendedContainerType] += $recommendedContainersQuantity;
+		}
+		return $totalContainersQuantity;
+	}
 
 } // SupplierPurchaseOrder

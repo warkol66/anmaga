@@ -77,7 +77,8 @@
 					|-/if-|
 				</td>
 				<td>
-					|-$shipment->getContainersRealCount()-|
+					|-$shipment->getContainersRealCount20()|number_format:3:",":"."-| de 20' <br />
+					|-$shipment->getContainersRealCount40()|number_format:3:",":"."-| de 40'
 				</td>
 				<td>
 					|-$shipment->getContainersNumbers()-|

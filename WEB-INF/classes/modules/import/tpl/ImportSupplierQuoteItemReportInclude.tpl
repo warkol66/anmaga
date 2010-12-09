@@ -29,23 +29,9 @@
 	</tr>
 </table>
 <br />
-	|-if $supplierQuoteItem->getUnitDensity() neq 0-|
-		|-assign var=density value=$supplierQuoteItem->getUnitDensity()-|
-	|-else-|
-		|-assign var=density value=$supplierQuoteItem->getCartonDensity()-|
-	|-/if-|
-	|-if $density gt 320-|
+	|-assign var=container value=$supplierQuoteItem->getRecommendedContainer()-|
 	|-if $supplierQuoteItem->getQuantity() > 1-|
-		|-math equation="totalWeight / containerWeightCap" containerWeightCap=21800 totalWeight=$supplierQuoteItem->getTotalWeigth() assign=weightLimit-|
-		|-math equation="totalVolume / conteinerVolumeCap" conteinerVolumeCap=33 totalVolume=$supplierQuoteItem->getTotalVolume() assign=volumeLimit-|
-		<p>Se recomienda contenedor de 20'.<br />(Límite por peso: |-$weightLimit|number_format:3:",":"."-| Contenedores / Límite por volumen: |-$volumeLimit|number_format:3:",":"."-| Contenedores )</p>
-		|-else-|
-			|-math equation="containerWeightCap / unitWeight" containerWeightCap=21800 unitWeight=$supplierQuoteItem->getTotalWeigth() assign=unitsWeigth-|
-			|-math equation="conteinerVolumeCap / unitVolume" conteinerVolumeCap=33 unitVolume=$supplierQuoteItem->getTotalVolume() assign=unitsVolume-|
-			<p>Se recomienda contenedor de 20'.<br />(Límite por peso: |-$unitsWeigth|number_format:0:",":"."-| unidades por contenedor / Límite por volumen: |-$unitsVolume|number_format:0:",":"."-| unidades por contenedor )</p>
-		|-/if-|
+		<p>Se recomienda contenedor de |-$container.type-|.<br />(Límite por peso: |-$supplierQuoteItem->getRecommendedContainersQuantityByWeight()|number_format:3:",":"."-| Contenedores / Límite por volumen: |-$supplierQuoteItem->getRecommendedContainersQuantityByVolume()|number_format:3:",":"."-| Contenedores )</p>
 	|-else-|
-		|-math equation="totalWeight / containerWeight" containerWeight=26000 totalWeight=$supplierQuoteItem->getTotalWeigth() assign=weightLimit-|
-		|-math equation="totalVolume / conteinerVolume" conteinerVolume=67 totalVolume=$supplierQuoteItem->getTotalVolume() assign=volumeLimit-|
-		<p>Se recomienda contenedor de 40'.<br />(Límite por peso: |-$weightLimit|number_format:3:",":"."-| Contenedores / Límite por volumen: |-$volumeLimit|number_format:3:",":"."-| Contenedores )</p>
+		<p>Se recomienda contenedor de |-$container.type-|.<br />(Límite por peso: |-$supplierQuoteItem->getRecommendedContainersQuantityByWeight()|number_format:0:",":"."-| unidades por contenedor / Límite por volumen: |-$supplierQuoteItem->getRecommendedContainersQuantityByVolume()|number_format:0:",":"."-| unidades por contenedor )</p>
 	|-/if-|

@@ -9,7 +9,8 @@
  * @method     ShipmentQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ShipmentQuery orderByCreatedat($order = Criteria::ASC) Order by the createdAt column
  * @method     ShipmentQuery orderBySupplierpurchaseorderid($order = Criteria::ASC) Order by the supplierPurchaseOrderId column
- * @method     ShipmentQuery orderByContainersrealcount($order = Criteria::ASC) Order by the containersRealCount column
+ * @method     ShipmentQuery orderByContainersrealcount20($order = Criteria::ASC) Order by the containersRealCount20 column
+ * @method     ShipmentQuery orderByContainersrealcount40($order = Criteria::ASC) Order by the containersRealCount40 column
  * @method     ShipmentQuery orderByContainersnumbers($order = Criteria::ASC) Order by the containersNumbers column
  * @method     ShipmentQuery orderByPickupdate($order = Criteria::ASC) Order by the pickupDate column
  * @method     ShipmentQuery orderByShipmentdate($order = Criteria::ASC) Order by the shipmentDate column
@@ -27,7 +28,8 @@
  * @method     ShipmentQuery groupById() Group by the id column
  * @method     ShipmentQuery groupByCreatedat() Group by the createdAt column
  * @method     ShipmentQuery groupBySupplierpurchaseorderid() Group by the supplierPurchaseOrderId column
- * @method     ShipmentQuery groupByContainersrealcount() Group by the containersRealCount column
+ * @method     ShipmentQuery groupByContainersrealcount20() Group by the containersRealCount20 column
+ * @method     ShipmentQuery groupByContainersrealcount40() Group by the containersRealCount40 column
  * @method     ShipmentQuery groupByContainersnumbers() Group by the containersNumbers column
  * @method     ShipmentQuery groupByPickupdate() Group by the pickupDate column
  * @method     ShipmentQuery groupByShipmentdate() Group by the shipmentDate column
@@ -64,7 +66,8 @@
  * @method     Shipment findOneById(int $id) Return the first Shipment filtered by the id column
  * @method     Shipment findOneByCreatedat(string $createdAt) Return the first Shipment filtered by the createdAt column
  * @method     Shipment findOneBySupplierpurchaseorderid(int $supplierPurchaseOrderId) Return the first Shipment filtered by the supplierPurchaseOrderId column
- * @method     Shipment findOneByContainersrealcount(int $containersRealCount) Return the first Shipment filtered by the containersRealCount column
+ * @method     Shipment findOneByContainersrealcount20(int $containersRealCount20) Return the first Shipment filtered by the containersRealCount20 column
+ * @method     Shipment findOneByContainersrealcount40(int $containersRealCount40) Return the first Shipment filtered by the containersRealCount40 column
  * @method     Shipment findOneByContainersnumbers(string $containersNumbers) Return the first Shipment filtered by the containersNumbers column
  * @method     Shipment findOneByPickupdate(string $pickupDate) Return the first Shipment filtered by the pickupDate column
  * @method     Shipment findOneByShipmentdate(string $shipmentDate) Return the first Shipment filtered by the shipmentDate column
@@ -82,7 +85,8 @@
  * @method     array findById(int $id) Return Shipment objects filtered by the id column
  * @method     array findByCreatedat(string $createdAt) Return Shipment objects filtered by the createdAt column
  * @method     array findBySupplierpurchaseorderid(int $supplierPurchaseOrderId) Return Shipment objects filtered by the supplierPurchaseOrderId column
- * @method     array findByContainersrealcount(int $containersRealCount) Return Shipment objects filtered by the containersRealCount column
+ * @method     array findByContainersrealcount20(int $containersRealCount20) Return Shipment objects filtered by the containersRealCount20 column
+ * @method     array findByContainersrealcount40(int $containersRealCount40) Return Shipment objects filtered by the containersRealCount40 column
  * @method     array findByContainersnumbers(string $containersNumbers) Return Shipment objects filtered by the containersNumbers column
  * @method     array findByPickupdate(string $pickupDate) Return Shipment objects filtered by the pickupDate column
  * @method     array findByShipmentdate(string $shipmentDate) Return Shipment objects filtered by the shipmentDate column
@@ -285,24 +289,24 @@ abstract class BaseShipmentQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query on the containersRealCount column
+	 * Filter the query on the containersRealCount20 column
 	 * 
-	 * @param     int|array $containersrealcount The value to use as filter.
+	 * @param     int|array $containersrealcount20 The value to use as filter.
 	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ShipmentQuery The current query, for fluid interface
 	 */
-	public function filterByContainersrealcount($containersrealcount = null, $comparison = null)
+	public function filterByContainersrealcount20($containersrealcount20 = null, $comparison = null)
 	{
-		if (is_array($containersrealcount)) {
+		if (is_array($containersrealcount20)) {
 			$useMinMax = false;
-			if (isset($containersrealcount['min'])) {
-				$this->addUsingAlias(ShipmentPeer::CONTAINERSREALCOUNT, $containersrealcount['min'], Criteria::GREATER_EQUAL);
+			if (isset($containersrealcount20['min'])) {
+				$this->addUsingAlias(ShipmentPeer::CONTAINERSREALCOUNT20, $containersrealcount20['min'], Criteria::GREATER_EQUAL);
 				$useMinMax = true;
 			}
-			if (isset($containersrealcount['max'])) {
-				$this->addUsingAlias(ShipmentPeer::CONTAINERSREALCOUNT, $containersrealcount['max'], Criteria::LESS_EQUAL);
+			if (isset($containersrealcount20['max'])) {
+				$this->addUsingAlias(ShipmentPeer::CONTAINERSREALCOUNT20, $containersrealcount20['max'], Criteria::LESS_EQUAL);
 				$useMinMax = true;
 			}
 			if ($useMinMax) {
@@ -312,7 +316,38 @@ abstract class BaseShipmentQuery extends ModelCriteria
 				$comparison = Criteria::IN;
 			}
 		}
-		return $this->addUsingAlias(ShipmentPeer::CONTAINERSREALCOUNT, $containersrealcount, $comparison);
+		return $this->addUsingAlias(ShipmentPeer::CONTAINERSREALCOUNT20, $containersrealcount20, $comparison);
+	}
+
+	/**
+	 * Filter the query on the containersRealCount40 column
+	 * 
+	 * @param     int|array $containersrealcount40 The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ShipmentQuery The current query, for fluid interface
+	 */
+	public function filterByContainersrealcount40($containersrealcount40 = null, $comparison = null)
+	{
+		if (is_array($containersrealcount40)) {
+			$useMinMax = false;
+			if (isset($containersrealcount40['min'])) {
+				$this->addUsingAlias(ShipmentPeer::CONTAINERSREALCOUNT40, $containersrealcount40['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($containersrealcount40['max'])) {
+				$this->addUsingAlias(ShipmentPeer::CONTAINERSREALCOUNT40, $containersrealcount40['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ShipmentPeer::CONTAINERSREALCOUNT40, $containersrealcount40, $comparison);
 	}
 
 	/**
