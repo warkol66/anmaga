@@ -34,9 +34,9 @@
  * @method     SecurityActionQuery rightJoinSecurityModule($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SecurityModule relation
  * @method     SecurityActionQuery innerJoinSecurityModule($relationAlias = null) Adds a INNER JOIN clause to the query using the SecurityModule relation
  *
- * @method     SecurityActionQuery leftJoinActionlog($relationAlias = null) Adds a LEFT JOIN clause to the query using the Actionlog relation
- * @method     SecurityActionQuery rightJoinActionlog($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Actionlog relation
- * @method     SecurityActionQuery innerJoinActionlog($relationAlias = null) Adds a INNER JOIN clause to the query using the Actionlog relation
+ * @method     SecurityActionQuery leftJoinActionLog($relationAlias = null) Adds a LEFT JOIN clause to the query using the ActionLog relation
+ * @method     SecurityActionQuery rightJoinActionLog($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ActionLog relation
+ * @method     SecurityActionQuery innerJoinActionLog($relationAlias = null) Adds a INNER JOIN clause to the query using the ActionLog relation
  *
  * @method     SecurityAction findOne(PropelPDO $con = null) Return the first SecurityAction matching the query
  * @method     SecurityAction findOneOrCreate(PropelPDO $con = null) Return the first SecurityAction matching the query, or a new SecurityAction object populated from the query conditions when no match is found
@@ -463,31 +463,31 @@ abstract class BaseSecurityActionQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query by a related Actionlog object
+	 * Filter the query by a related ActionLog object
 	 *
-	 * @param     Actionlog $actionlog  the related object to use as filter
+	 * @param     ActionLog $actionLog  the related object to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SecurityActionQuery The current query, for fluid interface
 	 */
-	public function filterByActionlog($actionlog, $comparison = null)
+	public function filterByActionLog($actionLog, $comparison = null)
 	{
 		return $this
-			->addUsingAlias(SecurityActionPeer::ACTION, $actionlog->getAction(), $comparison);
+			->addUsingAlias(SecurityActionPeer::ACTION, $actionLog->getAction(), $comparison);
 	}
 
 	/**
-	 * Adds a JOIN clause to the query using the Actionlog relation
+	 * Adds a JOIN clause to the query using the ActionLog relation
 	 * 
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
 	 * @return    SecurityActionQuery The current query, for fluid interface
 	 */
-	public function joinActionlog($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinActionLog($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('Actionlog');
+		$relationMap = $tableMap->getRelation('ActionLog');
 		
 		// create a ModelJoin object for this join
 		$join = new ModelJoin();
@@ -502,14 +502,14 @@ abstract class BaseSecurityActionQuery extends ModelCriteria
 			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
 			$this->addJoinObject($join, $relationAlias);
 		} else {
-			$this->addJoinObject($join, 'Actionlog');
+			$this->addJoinObject($join, 'ActionLog');
 		}
 		
 		return $this;
 	}
 
 	/**
-	 * Use the Actionlog relation Actionlog object
+	 * Use the ActionLog relation ActionLog object
 	 *
 	 * @see       useQuery()
 	 * 
@@ -517,13 +517,13 @@ abstract class BaseSecurityActionQuery extends ModelCriteria
 	 *                                   to be used as main alias in the secondary query
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    ActionlogQuery A secondary query class using the current class as primary query
+	 * @return    ActionLogQuery A secondary query class using the current class as primary query
 	 */
-	public function useActionlogQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useActionLogQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		return $this
-			->joinActionlog($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'Actionlog', 'ActionlogQuery');
+			->joinActionLog($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'ActionLog', 'ActionLogQuery');
 	}
 
 	/**

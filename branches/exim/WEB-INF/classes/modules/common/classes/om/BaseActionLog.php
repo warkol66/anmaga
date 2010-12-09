@@ -14,7 +14,7 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'ActionLogPeer';
+	const PEER = 'ActionLogPeer';
 
 	/**
 	 * The Peer class.
@@ -31,16 +31,16 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 	protected $id;
 
 	/**
-	 * The value for the objecttype field.
+	 * The value for the userobjecttype field.
 	 * @var        string
 	 */
-	protected $objecttype;
+	protected $userobjecttype;
 
 	/**
-	 * The value for the objectid field.
+	 * The value for the userobjectid field.
 	 * @var        int
 	 */
-	protected $objectid;
+	protected $userobjectid;
 
 	/**
 	 * The value for the userid field.
@@ -113,23 +113,23 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [objecttype] column value.
+	 * Get the [userobjecttype] column value.
 	 * Tipo de usuario
 	 * @return     string
 	 */
-	public function getObjecttype()
+	public function getUserobjecttype()
 	{
-		return $this->objecttype;
+		return $this->userobjecttype;
 	}
 
 	/**
-	 * Get the [objectid] column value.
+	 * Get the [userobjectid] column value.
 	 * Id del usuario
 	 * @return     int
 	 */
-	public function getObjectid()
+	public function getUserobjectid()
 	{
-		return $this->objectid;
+		return $this->userobjectid;
 	}
 
 	/**
@@ -241,44 +241,44 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 	} // setId()
 
 	/**
-	 * Set the value of [objecttype] column.
+	 * Set the value of [userobjecttype] column.
 	 * Tipo de usuario
 	 * @param      string $v new value
 	 * @return     ActionLog The current object (for fluent API support)
 	 */
-	public function setObjecttype($v)
+	public function setUserobjecttype($v)
 	{
 		if ($v !== null) {
 			$v = (string) $v;
 		}
 
-		if ($this->objecttype !== $v) {
-			$this->objecttype = $v;
-			$this->modifiedColumns[] = ActionLogPeer::OBJECTTYPE;
+		if ($this->userobjecttype !== $v) {
+			$this->userobjecttype = $v;
+			$this->modifiedColumns[] = ActionLogPeer::USEROBJECTTYPE;
 		}
 
 		return $this;
-	} // setObjecttype()
+	} // setUserobjecttype()
 
 	/**
-	 * Set the value of [objectid] column.
+	 * Set the value of [userobjectid] column.
 	 * Id del usuario
 	 * @param      int $v new value
 	 * @return     ActionLog The current object (for fluent API support)
 	 */
-	public function setObjectid($v)
+	public function setUserobjectid($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->objectid !== $v) {
-			$this->objectid = $v;
-			$this->modifiedColumns[] = ActionLogPeer::OBJECTID;
+		if ($this->userobjectid !== $v) {
+			$this->userobjectid = $v;
+			$this->modifiedColumns[] = ActionLogPeer::USEROBJECTID;
 		}
 
 		return $this;
-	} // setObjectid()
+	} // setUserobjectid()
 
 	/**
 	 * Set the value of [userid] column.
@@ -470,8 +470,8 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 		try {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-			$this->objecttype = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-			$this->objectid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->userobjecttype = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+			$this->userobjectid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
 			$this->userid = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
 			$this->affiliateid = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
 			$this->datetime = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
@@ -577,7 +577,7 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(ActionLogPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -619,7 +619,7 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 		if ($con === null) {
 			$con = Propel::getConnection(ActionLogPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -834,10 +834,10 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 				return $this->getId();
 				break;
 			case 1:
-				return $this->getObjecttype();
+				return $this->getUserobjecttype();
 				break;
 			case 2:
-				return $this->getObjectid();
+				return $this->getUserobjectid();
 				break;
 			case 3:
 				return $this->getUserid();
@@ -870,7 +870,7 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -882,8 +882,8 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 		$keys = ActionLogPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
-			$keys[1] => $this->getObjecttype(),
-			$keys[2] => $this->getObjectid(),
+			$keys[1] => $this->getUserobjecttype(),
+			$keys[2] => $this->getUserobjectid(),
 			$keys[3] => $this->getUserid(),
 			$keys[4] => $this->getAffiliateid(),
 			$keys[5] => $this->getDatetime(),
@@ -933,10 +933,10 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 				$this->setId($value);
 				break;
 			case 1:
-				$this->setObjecttype($value);
+				$this->setUserobjecttype($value);
 				break;
 			case 2:
-				$this->setObjectid($value);
+				$this->setUserobjectid($value);
 				break;
 			case 3:
 				$this->setUserid($value);
@@ -981,8 +981,8 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 		$keys = ActionLogPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setObjecttype($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setObjectid($arr[$keys[2]]);
+		if (array_key_exists($keys[1], $arr)) $this->setUserobjecttype($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setUserobjectid($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setUserid($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setAffiliateid($arr[$keys[4]]);
 		if (array_key_exists($keys[5], $arr)) $this->setDatetime($arr[$keys[5]]);
@@ -1001,8 +1001,8 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 		$criteria = new Criteria(ActionLogPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(ActionLogPeer::ID)) $criteria->add(ActionLogPeer::ID, $this->id);
-		if ($this->isColumnModified(ActionLogPeer::OBJECTTYPE)) $criteria->add(ActionLogPeer::OBJECTTYPE, $this->objecttype);
-		if ($this->isColumnModified(ActionLogPeer::OBJECTID)) $criteria->add(ActionLogPeer::OBJECTID, $this->objectid);
+		if ($this->isColumnModified(ActionLogPeer::USEROBJECTTYPE)) $criteria->add(ActionLogPeer::USEROBJECTTYPE, $this->userobjecttype);
+		if ($this->isColumnModified(ActionLogPeer::USEROBJECTID)) $criteria->add(ActionLogPeer::USEROBJECTID, $this->userobjectid);
 		if ($this->isColumnModified(ActionLogPeer::USERID)) $criteria->add(ActionLogPeer::USERID, $this->userid);
 		if ($this->isColumnModified(ActionLogPeer::AFFILIATEID)) $criteria->add(ActionLogPeer::AFFILIATEID, $this->affiliateid);
 		if ($this->isColumnModified(ActionLogPeer::DATETIME)) $criteria->add(ActionLogPeer::DATETIME, $this->datetime);
@@ -1070,8 +1070,8 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-		$copyObj->setObjecttype($this->objecttype);
-		$copyObj->setObjectid($this->objectid);
+		$copyObj->setUserobjecttype($this->userobjecttype);
+		$copyObj->setUserobjectid($this->userobjectid);
 		$copyObj->setUserid($this->userid);
 		$copyObj->setAffiliateid($this->affiliateid);
 		$copyObj->setDatetime($this->datetime);
@@ -1160,11 +1160,11 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 		if ($this->aUser === null && ($this->userid !== null)) {
 			$this->aUser = UserQuery::create()->findPk($this->userid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aUser->addActionLogs($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aUser->addActionLogs($this);
 			 */
 		}
 		return $this->aUser;
@@ -1209,11 +1209,11 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 		if ($this->aSecurityAction === null && (($this->action !== "" && $this->action !== null))) {
 			$this->aSecurityAction = SecurityActionQuery::create()->findPk($this->action, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aSecurityAction->addActionLogs($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aSecurityAction->addActionLogs($this);
 			 */
 		}
 		return $this->aSecurityAction;
@@ -1225,8 +1225,8 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 	public function clear()
 	{
 		$this->id = null;
-		$this->objecttype = null;
-		$this->objectid = null;
+		$this->userobjecttype = null;
+		$this->userobjectid = null;
 		$this->userid = null;
 		$this->affiliateid = null;
 		$this->datetime = null;

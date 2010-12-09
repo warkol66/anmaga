@@ -1,10 +1,8 @@
 <?php
 
 
-
 require_once("BaseAction.php");
 require_once("SecurityActionPeer.php");
-
 
 class	SecurityUsersDoEditAction extends BaseAction {
 
@@ -48,68 +46,45 @@ class	SecurityUsersDoEditAction extends BaseAction {
 		}
 
 		$module = "Security";
-		$section = "action list";
-
-		$smarty->assign("module",$module);
-		$smarty->assign("section",$section);
 
 		// contiene todos los actions
-		$actions=$_POST["actions"];
+		$actions = $_POST["actions"];
 
 		//Obtengo el nivel base del action que debe tener en base al nivel del usuario logueado
-		$loginUser=$_SESSION['loginUser'];
-		$userLevel=$loginUser->getLevelid();
+		$loginUser = $_SESSION['loginUser'];
+		$userLevel = $loginUser->getLevelid();
 		$baseLevel = 1;
 		while ($userLevel > 1) {
 			$baseLevel += $userLevel;
 			$userLevel = $userLevel / 2;
 		}
 
-		//por cada action voy seteando en $baseLevel los accesos
-		//Cabe destacar que igualmente los nuevos accesos vienen en $_POST["activeaction"];
-		foreach($actions as $act) {
+		foreach($actions as $act)
 			SecurityActionPeer::clearAccess($act,$baseLevel);
-		}
 
-		//contiene todos los actions que fueron seteados para que cualquiera tenga permiso
-		$levelmin=$_POST["all"];
+		$levelmin = $_POST["all"];
+		$action = $_POST["activeaction"];
 
-		//contiene todos los actions que fueron checkeados en la vista
-		$action=$_POST["activeaction"];
-
-		/**
-		* Divido una matriz en cada parte para poder luego enviar a la base de datos lo que necesito
-		* Me fijo mediante checkboxes enviados, el nivel de permiso que tendrá un determinado action y
-		* lo actualizo en la base de datos.
-		* $level va sumando los niveles de permiso que tendrá ese action
-		* $key contendrá el nombre del action que almacena la matriz
-		*/
 		foreach ($action as  $key=> $activeaction) {
 			$level=0;
-			foreach($activeaction as $activeactionlevel) {
+			foreach ($activeaction as $activeactionlevel)
 				$level+=$activeactionlevel;
-  		}
+
 			$level += $baseLevel;
 			SecurityActionPeer::setNewAccess($key,$level);
 		}
 
-		/*
-		* me fijo si el action lo podrá acceder cualquier grupo de usuario
-		* si es asi, seteo el acceso a ese action como 2¨30-1
-		* actualmente el sistema permite cargar no más de 30 grupos de usuarios o de lo contrario este metodo no funciona
-		*/
-		$levelAll=1073741823;
-		foreach($levelmin as $levelaction) {
+		$levelAll = SecurityActionPeer::LEVEL_ALL;
+		foreach ($levelmin as $levelaction) {
 			foreach ($actions as $act) {
-				if (strcmp($levelaction,$act)==0)	{
-					SecurityActionPeer::setNewAccess($act,$levelAll);
-				}
+				if (strcmp($levelaction, $act) == 0)
+					SecurityActionPeer::setNewAccess($act, $levelAll);
 			}
 		}
 
 		$myRedirectConfig = $mapping->findForwardConfig('success');
 		$myRedirectPath = $myRedirectConfig->getpath();
-		$queryData = '&module='.$_POST["module"];
+		$queryData = '&moduleSelected='.$_POST["moduleSelected"];
 		$myRedirectPath .= $queryData;
 		$fc = new ForwardConfig($myRedirectPath, True);
 		return $fc;

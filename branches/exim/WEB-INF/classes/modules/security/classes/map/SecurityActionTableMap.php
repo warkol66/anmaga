@@ -55,7 +55,7 @@ class SecurityActionTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('SecurityModule', 'SecurityModule', RelationMap::MANY_TO_ONE, array('module' => 'module', ), null, null);
-    $this->addRelation('Actionlog', 'Actionlog', RelationMap::ONE_TO_MANY, array('action' => 'action', ), null, null);
+    $this->addRelation('ActionLog', 'ActionLog', RelationMap::ONE_TO_MANY, array('action' => 'action', ), null, null);
 	} // buildRelations()
 
 } // SecurityActionTableMap

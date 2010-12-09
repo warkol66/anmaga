@@ -1,5 +1,4 @@
 <?php
-require_once 'users/classes/om/BaseUserGroup.php';
 
 /** 
  *

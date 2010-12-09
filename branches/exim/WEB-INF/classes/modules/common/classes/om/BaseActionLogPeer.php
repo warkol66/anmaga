@@ -34,11 +34,11 @@ abstract class BaseActionLogPeer {
 	/** the column name for the ID field */
 	const ID = 'actionLogs_log.ID';
 
-	/** the column name for the OBJECTTYPE field */
-	const OBJECTTYPE = 'actionLogs_log.OBJECTTYPE';
+	/** the column name for the USEROBJECTTYPE field */
+	const USEROBJECTTYPE = 'actionLogs_log.USEROBJECTTYPE';
 
-	/** the column name for the OBJECTID field */
-	const OBJECTID = 'actionLogs_log.OBJECTID';
+	/** the column name for the USEROBJECTID field */
+	const USEROBJECTID = 'actionLogs_log.USEROBJECTID';
 
 	/** the column name for the USERID field */
 	const USERID = 'actionLogs_log.USERID';
@@ -74,11 +74,11 @@ abstract class BaseActionLogPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Objecttype', 'Objectid', 'Userid', 'Affiliateid', 'Datetime', 'Action', 'Object', 'Forward', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'objecttype', 'objectid', 'userid', 'affiliateid', 'datetime', 'action', 'object', 'forward', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::OBJECTTYPE, self::OBJECTID, self::USERID, self::AFFILIATEID, self::DATETIME, self::ACTION, self::OBJECT, self::FORWARD, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'OBJECTTYPE', 'OBJECTID', 'USERID', 'AFFILIATEID', 'DATETIME', 'ACTION', 'OBJECT', 'FORWARD', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'objectType', 'objectId', 'userId', 'affiliateId', 'datetime', 'action', 'object', 'forward', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Userobjecttype', 'Userobjectid', 'Userid', 'Affiliateid', 'Datetime', 'Action', 'Object', 'Forward', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userobjecttype', 'userobjectid', 'userid', 'affiliateid', 'datetime', 'action', 'object', 'forward', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::USEROBJECTTYPE, self::USEROBJECTID, self::USERID, self::AFFILIATEID, self::DATETIME, self::ACTION, self::OBJECT, self::FORWARD, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USEROBJECTTYPE', 'USEROBJECTID', 'USERID', 'AFFILIATEID', 'DATETIME', 'ACTION', 'OBJECT', 'FORWARD', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'userObjectType', 'userObjectId', 'userId', 'affiliateId', 'datetime', 'action', 'object', 'forward', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
@@ -89,11 +89,11 @@ abstract class BaseActionLogPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Objecttype' => 1, 'Objectid' => 2, 'Userid' => 3, 'Affiliateid' => 4, 'Datetime' => 5, 'Action' => 6, 'Object' => 7, 'Forward' => 8, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'objecttype' => 1, 'objectid' => 2, 'userid' => 3, 'affiliateid' => 4, 'datetime' => 5, 'action' => 6, 'object' => 7, 'forward' => 8, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::OBJECTTYPE => 1, self::OBJECTID => 2, self::USERID => 3, self::AFFILIATEID => 4, self::DATETIME => 5, self::ACTION => 6, self::OBJECT => 7, self::FORWARD => 8, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'OBJECTTYPE' => 1, 'OBJECTID' => 2, 'USERID' => 3, 'AFFILIATEID' => 4, 'DATETIME' => 5, 'ACTION' => 6, 'OBJECT' => 7, 'FORWARD' => 8, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'objectType' => 1, 'objectId' => 2, 'userId' => 3, 'affiliateId' => 4, 'datetime' => 5, 'action' => 6, 'object' => 7, 'forward' => 8, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Userobjecttype' => 1, 'Userobjectid' => 2, 'Userid' => 3, 'Affiliateid' => 4, 'Datetime' => 5, 'Action' => 6, 'Object' => 7, 'Forward' => 8, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userobjecttype' => 1, 'userobjectid' => 2, 'userid' => 3, 'affiliateid' => 4, 'datetime' => 5, 'action' => 6, 'object' => 7, 'forward' => 8, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USEROBJECTTYPE => 1, self::USEROBJECTID => 2, self::USERID => 3, self::AFFILIATEID => 4, self::DATETIME => 5, self::ACTION => 6, self::OBJECT => 7, self::FORWARD => 8, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USEROBJECTTYPE' => 1, 'USEROBJECTID' => 2, 'USERID' => 3, 'AFFILIATEID' => 4, 'DATETIME' => 5, 'ACTION' => 6, 'OBJECT' => 7, 'FORWARD' => 8, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'userObjectType' => 1, 'userObjectId' => 2, 'userId' => 3, 'affiliateId' => 4, 'datetime' => 5, 'action' => 6, 'object' => 7, 'forward' => 8, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
@@ -167,8 +167,8 @@ abstract class BaseActionLogPeer {
 	{
 		if (null === $alias) {
 			$criteria->addSelectColumn(ActionLogPeer::ID);
-			$criteria->addSelectColumn(ActionLogPeer::OBJECTTYPE);
-			$criteria->addSelectColumn(ActionLogPeer::OBJECTID);
+			$criteria->addSelectColumn(ActionLogPeer::USEROBJECTTYPE);
+			$criteria->addSelectColumn(ActionLogPeer::USEROBJECTID);
 			$criteria->addSelectColumn(ActionLogPeer::USERID);
 			$criteria->addSelectColumn(ActionLogPeer::AFFILIATEID);
 			$criteria->addSelectColumn(ActionLogPeer::DATETIME);
@@ -177,8 +177,8 @@ abstract class BaseActionLogPeer {
 			$criteria->addSelectColumn(ActionLogPeer::FORWARD);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
-			$criteria->addSelectColumn($alias . '.OBJECTTYPE');
-			$criteria->addSelectColumn($alias . '.OBJECTID');
+			$criteria->addSelectColumn($alias . '.USEROBJECTTYPE');
+			$criteria->addSelectColumn($alias . '.USEROBJECTID');
 			$criteria->addSelectColumn($alias . '.USERID');
 			$criteria->addSelectColumn($alias . '.AFFILIATEID');
 			$criteria->addSelectColumn($alias . '.DATETIME');

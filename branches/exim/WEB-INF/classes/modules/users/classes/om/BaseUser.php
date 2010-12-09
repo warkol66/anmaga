@@ -43,22 +43,16 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	protected $password;
 
 	/**
+	 * The value for the passwordupdated field.
+	 * @var        string
+	 */
+	protected $passwordupdated;
+
+	/**
 	 * The value for the active field.
 	 * @var        boolean
 	 */
 	protected $active;
-
-	/**
-	 * The value for the created field.
-	 * @var        string
-	 */
-	protected $created;
-
-	/**
-	 * The value for the updated field.
-	 * @var        string
-	 */
-	protected $updated;
 
 	/**
 	 * The value for the levelid field.
@@ -79,14 +73,73 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	protected $timezone;
 
 	/**
+	 * The value for the recoveryhash field.
+	 * @var        string
+	 */
+	protected $recoveryhash;
+
+	/**
+	 * The value for the recoveryhashcreatedon field.
+	 * @var        string
+	 */
+	protected $recoveryhashcreatedon;
+
+	/**
+	 * The value for the name field.
+	 * @var        string
+	 */
+	protected $name;
+
+	/**
+	 * The value for the surname field.
+	 * @var        string
+	 */
+	protected $surname;
+
+	/**
+	 * The value for the mailaddress field.
+	 * @var        string
+	 */
+	protected $mailaddress;
+
+	/**
+	 * The value for the mailaddressalt field.
+	 * @var        string
+	 */
+	protected $mailaddressalt;
+
+	/**
+	 * The value for the deleted_at field.
+	 * @var        string
+	 */
+	protected $deleted_at;
+
+	/**
+	 * The value for the created_at field.
+	 * @var        string
+	 */
+	protected $created_at;
+
+	/**
+	 * The value for the updated_at field.
+	 * @var        string
+	 */
+	protected $updated_at;
+
+	/**
 	 * @var        Level
 	 */
 	protected $aLevel;
 
 	/**
-	 * @var        array Actionlog[] Collection to store aggregation of Actionlog objects.
+	 * @var        array ActionLog[] Collection to store aggregation of ActionLog objects.
 	 */
-	protected $collActionlogs;
+	protected $collActionLogs;
+
+	/**
+	 * @var        array AlertSubscriptionUser[] Collection to store aggregation of AlertSubscriptionUser objects.
+	 */
+	protected $collAlertSubscriptionUsers;
 
 	/**
 	 * @var        array ClientQuote[] Collection to store aggregation of ClientQuote objects.
@@ -109,14 +162,19 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	protected $collSupplierPurchaseOrders;
 
 	/**
-	 * @var        UserInfo one-to-one related UserInfo object
-	 */
-	protected $singleUserInfo;
-
-	/**
 	 * @var        array UserGroup[] Collection to store aggregation of UserGroup objects.
 	 */
 	protected $collUserGroups;
+
+	/**
+	 * @var        array AlertSubscription[] Collection to store aggregation of AlertSubscription objects.
+	 */
+	protected $collAlertSubscriptions;
+
+	/**
+	 * @var        array Group[] Collection to store aggregation of Group objects.
+	 */
+	protected $collGroups;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -163,6 +221,44 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Get the [optionally formatted] temporal [passwordupdated] column value.
+	 * Fecha de actualizacion de la clave
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getPasswordupdated($format = '%Y/%m/%d')
+	{
+		if ($this->passwordupdated === null) {
+			return null;
+		}
+
+
+		if ($this->passwordupdated === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->passwordupdated);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->passwordupdated, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
 	 * Get the [active] column value.
 	 * Is user active?
 	 * @return     boolean
@@ -170,82 +266,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	public function getActive()
 	{
 		return $this->active;
-	}
-
-	/**
-	 * Get the [optionally formatted] temporal [created] column value.
-	 * Creation date for
-	 *
-	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
-	 *							If format is NULL, then the raw DateTime object will be returned.
-	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-	 * @throws     PropelException - if unable to parse/validate the date/time value.
-	 */
-	public function getCreated($format = 'Y-m-d H:i:s')
-	{
-		if ($this->created === null) {
-			return null;
-		}
-
-
-		if ($this->created === '0000-00-00 00:00:00') {
-			// while technically this is not a default value of NULL,
-			// this seems to be closest in meaning.
-			return null;
-		} else {
-			try {
-				$dt = new DateTime($this->created);
-			} catch (Exception $x) {
-				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created, true), $x);
-			}
-		}
-
-		if ($format === null) {
-			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
-			return $dt;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $dt->format('U'));
-		} else {
-			return $dt->format($format);
-		}
-	}
-
-	/**
-	 * Get the [optionally formatted] temporal [updated] column value.
-	 * Last update date
-	 *
-	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
-	 *							If format is NULL, then the raw DateTime object will be returned.
-	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-	 * @throws     PropelException - if unable to parse/validate the date/time value.
-	 */
-	public function getUpdated($format = 'Y-m-d H:i:s')
-	{
-		if ($this->updated === null) {
-			return null;
-		}
-
-
-		if ($this->updated === '0000-00-00 00:00:00') {
-			// while technically this is not a default value of NULL,
-			// this seems to be closest in meaning.
-			return null;
-		} else {
-			try {
-				$dt = new DateTime($this->updated);
-			} catch (Exception $x) {
-				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->updated, true), $x);
-			}
-		}
-
-		if ($format === null) {
-			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
-			return $dt;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $dt->format('U'));
-		} else {
-			return $dt->format($format);
-		}
 	}
 
 	/**
@@ -304,6 +324,208 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	public function getTimezone()
 	{
 		return $this->timezone;
+	}
+
+	/**
+	 * Get the [recoveryhash] column value.
+	 * Hash enviado para la recuperacion de clave
+	 * @return     string
+	 */
+	public function getRecoveryhash()
+	{
+		return $this->recoveryhash;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [recoveryhashcreatedon] column value.
+	 * Momento de la solicitud para la recuperacion de clave
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getRecoveryhashcreatedon($format = 'Y-m-d H:i:s')
+	{
+		if ($this->recoveryhashcreatedon === null) {
+			return null;
+		}
+
+
+		if ($this->recoveryhashcreatedon === '0000-00-00 00:00:00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->recoveryhashcreatedon);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->recoveryhashcreatedon, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [name] column value.
+	 * Nombre
+	 * @return     string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * Get the [surname] column value.
+	 * Apellido
+	 * @return     string
+	 */
+	public function getSurname()
+	{
+		return $this->surname;
+	}
+
+	/**
+	 * Get the [mailaddress] column value.
+	 * Direccion electronica
+	 * @return     string
+	 */
+	public function getMailaddress()
+	{
+		return $this->mailaddress;
+	}
+
+	/**
+	 * Get the [mailaddressalt] column value.
+	 * Direccion electronica alternativa
+	 * @return     string
+	 */
+	public function getMailaddressalt()
+	{
+		return $this->mailaddressalt;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [deleted_at] column value.
+	 * 
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getDeletedAt($format = 'Y-m-d H:i:s')
+	{
+		if ($this->deleted_at === null) {
+			return null;
+		}
+
+
+		if ($this->deleted_at === '0000-00-00 00:00:00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->deleted_at);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->deleted_at, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [created_at] column value.
+	 * 
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getCreatedAt($format = 'Y-m-d H:i:s')
+	{
+		if ($this->created_at === null) {
+			return null;
+		}
+
+
+		if ($this->created_at === '0000-00-00 00:00:00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->created_at);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_at, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [updated_at] column value.
+	 * 
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getUpdatedAt($format = 'Y-m-d H:i:s')
+	{
+		if ($this->updated_at === null) {
+			return null;
+		}
+
+
+		if ($this->updated_at === '0000-00-00 00:00:00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->updated_at);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->updated_at, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
 	}
 
 	/**
@@ -367,6 +589,55 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	} // setPassword()
 
 	/**
+	 * Sets the value of [passwordupdated] column to a normalized version of the date/time value specified.
+	 * Fecha de actualizacion de la clave
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setPasswordupdated($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->passwordupdated !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->passwordupdated !== null && $tmpDt = new DateTime($this->passwordupdated)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->passwordupdated = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = UserPeer::PASSWORDUPDATED;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setPasswordupdated()
+
+	/**
 	 * Set the value of [active] column.
 	 * Is user active?
 	 * @param      boolean $v new value
@@ -385,104 +656,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 		return $this;
 	} // setActive()
-
-	/**
-	 * Sets the value of [created] column to a normalized version of the date/time value specified.
-	 * Creation date for
-	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
-	 *						be treated as NULL for temporal objects.
-	 * @return     User The current object (for fluent API support)
-	 */
-	public function setCreated($v)
-	{
-		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
-		// -- which is unexpected, to say the least.
-		if ($v === null || $v === '') {
-			$dt = null;
-		} elseif ($v instanceof DateTime) {
-			$dt = $v;
-		} else {
-			// some string/numeric value passed; we normalize that so that we can
-			// validate it.
-			try {
-				if (is_numeric($v)) { // if it's a unix timestamp
-					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
-					// We have to explicitly specify and then change the time zone because of a
-					// DateTime bug: http://bugs.php.net/bug.php?id=43003
-					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
-				} else {
-					$dt = new DateTime($v);
-				}
-			} catch (Exception $x) {
-				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
-			}
-		}
-
-		if ( $this->created !== null || $dt !== null ) {
-			// (nested ifs are a little easier to read in this case)
-
-			$currNorm = ($this->created !== null && $tmpDt = new DateTime($this->created)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
-
-			if ( ($currNorm !== $newNorm) // normalized values don't match 
-					)
-			{
-				$this->created = ($dt ? $dt->format('Y-m-d H:i:s') : null);
-				$this->modifiedColumns[] = UserPeer::CREATED;
-			}
-		} // if either are not null
-
-		return $this;
-	} // setCreated()
-
-	/**
-	 * Sets the value of [updated] column to a normalized version of the date/time value specified.
-	 * Last update date
-	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
-	 *						be treated as NULL for temporal objects.
-	 * @return     User The current object (for fluent API support)
-	 */
-	public function setUpdated($v)
-	{
-		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
-		// -- which is unexpected, to say the least.
-		if ($v === null || $v === '') {
-			$dt = null;
-		} elseif ($v instanceof DateTime) {
-			$dt = $v;
-		} else {
-			// some string/numeric value passed; we normalize that so that we can
-			// validate it.
-			try {
-				if (is_numeric($v)) { // if it's a unix timestamp
-					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
-					// We have to explicitly specify and then change the time zone because of a
-					// DateTime bug: http://bugs.php.net/bug.php?id=43003
-					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
-				} else {
-					$dt = new DateTime($v);
-				}
-			} catch (Exception $x) {
-				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
-			}
-		}
-
-		if ( $this->updated !== null || $dt !== null ) {
-			// (nested ifs are a little easier to read in this case)
-
-			$currNorm = ($this->updated !== null && $tmpDt = new DateTime($this->updated)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
-
-			if ( ($currNorm !== $newNorm) // normalized values don't match 
-					)
-			{
-				$this->updated = ($dt ? $dt->format('Y-m-d H:i:s') : null);
-				$this->modifiedColumns[] = UserPeer::UPDATED;
-			}
-		} // if either are not null
-
-		return $this;
-	} // setUpdated()
 
 	/**
 	 * Set the value of [levelid] column.
@@ -578,6 +751,302 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	} // setTimezone()
 
 	/**
+	 * Set the value of [recoveryhash] column.
+	 * Hash enviado para la recuperacion de clave
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setRecoveryhash($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->recoveryhash !== $v) {
+			$this->recoveryhash = $v;
+			$this->modifiedColumns[] = UserPeer::RECOVERYHASH;
+		}
+
+		return $this;
+	} // setRecoveryhash()
+
+	/**
+	 * Sets the value of [recoveryhashcreatedon] column to a normalized version of the date/time value specified.
+	 * Momento de la solicitud para la recuperacion de clave
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setRecoveryhashcreatedon($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->recoveryhashcreatedon !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->recoveryhashcreatedon !== null && $tmpDt = new DateTime($this->recoveryhashcreatedon)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->recoveryhashcreatedon = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+				$this->modifiedColumns[] = UserPeer::RECOVERYHASHCREATEDON;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setRecoveryhashcreatedon()
+
+	/**
+	 * Set the value of [name] column.
+	 * Nombre
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setName($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->name !== $v) {
+			$this->name = $v;
+			$this->modifiedColumns[] = UserPeer::NAME;
+		}
+
+		return $this;
+	} // setName()
+
+	/**
+	 * Set the value of [surname] column.
+	 * Apellido
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setSurname($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->surname !== $v) {
+			$this->surname = $v;
+			$this->modifiedColumns[] = UserPeer::SURNAME;
+		}
+
+		return $this;
+	} // setSurname()
+
+	/**
+	 * Set the value of [mailaddress] column.
+	 * Direccion electronica
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setMailaddress($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->mailaddress !== $v) {
+			$this->mailaddress = $v;
+			$this->modifiedColumns[] = UserPeer::MAILADDRESS;
+		}
+
+		return $this;
+	} // setMailaddress()
+
+	/**
+	 * Set the value of [mailaddressalt] column.
+	 * Direccion electronica alternativa
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setMailaddressalt($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->mailaddressalt !== $v) {
+			$this->mailaddressalt = $v;
+			$this->modifiedColumns[] = UserPeer::MAILADDRESSALT;
+		}
+
+		return $this;
+	} // setMailaddressalt()
+
+	/**
+	 * Sets the value of [deleted_at] column to a normalized version of the date/time value specified.
+	 * 
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setDeletedAt($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->deleted_at !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->deleted_at !== null && $tmpDt = new DateTime($this->deleted_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->deleted_at = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+				$this->modifiedColumns[] = UserPeer::DELETED_AT;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setDeletedAt()
+
+	/**
+	 * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+	 * 
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setCreatedAt($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->created_at !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->created_at = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+				$this->modifiedColumns[] = UserPeer::CREATED_AT;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setCreatedAt()
+
+	/**
+	 * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
+	 * 
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setUpdatedAt($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->updated_at !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->updated_at !== null && $tmpDt = new DateTime($this->updated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->updated_at = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+				$this->modifiedColumns[] = UserPeer::UPDATED_AT;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setUpdatedAt()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -612,12 +1081,20 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->username = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->password = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-			$this->active = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
-			$this->created = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-			$this->updated = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-			$this->levelid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-			$this->lastlogin = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-			$this->timezone = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->passwordupdated = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->active = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
+			$this->levelid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->lastlogin = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->timezone = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->recoveryhash = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->recoveryhashcreatedon = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->name = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+			$this->surname = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->mailaddress = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+			$this->mailaddressalt = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+			$this->deleted_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+			$this->created_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+			$this->updated_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -626,7 +1103,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 9; // 9 = UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 17; // 17 = UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating User object", $e);
@@ -692,7 +1169,9 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->aLevel = null;
-			$this->collActionlogs = null;
+			$this->collActionLogs = null;
+
+			$this->collAlertSubscriptionUsers = null;
 
 			$this->collClientQuotes = null;
 
@@ -702,10 +1181,10 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 			$this->collSupplierPurchaseOrders = null;
 
-			$this->singleUserInfo = null;
-
 			$this->collUserGroups = null;
 
+			$this->collAlertSubscriptions = null;
+			$this->collGroups = null;
 		} // if (deep)
 	}
 
@@ -731,6 +1210,14 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
+			// soft_delete behavior
+			if (!empty($ret) && UserQuery::isSoftDeleteEnabled()) {
+				$this->setDeletedAt(time());
+				$this->save($con);
+				$con->commit();
+				UserPeer::removeInstanceFromPool($this);
+				return;
+			}
 			if ($ret) {
 				UserQuery::create()
 					->filterByPrimaryKey($this->getPrimaryKey())
@@ -776,8 +1263,19 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$ret = $this->preSave($con);
 			if ($isInsert) {
 				$ret = $ret && $this->preInsert($con);
+				// timestampable behavior
+				if (!$this->isColumnModified(UserPeer::CREATED_AT)) {
+					$this->setCreatedAt(time());
+				}
+				if (!$this->isColumnModified(UserPeer::UPDATED_AT)) {
+					$this->setUpdatedAt(time());
+				}
 			} else {
 				$ret = $ret && $this->preUpdate($con);
+				// timestampable behavior
+				if ($this->isModified() && !$this->isColumnModified(UserPeer::UPDATED_AT)) {
+					$this->setUpdatedAt(time());
+				}
 			}
 			if ($ret) {
 				$affectedRows = $this->doSave($con);
@@ -851,8 +1349,16 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
-			if ($this->collActionlogs !== null) {
-				foreach ($this->collActionlogs as $referrerFK) {
+			if ($this->collActionLogs !== null) {
+				foreach ($this->collActionLogs as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collAlertSubscriptionUsers !== null) {
+				foreach ($this->collAlertSubscriptionUsers as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -888,12 +1394,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
-				}
-			}
-
-			if ($this->singleUserInfo !== null) {
-				if (!$this->singleUserInfo->isDeleted()) {
-						$affectedRows += $this->singleUserInfo->save($con);
 				}
 			}
 
@@ -988,8 +1488,16 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			}
 
 
-				if ($this->collActionlogs !== null) {
-					foreach ($this->collActionlogs as $referrerFK) {
+				if ($this->collActionLogs !== null) {
+					foreach ($this->collActionLogs as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collAlertSubscriptionUsers !== null) {
+					foreach ($this->collAlertSubscriptionUsers as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1025,12 +1533,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
-					}
-				}
-
-				if ($this->singleUserInfo !== null) {
-					if (!$this->singleUserInfo->validate($columns)) {
-						$failureMap = array_merge($failureMap, $this->singleUserInfo->getValidationFailures());
 					}
 				}
 
@@ -1085,22 +1587,46 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				return $this->getPassword();
 				break;
 			case 3:
-				return $this->getActive();
+				return $this->getPasswordupdated();
 				break;
 			case 4:
-				return $this->getCreated();
+				return $this->getActive();
 				break;
 			case 5:
-				return $this->getUpdated();
-				break;
-			case 6:
 				return $this->getLevelid();
 				break;
-			case 7:
+			case 6:
 				return $this->getLastlogin();
 				break;
-			case 8:
+			case 7:
 				return $this->getTimezone();
+				break;
+			case 8:
+				return $this->getRecoveryhash();
+				break;
+			case 9:
+				return $this->getRecoveryhashcreatedon();
+				break;
+			case 10:
+				return $this->getName();
+				break;
+			case 11:
+				return $this->getSurname();
+				break;
+			case 12:
+				return $this->getMailaddress();
+				break;
+			case 13:
+				return $this->getMailaddressalt();
+				break;
+			case 14:
+				return $this->getDeletedAt();
+				break;
+			case 15:
+				return $this->getCreatedAt();
+				break;
+			case 16:
+				return $this->getUpdatedAt();
 				break;
 			default:
 				return null;
@@ -1129,12 +1655,20 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getUsername(),
 			$keys[2] => $this->getPassword(),
-			$keys[3] => $this->getActive(),
-			$keys[4] => $this->getCreated(),
-			$keys[5] => $this->getUpdated(),
-			$keys[6] => $this->getLevelid(),
-			$keys[7] => $this->getLastlogin(),
-			$keys[8] => $this->getTimezone(),
+			$keys[3] => $this->getPasswordupdated(),
+			$keys[4] => $this->getActive(),
+			$keys[5] => $this->getLevelid(),
+			$keys[6] => $this->getLastlogin(),
+			$keys[7] => $this->getTimezone(),
+			$keys[8] => $this->getRecoveryhash(),
+			$keys[9] => $this->getRecoveryhashcreatedon(),
+			$keys[10] => $this->getName(),
+			$keys[11] => $this->getSurname(),
+			$keys[12] => $this->getMailaddress(),
+			$keys[13] => $this->getMailaddressalt(),
+			$keys[14] => $this->getDeletedAt(),
+			$keys[15] => $this->getCreatedAt(),
+			$keys[16] => $this->getUpdatedAt(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aLevel) {
@@ -1181,22 +1715,46 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				$this->setPassword($value);
 				break;
 			case 3:
-				$this->setActive($value);
+				$this->setPasswordupdated($value);
 				break;
 			case 4:
-				$this->setCreated($value);
+				$this->setActive($value);
 				break;
 			case 5:
-				$this->setUpdated($value);
-				break;
-			case 6:
 				$this->setLevelid($value);
 				break;
-			case 7:
+			case 6:
 				$this->setLastlogin($value);
 				break;
-			case 8:
+			case 7:
 				$this->setTimezone($value);
+				break;
+			case 8:
+				$this->setRecoveryhash($value);
+				break;
+			case 9:
+				$this->setRecoveryhashcreatedon($value);
+				break;
+			case 10:
+				$this->setName($value);
+				break;
+			case 11:
+				$this->setSurname($value);
+				break;
+			case 12:
+				$this->setMailaddress($value);
+				break;
+			case 13:
+				$this->setMailaddressalt($value);
+				break;
+			case 14:
+				$this->setDeletedAt($value);
+				break;
+			case 15:
+				$this->setCreatedAt($value);
+				break;
+			case 16:
+				$this->setUpdatedAt($value);
 				break;
 		} // switch()
 	}
@@ -1225,12 +1783,20 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setUsername($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setPassword($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setActive($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setCreated($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setUpdated($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setLevelid($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setLastlogin($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setTimezone($arr[$keys[8]]);
+		if (array_key_exists($keys[3], $arr)) $this->setPasswordupdated($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setActive($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setLevelid($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setLastlogin($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setTimezone($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setRecoveryhash($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setRecoveryhashcreatedon($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setName($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setSurname($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setMailaddress($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setMailaddressalt($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setDeletedAt($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setCreatedAt($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setUpdatedAt($arr[$keys[16]]);
 	}
 
 	/**
@@ -1245,12 +1811,20 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($this->isColumnModified(UserPeer::ID)) $criteria->add(UserPeer::ID, $this->id);
 		if ($this->isColumnModified(UserPeer::USERNAME)) $criteria->add(UserPeer::USERNAME, $this->username);
 		if ($this->isColumnModified(UserPeer::PASSWORD)) $criteria->add(UserPeer::PASSWORD, $this->password);
+		if ($this->isColumnModified(UserPeer::PASSWORDUPDATED)) $criteria->add(UserPeer::PASSWORDUPDATED, $this->passwordupdated);
 		if ($this->isColumnModified(UserPeer::ACTIVE)) $criteria->add(UserPeer::ACTIVE, $this->active);
-		if ($this->isColumnModified(UserPeer::CREATED)) $criteria->add(UserPeer::CREATED, $this->created);
-		if ($this->isColumnModified(UserPeer::UPDATED)) $criteria->add(UserPeer::UPDATED, $this->updated);
 		if ($this->isColumnModified(UserPeer::LEVELID)) $criteria->add(UserPeer::LEVELID, $this->levelid);
 		if ($this->isColumnModified(UserPeer::LASTLOGIN)) $criteria->add(UserPeer::LASTLOGIN, $this->lastlogin);
 		if ($this->isColumnModified(UserPeer::TIMEZONE)) $criteria->add(UserPeer::TIMEZONE, $this->timezone);
+		if ($this->isColumnModified(UserPeer::RECOVERYHASH)) $criteria->add(UserPeer::RECOVERYHASH, $this->recoveryhash);
+		if ($this->isColumnModified(UserPeer::RECOVERYHASHCREATEDON)) $criteria->add(UserPeer::RECOVERYHASHCREATEDON, $this->recoveryhashcreatedon);
+		if ($this->isColumnModified(UserPeer::NAME)) $criteria->add(UserPeer::NAME, $this->name);
+		if ($this->isColumnModified(UserPeer::SURNAME)) $criteria->add(UserPeer::SURNAME, $this->surname);
+		if ($this->isColumnModified(UserPeer::MAILADDRESS)) $criteria->add(UserPeer::MAILADDRESS, $this->mailaddress);
+		if ($this->isColumnModified(UserPeer::MAILADDRESSALT)) $criteria->add(UserPeer::MAILADDRESSALT, $this->mailaddressalt);
+		if ($this->isColumnModified(UserPeer::DELETED_AT)) $criteria->add(UserPeer::DELETED_AT, $this->deleted_at);
+		if ($this->isColumnModified(UserPeer::CREATED_AT)) $criteria->add(UserPeer::CREATED_AT, $this->created_at);
+		if ($this->isColumnModified(UserPeer::UPDATED_AT)) $criteria->add(UserPeer::UPDATED_AT, $this->updated_at);
 
 		return $criteria;
 	}
@@ -1314,21 +1888,35 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	{
 		$copyObj->setUsername($this->username);
 		$copyObj->setPassword($this->password);
+		$copyObj->setPasswordupdated($this->passwordupdated);
 		$copyObj->setActive($this->active);
-		$copyObj->setCreated($this->created);
-		$copyObj->setUpdated($this->updated);
 		$copyObj->setLevelid($this->levelid);
 		$copyObj->setLastlogin($this->lastlogin);
 		$copyObj->setTimezone($this->timezone);
+		$copyObj->setRecoveryhash($this->recoveryhash);
+		$copyObj->setRecoveryhashcreatedon($this->recoveryhashcreatedon);
+		$copyObj->setName($this->name);
+		$copyObj->setSurname($this->surname);
+		$copyObj->setMailaddress($this->mailaddress);
+		$copyObj->setMailaddressalt($this->mailaddressalt);
+		$copyObj->setDeletedAt($this->deleted_at);
+		$copyObj->setCreatedAt($this->created_at);
+		$copyObj->setUpdatedAt($this->updated_at);
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
-			foreach ($this->getActionlogs() as $relObj) {
+			foreach ($this->getActionLogs() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addActionlog($relObj->copy($deepCopy));
+					$copyObj->addActionLog($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getAlertSubscriptionUsers() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addAlertSubscriptionUser($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1354,11 +1942,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addSupplierPurchaseOrder($relObj->copy($deepCopy));
 				}
-			}
-
-			$relObj = $this->getUserInfo();
-			if ($relObj) {
-				$copyObj->setUserInfo($relObj->copy($deepCopy));
 			}
 
 			foreach ($this->getUserGroups() as $relObj) {
@@ -1462,36 +2045,36 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Clears out the collActionlogs collection
+	 * Clears out the collActionLogs collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addActionlogs()
+	 * @see        addActionLogs()
 	 */
-	public function clearActionlogs()
+	public function clearActionLogs()
 	{
-		$this->collActionlogs = null; // important to set this to NULL since that means it is uninitialized
+		$this->collActionLogs = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collActionlogs collection.
+	 * Initializes the collActionLogs collection.
 	 *
-	 * By default this just sets the collActionlogs collection to an empty array (like clearcollActionlogs());
+	 * By default this just sets the collActionLogs collection to an empty array (like clearcollActionLogs());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
 	 * @return     void
 	 */
-	public function initActionlogs()
+	public function initActionLogs()
 	{
-		$this->collActionlogs = new PropelObjectCollection();
-		$this->collActionlogs->setModel('Actionlog');
+		$this->collActionLogs = new PropelObjectCollection();
+		$this->collActionLogs->setModel('ActionLog');
 	}
 
 	/**
-	 * Gets an array of Actionlog objects which contain a foreign key that references this object.
+	 * Gets an array of ActionLog objects which contain a foreign key that references this object.
 	 *
 	 * If the $criteria is not null, it is used to always fetch the results from the database.
 	 * Otherwise the results are fetched from the database the first time, then cached.
@@ -1501,44 +2084,44 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	 *
 	 * @param      Criteria $criteria optional Criteria object to narrow the query
 	 * @param      PropelPDO $con optional connection object
-	 * @return     PropelCollection|array Actionlog[] List of Actionlog objects
+	 * @return     PropelCollection|array ActionLog[] List of ActionLog objects
 	 * @throws     PropelException
 	 */
-	public function getActionlogs($criteria = null, PropelPDO $con = null)
+	public function getActionLogs($criteria = null, PropelPDO $con = null)
 	{
-		if(null === $this->collActionlogs || null !== $criteria) {
-			if ($this->isNew() && null === $this->collActionlogs) {
+		if(null === $this->collActionLogs || null !== $criteria) {
+			if ($this->isNew() && null === $this->collActionLogs) {
 				// return empty collection
-				$this->initActionlogs();
+				$this->initActionLogs();
 			} else {
-				$collActionlogs = ActionlogQuery::create(null, $criteria)
+				$collActionLogs = ActionLogQuery::create(null, $criteria)
 					->filterByUser($this)
 					->find($con);
 				if (null !== $criteria) {
-					return $collActionlogs;
+					return $collActionLogs;
 				}
-				$this->collActionlogs = $collActionlogs;
+				$this->collActionLogs = $collActionLogs;
 			}
 		}
-		return $this->collActionlogs;
+		return $this->collActionLogs;
 	}
 
 	/**
-	 * Returns the number of related Actionlog objects.
+	 * Returns the number of related ActionLog objects.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      PropelPDO $con
-	 * @return     int Count of related Actionlog objects.
+	 * @return     int Count of related ActionLog objects.
 	 * @throws     PropelException
 	 */
-	public function countActionlogs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countActionLogs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if(null === $this->collActionlogs || null !== $criteria) {
-			if ($this->isNew() && null === $this->collActionlogs) {
+		if(null === $this->collActionLogs || null !== $criteria) {
+			if ($this->isNew() && null === $this->collActionLogs) {
 				return 0;
 			} else {
-				$query = ActionlogQuery::create(null, $criteria);
+				$query = ActionLogQuery::create(null, $criteria);
 				if($distinct) {
 					$query->distinct();
 				}
@@ -1547,25 +2130,25 @@ abstract class BaseUser extends BaseObject  implements Persistent
 					->count($con);
 			}
 		} else {
-			return count($this->collActionlogs);
+			return count($this->collActionLogs);
 		}
 	}
 
 	/**
-	 * Method called to associate a Actionlog object to this object
-	 * through the Actionlog foreign key attribute.
+	 * Method called to associate a ActionLog object to this object
+	 * through the ActionLog foreign key attribute.
 	 *
-	 * @param      Actionlog $l Actionlog
+	 * @param      ActionLog $l ActionLog
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addActionlog(Actionlog $l)
+	public function addActionLog(ActionLog $l)
 	{
-		if ($this->collActionlogs === null) {
-			$this->initActionlogs();
+		if ($this->collActionLogs === null) {
+			$this->initActionLogs();
 		}
-		if (!$this->collActionlogs->contains($l)) { // only add it if the **same** object is not already associated
-			$this->collActionlogs[]= $l;
+		if (!$this->collActionLogs->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collActionLogs[]= $l;
 			$l->setUser($this);
 		}
 	}
@@ -1576,7 +2159,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this User is new, it will return
 	 * an empty collection; or if this User has previously
-	 * been saved, it will retrieve related Actionlogs from storage.
+	 * been saved, it will retrieve related ActionLogs from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
@@ -1585,14 +2168,148 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	 * @param      Criteria $criteria optional Criteria object to narrow the query
 	 * @param      PropelPDO $con optional connection object
 	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-	 * @return     PropelCollection|array Actionlog[] List of Actionlog objects
+	 * @return     PropelCollection|array ActionLog[] List of ActionLog objects
 	 */
-	public function getActionlogsJoinSecurityAction($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getActionLogsJoinSecurityAction($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$query = ActionlogQuery::create(null, $criteria);
+		$query = ActionLogQuery::create(null, $criteria);
 		$query->joinWith('SecurityAction', $join_behavior);
 
-		return $this->getActionlogs($query, $con);
+		return $this->getActionLogs($query, $con);
+	}
+
+	/**
+	 * Clears out the collAlertSubscriptionUsers collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addAlertSubscriptionUsers()
+	 */
+	public function clearAlertSubscriptionUsers()
+	{
+		$this->collAlertSubscriptionUsers = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collAlertSubscriptionUsers collection.
+	 *
+	 * By default this just sets the collAlertSubscriptionUsers collection to an empty array (like clearcollAlertSubscriptionUsers());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initAlertSubscriptionUsers()
+	{
+		$this->collAlertSubscriptionUsers = new PropelObjectCollection();
+		$this->collAlertSubscriptionUsers->setModel('AlertSubscriptionUser');
+	}
+
+	/**
+	 * Gets an array of AlertSubscriptionUser objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array AlertSubscriptionUser[] List of AlertSubscriptionUser objects
+	 * @throws     PropelException
+	 */
+	public function getAlertSubscriptionUsers($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collAlertSubscriptionUsers || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAlertSubscriptionUsers) {
+				// return empty collection
+				$this->initAlertSubscriptionUsers();
+			} else {
+				$collAlertSubscriptionUsers = AlertSubscriptionUserQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collAlertSubscriptionUsers;
+				}
+				$this->collAlertSubscriptionUsers = $collAlertSubscriptionUsers;
+			}
+		}
+		return $this->collAlertSubscriptionUsers;
+	}
+
+	/**
+	 * Returns the number of related AlertSubscriptionUser objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related AlertSubscriptionUser objects.
+	 * @throws     PropelException
+	 */
+	public function countAlertSubscriptionUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collAlertSubscriptionUsers || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAlertSubscriptionUsers) {
+				return 0;
+			} else {
+				$query = AlertSubscriptionUserQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByUser($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collAlertSubscriptionUsers);
+		}
+	}
+
+	/**
+	 * Method called to associate a AlertSubscriptionUser object to this object
+	 * through the AlertSubscriptionUser foreign key attribute.
+	 *
+	 * @param      AlertSubscriptionUser $l AlertSubscriptionUser
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addAlertSubscriptionUser(AlertSubscriptionUser $l)
+	{
+		if ($this->collAlertSubscriptionUsers === null) {
+			$this->initAlertSubscriptionUsers();
+		}
+		if (!$this->collAlertSubscriptionUsers->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collAlertSubscriptionUsers[]= $l;
+			$l->setUser($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this User is new, it will return
+	 * an empty collection; or if this User has previously
+	 * been saved, it will retrieve related AlertSubscriptionUsers from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array AlertSubscriptionUser[] List of AlertSubscriptionUser objects
+	 */
+	public function getAlertSubscriptionUsersJoinAlertSubscription($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = AlertSubscriptionUserQuery::create(null, $criteria);
+		$query->joinWith('AlertSubscription', $join_behavior);
+
+		return $this->getAlertSubscriptionUsers($query, $con);
 	}
 
 	/**
@@ -2332,42 +3049,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Gets a single UserInfo object, which is related to this object by a one-to-one relationship.
-	 *
-	 * @param      PropelPDO $con optional connection object
-	 * @return     UserInfo
-	 * @throws     PropelException
-	 */
-	public function getUserInfo(PropelPDO $con = null)
-	{
-
-		if ($this->singleUserInfo === null && !$this->isNew()) {
-			$this->singleUserInfo = UserInfoQuery::create()->findPk($this->getPrimaryKey(), $con);
-		}
-
-		return $this->singleUserInfo;
-	}
-
-	/**
-	 * Sets a single UserInfo object as related to this object by a one-to-one relationship.
-	 *
-	 * @param      UserInfo $v UserInfo
-	 * @return     User The current object (for fluent API support)
-	 * @throws     PropelException
-	 */
-	public function setUserInfo(UserInfo $v = null)
-	{
-		$this->singleUserInfo = $v;
-
-		// Make sure that that the passed-in UserInfo isn't already associated with this object
-		if ($v !== null && $v->getUser() === null) {
-			$v->setUser($this);
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Clears out the collUserGroups collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
@@ -2502,6 +3183,232 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Clears out the collAlertSubscriptions collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addAlertSubscriptions()
+	 */
+	public function clearAlertSubscriptions()
+	{
+		$this->collAlertSubscriptions = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collAlertSubscriptions collection.
+	 *
+	 * By default this just sets the collAlertSubscriptions collection to an empty collection (like clearAlertSubscriptions());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initAlertSubscriptions()
+	{
+		$this->collAlertSubscriptions = new PropelObjectCollection();
+		$this->collAlertSubscriptions->setModel('AlertSubscription');
+	}
+
+	/**
+	 * Gets a collection of AlertSubscription objects related by a many-to-many relationship
+	 * to the current object by way of the common_alertSubscriptionUser cross-reference table.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     PropelCollection|array AlertSubscription[] List of AlertSubscription objects
+	 */
+	public function getAlertSubscriptions($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collAlertSubscriptions || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAlertSubscriptions) {
+				// return empty collection
+				$this->initAlertSubscriptions();
+			} else {
+				$collAlertSubscriptions = AlertSubscriptionQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collAlertSubscriptions;
+				}
+				$this->collAlertSubscriptions = $collAlertSubscriptions;
+			}
+		}
+		return $this->collAlertSubscriptions;
+	}
+
+	/**
+	 * Gets the number of AlertSubscription objects related by a many-to-many relationship
+	 * to the current object by way of the common_alertSubscriptionUser cross-reference table.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      boolean $distinct Set to true to force count distinct
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     int the number of related AlertSubscription objects
+	 */
+	public function countAlertSubscriptions($criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collAlertSubscriptions || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAlertSubscriptions) {
+				return 0;
+			} else {
+				$query = AlertSubscriptionQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByUser($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collAlertSubscriptions);
+		}
+	}
+
+	/**
+	 * Associate a AlertSubscription object to this object
+	 * through the common_alertSubscriptionUser cross reference table.
+	 *
+	 * @param      AlertSubscription $alertSubscription The AlertSubscriptionUser object to relate
+	 * @return     void
+	 */
+	public function addAlertSubscription($alertSubscription)
+	{
+		if ($this->collAlertSubscriptions === null) {
+			$this->initAlertSubscriptions();
+		}
+		if (!$this->collAlertSubscriptions->contains($alertSubscription)) { // only add it if the **same** object is not already associated
+			$alertSubscriptionUser = new AlertSubscriptionUser();
+			$alertSubscriptionUser->setAlertSubscription($alertSubscription);
+			$this->addAlertSubscriptionUser($alertSubscriptionUser);
+
+			$this->collAlertSubscriptions[]= $alertSubscription;
+		}
+	}
+
+	/**
+	 * Clears out the collGroups collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addGroups()
+	 */
+	public function clearGroups()
+	{
+		$this->collGroups = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collGroups collection.
+	 *
+	 * By default this just sets the collGroups collection to an empty collection (like clearGroups());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initGroups()
+	{
+		$this->collGroups = new PropelObjectCollection();
+		$this->collGroups->setModel('Group');
+	}
+
+	/**
+	 * Gets a collection of Group objects related by a many-to-many relationship
+	 * to the current object by way of the users_userGroup cross-reference table.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     PropelCollection|array Group[] List of Group objects
+	 */
+	public function getGroups($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collGroups) {
+				// return empty collection
+				$this->initGroups();
+			} else {
+				$collGroups = GroupQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collGroups;
+				}
+				$this->collGroups = $collGroups;
+			}
+		}
+		return $this->collGroups;
+	}
+
+	/**
+	 * Gets the number of Group objects related by a many-to-many relationship
+	 * to the current object by way of the users_userGroup cross-reference table.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      boolean $distinct Set to true to force count distinct
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     int the number of related Group objects
+	 */
+	public function countGroups($criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collGroups) {
+				return 0;
+			} else {
+				$query = GroupQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByUser($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collGroups);
+		}
+	}
+
+	/**
+	 * Associate a Group object to this object
+	 * through the users_userGroup cross reference table.
+	 *
+	 * @param      Group $group The UserGroup object to relate
+	 * @return     void
+	 */
+	public function addGroup($group)
+	{
+		if ($this->collGroups === null) {
+			$this->initGroups();
+		}
+		if (!$this->collGroups->contains($group)) { // only add it if the **same** object is not already associated
+			$userGroup = new UserGroup();
+			$userGroup->setGroup($group);
+			$this->addUserGroup($userGroup);
+
+			$this->collGroups[]= $group;
+		}
+	}
+
+	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
 	public function clear()
@@ -2509,12 +3416,20 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		$this->id = null;
 		$this->username = null;
 		$this->password = null;
+		$this->passwordupdated = null;
 		$this->active = null;
-		$this->created = null;
-		$this->updated = null;
 		$this->levelid = null;
 		$this->lastlogin = null;
 		$this->timezone = null;
+		$this->recoveryhash = null;
+		$this->recoveryhashcreatedon = null;
+		$this->name = null;
+		$this->surname = null;
+		$this->mailaddress = null;
+		$this->mailaddressalt = null;
+		$this->deleted_at = null;
+		$this->created_at = null;
+		$this->updated_at = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
@@ -2535,8 +3450,13 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
-			if ($this->collActionlogs) {
-				foreach ((array) $this->collActionlogs as $o) {
+			if ($this->collActionLogs) {
+				foreach ((array) $this->collActionLogs as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collAlertSubscriptionUsers) {
+				foreach ((array) $this->collAlertSubscriptionUsers as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -2560,9 +3480,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 					$o->clearAllReferences($deep);
 				}
 			}
-			if ($this->singleUserInfo) {
-				$this->singleUserInfo->clearAllReferences($deep);
-			}
 			if ($this->collUserGroups) {
 				foreach ((array) $this->collUserGroups as $o) {
 					$o->clearAllReferences($deep);
@@ -2570,14 +3487,49 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			}
 		} // if ($deep)
 
-		$this->collActionlogs = null;
+		$this->collActionLogs = null;
+		$this->collAlertSubscriptionUsers = null;
 		$this->collClientQuotes = null;
 		$this->collSupplierQuoteItemComments = null;
 		$this->collClientPurchaseOrders = null;
 		$this->collSupplierPurchaseOrders = null;
-		$this->singleUserInfo = null;
 		$this->collUserGroups = null;
 		$this->aLevel = null;
+	}
+
+	// soft_delete behavior
+	
+	/**
+	 * Bypass the soft_delete behavior and force a hard delete of the current object
+	 */
+	public function forceDelete(PropelPDO $con = null)
+	{
+		UserPeer::disableSoftDelete();
+		$this->delete($con);
+	}
+	
+	/**
+	 * Undelete a row that was soft_deleted
+	 *
+	 * @return		 int The number of rows affected by this update and any referring fk objects' save() operations.
+	 */
+	public function unDelete(PropelPDO $con = null)
+	{
+		$this->setDeletedAt(null);
+		return $this->save($con);
+	}
+
+	// timestampable behavior
+	
+	/**
+	 * Mark the current object so that the update date doesn't get updated during next save
+	 *
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function keepUpdateDateUnchanged()
+	{
+		$this->modifiedColumns[] = UserPeer::UPDATED_AT;
+		return $this;
 	}
 
 	/**

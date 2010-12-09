@@ -34,7 +34,7 @@
 			<th scope="row">
 				|-$moduleSelected->getModule()-|
 			</th> 
-			<td class="celldato">			
+			<td>			
 				<ul>
 				|-foreach from=$levels item=groupbit name=bitlevelgroup-|
 					<li>

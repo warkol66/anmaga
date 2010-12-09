@@ -48,7 +48,7 @@
 						<p>|-include file=ConfigSetInclude.tpl elements=$config name=[$selectedModule]-|</p>
 						<p>&nbsp;</p>
 					</ul>
-					|- if $flag != 1 -|
+					|-if $flag != 1-|
 					<ul id="configb">
 						<p><strong>Nuevos Actions Encontrados:</strong> |-include file=ConfigCreateXmlForActionInclude.tpl elements=$actionXmls name=[$selectedModule]-| </p>
 					</ul>

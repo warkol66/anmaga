@@ -1,17 +1,4 @@
 <?php
-/** 
- * UsersListAction
- *
- * @package users 
- */
-
-require_once("BaseAction.php");
-require_once("UserPeer.php");
-require_once("UserInfoPeer.php");
-require_once("UserGroupPeer.php");
-require_once("GroupPeer.php");
-require_once("LevelPeer.php");
-require_once("TimezonePeer.php");
 
 class UsersListAction extends BaseAction {
 
@@ -38,50 +25,39 @@ class UsersListAction extends BaseAction {
 		$smarty->assign("module",$module);
 		$smarty->assign("section",$section);
 
+		$page = $_GET["page"];
+		$smarty->assign("page",$page);
+
+		$userPeer = new UserPeer();
+
+		if (!empty($_GET['filters'])){
+			$filters = $_GET['filters'];
+			$this->applyFilters($userPeer,$filters,$smarty);
+		}
+
 		//timezone
 		$timezonePeer = new TimezonePeer();
 		$smarty->assign("timezones",$timezonePeer->getAll());
-		$userPeer = new UserPeer();
-		$pager = $userPeer->getAllPaginated($_GET["page"]);
+
+		$pager = $userPeer->getAllPaginatedFiltered($page);
 		$smarty->assign("users",$pager->getResult());
 		$smarty->assign("pager",$pager);
-		$url = "Main.php?do=usersList";
-		$smarty->assign("url",$url);				
-	
-		$deletedUsers = $userPeer->getDeleteds();
-		$smarty->assign("deletedUsers",$deletedUsers);
 
+		$url = "Main.php?do=usersList";
+		foreach ($filters as $key => $value)
+			$url .= "&filters[$key]=$value";
+		$smarty->assign("url",$url);
+
+
+		$inactiveUsers = UserPeer::getInactives();
+		$smarty->assign("inactiveUsers",$inactiveUsers);
+
+/*		$softDeleted = $userPeer->getSoftDeleted();
+		$smarty->assign("inactiveUsers",$softDeleted);
+*/
     $smarty->assign("message",$_GET["message"]);
     
-    if ( !empty($_GET["user"]) ) {
-			//voy a editar un usuario
 
-			try {
-				$user = $userPeer->get($_GET["user"]);
-				
-				$smarty->assign("currentUser",$user);
-				$groups = $userPeer->getGroupsByUser($_GET["user"]);
-				$smarty->assign("currentUserGroups",$groups);
-				$groupPeer = new GroupPeer();
-				$groups = $groupPeer->getAll();
-				$smarty->assign("groups",$groups);
-				$levels = LevelPeer::getAll();
-				$smarty->assign("levels",$levels);
-	    	$smarty->assign("action","edit");
-	  	}
-		catch (PropelException $e) {
-			$smarty->assign("action","add");
-			}
-		}
-		else if ( isset($_GET["user"]) && empty($_GET["user"]) ) {
-			//voy a crear un usuario nuevo
-			
-			$levels = LevelPeer::getAll();
-			$smarty->assign("levels",$levels);
-
-			$smarty->assign("action","add");
-		}
-		
 		$activeUsersCount = count($users);
 
 		global $system;

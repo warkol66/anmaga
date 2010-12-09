@@ -1,11 +1,4 @@
 <?php
-// The parent class
-require_once 'users/classes/om/BaseGroupPeer.php';
-
-// The object class
-include_once 'Group.php';
-
-require_once("GroupCategory.php");
 
 /**
  *
@@ -61,8 +54,8 @@ class GroupPeer extends BaseGroupPeer {
   function get($id) {
 		$cond = new Criteria();
 		$cond->add(GroupPeer::ID, $id);
-		$todosObj = GroupPeer::doSelect($cond);
-		return $todosObj[0];
+		$group = GroupPeer::doSelectOne($cond);
+		return $group;
   }
 
   /**
@@ -125,9 +118,8 @@ class GroupPeer extends BaseGroupPeer {
 			$cond = new Criteria();
 			$cond->add(GroupCategoryPeer::CATEGORYID, $category);
 			$cond->add(GroupCategoryPeer::GROUPID, $group);
-			$todosObj = GroupCategoryPeer::doSelect($cond);
-			$obj = $todosObj[0];
-			$obj->delete();
+			$categoryGroup = GroupCategoryPeer::doSelectOne($cond);
+			$categoryGroup->delete();
 			return true;
 		}
 		catch (PropelException $e) {
@@ -144,9 +136,9 @@ class GroupPeer extends BaseGroupPeer {
 		
 		$criteria = new Criteria();
 		$criteria->add(GroupPeer::NAME,$name);
-		$result = GroupPeer::doSelect($criteria);
+		$result = GroupPeer::doSelectOne($criteria);
 		if (!empty($result))
-			return $result[0];
+			return $result;
 		else
 			return null;
 		

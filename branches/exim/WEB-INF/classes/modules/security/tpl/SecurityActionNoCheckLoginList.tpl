@@ -36,7 +36,7 @@
 				<input type="hidden" name="actions[]" value="|-$action->getAction()-|" />
 			</th> 
 			<td>|-$action->getLabel()-|</td>
-			<td class="celldato">
+			<td>
 				<input type="checkbox" name="noCheckLogin[|-$action->getAction()-|]" value="1"|-if $action->getNoCheckLogin() eq "1"-| checked="checked"|-/if-| />
 			</td>
 		</tr>		

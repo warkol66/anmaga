@@ -1,11 +1,8 @@
 <?php
 
-
-
 require_once("BaseAction.php");
 require_once("SecurityActionPeer.php");
 require_once("LevelPeer.php");
-
 require_once("ModulePeer.php");
 
 /**
@@ -57,32 +54,33 @@ class SecurityUsersEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 		
-		//asigno modulo y seccion
-		$modulo = "Security";
-		$section = "";
-
-		$smarty->assign("modulo",$modulo);
+		$module = "Security";
+		$section = "Users";
+		$smarty->assign("module",$module);
 		$smarty->assign("section",$section);
 
 		$modules = ModulePeer::getAll();
 		
-		$userLevel=SecurityActionPeer::userInfoToSecurity();
+		$userLevel = SecurityActionPeer::userInfoToSecurity();
+		
 
-		if(!empty($_GET["module"])) {
-				$actions = SecurityActionPeer::getAllByModuleAndBitLevel($_GET["module"],$userLevel['levelId']);
-				$moduleView = $_GET["module"];
+		if(!empty($_GET["moduleSelected"])) {
+			$moduleSelected = $_GET["moduleSelected"];
+			$actions = SecurityActionPeer::getAllByModuleAndBitLevel($moduleSelected,$userLevel['levelId']);
+			$moduleObj = ModulePeer::get($moduleSelected);
+			$smarty->assign("moduleObj",$moduleObj);
 		}	
 
 		//obtengo todos los niveles con bitlevel mayor al del usuario logueado
-    	$levels = LevelPeer::getAllWithBitLevelGreaterThan($userLevel['levelId']);
+  	$levels = LevelPeer::getAllWithBitLevelGreaterThan($userLevel['levelId']);
 
 		//contiene un nivel a comparar, equivalente a 2¨30 -1
-		$levelSave=1073741823;
+		$levelSave = SecurityActionPeer::LEVEL_ALL;
 
 		$smarty->assign("actions",$actions);
 		$smarty->assign("levelsave",$levelSave);
-		$smarty->assign("modulesName",$modules);
-		$smarty->assign("moduleView",$moduleView);
+		$smarty->assign("modules",$modules);
+		$smarty->assign("moduleSelected",$moduleSelected);
 		$smarty->assign("levels",$levels);
 		$smarty->assign("userLevel",$userLevel['levelId']);
 		

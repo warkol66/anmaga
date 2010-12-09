@@ -14,7 +14,7 @@ abstract class BaseAlertSubscriptionUser extends BaseObject  implements Persiste
 	/**
 	 * Peer class name
 	 */
-  const PEER = 'AlertSubscriptionUserPeer';
+	const PEER = 'AlertSubscriptionUserPeer';
 
 	/**
 	 * The Peer class.
@@ -261,7 +261,7 @@ abstract class BaseAlertSubscriptionUser extends BaseObject  implements Persiste
 		if ($con === null) {
 			$con = Propel::getConnection(AlertSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
@@ -303,7 +303,7 @@ abstract class BaseAlertSubscriptionUser extends BaseObject  implements Persiste
 		if ($con === null) {
 			$con = Propel::getConnection(AlertSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
-		
+
 		$con->beginTransaction();
 		$isInsert = $this->isNew();
 		try {
@@ -525,7 +525,7 @@ abstract class BaseAlertSubscriptionUser extends BaseObject  implements Persiste
 	 * type constants.
 	 *
 	 * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
-	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. 
+	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
@@ -653,7 +653,7 @@ abstract class BaseAlertSubscriptionUser extends BaseObject  implements Persiste
 		$pks = array();
 		$pks[0] = $this->getAlertsubscriptionid();
 		$pks[1] = $this->getUserid();
-		
+
 		return $pks;
 	}
 
@@ -773,11 +773,11 @@ abstract class BaseAlertSubscriptionUser extends BaseObject  implements Persiste
 		if ($this->aAlertSubscription === null && ($this->alertsubscriptionid !== null)) {
 			$this->aAlertSubscription = AlertSubscriptionQuery::create()->findPk($this->alertsubscriptionid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aAlertSubscription->addAlertSubscriptionUsers($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aAlertSubscription->addAlertSubscriptionUsers($this);
 			 */
 		}
 		return $this->aAlertSubscription;
@@ -822,11 +822,11 @@ abstract class BaseAlertSubscriptionUser extends BaseObject  implements Persiste
 		if ($this->aUser === null && ($this->userid !== null)) {
 			$this->aUser = UserQuery::create()->findPk($this->userid, $con);
 			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aUser->addAlertSubscriptionUsers($this);
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aUser->addAlertSubscriptionUsers($this);
 			 */
 		}
 		return $this->aUser;

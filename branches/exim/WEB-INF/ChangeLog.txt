@@ -1,4 +1,270 @@
 -- =============================
+-- Revisión 6.. - Fecha 20101209
+-- -----------------------------
+
+ALTER TABLE users_user
+ADD 	`passwordUpdated` DATE   COMMENT 'Fecha de actualizacion de la clave',
+ADD 	`recoveryHash` VARCHAR(255)   COMMENT 'Hash enviado para la recuperacion de clave',
+ADD 	`recoveryHashCreatedOn` DATETIME   COMMENT 'Momento de la solicitud para la recuperacion de clave',
+ADD 	`name` VARCHAR(90)   COMMENT 'Nombre',
+ADD 	`surname` VARCHAR(90)   COMMENT 'Apellido',
+ADD 	`mailAddress` VARCHAR(90)   COMMENT 'Direccion electronica',
+ADD 	`mailAddressAlt` VARCHAR(90)   COMMENT 'Direccion electronica alternativa',
+ADD 	`deleted_at` DATETIME,
+ADD 	`created_at` DATETIME,
+ADD 	`updated_at` DATETIME,
+DROP `updated`,
+DROP `created`;
+
+UPDATE `users_user` ,`users_userInfo` SET `users_user`.`name` = `users_userInfo`.`name`,
+`users_user`.`surname` = `users_userInfo`.`surname`,
+`users_user`.`mailAddress` = `users_userInfo`.`mailAddress`,
+`passwordUpdated` = '2010-01-01'
+ WHERE `users_userInfo`.`userId` = `users_user`.`id`;
+
+#-----------------------------------------------------------------------------
+#-- modules_entity
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `modules_entity`;
+
+
+CREATE TABLE `modules_entity`
+(
+	`moduleName` VARCHAR(50)  NOT NULL COMMENT 'nombre del modulo',
+	`name` VARCHAR(50)  NOT NULL COMMENT 'Nombre de la entidad',
+	`phpName` VARCHAR(50)   COMMENT 'Nombre de la Clase',
+	`description` VARCHAR(255)   COMMENT 'Descripcion de la entidad',
+	`softDelete` BOOL   COMMENT 'Indica si usa softdelete',
+	`relation` BOOL   COMMENT 'Indica si es una entidad principal o una relacion de dos entidades',
+	`saveLog` BOOL   COMMENT 'Indica si guarda log de cambios',
+	`nestedset` BOOL   COMMENT 'Indica si es una entidad nestedset',
+	`scopeFieldUniqueName` VARCHAR(100)   COMMENT 'Indica el campo que es usado como scope en el nestedset',
+	PRIMARY KEY (`name`),
+	INDEX `modules_entity_FI_1` (`moduleName`),
+	CONSTRAINT `modules_entity_FK_1`
+		FOREIGN KEY (`moduleName`)
+		REFERENCES `modules_module` (`name`),
+	INDEX `modules_entity_FI_2` (`scopeFieldUniqueName`),
+	CONSTRAINT `modules_entity_FK_2`
+		FOREIGN KEY (`scopeFieldUniqueName`)
+		REFERENCES `modules_entityField` (`uniqueName`)
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Entidades de modulos ';
+
+#-----------------------------------------------------------------------------
+#-- modules_entityField
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `modules_entityField`;
+
+
+CREATE TABLE `modules_entityField`
+(
+	`uniqueName` VARCHAR(100)  NOT NULL COMMENT 'Nombre unico del campo',
+	`entityName` VARCHAR(50)  NOT NULL COMMENT 'Nombre de la entidad',
+	`name` VARCHAR(50)  NOT NULL COMMENT 'Nombre del campo (max 50 caracteres)',
+	`description` VARCHAR(255)   COMMENT 'Descripcion del campo (comment)',
+	`isRequired` BOOL   COMMENT 'Indica si es obligatorio',
+	`isPrimaryKey` BOOL   COMMENT 'Indica si clave primaria',
+	`isAutoIncrement` BOOL   COMMENT 'Indica si el campo es autoincremental',
+	`order` INTEGER  NOT NULL COMMENT 'Orden',
+	`type` INTEGER  NOT NULL COMMENT 'Tipo de campo',
+	`unique` BOOL   COMMENT 'Indica si es unica',
+	`size` INTEGER   COMMENT 'Size del campo',
+	`aggregateExpression` VARCHAR(255)   COMMENT 'Detalles de la expresion agregada',
+	`label` VARCHAR(255)   COMMENT 'Etiqueta para el formulario',
+	`formFieldType` INTEGER   COMMENT 'Tipo de campo para formulario',
+	`formFieldSize` INTEGER   COMMENT 'Size del campo en formulario',
+	`formFieldLines` INTEGER   COMMENT 'Size del campo en formulario lineas',
+	`formFieldUseCalendar` BOOL   COMMENT 'Si utiliza o no el calendario en formulario',
+	`foreignKeyTable` VARCHAR(50)   COMMENT 'Entidad con la que enlaza la clave remota',
+	`foreignKeyRemote` VARCHAR(100)   COMMENT 'Nombre del campo en la tabla remota',
+	PRIMARY KEY (`uniqueName`),
+	INDEX `modules_entityField_FI_1` (`entityName`),
+	CONSTRAINT `modules_entityField_FK_1`
+		FOREIGN KEY (`entityName`)
+		REFERENCES `modules_entity` (`name`)
+		ON DELETE CASCADE,
+	INDEX `modules_entityField_FI_2` (`foreignKeyTable`),
+	CONSTRAINT `modules_entityField_FK_2`
+		FOREIGN KEY (`foreignKeyTable`)
+		REFERENCES `modules_entity` (`name`)
+		ON DELETE SET NULL,
+	INDEX `modules_entityField_FI_3` (`foreignKeyRemote`),
+	CONSTRAINT `modules_entityField_FK_3`
+		FOREIGN KEY (`foreignKeyRemote`)
+		REFERENCES `modules_entityField` (`uniqueName`)
+		ON DELETE SET NULL
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Campos de las entidades de modulos';
+
+#-----------------------------------------------------------------------------
+#-- modules_entityFieldValidation
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `modules_entityFieldValidation`;
+
+
+CREATE TABLE `modules_entityFieldValidation`
+(
+	`entityFieldUniqueName` VARCHAR(100)  NOT NULL COMMENT 'Nombre unico del campo',
+	`name` VARCHAR(50)  NOT NULL COMMENT 'Nombre del validador',
+	`value` VARCHAR(50)   COMMENT 'Valor del validador',
+	`message` VARCHAR(255)   COMMENT 'Mensaje',
+	PRIMARY KEY (`entityFieldUniqueName`,`name`),
+	CONSTRAINT `modules_entityFieldValidation_FK_1`
+		FOREIGN KEY (`entityFieldUniqueName`)
+		REFERENCES `modules_entityField` (`uniqueName`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM COMMENT='Validaciones de los campos de las entidades de modulos ';
+
+#-----------------------------------------------------------------------------
+#-- actionlogs_log
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `actionlogs_log`;
+DROP TABLE IF EXISTS `actionlogs_label`;
+
+DROP TABLE IF EXISTS `actionLogs_log`;
+
+
+CREATE TABLE `actionLogs_log`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id log',
+	`userObjectType` VARCHAR(50)  NOT NULL COMMENT 'Tipo de usuario',
+	`userObjectId` INTEGER  NOT NULL COMMENT 'Id del usuario',
+	`userId` INTEGER  NOT NULL COMMENT 'Id del usuario',
+	`affiliateId` INTEGER  NOT NULL COMMENT 'Id del afiliado',
+	`datetime` DATETIME  NOT NULL COMMENT 'Fecha en que se logueo el dato',
+	`action` VARCHAR(100)  NOT NULL COMMENT 'action en que se logueo el dato',
+	`object` VARCHAR(100)  NOT NULL COMMENT 'objeto sobre el cual se realizo la accion',
+	`forward` VARCHAR(100)   COMMENT 'tipo de accion de la etiqueta',
+	PRIMARY KEY (`id`),
+	INDEX `actionLogs_log_FI_1` (`userId`),
+	CONSTRAINT `actionLogs_log_FK_1`
+		FOREIGN KEY (`userId`)
+		REFERENCES `users_user` (`id`),
+	INDEX `actionLogs_log_FI_2` (`action`),
+	CONSTRAINT `actionLogs_log_FK_2`
+		FOREIGN KEY (`action`)
+		REFERENCES `security_action` (`action`)
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='logs de acciones del sistema';
+
+#-----------------------------------------------------------------------------
+#-- actionLogs_label
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `actionLogs_label`;
+
+
+CREATE TABLE `actionLogs_label`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id Label',
+	`action` VARCHAR(100)  NOT NULL COMMENT 'action en que se loguea el dato',
+	`label` VARCHAR(100)  NOT NULL COMMENT 'mensaje del log',
+	`language` VARCHAR(100)   COMMENT 'idioma de la etiqueta',
+	`forward` VARCHAR(100)   COMMENT 'tipo de accion de la etiqueta',
+	PRIMARY KEY (`id`,`action`)
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Etiquetas de los logs';
+
+#-----------------------------------------------------------------------------
+#-- common_menuItem
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `common_menuItem`;
+
+
+CREATE TABLE `common_menuItem`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`action` VARCHAR(100)   COMMENT 'Nombre de la accion a ejecutar',
+	`url` VARCHAR(255)   COMMENT 'Direccion del enlace',
+	`order` INTEGER   COMMENT 'Indice de ordenamiento',
+	`parentId` INTEGER   COMMENT 'Id item padre',
+	`newWindow` BOOL default 0 NOT NULL COMMENT 'Abrir el enlace en nueva ventana',
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Items de los menues dinamicos';
+
+#-----------------------------------------------------------------------------
+#-- common_menuItemInfo
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `common_menuItemInfo`;
+
+
+CREATE TABLE `common_menuItemInfo`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`menuItemId` INTEGER  NOT NULL,
+	`name` VARCHAR(100)  NOT NULL COMMENT 'Nombre a mostrar en el item',
+	`title` VARCHAR(255)   COMMENT 'Titulo a mostrar en el item',
+	`description` TEXT   COMMENT 'Descripcion del item',
+	`language` VARCHAR(100)  NOT NULL COMMENT 'Idioma',
+	PRIMARY KEY (`id`),
+	INDEX `common_menuItemInfo_FI_1` (`menuItemId`),
+	CONSTRAINT `common_menuItemInfo_FK_1`
+		FOREIGN KEY (`menuItemId`)
+		REFERENCES `common_menuItem` (`id`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Items de los menues dinamicos';
+
+#-----------------------------------------------------------------------------
+#-- common_alertSubscription
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `common_alertSubscription`;
+
+
+CREATE TABLE `common_alertSubscription`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(100)   COMMENT 'Nombre de la suscripción',
+	`entityName` VARCHAR(50)   COMMENT 'Nombre único de la entidad asociada.',
+	`entityFieldUniqueName` VARCHAR(100),
+	`anticipationDays` INTEGER   COMMENT 'Cantidad de dias de anticipación. Se usa para evaluar campos tipo fecha.',
+	`entityNameFieldUniqueName` VARCHAR(100)   COMMENT 'Campo a imprimir en representación del nombre de cada instancia de la entidad',
+	`extraRecipients` TEXT   COMMENT 'Destinatarios extra',
+	PRIMARY KEY (`id`),
+	INDEX `common_alertSubscription_FI_1` (`entityName`),
+	CONSTRAINT `common_alertSubscription_FK_1`
+		FOREIGN KEY (`entityName`)
+		REFERENCES `modules_entity` (`name`)
+		ON DELETE CASCADE,
+	INDEX `common_alertSubscription_FI_2` (`entityFieldUniqueName`),
+	CONSTRAINT `common_alertSubscription_FK_2`
+		FOREIGN KEY (`entityFieldUniqueName`)
+		REFERENCES `modules_entityField` (`uniqueName`)
+		ON DELETE CASCADE,
+	INDEX `common_alertSubscription_FI_3` (`entityNameFieldUniqueName`),
+	CONSTRAINT `common_alertSubscription_FK_3`
+		FOREIGN KEY (`entityNameFieldUniqueName`)
+		REFERENCES `modules_entityField` (`uniqueName`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Suscripciones de alerta';
+
+#-----------------------------------------------------------------------------
+#-- common_alertSubscriptionUser
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `common_alertSubscriptionUser`;
+
+
+CREATE TABLE `common_alertSubscriptionUser`
+(
+	`alertSubscriptionId` INTEGER  NOT NULL,
+	`userId` INTEGER  NOT NULL,
+	PRIMARY KEY (`alertSubscriptionId`,`userId`),
+	CONSTRAINT `common_alertSubscriptionUser_FK_1`
+		FOREIGN KEY (`alertSubscriptionId`)
+		REFERENCES `common_alertSubscription` (`id`)
+		ON DELETE CASCADE,
+	INDEX `common_alertSubscriptionUser_FI_2` (`userId`),
+	CONSTRAINT `common_alertSubscriptionUser_FK_2`
+		FOREIGN KEY (`userId`)
+		REFERENCES `users_user` (`id`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Relación AlertSubscription - User';
+
+-- =============================
 -- Revisión 598 - Fecha 20101209
 -- -----------------------------
 ALTER TABLE `import_shipment` DROP `containersRealCount`;

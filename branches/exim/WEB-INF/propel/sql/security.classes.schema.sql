@@ -26,7 +26,7 @@ CREATE TABLE `security_action`
 	CONSTRAINT `security_action_FK_1`
 		FOREIGN KEY (`module`)
 		REFERENCES `security_module` (`module`)
-) ENGINE=MyISAM COMMENT='Actions del sistema';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Actions del sistema';
 
 #-----------------------------------------------------------------------------
 #-- security_module
@@ -43,7 +43,7 @@ CREATE TABLE `security_module`
 	`accessRegistrationUser` INTEGER   COMMENT 'El acceso a ese modulo para los usuarios por registracion',
 	`noCheckLogin` TINYINT default 0  COMMENT 'Si no se chequea login ese modulo',
 	PRIMARY KEY (`module`)
-) ENGINE=MyISAM COMMENT='Modulos del sistema';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Modulos del sistema';
 
 #-----------------------------------------------------------------------------
 #-- security_actionLabel
@@ -58,8 +58,9 @@ CREATE TABLE `security_actionLabel`
 	`action` VARCHAR(100)  NOT NULL COMMENT 'Action pagina',
 	`language` VARCHAR(100)   COMMENT 'Idioma de la etiqueta',
 	`label` VARCHAR(100)   COMMENT 'Etiqueta',
+	`description` VARCHAR(255)   COMMENT 'Descripcion',
 	PRIMARY KEY (`id`,`action`)
-) ENGINE=MyISAM COMMENT='etiquetas de actions de seguridad';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='etiquetas de actions de seguridad';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

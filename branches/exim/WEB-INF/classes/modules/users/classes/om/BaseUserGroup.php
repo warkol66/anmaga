@@ -62,7 +62,7 @@ abstract class BaseUserGroup extends BaseObject  implements Persistent
 
 	/**
 	 * Get the [userid] column value.
-	 * Group ID
+	 * User ID
 	 * @return     int
 	 */
 	public function getUserid()
@@ -82,7 +82,7 @@ abstract class BaseUserGroup extends BaseObject  implements Persistent
 
 	/**
 	 * Set the value of [userid] column.
-	 * Group ID
+	 * User ID
 	 * @param      int $v new value
 	 * @return     UserGroup The current object (for fluent API support)
 	 */

@@ -31,7 +31,11 @@ class UsersDoDeleteAction extends BaseAction {
 
 		$userPeer = new UserPeer();
 
-		if ( $userPeer->delete($_GET["user"]) ) {
+//		if ( $userPeer->recoverDelete($_GET["user"]) ) {
+		if ( $userPeer->softDelete($_GET["user"]) ) {
+//		if ( $userPeer->hardDelete($_GET["user"]) ) {
+//		if ( $userPeer->delete($_GET["user"]) ) {
+//		if ( $userPeer->deleteOnCascade($_GET["user"]) ) {
 			Common::doLog('success','userId: ' . $_GET["user"]);
 			return $mapping->findForwardConfig('success');
 		}

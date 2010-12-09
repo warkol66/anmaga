@@ -21,12 +21,12 @@
 			<td>|-$module->getDescription()-|</td>
 			<input type=hidden name="modules[]" value="|-$module->getName()-|">	 
 		|-foreach from=$userTypes item=userType name=bitlevelgroup-|
-			<td class="celldato">
+			<td>
 				<input type="checkbox" name="activeModule[|-$module->getName()-|][]" value="|-$userType.bitUser-|" |-checked_if_has_access first=$userType.bitUser second=$module->getAccess()-|>
 				<input type=hidden name="bitaction[|-$module->getName()-|][|-$smarty.foreach.contar.iteration-|]" value="|-$userType.bit	User-|">
 			</td>
 		|-/foreach-|
-			<td class="celldato">
+			<td>
 				<input type="checkbox" name="all[]" value="|-$module->getName()-|"|-if $levelsave eq $module->getAccess()-|checked|-/if-| />
 			</td>
 		</tr>		

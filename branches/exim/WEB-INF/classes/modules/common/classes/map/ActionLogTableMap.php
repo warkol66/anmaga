@@ -38,8 +38,8 @@ class ActionLogTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addColumn('OBJECTTYPE', 'Objecttype', 'VARCHAR', true, 50, null);
-		$this->addColumn('OBJECTID', 'Objectid', 'INTEGER', true, null, null);
+		$this->addColumn('USEROBJECTTYPE', 'Userobjecttype', 'VARCHAR', true, 50, null);
+		$this->addColumn('USEROBJECTID', 'Userobjectid', 'INTEGER', true, null, null);
 		$this->addForeignKey('USERID', 'Userid', 'INTEGER', 'users_user', 'ID', true, null, null);
 		$this->addColumn('AFFILIATEID', 'Affiliateid', 'INTEGER', true, null, null);
 		$this->addColumn('DATETIME', 'Datetime', 'TIMESTAMP', true, null, null);

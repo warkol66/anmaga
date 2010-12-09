@@ -1,28 +1,29 @@
 <h2>Seguridad</h2>
-<h1>Administración de permisos para Usuarios de Afiliados</h1>
+<h1>Administración de permisos para usuarios de afiliados</h1>
 |-if $message eq "saved"-|
-	<div class="resultSuccess">Los cambios han sido guardados</div>
+	<div class="successMessage">Los cambios han sido guardados</div>
 |-/if-|	
-<p>Mediante esta aplicación puede modificar lso permisos de lso usuarios a acceder y ejecutar diferenctes acciones del sistema. Seleccione un módulo y marque o desmarque el nivel de usuario que desea modificar.
-<br />Si desea dar acceso a cualquer usuario, marque la opción "Todos".</p>
+<p>Mediante esta aplicación puede modificar los permisos de los usuarios para acceder y ejecutar diferenctes acciones del sistema. Seleccione un módulo y marque o desmarque el nivel de usuario que desea modificar.
+<br />
+Si desea dar acceso a cualquer usuario, marque la opción "Todos".</p>
 	<fieldset title="Seleccion el módulo para definir sus permisos">
 	 <legend>Seleccione módulo</legend>
 <form name="securityFilter" id="securityFilter" action="Main.php" method="get">
 		 <p>Seleccione el módulo que desea modificar</p>
 	<p>
 		 <label for="module">Módulo</label>
-				<select name="module" onchange="if (this.options[this.selectedIndex].value) document.forms.securityFilter.submit()">
-				<option value='todos'>Seleccione un módulo</option>
-				|-foreach from=$modulesName item=moduleName-|
-					<option value="|-$moduleName->getName()-|"> |-$moduleName->getName()-|</option>
+				<select name="moduleSelected" onchange="if (this.options[this.selectedIndex].value) document.forms.securityFilter.submit()">
+				<option value=''>Seleccione un módulo</option>
+				|-foreach from=$modules item=eachModule-|
+					<option value="|-$eachModule->getName()-|"|-if $eachModule->getName() eq $moduleSelected-| selected="selected" |-/if-|> |-$eachModule->getName()|multilang_get_translation:"common"-|</option>
 				|-/foreach-|
 				</select>
 				<input type="hidden" name="do" value="securityAffiliatesEdit" />
 			 </p>
 	</form>
 </fieldset>
-|-if $moduleView ne ""-|
-<h3>Seguridad global del módulo |-$moduleView-| para usuarios afiliados</h3>
+|-if $moduleSelected ne ""-|
+<h3>Seguridad global del módulo |-$moduleSelected|multilang_get_translation:"common"-| para usuarios de afiliados</h3>
 <p>Las acciones que no posean permisos específicos, heredan los permisos del módulo.</p>
 <form name="security" action="Main.php" method="post">
 	<table width="100%" border="0" cellpadding="4" cellspacing="0" class="tableTdBorders">
@@ -32,9 +33,8 @@
 		</tr> 
 		<tr>
 			<td>
-				<h3>|-$moduleView-|</h3>
+				<h3>|-$moduleObj->getLabel()-|</h3><h2>(|-$moduleSelected-|)</h2>
 				<input type="hidden" name="module[]" value="1" />
-			<p>|-$moduleView-|</p>
 			</td>
 			<td>
 				<ul>
@@ -51,10 +51,10 @@
 					</li>
 				</ul>	
 			</td>				
-		 </tr>		
+	  </tr>		
 	</table> 
 
-<h3>Seguridad de las acciones del módulo |-$moduleView-|</h3>
+<h3>Seguridad de las acciones del módulo |-$moduleSelected|multilang_get_translation:"common"-|</h3>
 <p>Para permitir el acceso a una acción determinada, marque la casilla junto al nivel de usuario correspondiente.</p>
 	<table width="100%" border="0" cellpadding="4" cellspacing="0" class="tableTdBorders">
 		<tr> 
@@ -64,7 +64,7 @@
 		|-foreach from=$actions item=action name=for_actions-|
 		<tr>
 			<td>
-				<h3>|-$action->getAction()-|</h3>
+				<h3>|-$action->getLabel()-|</h3><h2>(|-$action->getAction()-|)</h2>
 				<input type="hidden" name="actions[]" value="|-$action->getAction()-|" />
 			<p>|-$action->getLabel()-|</p>
 			</td>
@@ -83,12 +83,12 @@
 					</li>
 				</ul>	
 			</td>				
-		 </tr>		
+	  </tr>		
 		 |-/foreach-|
 		<tr>
 			<td colspan="2">
 				<input type="submit" value="Guardar" />
-				<input type="hidden" name="module" value="|-$moduleView-|" />
+				<input type="hidden" name="moduleSelected" value="|-$moduleSelected-|" />
 				<input type="hidden" name="do" value="securityAffiliatesDoEdit" />
 			</td>
 		</tr>	 

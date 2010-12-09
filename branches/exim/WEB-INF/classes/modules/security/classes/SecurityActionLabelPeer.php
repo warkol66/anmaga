@@ -1,7 +1,7 @@
 <?php
 
   // include base peer class
-  require_once 'om/BaseSecurityActionLabelPeer.php';
+  require_once 'security/classes/om/BaseSecurityActionLabelPeer.php';
   
   // include object class
   include_once 'SecurityActionLabel.php';
@@ -17,17 +17,6 @@
 class SecurityActionLabelPeer extends BaseSecurityActionLabelPeer {
 
 	/**
-	 * Initializes internal state of Content object.
-	 * @see        parent::__construct()
-	 */
-	public function __construct()
-	{
-		// Make sure that parent constructor is always invoked, since that
-		// is where any default values for this object are set.
-		parent::__construct();
-	}
-
-	/**
 *
 *	Obtiene etiquetas segun el idioma y action
 *	@param string $language idioma
@@ -36,13 +25,29 @@ class SecurityActionLabelPeer extends BaseSecurityActionLabelPeer {
 */
 	function getByActionAndLanguage($action,$language) {
 		try{
-		$cond = new Criteria();
-		$cond->add(SecurityActionLabelPeer::ACTION, $action);
-		$cond->add(SecurityActionLabelPeer::LANGUAGE, $language);
-		$obj = SecurityActionLabelPeer::doSelect($cond);
-		return $obj[0];
+			$cond = new Criteria();
+			$cond->setIgnoreCase(true);
+			$cond->add(SecurityActionLabelPeer::ACTION, $action);
+			$cond->add(SecurityActionLabelPeer::LANGUAGE, $language);
+			$obj = SecurityActionLabelPeer::doSelectOne($cond);
+			if (empty($obj) && (preg_match("/(.*)(Do[A-Z])(.*)/",$action,$parts))) {
+				$actionWithoutDo = $parts[1].$parts[2][2].$parts[3];
+				$cond = new Criteria();
+				$cond->add(SecurityActionLabelPeer::ACTION, $actionWithoutDo);
+				$cond->add(SecurityActionLabelPeer::LANGUAGE, $language);
+				$obj = SecurityActionLabelPeer::doSelectOne($cond);
+			}
+			return $obj;
 		}catch (PropelException $e) {}
 	}
 
+	function getAllByLanguage($language) {
+		try{
+			$cond = new Criteria();
+			$cond->add(SecurityActionLabelPeer::LANGUAGE, $language);
+			$obj = SecurityActionLabelPeer::doSelect($cond);
+			return $obj;
+		}catch (PropelException $e) {}
+	}
 
 } // SecurityActionLabelPeer

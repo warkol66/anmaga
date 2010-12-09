@@ -46,10 +46,7 @@ class	SecurityAffiliatesDoEditAction extends BaseAction {
 		}
 
 		$module = "Security";
-		$section = "action list";
-
-		$smarty->assign("module",$module);
-		$smarty->assign("section",$section);
+		$section = "Affiliates";
 
 		// contiene todos los actions
 		$actions=$_POST["actions"];
@@ -98,7 +95,7 @@ class	SecurityAffiliatesDoEditAction extends BaseAction {
 		* si es asi, seteo el acceso a ese action como 2¨30-1
 		* actualmente el sistema permite cargar no más de 30 grupos de usuarios o de lo contrario este metodo no funciona
 		*/
-		$levelAll=1073741823;
+		$levelSave = SecurityActionPeer::LEVEL_ALL;
 		foreach($levelmin as $levelaction) {
 			foreach ($actions as $act) {
 				if (strcmp($levelaction,$act)==0)	{
@@ -109,7 +106,7 @@ class	SecurityAffiliatesDoEditAction extends BaseAction {
 
 		$myRedirectConfig = $mapping->findForwardConfig('success');
 		$myRedirectPath = $myRedirectConfig->getpath();
-		$queryData = '&module='.$_POST["module"];
+		$queryData = '&moduleSelected='.$_POST["moduleSelected"];
 		$myRedirectPath .= $queryData;
 		$fc = new ForwardConfig($myRedirectPath, True);
 		return $fc;

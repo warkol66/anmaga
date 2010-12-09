@@ -65,16 +65,20 @@ class Common {
 			if(is_object($user))
 				$userInfo["userId"] = $user->getId();
 			$userInfo["affiliateId"] = 0;
-			$userInfo["objectType"] = 'User';
-			$userInfo["objectId"] = $userInfo["userId"];
+			$userInfo["userObjectType"] = 'User';
+			$userInfo["userObjectId"] = $userInfo["userId"];
 		}
 		else if (!empty($_SESSION['loginUserByRegistration'])) {
 			$userInfo["userId"] = $_SESSION['loginUserByRegistration'];
 			$userInfo["affiliateId"] = 999999 ;
+			$userInfo["userObjectType"] = 'UserByRegistration';
+			$userInfo["userObjectId"] = $_SESSION['loginUserByRegistration'];
 		}
 		else if (!empty($_SESSION["loginAffiliateUser"])) {
 			$userInfo["userId"] = $_SESSION["loginAffiliateUser"]->getId();
 			$userInfo["affiliateId"] = $_SESSION["loginAffiliateUser"]->getAffiliateId();
+			$userInfo["userObjectType"] = 'AffiliateUser';
+			$userInfo["userObjectId"] = $_SESSION["loginAffiliateUser"]->getId();
 		}
 
 		return $userInfo;
@@ -105,8 +109,8 @@ class Common {
 				$logs->setForward($forward);
 
 				//Nuevo log con ObjectType y ObjectId para liminar columnas de affiliateId, etc.
-				$logs->setObjectType($userInfo["objectType"]);
-				$logs->setObjectId($userInfo["objectId"]);
+				$logs->setUserObjectType($userInfo["userObjectType"]);
+				$logs->setUserObjectId($userInfo["userObjectId"]);
 
 				$logs->save();
 			}
