@@ -18,6 +18,10 @@
  * @method     AffiliateQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     AffiliateQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method     AffiliateQuery leftJoinAffiliateInfo($relationAlias = null) Adds a LEFT JOIN clause to the query using the AffiliateInfo relation
+ * @method     AffiliateQuery rightJoinAffiliateInfo($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AffiliateInfo relation
+ * @method     AffiliateQuery innerJoinAffiliateInfo($relationAlias = null) Adds a INNER JOIN clause to the query using the AffiliateInfo relation
+ *
  * @method     AffiliateQuery leftJoinAffiliateUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the AffiliateUser relation
  * @method     AffiliateQuery rightJoinAffiliateUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AffiliateUser relation
  * @method     AffiliateQuery innerJoinAffiliateUser($relationAlias = null) Adds a INNER JOIN clause to the query using the AffiliateUser relation
@@ -225,6 +229,70 @@ abstract class BaseAffiliateQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(AffiliatePeer::OWNERID, $ownerid, $comparison);
+	}
+
+	/**
+	 * Filter the query by a related AffiliateInfo object
+	 *
+	 * @param     AffiliateInfo $affiliateInfo  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateQuery The current query, for fluid interface
+	 */
+	public function filterByAffiliateInfo($affiliateInfo, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(AffiliatePeer::ID, $affiliateInfo->getAffiliateid(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the AffiliateInfo relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    AffiliateQuery The current query, for fluid interface
+	 */
+	public function joinAffiliateInfo($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('AffiliateInfo');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'AffiliateInfo');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the AffiliateInfo relation AffiliateInfo object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    AffiliateInfoQuery A secondary query class using the current class as primary query
+	 */
+	public function useAffiliateInfoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		return $this
+			->joinAffiliateInfo($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'AffiliateInfo', 'AffiliateInfoQuery');
 	}
 
 	/**

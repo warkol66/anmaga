@@ -156,3 +156,29 @@
 		</fieldset>
 	</form>
 </div>
+
+<div id="div_supplier_info">
+	<fieldset title="Información de contacto del proveedor">
+		<legend>Información de contacto del proveedor</legend>
+		<p>
+			<label for="name">Nombre</label>
+			<span id="name" title="Nombre" >|-$supplier->getName()-|</span>
+		</p>
+		<p>
+			<label for="address">Dirección</label>
+			<span id="address" title="Dirección" >|-$supplier->getAddress()-|</span>
+		</p>
+		<p>
+			<label for="phone_number">Número Telefónico</label>
+			<span id="phone_number" title="Número Telefónico" >|-$supplier->getPhoneNumber()-|</span>
+		</p>
+		<p>
+			<label for="email">E-Mail</label>
+			<span id="email" title="E-Mail" >|-$supplier->getEmail()-|</span>
+		</p>
+		<p>
+			<label for="contact_name">Nombre de Contacto</label>
+			<span id="contact_name" title="Nombre de Contacto" >|-$supplier->getContactName()-|</span>
+		</p>
+	</fieldset>
+</div>

@@ -37,7 +37,7 @@ class AffiliateInfoTableMap extends TableMap {
 		$this->setPackage('affiliates.classes');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addPrimaryKey('AFFILIATEID', 'Affiliateid', 'INTEGER', true, null, null);
+		$this->addForeignPrimaryKey('AFFILIATEID', 'Affiliateid', 'INTEGER' , 'affiliates_affiliate', 'ID', true, null, null);
 		$this->addColumn('AFFILIATEINTERNALNUMBER', 'Affiliateinternalnumber', 'INTEGER', true, null, null);
 		$this->addColumn('ADDRESS', 'Address', 'VARCHAR', false, 255, null);
 		$this->addColumn('PHONE', 'Phone', 'VARCHAR', false, 50, null);
@@ -54,6 +54,7 @@ class AffiliateInfoTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
+    $this->addRelation('Affiliate', 'Affiliate', RelationMap::MANY_TO_ONE, array('affiliateId' => 'id', ), 'CASCADE', null);
 	} // buildRelations()
 
 } // AffiliateInfoTableMap

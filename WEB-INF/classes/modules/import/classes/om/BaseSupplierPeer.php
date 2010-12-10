@@ -26,7 +26,7 @@ abstract class BaseSupplierPeer {
 	const TM_CLASS = 'SupplierTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 6;
+	const NUM_COLUMNS = 9;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -37,8 +37,17 @@ abstract class BaseSupplierPeer {
 	/** the column name for the NAME field */
 	const NAME = 'import_supplier.NAME';
 
+	/** the column name for the ADDRESS field */
+	const ADDRESS = 'import_supplier.ADDRESS';
+
+	/** the column name for the PHONENUMBER field */
+	const PHONENUMBER = 'import_supplier.PHONENUMBER';
+
 	/** the column name for the EMAIL field */
 	const EMAIL = 'import_supplier.EMAIL';
+
+	/** the column name for the CONTACTNAME field */
+	const CONTACTNAME = 'import_supplier.CONTACTNAME';
 
 	/** the column name for the ACTIVE field */
 	const ACTIVE = 'import_supplier.ACTIVE';
@@ -65,12 +74,12 @@ abstract class BaseSupplierPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Email', 'Active', 'Defaultincotermid', 'Defaultportid', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'email', 'active', 'defaultincotermid', 'defaultportid', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::EMAIL, self::ACTIVE, self::DEFAULTINCOTERMID, self::DEFAULTPORTID, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'EMAIL', 'ACTIVE', 'DEFAULTINCOTERMID', 'DEFAULTPORTID', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'email', 'active', 'defaultIncotermId', 'defaultPortId', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Address', 'Phonenumber', 'Email', 'Contactname', 'Active', 'Defaultincotermid', 'Defaultportid', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'address', 'phonenumber', 'email', 'contactname', 'active', 'defaultincotermid', 'defaultportid', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ADDRESS, self::PHONENUMBER, self::EMAIL, self::CONTACTNAME, self::ACTIVE, self::DEFAULTINCOTERMID, self::DEFAULTPORTID, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ADDRESS', 'PHONENUMBER', 'EMAIL', 'CONTACTNAME', 'ACTIVE', 'DEFAULTINCOTERMID', 'DEFAULTPORTID', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'address', 'phoneNumber', 'email', 'contactName', 'active', 'defaultIncotermId', 'defaultPortId', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	/**
@@ -80,12 +89,12 @@ abstract class BaseSupplierPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Email' => 2, 'Active' => 3, 'Defaultincotermid' => 4, 'Defaultportid' => 5, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'email' => 2, 'active' => 3, 'defaultincotermid' => 4, 'defaultportid' => 5, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::EMAIL => 2, self::ACTIVE => 3, self::DEFAULTINCOTERMID => 4, self::DEFAULTPORTID => 5, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'EMAIL' => 2, 'ACTIVE' => 3, 'DEFAULTINCOTERMID' => 4, 'DEFAULTPORTID' => 5, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'email' => 2, 'active' => 3, 'defaultIncotermId' => 4, 'defaultPortId' => 5, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Address' => 2, 'Phonenumber' => 3, 'Email' => 4, 'Contactname' => 5, 'Active' => 6, 'Defaultincotermid' => 7, 'Defaultportid' => 8, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'address' => 2, 'phonenumber' => 3, 'email' => 4, 'contactname' => 5, 'active' => 6, 'defaultincotermid' => 7, 'defaultportid' => 8, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ADDRESS => 2, self::PHONENUMBER => 3, self::EMAIL => 4, self::CONTACTNAME => 5, self::ACTIVE => 6, self::DEFAULTINCOTERMID => 7, self::DEFAULTPORTID => 8, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ADDRESS' => 2, 'PHONENUMBER' => 3, 'EMAIL' => 4, 'CONTACTNAME' => 5, 'ACTIVE' => 6, 'DEFAULTINCOTERMID' => 7, 'DEFAULTPORTID' => 8, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'address' => 2, 'phoneNumber' => 3, 'email' => 4, 'contactName' => 5, 'active' => 6, 'defaultIncotermId' => 7, 'defaultPortId' => 8, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	/**
@@ -159,14 +168,20 @@ abstract class BaseSupplierPeer {
 		if (null === $alias) {
 			$criteria->addSelectColumn(SupplierPeer::ID);
 			$criteria->addSelectColumn(SupplierPeer::NAME);
+			$criteria->addSelectColumn(SupplierPeer::ADDRESS);
+			$criteria->addSelectColumn(SupplierPeer::PHONENUMBER);
 			$criteria->addSelectColumn(SupplierPeer::EMAIL);
+			$criteria->addSelectColumn(SupplierPeer::CONTACTNAME);
 			$criteria->addSelectColumn(SupplierPeer::ACTIVE);
 			$criteria->addSelectColumn(SupplierPeer::DEFAULTINCOTERMID);
 			$criteria->addSelectColumn(SupplierPeer::DEFAULTPORTID);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.ADDRESS');
+			$criteria->addSelectColumn($alias . '.PHONENUMBER');
 			$criteria->addSelectColumn($alias . '.EMAIL');
+			$criteria->addSelectColumn($alias . '.CONTACTNAME');
 			$criteria->addSelectColumn($alias . '.ACTIVE');
 			$criteria->addSelectColumn($alias . '.DEFAULTINCOTERMID');
 			$criteria->addSelectColumn($alias . '.DEFAULTPORTID');

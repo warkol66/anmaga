@@ -91,4 +91,19 @@ class Shipment extends BaseShipment {
 	public function getStatusName() {		
 		return $this->statusNames[$this->calculateStatus()];
 	}
+	
+	/**
+	 * Obtiene la información del cliente
+	 * @return AffiliateInfo
+	 */
+	public function getClientInfo() {
+		return AffiliateInfoQuery::create()->join('Affiliate')
+										   ->join('Affiliate.ClientQuote')
+										   ->join('ClientQuote.SupplierPurchaseOrder')
+										   ->join('SupplierPurchaseOrder.Shipment')
+										   ->useQuery('Shipment')
+												->filterById($this->getId())
+										   ->endUse()
+										   ->findOne();
+	}
 } // Shipment

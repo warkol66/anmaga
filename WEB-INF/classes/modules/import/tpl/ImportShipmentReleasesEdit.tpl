@@ -120,3 +120,37 @@
 		</fieldset>
 	</form>
 </div>
+
+<div id="div_client_info">
+	<fieldset title="Información de contacto del cliente">
+		<legend>Información de contacto del cliente</legend>
+		<p>
+			<label for="name">Nombre</label>
+			<span id="name" title="Nombre" >|-$clientInfo->getName()-|</span>
+		</p>
+		<p>
+			<label for="address">Dirección</label>
+			<span id="address" title="Dirección" >|-$clientInfo->getAddress()-|</span>
+		</p>
+		<p>
+			<label for="phone_number">Número Telefónico</label>
+			<span id="phone_number" title="Número Telefónico" >|-$clientInfo->getPhone()-|</span>
+		</p>
+		<p>
+			<label for="email">E-Mail</label>
+			<span id="email" title="E-Mail" >|-$clientInfo->getEmail()-|</span>
+		</p>
+		<p>
+			<label for="contact_name">Nombre de Contacto</label>
+			<span id="contact_name" title="Nombre de Contacto" >|-$clientInfo->getContact()-|</span>
+		</p>
+		<p>
+			<label for="contact_email">E-Mail de Contacto</label>
+			<span id="contact_email" title="E-Mail de Contacto" >|-$clientInfo->getContactEmail()-|</span>
+		</p>
+				<p>
+			<label for="web">Página Web</label>
+			<span id="web" title="Página Web" >|-$clientInfo->getWeb()-|</span>
+		</p>
+	</fieldset>
+</div>

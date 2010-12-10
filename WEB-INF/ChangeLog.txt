@@ -1,4 +1,15 @@
 -- =============================
+-- Revisión 605 - Fecha 20101210
+-- -----------------------------
+ALTER TABLE `import_supplier` ADD `address` VARCHAR(255)   COMMENT 'direccion';
+ALTER TABLE `import_supplier` ADD `phoneNumber` VARCHAR(25)   COMMENT 'telefono';
+ALTER TABLE `import_supplier` ADD `contactName` VARCHAR(255)   COMMENT 'Persona de contacto';
+
+ALTER TABLE `affiliates_affiliateInfo` ADD CONSTRAINT `affiliates_affiliateInfo_FK_1`
+		FOREIGN KEY (`affiliateId`)
+		REFERENCES `affiliates_affiliate` (`id`)
+		ON DELETE CASCADE;
+-- =============================
 -- Revisión 601 - Fecha 20101209
 -- -----------------------------
 ALTER TABLE `import_shipment` ADD `status` INTEGER  NOT NULL COMMENT 'Status de Embarque';

@@ -43,6 +43,11 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	protected $ownerid;
 
 	/**
+	 * @var        AffiliateInfo one-to-one related AffiliateInfo object
+	 */
+	protected $singleAffiliateInfo;
+
+	/**
 	 * @var        array AffiliateUser[] Collection to store aggregation of AffiliateUser objects.
 	 */
 	protected $collAffiliateUsers;
@@ -276,6 +281,8 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 
 		if ($deep) {  // also de-associate any related objects?
 
+			$this->singleAffiliateInfo = null;
+
 			$this->collAffiliateUsers = null;
 
 			$this->collAffiliateBranchs = null;
@@ -419,6 +426,12 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
+			if ($this->singleAffiliateInfo !== null) {
+				if (!$this->singleAffiliateInfo->isDeleted()) {
+						$affectedRows += $this->singleAffiliateInfo->save($con);
+				}
+			}
+
 			if ($this->collAffiliateUsers !== null) {
 				foreach ($this->collAffiliateUsers as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -529,6 +542,12 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
+
+				if ($this->singleAffiliateInfo !== null) {
+					if (!$this->singleAffiliateInfo->validate($columns)) {
+						$failureMap = array_merge($failureMap, $this->singleAffiliateInfo->getValidationFailures());
+					}
+				}
 
 				if ($this->collAffiliateUsers !== null) {
 					foreach ($this->collAffiliateUsers as $referrerFK) {
@@ -788,6 +807,11 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
+			$relObj = $this->getAffiliateInfo();
+			if ($relObj) {
+				$copyObj->setAffiliateInfo($relObj->copy($deepCopy));
+			}
+
 			foreach ($this->getAffiliateUsers() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addAffiliateUser($relObj->copy($deepCopy));
@@ -861,6 +885,42 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 			self::$peer = new AffiliatePeer();
 		}
 		return self::$peer;
+	}
+
+	/**
+	 * Gets a single AffiliateInfo object, which is related to this object by a one-to-one relationship.
+	 *
+	 * @param      PropelPDO $con optional connection object
+	 * @return     AffiliateInfo
+	 * @throws     PropelException
+	 */
+	public function getAffiliateInfo(PropelPDO $con = null)
+	{
+
+		if ($this->singleAffiliateInfo === null && !$this->isNew()) {
+			$this->singleAffiliateInfo = AffiliateInfoQuery::create()->findPk($this->getPrimaryKey(), $con);
+		}
+
+		return $this->singleAffiliateInfo;
+	}
+
+	/**
+	 * Sets a single AffiliateInfo object as related to this object by a one-to-one relationship.
+	 *
+	 * @param      AffiliateInfo $v AffiliateInfo
+	 * @return     Affiliate The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setAffiliateInfo(AffiliateInfo $v = null)
+	{
+		$this->singleAffiliateInfo = $v;
+
+		// Make sure that that the passed-in AffiliateInfo isn't already associated with this object
+		if ($v !== null && $v->getAffiliate() === null) {
+			$v->setAffiliate($this);
+		}
+
+		return $this;
 	}
 
 	/**
@@ -1711,6 +1771,9 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
+			if ($this->singleAffiliateInfo) {
+				$this->singleAffiliateInfo->clearAllReferences($deep);
+			}
 			if ($this->collAffiliateUsers) {
 				foreach ((array) $this->collAffiliateUsers as $o) {
 					$o->clearAllReferences($deep);
@@ -1738,6 +1801,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 			}
 		} // if ($deep)
 
+		$this->singleAffiliateInfo = null;
 		$this->collAffiliateUsers = null;
 		$this->collAffiliateBranchs = null;
 		$this->collClientQuotes = null;

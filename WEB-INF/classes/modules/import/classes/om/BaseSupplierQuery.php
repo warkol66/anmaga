@@ -8,14 +8,20 @@
  *
  * @method     SupplierQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     SupplierQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method     SupplierQuery orderByAddress($order = Criteria::ASC) Order by the address column
+ * @method     SupplierQuery orderByPhonenumber($order = Criteria::ASC) Order by the phoneNumber column
  * @method     SupplierQuery orderByEmail($order = Criteria::ASC) Order by the email column
+ * @method     SupplierQuery orderByContactname($order = Criteria::ASC) Order by the contactName column
  * @method     SupplierQuery orderByActive($order = Criteria::ASC) Order by the active column
  * @method     SupplierQuery orderByDefaultincotermid($order = Criteria::ASC) Order by the defaultIncotermId column
  * @method     SupplierQuery orderByDefaultportid($order = Criteria::ASC) Order by the defaultPortId column
  *
  * @method     SupplierQuery groupById() Group by the id column
  * @method     SupplierQuery groupByName() Group by the name column
+ * @method     SupplierQuery groupByAddress() Group by the address column
+ * @method     SupplierQuery groupByPhonenumber() Group by the phoneNumber column
  * @method     SupplierQuery groupByEmail() Group by the email column
+ * @method     SupplierQuery groupByContactname() Group by the contactName column
  * @method     SupplierQuery groupByActive() Group by the active column
  * @method     SupplierQuery groupByDefaultincotermid() Group by the defaultIncotermId column
  * @method     SupplierQuery groupByDefaultportid() Group by the defaultPortId column
@@ -53,14 +59,20 @@
  *
  * @method     Supplier findOneById(int $id) Return the first Supplier filtered by the id column
  * @method     Supplier findOneByName(string $name) Return the first Supplier filtered by the name column
+ * @method     Supplier findOneByAddress(string $address) Return the first Supplier filtered by the address column
+ * @method     Supplier findOneByPhonenumber(string $phoneNumber) Return the first Supplier filtered by the phoneNumber column
  * @method     Supplier findOneByEmail(string $email) Return the first Supplier filtered by the email column
+ * @method     Supplier findOneByContactname(string $contactName) Return the first Supplier filtered by the contactName column
  * @method     Supplier findOneByActive(boolean $active) Return the first Supplier filtered by the active column
  * @method     Supplier findOneByDefaultincotermid(int $defaultIncotermId) Return the first Supplier filtered by the defaultIncotermId column
  * @method     Supplier findOneByDefaultportid(int $defaultPortId) Return the first Supplier filtered by the defaultPortId column
  *
  * @method     array findById(int $id) Return Supplier objects filtered by the id column
  * @method     array findByName(string $name) Return Supplier objects filtered by the name column
+ * @method     array findByAddress(string $address) Return Supplier objects filtered by the address column
+ * @method     array findByPhonenumber(string $phoneNumber) Return Supplier objects filtered by the phoneNumber column
  * @method     array findByEmail(string $email) Return Supplier objects filtered by the email column
+ * @method     array findByContactname(string $contactName) Return Supplier objects filtered by the contactName column
  * @method     array findByActive(boolean $active) Return Supplier objects filtered by the active column
  * @method     array findByDefaultincotermid(int $defaultIncotermId) Return Supplier objects filtered by the defaultIncotermId column
  * @method     array findByDefaultportid(int $defaultPortId) Return Supplier objects filtered by the defaultPortId column
@@ -213,6 +225,50 @@ abstract class BaseSupplierQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query on the address column
+	 * 
+	 * @param     string $address The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    SupplierQuery The current query, for fluid interface
+	 */
+	public function filterByAddress($address = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($address)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $address)) {
+				$address = str_replace('*', '%', $address);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(SupplierPeer::ADDRESS, $address, $comparison);
+	}
+
+	/**
+	 * Filter the query on the phoneNumber column
+	 * 
+	 * @param     string $phonenumber The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    SupplierQuery The current query, for fluid interface
+	 */
+	public function filterByPhonenumber($phonenumber = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($phonenumber)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $phonenumber)) {
+				$phonenumber = str_replace('*', '%', $phonenumber);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(SupplierPeer::PHONENUMBER, $phonenumber, $comparison);
+	}
+
+	/**
 	 * Filter the query on the email column
 	 * 
 	 * @param     string $email The value to use as filter.
@@ -232,6 +288,28 @@ abstract class BaseSupplierQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(SupplierPeer::EMAIL, $email, $comparison);
+	}
+
+	/**
+	 * Filter the query on the contactName column
+	 * 
+	 * @param     string $contactname The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    SupplierQuery The current query, for fluid interface
+	 */
+	public function filterByContactname($contactname = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($contactname)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $contactname)) {
+				$contactname = str_replace('*', '%', $contactname);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(SupplierPeer::CONTACTNAME, $contactname, $comparison);
 	}
 
 	/**

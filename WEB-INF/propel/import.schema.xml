@@ -31,7 +31,10 @@
 	<table name="import_supplier" phpName="Supplier" description="Proveedores" >
 	  <column autoIncrement="true" type="INTEGER" name="id" required="true" description="" primaryKey='true' />
 	  <column size="255" type="VARCHAR" name="name" required="true" description="Nombre" />
+	  <column size="255" type="VARCHAR" name="address" description="direccion" />
+	  <column size="25" type="VARCHAR" name="phoneNumber" description="telefono" />
 	  <column size="255" type="VARCHAR" name="email" description="email" />
+	  <column size="255" type="VARCHAR" name="contactName" description="Persona de contacto" />
 	  <column type="BOOLEAN" name="active" required="true" description="Is supplier active?" />
 	  <column name="defaultIncotermId" type="INTEGER" description="id de incoterm por default del proveedor"/>
 	  <column name="defaultPortId" type="INTEGER" description="id de puerto por default del proveedor"/>
