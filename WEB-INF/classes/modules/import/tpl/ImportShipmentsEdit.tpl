@@ -79,14 +79,12 @@
 																		
 			<p>
 				<label for="estimatedFactoryDate">Fecha estimada de la conclusión de la fabricación</label>
-				<span id="estimatedFactoryDate" title="Fecha estimada de la conclusión de la fabricación" >|-$supplierPurchaseOrder->getEstimatedDeliveryDate()-|</span>
+				<span id="estimatedFactoryDate" title="Fecha estimada de la conclusión de la fabricación" >|-$supplierPurchaseOrder->getEstimatedDeliveryDate()|date_format:"%d-%m-%Y"-|</span>
 			</p>	
-			<!-- TODO: ver que mostrar acá
 			<p>
 				<label for="factoryDate">Fecha de conclusión de fabricación</label>
-				<span id="factoryDate" value="" title="Fecha de conclusión de fabricación" />
+				<span id="factoryDate" title="Fecha de conclusión de fabricación" >|-$supplierPurchaseOrder->getFabricationDate()|date_format:"%d-%m-%Y"-|</span>
 			</p>
-			-->
 			<p>
 				<label for="pickupDate">Fecha de retiro de la mercancia</label>
 				<input type="text" name="shipment[pickupDate]" cols="70" rows="7" wrap="virtual" id="pickupDate" title="Fecha de retiro de la mercancia" value="|-$shipment->getPickupDate()|date_format:"%d-%m-%Y"-|"/>
