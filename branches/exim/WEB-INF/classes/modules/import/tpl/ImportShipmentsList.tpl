@@ -3,8 +3,11 @@
 <p>A continuación puede ver el listado de productos sujetos al trámite de transporte.</p>
 
 <div id="div_messages">
-	|-if $message eq "tracked"-|
-		<div class="successMessage">Se ha guardado el comentario de seguimiento exitosamente.</div>
+	|-if $message eq "ok"-|
+		<div class="successMessage">Se ha guardado el embarque exitosamente.</div>
+	|-/if-|
+	|-if $message eq "error"-|
+		<div class="failureMessage">Ha ocurrido un error al intentar guardar el embarque</div>
 	|-/if-|
 </div>
 

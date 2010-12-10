@@ -627,4 +627,20 @@
 
 <!-- End Section BankAccounts -->
 
+<!-- Section Shipments -->
+	<action-mappings>
+
+		<action    path = "importShipmentsDoEdit"
+							 type = "ImportShipmentsDoEditAction"
+							 name = "importShipmentsDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importShipmentsList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="/Main.php?do=importShipmentsList&amp;message=error" redirect="true" />
+			<forward name="createShipmentRelease" path="/Main.php?do=importShipmentReleasesEdit" redirect="true" />
+		</action>
+	</action-mappings>
+
+<!-- End Section Shipments -->
+
 <!-- End Module Import -->
