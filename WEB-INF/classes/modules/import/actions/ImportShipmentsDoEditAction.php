@@ -49,10 +49,14 @@ class ImportShipmentsDoEditAction extends BaseAction {
 			
 		Common::setObjectFromParams($shipment, $shipmentParams);
 		
-		if ($shipment->save())
-			return $mapping->findForwardConfig('success');
-						
-		return $mapping->findForwardConfig('failure');
+		if (!$shipment->save())
+			return $mapping->findForwardConfig('failure');
+		
+		//Si por algún motivo aún no tiene ShipmentRelease, lo creamos.
+		if (!$shipment->hasShipmentRelease()) {
+			return $this->addParamsToForwards(array('shipmentId' => $shipment->getId()), $mapping, 'createShipmentRelease');
+		}
+		return $mapping->findForwardConfig('success');
 	}
 }
 

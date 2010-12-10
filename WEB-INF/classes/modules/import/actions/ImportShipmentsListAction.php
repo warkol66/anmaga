@@ -56,6 +56,7 @@ class ImportShipmentsListAction extends BaseAction {
 		$smarty->assign("suppliers",$suppliers);
 		$smarty->assign("status",$shipmentPeer->getStatusNames());
 		$smarty->assign("pager",$pager);
+		$smarty->assign('message',$_GET['message']);
 
 		return $mapping->findForwardConfig('success');
 		
