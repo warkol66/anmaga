@@ -134,5 +134,17 @@ class SupplierPurchaseOrder extends BaseSupplierPurchaseOrder {
 		}
 		return $totalContainersQuantity;
 	}
+	
+	/**
+	 * Obtiene la fecha en que la orden paso al estado de waiting for transport
+	 * a partir de su información histórica.
+	 */
+	public function getFabricationDate() {
+		return SupplierPurchaseOrderHistoryQuery::create()->filterBySupplierPurchaseOrder($this)
+														  ->filterByStatus(SupplierPurchaseOrder::STATUS_WAITING_FOR_TRANSPORT)
+														  ->orderBy('Createdat', 'desc')  //Nos aseguramos que de como resultado el más actual.
+														  ->select('Createdat')
+														  ->findOne();
+	}
 
 } // SupplierPurchaseOrder
