@@ -146,5 +146,9 @@ class SupplierPurchaseOrder extends BaseSupplierPurchaseOrder {
 														  ->select('Createdat')
 														  ->findOne();
 	}
+	
+	public function hasShipment() {
+		return ShipmentQuery::create()->filterBySupplierPurchaseOrder($this)->count() > 0;
+	}
 
 } // SupplierPurchaseOrder
