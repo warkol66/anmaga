@@ -77,4 +77,12 @@ class ShipmentRelease extends BaseShipmentRelease {
 	public function getStatusName() {		
 		return $this->statusNames[$this->calculateStatus()];
 	}
+	
+	/**
+	 * Obtiene la información del cliente
+	 * @return AffiliateInfo
+	 */
+	public function getClientInfo() {
+		return $this->getShipment()->getClientInfo();
+	}
 } // ShipmentRelease

@@ -11,5 +11,7 @@ require_once 'affiliates/classes/om/BaseAffiliateInfo.php';
  * @package affiliates
  */	
 class AffiliateInfo extends BaseAffiliateInfo {
-
+	public function getName() {
+		return $this->getAffiliate()->getName();
+	}
 } // AffiliateInfo

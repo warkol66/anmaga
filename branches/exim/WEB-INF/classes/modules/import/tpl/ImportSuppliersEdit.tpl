@@ -14,8 +14,20 @@
 				<input name="supplier[name]" type="text" id="supplier[name]" title="name" value="|-if $action eq 'edit'-||-$supplier->getname()-||-/if-|" size="75" maxlength="255" />
 			</p>
 			<p>
-				<label for="name">E-mail</label>
-				<input name="supplier[email]" type="text" id="email" title="name" value="|-if $action eq 'edit'-||-$supplier->getEmail()-||-/if-|" size="60" maxlength="255" />
+				<label for="address">Dirección</label>
+				<input name="supplier[address]" type="text" id="address" title="Dirección" value="|-if $action eq 'edit'-||-$supplier->getAddress()-||-/if-|" size="60" maxlength="255" />
+			</p>
+			<p>
+				<label for="phoneNumber">Teléfono</label>
+				<input name="supplier[phoneNumber]" type="text" id="phoneNumber" title="Teléfono" value="|-if $action eq 'edit'-||-$supplier->getPhoneNumber()-||-/if-|" size="60" maxlength="255" />
+			</p>
+			<p>
+				<label for="name">E-Mail</label>
+				<input name="supplier[email]" type="text" id="email" title="E-Mail" value="|-if $action eq 'edit'-||-$supplier->getEmail()-||-/if-|" size="60" maxlength="255" />
+			</p>
+			<p>
+				<label for="contactName">Nombre de Contacto</label>
+				<input name="supplier[contactName]" type="text" id="contactName" title="Nombre de Contacto" value="|-if $action eq 'edit'-||-$supplier->getContactName()-||-/if-|" size="60" maxlength="255" />
 			</p>
 			<p>
 				<label for="defaultIncotermId">Incoterm por defecto</label>

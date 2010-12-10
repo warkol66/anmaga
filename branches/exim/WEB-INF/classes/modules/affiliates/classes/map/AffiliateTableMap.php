@@ -48,6 +48,7 @@ class AffiliateTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
+    $this->addRelation('AffiliateInfo', 'AffiliateInfo', RelationMap::ONE_TO_ONE, array('id' => 'affiliateId', ), 'CASCADE', null);
     $this->addRelation('AffiliateUser', 'AffiliateUser', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('AffiliateBranch', 'AffiliateBranch', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('ClientQuote', 'ClientQuote', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);

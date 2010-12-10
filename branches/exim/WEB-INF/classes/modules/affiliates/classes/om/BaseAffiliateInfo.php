@@ -79,6 +79,11 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent
 	protected $memo;
 
 	/**
+	 * @var        Affiliate
+	 */
+	protected $aAffiliate;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -197,6 +202,10 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent
 		if ($this->affiliateid !== $v) {
 			$this->affiliateid = $v;
 			$this->modifiedColumns[] = AffiliateInfoPeer::AFFILIATEID;
+		}
+
+		if ($this->aAffiliate !== null && $this->aAffiliate->getId() !== $v) {
+			$this->aAffiliate = null;
 		}
 
 		return $this;
@@ -434,6 +443,9 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent
 	public function ensureConsistency()
 	{
 
+		if ($this->aAffiliate !== null && $this->affiliateid !== $this->aAffiliate->getId()) {
+			$this->aAffiliate = null;
+		}
 	} // ensureConsistency
 
 	/**
@@ -473,6 +485,7 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent
 
 		if ($deep) {  // also de-associate any related objects?
 
+			$this->aAffiliate = null;
 		} // if (deep)
 	}
 
@@ -583,16 +596,28 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent
 		if (!$this->alreadyInSave) {
 			$this->alreadyInSave = true;
 
+			// We call the save method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->aAffiliate !== null) {
+				if ($this->aAffiliate->isModified() || $this->aAffiliate->isNew()) {
+					$affectedRows += $this->aAffiliate->save($con);
+				}
+				$this->setAffiliate($this->aAffiliate);
+			}
+
 
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
 					$criteria = $this->buildCriteria();
 					$pk = BasePeer::doInsert($criteria, $con);
-					$affectedRows = 1;
+					$affectedRows += 1;
 					$this->setNew(false);
 				} else {
-					$affectedRows = AffiliateInfoPeer::doUpdate($this, $con);
+					$affectedRows += AffiliateInfoPeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
@@ -662,6 +687,18 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent
 			$retval = null;
 
 			$failureMap = array();
+
+
+			// We call the validate method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->aAffiliate !== null) {
+				if (!$this->aAffiliate->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aAffiliate->getValidationFailures());
+				}
+			}
 
 
 			if (($retval = AffiliateInfoPeer::doValidate($this, $columns)) !== true) {
@@ -745,10 +782,11 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
 	{
 		$keys = AffiliateInfoPeer::getFieldNames($keyType);
 		$result = array(
@@ -762,6 +800,11 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent
 			$keys[7] => $this->getWeb(),
 			$keys[8] => $this->getMemo(),
 		);
+		if ($includeForeignObjects) {
+			if (null !== $this->aAffiliate) {
+				$result['Affiliate'] = $this->aAffiliate->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+		}
 		return $result;
 	}
 
@@ -985,6 +1028,49 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Declares an association between this object and a Affiliate object.
+	 *
+	 * @param      Affiliate $v
+	 * @return     AffiliateInfo The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setAffiliate(Affiliate $v = null)
+	{
+		if ($v === null) {
+			$this->setAffiliateid(NULL);
+		} else {
+			$this->setAffiliateid($v->getId());
+		}
+
+		$this->aAffiliate = $v;
+
+		// Add binding for other direction of this 1:1 relationship.
+		if ($v !== null) {
+			$v->setAffiliateInfo($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Affiliate object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Affiliate The associated Affiliate object.
+	 * @throws     PropelException
+	 */
+	public function getAffiliate(PropelPDO $con = null)
+	{
+		if ($this->aAffiliate === null && ($this->affiliateid !== null)) {
+			$this->aAffiliate = AffiliateQuery::create()->findPk($this->affiliateid, $con);
+			// Because this foreign key represents a one-to-one relationship, we will create a bi-directional association.
+			$this->aAffiliate->setAffiliateInfo($this);
+		}
+		return $this->aAffiliate;
+	}
+
+	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
 	public function clear()
@@ -1020,6 +1106,7 @@ abstract class BaseAffiliateInfo extends BaseObject  implements Persistent
 		if ($deep) {
 		} // if ($deep)
 
+		$this->aAffiliate = null;
 	}
 
 	/**

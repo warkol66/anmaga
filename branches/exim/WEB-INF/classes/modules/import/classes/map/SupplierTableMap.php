@@ -39,7 +39,10 @@ class SupplierTableMap extends TableMap {
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
+		$this->addColumn('ADDRESS', 'Address', 'VARCHAR', false, 255, null);
+		$this->addColumn('PHONENUMBER', 'Phonenumber', 'VARCHAR', false, 25, null);
 		$this->addColumn('EMAIL', 'Email', 'VARCHAR', false, 255, null);
+		$this->addColumn('CONTACTNAME', 'Contactname', 'VARCHAR', false, 255, null);
 		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null, null);
 		$this->addForeignKey('DEFAULTINCOTERMID', 'Defaultincotermid', 'INTEGER', 'import_incoterm', 'ID', false, null, null);
 		$this->addForeignKey('DEFAULTPORTID', 'Defaultportid', 'INTEGER', 'import_port', 'ID', false, null, null);

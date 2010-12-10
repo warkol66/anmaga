@@ -37,10 +37,28 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 	protected $name;
 
 	/**
+	 * The value for the address field.
+	 * @var        string
+	 */
+	protected $address;
+
+	/**
+	 * The value for the phonenumber field.
+	 * @var        string
+	 */
+	protected $phonenumber;
+
+	/**
 	 * The value for the email field.
 	 * @var        string
 	 */
 	protected $email;
+
+	/**
+	 * The value for the contactname field.
+	 * @var        string
+	 */
+	protected $contactname;
 
 	/**
 	 * The value for the active field.
@@ -125,6 +143,26 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Get the [address] column value.
+	 * direccion
+	 * @return     string
+	 */
+	public function getAddress()
+	{
+		return $this->address;
+	}
+
+	/**
+	 * Get the [phonenumber] column value.
+	 * telefono
+	 * @return     string
+	 */
+	public function getPhonenumber()
+	{
+		return $this->phonenumber;
+	}
+
+	/**
 	 * Get the [email] column value.
 	 * email
 	 * @return     string
@@ -132,6 +170,16 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 	public function getEmail()
 	{
 		return $this->email;
+	}
+
+	/**
+	 * Get the [contactname] column value.
+	 * Persona de contacto
+	 * @return     string
+	 */
+	public function getContactname()
+	{
+		return $this->contactname;
 	}
 
 	/**
@@ -205,6 +253,46 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 	} // setName()
 
 	/**
+	 * Set the value of [address] column.
+	 * direccion
+	 * @param      string $v new value
+	 * @return     Supplier The current object (for fluent API support)
+	 */
+	public function setAddress($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->address !== $v) {
+			$this->address = $v;
+			$this->modifiedColumns[] = SupplierPeer::ADDRESS;
+		}
+
+		return $this;
+	} // setAddress()
+
+	/**
+	 * Set the value of [phonenumber] column.
+	 * telefono
+	 * @param      string $v new value
+	 * @return     Supplier The current object (for fluent API support)
+	 */
+	public function setPhonenumber($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->phonenumber !== $v) {
+			$this->phonenumber = $v;
+			$this->modifiedColumns[] = SupplierPeer::PHONENUMBER;
+		}
+
+		return $this;
+	} // setPhonenumber()
+
+	/**
 	 * Set the value of [email] column.
 	 * email
 	 * @param      string $v new value
@@ -223,6 +311,26 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 
 		return $this;
 	} // setEmail()
+
+	/**
+	 * Set the value of [contactname] column.
+	 * Persona de contacto
+	 * @param      string $v new value
+	 * @return     Supplier The current object (for fluent API support)
+	 */
+	public function setContactname($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->contactname !== $v) {
+			$this->contactname = $v;
+			$this->modifiedColumns[] = SupplierPeer::CONTACTNAME;
+		}
+
+		return $this;
+	} // setContactname()
 
 	/**
 	 * Set the value of [active] column.
@@ -326,10 +434,13 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-			$this->email = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-			$this->active = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
-			$this->defaultincotermid = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-			$this->defaultportid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->address = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->phonenumber = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->email = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->contactname = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->active = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
+			$this->defaultincotermid = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+			$this->defaultportid = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -338,7 +449,7 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 6; // 6 = SupplierPeer::NUM_COLUMNS - SupplierPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 9; // 9 = SupplierPeer::NUM_COLUMNS - SupplierPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Supplier object", $e);
@@ -761,15 +872,24 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 				return $this->getName();
 				break;
 			case 2:
-				return $this->getEmail();
+				return $this->getAddress();
 				break;
 			case 3:
-				return $this->getActive();
+				return $this->getPhonenumber();
 				break;
 			case 4:
-				return $this->getDefaultincotermid();
+				return $this->getEmail();
 				break;
 			case 5:
+				return $this->getContactname();
+				break;
+			case 6:
+				return $this->getActive();
+				break;
+			case 7:
+				return $this->getDefaultincotermid();
+				break;
+			case 8:
 				return $this->getDefaultportid();
 				break;
 			default:
@@ -798,10 +918,13 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
-			$keys[2] => $this->getEmail(),
-			$keys[3] => $this->getActive(),
-			$keys[4] => $this->getDefaultincotermid(),
-			$keys[5] => $this->getDefaultportid(),
+			$keys[2] => $this->getAddress(),
+			$keys[3] => $this->getPhonenumber(),
+			$keys[4] => $this->getEmail(),
+			$keys[5] => $this->getContactname(),
+			$keys[6] => $this->getActive(),
+			$keys[7] => $this->getDefaultincotermid(),
+			$keys[8] => $this->getDefaultportid(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aIncoterm) {
@@ -848,15 +971,24 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 				$this->setName($value);
 				break;
 			case 2:
-				$this->setEmail($value);
+				$this->setAddress($value);
 				break;
 			case 3:
-				$this->setActive($value);
+				$this->setPhonenumber($value);
 				break;
 			case 4:
-				$this->setDefaultincotermid($value);
+				$this->setEmail($value);
 				break;
 			case 5:
+				$this->setContactname($value);
+				break;
+			case 6:
+				$this->setActive($value);
+				break;
+			case 7:
+				$this->setDefaultincotermid($value);
+				break;
+			case 8:
 				$this->setDefaultportid($value);
 				break;
 		} // switch()
@@ -885,10 +1017,13 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setEmail($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setActive($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setDefaultincotermid($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setDefaultportid($arr[$keys[5]]);
+		if (array_key_exists($keys[2], $arr)) $this->setAddress($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setPhonenumber($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setEmail($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setContactname($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setActive($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setDefaultincotermid($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setDefaultportid($arr[$keys[8]]);
 	}
 
 	/**
@@ -902,7 +1037,10 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 
 		if ($this->isColumnModified(SupplierPeer::ID)) $criteria->add(SupplierPeer::ID, $this->id);
 		if ($this->isColumnModified(SupplierPeer::NAME)) $criteria->add(SupplierPeer::NAME, $this->name);
+		if ($this->isColumnModified(SupplierPeer::ADDRESS)) $criteria->add(SupplierPeer::ADDRESS, $this->address);
+		if ($this->isColumnModified(SupplierPeer::PHONENUMBER)) $criteria->add(SupplierPeer::PHONENUMBER, $this->phonenumber);
 		if ($this->isColumnModified(SupplierPeer::EMAIL)) $criteria->add(SupplierPeer::EMAIL, $this->email);
+		if ($this->isColumnModified(SupplierPeer::CONTACTNAME)) $criteria->add(SupplierPeer::CONTACTNAME, $this->contactname);
 		if ($this->isColumnModified(SupplierPeer::ACTIVE)) $criteria->add(SupplierPeer::ACTIVE, $this->active);
 		if ($this->isColumnModified(SupplierPeer::DEFAULTINCOTERMID)) $criteria->add(SupplierPeer::DEFAULTINCOTERMID, $this->defaultincotermid);
 		if ($this->isColumnModified(SupplierPeer::DEFAULTPORTID)) $criteria->add(SupplierPeer::DEFAULTPORTID, $this->defaultportid);
@@ -968,7 +1106,10 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 		$copyObj->setName($this->name);
+		$copyObj->setAddress($this->address);
+		$copyObj->setPhonenumber($this->phonenumber);
 		$copyObj->setEmail($this->email);
+		$copyObj->setContactname($this->contactname);
 		$copyObj->setActive($this->active);
 		$copyObj->setDefaultincotermid($this->defaultincotermid);
 		$copyObj->setDefaultportid($this->defaultportid);
@@ -1813,7 +1954,10 @@ abstract class BaseSupplier extends BaseObject  implements Persistent
 	{
 		$this->id = null;
 		$this->name = null;
+		$this->address = null;
+		$this->phonenumber = null;
 		$this->email = null;
+		$this->contactname = null;
 		$this->active = null;
 		$this->defaultincotermid = null;
 		$this->defaultportid = null;

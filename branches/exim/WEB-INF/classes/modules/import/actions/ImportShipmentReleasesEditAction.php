@@ -54,6 +54,10 @@ class ImportShipmentReleasesEditAction extends BaseAction {
 			}
 		}
 		
+		// Preparamos la info del cliente
+		$clientInfo = $shipmentRelease->getClientInfo();
+		$smarty->assign('clientInfo', $clientInfo);
+		
 		$smarty->assign('shipmentRelease',$shipmentRelease);
 
 		return $mapping->findForwardConfig('success');	

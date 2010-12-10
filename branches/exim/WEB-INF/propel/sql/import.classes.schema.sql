@@ -57,7 +57,10 @@ CREATE TABLE `import_supplier`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Nombre',
+	`address` VARCHAR(255)   COMMENT 'direccion',
+	`phoneNumber` VARCHAR(25)   COMMENT 'telefono',
 	`email` VARCHAR(255)   COMMENT 'email',
+	`contactName` VARCHAR(255)   COMMENT 'Persona de contacto',
 	`active` TINYINT  NOT NULL COMMENT 'Is supplier active?',
 	`defaultIncotermId` INTEGER   COMMENT 'id de incoterm por default del proveedor',
 	`defaultPortId` INTEGER   COMMENT 'id de puerto por default del proveedor',

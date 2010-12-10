@@ -37,7 +37,11 @@ CREATE TABLE `affiliates_affiliateInfo`
 	`contactEmail` VARCHAR(100)   COMMENT 'Email de persona de contacto',
 	`web` VARCHAR(255)   COMMENT 'Direccion web del afiliado',
 	`memo` TEXT   COMMENT 'Informacion adicional del afiliado',
-	PRIMARY KEY (`affiliateId`)
+	PRIMARY KEY (`affiliateId`),
+	CONSTRAINT `affiliates_affiliateInfo_FK_1`
+		FOREIGN KEY (`affiliateId`)
+		REFERENCES `affiliates_affiliate` (`id`)
+		ON DELETE CASCADE
 ) ENGINE=MyISAM COMMENT='Informacion del afiliado';
 
 #-----------------------------------------------------------------------------
