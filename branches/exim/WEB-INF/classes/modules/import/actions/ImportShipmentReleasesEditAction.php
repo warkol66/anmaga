@@ -59,6 +59,7 @@ class ImportShipmentReleasesEditAction extends BaseAction {
 		$smarty->assign('clientInfo', $clientInfo);
 		
 		$smarty->assign('shipmentRelease',$shipmentRelease);
+		$smarty->assign('message',$_GET['message']);
 
 		return $mapping->findForwardConfig('success');	
 	}

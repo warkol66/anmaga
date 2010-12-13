@@ -628,6 +628,7 @@
 <!-- End Section BankAccounts -->
 
 <!-- Section Shipments -->
+
 	<action-mappings>
 
 		<action    path = "importShipmentsDoEdit"
@@ -637,10 +638,46 @@
 					 validate = "true">
 			<forward name="success" path="/Main.php?do=importShipmentsList&amp;message=ok" redirect="true" />
 			<forward name="failure" path="/Main.php?do=importShipmentsList&amp;message=error" redirect="true" />
-			<forward name="createShipmentRelease" path="/Main.php?do=importShipmentReleasesEdit" redirect="true" />
+			<forward name="createShipmentRelease" path="/Main.php?do=importShipmentReleasesEdit&amp;message=shipment_created_ok" redirect="true" />
 		</action>
+		
+		<action    path = "importShipmentsDoDelete"
+							 type = "ImportShipmentsDoDeleteAction"
+							 name = "importShipmentsDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importShipmentsList&amp;message=deleted_ok" redirect="true" />
+			<forward name="failure" path="/Main.php?do=importShipmentsList&amp;message=deleted_error" redirect="true" />
+		</action>
+		
 	</action-mappings>
 
 <!-- End Section Shipments -->
+
+<!-- Section ShipmentReleases -->
+
+	<action-mappings>
+
+		<action    path = "importShipmentReleasesDoEdit"
+							 type = "ImportShipmentReleasesDoEditAction"
+							 name = "importShipmentReleasesDoEdit"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importShipmentReleasesList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="/Main.php?do=importShipmentReleasesList&amp;message=error" redirect="true" />
+		</action>
+		
+		<action    path = "importShipmentReleasesDoDelete"
+							 type = "ImportShipmentReleasesDoDeleteAction"
+							 name = "importShipmentReleasesDoDelete"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=importShipmentReleasesList&amp;message=deleted_ok" redirect="true" />
+			<forward name="failure" path="/Main.php?do=importShipmentReleasesList&amp;message=deleted_error" redirect="true" />
+		</action>
+		
+	</action-mappings>
+
+<!-- End Section ShipmentReleases -->
 
 <!-- End Module Import -->

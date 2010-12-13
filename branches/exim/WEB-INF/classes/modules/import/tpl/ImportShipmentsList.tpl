@@ -5,8 +5,11 @@
 <div id="div_messages">
 	|-if $message eq "ok"-|
 		<div class="successMessage">Se ha guardado el embarque exitosamente.</div>
-	|-/if-|
-	|-if $message eq "error"-|
+	|-elseif $message eq "deleted_ok"-|
+		<div class="successMessage">Se ha borrado el embarque exitosamente.</div>
+	|-elseif $message eq "deleted_error"-|
+		<div class="failureMessage">Ha ocurrido un error al intentar borrar el embarque</div>
+	|-elseif $message eq "error"-|
 		<div class="failureMessage">Ha ocurrido un error al intentar guardar el embarque</div>
 	|-/if-|
 </div>
