@@ -147,6 +147,21 @@ class SupplierPurchaseOrder extends BaseSupplierPurchaseOrder {
 														  ->findOne();
 	}
 	
+	/**
+	 * Indica si una orden está a la espera de transporte.
+	 * 
+	 * Solo en este estado pueden ser iniciados los tramites de embarque y
+	 * nacionalización.
+	 * 
+	 * @return verdadero si existe al menos un SupplierPurchaseOrderHistory
+	 * perteneciente a esta orden cuyo estado sea STATUS_WAITING_FOR_TRANSPORT.
+	 */
+	public function isWaitingForTransport() {
+		return SupplierPurchaseOrderHistoryQuery::create()->filterBySupplierPurchaseOrder($this)
+														  ->filterByStatus(SupplierPurchaseOrder::STATUS_WAITING_FOR_TRANSPORT)
+														  ->count() > 0;
+	}
+	
 	public function hasShipment() {
 		return ShipmentQuery::create()->filterBySupplierPurchaseOrder($this)->count() > 0;
 	}
