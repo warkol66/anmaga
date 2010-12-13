@@ -1,6 +1,10 @@
 <h2>Exportaciones</h2>
 <h1>Información de Nacionalización</h1>
-
+<div id="div_messages">
+	|-if $message eq "shipment_created_ok"-|
+		<div class="successMessage">Se ha guardado el embarque exitosamente.</div>
+	|-/if-|
+</div>
 <div id="div_shipment">
 	<form name="form_edit_shipment" id="form_edit_shipment" action="Main.php" method="post">
 		|-if $message eq "error"-|

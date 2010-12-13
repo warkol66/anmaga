@@ -3,8 +3,14 @@
 <p>A continuación puede ver el listado de productos sujetos al trámite de nacionalización.</p>
 
 <div id="div_messages">
-	|-if $message eq "tracked"-|
-		<div class="successMessage">Se ha guardado el comentario de seguimiento exitosamente.</div>
+	|-if $message eq "ok"-|
+		<div class="successMessage">Se ha guardado la información de nacionalización exitosamente.</div>
+	|-elseif $message eq "deleted_ok"-|
+		<div class="successMessage">Se ha borrado la información de nacionalización exitosamente.</div>
+	|-elseif $message eq "deleted_error"-|
+		<div class="failureMessage">Ha ocurrido un error al intentar borrar la información de nacionalización</div>
+	|-elseif $message eq "error"-|
+		<div class="failureMessage">Ha ocurrido un error al intentar guardar la información de nacionalización</div>
 	|-/if-|
 </div>
 
