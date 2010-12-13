@@ -100,7 +100,7 @@
 						<input type="hidden" name="id" value="|-$order->getid()-|" />
 						<input type="button" name="submit_go_edit_order" value="Ver Historial" class="buttonImageHistory" title="Ver Historial" alt="Ver Historial" onClick="window.open('Main.php?do=importSupplierOrderHistory&id=|-$order->getid()-|','History','width=670,height=500,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes');" />
 					</form>
-					|-if !$order->hasShipment()-|
+					|-if !$order->hasShipment() and $order->isWaitingForTransport()-|
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importShipmentsEdit" />
 						<input type="hidden" name="supplierPurchaseOrderId" value="|-$order->getid()-|" />
