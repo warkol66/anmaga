@@ -116,6 +116,7 @@
 				<input type="hidden" name="shipmentRelease[shipmentId]" id="shipmentRelease[shipmentId]" value="|-$shipmentRelease->getShipmentId()-|" />
 				<input type="hidden" name="do" id="do" value="importShipmentReleasesDoEdit" />
 				<input type="submit" id="button_edit_shipment_release" name="button_edit_shipment_release" title="Aceptar" value="Aceptar" />
+				<input type="button" title="Cancelar" value="Cancelar" onClick="javascript: history.go(-1);" />
 			</p>
 		</fieldset>
 	</form>
