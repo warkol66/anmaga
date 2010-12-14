@@ -52,7 +52,11 @@ class ImportShipmentsDoEditAction extends BaseAction {
 		if (!$shipment->save())
 			return $mapping->findForwardConfig('failure');
 		
-		//Si por algún motivo aún no tiene ShipmentRelease, lo creamos.
+		//Si ya tiene shipmentRelease pero lo acabamos de crear, entonces vamos al edit de ShipmentRelease.
+		if (!empty($_POST['shipmentReleaseId']))
+			return $this->addParamsToForwards(array('id' => $_POST['shipmentReleaseId']), $mapping, 'createShipmentRelease');
+			
+		//Si por algún motivo aún no tiene ShipmentRelease, vamos al edit de ShipmentRelease.
 		if (!$shipment->hasShipmentRelease()) {
 			return $this->addParamsToForwards(array('shipmentId' => $shipment->getId()), $mapping, 'createShipmentRelease');
 		}

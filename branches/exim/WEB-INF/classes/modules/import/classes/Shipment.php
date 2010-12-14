@@ -108,6 +108,6 @@ class Shipment extends BaseShipment {
 	}
 	
 	public function hasShipmentRelease() {
-		return ShipmentReleaseQuery::create()->filterByShipment($this)->count() > 0;
+		return $this->countShipmentReleases() > 0;
 	}
 } // Shipment
