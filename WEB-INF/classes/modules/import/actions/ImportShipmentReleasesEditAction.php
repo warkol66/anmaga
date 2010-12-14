@@ -49,6 +49,8 @@ class ImportShipmentReleasesEditAction extends BaseAction {
 			if (!empty($_GET["shipmentId"])) {
 				$shipment = $shipmentPeer->get($_GET["shipmentId"]);
 				$shipmentRelease->setShipment($shipment);
+				if (!$shipmentRelease->save())
+					return $mapping->findForwardConfig('failure');
 			} else {
 				return $mapping->findForwardConfig('failure');
 			}

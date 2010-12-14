@@ -49,6 +49,16 @@ class ImportShipmentsEditAction extends BaseAction {
 			if (!empty($_GET["supplierPurchaseOrderId"])) {
 				$supplierPurchaseOrder = $supplierPurchaseOrderPeer->get($_GET["supplierPurchaseOrderId"]);
 				$shipment->setSupplierPurchaseOrder($supplierPurchaseOrder);
+				
+				//Vamos a crearlos en la base, aunque por el momento estén vacíos.
+				//Esto evita la posibilidad de retractarse a mitad del proceso.
+				if (!$shipment->save())
+					return $mapping->findForwardConfig('failure');
+				$shipmentRelease = new ShipmentRelease();
+				$shipmentRelease->setShipment($shipment);
+				if (!$shipmentRelease->save())
+					return $mapping->findForwardConfig('failure');
+				$smarty->assign('shipmentReleaseId',$shipmentRelease->getId());
 			} else {
 				return $mapping->findForwardConfig('failure');
 			}
