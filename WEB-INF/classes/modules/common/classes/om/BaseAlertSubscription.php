@@ -43,10 +43,16 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 	protected $entityname;
 
 	/**
-	 * The value for the entityfielduniquename field.
+	 * The value for the entitydatefielduniquename field.
 	 * @var        string
 	 */
-	protected $entityfielduniquename;
+	protected $entitydatefielduniquename;
+
+	/**
+	 * The value for the entitybooleanfielduniquename field.
+	 * @var        string
+	 */
+	protected $entitybooleanfielduniquename;
 
 	/**
 	 * The value for the anticipationdays field.
@@ -74,12 +80,17 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 	/**
 	 * @var        ModuleEntityField
 	 */
-	protected $aModuleEntityFieldRelatedByEntityfielduniquename;
+	protected $aModuleEntityFieldRelatedByEntitynamefielduniquename;
 
 	/**
 	 * @var        ModuleEntityField
 	 */
-	protected $aModuleEntityFieldRelatedByEntitynamefielduniquename;
+	protected $aModuleEntityFieldRelatedByEntitydatefielduniquename;
+
+	/**
+	 * @var        ModuleEntityField
+	 */
+	protected $aModuleEntityFieldRelatedByEntitybooleanfielduniquename;
 
 	/**
 	 * @var        array AlertSubscriptionUser[] Collection to store aggregation of AlertSubscriptionUser objects.
@@ -136,13 +147,23 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [entityfielduniquename] column value.
-	 * 
+	 * Get the [entitydatefielduniquename] column value.
+	 * Nombre unico del campo fecha
 	 * @return     string
 	 */
-	public function getEntityfielduniquename()
+	public function getEntitydatefielduniquename()
 	{
-		return $this->entityfielduniquename;
+		return $this->entitydatefielduniquename;
+	}
+
+	/**
+	 * Get the [entitybooleanfielduniquename] column value.
+	 * Nombre unico del campo a evaluar por verdadero o falso.
+	 * @return     string
+	 */
+	public function getEntitybooleanfielduniquename()
+	{
+		return $this->entitybooleanfielduniquename;
 	}
 
 	/**
@@ -240,28 +261,52 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 	} // setEntityname()
 
 	/**
-	 * Set the value of [entityfielduniquename] column.
-	 * 
+	 * Set the value of [entitydatefielduniquename] column.
+	 * Nombre unico del campo fecha
 	 * @param      string $v new value
 	 * @return     AlertSubscription The current object (for fluent API support)
 	 */
-	public function setEntityfielduniquename($v)
+	public function setEntitydatefielduniquename($v)
 	{
 		if ($v !== null) {
 			$v = (string) $v;
 		}
 
-		if ($this->entityfielduniquename !== $v) {
-			$this->entityfielduniquename = $v;
-			$this->modifiedColumns[] = AlertSubscriptionPeer::ENTITYFIELDUNIQUENAME;
+		if ($this->entitydatefielduniquename !== $v) {
+			$this->entitydatefielduniquename = $v;
+			$this->modifiedColumns[] = AlertSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME;
 		}
 
-		if ($this->aModuleEntityFieldRelatedByEntityfielduniquename !== null && $this->aModuleEntityFieldRelatedByEntityfielduniquename->getUniquename() !== $v) {
-			$this->aModuleEntityFieldRelatedByEntityfielduniquename = null;
+		if ($this->aModuleEntityFieldRelatedByEntitydatefielduniquename !== null && $this->aModuleEntityFieldRelatedByEntitydatefielduniquename->getUniquename() !== $v) {
+			$this->aModuleEntityFieldRelatedByEntitydatefielduniquename = null;
 		}
 
 		return $this;
-	} // setEntityfielduniquename()
+	} // setEntitydatefielduniquename()
+
+	/**
+	 * Set the value of [entitybooleanfielduniquename] column.
+	 * Nombre unico del campo a evaluar por verdadero o falso.
+	 * @param      string $v new value
+	 * @return     AlertSubscription The current object (for fluent API support)
+	 */
+	public function setEntitybooleanfielduniquename($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->entitybooleanfielduniquename !== $v) {
+			$this->entitybooleanfielduniquename = $v;
+			$this->modifiedColumns[] = AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME;
+		}
+
+		if ($this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename !== null && $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename->getUniquename() !== $v) {
+			$this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename = null;
+		}
+
+		return $this;
+	} // setEntitybooleanfielduniquename()
 
 	/**
 	 * Set the value of [anticipationdays] column.
@@ -362,10 +407,11 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->entityname = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-			$this->entityfielduniquename = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-			$this->anticipationdays = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-			$this->entitynamefielduniquename = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-			$this->extrarecipients = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->entitydatefielduniquename = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->entitybooleanfielduniquename = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->anticipationdays = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->entitynamefielduniquename = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->extrarecipients = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -374,7 +420,7 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 7; // 7 = AlertSubscriptionPeer::NUM_COLUMNS - AlertSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 8; // 8 = AlertSubscriptionPeer::NUM_COLUMNS - AlertSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating AlertSubscription object", $e);
@@ -400,8 +446,11 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 		if ($this->aModuleEntity !== null && $this->entityname !== $this->aModuleEntity->getName()) {
 			$this->aModuleEntity = null;
 		}
-		if ($this->aModuleEntityFieldRelatedByEntityfielduniquename !== null && $this->entityfielduniquename !== $this->aModuleEntityFieldRelatedByEntityfielduniquename->getUniquename()) {
-			$this->aModuleEntityFieldRelatedByEntityfielduniquename = null;
+		if ($this->aModuleEntityFieldRelatedByEntitydatefielduniquename !== null && $this->entitydatefielduniquename !== $this->aModuleEntityFieldRelatedByEntitydatefielduniquename->getUniquename()) {
+			$this->aModuleEntityFieldRelatedByEntitydatefielduniquename = null;
+		}
+		if ($this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename !== null && $this->entitybooleanfielduniquename !== $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename->getUniquename()) {
+			$this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename = null;
 		}
 		if ($this->aModuleEntityFieldRelatedByEntitynamefielduniquename !== null && $this->entitynamefielduniquename !== $this->aModuleEntityFieldRelatedByEntitynamefielduniquename->getUniquename()) {
 			$this->aModuleEntityFieldRelatedByEntitynamefielduniquename = null;
@@ -446,8 +495,9 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->aModuleEntity = null;
-			$this->aModuleEntityFieldRelatedByEntityfielduniquename = null;
 			$this->aModuleEntityFieldRelatedByEntitynamefielduniquename = null;
+			$this->aModuleEntityFieldRelatedByEntitydatefielduniquename = null;
+			$this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename = null;
 			$this->collAlertSubscriptionUsers = null;
 
 			$this->collUsers = null;
@@ -573,18 +623,25 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 				$this->setModuleEntity($this->aModuleEntity);
 			}
 
-			if ($this->aModuleEntityFieldRelatedByEntityfielduniquename !== null) {
-				if ($this->aModuleEntityFieldRelatedByEntityfielduniquename->isModified() || $this->aModuleEntityFieldRelatedByEntityfielduniquename->isNew()) {
-					$affectedRows += $this->aModuleEntityFieldRelatedByEntityfielduniquename->save($con);
-				}
-				$this->setModuleEntityFieldRelatedByEntityfielduniquename($this->aModuleEntityFieldRelatedByEntityfielduniquename);
-			}
-
 			if ($this->aModuleEntityFieldRelatedByEntitynamefielduniquename !== null) {
 				if ($this->aModuleEntityFieldRelatedByEntitynamefielduniquename->isModified() || $this->aModuleEntityFieldRelatedByEntitynamefielduniquename->isNew()) {
 					$affectedRows += $this->aModuleEntityFieldRelatedByEntitynamefielduniquename->save($con);
 				}
 				$this->setModuleEntityFieldRelatedByEntitynamefielduniquename($this->aModuleEntityFieldRelatedByEntitynamefielduniquename);
+			}
+
+			if ($this->aModuleEntityFieldRelatedByEntitydatefielduniquename !== null) {
+				if ($this->aModuleEntityFieldRelatedByEntitydatefielduniquename->isModified() || $this->aModuleEntityFieldRelatedByEntitydatefielduniquename->isNew()) {
+					$affectedRows += $this->aModuleEntityFieldRelatedByEntitydatefielduniquename->save($con);
+				}
+				$this->setModuleEntityFieldRelatedByEntitydatefielduniquename($this->aModuleEntityFieldRelatedByEntitydatefielduniquename);
+			}
+
+			if ($this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename !== null) {
+				if ($this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename->isModified() || $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename->isNew()) {
+					$affectedRows += $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename->save($con);
+				}
+				$this->setModuleEntityFieldRelatedByEntitybooleanfielduniquename($this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename);
 			}
 
 			if ($this->isNew() ) {
@@ -695,15 +752,21 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 				}
 			}
 
-			if ($this->aModuleEntityFieldRelatedByEntityfielduniquename !== null) {
-				if (!$this->aModuleEntityFieldRelatedByEntityfielduniquename->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aModuleEntityFieldRelatedByEntityfielduniquename->getValidationFailures());
-				}
-			}
-
 			if ($this->aModuleEntityFieldRelatedByEntitynamefielduniquename !== null) {
 				if (!$this->aModuleEntityFieldRelatedByEntitynamefielduniquename->validate($columns)) {
 					$failureMap = array_merge($failureMap, $this->aModuleEntityFieldRelatedByEntitynamefielduniquename->getValidationFailures());
+				}
+			}
+
+			if ($this->aModuleEntityFieldRelatedByEntitydatefielduniquename !== null) {
+				if (!$this->aModuleEntityFieldRelatedByEntitydatefielduniquename->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aModuleEntityFieldRelatedByEntitydatefielduniquename->getValidationFailures());
+				}
+			}
+
+			if ($this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename !== null) {
+				if (!$this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename->getValidationFailures());
 				}
 			}
 
@@ -764,15 +827,18 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 				return $this->getEntityname();
 				break;
 			case 3:
-				return $this->getEntityfielduniquename();
+				return $this->getEntitydatefielduniquename();
 				break;
 			case 4:
-				return $this->getAnticipationdays();
+				return $this->getEntitybooleanfielduniquename();
 				break;
 			case 5:
-				return $this->getEntitynamefielduniquename();
+				return $this->getAnticipationdays();
 				break;
 			case 6:
+				return $this->getEntitynamefielduniquename();
+				break;
+			case 7:
 				return $this->getExtrarecipients();
 				break;
 			default:
@@ -802,20 +868,24 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getEntityname(),
-			$keys[3] => $this->getEntityfielduniquename(),
-			$keys[4] => $this->getAnticipationdays(),
-			$keys[5] => $this->getEntitynamefielduniquename(),
-			$keys[6] => $this->getExtrarecipients(),
+			$keys[3] => $this->getEntitydatefielduniquename(),
+			$keys[4] => $this->getEntitybooleanfielduniquename(),
+			$keys[5] => $this->getAnticipationdays(),
+			$keys[6] => $this->getEntitynamefielduniquename(),
+			$keys[7] => $this->getExtrarecipients(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aModuleEntity) {
 				$result['ModuleEntity'] = $this->aModuleEntity->toArray($keyType, $includeLazyLoadColumns, true);
 			}
-			if (null !== $this->aModuleEntityFieldRelatedByEntityfielduniquename) {
-				$result['ModuleEntityFieldRelatedByEntityfielduniquename'] = $this->aModuleEntityFieldRelatedByEntityfielduniquename->toArray($keyType, $includeLazyLoadColumns, true);
-			}
 			if (null !== $this->aModuleEntityFieldRelatedByEntitynamefielduniquename) {
 				$result['ModuleEntityFieldRelatedByEntitynamefielduniquename'] = $this->aModuleEntityFieldRelatedByEntitynamefielduniquename->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aModuleEntityFieldRelatedByEntitydatefielduniquename) {
+				$result['ModuleEntityFieldRelatedByEntitydatefielduniquename'] = $this->aModuleEntityFieldRelatedByEntitydatefielduniquename->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename) {
+				$result['ModuleEntityFieldRelatedByEntitybooleanfielduniquename'] = $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename->toArray($keyType, $includeLazyLoadColumns, true);
 			}
 		}
 		return $result;
@@ -858,15 +928,18 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 				$this->setEntityname($value);
 				break;
 			case 3:
-				$this->setEntityfielduniquename($value);
+				$this->setEntitydatefielduniquename($value);
 				break;
 			case 4:
-				$this->setAnticipationdays($value);
+				$this->setEntitybooleanfielduniquename($value);
 				break;
 			case 5:
-				$this->setEntitynamefielduniquename($value);
+				$this->setAnticipationdays($value);
 				break;
 			case 6:
+				$this->setEntitynamefielduniquename($value);
+				break;
+			case 7:
 				$this->setExtrarecipients($value);
 				break;
 		} // switch()
@@ -896,10 +969,11 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setEntityname($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setEntityfielduniquename($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setAnticipationdays($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setEntitynamefielduniquename($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setExtrarecipients($arr[$keys[6]]);
+		if (array_key_exists($keys[3], $arr)) $this->setEntitydatefielduniquename($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setEntitybooleanfielduniquename($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setAnticipationdays($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setEntitynamefielduniquename($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setExtrarecipients($arr[$keys[7]]);
 	}
 
 	/**
@@ -914,7 +988,8 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 		if ($this->isColumnModified(AlertSubscriptionPeer::ID)) $criteria->add(AlertSubscriptionPeer::ID, $this->id);
 		if ($this->isColumnModified(AlertSubscriptionPeer::NAME)) $criteria->add(AlertSubscriptionPeer::NAME, $this->name);
 		if ($this->isColumnModified(AlertSubscriptionPeer::ENTITYNAME)) $criteria->add(AlertSubscriptionPeer::ENTITYNAME, $this->entityname);
-		if ($this->isColumnModified(AlertSubscriptionPeer::ENTITYFIELDUNIQUENAME)) $criteria->add(AlertSubscriptionPeer::ENTITYFIELDUNIQUENAME, $this->entityfielduniquename);
+		if ($this->isColumnModified(AlertSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME)) $criteria->add(AlertSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME, $this->entitydatefielduniquename);
+		if ($this->isColumnModified(AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME)) $criteria->add(AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME, $this->entitybooleanfielduniquename);
 		if ($this->isColumnModified(AlertSubscriptionPeer::ANTICIPATIONDAYS)) $criteria->add(AlertSubscriptionPeer::ANTICIPATIONDAYS, $this->anticipationdays);
 		if ($this->isColumnModified(AlertSubscriptionPeer::ENTITYNAMEFIELDUNIQUENAME)) $criteria->add(AlertSubscriptionPeer::ENTITYNAMEFIELDUNIQUENAME, $this->entitynamefielduniquename);
 		if ($this->isColumnModified(AlertSubscriptionPeer::EXTRARECIPIENTS)) $criteria->add(AlertSubscriptionPeer::EXTRARECIPIENTS, $this->extrarecipients);
@@ -981,7 +1056,8 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 	{
 		$copyObj->setName($this->name);
 		$copyObj->setEntityname($this->entityname);
-		$copyObj->setEntityfielduniquename($this->entityfielduniquename);
+		$copyObj->setEntitydatefielduniquename($this->entitydatefielduniquename);
+		$copyObj->setEntitybooleanfielduniquename($this->entitybooleanfielduniquename);
 		$copyObj->setAnticipationdays($this->anticipationdays);
 		$copyObj->setEntitynamefielduniquename($this->entitynamefielduniquename);
 		$copyObj->setExtrarecipients($this->extrarecipients);
@@ -1098,55 +1174,6 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 	 * @return     AlertSubscription The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setModuleEntityFieldRelatedByEntityfielduniquename(ModuleEntityField $v = null)
-	{
-		if ($v === null) {
-			$this->setEntityfielduniquename(NULL);
-		} else {
-			$this->setEntityfielduniquename($v->getUniquename());
-		}
-
-		$this->aModuleEntityFieldRelatedByEntityfielduniquename = $v;
-
-		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the ModuleEntityField object, it will not be re-added.
-		if ($v !== null) {
-			$v->addAlertSubscriptionRelatedByEntityfielduniquename($this);
-		}
-
-		return $this;
-	}
-
-
-	/**
-	 * Get the associated ModuleEntityField object
-	 *
-	 * @param      PropelPDO Optional Connection object.
-	 * @return     ModuleEntityField The associated ModuleEntityField object.
-	 * @throws     PropelException
-	 */
-	public function getModuleEntityFieldRelatedByEntityfielduniquename(PropelPDO $con = null)
-	{
-		if ($this->aModuleEntityFieldRelatedByEntityfielduniquename === null && (($this->entityfielduniquename !== "" && $this->entityfielduniquename !== null))) {
-			$this->aModuleEntityFieldRelatedByEntityfielduniquename = ModuleEntityFieldQuery::create()->findPk($this->entityfielduniquename, $con);
-			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aModuleEntityFieldRelatedByEntityfielduniquename->addAlertSubscriptionsRelatedByEntityfielduniquename($this);
-			 */
-		}
-		return $this->aModuleEntityFieldRelatedByEntityfielduniquename;
-	}
-
-	/**
-	 * Declares an association between this object and a ModuleEntityField object.
-	 *
-	 * @param      ModuleEntityField $v
-	 * @return     AlertSubscription The current object (for fluent API support)
-	 * @throws     PropelException
-	 */
 	public function setModuleEntityFieldRelatedByEntitynamefielduniquename(ModuleEntityField $v = null)
 	{
 		if ($v === null) {
@@ -1187,6 +1214,104 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 			 */
 		}
 		return $this->aModuleEntityFieldRelatedByEntitynamefielduniquename;
+	}
+
+	/**
+	 * Declares an association between this object and a ModuleEntityField object.
+	 *
+	 * @param      ModuleEntityField $v
+	 * @return     AlertSubscription The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setModuleEntityFieldRelatedByEntitydatefielduniquename(ModuleEntityField $v = null)
+	{
+		if ($v === null) {
+			$this->setEntitydatefielduniquename(NULL);
+		} else {
+			$this->setEntitydatefielduniquename($v->getUniquename());
+		}
+
+		$this->aModuleEntityFieldRelatedByEntitydatefielduniquename = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the ModuleEntityField object, it will not be re-added.
+		if ($v !== null) {
+			$v->addAlertSubscriptionRelatedByEntitydatefielduniquename($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated ModuleEntityField object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     ModuleEntityField The associated ModuleEntityField object.
+	 * @throws     PropelException
+	 */
+	public function getModuleEntityFieldRelatedByEntitydatefielduniquename(PropelPDO $con = null)
+	{
+		if ($this->aModuleEntityFieldRelatedByEntitydatefielduniquename === null && (($this->entitydatefielduniquename !== "" && $this->entitydatefielduniquename !== null))) {
+			$this->aModuleEntityFieldRelatedByEntitydatefielduniquename = ModuleEntityFieldQuery::create()->findPk($this->entitydatefielduniquename, $con);
+			/* The following can be used additionally to
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aModuleEntityFieldRelatedByEntitydatefielduniquename->addAlertSubscriptionsRelatedByEntitydatefielduniquename($this);
+			 */
+		}
+		return $this->aModuleEntityFieldRelatedByEntitydatefielduniquename;
+	}
+
+	/**
+	 * Declares an association between this object and a ModuleEntityField object.
+	 *
+	 * @param      ModuleEntityField $v
+	 * @return     AlertSubscription The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setModuleEntityFieldRelatedByEntitybooleanfielduniquename(ModuleEntityField $v = null)
+	{
+		if ($v === null) {
+			$this->setEntitybooleanfielduniquename(NULL);
+		} else {
+			$this->setEntitybooleanfielduniquename($v->getUniquename());
+		}
+
+		$this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the ModuleEntityField object, it will not be re-added.
+		if ($v !== null) {
+			$v->addAlertSubscriptionRelatedByEntitybooleanfielduniquename($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated ModuleEntityField object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     ModuleEntityField The associated ModuleEntityField object.
+	 * @throws     PropelException
+	 */
+	public function getModuleEntityFieldRelatedByEntitybooleanfielduniquename(PropelPDO $con = null)
+	{
+		if ($this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename === null && (($this->entitybooleanfielduniquename !== "" && $this->entitybooleanfielduniquename !== null))) {
+			$this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename = ModuleEntityFieldQuery::create()->findPk($this->entitybooleanfielduniquename, $con);
+			/* The following can be used additionally to
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename->addAlertSubscriptionsRelatedByEntitybooleanfielduniquename($this);
+			 */
+		}
+		return $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename;
 	}
 
 	/**
@@ -1444,7 +1569,8 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 		$this->id = null;
 		$this->name = null;
 		$this->entityname = null;
-		$this->entityfielduniquename = null;
+		$this->entitydatefielduniquename = null;
+		$this->entitybooleanfielduniquename = null;
 		$this->anticipationdays = null;
 		$this->entitynamefielduniquename = null;
 		$this->extrarecipients = null;
@@ -1477,8 +1603,9 @@ abstract class BaseAlertSubscription extends BaseObject  implements Persistent
 
 		$this->collAlertSubscriptionUsers = null;
 		$this->aModuleEntity = null;
-		$this->aModuleEntityFieldRelatedByEntityfielduniquename = null;
 		$this->aModuleEntityFieldRelatedByEntitynamefielduniquename = null;
+		$this->aModuleEntityFieldRelatedByEntitydatefielduniquename = null;
+		$this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename = null;
 	}
 
 	/**

@@ -9,7 +9,8 @@
  * @method     AlertSubscriptionQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     AlertSubscriptionQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method     AlertSubscriptionQuery orderByEntityname($order = Criteria::ASC) Order by the entityName column
- * @method     AlertSubscriptionQuery orderByEntityfielduniquename($order = Criteria::ASC) Order by the entityFieldUniqueName column
+ * @method     AlertSubscriptionQuery orderByEntitydatefielduniquename($order = Criteria::ASC) Order by the entityDateFieldUniqueName column
+ * @method     AlertSubscriptionQuery orderByEntitybooleanfielduniquename($order = Criteria::ASC) Order by the entityBooleanFieldUniqueName column
  * @method     AlertSubscriptionQuery orderByAnticipationdays($order = Criteria::ASC) Order by the anticipationDays column
  * @method     AlertSubscriptionQuery orderByEntitynamefielduniquename($order = Criteria::ASC) Order by the entityNameFieldUniqueName column
  * @method     AlertSubscriptionQuery orderByExtrarecipients($order = Criteria::ASC) Order by the extraRecipients column
@@ -17,7 +18,8 @@
  * @method     AlertSubscriptionQuery groupById() Group by the id column
  * @method     AlertSubscriptionQuery groupByName() Group by the name column
  * @method     AlertSubscriptionQuery groupByEntityname() Group by the entityName column
- * @method     AlertSubscriptionQuery groupByEntityfielduniquename() Group by the entityFieldUniqueName column
+ * @method     AlertSubscriptionQuery groupByEntitydatefielduniquename() Group by the entityDateFieldUniqueName column
+ * @method     AlertSubscriptionQuery groupByEntitybooleanfielduniquename() Group by the entityBooleanFieldUniqueName column
  * @method     AlertSubscriptionQuery groupByAnticipationdays() Group by the anticipationDays column
  * @method     AlertSubscriptionQuery groupByEntitynamefielduniquename() Group by the entityNameFieldUniqueName column
  * @method     AlertSubscriptionQuery groupByExtrarecipients() Group by the extraRecipients column
@@ -30,13 +32,17 @@
  * @method     AlertSubscriptionQuery rightJoinModuleEntity($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ModuleEntity relation
  * @method     AlertSubscriptionQuery innerJoinModuleEntity($relationAlias = null) Adds a INNER JOIN clause to the query using the ModuleEntity relation
  *
- * @method     AlertSubscriptionQuery leftJoinModuleEntityFieldRelatedByEntityfielduniquename($relationAlias = null) Adds a LEFT JOIN clause to the query using the ModuleEntityFieldRelatedByEntityfielduniquename relation
- * @method     AlertSubscriptionQuery rightJoinModuleEntityFieldRelatedByEntityfielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ModuleEntityFieldRelatedByEntityfielduniquename relation
- * @method     AlertSubscriptionQuery innerJoinModuleEntityFieldRelatedByEntityfielduniquename($relationAlias = null) Adds a INNER JOIN clause to the query using the ModuleEntityFieldRelatedByEntityfielduniquename relation
- *
  * @method     AlertSubscriptionQuery leftJoinModuleEntityFieldRelatedByEntitynamefielduniquename($relationAlias = null) Adds a LEFT JOIN clause to the query using the ModuleEntityFieldRelatedByEntitynamefielduniquename relation
  * @method     AlertSubscriptionQuery rightJoinModuleEntityFieldRelatedByEntitynamefielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ModuleEntityFieldRelatedByEntitynamefielduniquename relation
  * @method     AlertSubscriptionQuery innerJoinModuleEntityFieldRelatedByEntitynamefielduniquename($relationAlias = null) Adds a INNER JOIN clause to the query using the ModuleEntityFieldRelatedByEntitynamefielduniquename relation
+ *
+ * @method     AlertSubscriptionQuery leftJoinModuleEntityFieldRelatedByEntitydatefielduniquename($relationAlias = null) Adds a LEFT JOIN clause to the query using the ModuleEntityFieldRelatedByEntitydatefielduniquename relation
+ * @method     AlertSubscriptionQuery rightJoinModuleEntityFieldRelatedByEntitydatefielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ModuleEntityFieldRelatedByEntitydatefielduniquename relation
+ * @method     AlertSubscriptionQuery innerJoinModuleEntityFieldRelatedByEntitydatefielduniquename($relationAlias = null) Adds a INNER JOIN clause to the query using the ModuleEntityFieldRelatedByEntitydatefielduniquename relation
+ *
+ * @method     AlertSubscriptionQuery leftJoinModuleEntityFieldRelatedByEntitybooleanfielduniquename($relationAlias = null) Adds a LEFT JOIN clause to the query using the ModuleEntityFieldRelatedByEntitybooleanfielduniquename relation
+ * @method     AlertSubscriptionQuery rightJoinModuleEntityFieldRelatedByEntitybooleanfielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ModuleEntityFieldRelatedByEntitybooleanfielduniquename relation
+ * @method     AlertSubscriptionQuery innerJoinModuleEntityFieldRelatedByEntitybooleanfielduniquename($relationAlias = null) Adds a INNER JOIN clause to the query using the ModuleEntityFieldRelatedByEntitybooleanfielduniquename relation
  *
  * @method     AlertSubscriptionQuery leftJoinAlertSubscriptionUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the AlertSubscriptionUser relation
  * @method     AlertSubscriptionQuery rightJoinAlertSubscriptionUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AlertSubscriptionUser relation
@@ -48,7 +54,8 @@
  * @method     AlertSubscription findOneById(int $id) Return the first AlertSubscription filtered by the id column
  * @method     AlertSubscription findOneByName(string $name) Return the first AlertSubscription filtered by the name column
  * @method     AlertSubscription findOneByEntityname(string $entityName) Return the first AlertSubscription filtered by the entityName column
- * @method     AlertSubscription findOneByEntityfielduniquename(string $entityFieldUniqueName) Return the first AlertSubscription filtered by the entityFieldUniqueName column
+ * @method     AlertSubscription findOneByEntitydatefielduniquename(string $entityDateFieldUniqueName) Return the first AlertSubscription filtered by the entityDateFieldUniqueName column
+ * @method     AlertSubscription findOneByEntitybooleanfielduniquename(string $entityBooleanFieldUniqueName) Return the first AlertSubscription filtered by the entityBooleanFieldUniqueName column
  * @method     AlertSubscription findOneByAnticipationdays(int $anticipationDays) Return the first AlertSubscription filtered by the anticipationDays column
  * @method     AlertSubscription findOneByEntitynamefielduniquename(string $entityNameFieldUniqueName) Return the first AlertSubscription filtered by the entityNameFieldUniqueName column
  * @method     AlertSubscription findOneByExtrarecipients(string $extraRecipients) Return the first AlertSubscription filtered by the extraRecipients column
@@ -56,7 +63,8 @@
  * @method     array findById(int $id) Return AlertSubscription objects filtered by the id column
  * @method     array findByName(string $name) Return AlertSubscription objects filtered by the name column
  * @method     array findByEntityname(string $entityName) Return AlertSubscription objects filtered by the entityName column
- * @method     array findByEntityfielduniquename(string $entityFieldUniqueName) Return AlertSubscription objects filtered by the entityFieldUniqueName column
+ * @method     array findByEntitydatefielduniquename(string $entityDateFieldUniqueName) Return AlertSubscription objects filtered by the entityDateFieldUniqueName column
+ * @method     array findByEntitybooleanfielduniquename(string $entityBooleanFieldUniqueName) Return AlertSubscription objects filtered by the entityBooleanFieldUniqueName column
  * @method     array findByAnticipationdays(int $anticipationDays) Return AlertSubscription objects filtered by the anticipationDays column
  * @method     array findByEntitynamefielduniquename(string $entityNameFieldUniqueName) Return AlertSubscription objects filtered by the entityNameFieldUniqueName column
  * @method     array findByExtrarecipients(string $extraRecipients) Return AlertSubscription objects filtered by the extraRecipients column
@@ -231,25 +239,47 @@ abstract class BaseAlertSubscriptionQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query on the entityFieldUniqueName column
+	 * Filter the query on the entityDateFieldUniqueName column
 	 * 
-	 * @param     string $entityfielduniquename The value to use as filter.
+	 * @param     string $entitydatefielduniquename The value to use as filter.
 	 *            Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AlertSubscriptionQuery The current query, for fluid interface
 	 */
-	public function filterByEntityfielduniquename($entityfielduniquename = null, $comparison = null)
+	public function filterByEntitydatefielduniquename($entitydatefielduniquename = null, $comparison = null)
 	{
 		if (null === $comparison) {
-			if (is_array($entityfielduniquename)) {
+			if (is_array($entitydatefielduniquename)) {
 				$comparison = Criteria::IN;
-			} elseif (preg_match('/[\%\*]/', $entityfielduniquename)) {
-				$entityfielduniquename = str_replace('*', '%', $entityfielduniquename);
+			} elseif (preg_match('/[\%\*]/', $entitydatefielduniquename)) {
+				$entitydatefielduniquename = str_replace('*', '%', $entitydatefielduniquename);
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(AlertSubscriptionPeer::ENTITYFIELDUNIQUENAME, $entityfielduniquename, $comparison);
+		return $this->addUsingAlias(AlertSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME, $entitydatefielduniquename, $comparison);
+	}
+
+	/**
+	 * Filter the query on the entityBooleanFieldUniqueName column
+	 * 
+	 * @param     string $entitybooleanfielduniquename The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AlertSubscriptionQuery The current query, for fluid interface
+	 */
+	public function filterByEntitybooleanfielduniquename($entitybooleanfielduniquename = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($entitybooleanfielduniquename)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $entitybooleanfielduniquename)) {
+				$entitybooleanfielduniquename = str_replace('*', '%', $entitybooleanfielduniquename);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME, $entitybooleanfielduniquename, $comparison);
 	}
 
 	/**
@@ -399,70 +429,6 @@ abstract class BaseAlertSubscriptionQuery extends ModelCriteria
 	 *
 	 * @return    AlertSubscriptionQuery The current query, for fluid interface
 	 */
-	public function filterByModuleEntityFieldRelatedByEntityfielduniquename($moduleEntityField, $comparison = null)
-	{
-		return $this
-			->addUsingAlias(AlertSubscriptionPeer::ENTITYFIELDUNIQUENAME, $moduleEntityField->getUniquename(), $comparison);
-	}
-
-	/**
-	 * Adds a JOIN clause to the query using the ModuleEntityFieldRelatedByEntityfielduniquename relation
-	 * 
-	 * @param     string $relationAlias optional alias for the relation
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    AlertSubscriptionQuery The current query, for fluid interface
-	 */
-	public function joinModuleEntityFieldRelatedByEntityfielduniquename($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-	{
-		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('ModuleEntityFieldRelatedByEntityfielduniquename');
-		
-		// create a ModelJoin object for this join
-		$join = new ModelJoin();
-		$join->setJoinType($joinType);
-		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-		if ($previousJoin = $this->getPreviousJoin()) {
-			$join->setPreviousJoin($previousJoin);
-		}
-		
-		// add the ModelJoin to the current object
-		if($relationAlias) {
-			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-			$this->addJoinObject($join, $relationAlias);
-		} else {
-			$this->addJoinObject($join, 'ModuleEntityFieldRelatedByEntityfielduniquename');
-		}
-		
-		return $this;
-	}
-
-	/**
-	 * Use the ModuleEntityFieldRelatedByEntityfielduniquename relation ModuleEntityField object
-	 *
-	 * @see       useQuery()
-	 * 
-	 * @param     string $relationAlias optional alias for the relation,
-	 *                                   to be used as main alias in the secondary query
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    ModuleEntityFieldQuery A secondary query class using the current class as primary query
-	 */
-	public function useModuleEntityFieldRelatedByEntityfielduniquenameQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-	{
-		return $this
-			->joinModuleEntityFieldRelatedByEntityfielduniquename($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'ModuleEntityFieldRelatedByEntityfielduniquename', 'ModuleEntityFieldQuery');
-	}
-
-	/**
-	 * Filter the query by a related ModuleEntityField object
-	 *
-	 * @param     ModuleEntityField $moduleEntityField  the related object to use as filter
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    AlertSubscriptionQuery The current query, for fluid interface
-	 */
 	public function filterByModuleEntityFieldRelatedByEntitynamefielduniquename($moduleEntityField, $comparison = null)
 	{
 		return $this
@@ -517,6 +483,134 @@ abstract class BaseAlertSubscriptionQuery extends ModelCriteria
 		return $this
 			->joinModuleEntityFieldRelatedByEntitynamefielduniquename($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'ModuleEntityFieldRelatedByEntitynamefielduniquename', 'ModuleEntityFieldQuery');
+	}
+
+	/**
+	 * Filter the query by a related ModuleEntityField object
+	 *
+	 * @param     ModuleEntityField $moduleEntityField  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AlertSubscriptionQuery The current query, for fluid interface
+	 */
+	public function filterByModuleEntityFieldRelatedByEntitydatefielduniquename($moduleEntityField, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(AlertSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME, $moduleEntityField->getUniquename(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the ModuleEntityFieldRelatedByEntitydatefielduniquename relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    AlertSubscriptionQuery The current query, for fluid interface
+	 */
+	public function joinModuleEntityFieldRelatedByEntitydatefielduniquename($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('ModuleEntityFieldRelatedByEntitydatefielduniquename');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'ModuleEntityFieldRelatedByEntitydatefielduniquename');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the ModuleEntityFieldRelatedByEntitydatefielduniquename relation ModuleEntityField object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ModuleEntityFieldQuery A secondary query class using the current class as primary query
+	 */
+	public function useModuleEntityFieldRelatedByEntitydatefielduniquenameQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		return $this
+			->joinModuleEntityFieldRelatedByEntitydatefielduniquename($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'ModuleEntityFieldRelatedByEntitydatefielduniquename', 'ModuleEntityFieldQuery');
+	}
+
+	/**
+	 * Filter the query by a related ModuleEntityField object
+	 *
+	 * @param     ModuleEntityField $moduleEntityField  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AlertSubscriptionQuery The current query, for fluid interface
+	 */
+	public function filterByModuleEntityFieldRelatedByEntitybooleanfielduniquename($moduleEntityField, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME, $moduleEntityField->getUniquename(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the ModuleEntityFieldRelatedByEntitybooleanfielduniquename relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    AlertSubscriptionQuery The current query, for fluid interface
+	 */
+	public function joinModuleEntityFieldRelatedByEntitybooleanfielduniquename($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('ModuleEntityFieldRelatedByEntitybooleanfielduniquename');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'ModuleEntityFieldRelatedByEntitybooleanfielduniquename');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the ModuleEntityFieldRelatedByEntitybooleanfielduniquename relation ModuleEntityField object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ModuleEntityFieldQuery A secondary query class using the current class as primary query
+	 */
+	public function useModuleEntityFieldRelatedByEntitybooleanfielduniquenameQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		return $this
+			->joinModuleEntityFieldRelatedByEntitybooleanfielduniquename($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'ModuleEntityFieldRelatedByEntitybooleanfielduniquename', 'ModuleEntityFieldQuery');
 	}
 
 	/**

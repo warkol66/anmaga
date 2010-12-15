@@ -48,7 +48,7 @@
 					<input type="hidden" name="id" value="|-$alertSubscription->getid()-|" /> 
 					<input type="submit" name="submit_go_edit_alertSubscription" value="Editar" class="buttonImageEdit" /> 
 				</form>
-				|-if $loginUser->isAdmin() || $loginUser->isSupervisor()-|
+				|-if $loginUser ne '' && ($loginUser->isAdmin() || $loginUser->isSupervisor())-|
 				<form action="Main.php" method="post" style="display:inline;"> 
 					<input type="hidden" name="do" value="commonAlertsSubscriptionsDoDelete" /> 
 						|-include file="FiltersRedirectInclude.tpl" filters=$filters-|

@@ -149,7 +149,7 @@ class BaseAction extends Action {
 	 * @param $forwardName nombre del forward que se quiere modificar de ese mapping
 	 */
 	function addParamsToForwards($params,$mapping,$forwardName) {
-		//redireccionamiento con opciones correctas
+
 		$myRedirectConfig = $mapping->findForwardConfig($forwardName);
 		$myRedirectPath = $myRedirectConfig->getpath();
 
@@ -203,6 +203,102 @@ class BaseAction extends Action {
 		return $url;
 
 	}
+	
+	/**
+	 * Agrega parametros al url de un forward
+	 * @param $params array with parameters with key and value
+	 * @param $mapping
+	 * @param $forwardName nombre del forward que se quiere modificar de ese mapping
+	 */
+	function addFiltersToForwards($params,$mapping,$forwardName) {
 
+		$myRedirectConfig = $mapping->findForwardConfig($forwardName);
+		$myRedirectPath = $myRedirectConfig->getpath();
+
+		foreach ($params as $key => $value)
+			$myRedirectPath .= "&filters[$key]=$value";
+
+		return new ForwardConfig($myRedirectPath, True);
+
+	}
+
+	/**
+	 * Agrega parametros al url de un forward
+	 * @param $params array with parameters with key and value
+	 * @param $mapping
+	 * @param $forwardName nombre del forward que se quiere modificar de ese mapping
+	 */
+	function addParamsAndFiltersToForwards($params,$filters,$mapping,$forwardName) {
+
+		$myRedirectConfig = $mapping->findForwardConfig($forwardName);
+		$myRedirectPath = $myRedirectConfig->getpath();
+
+		foreach ($params as $key => $value)
+			$myRedirectPath .= "&$key=$value";
+
+		foreach ($filters as $key => $value)
+			$myRedirectPath .= "&filters[$key]=$value";
+
+		return new ForwardConfig($myRedirectPath, True);
+
+	}
+	
+	
+	/**
+	 * Realiza el procesamiento de filtros sobre una clase Peer de Propel
+	 * @param Class $peer instancia de clase peer de propel
+	 * @param array $filterValuer valores de filtro a verificar, los metodos de set en la clase peer deben tener antepuesto a estos nombres, 'set'
+	 * @param $smarty instancia de smarty sobre la cual se esta trabajando (tener en cuenta que al trabajar con una referencia a smarty, no hay problema de pasaje por parametro)
+	 */
+	function applyFilters($peer,$filters,$smarty = '') {
+		if (!empty($smarty))
+			$smarty->assign('filters',$filters);
+		foreach(array_keys($peer->filterConditions) as $filterKey)
+			if (isset($filters[$filterKey])) {
+				$filterMethod = $peer->filterConditions[$filterKey];
+				$peer->$filterMethod($filters[$filterKey]);
+			}
+
+		return $peer;
+	}
+	
+		/**
+	 * Consulta la base de datos y obtiene la información básica que generalmente es requerida por una vista de formulario
+	 * sencilla de una entidad. Tener en cuenta que la entidad propiamente dicha debe ser asignada por separado.
+	 * 
+	 * En la vista quedan accesibles las instancias de entidades relacionadas con sus respectivos nombres pluralizados.
+	 * Además se asigna el nombre tentativo del formulario que contiene la vista a incluir si se trata de un formulario embutido.
+	 * 
+	 * @param $objectClassName nombre de la clase php de la entidad.
+	 * @param $smarty instancia de smarty sobre la cual se esta trabajando (tener en cuenta que al trabajar con una referencia a smarty, no hay problema de pasaje por parametro)
+	 */
+	function prepareEmbeddedForm($objectClassName, $smarty) {
+		$objectPeerName = $objectClassName . 'Peer';
+		if (class_exists($objectPeerName)) {
+			$tableMap = call_user_func(array($objectPeerName, 'getTableMap'));
+			$objectPackageName = $tableMap->getPackage();
+			$objectModuleName = ucwords(preg_replace('/.classes$/', '', $objectPackageName));
+			$pluralizedObjectClassName = Common::pluralize($tableMap->getClassName());
+			if ($objectModuleName != $pluralizedObjectClassName) {
+				$formTemplateName = $objectModuleName . $pluralizedObjectClassName . 'Form.tpl';
+			} else {
+				$formTemplateName = $pluralizedObjectClassName . 'Form.tpl';
+			}
+			$smarty->assign('formTemplateName', $formTemplateName);
+			$relations = $tableMap->getRelations();
+			foreach ($relations as $relation) {
+				if ($relation->getType() == RelationMap::MANY_TO_ONE) {
+					$foreignTable = $relation->getForeignTable();
+					$foreignEntityName = $foreignTable->getClassName();
+					$foreignPeerClassName = $foreignTable->getPeerClassName();
+					if (method_exists($foreignPeerClassName, 'getAll')) {
+						$foreignEntities = call_user_func(array($foreignPeerClassName, 'getAll'));
+					}
+					$pluralizedEntityName = Common::pluralize(Common::strtocamel($foreignEntityName, false));
+					$smarty->assign($pluralizedEntityName, $foreignEntities);
+				}
+			}
+		}
+	}
 }
 

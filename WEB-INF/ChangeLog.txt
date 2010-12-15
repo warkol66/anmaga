@@ -1,4 +1,18 @@
 -- =============================
+-- Revisión 614 - Fecha 20101215
+-- -----------------------------
+ALTER TABLE `common_alertSubscription` ADD `entityBooleanFieldUniqueName` VARCHAR(100)   COMMENT 'Nombre unico del campo a evaluar por verdadero o falso.';
+
+ALTER TABLE `common_alertSubscription` ADD INDEX `common_alertSubscription_FI_4` (`entityBooleanFieldUniqueName`);
+
+ALTER TABLE `common_alertSubscription` ADD CONSTRAINT `common_alertSubscription_FK_4`
+		FOREIGN KEY (`entityBooleanFieldUniqueName`)
+		REFERENCES `modules_entityField` (`uniqueName`)
+		ON DELETE CASCADE;
+		
+ALTER TABLE  `common_alertSubscription` CHANGE  `entityFieldUniqueName`  `entityDateFieldUniqueName` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+-- =============================
 -- Revisión 605 - Fecha 20101210
 -- -----------------------------
 ALTER TABLE `import_supplier` ADD `address` VARCHAR(255)   COMMENT 'direccion';

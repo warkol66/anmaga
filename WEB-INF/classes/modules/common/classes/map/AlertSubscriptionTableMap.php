@@ -40,7 +40,8 @@ class AlertSubscriptionTableMap extends TableMap {
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 100, null);
 		$this->addForeignKey('ENTITYNAME', 'Entityname', 'VARCHAR', 'modules_entity', 'NAME', false, 50, null);
-		$this->addForeignKey('ENTITYFIELDUNIQUENAME', 'Entityfielduniquename', 'VARCHAR', 'modules_entityField', 'UNIQUENAME', false, 100, null);
+		$this->addForeignKey('ENTITYDATEFIELDUNIQUENAME', 'Entitydatefielduniquename', 'VARCHAR', 'modules_entityField', 'UNIQUENAME', false, 100, null);
+		$this->addForeignKey('ENTITYBOOLEANFIELDUNIQUENAME', 'Entitybooleanfielduniquename', 'VARCHAR', 'modules_entityField', 'UNIQUENAME', false, 100, null);
 		$this->addColumn('ANTICIPATIONDAYS', 'Anticipationdays', 'INTEGER', false, null, null);
 		$this->addForeignKey('ENTITYNAMEFIELDUNIQUENAME', 'Entitynamefielduniquename', 'VARCHAR', 'modules_entityField', 'UNIQUENAME', false, 100, null);
 		$this->addColumn('EXTRARECIPIENTS', 'Extrarecipients', 'LONGVARCHAR', false, null, null);
@@ -53,8 +54,9 @@ class AlertSubscriptionTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('ModuleEntity', 'ModuleEntity', RelationMap::MANY_TO_ONE, array('entityName' => 'name', ), 'CASCADE', null);
-    $this->addRelation('ModuleEntityFieldRelatedByEntityfielduniquename', 'ModuleEntityField', RelationMap::MANY_TO_ONE, array('entityFieldUniqueName' => 'uniqueName', ), 'CASCADE', null);
     $this->addRelation('ModuleEntityFieldRelatedByEntitynamefielduniquename', 'ModuleEntityField', RelationMap::MANY_TO_ONE, array('entityNameFieldUniqueName' => 'uniqueName', ), 'CASCADE', null);
+    $this->addRelation('ModuleEntityFieldRelatedByEntitydatefielduniquename', 'ModuleEntityField', RelationMap::MANY_TO_ONE, array('entityDateFieldUniqueName' => 'uniqueName', ), 'CASCADE', null);
+    $this->addRelation('ModuleEntityFieldRelatedByEntitybooleanfielduniquename', 'ModuleEntityField', RelationMap::MANY_TO_ONE, array('entityBooleanFieldUniqueName' => 'uniqueName', ), 'CASCADE', null);
     $this->addRelation('AlertSubscriptionUser', 'AlertSubscriptionUser', RelationMap::ONE_TO_MANY, array('id' => 'alertSubscriptionId', ), 'CASCADE', null);
     $this->addRelation('User', 'User', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null);
 	} // buildRelations()

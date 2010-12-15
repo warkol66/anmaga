@@ -82,7 +82,8 @@
 		<column name="id" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
 		<column name="name" type="VARCHAR" size="100" description="Nombre de la suscripción"/>
 		<column name="entityName" type="VARCHAR" size="50" description="Nombre único de la entidad asociada."/>
-		<column name="entityFieldUniqueName" type="VARCHAR" size="100" />
+		<column name="entityDateFieldUniqueName" type="VARCHAR" size="100" description="Nombre unico del campo fecha"/>
+		<column name="entityBooleanFieldUniqueName" type="VARCHAR" size="100" description="Nombre unico del campo a evaluar por verdadero o falso."/>
 		<column name="anticipationDays" type="INTEGER" description="Cantidad de dias de anticipación. Se usa para evaluar campos tipo fecha." />
 		<column name="entityNameFieldUniqueName" type="VARCHAR" size="100" description="Campo a imprimir en representación del nombre de cada instancia de la entidad" />
 		<column name="extraRecipients" type="LONGVARCHAR" description="Destinatarios extra"/>
@@ -92,11 +93,15 @@
   		</foreign-key>
 		
 		<foreign-key foreignTable="modules_entityField" onDelete="CASCADE" >
-	    	<reference local="entityFieldUniqueName" foreign="uniqueName"/>
+	    	<reference local="entityNameFieldUniqueName" foreign="uniqueName"/>
 	 	</foreign-key>
 		
 		<foreign-key foreignTable="modules_entityField" onDelete="CASCADE" >
-	    	<reference local="entityNameFieldUniqueName" foreign="uniqueName"/>
+	    	<reference local="entityDateFieldUniqueName" foreign="uniqueName"/>
+	 	</foreign-key>
+		
+		<foreign-key foreignTable="modules_entityField" onDelete="CASCADE" >
+	    	<reference local="entityBooleanFieldUniqueName" foreign="uniqueName"/>
 	 	</foreign-key>
 		
 		<vendor type="mysql">

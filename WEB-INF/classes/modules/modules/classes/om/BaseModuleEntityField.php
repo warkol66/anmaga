@@ -156,12 +156,17 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 	/**
 	 * @var        array AlertSubscription[] Collection to store aggregation of AlertSubscription objects.
 	 */
-	protected $collAlertSubscriptionsRelatedByEntityfielduniquename;
+	protected $collAlertSubscriptionsRelatedByEntitynamefielduniquename;
 
 	/**
 	 * @var        array AlertSubscription[] Collection to store aggregation of AlertSubscription objects.
 	 */
-	protected $collAlertSubscriptionsRelatedByEntitynamefielduniquename;
+	protected $collAlertSubscriptionsRelatedByEntitydatefielduniquename;
+
+	/**
+	 * @var        array AlertSubscription[] Collection to store aggregation of AlertSubscription objects.
+	 */
+	protected $collAlertSubscriptionsRelatedByEntitybooleanfielduniquename;
 
 	/**
 	 * @var        array ModuleEntity[] Collection to store aggregation of ModuleEntity objects.
@@ -907,9 +912,11 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 			$this->aModuleEntityRelatedByEntityname = null;
 			$this->aModuleEntityRelatedByForeignkeytable = null;
 			$this->aModuleEntityFieldRelatedByForeignkeyremote = null;
-			$this->collAlertSubscriptionsRelatedByEntityfielduniquename = null;
-
 			$this->collAlertSubscriptionsRelatedByEntitynamefielduniquename = null;
+
+			$this->collAlertSubscriptionsRelatedByEntitydatefielduniquename = null;
+
+			$this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename = null;
 
 			$this->collModuleEntitysRelatedByScopefielduniquename = null;
 
@@ -1068,16 +1075,24 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
-			if ($this->collAlertSubscriptionsRelatedByEntityfielduniquename !== null) {
-				foreach ($this->collAlertSubscriptionsRelatedByEntityfielduniquename as $referrerFK) {
+			if ($this->collAlertSubscriptionsRelatedByEntitynamefielduniquename !== null) {
+				foreach ($this->collAlertSubscriptionsRelatedByEntitynamefielduniquename as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
 				}
 			}
 
-			if ($this->collAlertSubscriptionsRelatedByEntitynamefielduniquename !== null) {
-				foreach ($this->collAlertSubscriptionsRelatedByEntitynamefielduniquename as $referrerFK) {
+			if ($this->collAlertSubscriptionsRelatedByEntitydatefielduniquename !== null) {
+				foreach ($this->collAlertSubscriptionsRelatedByEntitydatefielduniquename as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename !== null) {
+				foreach ($this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -1203,16 +1218,24 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 			}
 
 
-				if ($this->collAlertSubscriptionsRelatedByEntityfielduniquename !== null) {
-					foreach ($this->collAlertSubscriptionsRelatedByEntityfielduniquename as $referrerFK) {
+				if ($this->collAlertSubscriptionsRelatedByEntitynamefielduniquename !== null) {
+					foreach ($this->collAlertSubscriptionsRelatedByEntitynamefielduniquename as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
 					}
 				}
 
-				if ($this->collAlertSubscriptionsRelatedByEntitynamefielduniquename !== null) {
-					foreach ($this->collAlertSubscriptionsRelatedByEntitynamefielduniquename as $referrerFK) {
+				if ($this->collAlertSubscriptionsRelatedByEntitydatefielduniquename !== null) {
+					foreach ($this->collAlertSubscriptionsRelatedByEntitydatefielduniquename as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename !== null) {
+					foreach ($this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1634,15 +1657,21 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
-			foreach ($this->getAlertSubscriptionsRelatedByEntityfielduniquename() as $relObj) {
-				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addAlertSubscriptionRelatedByEntityfielduniquename($relObj->copy($deepCopy));
-				}
-			}
-
 			foreach ($this->getAlertSubscriptionsRelatedByEntitynamefielduniquename() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addAlertSubscriptionRelatedByEntitynamefielduniquename($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getAlertSubscriptionsRelatedByEntitydatefielduniquename() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addAlertSubscriptionRelatedByEntitydatefielduniquename($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getAlertSubscriptionsRelatedByEntitybooleanfielduniquename() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addAlertSubscriptionRelatedByEntitybooleanfielduniquename($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1856,140 +1885,6 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Clears out the collAlertSubscriptionsRelatedByEntityfielduniquename collection
-	 *
-	 * This does not modify the database; however, it will remove any associated objects, causing
-	 * them to be refetched by subsequent calls to accessor method.
-	 *
-	 * @return     void
-	 * @see        addAlertSubscriptionsRelatedByEntityfielduniquename()
-	 */
-	public function clearAlertSubscriptionsRelatedByEntityfielduniquename()
-	{
-		$this->collAlertSubscriptionsRelatedByEntityfielduniquename = null; // important to set this to NULL since that means it is uninitialized
-	}
-
-	/**
-	 * Initializes the collAlertSubscriptionsRelatedByEntityfielduniquename collection.
-	 *
-	 * By default this just sets the collAlertSubscriptionsRelatedByEntityfielduniquename collection to an empty array (like clearcollAlertSubscriptionsRelatedByEntityfielduniquename());
-	 * however, you may wish to override this method in your stub class to provide setting appropriate
-	 * to your application -- for example, setting the initial array to the values stored in database.
-	 *
-	 * @return     void
-	 */
-	public function initAlertSubscriptionsRelatedByEntityfielduniquename()
-	{
-		$this->collAlertSubscriptionsRelatedByEntityfielduniquename = new PropelObjectCollection();
-		$this->collAlertSubscriptionsRelatedByEntityfielduniquename->setModel('AlertSubscription');
-	}
-
-	/**
-	 * Gets an array of AlertSubscription objects which contain a foreign key that references this object.
-	 *
-	 * If the $criteria is not null, it is used to always fetch the results from the database.
-	 * Otherwise the results are fetched from the database the first time, then cached.
-	 * Next time the same method is called without $criteria, the cached collection is returned.
-	 * If this ModuleEntityField is new, it will return
-	 * an empty collection or the current collection; the criteria is ignored on a new object.
-	 *
-	 * @param      Criteria $criteria optional Criteria object to narrow the query
-	 * @param      PropelPDO $con optional connection object
-	 * @return     PropelCollection|array AlertSubscription[] List of AlertSubscription objects
-	 * @throws     PropelException
-	 */
-	public function getAlertSubscriptionsRelatedByEntityfielduniquename($criteria = null, PropelPDO $con = null)
-	{
-		if(null === $this->collAlertSubscriptionsRelatedByEntityfielduniquename || null !== $criteria) {
-			if ($this->isNew() && null === $this->collAlertSubscriptionsRelatedByEntityfielduniquename) {
-				// return empty collection
-				$this->initAlertSubscriptionsRelatedByEntityfielduniquename();
-			} else {
-				$collAlertSubscriptionsRelatedByEntityfielduniquename = AlertSubscriptionQuery::create(null, $criteria)
-					->filterByModuleEntityFieldRelatedByEntityfielduniquename($this)
-					->find($con);
-				if (null !== $criteria) {
-					return $collAlertSubscriptionsRelatedByEntityfielduniquename;
-				}
-				$this->collAlertSubscriptionsRelatedByEntityfielduniquename = $collAlertSubscriptionsRelatedByEntityfielduniquename;
-			}
-		}
-		return $this->collAlertSubscriptionsRelatedByEntityfielduniquename;
-	}
-
-	/**
-	 * Returns the number of related AlertSubscription objects.
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct
-	 * @param      PropelPDO $con
-	 * @return     int Count of related AlertSubscription objects.
-	 * @throws     PropelException
-	 */
-	public function countAlertSubscriptionsRelatedByEntityfielduniquename(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-	{
-		if(null === $this->collAlertSubscriptionsRelatedByEntityfielduniquename || null !== $criteria) {
-			if ($this->isNew() && null === $this->collAlertSubscriptionsRelatedByEntityfielduniquename) {
-				return 0;
-			} else {
-				$query = AlertSubscriptionQuery::create(null, $criteria);
-				if($distinct) {
-					$query->distinct();
-				}
-				return $query
-					->filterByModuleEntityFieldRelatedByEntityfielduniquename($this)
-					->count($con);
-			}
-		} else {
-			return count($this->collAlertSubscriptionsRelatedByEntityfielduniquename);
-		}
-	}
-
-	/**
-	 * Method called to associate a AlertSubscription object to this object
-	 * through the AlertSubscription foreign key attribute.
-	 *
-	 * @param      AlertSubscription $l AlertSubscription
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function addAlertSubscriptionRelatedByEntityfielduniquename(AlertSubscription $l)
-	{
-		if ($this->collAlertSubscriptionsRelatedByEntityfielduniquename === null) {
-			$this->initAlertSubscriptionsRelatedByEntityfielduniquename();
-		}
-		if (!$this->collAlertSubscriptionsRelatedByEntityfielduniquename->contains($l)) { // only add it if the **same** object is not already associated
-			$this->collAlertSubscriptionsRelatedByEntityfielduniquename[]= $l;
-			$l->setModuleEntityFieldRelatedByEntityfielduniquename($this);
-		}
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this ModuleEntityField is new, it will return
-	 * an empty collection; or if this ModuleEntityField has previously
-	 * been saved, it will retrieve related AlertSubscriptionsRelatedByEntityfielduniquename from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in ModuleEntityField.
-	 *
-	 * @param      Criteria $criteria optional Criteria object to narrow the query
-	 * @param      PropelPDO $con optional connection object
-	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-	 * @return     PropelCollection|array AlertSubscription[] List of AlertSubscription objects
-	 */
-	public function getAlertSubscriptionsRelatedByEntityfielduniquenameJoinModuleEntity($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$query = AlertSubscriptionQuery::create(null, $criteria);
-		$query->joinWith('ModuleEntity', $join_behavior);
-
-		return $this->getAlertSubscriptionsRelatedByEntityfielduniquename($query, $con);
-	}
-
-	/**
 	 * Clears out the collAlertSubscriptionsRelatedByEntitynamefielduniquename collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
@@ -2121,6 +2016,274 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 		$query->joinWith('ModuleEntity', $join_behavior);
 
 		return $this->getAlertSubscriptionsRelatedByEntitynamefielduniquename($query, $con);
+	}
+
+	/**
+	 * Clears out the collAlertSubscriptionsRelatedByEntitydatefielduniquename collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addAlertSubscriptionsRelatedByEntitydatefielduniquename()
+	 */
+	public function clearAlertSubscriptionsRelatedByEntitydatefielduniquename()
+	{
+		$this->collAlertSubscriptionsRelatedByEntitydatefielduniquename = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collAlertSubscriptionsRelatedByEntitydatefielduniquename collection.
+	 *
+	 * By default this just sets the collAlertSubscriptionsRelatedByEntitydatefielduniquename collection to an empty array (like clearcollAlertSubscriptionsRelatedByEntitydatefielduniquename());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initAlertSubscriptionsRelatedByEntitydatefielduniquename()
+	{
+		$this->collAlertSubscriptionsRelatedByEntitydatefielduniquename = new PropelObjectCollection();
+		$this->collAlertSubscriptionsRelatedByEntitydatefielduniquename->setModel('AlertSubscription');
+	}
+
+	/**
+	 * Gets an array of AlertSubscription objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this ModuleEntityField is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array AlertSubscription[] List of AlertSubscription objects
+	 * @throws     PropelException
+	 */
+	public function getAlertSubscriptionsRelatedByEntitydatefielduniquename($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collAlertSubscriptionsRelatedByEntitydatefielduniquename || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAlertSubscriptionsRelatedByEntitydatefielduniquename) {
+				// return empty collection
+				$this->initAlertSubscriptionsRelatedByEntitydatefielduniquename();
+			} else {
+				$collAlertSubscriptionsRelatedByEntitydatefielduniquename = AlertSubscriptionQuery::create(null, $criteria)
+					->filterByModuleEntityFieldRelatedByEntitydatefielduniquename($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collAlertSubscriptionsRelatedByEntitydatefielduniquename;
+				}
+				$this->collAlertSubscriptionsRelatedByEntitydatefielduniquename = $collAlertSubscriptionsRelatedByEntitydatefielduniquename;
+			}
+		}
+		return $this->collAlertSubscriptionsRelatedByEntitydatefielduniquename;
+	}
+
+	/**
+	 * Returns the number of related AlertSubscription objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related AlertSubscription objects.
+	 * @throws     PropelException
+	 */
+	public function countAlertSubscriptionsRelatedByEntitydatefielduniquename(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collAlertSubscriptionsRelatedByEntitydatefielduniquename || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAlertSubscriptionsRelatedByEntitydatefielduniquename) {
+				return 0;
+			} else {
+				$query = AlertSubscriptionQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByModuleEntityFieldRelatedByEntitydatefielduniquename($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collAlertSubscriptionsRelatedByEntitydatefielduniquename);
+		}
+	}
+
+	/**
+	 * Method called to associate a AlertSubscription object to this object
+	 * through the AlertSubscription foreign key attribute.
+	 *
+	 * @param      AlertSubscription $l AlertSubscription
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addAlertSubscriptionRelatedByEntitydatefielduniquename(AlertSubscription $l)
+	{
+		if ($this->collAlertSubscriptionsRelatedByEntitydatefielduniquename === null) {
+			$this->initAlertSubscriptionsRelatedByEntitydatefielduniquename();
+		}
+		if (!$this->collAlertSubscriptionsRelatedByEntitydatefielduniquename->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collAlertSubscriptionsRelatedByEntitydatefielduniquename[]= $l;
+			$l->setModuleEntityFieldRelatedByEntitydatefielduniquename($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ModuleEntityField is new, it will return
+	 * an empty collection; or if this ModuleEntityField has previously
+	 * been saved, it will retrieve related AlertSubscriptionsRelatedByEntitydatefielduniquename from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ModuleEntityField.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array AlertSubscription[] List of AlertSubscription objects
+	 */
+	public function getAlertSubscriptionsRelatedByEntitydatefielduniquenameJoinModuleEntity($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = AlertSubscriptionQuery::create(null, $criteria);
+		$query->joinWith('ModuleEntity', $join_behavior);
+
+		return $this->getAlertSubscriptionsRelatedByEntitydatefielduniquename($query, $con);
+	}
+
+	/**
+	 * Clears out the collAlertSubscriptionsRelatedByEntitybooleanfielduniquename collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addAlertSubscriptionsRelatedByEntitybooleanfielduniquename()
+	 */
+	public function clearAlertSubscriptionsRelatedByEntitybooleanfielduniquename()
+	{
+		$this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collAlertSubscriptionsRelatedByEntitybooleanfielduniquename collection.
+	 *
+	 * By default this just sets the collAlertSubscriptionsRelatedByEntitybooleanfielduniquename collection to an empty array (like clearcollAlertSubscriptionsRelatedByEntitybooleanfielduniquename());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initAlertSubscriptionsRelatedByEntitybooleanfielduniquename()
+	{
+		$this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename = new PropelObjectCollection();
+		$this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename->setModel('AlertSubscription');
+	}
+
+	/**
+	 * Gets an array of AlertSubscription objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this ModuleEntityField is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array AlertSubscription[] List of AlertSubscription objects
+	 * @throws     PropelException
+	 */
+	public function getAlertSubscriptionsRelatedByEntitybooleanfielduniquename($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename) {
+				// return empty collection
+				$this->initAlertSubscriptionsRelatedByEntitybooleanfielduniquename();
+			} else {
+				$collAlertSubscriptionsRelatedByEntitybooleanfielduniquename = AlertSubscriptionQuery::create(null, $criteria)
+					->filterByModuleEntityFieldRelatedByEntitybooleanfielduniquename($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collAlertSubscriptionsRelatedByEntitybooleanfielduniquename;
+				}
+				$this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename = $collAlertSubscriptionsRelatedByEntitybooleanfielduniquename;
+			}
+		}
+		return $this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename;
+	}
+
+	/**
+	 * Returns the number of related AlertSubscription objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related AlertSubscription objects.
+	 * @throws     PropelException
+	 */
+	public function countAlertSubscriptionsRelatedByEntitybooleanfielduniquename(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename) {
+				return 0;
+			} else {
+				$query = AlertSubscriptionQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByModuleEntityFieldRelatedByEntitybooleanfielduniquename($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename);
+		}
+	}
+
+	/**
+	 * Method called to associate a AlertSubscription object to this object
+	 * through the AlertSubscription foreign key attribute.
+	 *
+	 * @param      AlertSubscription $l AlertSubscription
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addAlertSubscriptionRelatedByEntitybooleanfielduniquename(AlertSubscription $l)
+	{
+		if ($this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename === null) {
+			$this->initAlertSubscriptionsRelatedByEntitybooleanfielduniquename();
+		}
+		if (!$this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename[]= $l;
+			$l->setModuleEntityFieldRelatedByEntitybooleanfielduniquename($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ModuleEntityField is new, it will return
+	 * an empty collection; or if this ModuleEntityField has previously
+	 * been saved, it will retrieve related AlertSubscriptionsRelatedByEntitybooleanfielduniquename from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ModuleEntityField.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array AlertSubscription[] List of AlertSubscription objects
+	 */
+	public function getAlertSubscriptionsRelatedByEntitybooleanfielduniquenameJoinModuleEntity($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = AlertSubscriptionQuery::create(null, $criteria);
+		$query->joinWith('ModuleEntity', $join_behavior);
+
+		return $this->getAlertSubscriptionsRelatedByEntitybooleanfielduniquename($query, $con);
 	}
 
 	/**
@@ -2569,13 +2732,18 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
-			if ($this->collAlertSubscriptionsRelatedByEntityfielduniquename) {
-				foreach ((array) $this->collAlertSubscriptionsRelatedByEntityfielduniquename as $o) {
+			if ($this->collAlertSubscriptionsRelatedByEntitynamefielduniquename) {
+				foreach ((array) $this->collAlertSubscriptionsRelatedByEntitynamefielduniquename as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
-			if ($this->collAlertSubscriptionsRelatedByEntitynamefielduniquename) {
-				foreach ((array) $this->collAlertSubscriptionsRelatedByEntitynamefielduniquename as $o) {
+			if ($this->collAlertSubscriptionsRelatedByEntitydatefielduniquename) {
+				foreach ((array) $this->collAlertSubscriptionsRelatedByEntitydatefielduniquename as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename) {
+				foreach ((array) $this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -2596,8 +2764,9 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 			}
 		} // if ($deep)
 
-		$this->collAlertSubscriptionsRelatedByEntityfielduniquename = null;
 		$this->collAlertSubscriptionsRelatedByEntitynamefielduniquename = null;
+		$this->collAlertSubscriptionsRelatedByEntitydatefielduniquename = null;
+		$this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename = null;
 		$this->collModuleEntitysRelatedByScopefielduniquename = null;
 		$this->collModuleEntityFieldsRelatedByUniquename = null;
 		$this->collModuleEntityFieldValidations = null;

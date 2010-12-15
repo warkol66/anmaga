@@ -26,7 +26,7 @@ abstract class BaseAlertSubscriptionPeer {
 	const TM_CLASS = 'AlertSubscriptionTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 7;
+	const NUM_COLUMNS = 8;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -40,8 +40,11 @@ abstract class BaseAlertSubscriptionPeer {
 	/** the column name for the ENTITYNAME field */
 	const ENTITYNAME = 'common_alertSubscription.ENTITYNAME';
 
-	/** the column name for the ENTITYFIELDUNIQUENAME field */
-	const ENTITYFIELDUNIQUENAME = 'common_alertSubscription.ENTITYFIELDUNIQUENAME';
+	/** the column name for the ENTITYDATEFIELDUNIQUENAME field */
+	const ENTITYDATEFIELDUNIQUENAME = 'common_alertSubscription.ENTITYDATEFIELDUNIQUENAME';
+
+	/** the column name for the ENTITYBOOLEANFIELDUNIQUENAME field */
+	const ENTITYBOOLEANFIELDUNIQUENAME = 'common_alertSubscription.ENTITYBOOLEANFIELDUNIQUENAME';
 
 	/** the column name for the ANTICIPATIONDAYS field */
 	const ANTICIPATIONDAYS = 'common_alertSubscription.ANTICIPATIONDAYS';
@@ -68,12 +71,12 @@ abstract class BaseAlertSubscriptionPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Entityname', 'Entityfielduniquename', 'Anticipationdays', 'Entitynamefielduniquename', 'Extrarecipients', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'entityname', 'entityfielduniquename', 'anticipationdays', 'entitynamefielduniquename', 'extrarecipients', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ENTITYNAME, self::ENTITYFIELDUNIQUENAME, self::ANTICIPATIONDAYS, self::ENTITYNAMEFIELDUNIQUENAME, self::EXTRARECIPIENTS, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ENTITYNAME', 'ENTITYFIELDUNIQUENAME', 'ANTICIPATIONDAYS', 'ENTITYNAMEFIELDUNIQUENAME', 'EXTRARECIPIENTS', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'entityName', 'entityFieldUniqueName', 'anticipationDays', 'entityNameFieldUniqueName', 'extraRecipients', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Entityname', 'Entitydatefielduniquename', 'Entitybooleanfielduniquename', 'Anticipationdays', 'Entitynamefielduniquename', 'Extrarecipients', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'entityname', 'entitydatefielduniquename', 'entitybooleanfielduniquename', 'anticipationdays', 'entitynamefielduniquename', 'extrarecipients', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ENTITYNAME, self::ENTITYDATEFIELDUNIQUENAME, self::ENTITYBOOLEANFIELDUNIQUENAME, self::ANTICIPATIONDAYS, self::ENTITYNAMEFIELDUNIQUENAME, self::EXTRARECIPIENTS, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ENTITYNAME', 'ENTITYDATEFIELDUNIQUENAME', 'ENTITYBOOLEANFIELDUNIQUENAME', 'ANTICIPATIONDAYS', 'ENTITYNAMEFIELDUNIQUENAME', 'EXTRARECIPIENTS', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'entityName', 'entityDateFieldUniqueName', 'entityBooleanFieldUniqueName', 'anticipationDays', 'entityNameFieldUniqueName', 'extraRecipients', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
 
 	/**
@@ -83,12 +86,12 @@ abstract class BaseAlertSubscriptionPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Entityname' => 2, 'Entityfielduniquename' => 3, 'Anticipationdays' => 4, 'Entitynamefielduniquename' => 5, 'Extrarecipients' => 6, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'entityname' => 2, 'entityfielduniquename' => 3, 'anticipationdays' => 4, 'entitynamefielduniquename' => 5, 'extrarecipients' => 6, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ENTITYNAME => 2, self::ENTITYFIELDUNIQUENAME => 3, self::ANTICIPATIONDAYS => 4, self::ENTITYNAMEFIELDUNIQUENAME => 5, self::EXTRARECIPIENTS => 6, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ENTITYNAME' => 2, 'ENTITYFIELDUNIQUENAME' => 3, 'ANTICIPATIONDAYS' => 4, 'ENTITYNAMEFIELDUNIQUENAME' => 5, 'EXTRARECIPIENTS' => 6, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'entityName' => 2, 'entityFieldUniqueName' => 3, 'anticipationDays' => 4, 'entityNameFieldUniqueName' => 5, 'extraRecipients' => 6, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Entityname' => 2, 'Entitydatefielduniquename' => 3, 'Entitybooleanfielduniquename' => 4, 'Anticipationdays' => 5, 'Entitynamefielduniquename' => 6, 'Extrarecipients' => 7, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'entityname' => 2, 'entitydatefielduniquename' => 3, 'entitybooleanfielduniquename' => 4, 'anticipationdays' => 5, 'entitynamefielduniquename' => 6, 'extrarecipients' => 7, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ENTITYNAME => 2, self::ENTITYDATEFIELDUNIQUENAME => 3, self::ENTITYBOOLEANFIELDUNIQUENAME => 4, self::ANTICIPATIONDAYS => 5, self::ENTITYNAMEFIELDUNIQUENAME => 6, self::EXTRARECIPIENTS => 7, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ENTITYNAME' => 2, 'ENTITYDATEFIELDUNIQUENAME' => 3, 'ENTITYBOOLEANFIELDUNIQUENAME' => 4, 'ANTICIPATIONDAYS' => 5, 'ENTITYNAMEFIELDUNIQUENAME' => 6, 'EXTRARECIPIENTS' => 7, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'entityName' => 2, 'entityDateFieldUniqueName' => 3, 'entityBooleanFieldUniqueName' => 4, 'anticipationDays' => 5, 'entityNameFieldUniqueName' => 6, 'extraRecipients' => 7, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
 
 	/**
@@ -163,7 +166,8 @@ abstract class BaseAlertSubscriptionPeer {
 			$criteria->addSelectColumn(AlertSubscriptionPeer::ID);
 			$criteria->addSelectColumn(AlertSubscriptionPeer::NAME);
 			$criteria->addSelectColumn(AlertSubscriptionPeer::ENTITYNAME);
-			$criteria->addSelectColumn(AlertSubscriptionPeer::ENTITYFIELDUNIQUENAME);
+			$criteria->addSelectColumn(AlertSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME);
+			$criteria->addSelectColumn(AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME);
 			$criteria->addSelectColumn(AlertSubscriptionPeer::ANTICIPATIONDAYS);
 			$criteria->addSelectColumn(AlertSubscriptionPeer::ENTITYNAMEFIELDUNIQUENAME);
 			$criteria->addSelectColumn(AlertSubscriptionPeer::EXTRARECIPIENTS);
@@ -171,7 +175,8 @@ abstract class BaseAlertSubscriptionPeer {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.NAME');
 			$criteria->addSelectColumn($alias . '.ENTITYNAME');
-			$criteria->addSelectColumn($alias . '.ENTITYFIELDUNIQUENAME');
+			$criteria->addSelectColumn($alias . '.ENTITYDATEFIELDUNIQUENAME');
+			$criteria->addSelectColumn($alias . '.ENTITYBOOLEANFIELDUNIQUENAME');
 			$criteria->addSelectColumn($alias . '.ANTICIPATIONDAYS');
 			$criteria->addSelectColumn($alias . '.ENTITYNAMEFIELDUNIQUENAME');
 			$criteria->addSelectColumn($alias . '.EXTRARECIPIENTS');
@@ -514,56 +519,6 @@ abstract class BaseAlertSubscriptionPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related ModuleEntityFieldRelatedByEntityfielduniquename table
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     int Number of matching rows.
-	 */
-	public static function doCountJoinModuleEntityFieldRelatedByEntityfielduniquename(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		// we're going to modify criteria, so copy it first
-		$criteria = clone $criteria;
-
-		// We need to set the primary table name, since in the case that there are no WHERE columns
-		// it will be impossible for the BasePeer::createSelectSql() method to determine which
-		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(AlertSubscriptionPeer::TABLE_NAME);
-
-		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->setDistinct();
-		}
-
-		if (!$criteria->hasSelectClause()) {
-			AlertSubscriptionPeer::addSelectColumns($criteria);
-		}
-		
-		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-		
-		// Set the correct dbName
-		$criteria->setDbName(self::DATABASE_NAME);
-
-		if ($con === null) {
-			$con = Propel::getConnection(AlertSubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-		}
-
-		$criteria->addJoin(AlertSubscriptionPeer::ENTITYFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
-
-		$stmt = BasePeer::doCount($criteria, $con);
-
-		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$count = (int) $row[0];
-		} else {
-			$count = 0; // no rows returned; we infer that means 0 matches.
-		}
-		$stmt->closeCursor();
-		return $count;
-	}
-
-
-	/**
 	 * Returns the number of rows matching criteria, joining the related ModuleEntityFieldRelatedByEntitynamefielduniquename table
 	 *
 	 * @param      Criteria $criteria
@@ -600,6 +555,106 @@ abstract class BaseAlertSubscriptionPeer {
 		}
 
 		$criteria->addJoin(AlertSubscriptionPeer::ENTITYNAMEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+
+		$stmt = BasePeer::doCount($criteria, $con);
+
+		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$count = (int) $row[0];
+		} else {
+			$count = 0; // no rows returned; we infer that means 0 matches.
+		}
+		$stmt->closeCursor();
+		return $count;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related ModuleEntityFieldRelatedByEntitydatefielduniquename table
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinModuleEntityFieldRelatedByEntitydatefielduniquename(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// We need to set the primary table name, since in the case that there are no WHERE columns
+		// it will be impossible for the BasePeer::createSelectSql() method to determine which
+		// tables go into the FROM clause.
+		$criteria->setPrimaryTableName(AlertSubscriptionPeer::TABLE_NAME);
+
+		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->setDistinct();
+		}
+
+		if (!$criteria->hasSelectClause()) {
+			AlertSubscriptionPeer::addSelectColumns($criteria);
+		}
+		
+		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+		
+		// Set the correct dbName
+		$criteria->setDbName(self::DATABASE_NAME);
+
+		if ($con === null) {
+			$con = Propel::getConnection(AlertSubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+
+		$stmt = BasePeer::doCount($criteria, $con);
+
+		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$count = (int) $row[0];
+		} else {
+			$count = 0; // no rows returned; we infer that means 0 matches.
+		}
+		$stmt->closeCursor();
+		return $count;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related ModuleEntityFieldRelatedByEntitybooleanfielduniquename table
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinModuleEntityFieldRelatedByEntitybooleanfielduniquename(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// We need to set the primary table name, since in the case that there are no WHERE columns
+		// it will be impossible for the BasePeer::createSelectSql() method to determine which
+		// tables go into the FROM clause.
+		$criteria->setPrimaryTableName(AlertSubscriptionPeer::TABLE_NAME);
+
+		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->setDistinct();
+		}
+
+		if (!$criteria->hasSelectClause()) {
+			AlertSubscriptionPeer::addSelectColumns($criteria);
+		}
+		
+		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+		
+		// Set the correct dbName
+		$criteria->setDbName(self::DATABASE_NAME);
+
+		if ($con === null) {
+			$con = Propel::getConnection(AlertSubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -688,72 +743,6 @@ abstract class BaseAlertSubscriptionPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinModuleEntityFieldRelatedByEntityfielduniquename(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$criteria = clone $criteria;
-
-		// Set the correct dbName if it has not been overridden
-		if ($criteria->getDbName() == Propel::getDefaultDB()) {
-			$criteria->setDbName(self::DATABASE_NAME);
-		}
-
-		AlertSubscriptionPeer::addSelectColumns($criteria);
-		$startcol = (AlertSubscriptionPeer::NUM_COLUMNS - AlertSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
-		ModuleEntityFieldPeer::addSelectColumns($criteria);
-
-		$criteria->addJoin(AlertSubscriptionPeer::ENTITYFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
-
-		$stmt = BasePeer::doSelect($criteria, $con);
-		$results = array();
-
-		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = AlertSubscriptionPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = AlertSubscriptionPeer::getInstanceFromPool($key1))) {
-				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://www.propelorm.org/ticket/509
-				// $obj1->hydrate($row, 0, true); // rehydrate
-			} else {
-
-				$cls = AlertSubscriptionPeer::getOMClass(false);
-
-				$obj1 = new $cls();
-				$obj1->hydrate($row);
-				AlertSubscriptionPeer::addInstanceToPool($obj1, $key1);
-			} // if $obj1 already loaded
-
-			$key2 = ModuleEntityFieldPeer::getPrimaryKeyHashFromRow($row, $startcol);
-			if ($key2 !== null) {
-				$obj2 = ModuleEntityFieldPeer::getInstanceFromPool($key2);
-				if (!$obj2) {
-
-					$cls = ModuleEntityFieldPeer::getOMClass(false);
-
-					$obj2 = new $cls();
-					$obj2->hydrate($row, $startcol);
-					ModuleEntityFieldPeer::addInstanceToPool($obj2, $key2);
-				} // if obj2 already loaded
-
-				// Add the $obj1 (AlertSubscription) to $obj2 (ModuleEntityField)
-				$obj2->addAlertSubscriptionRelatedByEntityfielduniquename($obj1);
-
-			} // if joined row was not null
-
-			$results[] = $obj1;
-		}
-		$stmt->closeCursor();
-		return $results;
-	}
-
-
-	/**
-	 * Selects a collection of AlertSubscription objects pre-filled with their ModuleEntityField objects.
-	 * @param      Criteria  $criteria
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of AlertSubscription objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
 	public static function doSelectJoinModuleEntityFieldRelatedByEntitynamefielduniquename(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
@@ -812,6 +801,138 @@ abstract class BaseAlertSubscriptionPeer {
 
 
 	/**
+	 * Selects a collection of AlertSubscription objects pre-filled with their ModuleEntityField objects.
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of AlertSubscription objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinModuleEntityFieldRelatedByEntitydatefielduniquename(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		AlertSubscriptionPeer::addSelectColumns($criteria);
+		$startcol = (AlertSubscriptionPeer::NUM_COLUMNS - AlertSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		ModuleEntityFieldPeer::addSelectColumns($criteria);
+
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = AlertSubscriptionPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = AlertSubscriptionPeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://www.propelorm.org/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+
+				$cls = AlertSubscriptionPeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				AlertSubscriptionPeer::addInstanceToPool($obj1, $key1);
+			} // if $obj1 already loaded
+
+			$key2 = ModuleEntityFieldPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			if ($key2 !== null) {
+				$obj2 = ModuleEntityFieldPeer::getInstanceFromPool($key2);
+				if (!$obj2) {
+
+					$cls = ModuleEntityFieldPeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol);
+					ModuleEntityFieldPeer::addInstanceToPool($obj2, $key2);
+				} // if obj2 already loaded
+
+				// Add the $obj1 (AlertSubscription) to $obj2 (ModuleEntityField)
+				$obj2->addAlertSubscriptionRelatedByEntitydatefielduniquename($obj1);
+
+			} // if joined row was not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of AlertSubscription objects pre-filled with their ModuleEntityField objects.
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of AlertSubscription objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinModuleEntityFieldRelatedByEntitybooleanfielduniquename(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		AlertSubscriptionPeer::addSelectColumns($criteria);
+		$startcol = (AlertSubscriptionPeer::NUM_COLUMNS - AlertSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		ModuleEntityFieldPeer::addSelectColumns($criteria);
+
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = AlertSubscriptionPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = AlertSubscriptionPeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://www.propelorm.org/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+
+				$cls = AlertSubscriptionPeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				AlertSubscriptionPeer::addInstanceToPool($obj1, $key1);
+			} // if $obj1 already loaded
+
+			$key2 = ModuleEntityFieldPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			if ($key2 !== null) {
+				$obj2 = ModuleEntityFieldPeer::getInstanceFromPool($key2);
+				if (!$obj2) {
+
+					$cls = ModuleEntityFieldPeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol);
+					ModuleEntityFieldPeer::addInstanceToPool($obj2, $key2);
+				} // if obj2 already loaded
+
+				// Add the $obj1 (AlertSubscription) to $obj2 (ModuleEntityField)
+				$obj2->addAlertSubscriptionRelatedByEntitybooleanfielduniquename($obj1);
+
+			} // if joined row was not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
+
+
+	/**
 	 * Returns the number of rows matching criteria, joining all related tables
 	 *
 	 * @param      Criteria $criteria
@@ -849,9 +970,11 @@ abstract class BaseAlertSubscriptionPeer {
 
 		$criteria->addJoin(AlertSubscriptionPeer::ENTITYNAME, ModuleEntityPeer::NAME, $join_behavior);
 
-		$criteria->addJoin(AlertSubscriptionPeer::ENTITYFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
-
 		$criteria->addJoin(AlertSubscriptionPeer::ENTITYNAMEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -895,11 +1018,16 @@ abstract class BaseAlertSubscriptionPeer {
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
 
+		ModuleEntityFieldPeer::addSelectColumns($criteria);
+		$startcol6 = $startcol5 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
+
 		$criteria->addJoin(AlertSubscriptionPeer::ENTITYNAME, ModuleEntityPeer::NAME, $join_behavior);
 
-		$criteria->addJoin(AlertSubscriptionPeer::ENTITYFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
-
 		$criteria->addJoin(AlertSubscriptionPeer::ENTITYNAMEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -951,7 +1079,7 @@ abstract class BaseAlertSubscriptionPeer {
 				} // if obj3 loaded
 
 				// Add the $obj1 (AlertSubscription) to the collection in $obj3 (ModuleEntityField)
-				$obj3->addAlertSubscriptionRelatedByEntityfielduniquename($obj1);
+				$obj3->addAlertSubscriptionRelatedByEntitynamefielduniquename($obj1);
 			} // if joined row not null
 
 			// Add objects for joined ModuleEntityField rows
@@ -969,7 +1097,25 @@ abstract class BaseAlertSubscriptionPeer {
 				} // if obj4 loaded
 
 				// Add the $obj1 (AlertSubscription) to the collection in $obj4 (ModuleEntityField)
-				$obj4->addAlertSubscriptionRelatedByEntitynamefielduniquename($obj1);
+				$obj4->addAlertSubscriptionRelatedByEntitydatefielduniquename($obj1);
+			} // if joined row not null
+
+			// Add objects for joined ModuleEntityField rows
+
+			$key5 = ModuleEntityFieldPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+			if ($key5 !== null) {
+				$obj5 = ModuleEntityFieldPeer::getInstanceFromPool($key5);
+				if (!$obj5) {
+
+					$cls = ModuleEntityFieldPeer::getOMClass(false);
+
+					$obj5 = new $cls();
+					$obj5->hydrate($row, $startcol5);
+					ModuleEntityFieldPeer::addInstanceToPool($obj5, $key5);
+				} // if obj5 loaded
+
+				// Add the $obj1 (AlertSubscription) to the collection in $obj5 (ModuleEntityField)
+				$obj5->addAlertSubscriptionRelatedByEntitybooleanfielduniquename($obj1);
 			} // if joined row not null
 
 			$results[] = $obj1;
@@ -1015,9 +1161,11 @@ abstract class BaseAlertSubscriptionPeer {
 			$con = Propel::getConnection(AlertSubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(AlertSubscriptionPeer::ENTITYFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
-
 		$criteria->addJoin(AlertSubscriptionPeer::ENTITYNAMEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -1032,7 +1180,7 @@ abstract class BaseAlertSubscriptionPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related ModuleEntityFieldRelatedByEntityfielduniquename table
+	 * Returns the number of rows matching criteria, joining the related ModuleEntityFieldRelatedByEntitynamefielduniquename table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -1040,7 +1188,7 @@ abstract class BaseAlertSubscriptionPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptModuleEntityFieldRelatedByEntityfielduniquename(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptModuleEntityFieldRelatedByEntitynamefielduniquename(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -1082,7 +1230,7 @@ abstract class BaseAlertSubscriptionPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related ModuleEntityFieldRelatedByEntitynamefielduniquename table
+	 * Returns the number of rows matching criteria, joining the related ModuleEntityFieldRelatedByEntitydatefielduniquename table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -1090,7 +1238,57 @@ abstract class BaseAlertSubscriptionPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptModuleEntityFieldRelatedByEntitynamefielduniquename(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptModuleEntityFieldRelatedByEntitydatefielduniquename(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// We need to set the primary table name, since in the case that there are no WHERE columns
+		// it will be impossible for the BasePeer::createSelectSql() method to determine which
+		// tables go into the FROM clause.
+		$criteria->setPrimaryTableName(AlertSubscriptionPeer::TABLE_NAME);
+		
+		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->setDistinct();
+		}
+
+		if (!$criteria->hasSelectClause()) {
+			AlertSubscriptionPeer::addSelectColumns($criteria);
+		}
+		
+		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
+		
+		// Set the correct dbName
+		$criteria->setDbName(self::DATABASE_NAME);
+
+		if ($con === null) {
+			$con = Propel::getConnection(AlertSubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+	
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYNAME, ModuleEntityPeer::NAME, $join_behavior);
+
+		$stmt = BasePeer::doCount($criteria, $con);
+
+		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$count = (int) $row[0];
+		} else {
+			$count = 0; // no rows returned; we infer that means 0 matches.
+		}
+		$stmt->closeCursor();
+		return $count;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related ModuleEntityFieldRelatedByEntitybooleanfielduniquename table
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptModuleEntityFieldRelatedByEntitybooleanfielduniquename(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -1161,9 +1359,14 @@ abstract class BaseAlertSubscriptionPeer {
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(AlertSubscriptionPeer::ENTITYFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+		ModuleEntityFieldPeer::addSelectColumns($criteria);
+		$startcol5 = $startcol4 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
 
 		$criteria->addJoin(AlertSubscriptionPeer::ENTITYNAMEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -1198,7 +1401,7 @@ abstract class BaseAlertSubscriptionPeer {
 				} // if $obj2 already loaded
 
 				// Add the $obj1 (AlertSubscription) to the collection in $obj2 (ModuleEntityField)
-				$obj2->addAlertSubscriptionRelatedByEntityfielduniquename($obj1);
+				$obj2->addAlertSubscriptionRelatedByEntitynamefielduniquename($obj1);
 
 			} // if joined row is not null
 
@@ -1217,7 +1420,26 @@ abstract class BaseAlertSubscriptionPeer {
 				} // if $obj3 already loaded
 
 				// Add the $obj1 (AlertSubscription) to the collection in $obj3 (ModuleEntityField)
-				$obj3->addAlertSubscriptionRelatedByEntitynamefielduniquename($obj1);
+				$obj3->addAlertSubscriptionRelatedByEntitydatefielduniquename($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined ModuleEntityField rows
+
+				$key4 = ModuleEntityFieldPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+				if ($key4 !== null) {
+					$obj4 = ModuleEntityFieldPeer::getInstanceFromPool($key4);
+					if (!$obj4) {
+	
+						$cls = ModuleEntityFieldPeer::getOMClass(false);
+
+					$obj4 = new $cls();
+					$obj4->hydrate($row, $startcol4);
+					ModuleEntityFieldPeer::addInstanceToPool($obj4, $key4);
+				} // if $obj4 already loaded
+
+				// Add the $obj1 (AlertSubscription) to the collection in $obj4 (ModuleEntityField)
+				$obj4->addAlertSubscriptionRelatedByEntitybooleanfielduniquename($obj1);
 
 			} // if joined row is not null
 
@@ -1229,7 +1451,7 @@ abstract class BaseAlertSubscriptionPeer {
 
 
 	/**
-	 * Selects a collection of AlertSubscription objects pre-filled with all related objects except ModuleEntityFieldRelatedByEntityfielduniquename.
+	 * Selects a collection of AlertSubscription objects pre-filled with all related objects except ModuleEntityFieldRelatedByEntitynamefielduniquename.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -1238,7 +1460,7 @@ abstract class BaseAlertSubscriptionPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptModuleEntityFieldRelatedByEntityfielduniquename(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptModuleEntityFieldRelatedByEntitynamefielduniquename(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -1302,7 +1524,7 @@ abstract class BaseAlertSubscriptionPeer {
 
 
 	/**
-	 * Selects a collection of AlertSubscription objects pre-filled with all related objects except ModuleEntityFieldRelatedByEntitynamefielduniquename.
+	 * Selects a collection of AlertSubscription objects pre-filled with all related objects except ModuleEntityFieldRelatedByEntitydatefielduniquename.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -1311,7 +1533,80 @@ abstract class BaseAlertSubscriptionPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptModuleEntityFieldRelatedByEntitynamefielduniquename(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptModuleEntityFieldRelatedByEntitydatefielduniquename(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		// $criteria->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		AlertSubscriptionPeer::addSelectColumns($criteria);
+		$startcol2 = (AlertSubscriptionPeer::NUM_COLUMNS - AlertSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		ModuleEntityPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		$criteria->addJoin(AlertSubscriptionPeer::ENTITYNAME, ModuleEntityPeer::NAME, $join_behavior);
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = AlertSubscriptionPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = AlertSubscriptionPeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://www.propelorm.org/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+				$cls = AlertSubscriptionPeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				AlertSubscriptionPeer::addInstanceToPool($obj1, $key1);
+			} // if obj1 already loaded
+
+				// Add objects for joined ModuleEntity rows
+
+				$key2 = ModuleEntityPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				if ($key2 !== null) {
+					$obj2 = ModuleEntityPeer::getInstanceFromPool($key2);
+					if (!$obj2) {
+	
+						$cls = ModuleEntityPeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol2);
+					ModuleEntityPeer::addInstanceToPool($obj2, $key2);
+				} // if $obj2 already loaded
+
+				// Add the $obj1 (AlertSubscription) to the collection in $obj2 (ModuleEntity)
+				$obj2->addAlertSubscription($obj1);
+
+			} // if joined row is not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of AlertSubscription objects pre-filled with all related objects except ModuleEntityFieldRelatedByEntitybooleanfielduniquename.
+	 *
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of AlertSubscription objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptModuleEntityFieldRelatedByEntitybooleanfielduniquename(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 

@@ -434,6 +434,9 @@ abstract class BaseModuleEntityFieldPeer {
 		// Invalidate objects in AlertSubscriptionPeer instance pool, 
 		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
 		AlertSubscriptionPeer::clearInstancePool();
+		// Invalidate objects in AlertSubscriptionPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		AlertSubscriptionPeer::clearInstancePool();
 		// Invalidate objects in ModuleEntityFieldPeer instance pool, 
 		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
 		ModuleEntityFieldPeer::clearInstancePool();
@@ -1493,13 +1496,19 @@ abstract class BaseModuleEntityFieldPeer {
 			// delete related AlertSubscription objects
 			$criteria = new Criteria(AlertSubscriptionPeer::DATABASE_NAME);
 			
-			$criteria->add(AlertSubscriptionPeer::ENTITYFIELDUNIQUENAME, $obj->getUniquename());
+			$criteria->add(AlertSubscriptionPeer::ENTITYNAMEFIELDUNIQUENAME, $obj->getUniquename());
 			$affectedRows += AlertSubscriptionPeer::doDelete($criteria, $con);
 
 			// delete related AlertSubscription objects
 			$criteria = new Criteria(AlertSubscriptionPeer::DATABASE_NAME);
 			
-			$criteria->add(AlertSubscriptionPeer::ENTITYNAMEFIELDUNIQUENAME, $obj->getUniquename());
+			$criteria->add(AlertSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME, $obj->getUniquename());
+			$affectedRows += AlertSubscriptionPeer::doDelete($criteria, $con);
+
+			// delete related AlertSubscription objects
+			$criteria = new Criteria(AlertSubscriptionPeer::DATABASE_NAME);
+			
+			$criteria->add(AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME, $obj->getUniquename());
 			$affectedRows += AlertSubscriptionPeer::doDelete($criteria, $con);
 
 			// delete related ModuleEntityFieldValidation objects
