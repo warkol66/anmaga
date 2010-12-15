@@ -1375,10 +1375,10 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
 	 * @return     PropelCollection|array AlertSubscription[] List of AlertSubscription objects
 	 */
-	public function getAlertSubscriptionsJoinModuleEntityFieldRelatedByEntityfielduniquename($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getAlertSubscriptionsJoinModuleEntityFieldRelatedByEntitynamefielduniquename($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$query = AlertSubscriptionQuery::create(null, $criteria);
-		$query->joinWith('ModuleEntityFieldRelatedByEntityfielduniquename', $join_behavior);
+		$query->joinWith('ModuleEntityFieldRelatedByEntitynamefielduniquename', $join_behavior);
 
 		return $this->getAlertSubscriptions($query, $con);
 	}
@@ -1400,10 +1400,35 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
 	 * @return     PropelCollection|array AlertSubscription[] List of AlertSubscription objects
 	 */
-	public function getAlertSubscriptionsJoinModuleEntityFieldRelatedByEntitynamefielduniquename($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getAlertSubscriptionsJoinModuleEntityFieldRelatedByEntitydatefielduniquename($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$query = AlertSubscriptionQuery::create(null, $criteria);
-		$query->joinWith('ModuleEntityFieldRelatedByEntitynamefielduniquename', $join_behavior);
+		$query->joinWith('ModuleEntityFieldRelatedByEntitydatefielduniquename', $join_behavior);
+
+		return $this->getAlertSubscriptions($query, $con);
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ModuleEntity is new, it will return
+	 * an empty collection; or if this ModuleEntity has previously
+	 * been saved, it will retrieve related AlertSubscriptions from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ModuleEntity.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array AlertSubscription[] List of AlertSubscription objects
+	 */
+	public function getAlertSubscriptionsJoinModuleEntityFieldRelatedByEntitybooleanfielduniquename($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = AlertSubscriptionQuery::create(null, $criteria);
+		$query->joinWith('ModuleEntityFieldRelatedByEntitybooleanfielduniquename', $join_behavior);
 
 		return $this->getAlertSubscriptions($query, $con);
 	}

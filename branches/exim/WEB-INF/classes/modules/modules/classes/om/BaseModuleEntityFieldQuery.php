@@ -62,13 +62,17 @@
  * @method     ModuleEntityFieldQuery rightJoinModuleEntityFieldRelatedByForeignkeyremote($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ModuleEntityFieldRelatedByForeignkeyremote relation
  * @method     ModuleEntityFieldQuery innerJoinModuleEntityFieldRelatedByForeignkeyremote($relationAlias = null) Adds a INNER JOIN clause to the query using the ModuleEntityFieldRelatedByForeignkeyremote relation
  *
- * @method     ModuleEntityFieldQuery leftJoinAlertSubscriptionRelatedByEntityfielduniquename($relationAlias = null) Adds a LEFT JOIN clause to the query using the AlertSubscriptionRelatedByEntityfielduniquename relation
- * @method     ModuleEntityFieldQuery rightJoinAlertSubscriptionRelatedByEntityfielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AlertSubscriptionRelatedByEntityfielduniquename relation
- * @method     ModuleEntityFieldQuery innerJoinAlertSubscriptionRelatedByEntityfielduniquename($relationAlias = null) Adds a INNER JOIN clause to the query using the AlertSubscriptionRelatedByEntityfielduniquename relation
- *
  * @method     ModuleEntityFieldQuery leftJoinAlertSubscriptionRelatedByEntitynamefielduniquename($relationAlias = null) Adds a LEFT JOIN clause to the query using the AlertSubscriptionRelatedByEntitynamefielduniquename relation
  * @method     ModuleEntityFieldQuery rightJoinAlertSubscriptionRelatedByEntitynamefielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AlertSubscriptionRelatedByEntitynamefielduniquename relation
  * @method     ModuleEntityFieldQuery innerJoinAlertSubscriptionRelatedByEntitynamefielduniquename($relationAlias = null) Adds a INNER JOIN clause to the query using the AlertSubscriptionRelatedByEntitynamefielduniquename relation
+ *
+ * @method     ModuleEntityFieldQuery leftJoinAlertSubscriptionRelatedByEntitydatefielduniquename($relationAlias = null) Adds a LEFT JOIN clause to the query using the AlertSubscriptionRelatedByEntitydatefielduniquename relation
+ * @method     ModuleEntityFieldQuery rightJoinAlertSubscriptionRelatedByEntitydatefielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AlertSubscriptionRelatedByEntitydatefielduniquename relation
+ * @method     ModuleEntityFieldQuery innerJoinAlertSubscriptionRelatedByEntitydatefielduniquename($relationAlias = null) Adds a INNER JOIN clause to the query using the AlertSubscriptionRelatedByEntitydatefielduniquename relation
+ *
+ * @method     ModuleEntityFieldQuery leftJoinAlertSubscriptionRelatedByEntitybooleanfielduniquename($relationAlias = null) Adds a LEFT JOIN clause to the query using the AlertSubscriptionRelatedByEntitybooleanfielduniquename relation
+ * @method     ModuleEntityFieldQuery rightJoinAlertSubscriptionRelatedByEntitybooleanfielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AlertSubscriptionRelatedByEntitybooleanfielduniquename relation
+ * @method     ModuleEntityFieldQuery innerJoinAlertSubscriptionRelatedByEntitybooleanfielduniquename($relationAlias = null) Adds a INNER JOIN clause to the query using the AlertSubscriptionRelatedByEntitybooleanfielduniquename relation
  *
  * @method     ModuleEntityFieldQuery leftJoinModuleEntityRelatedByScopefielduniquename($relationAlias = null) Adds a LEFT JOIN clause to the query using the ModuleEntityRelatedByScopefielduniquename relation
  * @method     ModuleEntityFieldQuery rightJoinModuleEntityRelatedByScopefielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ModuleEntityRelatedByScopefielduniquename relation
@@ -885,70 +889,6 @@ abstract class BaseModuleEntityFieldQuery extends ModelCriteria
 	 *
 	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
 	 */
-	public function filterByAlertSubscriptionRelatedByEntityfielduniquename($alertSubscription, $comparison = null)
-	{
-		return $this
-			->addUsingAlias(ModuleEntityFieldPeer::UNIQUENAME, $alertSubscription->getEntityfielduniquename(), $comparison);
-	}
-
-	/**
-	 * Adds a JOIN clause to the query using the AlertSubscriptionRelatedByEntityfielduniquename relation
-	 * 
-	 * @param     string $relationAlias optional alias for the relation
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
-	 */
-	public function joinAlertSubscriptionRelatedByEntityfielduniquename($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-	{
-		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('AlertSubscriptionRelatedByEntityfielduniquename');
-		
-		// create a ModelJoin object for this join
-		$join = new ModelJoin();
-		$join->setJoinType($joinType);
-		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-		if ($previousJoin = $this->getPreviousJoin()) {
-			$join->setPreviousJoin($previousJoin);
-		}
-		
-		// add the ModelJoin to the current object
-		if($relationAlias) {
-			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-			$this->addJoinObject($join, $relationAlias);
-		} else {
-			$this->addJoinObject($join, 'AlertSubscriptionRelatedByEntityfielduniquename');
-		}
-		
-		return $this;
-	}
-
-	/**
-	 * Use the AlertSubscriptionRelatedByEntityfielduniquename relation AlertSubscription object
-	 *
-	 * @see       useQuery()
-	 * 
-	 * @param     string $relationAlias optional alias for the relation,
-	 *                                   to be used as main alias in the secondary query
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    AlertSubscriptionQuery A secondary query class using the current class as primary query
-	 */
-	public function useAlertSubscriptionRelatedByEntityfielduniquenameQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-	{
-		return $this
-			->joinAlertSubscriptionRelatedByEntityfielduniquename($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'AlertSubscriptionRelatedByEntityfielduniquename', 'AlertSubscriptionQuery');
-	}
-
-	/**
-	 * Filter the query by a related AlertSubscription object
-	 *
-	 * @param     AlertSubscription $alertSubscription  the related object to use as filter
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
-	 */
 	public function filterByAlertSubscriptionRelatedByEntitynamefielduniquename($alertSubscription, $comparison = null)
 	{
 		return $this
@@ -1003,6 +943,134 @@ abstract class BaseModuleEntityFieldQuery extends ModelCriteria
 		return $this
 			->joinAlertSubscriptionRelatedByEntitynamefielduniquename($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'AlertSubscriptionRelatedByEntitynamefielduniquename', 'AlertSubscriptionQuery');
+	}
+
+	/**
+	 * Filter the query by a related AlertSubscription object
+	 *
+	 * @param     AlertSubscription $alertSubscription  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
+	 */
+	public function filterByAlertSubscriptionRelatedByEntitydatefielduniquename($alertSubscription, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(ModuleEntityFieldPeer::UNIQUENAME, $alertSubscription->getEntitydatefielduniquename(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the AlertSubscriptionRelatedByEntitydatefielduniquename relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
+	 */
+	public function joinAlertSubscriptionRelatedByEntitydatefielduniquename($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('AlertSubscriptionRelatedByEntitydatefielduniquename');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'AlertSubscriptionRelatedByEntitydatefielduniquename');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the AlertSubscriptionRelatedByEntitydatefielduniquename relation AlertSubscription object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    AlertSubscriptionQuery A secondary query class using the current class as primary query
+	 */
+	public function useAlertSubscriptionRelatedByEntitydatefielduniquenameQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		return $this
+			->joinAlertSubscriptionRelatedByEntitydatefielduniquename($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'AlertSubscriptionRelatedByEntitydatefielduniquename', 'AlertSubscriptionQuery');
+	}
+
+	/**
+	 * Filter the query by a related AlertSubscription object
+	 *
+	 * @param     AlertSubscription $alertSubscription  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
+	 */
+	public function filterByAlertSubscriptionRelatedByEntitybooleanfielduniquename($alertSubscription, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(ModuleEntityFieldPeer::UNIQUENAME, $alertSubscription->getEntitybooleanfielduniquename(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the AlertSubscriptionRelatedByEntitybooleanfielduniquename relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
+	 */
+	public function joinAlertSubscriptionRelatedByEntitybooleanfielduniquename($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('AlertSubscriptionRelatedByEntitybooleanfielduniquename');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'AlertSubscriptionRelatedByEntitybooleanfielduniquename');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the AlertSubscriptionRelatedByEntitybooleanfielduniquename relation AlertSubscription object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    AlertSubscriptionQuery A secondary query class using the current class as primary query
+	 */
+	public function useAlertSubscriptionRelatedByEntitybooleanfielduniquenameQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		return $this
+			->joinAlertSubscriptionRelatedByEntitybooleanfielduniquename($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'AlertSubscriptionRelatedByEntitybooleanfielduniquename', 'AlertSubscriptionQuery');
 	}
 
 	/**

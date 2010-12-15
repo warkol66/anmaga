@@ -176,5 +176,12 @@ class AlertSubscriptionPeer extends BaseAlertSubscriptionPeer {
 		return ModuleEntityFieldQuery::create()->filterByType($temporalTypes)
 											   ->findByEntityName($entityName);
 	}
+	
+	public static function getPosibleBooleanFieldsByEntityName($entityName) {
+		// Permitimos tambien evaluar tipos temporales como booleanos.
+		$booleanTypes = array_merge(array_keys(ModuleEntityFieldPeer::getTemporalTypes()), array_keys(ModuleEntityFieldPeer::getBooleanTypes()));
+		return ModuleEntityFieldQuery::create()->filterByType($booleanTypes)
+											   ->findByEntityName($entityName);
+	}
 
 } // AlertSubscriptionPeer

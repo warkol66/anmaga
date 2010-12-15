@@ -102,7 +102,8 @@ CREATE TABLE `common_alertSubscription`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(100)   COMMENT 'Nombre de la suscripción',
 	`entityName` VARCHAR(50)   COMMENT 'Nombre único de la entidad asociada.',
-	`entityFieldUniqueName` VARCHAR(100),
+	`entityDateFieldUniqueName` VARCHAR(100)   COMMENT 'Nombre unico del campo fecha',
+	`entityBooleanFieldUniqueName` VARCHAR(100)   COMMENT 'Nombre unico del campo a evaluar por verdadero o falso.',
 	`anticipationDays` INTEGER   COMMENT 'Cantidad de dias de anticipación. Se usa para evaluar campos tipo fecha.',
 	`entityNameFieldUniqueName` VARCHAR(100)   COMMENT 'Campo a imprimir en representación del nombre de cada instancia de la entidad',
 	`extraRecipients` TEXT   COMMENT 'Destinatarios extra',
@@ -112,14 +113,19 @@ CREATE TABLE `common_alertSubscription`
 		FOREIGN KEY (`entityName`)
 		REFERENCES `modules_entity` (`name`)
 		ON DELETE CASCADE,
-	INDEX `common_alertSubscription_FI_2` (`entityFieldUniqueName`),
+	INDEX `common_alertSubscription_FI_2` (`entityNameFieldUniqueName`),
 	CONSTRAINT `common_alertSubscription_FK_2`
-		FOREIGN KEY (`entityFieldUniqueName`)
+		FOREIGN KEY (`entityNameFieldUniqueName`)
 		REFERENCES `modules_entityField` (`uniqueName`)
 		ON DELETE CASCADE,
-	INDEX `common_alertSubscription_FI_3` (`entityNameFieldUniqueName`),
+	INDEX `common_alertSubscription_FI_3` (`entityDateFieldUniqueName`),
 	CONSTRAINT `common_alertSubscription_FK_3`
-		FOREIGN KEY (`entityNameFieldUniqueName`)
+		FOREIGN KEY (`entityDateFieldUniqueName`)
+		REFERENCES `modules_entityField` (`uniqueName`)
+		ON DELETE CASCADE,
+	INDEX `common_alertSubscription_FI_4` (`entityBooleanFieldUniqueName`),
+	CONSTRAINT `common_alertSubscription_FK_4`
+		FOREIGN KEY (`entityBooleanFieldUniqueName`)
 		REFERENCES `modules_entityField` (`uniqueName`)
 		ON DELETE CASCADE
 ) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Suscripciones de alerta';
