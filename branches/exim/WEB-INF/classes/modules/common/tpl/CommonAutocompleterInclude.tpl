@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="css/autocomplete.css" type="text/css">
 <script type="text/javascript" language="javascript" charset="utf-8">
 	/**
 	 * @param: id_of_text_field, id del input donde se ingresa el texto para autocompletar.
