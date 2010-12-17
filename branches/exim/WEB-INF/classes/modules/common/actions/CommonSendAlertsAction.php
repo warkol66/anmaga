@@ -21,7 +21,6 @@ class CommonSendAlertsAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
-		$system = Common::getModuleConfiguration("system");
 				
 		$alertsSubscriptions = AlertSubscriptionPeer::getAll();
 		$totalRecipients = array();
@@ -30,19 +29,11 @@ class CommonSendAlertsAction extends BaseAction {
 			$entitiesFiltered = $alertSubscription->getEntitiesFiltered();
 			if (!empty($entitiesFiltered) && count($entitiesFiltered) > 0) {
 				$recipients = $alertSubscription->getRecipients();
+				$subject = Common::getTranslation('Alert','users');
 				$smarty->assign('alertSubscription', $alertSubscription);
-				$body = $smarty->fetch("CommonAlertMail.tpl");
-				
-				foreach($recipients as $recipient) {
-					$mailTo = $recipient;
-					$subject = Common::getTranslation('Alert','users');
-					$mailFrom = $system["parameters"]["fromEmail"];
-					$manager = new EmailManagement();
-					$manager->setTestMode();
-					$message = $manager->createHTMLMessage($subject,$body);
-					$totalRecipients[] = $mailTo;
-					$result = $manager->sendMessage($mailTo,$mailFrom,$message); // se envía.
-				}
+				$body = $smarty->fetch('CommonAlertMail.tpl');
+				$partialRecipients = AlertSubscriptionPeer::sendAlert($alertSubscription, $body, $recipients, $subject);
+				$totalRecipients = array_merge($totalRecipients, $partialRecipients);
 			}	
 		}
 		$smarty->assign('timestamp', new DateTime());
