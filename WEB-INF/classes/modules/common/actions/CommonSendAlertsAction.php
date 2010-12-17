@@ -27,19 +27,22 @@ class CommonSendAlertsAction extends BaseAction {
 		$totalRecipients = array();
 		
 		foreach($alertsSubscriptions as $alertSubscription) {
-			$recipients = $alertSubscription->getRecipients();
-			$smarty->assign('alertSubscription', $alertSubscription);
-			$body = $smarty->fetch("CommonAlertMail.tpl");
-			$alertSubscription->getEntitiesFiltered();
-			foreach($recipients as $recipient) {
-				$mailTo = $recipient;
-				$subject = Common::getTranslation('Alert','users');
-				$mailFrom = $system["parameters"]["fromEmail"];
-				$manager = new EmailManagement();
-				$manager->setTestMode();
-				$message = $manager->createHTMLMessage($subject,$body);
-				$totalRecipients[] = $mailTo;
-				$result = $manager->sendMessage($mailTo,$mailFrom,$message); // se envía.
+			$entitiesFiltered = $alertSubscription->getEntitiesFiltered();
+			if (!empty($entitiesFiltered) && count($entitiesFiltered) > 0) {
+				$recipients = $alertSubscription->getRecipients();
+				$smarty->assign('alertSubscription', $alertSubscription);
+				$body = $smarty->fetch("CommonAlertMail.tpl");
+				
+				foreach($recipients as $recipient) {
+					$mailTo = $recipient;
+					$subject = Common::getTranslation('Alert','users');
+					$mailFrom = $system["parameters"]["fromEmail"];
+					$manager = new EmailManagement();
+					$manager->setTestMode();
+					$message = $manager->createHTMLMessage($subject,$body);
+					$totalRecipients[] = $mailTo;
+					$result = $manager->sendMessage($mailTo,$mailFrom,$message); // se envía.
+				}
 			}	
 		}
 		$smarty->assign('timestamp', new DateTime());
