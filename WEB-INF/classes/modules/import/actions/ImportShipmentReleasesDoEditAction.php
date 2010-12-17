@@ -60,21 +60,9 @@ class ImportShipmentReleasesDoEditAction extends BaseAction {
 	}
 	
 	private function sendNotification(&$smarty, $shipmentRelease) {
-		$tpl = $this->template->template;  //Guardamos el template original.
-		$this->template->template = "TemplatePlain.tpl";  //Establecemos un template plano para el mail.
-		$mailTo = '';  //TODO: ver a quien va realmente esto.
-		$mailFrom = $system["parameters"]["fromEmail"];
-		$subject = Common::getTranslation('Notification', 'import');
-		
-		$manager = new EmailManagement();
-		$manager->setTestMode();
-		
-		$smarty->assign('shipmentRelease', $shipmentRelease);
-		$body = $smarty->fetch("ImportShipmentReleasesMail.tpl");
-		
-		$message = $manager->createHTMLMessage($subject,$body);
-		$result = $manager->sendMessage($mailTo,$mailFrom,$message);  // se envía.
-		$this->template->template = $tpl;  //Restauramos el template original.
+		$mailTo = 'axelsanguinetti@gmail.com';  //TODO: ver a quien va realmente esto.
+		$subject = Common::getTranslation('Notification', 'import');					
+		AlertSubscriptionPeer::sendAlertSmarty($shipmentRelease, $smarty, $this->template, 'ImportShipmentReleasesMail.tpl', $mailTo, $subject);
 	}
 }
 
