@@ -39,6 +39,9 @@ class ImportShipmentsDoEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 		
+		$module = "Import";
+		$smarty->assign('module',$module);
+
 		$shipmentParams = $_POST['shipment'];
 		
 		if ( !empty($_POST['id']) )

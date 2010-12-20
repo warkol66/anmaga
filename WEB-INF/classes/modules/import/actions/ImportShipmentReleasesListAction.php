@@ -39,6 +39,9 @@ class ImportShipmentReleasesListAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}		
 	
+		$module = "Import";
+		$smarty->assign('module',$module);
+
 		$shipmentReleasesPeer = new ShipmentReleasePeer();
 
 		$filterValues = array('searchSupplierId','searchStatus');
