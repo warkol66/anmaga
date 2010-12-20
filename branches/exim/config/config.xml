@@ -44,7 +44,7 @@
 			<siteDescription>Sistema de Administración de Exportaciones de Brisway International Limited</siteDescription>
 			<siteShortName>anmagaexport</siteShortName>
 			<webmasterMail>gflamerich@gmail.com</webmasterMail>
-			<debugMail>gflamerich@gmail.com</debugMail>
+			<debugMail>dbugger.modulnet@gmail.com</debugMail>
 			<fromEmail>gflamerich@gmail.com</fromEmail>
 			<tablePrefix></tablePrefix>
 			<news>Novedades: Bienvenido al sistema Anmaga. En este momento este sistema se encuentra en período de prueba</news>
@@ -63,6 +63,7 @@
 			</element_options>
 		</errorReporting>
 		<rowsPerPage>15</rowsPerPage>
+		<language>esp</language>
 	</system>
 	<multilang>
 		<language>esp</language>

@@ -6,12 +6,11 @@ class ConfigModule {
 		"global" => array(
 			"debugMode" => true,
 			"noSecurity" => true,
-			"noCheckLogin" => false,
+			"noCheckLogin" => true,
 			"developmentMode" => true,
 			"showPropelExceptions" => true,
-			"doLog" => true,
-			"unifiedUsernames" => true,
-			"applicationName" => "wb"
+			"doLog" => false,
+			"unifiedUsernames" => true
 		),
 		"affiliates" => array(
 			"unifiedLogin" => false
@@ -28,9 +27,6 @@ class ConfigModule {
 				1 => 'Alert',
 				2 => 'Schedule',
 			)
-		),
-		"banners" => array(
-			"saveClicks" => false
 		),
 		"import" => array(
 			"quotesUseQuantities" => false
