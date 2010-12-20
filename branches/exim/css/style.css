@@ -1,17 +1,13 @@
 * {
 	padding: 0; margin: 0; 
-	font-family: Arial, Helvetica, sans-serif, Geneva;
 }
-
 body {
-	font-family: Arial, Helvetica, sans-serif;
 	margin-top: 0px;
 	margin-left: 0px;
 	margin-right: 0px;
 	vertical-align:top;
 }
 body,td,input,textarea,select {
-	font-family: Arial, Helvetica, sans-serif;
 }
 th {
 	font-weight: bold;
@@ -20,6 +16,12 @@ th {
 }
 form {
 	display:inline;
+}
+a:active, a:focus, input:active, input:focus {
+	outline: 0 none;
+}
+a img{
+	border: none;
 }
 .noPaddingCell {
 	padding: 0px;
@@ -63,6 +65,30 @@ form {
 }
 .size6 {
 	font-size: 0.60em;
+}
+.style4slink {
+	font-size: 0.8em;
+	text-decoration: none;
+	color: #000000;
+}
+a.style4slink {
+	text-decoration: none;
+	color: #000000;
+}
+.smallButton{
+	font-size: 1em;
+	line-height: 1.10em;
+	height: 1.70em;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+.tinyButton{
+	font-size: .90em;
+	line-height: 1.00em;
+	height: 1.20em;
+}
+.negative{
+	color: Red;
 }
 .botonalto {
 	background: #DCDCDC;
@@ -803,45 +829,53 @@ a.linkAdd:hover, a.linkAdd:active {
 	display:block;
 	margin:40px auto 0 auto;
 	width:100%;
+	height:546px;
 	padding:0;
 	text-align:center;
 /*	background-image:
 	background-position:
 	background-repeat:*/
 }
-#loginTop { 
+#loginTop { /*
 	width: 360px;
 	height: 104px;
 	padding: 0;
 	margin: 0 auto;
 
-/*	background-image:
+	background-image:
 	background-position: 
 	background-repeat:*/
 }
 
-#loginContent { 
-	width: 360px;
+#loginContent, #loginContentMaintenance, #passRecovery  { 
+	width: 480px;
 	height: auto;	
-	margin: auto;
 	text-align:left;
 }
-#loginContent h1{ 
+#loginContent h1, #passRecovery h1{ 
 /*	color: */
 	font-weight: bold;
 	font-size: 1.4em;
-	padding-left: 25px;
+	padding-left: 140px;
 }
-#loginContent p{ 
+#loginContent h2, #passRecovery h2{ 
+/*	color: */
+	font-weight: bold;
+	font-size: 1.8em;
+	padding-left: 140px;
+	margin-top: 0;
+	margin-top: 0;
+}
+#loginContent p, #loginContentMaintenance p, #passRecovery p{ 
 /*	color: */
 	font-weight: bold;
 	font-size: 1.1em;
-	padding-left: 25px;
+	padding-left: 140px;
 	padding-right: 25px;
-	padding-bottom: 15px;
+	padding-bottom: 4px;
 }
 
-#loginContent input { 
+#loginContent input.inputLogin, #passRecovery input.inputLogin { 
 	width: 300px;
 	height: 20px;
 	margin-bottom: 10px;
@@ -853,7 +887,7 @@ a.linkAdd:hover, a.linkAdd:active {
 #loginButton { 
 	width: 100px;
 	height: 55px;
-	margin: 0 auto 0 auto;
+	margin: 0 auto 0 225px;
 	background-color: transparent;
 	border: none;
 	font-size: 0px;
@@ -864,18 +898,19 @@ a.linkAdd:hover, a.linkAdd:active {
 	background-repeat:*/
 }
 
-#loginBottom { 
+#loginBottom { /*
 	width: 360px;
 	height: 162px;	
 	margin: auto;
 	padding: 0;
-	vertical-align: bottom;
+	vertical-align: bottom;*/
 /*	background-image:
 	background-position:
 	background-repeat:*/
 }
 
 /*  /LOGIN  -----------------------------------------------*/
+
 
 
 #wrapper { 
