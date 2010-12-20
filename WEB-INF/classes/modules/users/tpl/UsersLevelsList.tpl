@@ -44,11 +44,11 @@
 	|-foreach from=$levels item=level name=for_levels-|
 	<tr>
 		<td>|-$level->getName()-|</td>
-		<td nowrap='nowrap'><a href='Main.php?do=usersLevelsList&level=|-$level->getId()-|' alt='##114,Editar##' title='##114,Editar##'><img src="images/clear.png" class="linkImageEdit"></a>
+		<td nowrap='nowrap'><a href='Main.php?do=usersLevelsList&level=|-$level->getId()-|' alt='##114,Editar##' title='##114,Editar##'><img src="images/clear.png" class="iconEdit"></a>
 			|-if $level->getId() gt 3-|
-			<a href='Main.php?do=usersLevelsDoDelete&level=|-$level->getId()-|' title='##115,Eliminar##' alt='##115,Eliminar##' onclick="return confirm('##256,Esta opción elimina permanentemente a este Nivel. ¿Está seguro que desea eliminarlo?##');"><img src="images/clear.png" class="linkImageDelete"></a>
+			<a href='Main.php?do=usersLevelsDoDelete&level=|-$level->getId()-|' title='##115,Eliminar##' alt='##115,Eliminar##' onclick="return confirm('##256,Esta opción elimina permanentemente a este Nivel. ¿Está seguro que desea eliminarlo?##');"><img src="images/clear.png" class="iconDelete"></a>
 			|-else-|
-			<img src="images/clear.png" class="linkImageDeleteDisabled" title="No se puede eliminar." alt="No se puede eliminar.">
+			<img src="images/clear.png" class="iconDeleteDisabled" title="No se puede eliminar." alt="No se puede eliminar.">
 			|-/if-|</td>
 	</tr>
 	|-/foreach-|

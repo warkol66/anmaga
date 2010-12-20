@@ -35,12 +35,12 @@
 					<form action="Main.php" method="get">
 						<input type="hidden" name="do" value="importPortsEdit" />
 						<input type="hidden" name="id" value="|-$port->getid()-|" />
-						<input type="submit" name="submit_go_edit_port" value="Editar" class="buttonImageEdit" />
+						<input type="submit" name="submit_go_edit_port" value="Editar" class="iconEdit" />
 					</form>
 					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="importPortsDoDelete" />
 						<input type="hidden" name="id" value="|-$port->getid()-|" />
-						<input type="submit" name="submit_go_delete_port" value="Borrar" onclick="return confirm('Seguro que desea eliminar el port?')" class="buttonImageDelete" />
+						<input type="submit" name="submit_go_delete_port" value="Borrar" onclick="return confirm('Seguro que desea eliminar el port?')" class="iconDelete" />
 					</form>
 				</td>
 			</tr>
@@ -84,7 +84,7 @@
 					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="importPortsDoActivate" />
 						<input type="hidden" name="id" value="|-$port->getid()-|" />
-						<input type="submit" name="submit_go_delete_port" value="Activar" class="buttonImageActivate" />
+						<input type="submit" name="submit_go_delete_port" value="Activar" class="iconActivate" />
 					</form>
 				</td>
 			</tr>

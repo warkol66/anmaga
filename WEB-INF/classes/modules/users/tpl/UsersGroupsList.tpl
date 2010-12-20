@@ -55,7 +55,7 @@
 			|-assign var="category" value=$groupCategory->getCategory()-|
 			<tr>
 				<td>|-$category->getName()-|</td>
-				<td nowrap><a href="Main.php?do=usersGroupsDoRemoveCatFromGroup&category=|-$category->getId()-|&group=|-$currentGroup->getId()-|" title='Eliminar acceso del grupo esta categoría' alt='Eliminar acceso del grupo esta categoría' onclick="return confirm('##users,257,Esta opción remueve el acceso del grupo a la categoría. ¿Está seguro que desea eliminarlo?##');"><img src="images/clear.png" class="linkImageDelete"></a></td>
+				<td nowrap><a href="Main.php?do=usersGroupsDoRemoveCatFromGroup&category=|-$category->getId()-|&group=|-$currentGroup->getId()-|" title='Eliminar acceso del grupo esta categoría' alt='Eliminar acceso del grupo esta categoría' onclick="return confirm('##users,257,Esta opción remueve el acceso del grupo a la categoría. ¿Está seguro que desea eliminarlo?##');"><img src="images/clear.png" class="iconDelete"></a></td>
 			</tr>
 		|-/foreach-|
 	|-/if-|
@@ -91,11 +91,11 @@
 	|-foreach from=$groups item=group name=for_groups-|
 	<tr>
 		<td>|-$group->getName()-|</td>
-		<td nowrap><a href='Main.php?do=usersGroupsList&group=|-$group->getId()-|' alt='##users,114,Editar##' title='##users,114,Editar##'><img src="images/clear.png" class="linkImageEdit"></a>
+		<td nowrap><a href='Main.php?do=usersGroupsList&group=|-$group->getId()-|' alt='##users,114,Editar##' title='##users,114,Editar##'><img src="images/clear.png" class="iconEdit"></a>
 		|-if $group->getId() lt 4-|
-			<img src="images/clear.png" class="linkImageDeleteDisabled" title="Este grupo no se puede eliminar" alt="Este grupo no se puede eliminar">
+			<img src="images/clear.png" class="iconDeleteDisabled" title="Este grupo no se puede eliminar" alt="Este grupo no se puede eliminar">
 		|-else-|
-			<a href='Main.php?do=usersGroupsDoDelete&group=|-$group->getId()-|' title='##users,115,Eliminar##' alt='##users,115,Eliminar##' onclick="return confirm('##users,256,Esta opción eliminará permanentemente a este Grupo. ¿Está seguro que desea eliminarlo?##');"><img src="images/clear.png" class="linkImageDelete"></a>
+			<a href='Main.php?do=usersGroupsDoDelete&group=|-$group->getId()-|' title='##users,115,Eliminar##' alt='##users,115,Eliminar##' onclick="return confirm('##users,256,Esta opción eliminará permanentemente a este Grupo. ¿Está seguro que desea eliminarlo?##');"><img src="images/clear.png" class="iconDelete"></a>
 		|-/if-|</td>
 	</tr>
 	|-/foreach-|

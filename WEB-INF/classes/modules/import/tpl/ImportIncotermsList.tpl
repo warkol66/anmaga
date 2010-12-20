@@ -35,12 +35,12 @@
 					<form action="Main.php" method="get">
 						<input type="hidden" name="do" value="importIncotermsEdit" />
 																<input type="hidden" name="id" value="|-$incoterm->getid()-|" />
-																<input type="submit" name="submit_go_edit_incoterm" value="Editar" class="buttonImageEdit" />
+																<input type="submit" name="submit_go_edit_incoterm" value="Editar" class="iconEdit" />
 					</form>
 					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="importIncotermsDoDelete" />
 																<input type="hidden" name="id" value="|-$incoterm->getid()-|" />
-																<input type="submit" name="submit_go_delete_incoterm" value="Borrar" onclick="return confirm('Seguro que desea eliminar el incoterm?')" class="buttonImageDelete" />
+																<input type="submit" name="submit_go_delete_incoterm" value="Borrar" onclick="return confirm('Seguro que desea eliminar el incoterm?')" class="iconDelete" />
 					</form>
 				</td>
 			</tr>
