@@ -803,80 +803,22 @@ a.linkAdd:hover, a.linkAdd:active {
 
 /*  LOGIN  -----------------------------------------------*/
 #login { 
-	float:left;
-	display:block;
-	margin:40px auto 0 auto;
-	width:100%;
-	padding:0;
-	text-align:center;
-/*	background-image:
-	background-position:
-	background-repeat:*/
 }
-#loginTop { 
-	width: 360px;
-	height: 104px;
-	padding: 0;
-	margin: 0 auto;
-
-/*	background-image:
-	background-position: 
-	background-repeat:*/
+#loginTop {
 }
-
-#loginContent { 
-	width: 360px;
-	height: auto;	
-	margin: auto;
-	text-align:left;
+#loginContent {
 }
-#loginContent h1{ 
-/*	color: */
-	font-weight: bold;
-	font-size: 1.4em;
-	padding-left: 25px;
+#loginContent h1, #passRecovery h1{ 
 }
-#loginContent p{ 
-/*	color: */
-	font-weight: bold;
-	font-size: 1.1em;
-	padding-left: 25px;
-	padding-right: 25px;
-	padding-bottom: 15px;
+#loginContent h2, #passRecovery h2{ 
 }
-
-#loginContent input { 
-	width: 300px;
-	height: 20px;
-	margin-bottom: 10px;
-	font-size: 1.2em;
-
-/*	border: */	
+#loginContent p, #loginContentMaintenance p, #passRecovery p{ 
 }
-
+#loginContent input.inputLogin, #passRecovery input.inputLogin { 
+}
 #loginButton { 
-	width: 100px;
-	height: 55px;
-	margin: 0 auto 0 auto;
-	background-color: transparent;
-	border: none;
-	font-size: 0px;
-	cursor: pointer;	
-
-/*	background-image:
-	background-position:
-	background-repeat:*/
 }
-
 #loginBottom { 
-	width: 360px;
-	height: 162px;	
-	margin: auto;
-	padding: 0;
-	vertical-align: bottom;
-/*	background-image:
-	background-position:
-	background-repeat:*/
 }
 
 /*  /LOGIN  -----------------------------------------------*/

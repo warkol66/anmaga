@@ -1,0 +1,166 @@
+/* Image Buttons and Links */
+.iconActivate, .iconAdd, .iconBack, .iconBudget, .iconDelete, .iconDetail, .iconDownload,
+.iconEdit, .iconEmail, .iconFollow, .iconGoTo, .iconGraph, .iconHelp, .iconHistory, .iconIndicator,
+.iconInfo, .iconManufacture, .iconOrder, .iconPassword, .iconPlus, .iconRestore, .iconRestoreFromServer,
+.iconSendMultiple, .iconStoreInServer, .iconStoreLocal, .iconThumbnail, .iconUpload,
+.iconView, .iconViewGantt, .iconWeight, .iconShipment, .iconCustoms {
+	font-size: 0px;
+	width: 16px;
+	height: 16px;
+	color: transparent;
+	border: none;
+	outline: 0 none;
+	cursor: pointer;
+	vertical-align:top;
+}
+.iconActivate, .iconAdd, .iconBack, .iconBudget, .iconDelete, .iconDetail, .iconDownload,
+.iconEdit, .iconEmail, .iconFollow, .iconGoTo, .iconGraph, .iconHelp, .iconHistory, .iconIndicator,
+.iconInfo, .iconManufacture, .iconOrder, .iconPassword, .iconPlus, .iconRestore, .iconRestoreFromServer,
+.iconSendMultiple, .iconStoreInServer, .iconStoreLocal, .iconThumbnail, .iconUpload,
+.iconView, .iconViewGantt, .iconWeight, .iconShipment, .iconCustoms {
+	background: url(../images/linkImage_all16-20.png) no-repeat;
+}
+.disabled {
+	background: url(../images/linkImage_all16-20_dis.png) no-repeat;
+}
+.iconEdit {
+	background-position: 0px 0px;
+}
+.iconDelete {
+	background-position: -20px 0px;
+}
+.iconView {
+	background-position: -40px 0px;
+}
+.iconUpload {
+	background-position: -60px 0px;
+}
+.iconDownload {
+	background-position: -80px 0px;
+}
+.iconAdd {
+	background-position: -100px 0px;
+}
+.iconInfo {
+	background-position: -120px 0px;
+}
+.iconHelp {
+	background-position: -140px 0px;
+}
+.iconBack {
+	background-position: -160px 0px;
+}
+.iconGoTo {
+	background-position: -180px 0px;
+}
+.iconStoreInServer {
+	background-position: 0px -20px;
+}
+.iconStoreLocal {
+	background-position: -20px -20px;
+}
+.iconRestoreFromServer {
+	background-position: -40px -20px;
+}
+.iconRestore {
+	background-position: -60px -20px;
+}
+.iconEmail {
+	background-position: -80px -20px;
+}
+.iconSendMultiple {
+	background-position: -100px -20px;
+}
+.iconOrder {
+	background-position: -120px -20px;
+}
+.iconWeight {
+	background-position: -140px -20px;
+}
+.iconActivate {
+	background-position: -160px -20px;
+}
+.iconHistory {
+	background-position: -180px -20px;
+}
+.iconThumbnail {
+	background-position: -20px -40px;
+}
+.iconViewGantt {
+	background-position: -60px -40px;
+}
+.iconManufacture {
+	background-position: -80px -40px;
+}
+.iconIndicator {
+	background-position: -100px -40px;
+}
+.iconTableh3 {
+	background-position: -120px -40px;
+}
+.iconNote {
+	background-position: -140px -40px;
+}
+.iconDocument {
+	background-position: -160px -40px;
+}
+.iconAttach {
+	background-position: -180px -40px;
+}
+.iconGraph {
+	background-position: -0px -60px;
+}
+.buttonFollow {
+	background-position: -20px -60px;
+}
+.iconPlus {
+	background-position: -40px -60px;
+}
+.iconDetail {
+	background-position: -60px -60px;
+}
+.iconBudget {
+	background-position: -100px -60px;
+}
+.iconPassword {
+	background-position: -80px -60px;
+}
+.iconShipment {
+	background-position: -180px -100px;
+}
+.iconCustoms {
+	background-position: -160px -100px;
+}
+input.iconActivate, input.iconAdd, input.iconBack, input.iconBudget, input.iconDelete, input.iconDetail, input.iconDownload,
+input.iconEdit, input.iconEmail, input.iconFollow, input.iconGoTo, input.iconGraph, input.iconHelp, input.iconHistory, input.iconIndicator,
+input.iconInfo, input.iconManufacture, input.iconOrder, input.iconPassword, input.iconPlus, input.iconRestore, input.iconRestoreFromServer,
+input.iconSendMultiple, input.iconStoreInServer, input.iconStoreLocal, input.iconThumbnail, input.iconUpload,
+input.iconView, input.iconViewGantt, input.iconWeight, input.iconShipment, input.iconCustoms  {
+	width: 18px;
+	height: 18px;
+}
+.iconActivate, .iconAdd, .iconBack, .iconBudget, .iconDelete, .iconDetail, .iconDownload,
+.iconEdit, .iconEmail, .iconFollow, .iconGoTo, .iconGraph, .iconHelp, .iconHistory, .iconIndicator,
+.iconInfo, .iconManufacture, .iconOrder, .iconPassword, .iconPlus, .iconRestore, .iconRestoreFromServer,
+.iconSendMultiple, .iconStoreInServer, .iconStoreLocal, .iconThumbnail, .iconUpload,
+.iconView, .iconViewGantt, .iconWeight, .iconShipment, .iconCustoms {
+/*	background: url(../images/icons_all.png) no-repeat #e3e3e3;
+	border: solid 1px #ababab;*/
+}
+.disabled {
+/*	background: url(../images/icons_all_dis.png) no-repeat #e3e3e3;
+	border: solid 1px #ababab;*/
+}
+.iconActivate:hover, .iconAdd:hover, .iconBack:hover, .iconBudget:hover, .iconDelete:hover, .iconDetail:hover, .iconDownload:hover,
+.iconEdit:hover, .iconEmail:hover, .iconFollow:hover, .iconGoTo:hover, .iconGraph:hover, .iconHelp:hover, .iconHistory:hover, .iconIndicator:hover,
+.iconInfo:hover, .iconManufacture:hover, .iconOrder:hover, .iconPassword:hover, .iconPlus:hover, .iconRestore:hover, .iconRestoreFromServer:hover,
+.iconSendMultiple:hover, .iconStoreInServer:hover, .iconStoreLocal:hover, .iconThumbnail:hover, .iconUpload:hover,
+.iconView:hover, .iconViewGantt:hover, .iconWeight:hover, .iconShipment:hover, .iconCustoms:hover {
+/*	background-color: #f1f1f1;
+	border: solid 1px #d3d2d2;*/
+}
+.disabled:hover {
+/*	background-color: #e3e3e3;
+	border: solid 1px #ababab;*/
+}
+/* Fin Image Buttons and Links */
