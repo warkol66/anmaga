@@ -39,6 +39,9 @@ class ImportShipmentsDoDeleteAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 		
+		$module = "Import";
+		$smarty->assign('module',$module);
+
 		$shipmentId = $_POST['id'];
 		
 		if ( !empty($shipmentId) )
@@ -49,4 +52,3 @@ class ImportShipmentsDoDeleteAction extends BaseAction {
 		return $mapping->findForwardConfig('success');					
 	}
 }
-?>

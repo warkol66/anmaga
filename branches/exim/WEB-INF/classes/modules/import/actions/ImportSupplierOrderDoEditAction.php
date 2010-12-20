@@ -19,6 +19,7 @@ class ImportSupplierOrderDoEditAction extends BaseAction {
 		}
 
 		$module = "Import";
+		$smarty->assign('module',$module);
 
 		$purchaseOrderParams = $_POST['params'];
 		

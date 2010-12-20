@@ -38,6 +38,9 @@ class ImportShipmentsEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
+		$module = "Import";
+		$smarty->assign('module',$module);
+
 		$shipmentPeer = new ShipmentPeer();
 		$supplierPurchaseOrderPeer = new SupplierPurchaseOrderPeer();
 
