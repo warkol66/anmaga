@@ -56,17 +56,17 @@
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientOrderEdit" />
 						<input type="hidden" name="id" value="|-$order->getid()-|" />
-						<input type="submit" name="submit_go_edit_order" value="Editar" class="buttonImageEdit" />
+						<input type="submit" name="submit_go_edit_order" value="Editar" class="iconEdit" />
 					</form>
 					<form action="Main.php" method="get">						
 						<input type="hidden" name="do" value="importClientOrderHistory" />
 						<input type="hidden" name="id" value="|-$order->getid()-|" />
-						<input type="button" name="submit_go_edit_order" value="Ver Historial" class="buttonImageHistory" onClick="window.open('Main.php?do=importClientOrderHistory&id=|-$order->getid()-|','History','width=670,height=500,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes');" />
+						<input type="button" name="submit_go_edit_order" value="Ver Historial" class="iconHistory" onClick="window.open('Main.php?do=importClientOrderHistory&id=|-$order->getid()-|','History','width=670,height=500,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes');" />
 					</form>
 <!--					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="importClientQuoteDelete" />
 						<input type="hidden" name="id" value="|-$order->getid()-|" />
-						<input type="submit" name="submit_go_delete_order" value="Borrar" onclick="return confirm('Seguro que desea eliminar la cotizacion?')" class="buttonImageDelete" />
+						<input type="submit" name="submit_go_delete_order" value="Borrar" onclick="return confirm('Seguro que desea eliminar la cotizacion?')" class="iconDelete" />
 					</form>
 -->
 				</td>

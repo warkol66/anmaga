@@ -26,7 +26,7 @@ CREATE TABLE `multilang_text`
 	CONSTRAINT `multilang_text_FK_2`
 		FOREIGN KEY (`moduleName`)
 		REFERENCES `modules_module` (`name`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
 
 #-----------------------------------------------------------------------------
 #-- multilang_language
@@ -43,7 +43,7 @@ CREATE TABLE `multilang_language`
 	`locale` VARCHAR(30),
 	PRIMARY KEY (`id`),
 	INDEX `I_referenced_multilang_text_FK_1_1` (`code`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

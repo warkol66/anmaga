@@ -45,9 +45,9 @@
 		<td width="5%">|-$affiliate->getId()-|</td>
 		<td width="85%">|-$affiliate->getName()-||-if $affiliate->getOwnerId() neq ""-||-assign var=owner value=$affiliate->getOwner()-| [ Usuario administrador: |-$owner->getUsername()-| ] |-/if-|</td>
 		<td width="10%" nowrap>
-		<a href='Main.php?do=affiliatesViewAffiliate&id=|-$affiliate->getId()-|' title="Ver"><img src="images/clear.png" class="linkImageView"></a>
-		<a href='Main.php?do=affiliatesEdit&id=|-$affiliate->getId()-|' title="##114,Editar##"><img src="images/clear.png" class="linkImageEdit"></a>
-		<a href='Main.php?do=affiliatesDoDelete&affiliate=|-$affiliate->getId()-|' onclick="return confirm('##256,Esta opción eliminar permanentemente a esta Institución. ¿Está seguro que desea eliminarla?##');" title="##115,Eliminar##"><img src="images/clear.png" class="linkImageDelete"></a>
+		<a href='Main.php?do=affiliatesViewAffiliate&id=|-$affiliate->getId()-|' title="Ver"><img src="images/clear.png" class="iconView"></a>
+		<a href='Main.php?do=affiliatesEdit&id=|-$affiliate->getId()-|' title="##114,Editar##"><img src="images/clear.png" class="iconEdit"></a>
+		<a href='Main.php?do=affiliatesDoDelete&affiliate=|-$affiliate->getId()-|' onclick="return confirm('##256,Esta opción eliminar permanentemente a esta Institución. ¿Está seguro que desea eliminarla?##');" title="##115,Eliminar##"><img src="images/clear.png" class="iconDelete"></a>
 		</td>
 	</tr>
 	|-/foreach-|
