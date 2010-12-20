@@ -1,7 +1,9 @@
 <?php
-
-require_once("BaseAction.php");
-require_once("UserPeer.php");
+/**
+ * UsersValidationPasswordXAction
+ *
+ * @package users
+ */
 
 class UsersValidationPasswordXAction extends BaseAction {
 

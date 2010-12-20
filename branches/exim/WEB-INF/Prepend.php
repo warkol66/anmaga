@@ -2,10 +2,8 @@
 /**
 * Prepend
 *
-* $author Modulos Empresarios / Egytca
 * @package phpMVCconfig
 */
-
 
 #if(!defined('CONFIGRULESET'))
 #	include_once './WEB-INF/configRules/ConfigRuleSet.php';
@@ -16,11 +14,9 @@
 
 require_once 'lib/Propel.php';
 Propel::init("$moduleRootDir/config/application-conf.php");
-require_once("UserPeer.php");
-require_once("AffiliateUserPeer.php");
 
-//ponemos el server en GMT-0
-putenv('TZ=UTC');
+//ponemos el server en UTC
+date_default_timezone_set('UTC');
 
 require_once("BaseAction.php");
 

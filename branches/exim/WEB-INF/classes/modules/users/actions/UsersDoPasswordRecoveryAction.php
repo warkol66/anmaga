@@ -5,10 +5,6 @@
  * @package users 
  */
 
-require_once("BaseAction.php");
-require_once("UserPeer.php");
-require_once("UserInfoPeer.php");
-
 class UsersDoPasswordRecoveryAction extends BaseAction {
 
 	function UsersDoPasswordRecoveryAction() {

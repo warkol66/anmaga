@@ -123,7 +123,7 @@ class SmartyActionDispatcher extends ActionDispatcher {
 			//y arma la ruta hasta el mismo
 			$regs = array();
 			//obtenemos el nombre del modulo del tpl segun convencion
-			if (ereg('^([A-Z][a-z]*)[A-Z]',$requestURI,$regs)) {
+			if (preg_match('/^([A-Z][a-z]*)[A-Z]/',$requestURI,$regs)) {
 				$module = strtolower($regs[1]);
 				$modulePath = 'WEB-INF/classes/modules/';
 				$tplPath = $modulePath . '/' . $module . '/' . 'tpl';

@@ -6,10 +6,6 @@
  * @subpackage groups 
  */
 
-require_once("BaseAction.php");
-require_once("GroupPeer.php");
-require_once("GroupCategoryPeer.php");
-
 class UsersGroupsListAction extends BaseAction {
 
 	function UsersGroupsListAction() {

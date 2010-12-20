@@ -58,86 +58,138 @@ class BaseAction extends Action {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		global $system;
-
+		setlocale(LC_ALL, Common::getCurrentLocale());
 		$GLOBALS['_NG_LANGUAGE_'] =& $smarty->language;
-		if (!empty($GLOBALS['_NG_LANGUAGE_']))
-			$GLOBALS['_NG_LANGUAGE_']->setCurrentLanguage(Common::getCurrentLanguageCode());
 
-		$systemUrl = "http://".$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/"))."/Main.php";
+		//Tiene Prioriodad si se pasa el lenguage en el request.
+		//Analizar si es necesario agregar luego control de GoogleBot
+		if (!empty($_REQUEST['lang'])) {
+			$GLOBALS['_NG_LANGUAGE_']->setCurrentLanguage($_REQUEST['lang']);
+			Common::setCurrentLanguageCode($_REQUEST['lang']);
+		}
+		else {
+			if (!empty($GLOBALS['_NG_LANGUAGE_']))
+				$GLOBALS['_NG_LANGUAGE_']->setCurrentLanguage(Common::getCurrentLanguageCode());
+		}
+
+		$smarty->assign('configModule', new ConfigModule());
+		$smarty->assign('actualAction', $_REQUEST['do']);
+
+		$_SERVER['FULL_URL'] = 'http';
+		if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on')
+				$_SERVER['FULL_URL'] .=  's';
+		$_SERVER['FULL_URL'] .=  '://';
+		$serverPort = "";
+		if($_SERVER['SERVER_PORT']!='80')
+			$serverPort = ":" . $_SERVER['SERVER_PORT'];
+
+		$systemUrl = $_SERVER['FULL_URL'].$_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],"/")).$serverPort."/Main.php";
 		$smarty->assign("systemUrl",$systemUrl);
-
-		header("Content-type: text/html; charset=UTF-8");
+		$scriptPath = substr($_SERVER['PHP_SELF'], 0, (strlen($_SERVER['PHP_SELF']) -8 - @strlen($_SERVER['PATH_INFO'])));
+		$smarty->assign('scriptPath',$scriptPath);
 
 		if (Common::inMaintenance()) {
 			header("Location: Main.php?do=commonMaintenance");
 			exit;
 		}
+		$actionRequested = $request->getAttribute('ACTION_DO_PATH');
+		//Se obtienen modulo y accion solicitada
+		//$actionRequested = $_REQUEST["do"];
 
-		//Configura la acción solicitada y convierto primer letra mayuscula
-		$actionRequested = ucfirst($_REQUEST["do"]);
+		if (preg_match('/^([a-z]*)[A-Z]/',$actionRequested,$regs))
+			$moduleRequested = $regs[1];
+		if (empty($moduleRequested) && $actionRequested == "js")
+			$moduleRequested = "common";
+		
+		$smarty->assign("module",$moduleRequested);
+		
+		if (isset($_SESSION["loginUser"]) && is_object($_SESSION["loginUser"]) && get_class($_SESSION["loginUser"]) == "User")
+			$loginUser = $_SESSION["loginUser"];
+		if (isset($_SESSION["loginAffiliateUser"]) && is_object($_SESSION["loginAffiliateUser"]) && get_class($_SESSION["loginAffiliateUser"]) == "AffiliateUser")
+			$loginUserAffiliate = $_SESSION["loginAffiliateUser"];
+		if (isset($_SESSION["loginRegistrationUser"]) && is_object($_SESSION["loginRegistrationUser"]) && get_class($_SESSION["loginRegistrationUser"]) == "RegistrationUser")
+			$loginRegistrationUser = $_SESSION["loginRegistrationUser"];
 
-		$loginUser = $_SESSION["loginUser"];
-		$loginUserAffiliate = $_SESSION["loginAffiliateUser"];
-		$loginRegistrationUser = $_SESSION["loginRegistrationUser"];
+		$securityAction = SecurityActionPeer::getByNameOrPair($actionRequested);
+		$securityModule = SecurityModulePeer::get($moduleRequested);
 
-		$securityAction = SecurityActionPeer::get($actionRequested);
-		$securityModule = SecurityModulePeer::get($actionRequested);
-	
+		//Controlo las acciones y modulos que no requieren login
+		//Si no se requiere login $noCheckLogin va a ser igual a 1
 		$noCheckLogin = 1;
 		if (!empty($securityAction))
 			$noCheckLogin = $securityAction->getOverallNoCheckLogin();
-		elseif (!empty($securityModule))
+		else if (!empty($securityModule))
 			$noCheckLogin = $securityModule->getNoCheckLogin();
+		else
+			$noCheckLogin = 0;
 
-		//Si el sistema está en desarrollo, no verifico permisos
-		if ($system["config"]["system"]["developmentMode"]["value"] == "YES")
+		if (ConfigModule::get("global","noCheckLogin"))
 			$noCheckLogin = 1;
 
-		//Verifico permisos cuando no se encontró en noCheckLogin
-		if (!$noCheckLogin) {
+		header("Content-type: text/html; charset=UTF-8");
 
-			//Chequeo de permisos de acceso
+		if (!$noCheckLogin) { //Verifica login $noCheckLogin != 1
 			if (!empty($loginUser) || !empty($loginUserAffiliate) || !empty($loginRegistrationUser)) {
 
-				$actionAccess = $securityAction->getAccessByUser();
-//				$userLevel = $user->getLevel();
+				if (!ConfigModule::get("global","noSecurity")) {
 
-//				if (empty($actionAccess))
-//					$actionAccess = $securityModule->getAccessByUser();
+					if (!empty($loginUser))
+						$user = $loginUser;
+					else if (!empty($loginUserAffiliate))
+						$user = $loginUserAffiliate;
+					else if (!empty($loginRegistrationUser))
+						$user = $loginRegistrationUser;
 
-/*				if ( empty($userLevel) || ($userLevel->getBitLevel() & $actionAccess) == 0 ) {
-					header("Location:Main.php?do=securityNoPermission");
-					exit();
+					if (!empty($user))
+						$userLevel = $user->getLevel();
+
+					if (!empty($securityAction))
+						$access = $securityAction->getAccessByUser($user);
+					else if (!empty($securityModule))
+						$access = $securityModule->getAccessByUser($user);
+
+					if (!empty($securityAction) || !empty($securityModule)) {
+					}
 				}
-*/			}
-
+				else {//No verifica seguridad
+				}
+			}
+			else { //Si requiere login y no hay sesion va a login
+				global $loginPath;
+				header("Location:Main.php?do=$loginPath");
+				exit();
+			}
 		}
-
-
-		if (!empty($user))
-			$level = $user->getLevel();
+		else { // No verifica login
+		}
 
 		if (!empty($loginUserAffiliate))
 			$smarty->assign("affiliateId",$loginUserAffiliate->getAffiliateId());
 
-		$smarty->assign("loginUser",$loginUser);
-		$smarty->assign("loginAffiliateUser",$loginUserAffiliate);
-		$smarty->assign("loginRegistrationUser",$loginRegistrationUser);
+		if (isset($loginUser))
+			$smarty->assign("loginUser",$loginUser);
+		if (isset($loginUserAffiliate))
+			$smarty->assign("loginAffiliateUser",$loginUserAffiliate);
+		if (isset($loginRegistrationUser))
+			$smarty->assign("loginRegistrationUser",$loginRegistrationUser);
+
 		$smarty->assign("currentLanguageCode",Common::getCurrentLanguageCode());
 
-		$smarty->assign("Browser",Common::getBrowser());
+		$smarty->assign("browser",Common::getBrowser());
+		$smarty->assign("isBot",Common::isBot());
 
+		$smarty->assign("mapping",$mapping);
 
 		$this->template = new SmartyOutputFilter();
 		$smarty->register_outputfilter(array($this->template,"smarty_add_template"));
 
-		//Asignacion a smarty de los parametros del sistema
-		$smarty->assign("parameters",$system["config"]["system"]["parameters"]);
+		$systemParameters = Common::getModuleConfiguration("system");
+		$smarty->assign("parameters",$systemParameters["parameters"]);
+		$smarty->assign("SESSION",$_SESSION);
 
 		if (!empty($GLOBALS['_NG_LANGUAGE_']))
 			$smarty->register_outputfilter("smarty_outputfilter_i18n");
-	
+
 		$smarty->assign("languagesAvailable",common::getAllLanguages());
 
 	} //End execute
@@ -159,51 +211,6 @@ class BaseAction extends Action {
 		return new ForwardConfig($myRedirectPath, True);
 
 	}
-
-	/**
-	 * Realiza el procesamiento de filtros sobre una clase Peer de Propel
-	 * @param Class $peer instancia de clase peer de propel
-	 * @param array $filterValuer valores de filtro a verificar, los metodos de set en la clase peer deben tener antepuesto a estos nombres, 'set'
-	 * @param $smarty instancia de smarty sobre la cual se esta trabajando (tener en cuenta que al trabajar con una referencia a smarty, no hay problema de pasaje por parametro)
-	 */
-	function processFilters($peer,$filterValues,$smarty) {
-
-		if (!empty($_GET['filters'])) {
-
-			$smarty->assign('filters',$_GET['filters']);
-
-			foreach ($filterValues as $filterField) {
-
-				if (!empty($_GET['filters'][$filterField])) {
-					$setMethod = 'set' . $filterField;
-					if (method_exists($peer,$setMethod)) {
-						$peer->$setMethod($_GET['filters'][$filterField]);
-					}
-				}
-			}
-		}
-
-		return $peer;
-	}
-
-	/**
-	 * Agrega a una url los valores de un filtro, utilizado para la url de los paginadores
-	 * @param String $url
-	 * @return String url con los parametros agregados
-	 */
-	function addFiltersToUrl($url) {
-
-		if (!empty($_GET['filters'])) {
-			foreach ($_GET['filters'] as $key => $value) {
-				$url .= '&filters[' . $key . ']=' . $value;
-			}
-
-		}
-
-		return $url;
-
-	}
-	
 	/**
 	 * Agrega parametros al url de un forward
 	 * @param $params array with parameters with key and value
@@ -242,8 +249,7 @@ class BaseAction extends Action {
 		return new ForwardConfig($myRedirectPath, True);
 
 	}
-	
-	
+
 	/**
 	 * Realiza el procesamiento de filtros sobre una clase Peer de Propel
 	 * @param Class $peer instancia de clase peer de propel
@@ -261,8 +267,8 @@ class BaseAction extends Action {
 
 		return $peer;
 	}
-	
-		/**
+
+	/**
 	 * Consulta la base de datos y obtiene la información básica que generalmente es requerida por una vista de formulario
 	 * sencilla de una entidad. Tener en cuenta que la entidad propiamente dicha debe ser asignada por separado.
 	 * 
@@ -300,5 +306,45 @@ class BaseAction extends Action {
 			}
 		}
 	}
-}
+	
+//TODO: Eliminar lso siguientes metodos.
+// Lo siguientes metodos han sido modernizados pero se dejan hasta tanto no se reemplacen por los nuevos
+
+	
+	/**
+	 * Agrega a una url los valores de un filtro, utilizado para la url de los paginadores
+	 * @param String $url
+	 * @return String url con los parametros agregados
+	 */
+	function addFiltersToUrl($url) {
+		if (!empty($_GET['filters'])) {
+			foreach ($_GET['filters'] as $key => $value)
+				$url .= '&filters[' . $key . ']=' . $value;
+		}
+		return $url;
+	}
+
+	/**
+	 * Realiza el procesamiento de filtros sobre una clase Peer de Propel
+	 * @param Class $peer instancia de clase peer de propel
+	 * @param array $filterValuer valores de filtro a verificar, los metodos de set en la clase peer deben tener antepuesto a estos nombres, 'set'
+	 * @param $smarty instancia de smarty sobre la cual se esta trabajando (tener en cuenta que al trabajar con una referencia a smarty, no hay problema de pasaje por parametro)
+	 */
+	function processFilters($peer,$filterValues,$smarty) {
+
+		if (!empty($_GET['filters'])) {
+			$smarty->assign('filters',$_GET['filters']);
+			foreach ($filterValues as $filterField) {
+				if (!empty($_GET['filters'][$filterField])) {
+					$setMethod = 'set' . $filterField;
+					if (method_exists($peer,$setMethod))
+						$peer->$setMethod($_GET['filters'][$filterField]);
+				}
+			}
+		}
+		return $peer;
+	}
+
+
+} //End BaseActiom
 

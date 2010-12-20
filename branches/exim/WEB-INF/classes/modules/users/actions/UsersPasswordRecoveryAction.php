@@ -16,10 +16,11 @@ class UsersPasswordRecoveryAction extends BaseAction {
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
-    	/**
-     	* Use a different template
-     	*/
+
+  	//////////
+   	// Use a different template
 		$this->template->template = "TemplateLogin.tpl";
+
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
