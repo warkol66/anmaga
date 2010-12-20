@@ -2,9 +2,6 @@
 
 //Accion que devuelve el listado de usuarios para mostrar en el autocomplete
 
-require_once("UserPeer.php");
-require_once("UserQuery.php");
-
 class UsersAutocompleteListXAction extends BaseAction {
 
 	function UsersAutocompleteListXAction() {

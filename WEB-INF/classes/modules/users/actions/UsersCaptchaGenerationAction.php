@@ -1,5 +1,5 @@
 <?php
-require_once('BaseAction.php');
+
 require_once("includes/captcha/CaptchaSecurityImages.php");
 
 class UsersCaptchaGenerationAction extends BaseAction {

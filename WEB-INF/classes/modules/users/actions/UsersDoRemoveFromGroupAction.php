@@ -6,9 +6,6 @@
  * @subpackage groups 
  */
 
-require_once("BaseAction.php");
-require_once("UserPeer.php");
-
 class UsersDoRemoveFromGroupAction extends BaseAction {
 
 	function UsersDoRemoveFromGroupAction() {

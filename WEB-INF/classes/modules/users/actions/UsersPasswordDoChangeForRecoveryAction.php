@@ -5,8 +5,6 @@
  * @package users 
  */
 
-require_once("BaseAction.php");
-
 class UsersPasswordDoChangeForRecoveryAction extends BaseAction {
 
 	function UsersPasswordDoChangeForRecoveryAction() {
