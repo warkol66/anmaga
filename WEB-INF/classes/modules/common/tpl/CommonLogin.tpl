@@ -24,7 +24,7 @@
 			 </p> 
 			<h1>Contraseña</h1> 
 			<p><input type='password' name='loginPassword' size='20' class="inputLogin" /></p> 
-			<p><a href="Main.php?do=usersPasswordRecovery">¿Olvidó su contraseña?</a></p>
+			<p><a href="Main.php?do=commonPasswordRecovery">¿Olvidó su contraseña?</a></p>
 		<!--[if lte IE 6]><p>Su versión actual de navegador es IExplorer 6.<br />Este sistema requiere que utilice una versión mas nueva de Interntet Explorer.<br />
 Debe actualizarla para el correcto funcionamiento del sistema.</p><![endif]-->
 		 <!-- Begin LoginBottom --> 

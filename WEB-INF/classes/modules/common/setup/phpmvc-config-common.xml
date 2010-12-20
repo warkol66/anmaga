@@ -83,21 +83,40 @@
 			<forward name="failure" path="CommonLogin.tpl"/>
 		</action>
 
-		<action    path = "commonPasswordRecovery"
-							 type = "CommonPasswordRecoveryAction"
-							 name = "commonPasswordRecovery"
+		<action    path = "commonPasswordRecoverySendConfirmationRequest"
+							 type = "CommonPasswordRecoverySendConfirmationRequestAction"
+							 name = "commonPasswordRecoverySendConfirmationRequest"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="CommonPasswordRecovery.tpl"/>
+			<forward name="success" path="/Main.php?do=commonLogin&amp;message=confirmationMailSent" redirect="true" />
+			<forward name="failure" path="CommonPasswordRecovery.tpl"/>
+		</action>
+		
+		<action    path = "commonPasswordRecoveryConfirmation"
+							 type = "CommonPasswordRecoveryConfirmationAction"
+							 name = "commonPasswordRecoveryConfirmation"
+							scope = "request"
+					 validate = "true">
+			<forward name="askNewPass" path="CommonNewPasswordForRecovery.tpl"/>
+			<forward name="sendNewPass" path="/Main.php?do=commonPasswordDoRecovery" redirect="true"/>
+		</action>
+		
+		<action    path = "commonPasswordDoChangeForRecovery"
+							 type = "CommonPasswordDoChangeForRecoveryAction"
+							 name = "commonPasswordDoChangeForRecovery"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=commonLogin&amp;message=passwordChanged" redirect="true"/>
+			<forward name="failure" path="/Main.php?do=commonLogin" redirect="true"/>
 		</action>
 
-		<action    path = "commonDoPasswordRecovery"
-							 type = "CommonDoPasswordRecoveryAction"
-							 name = "commonDoPasswordRecovery"
+		<action    path = "commonPasswordDoRecovery"
+							 type = "CommonPasswordDoRecoveryAction"
+							 name = "commonPasswordDoRecovery"
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="/Main.php?do=commonLogin&amp;message=passwordSent" redirect="true" />
-			<forward name="failure" path="CommonPasswordRecovery.tpl"/>
+			<forward name="failure" path="CommonLogin.tpl"/>
 		</action>
 
 		<action    path = "commonWelcome"
