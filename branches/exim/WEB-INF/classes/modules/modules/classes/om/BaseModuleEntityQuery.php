@@ -42,6 +42,10 @@
  * @method     ModuleEntityQuery rightJoinAlertSubscription($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AlertSubscription relation
  * @method     ModuleEntityQuery innerJoinAlertSubscription($relationAlias = null) Adds a INNER JOIN clause to the query using the AlertSubscription relation
  *
+ * @method     ModuleEntityQuery leftJoinScheduleSubscription($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduleSubscription relation
+ * @method     ModuleEntityQuery rightJoinScheduleSubscription($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduleSubscription relation
+ * @method     ModuleEntityQuery innerJoinScheduleSubscription($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduleSubscription relation
+ *
  * @method     ModuleEntityQuery leftJoinModuleEntityFieldRelatedByEntityname($relationAlias = null) Adds a LEFT JOIN clause to the query using the ModuleEntityFieldRelatedByEntityname relation
  * @method     ModuleEntityQuery rightJoinModuleEntityFieldRelatedByEntityname($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ModuleEntityFieldRelatedByEntityname relation
  * @method     ModuleEntityQuery innerJoinModuleEntityFieldRelatedByEntityname($relationAlias = null) Adds a INNER JOIN clause to the query using the ModuleEntityFieldRelatedByEntityname relation
@@ -549,6 +553,70 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 		return $this
 			->joinAlertSubscription($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'AlertSubscription', 'AlertSubscriptionQuery');
+	}
+
+	/**
+	 * Filter the query by a related ScheduleSubscription object
+	 *
+	 * @param     ScheduleSubscription $scheduleSubscription  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ModuleEntityQuery The current query, for fluid interface
+	 */
+	public function filterByScheduleSubscription($scheduleSubscription, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(ModuleEntityPeer::NAME, $scheduleSubscription->getEntityname(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the ScheduleSubscription relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ModuleEntityQuery The current query, for fluid interface
+	 */
+	public function joinScheduleSubscription($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('ScheduleSubscription');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'ScheduleSubscription');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the ScheduleSubscription relation ScheduleSubscription object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ScheduleSubscriptionQuery A secondary query class using the current class as primary query
+	 */
+	public function useScheduleSubscriptionQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		return $this
+			->joinScheduleSubscription($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'ScheduleSubscription', 'ScheduleSubscriptionQuery');
 	}
 
 	/**

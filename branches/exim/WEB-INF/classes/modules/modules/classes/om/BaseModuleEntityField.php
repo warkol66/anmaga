@@ -169,6 +169,21 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 	protected $collAlertSubscriptionsRelatedByEntitybooleanfielduniquename;
 
 	/**
+	 * @var        array ScheduleSubscription[] Collection to store aggregation of ScheduleSubscription objects.
+	 */
+	protected $collScheduleSubscriptionsRelatedByEntitynamefielduniquename;
+
+	/**
+	 * @var        array ScheduleSubscription[] Collection to store aggregation of ScheduleSubscription objects.
+	 */
+	protected $collScheduleSubscriptionsRelatedByEntitydatefielduniquename;
+
+	/**
+	 * @var        array ScheduleSubscription[] Collection to store aggregation of ScheduleSubscription objects.
+	 */
+	protected $collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename;
+
+	/**
 	 * @var        array ModuleEntity[] Collection to store aggregation of ModuleEntity objects.
 	 */
 	protected $collModuleEntitysRelatedByScopefielduniquename;
@@ -918,6 +933,12 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 
 			$this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename = null;
 
+			$this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename = null;
+
+			$this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename = null;
+
+			$this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename = null;
+
 			$this->collModuleEntitysRelatedByScopefielduniquename = null;
 
 			$this->collModuleEntityFieldsRelatedByUniquename = null;
@@ -1099,6 +1120,30 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 				}
 			}
 
+			if ($this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename !== null) {
+				foreach ($this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename !== null) {
+				foreach ($this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename !== null) {
+				foreach ($this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collModuleEntitysRelatedByScopefielduniquename !== null) {
 				foreach ($this->collModuleEntitysRelatedByScopefielduniquename as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -1236,6 +1281,30 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 
 				if ($this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename !== null) {
 					foreach ($this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename !== null) {
+					foreach ($this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename !== null) {
+					foreach ($this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename !== null) {
+					foreach ($this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1672,6 +1741,24 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 			foreach ($this->getAlertSubscriptionsRelatedByEntitybooleanfielduniquename() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addAlertSubscriptionRelatedByEntitybooleanfielduniquename($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getScheduleSubscriptionsRelatedByEntitynamefielduniquename() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addScheduleSubscriptionRelatedByEntitynamefielduniquename($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getScheduleSubscriptionsRelatedByEntitydatefielduniquename() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addScheduleSubscriptionRelatedByEntitydatefielduniquename($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getScheduleSubscriptionsRelatedByEntitybooleanfielduniquename() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addScheduleSubscriptionRelatedByEntitybooleanfielduniquename($relObj->copy($deepCopy));
 				}
 			}
 
@@ -2287,6 +2374,408 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Clears out the collScheduleSubscriptionsRelatedByEntitynamefielduniquename collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addScheduleSubscriptionsRelatedByEntitynamefielduniquename()
+	 */
+	public function clearScheduleSubscriptionsRelatedByEntitynamefielduniquename()
+	{
+		$this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collScheduleSubscriptionsRelatedByEntitynamefielduniquename collection.
+	 *
+	 * By default this just sets the collScheduleSubscriptionsRelatedByEntitynamefielduniquename collection to an empty array (like clearcollScheduleSubscriptionsRelatedByEntitynamefielduniquename());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initScheduleSubscriptionsRelatedByEntitynamefielduniquename()
+	{
+		$this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename = new PropelObjectCollection();
+		$this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename->setModel('ScheduleSubscription');
+	}
+
+	/**
+	 * Gets an array of ScheduleSubscription objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this ModuleEntityField is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array ScheduleSubscription[] List of ScheduleSubscription objects
+	 * @throws     PropelException
+	 */
+	public function getScheduleSubscriptionsRelatedByEntitynamefielduniquename($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename || null !== $criteria) {
+			if ($this->isNew() && null === $this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename) {
+				// return empty collection
+				$this->initScheduleSubscriptionsRelatedByEntitynamefielduniquename();
+			} else {
+				$collScheduleSubscriptionsRelatedByEntitynamefielduniquename = ScheduleSubscriptionQuery::create(null, $criteria)
+					->filterByModuleEntityFieldRelatedByEntitynamefielduniquename($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collScheduleSubscriptionsRelatedByEntitynamefielduniquename;
+				}
+				$this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename = $collScheduleSubscriptionsRelatedByEntitynamefielduniquename;
+			}
+		}
+		return $this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename;
+	}
+
+	/**
+	 * Returns the number of related ScheduleSubscription objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related ScheduleSubscription objects.
+	 * @throws     PropelException
+	 */
+	public function countScheduleSubscriptionsRelatedByEntitynamefielduniquename(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename || null !== $criteria) {
+			if ($this->isNew() && null === $this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename) {
+				return 0;
+			} else {
+				$query = ScheduleSubscriptionQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByModuleEntityFieldRelatedByEntitynamefielduniquename($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename);
+		}
+	}
+
+	/**
+	 * Method called to associate a ScheduleSubscription object to this object
+	 * through the ScheduleSubscription foreign key attribute.
+	 *
+	 * @param      ScheduleSubscription $l ScheduleSubscription
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addScheduleSubscriptionRelatedByEntitynamefielduniquename(ScheduleSubscription $l)
+	{
+		if ($this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename === null) {
+			$this->initScheduleSubscriptionsRelatedByEntitynamefielduniquename();
+		}
+		if (!$this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename[]= $l;
+			$l->setModuleEntityFieldRelatedByEntitynamefielduniquename($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ModuleEntityField is new, it will return
+	 * an empty collection; or if this ModuleEntityField has previously
+	 * been saved, it will retrieve related ScheduleSubscriptionsRelatedByEntitynamefielduniquename from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ModuleEntityField.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array ScheduleSubscription[] List of ScheduleSubscription objects
+	 */
+	public function getScheduleSubscriptionsRelatedByEntitynamefielduniquenameJoinModuleEntity($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = ScheduleSubscriptionQuery::create(null, $criteria);
+		$query->joinWith('ModuleEntity', $join_behavior);
+
+		return $this->getScheduleSubscriptionsRelatedByEntitynamefielduniquename($query, $con);
+	}
+
+	/**
+	 * Clears out the collScheduleSubscriptionsRelatedByEntitydatefielduniquename collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addScheduleSubscriptionsRelatedByEntitydatefielduniquename()
+	 */
+	public function clearScheduleSubscriptionsRelatedByEntitydatefielduniquename()
+	{
+		$this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collScheduleSubscriptionsRelatedByEntitydatefielduniquename collection.
+	 *
+	 * By default this just sets the collScheduleSubscriptionsRelatedByEntitydatefielduniquename collection to an empty array (like clearcollScheduleSubscriptionsRelatedByEntitydatefielduniquename());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initScheduleSubscriptionsRelatedByEntitydatefielduniquename()
+	{
+		$this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename = new PropelObjectCollection();
+		$this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename->setModel('ScheduleSubscription');
+	}
+
+	/**
+	 * Gets an array of ScheduleSubscription objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this ModuleEntityField is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array ScheduleSubscription[] List of ScheduleSubscription objects
+	 * @throws     PropelException
+	 */
+	public function getScheduleSubscriptionsRelatedByEntitydatefielduniquename($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename || null !== $criteria) {
+			if ($this->isNew() && null === $this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename) {
+				// return empty collection
+				$this->initScheduleSubscriptionsRelatedByEntitydatefielduniquename();
+			} else {
+				$collScheduleSubscriptionsRelatedByEntitydatefielduniquename = ScheduleSubscriptionQuery::create(null, $criteria)
+					->filterByModuleEntityFieldRelatedByEntitydatefielduniquename($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collScheduleSubscriptionsRelatedByEntitydatefielduniquename;
+				}
+				$this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename = $collScheduleSubscriptionsRelatedByEntitydatefielduniquename;
+			}
+		}
+		return $this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename;
+	}
+
+	/**
+	 * Returns the number of related ScheduleSubscription objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related ScheduleSubscription objects.
+	 * @throws     PropelException
+	 */
+	public function countScheduleSubscriptionsRelatedByEntitydatefielduniquename(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename || null !== $criteria) {
+			if ($this->isNew() && null === $this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename) {
+				return 0;
+			} else {
+				$query = ScheduleSubscriptionQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByModuleEntityFieldRelatedByEntitydatefielduniquename($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename);
+		}
+	}
+
+	/**
+	 * Method called to associate a ScheduleSubscription object to this object
+	 * through the ScheduleSubscription foreign key attribute.
+	 *
+	 * @param      ScheduleSubscription $l ScheduleSubscription
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addScheduleSubscriptionRelatedByEntitydatefielduniquename(ScheduleSubscription $l)
+	{
+		if ($this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename === null) {
+			$this->initScheduleSubscriptionsRelatedByEntitydatefielduniquename();
+		}
+		if (!$this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename[]= $l;
+			$l->setModuleEntityFieldRelatedByEntitydatefielduniquename($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ModuleEntityField is new, it will return
+	 * an empty collection; or if this ModuleEntityField has previously
+	 * been saved, it will retrieve related ScheduleSubscriptionsRelatedByEntitydatefielduniquename from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ModuleEntityField.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array ScheduleSubscription[] List of ScheduleSubscription objects
+	 */
+	public function getScheduleSubscriptionsRelatedByEntitydatefielduniquenameJoinModuleEntity($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = ScheduleSubscriptionQuery::create(null, $criteria);
+		$query->joinWith('ModuleEntity', $join_behavior);
+
+		return $this->getScheduleSubscriptionsRelatedByEntitydatefielduniquename($query, $con);
+	}
+
+	/**
+	 * Clears out the collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addScheduleSubscriptionsRelatedByEntitybooleanfielduniquename()
+	 */
+	public function clearScheduleSubscriptionsRelatedByEntitybooleanfielduniquename()
+	{
+		$this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename collection.
+	 *
+	 * By default this just sets the collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename collection to an empty array (like clearcollScheduleSubscriptionsRelatedByEntitybooleanfielduniquename());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initScheduleSubscriptionsRelatedByEntitybooleanfielduniquename()
+	{
+		$this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename = new PropelObjectCollection();
+		$this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename->setModel('ScheduleSubscription');
+	}
+
+	/**
+	 * Gets an array of ScheduleSubscription objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this ModuleEntityField is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array ScheduleSubscription[] List of ScheduleSubscription objects
+	 * @throws     PropelException
+	 */
+	public function getScheduleSubscriptionsRelatedByEntitybooleanfielduniquename($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename || null !== $criteria) {
+			if ($this->isNew() && null === $this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename) {
+				// return empty collection
+				$this->initScheduleSubscriptionsRelatedByEntitybooleanfielduniquename();
+			} else {
+				$collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename = ScheduleSubscriptionQuery::create(null, $criteria)
+					->filterByModuleEntityFieldRelatedByEntitybooleanfielduniquename($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename;
+				}
+				$this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename = $collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename;
+			}
+		}
+		return $this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename;
+	}
+
+	/**
+	 * Returns the number of related ScheduleSubscription objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related ScheduleSubscription objects.
+	 * @throws     PropelException
+	 */
+	public function countScheduleSubscriptionsRelatedByEntitybooleanfielduniquename(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename || null !== $criteria) {
+			if ($this->isNew() && null === $this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename) {
+				return 0;
+			} else {
+				$query = ScheduleSubscriptionQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByModuleEntityFieldRelatedByEntitybooleanfielduniquename($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename);
+		}
+	}
+
+	/**
+	 * Method called to associate a ScheduleSubscription object to this object
+	 * through the ScheduleSubscription foreign key attribute.
+	 *
+	 * @param      ScheduleSubscription $l ScheduleSubscription
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addScheduleSubscriptionRelatedByEntitybooleanfielduniquename(ScheduleSubscription $l)
+	{
+		if ($this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename === null) {
+			$this->initScheduleSubscriptionsRelatedByEntitybooleanfielduniquename();
+		}
+		if (!$this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename[]= $l;
+			$l->setModuleEntityFieldRelatedByEntitybooleanfielduniquename($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this ModuleEntityField is new, it will return
+	 * an empty collection; or if this ModuleEntityField has previously
+	 * been saved, it will retrieve related ScheduleSubscriptionsRelatedByEntitybooleanfielduniquename from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in ModuleEntityField.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array ScheduleSubscription[] List of ScheduleSubscription objects
+	 */
+	public function getScheduleSubscriptionsRelatedByEntitybooleanfielduniquenameJoinModuleEntity($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = ScheduleSubscriptionQuery::create(null, $criteria);
+		$query->joinWith('ModuleEntity', $join_behavior);
+
+		return $this->getScheduleSubscriptionsRelatedByEntitybooleanfielduniquename($query, $con);
+	}
+
+	/**
 	 * Clears out the collModuleEntitysRelatedByScopefielduniquename collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
@@ -2747,6 +3236,21 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename) {
+				foreach ((array) $this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename) {
+				foreach ((array) $this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename) {
+				foreach ((array) $this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 			if ($this->collModuleEntitysRelatedByScopefielduniquename) {
 				foreach ((array) $this->collModuleEntitysRelatedByScopefielduniquename as $o) {
 					$o->clearAllReferences($deep);
@@ -2767,6 +3271,9 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 		$this->collAlertSubscriptionsRelatedByEntitynamefielduniquename = null;
 		$this->collAlertSubscriptionsRelatedByEntitydatefielduniquename = null;
 		$this->collAlertSubscriptionsRelatedByEntitybooleanfielduniquename = null;
+		$this->collScheduleSubscriptionsRelatedByEntitynamefielduniquename = null;
+		$this->collScheduleSubscriptionsRelatedByEntitydatefielduniquename = null;
+		$this->collScheduleSubscriptionsRelatedByEntitybooleanfielduniquename = null;
 		$this->collModuleEntitysRelatedByScopefielduniquename = null;
 		$this->collModuleEntityFieldsRelatedByUniquename = null;
 		$this->collModuleEntityFieldValidations = null;

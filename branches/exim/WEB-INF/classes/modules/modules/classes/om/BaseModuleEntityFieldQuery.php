@@ -74,6 +74,18 @@
  * @method     ModuleEntityFieldQuery rightJoinAlertSubscriptionRelatedByEntitybooleanfielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AlertSubscriptionRelatedByEntitybooleanfielduniquename relation
  * @method     ModuleEntityFieldQuery innerJoinAlertSubscriptionRelatedByEntitybooleanfielduniquename($relationAlias = null) Adds a INNER JOIN clause to the query using the AlertSubscriptionRelatedByEntitybooleanfielduniquename relation
  *
+ * @method     ModuleEntityFieldQuery leftJoinScheduleSubscriptionRelatedByEntitynamefielduniquename($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduleSubscriptionRelatedByEntitynamefielduniquename relation
+ * @method     ModuleEntityFieldQuery rightJoinScheduleSubscriptionRelatedByEntitynamefielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduleSubscriptionRelatedByEntitynamefielduniquename relation
+ * @method     ModuleEntityFieldQuery innerJoinScheduleSubscriptionRelatedByEntitynamefielduniquename($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduleSubscriptionRelatedByEntitynamefielduniquename relation
+ *
+ * @method     ModuleEntityFieldQuery leftJoinScheduleSubscriptionRelatedByEntitydatefielduniquename($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduleSubscriptionRelatedByEntitydatefielduniquename relation
+ * @method     ModuleEntityFieldQuery rightJoinScheduleSubscriptionRelatedByEntitydatefielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduleSubscriptionRelatedByEntitydatefielduniquename relation
+ * @method     ModuleEntityFieldQuery innerJoinScheduleSubscriptionRelatedByEntitydatefielduniquename($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduleSubscriptionRelatedByEntitydatefielduniquename relation
+ *
+ * @method     ModuleEntityFieldQuery leftJoinScheduleSubscriptionRelatedByEntitybooleanfielduniquename($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduleSubscriptionRelatedByEntitybooleanfielduniquename relation
+ * @method     ModuleEntityFieldQuery rightJoinScheduleSubscriptionRelatedByEntitybooleanfielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduleSubscriptionRelatedByEntitybooleanfielduniquename relation
+ * @method     ModuleEntityFieldQuery innerJoinScheduleSubscriptionRelatedByEntitybooleanfielduniquename($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduleSubscriptionRelatedByEntitybooleanfielduniquename relation
+ *
  * @method     ModuleEntityFieldQuery leftJoinModuleEntityRelatedByScopefielduniquename($relationAlias = null) Adds a LEFT JOIN clause to the query using the ModuleEntityRelatedByScopefielduniquename relation
  * @method     ModuleEntityFieldQuery rightJoinModuleEntityRelatedByScopefielduniquename($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ModuleEntityRelatedByScopefielduniquename relation
  * @method     ModuleEntityFieldQuery innerJoinModuleEntityRelatedByScopefielduniquename($relationAlias = null) Adds a INNER JOIN clause to the query using the ModuleEntityRelatedByScopefielduniquename relation
@@ -1071,6 +1083,198 @@ abstract class BaseModuleEntityFieldQuery extends ModelCriteria
 		return $this
 			->joinAlertSubscriptionRelatedByEntitybooleanfielduniquename($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'AlertSubscriptionRelatedByEntitybooleanfielduniquename', 'AlertSubscriptionQuery');
+	}
+
+	/**
+	 * Filter the query by a related ScheduleSubscription object
+	 *
+	 * @param     ScheduleSubscription $scheduleSubscription  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
+	 */
+	public function filterByScheduleSubscriptionRelatedByEntitynamefielduniquename($scheduleSubscription, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(ModuleEntityFieldPeer::UNIQUENAME, $scheduleSubscription->getEntitynamefielduniquename(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the ScheduleSubscriptionRelatedByEntitynamefielduniquename relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
+	 */
+	public function joinScheduleSubscriptionRelatedByEntitynamefielduniquename($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('ScheduleSubscriptionRelatedByEntitynamefielduniquename');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'ScheduleSubscriptionRelatedByEntitynamefielduniquename');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the ScheduleSubscriptionRelatedByEntitynamefielduniquename relation ScheduleSubscription object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ScheduleSubscriptionQuery A secondary query class using the current class as primary query
+	 */
+	public function useScheduleSubscriptionRelatedByEntitynamefielduniquenameQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		return $this
+			->joinScheduleSubscriptionRelatedByEntitynamefielduniquename($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'ScheduleSubscriptionRelatedByEntitynamefielduniquename', 'ScheduleSubscriptionQuery');
+	}
+
+	/**
+	 * Filter the query by a related ScheduleSubscription object
+	 *
+	 * @param     ScheduleSubscription $scheduleSubscription  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
+	 */
+	public function filterByScheduleSubscriptionRelatedByEntitydatefielduniquename($scheduleSubscription, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(ModuleEntityFieldPeer::UNIQUENAME, $scheduleSubscription->getEntitydatefielduniquename(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the ScheduleSubscriptionRelatedByEntitydatefielduniquename relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
+	 */
+	public function joinScheduleSubscriptionRelatedByEntitydatefielduniquename($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('ScheduleSubscriptionRelatedByEntitydatefielduniquename');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'ScheduleSubscriptionRelatedByEntitydatefielduniquename');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the ScheduleSubscriptionRelatedByEntitydatefielduniquename relation ScheduleSubscription object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ScheduleSubscriptionQuery A secondary query class using the current class as primary query
+	 */
+	public function useScheduleSubscriptionRelatedByEntitydatefielduniquenameQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		return $this
+			->joinScheduleSubscriptionRelatedByEntitydatefielduniquename($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'ScheduleSubscriptionRelatedByEntitydatefielduniquename', 'ScheduleSubscriptionQuery');
+	}
+
+	/**
+	 * Filter the query by a related ScheduleSubscription object
+	 *
+	 * @param     ScheduleSubscription $scheduleSubscription  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
+	 */
+	public function filterByScheduleSubscriptionRelatedByEntitybooleanfielduniquename($scheduleSubscription, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(ModuleEntityFieldPeer::UNIQUENAME, $scheduleSubscription->getEntitybooleanfielduniquename(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the ScheduleSubscriptionRelatedByEntitybooleanfielduniquename relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
+	 */
+	public function joinScheduleSubscriptionRelatedByEntitybooleanfielduniquename($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('ScheduleSubscriptionRelatedByEntitybooleanfielduniquename');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'ScheduleSubscriptionRelatedByEntitybooleanfielduniquename');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the ScheduleSubscriptionRelatedByEntitybooleanfielduniquename relation ScheduleSubscription object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ScheduleSubscriptionQuery A secondary query class using the current class as primary query
+	 */
+	public function useScheduleSubscriptionRelatedByEntitybooleanfielduniquenameQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		return $this
+			->joinScheduleSubscriptionRelatedByEntitybooleanfielduniquename($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'ScheduleSubscriptionRelatedByEntitybooleanfielduniquename', 'ScheduleSubscriptionQuery');
 	}
 
 	/**

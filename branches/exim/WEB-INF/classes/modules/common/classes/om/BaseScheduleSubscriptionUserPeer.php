@@ -2,67 +2,46 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'modules_entity' table.
+ * Base static class for performing query and update operations on the 'common_scheduleSubscriptionUser' table.
  *
- * Entidades de modulos 
+ * Relación ScheduleSubscription - User
  *
- * @package    propel.generator.modules.classes.om
+ * @package    propel.generator.common.classes.om
  */
-abstract class BaseModuleEntityPeer {
+abstract class BaseScheduleSubscriptionUserPeer {
 
 	/** the default database name for this class */
 	const DATABASE_NAME = 'application';
 
 	/** the table name for this class */
-	const TABLE_NAME = 'modules_entity';
+	const TABLE_NAME = 'common_scheduleSubscriptionUser';
 
 	/** the related Propel class for this table */
-	const OM_CLASS = 'ModuleEntity';
+	const OM_CLASS = 'ScheduleSubscriptionUser';
 
 	/** A class that can be returned by this peer. */
-	const CLASS_DEFAULT = 'modules.classes.ModuleEntity';
+	const CLASS_DEFAULT = 'common.classes.ScheduleSubscriptionUser';
 
 	/** the related TableMap class for this table */
-	const TM_CLASS = 'ModuleEntityTableMap';
+	const TM_CLASS = 'ScheduleSubscriptionUserTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 9;
+	const NUM_COLUMNS = 2;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
-	/** the column name for the MODULENAME field */
-	const MODULENAME = 'modules_entity.MODULENAME';
+	/** the column name for the SCHEDULESUBSCRIPTIONID field */
+	const SCHEDULESUBSCRIPTIONID = 'common_scheduleSubscriptionUser.SCHEDULESUBSCRIPTIONID';
 
-	/** the column name for the NAME field */
-	const NAME = 'modules_entity.NAME';
-
-	/** the column name for the PHPNAME field */
-	const PHPNAME = 'modules_entity.PHPNAME';
-
-	/** the column name for the DESCRIPTION field */
-	const DESCRIPTION = 'modules_entity.DESCRIPTION';
-
-	/** the column name for the SOFTDELETE field */
-	const SOFTDELETE = 'modules_entity.SOFTDELETE';
-
-	/** the column name for the RELATION field */
-	const RELATION = 'modules_entity.RELATION';
-
-	/** the column name for the SAVELOG field */
-	const SAVELOG = 'modules_entity.SAVELOG';
-
-	/** the column name for the NESTEDSET field */
-	const NESTEDSET = 'modules_entity.NESTEDSET';
-
-	/** the column name for the SCOPEFIELDUNIQUENAME field */
-	const SCOPEFIELDUNIQUENAME = 'modules_entity.SCOPEFIELDUNIQUENAME';
+	/** the column name for the USERID field */
+	const USERID = 'common_scheduleSubscriptionUser.USERID';
 
 	/**
-	 * An identiy map to hold any loaded instances of ModuleEntity objects.
+	 * An identiy map to hold any loaded instances of ScheduleSubscriptionUser objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
 	 * queries.
-	 * @var        array ModuleEntity[]
+	 * @var        array ScheduleSubscriptionUser[]
 	 */
 	public static $instances = array();
 
@@ -74,12 +53,12 @@ abstract class BaseModuleEntityPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Modulename', 'Name', 'Phpname', 'Description', 'Softdelete', 'Relation', 'Savelog', 'Nestedset', 'Scopefielduniquename', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('modulename', 'name', 'phpname', 'description', 'softdelete', 'relation', 'savelog', 'nestedset', 'scopefielduniquename', ),
-		BasePeer::TYPE_COLNAME => array (self::MODULENAME, self::NAME, self::PHPNAME, self::DESCRIPTION, self::SOFTDELETE, self::RELATION, self::SAVELOG, self::NESTEDSET, self::SCOPEFIELDUNIQUENAME, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('MODULENAME', 'NAME', 'PHPNAME', 'DESCRIPTION', 'SOFTDELETE', 'RELATION', 'SAVELOG', 'NESTEDSET', 'SCOPEFIELDUNIQUENAME', ),
-		BasePeer::TYPE_FIELDNAME => array ('moduleName', 'name', 'phpName', 'description', 'softDelete', 'relation', 'saveLog', 'nestedset', 'scopeFieldUniqueName', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+		BasePeer::TYPE_PHPNAME => array ('Schedulesubscriptionid', 'Userid', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('schedulesubscriptionid', 'userid', ),
+		BasePeer::TYPE_COLNAME => array (self::SCHEDULESUBSCRIPTIONID, self::USERID, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('SCHEDULESUBSCRIPTIONID', 'USERID', ),
+		BasePeer::TYPE_FIELDNAME => array ('scheduleSubscriptionId', 'userId', ),
+		BasePeer::TYPE_NUM => array (0, 1, )
 	);
 
 	/**
@@ -89,12 +68,12 @@ abstract class BaseModuleEntityPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Modulename' => 0, 'Name' => 1, 'Phpname' => 2, 'Description' => 3, 'Softdelete' => 4, 'Relation' => 5, 'Savelog' => 6, 'Nestedset' => 7, 'Scopefielduniquename' => 8, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('modulename' => 0, 'name' => 1, 'phpname' => 2, 'description' => 3, 'softdelete' => 4, 'relation' => 5, 'savelog' => 6, 'nestedset' => 7, 'scopefielduniquename' => 8, ),
-		BasePeer::TYPE_COLNAME => array (self::MODULENAME => 0, self::NAME => 1, self::PHPNAME => 2, self::DESCRIPTION => 3, self::SOFTDELETE => 4, self::RELATION => 5, self::SAVELOG => 6, self::NESTEDSET => 7, self::SCOPEFIELDUNIQUENAME => 8, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('MODULENAME' => 0, 'NAME' => 1, 'PHPNAME' => 2, 'DESCRIPTION' => 3, 'SOFTDELETE' => 4, 'RELATION' => 5, 'SAVELOG' => 6, 'NESTEDSET' => 7, 'SCOPEFIELDUNIQUENAME' => 8, ),
-		BasePeer::TYPE_FIELDNAME => array ('moduleName' => 0, 'name' => 1, 'phpName' => 2, 'description' => 3, 'softDelete' => 4, 'relation' => 5, 'saveLog' => 6, 'nestedset' => 7, 'scopeFieldUniqueName' => 8, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+		BasePeer::TYPE_PHPNAME => array ('Schedulesubscriptionid' => 0, 'Userid' => 1, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('schedulesubscriptionid' => 0, 'userid' => 1, ),
+		BasePeer::TYPE_COLNAME => array (self::SCHEDULESUBSCRIPTIONID => 0, self::USERID => 1, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('SCHEDULESUBSCRIPTIONID' => 0, 'USERID' => 1, ),
+		BasePeer::TYPE_FIELDNAME => array ('scheduleSubscriptionId' => 0, 'userId' => 1, ),
+		BasePeer::TYPE_NUM => array (0, 1, )
 	);
 
 	/**
@@ -143,12 +122,12 @@ abstract class BaseModuleEntityPeer {
 	 *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
 	 * </code>
 	 * @param      string $alias The alias for the current table.
-	 * @param      string $column The column name for current table. (i.e. ModuleEntityPeer::COLUMN_NAME).
+	 * @param      string $column The column name for current table. (i.e. ScheduleSubscriptionUserPeer::COLUMN_NAME).
 	 * @return     string
 	 */
 	public static function alias($alias, $column)
 	{
-		return str_replace(ModuleEntityPeer::TABLE_NAME.'.', $alias.'.', $column);
+		return str_replace(ScheduleSubscriptionUserPeer::TABLE_NAME.'.', $alias.'.', $column);
 	}
 
 	/**
@@ -166,25 +145,11 @@ abstract class BaseModuleEntityPeer {
 	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
 		if (null === $alias) {
-			$criteria->addSelectColumn(ModuleEntityPeer::MODULENAME);
-			$criteria->addSelectColumn(ModuleEntityPeer::NAME);
-			$criteria->addSelectColumn(ModuleEntityPeer::PHPNAME);
-			$criteria->addSelectColumn(ModuleEntityPeer::DESCRIPTION);
-			$criteria->addSelectColumn(ModuleEntityPeer::SOFTDELETE);
-			$criteria->addSelectColumn(ModuleEntityPeer::RELATION);
-			$criteria->addSelectColumn(ModuleEntityPeer::SAVELOG);
-			$criteria->addSelectColumn(ModuleEntityPeer::NESTEDSET);
-			$criteria->addSelectColumn(ModuleEntityPeer::SCOPEFIELDUNIQUENAME);
+			$criteria->addSelectColumn(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID);
+			$criteria->addSelectColumn(ScheduleSubscriptionUserPeer::USERID);
 		} else {
-			$criteria->addSelectColumn($alias . '.MODULENAME');
-			$criteria->addSelectColumn($alias . '.NAME');
-			$criteria->addSelectColumn($alias . '.PHPNAME');
-			$criteria->addSelectColumn($alias . '.DESCRIPTION');
-			$criteria->addSelectColumn($alias . '.SOFTDELETE');
-			$criteria->addSelectColumn($alias . '.RELATION');
-			$criteria->addSelectColumn($alias . '.SAVELOG');
-			$criteria->addSelectColumn($alias . '.NESTEDSET');
-			$criteria->addSelectColumn($alias . '.SCOPEFIELDUNIQUENAME');
+			$criteria->addSelectColumn($alias . '.SCHEDULESUBSCRIPTIONID');
+			$criteria->addSelectColumn($alias . '.USERID');
 		}
 	}
 
@@ -204,21 +169,21 @@ abstract class BaseModuleEntityPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(ModuleEntityPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(ScheduleSubscriptionUserPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			ModuleEntityPeer::addSelectColumns($criteria);
+			ScheduleSubscriptionUserPeer::addSelectColumns($criteria);
 		}
 
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 		$criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
 
 		if ($con === null) {
-			$con = Propel::getConnection(ModuleEntityPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(ScheduleSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 		// BasePeer returns a PDOStatement
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -236,7 +201,7 @@ abstract class BaseModuleEntityPeer {
 	 *
 	 * @param      Criteria $criteria object used to create the SELECT statement.
 	 * @param      PropelPDO $con
-	 * @return     ModuleEntity
+	 * @return     ScheduleSubscriptionUser
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
@@ -244,7 +209,7 @@ abstract class BaseModuleEntityPeer {
 	{
 		$critcopy = clone $criteria;
 		$critcopy->setLimit(1);
-		$objects = ModuleEntityPeer::doSelect($critcopy, $con);
+		$objects = ScheduleSubscriptionUserPeer::doSelect($critcopy, $con);
 		if ($objects) {
 			return $objects[0];
 		}
@@ -261,7 +226,7 @@ abstract class BaseModuleEntityPeer {
 	 */
 	public static function doSelect(Criteria $criteria, PropelPDO $con = null)
 	{
-		return ModuleEntityPeer::populateObjects(ModuleEntityPeer::doSelectStmt($criteria, $con));
+		return ScheduleSubscriptionUserPeer::populateObjects(ScheduleSubscriptionUserPeer::doSelectStmt($criteria, $con));
 	}
 	/**
 	 * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -279,12 +244,12 @@ abstract class BaseModuleEntityPeer {
 	public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(ModuleEntityPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(ScheduleSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		if (!$criteria->hasSelectClause()) {
 			$criteria = clone $criteria;
-			ModuleEntityPeer::addSelectColumns($criteria);
+			ScheduleSubscriptionUserPeer::addSelectColumns($criteria);
 		}
 
 		// Set the correct dbName
@@ -302,14 +267,14 @@ abstract class BaseModuleEntityPeer {
 	 * to the cache in order to ensure that the same objects are always returned by doSelect*()
 	 * and retrieveByPK*() calls.
 	 *
-	 * @param      ModuleEntity $value A ModuleEntity object.
+	 * @param      ScheduleSubscriptionUser $value A ScheduleSubscriptionUser object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(ModuleEntity $obj, $key = null)
+	public static function addInstanceToPool(ScheduleSubscriptionUser $obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
-				$key = (string) $obj->getName();
+				$key = serialize(array((string) $obj->getSchedulesubscriptionid(), (string) $obj->getUserid()));
 			} // if key === null
 			self::$instances[$key] = $obj;
 		}
@@ -323,18 +288,18 @@ abstract class BaseModuleEntityPeer {
 	 * methods in your stub classes -- you may need to explicitly remove objects
 	 * from the cache in order to prevent returning objects that no longer exist.
 	 *
-	 * @param      mixed $value A ModuleEntity object or a primary key value.
+	 * @param      mixed $value A ScheduleSubscriptionUser object or a primary key value.
 	 */
 	public static function removeInstanceFromPool($value)
 	{
 		if (Propel::isInstancePoolingEnabled() && $value !== null) {
-			if (is_object($value) && $value instanceof ModuleEntity) {
-				$key = (string) $value->getName();
-			} elseif (is_scalar($value)) {
+			if (is_object($value) && $value instanceof ScheduleSubscriptionUser) {
+				$key = serialize(array((string) $value->getSchedulesubscriptionid(), (string) $value->getUserid()));
+			} elseif (is_array($value) && count($value) === 2) {
 				// assume we've been passed a primary key
-				$key = (string) $value;
+				$key = serialize(array((string) $value[0], (string) $value[1]));
 			} else {
-				$e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or ModuleEntity object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+				$e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or ScheduleSubscriptionUser object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
 				throw $e;
 			}
 
@@ -349,7 +314,7 @@ abstract class BaseModuleEntityPeer {
 	 * a multi-column primary key, a serialize()d version of the primary key will be returned.
 	 *
 	 * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-	 * @return     ModuleEntity Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+	 * @return     ScheduleSubscriptionUser Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
 	 * @see        getPrimaryKeyHash()
 	 */
 	public static function getInstanceFromPool($key)
@@ -373,23 +338,11 @@ abstract class BaseModuleEntityPeer {
 	}
 	
 	/**
-	 * Method to invalidate the instance pool of all tables related to modules_entity
+	 * Method to invalidate the instance pool of all tables related to common_scheduleSubscriptionUser
 	 * by a foreign key with ON DELETE CASCADE
 	 */
 	public static function clearRelatedInstancePool()
 	{
-		// Invalidate objects in AlertSubscriptionPeer instance pool, 
-		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-		AlertSubscriptionPeer::clearInstancePool();
-		// Invalidate objects in ScheduleSubscriptionPeer instance pool, 
-		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-		ScheduleSubscriptionPeer::clearInstancePool();
-		// Invalidate objects in ModuleEntityFieldPeer instance pool, 
-		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-		ModuleEntityFieldPeer::clearInstancePool();
-		// Invalidate objects in ModuleEntityFieldPeer instance pool, 
-		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-		ModuleEntityFieldPeer::clearInstancePool();
 	}
 
 	/**
@@ -405,10 +358,10 @@ abstract class BaseModuleEntityPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol + 1] === null) {
+		if ($row[$startcol] === null && $row[$startcol + 1] === null) {
 			return null;
 		}
-		return (string) $row[$startcol + 1];
+		return serialize(array((string) $row[$startcol], (string) $row[$startcol + 1]));
 	}
 
 	/**
@@ -422,7 +375,7 @@ abstract class BaseModuleEntityPeer {
 	 */
 	public static function getPrimaryKeyFromRow($row, $startcol = 0)
 	{
-		return (string) $row[$startcol + 1];
+		return array((int) $row[$startcol], (int) $row[$startcol + 1]);
 	}
 	
 	/**
@@ -437,11 +390,11 @@ abstract class BaseModuleEntityPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = ModuleEntityPeer::getOMClass(false);
+		$cls = ScheduleSubscriptionUserPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key = ModuleEntityPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj = ModuleEntityPeer::getInstanceFromPool($key))) {
+			$key = ScheduleSubscriptionUserPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj = ScheduleSubscriptionUserPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
@@ -450,7 +403,7 @@ abstract class BaseModuleEntityPeer {
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
-				ModuleEntityPeer::addInstanceToPool($obj, $key);
+				ScheduleSubscriptionUserPeer::addInstanceToPool($obj, $key);
 			} // if key exists
 		}
 		$stmt->closeCursor();
@@ -463,27 +416,27 @@ abstract class BaseModuleEntityPeer {
 	 * @param      int $startcol The 0-based offset for reading from the resultset row.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
-	 * @return     array (ModuleEntity object, last column rank)
+	 * @return     array (ScheduleSubscriptionUser object, last column rank)
 	 */
 	public static function populateObject($row, $startcol = 0)
 	{
-		$key = ModuleEntityPeer::getPrimaryKeyHashFromRow($row, $startcol);
-		if (null !== ($obj = ModuleEntityPeer::getInstanceFromPool($key))) {
+		$key = ScheduleSubscriptionUserPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = ScheduleSubscriptionUserPeer::getInstanceFromPool($key))) {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + ModuleEntityPeer::NUM_COLUMNS;
+			$col = $startcol + ScheduleSubscriptionUserPeer::NUM_COLUMNS;
 		} else {
-			$cls = ModuleEntityPeer::OM_CLASS;
+			$cls = ScheduleSubscriptionUserPeer::OM_CLASS;
 			$obj = new $cls();
 			$col = $obj->hydrate($row, $startcol);
-			ModuleEntityPeer::addInstanceToPool($obj, $key);
+			ScheduleSubscriptionUserPeer::addInstanceToPool($obj, $key);
 		}
 		return array($obj, $col);
 	}
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related Module table
+	 * Returns the number of rows matching criteria, joining the related ScheduleSubscription table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -491,7 +444,7 @@ abstract class BaseModuleEntityPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinModule(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinScheduleSubscription(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -499,14 +452,14 @@ abstract class BaseModuleEntityPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(ModuleEntityPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(ScheduleSubscriptionUserPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			ModuleEntityPeer::addSelectColumns($criteria);
+			ScheduleSubscriptionUserPeer::addSelectColumns($criteria);
 		}
 		
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
@@ -515,10 +468,10 @@ abstract class BaseModuleEntityPeer {
 		$criteria->setDbName(self::DATABASE_NAME);
 
 		if ($con === null) {
-			$con = Propel::getConnection(ModuleEntityPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(ScheduleSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(ModuleEntityPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+		$criteria->addJoin(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID, ScheduleSubscriptionPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -533,7 +486,7 @@ abstract class BaseModuleEntityPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related ModuleEntityFieldRelatedByScopefielduniquename table
+	 * Returns the number of rows matching criteria, joining the related User table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -541,7 +494,7 @@ abstract class BaseModuleEntityPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinModuleEntityFieldRelatedByScopefielduniquename(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -549,14 +502,14 @@ abstract class BaseModuleEntityPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(ModuleEntityPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(ScheduleSubscriptionUserPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			ModuleEntityPeer::addSelectColumns($criteria);
+			ScheduleSubscriptionUserPeer::addSelectColumns($criteria);
 		}
 		
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
@@ -565,10 +518,10 @@ abstract class BaseModuleEntityPeer {
 		$criteria->setDbName(self::DATABASE_NAME);
 
 		if ($con === null) {
-			$con = Propel::getConnection(ModuleEntityPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(ScheduleSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(ModuleEntityPeer::SCOPEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+		$criteria->addJoin(ScheduleSubscriptionUserPeer::USERID, UserPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -583,15 +536,15 @@ abstract class BaseModuleEntityPeer {
 
 
 	/**
-	 * Selects a collection of ModuleEntity objects pre-filled with their Module objects.
+	 * Selects a collection of ScheduleSubscriptionUser objects pre-filled with their ScheduleSubscription objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of ModuleEntity objects.
+	 * @return     array Array of ScheduleSubscriptionUser objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinModule(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinScheduleSubscription(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -600,44 +553,44 @@ abstract class BaseModuleEntityPeer {
 			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol = (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
-		ModulePeer::addSelectColumns($criteria);
+		ScheduleSubscriptionUserPeer::addSelectColumns($criteria);
+		$startcol = (ScheduleSubscriptionUserPeer::NUM_COLUMNS - ScheduleSubscriptionUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		ScheduleSubscriptionPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(ModuleEntityPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+		$criteria->addJoin(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID, ScheduleSubscriptionPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = ModuleEntityPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = ModuleEntityPeer::getInstanceFromPool($key1))) {
+			$key1 = ScheduleSubscriptionUserPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = ScheduleSubscriptionUserPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$cls = ModuleEntityPeer::getOMClass(false);
+				$cls = ScheduleSubscriptionUserPeer::getOMClass(false);
 
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
-				ModuleEntityPeer::addInstanceToPool($obj1, $key1);
+				ScheduleSubscriptionUserPeer::addInstanceToPool($obj1, $key1);
 			} // if $obj1 already loaded
 
-			$key2 = ModulePeer::getPrimaryKeyHashFromRow($row, $startcol);
+			$key2 = ScheduleSubscriptionPeer::getPrimaryKeyHashFromRow($row, $startcol);
 			if ($key2 !== null) {
-				$obj2 = ModulePeer::getInstanceFromPool($key2);
+				$obj2 = ScheduleSubscriptionPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = ModulePeer::getOMClass(false);
+					$cls = ScheduleSubscriptionPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
-					ModulePeer::addInstanceToPool($obj2, $key2);
+					ScheduleSubscriptionPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 
-				// Add the $obj1 (ModuleEntity) to $obj2 (Module)
-				$obj2->addModuleEntity($obj1);
+				// Add the $obj1 (ScheduleSubscriptionUser) to $obj2 (ScheduleSubscription)
+				$obj2->addScheduleSubscriptionUser($obj1);
 
 			} // if joined row was not null
 
@@ -649,15 +602,15 @@ abstract class BaseModuleEntityPeer {
 
 
 	/**
-	 * Selects a collection of ModuleEntity objects pre-filled with their ModuleEntityField objects.
+	 * Selects a collection of ScheduleSubscriptionUser objects pre-filled with their User objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of ModuleEntity objects.
+	 * @return     array Array of ScheduleSubscriptionUser objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinModuleEntityFieldRelatedByScopefielduniquename(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -666,44 +619,44 @@ abstract class BaseModuleEntityPeer {
 			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol = (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
-		ModuleEntityFieldPeer::addSelectColumns($criteria);
+		ScheduleSubscriptionUserPeer::addSelectColumns($criteria);
+		$startcol = (ScheduleSubscriptionUserPeer::NUM_COLUMNS - ScheduleSubscriptionUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		UserPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(ModuleEntityPeer::SCOPEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+		$criteria->addJoin(ScheduleSubscriptionUserPeer::USERID, UserPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = ModuleEntityPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = ModuleEntityPeer::getInstanceFromPool($key1))) {
+			$key1 = ScheduleSubscriptionUserPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = ScheduleSubscriptionUserPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$cls = ModuleEntityPeer::getOMClass(false);
+				$cls = ScheduleSubscriptionUserPeer::getOMClass(false);
 
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
-				ModuleEntityPeer::addInstanceToPool($obj1, $key1);
+				ScheduleSubscriptionUserPeer::addInstanceToPool($obj1, $key1);
 			} // if $obj1 already loaded
 
-			$key2 = ModuleEntityFieldPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			$key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol);
 			if ($key2 !== null) {
-				$obj2 = ModuleEntityFieldPeer::getInstanceFromPool($key2);
+				$obj2 = UserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = ModuleEntityFieldPeer::getOMClass(false);
+					$cls = UserPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
-					ModuleEntityFieldPeer::addInstanceToPool($obj2, $key2);
+					UserPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 
-				// Add the $obj1 (ModuleEntity) to $obj2 (ModuleEntityField)
-				$obj2->addModuleEntityRelatedByScopefielduniquename($obj1);
+				// Add the $obj1 (ScheduleSubscriptionUser) to $obj2 (User)
+				$obj2->addScheduleSubscriptionUser($obj1);
 
 			} // if joined row was not null
 
@@ -731,14 +684,14 @@ abstract class BaseModuleEntityPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(ModuleEntityPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(ScheduleSubscriptionUserPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			ModuleEntityPeer::addSelectColumns($criteria);
+			ScheduleSubscriptionUserPeer::addSelectColumns($criteria);
 		}
 		
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
@@ -747,12 +700,12 @@ abstract class BaseModuleEntityPeer {
 		$criteria->setDbName(self::DATABASE_NAME);
 
 		if ($con === null) {
-			$con = Propel::getConnection(ModuleEntityPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(ScheduleSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(ModuleEntityPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+		$criteria->addJoin(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID, ScheduleSubscriptionPeer::ID, $join_behavior);
 
-		$criteria->addJoin(ModuleEntityPeer::SCOPEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+		$criteria->addJoin(ScheduleSubscriptionUserPeer::USERID, UserPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -766,12 +719,12 @@ abstract class BaseModuleEntityPeer {
 	}
 
 	/**
-	 * Selects a collection of ModuleEntity objects pre-filled with all related objects.
+	 * Selects a collection of ScheduleSubscriptionUser objects pre-filled with all related objects.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of ModuleEntity objects.
+	 * @return     array Array of ScheduleSubscriptionUser objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
@@ -784,70 +737,70 @@ abstract class BaseModuleEntityPeer {
 			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol2 = (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
+		ScheduleSubscriptionUserPeer::addSelectColumns($criteria);
+		$startcol2 = (ScheduleSubscriptionUserPeer::NUM_COLUMNS - ScheduleSubscriptionUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ModulePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (ModulePeer::NUM_COLUMNS - ModulePeer::NUM_LAZY_LOAD_COLUMNS);
+		ScheduleSubscriptionPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (ScheduleSubscriptionPeer::NUM_COLUMNS - ScheduleSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ModuleEntityFieldPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
+		UserPeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(ModuleEntityPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+		$criteria->addJoin(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID, ScheduleSubscriptionPeer::ID, $join_behavior);
 
-		$criteria->addJoin(ModuleEntityPeer::SCOPEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+		$criteria->addJoin(ScheduleSubscriptionUserPeer::USERID, UserPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = ModuleEntityPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = ModuleEntityPeer::getInstanceFromPool($key1))) {
+			$key1 = ScheduleSubscriptionUserPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = ScheduleSubscriptionUserPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$cls = ModuleEntityPeer::getOMClass(false);
+				$cls = ScheduleSubscriptionUserPeer::getOMClass(false);
 
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
-				ModuleEntityPeer::addInstanceToPool($obj1, $key1);
+				ScheduleSubscriptionUserPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-			// Add objects for joined Module rows
+			// Add objects for joined ScheduleSubscription rows
 
-			$key2 = ModulePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+			$key2 = ScheduleSubscriptionPeer::getPrimaryKeyHashFromRow($row, $startcol2);
 			if ($key2 !== null) {
-				$obj2 = ModulePeer::getInstanceFromPool($key2);
+				$obj2 = ScheduleSubscriptionPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = ModulePeer::getOMClass(false);
+					$cls = ScheduleSubscriptionPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					ModulePeer::addInstanceToPool($obj2, $key2);
+					ScheduleSubscriptionPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 loaded
 
-				// Add the $obj1 (ModuleEntity) to the collection in $obj2 (Module)
-				$obj2->addModuleEntity($obj1);
+				// Add the $obj1 (ScheduleSubscriptionUser) to the collection in $obj2 (ScheduleSubscription)
+				$obj2->addScheduleSubscriptionUser($obj1);
 			} // if joined row not null
 
-			// Add objects for joined ModuleEntityField rows
+			// Add objects for joined User rows
 
-			$key3 = ModuleEntityFieldPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+			$key3 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol3);
 			if ($key3 !== null) {
-				$obj3 = ModuleEntityFieldPeer::getInstanceFromPool($key3);
+				$obj3 = UserPeer::getInstanceFromPool($key3);
 				if (!$obj3) {
 
-					$cls = ModuleEntityFieldPeer::getOMClass(false);
+					$cls = UserPeer::getOMClass(false);
 
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
-					ModuleEntityFieldPeer::addInstanceToPool($obj3, $key3);
+					UserPeer::addInstanceToPool($obj3, $key3);
 				} // if obj3 loaded
 
-				// Add the $obj1 (ModuleEntity) to the collection in $obj3 (ModuleEntityField)
-				$obj3->addModuleEntityRelatedByScopefielduniquename($obj1);
+				// Add the $obj1 (ScheduleSubscriptionUser) to the collection in $obj3 (User)
+				$obj3->addScheduleSubscriptionUser($obj1);
 			} // if joined row not null
 
 			$results[] = $obj1;
@@ -858,7 +811,7 @@ abstract class BaseModuleEntityPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related Module table
+	 * Returns the number of rows matching criteria, joining the related ScheduleSubscription table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -866,7 +819,7 @@ abstract class BaseModuleEntityPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptModule(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptScheduleSubscription(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -874,14 +827,14 @@ abstract class BaseModuleEntityPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(ModuleEntityPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(ScheduleSubscriptionUserPeer::TABLE_NAME);
 		
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			ModuleEntityPeer::addSelectColumns($criteria);
+			ScheduleSubscriptionUserPeer::addSelectColumns($criteria);
 		}
 		
 		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
@@ -890,10 +843,10 @@ abstract class BaseModuleEntityPeer {
 		$criteria->setDbName(self::DATABASE_NAME);
 
 		if ($con === null) {
-			$con = Propel::getConnection(ModuleEntityPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(ScheduleSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(ModuleEntityPeer::SCOPEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+		$criteria->addJoin(ScheduleSubscriptionUserPeer::USERID, UserPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -908,7 +861,7 @@ abstract class BaseModuleEntityPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related ModuleEntityFieldRelatedByScopefielduniquename table
+	 * Returns the number of rows matching criteria, joining the related User table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -916,7 +869,7 @@ abstract class BaseModuleEntityPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptModuleEntityFieldRelatedByScopefielduniquename(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -924,14 +877,14 @@ abstract class BaseModuleEntityPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(ModuleEntityPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(ScheduleSubscriptionUserPeer::TABLE_NAME);
 		
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			ModuleEntityPeer::addSelectColumns($criteria);
+			ScheduleSubscriptionUserPeer::addSelectColumns($criteria);
 		}
 		
 		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
@@ -940,10 +893,10 @@ abstract class BaseModuleEntityPeer {
 		$criteria->setDbName(self::DATABASE_NAME);
 
 		if ($con === null) {
-			$con = Propel::getConnection(ModuleEntityPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(ScheduleSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(ModuleEntityPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+		$criteria->addJoin(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID, ScheduleSubscriptionPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -958,16 +911,16 @@ abstract class BaseModuleEntityPeer {
 
 
 	/**
-	 * Selects a collection of ModuleEntity objects pre-filled with all related objects except Module.
+	 * Selects a collection of ScheduleSubscriptionUser objects pre-filled with all related objects except ScheduleSubscription.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of ModuleEntity objects.
+	 * @return     array Array of ScheduleSubscriptionUser objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptModule(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptScheduleSubscription(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -978,48 +931,48 @@ abstract class BaseModuleEntityPeer {
 			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol2 = (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
+		ScheduleSubscriptionUserPeer::addSelectColumns($criteria);
+		$startcol2 = (ScheduleSubscriptionUserPeer::NUM_COLUMNS - ScheduleSubscriptionUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ModuleEntityFieldPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
+		UserPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(ModuleEntityPeer::SCOPEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
+		$criteria->addJoin(ScheduleSubscriptionUserPeer::USERID, UserPeer::ID, $join_behavior);
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = ModuleEntityPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = ModuleEntityPeer::getInstanceFromPool($key1))) {
+			$key1 = ScheduleSubscriptionUserPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = ScheduleSubscriptionUserPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$cls = ModuleEntityPeer::getOMClass(false);
+				$cls = ScheduleSubscriptionUserPeer::getOMClass(false);
 
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
-				ModuleEntityPeer::addInstanceToPool($obj1, $key1);
+				ScheduleSubscriptionUserPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-				// Add objects for joined ModuleEntityField rows
+				// Add objects for joined User rows
 
-				$key2 = ModuleEntityFieldPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				$key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
 				if ($key2 !== null) {
-					$obj2 = ModuleEntityFieldPeer::getInstanceFromPool($key2);
+					$obj2 = UserPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$cls = ModuleEntityFieldPeer::getOMClass(false);
+						$cls = UserPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					ModuleEntityFieldPeer::addInstanceToPool($obj2, $key2);
+					UserPeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
-				// Add the $obj1 (ModuleEntity) to the collection in $obj2 (ModuleEntityField)
-				$obj2->addModuleEntityRelatedByScopefielduniquename($obj1);
+				// Add the $obj1 (ScheduleSubscriptionUser) to the collection in $obj2 (User)
+				$obj2->addScheduleSubscriptionUser($obj1);
 
 			} // if joined row is not null
 
@@ -1031,16 +984,16 @@ abstract class BaseModuleEntityPeer {
 
 
 	/**
-	 * Selects a collection of ModuleEntity objects pre-filled with all related objects except ModuleEntityFieldRelatedByScopefielduniquename.
+	 * Selects a collection of ScheduleSubscriptionUser objects pre-filled with all related objects except User.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of ModuleEntity objects.
+	 * @return     array Array of ScheduleSubscriptionUser objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptModuleEntityFieldRelatedByScopefielduniquename(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -1051,48 +1004,48 @@ abstract class BaseModuleEntityPeer {
 			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol2 = (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
+		ScheduleSubscriptionUserPeer::addSelectColumns($criteria);
+		$startcol2 = (ScheduleSubscriptionUserPeer::NUM_COLUMNS - ScheduleSubscriptionUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		ModulePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (ModulePeer::NUM_COLUMNS - ModulePeer::NUM_LAZY_LOAD_COLUMNS);
+		ScheduleSubscriptionPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (ScheduleSubscriptionPeer::NUM_COLUMNS - ScheduleSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(ModuleEntityPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
+		$criteria->addJoin(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID, ScheduleSubscriptionPeer::ID, $join_behavior);
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = ModuleEntityPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = ModuleEntityPeer::getInstanceFromPool($key1))) {
+			$key1 = ScheduleSubscriptionUserPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = ScheduleSubscriptionUserPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$cls = ModuleEntityPeer::getOMClass(false);
+				$cls = ScheduleSubscriptionUserPeer::getOMClass(false);
 
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
-				ModuleEntityPeer::addInstanceToPool($obj1, $key1);
+				ScheduleSubscriptionUserPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-				// Add objects for joined Module rows
+				// Add objects for joined ScheduleSubscription rows
 
-				$key2 = ModulePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				$key2 = ScheduleSubscriptionPeer::getPrimaryKeyHashFromRow($row, $startcol2);
 				if ($key2 !== null) {
-					$obj2 = ModulePeer::getInstanceFromPool($key2);
+					$obj2 = ScheduleSubscriptionPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$cls = ModulePeer::getOMClass(false);
+						$cls = ScheduleSubscriptionPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					ModulePeer::addInstanceToPool($obj2, $key2);
+					ScheduleSubscriptionPeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
-				// Add the $obj1 (ModuleEntity) to the collection in $obj2 (Module)
-				$obj2->addModuleEntity($obj1);
+				// Add the $obj1 (ScheduleSubscriptionUser) to the collection in $obj2 (ScheduleSubscription)
+				$obj2->addScheduleSubscriptionUser($obj1);
 
 			} // if joined row is not null
 
@@ -1119,10 +1072,10 @@ abstract class BaseModuleEntityPeer {
 	 */
 	public static function buildTableMap()
 	{
-	  $dbMap = Propel::getDatabaseMap(BaseModuleEntityPeer::DATABASE_NAME);
-	  if (!$dbMap->hasTable(BaseModuleEntityPeer::TABLE_NAME))
+	  $dbMap = Propel::getDatabaseMap(BaseScheduleSubscriptionUserPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseScheduleSubscriptionUserPeer::TABLE_NAME))
 	  {
-	    $dbMap->addTableObject(new ModuleEntityTableMap());
+	    $dbMap->addTableObject(new ScheduleSubscriptionUserTableMap());
 	  }
 	}
 
@@ -1139,13 +1092,13 @@ abstract class BaseModuleEntityPeer {
 	 */
 	public static function getOMClass($withPrefix = true)
 	{
-		return $withPrefix ? ModuleEntityPeer::CLASS_DEFAULT : ModuleEntityPeer::OM_CLASS;
+		return $withPrefix ? ScheduleSubscriptionUserPeer::CLASS_DEFAULT : ScheduleSubscriptionUserPeer::OM_CLASS;
 	}
 
 	/**
-	 * Method perform an INSERT on the database, given a ModuleEntity or Criteria object.
+	 * Method perform an INSERT on the database, given a ScheduleSubscriptionUser or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or ModuleEntity object containing data that is used to create the INSERT statement.
+	 * @param      mixed $values Criteria or ScheduleSubscriptionUser object containing data that is used to create the INSERT statement.
 	 * @param      PropelPDO $con the PropelPDO connection to use
 	 * @return     mixed The new primary key.
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -1154,13 +1107,13 @@ abstract class BaseModuleEntityPeer {
 	public static function doInsert($values, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(ModuleEntityPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(ScheduleSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 		} else {
-			$criteria = $values->buildCriteria(); // build Criteria from ModuleEntity object
+			$criteria = $values->buildCriteria(); // build Criteria from ScheduleSubscriptionUser object
 		}
 
 
@@ -1182,9 +1135,9 @@ abstract class BaseModuleEntityPeer {
 	}
 
 	/**
-	 * Method perform an UPDATE on the database, given a ModuleEntity or Criteria object.
+	 * Method perform an UPDATE on the database, given a ScheduleSubscriptionUser or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or ModuleEntity object containing data that is used to create the UPDATE statement.
+	 * @param      mixed $values Criteria or ScheduleSubscriptionUser object containing data that is used to create the UPDATE statement.
 	 * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -1193,7 +1146,7 @@ abstract class BaseModuleEntityPeer {
 	public static function doUpdate($values, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(ModuleEntityPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(ScheduleSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$selectCriteria = new Criteria(self::DATABASE_NAME);
@@ -1201,15 +1154,23 @@ abstract class BaseModuleEntityPeer {
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 
-			$comparison = $criteria->getComparison(ModuleEntityPeer::NAME);
-			$value = $criteria->remove(ModuleEntityPeer::NAME);
+			$comparison = $criteria->getComparison(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID);
+			$value = $criteria->remove(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID);
 			if ($value) {
-				$selectCriteria->add(ModuleEntityPeer::NAME, $value, $comparison);
+				$selectCriteria->add(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID, $value, $comparison);
 			} else {
-				$selectCriteria->setPrimaryTableName(ModuleEntityPeer::TABLE_NAME);
+				$selectCriteria->setPrimaryTableName(ScheduleSubscriptionUserPeer::TABLE_NAME);
 			}
 
-		} else { // $values is ModuleEntity object
+			$comparison = $criteria->getComparison(ScheduleSubscriptionUserPeer::USERID);
+			$value = $criteria->remove(ScheduleSubscriptionUserPeer::USERID);
+			if ($value) {
+				$selectCriteria->add(ScheduleSubscriptionUserPeer::USERID, $value, $comparison);
+			} else {
+				$selectCriteria->setPrimaryTableName(ScheduleSubscriptionUserPeer::TABLE_NAME);
+			}
+
+		} else { // $values is ScheduleSubscriptionUser object
 			$criteria = $values->buildCriteria(); // gets full criteria
 			$selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
 		}
@@ -1221,28 +1182,26 @@ abstract class BaseModuleEntityPeer {
 	}
 
 	/**
-	 * Method to DELETE all rows from the modules_entity table.
+	 * Method to DELETE all rows from the common_scheduleSubscriptionUser table.
 	 *
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 */
 	public static function doDeleteAll($con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(ModuleEntityPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(ScheduleSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 		$affectedRows = 0; // initialize var to track total num of affected rows
 		try {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += ModuleEntityPeer::doOnDeleteCascade(new Criteria(ModuleEntityPeer::DATABASE_NAME), $con);
-			ModuleEntityPeer::doOnDeleteSetNull(new Criteria(ModuleEntityPeer::DATABASE_NAME), $con);
-			$affectedRows += BasePeer::doDeleteAll(ModuleEntityPeer::TABLE_NAME, $con, ModuleEntityPeer::DATABASE_NAME);
+			$affectedRows += BasePeer::doDeleteAll(ScheduleSubscriptionUserPeer::TABLE_NAME, $con, ScheduleSubscriptionUserPeer::DATABASE_NAME);
 			// Because this db requires some delete cascade/set null emulation, we have to
 			// clear the cached instance *after* the emulation has happened (since
 			// instances get re-added by the select statement contained therein).
-			ModuleEntityPeer::clearInstancePool();
-			ModuleEntityPeer::clearRelatedInstancePool();
+			ScheduleSubscriptionUserPeer::clearInstancePool();
+			ScheduleSubscriptionUserPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1252,9 +1211,9 @@ abstract class BaseModuleEntityPeer {
 	}
 
 	/**
-	 * Method perform a DELETE on the database, given a ModuleEntity or Criteria object OR a primary key value.
+	 * Method perform a DELETE on the database, given a ScheduleSubscriptionUser or Criteria object OR a primary key value.
 	 *
-	 * @param      mixed $values Criteria or ModuleEntity object or primary key or array of primary keys
+	 * @param      mixed $values Criteria or ScheduleSubscriptionUser object or primary key or array of primary keys
 	 *              which is used to create the DELETE statement
 	 * @param      PropelPDO $con the connection to use
 	 * @return     int 	The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -1265,18 +1224,36 @@ abstract class BaseModuleEntityPeer {
 	 public static function doDelete($values, PropelPDO $con = null)
 	 {
 		if ($con === null) {
-			$con = Propel::getConnection(ModuleEntityPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(ScheduleSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
+			// invalidate the cache for all objects of this type, since we have no
+			// way of knowing (without running a query) what objects should be invalidated
+			// from the cache based on this Criteria.
+			ScheduleSubscriptionUserPeer::clearInstancePool();
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof ModuleEntity) { // it's a model object
+		} elseif ($values instanceof ScheduleSubscriptionUser) { // it's a model object
+			// invalidate the cache for this single object
+			ScheduleSubscriptionUserPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
 		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(ModuleEntityPeer::NAME, (array) $values, Criteria::IN);
+			// primary key is composite; we therefore, expect
+			// the primary key passed to be an array of pkey values
+			if (count($values) == count($values, COUNT_RECURSIVE)) {
+				// array is not multi-dimensional
+				$values = array($values);
+			}
+			foreach ($values as $value) {
+				$criterion = $criteria->getNewCriterion(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID, $value[0]);
+				$criterion->addAnd($criteria->getNewCriterion(ScheduleSubscriptionUserPeer::USERID, $value[1]));
+				$criteria->addOr($criterion);
+				// we can invalidate the cache for this single PK
+				ScheduleSubscriptionUserPeer::removeInstanceFromPool($value);
+			}
 		}
 
 		// Set the correct dbName
@@ -1289,29 +1266,8 @@ abstract class BaseModuleEntityPeer {
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
 			
-			// cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
-			$c = clone $criteria;
-			$affectedRows += ModuleEntityPeer::doOnDeleteCascade($c, $con);
-			
-			// cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
-			$c = clone $criteria;
-			ModuleEntityPeer::doOnDeleteSetNull($c, $con);
-			
-			// Because this db requires some delete cascade/set null emulation, we have to
-			// clear the cached instance *after* the emulation has happened (since
-			// instances get re-added by the select statement contained therein).
-			if ($values instanceof Criteria) {
-				ModuleEntityPeer::clearInstancePool();
-			} elseif ($values instanceof ModuleEntity) { // it's a model object
-				ModuleEntityPeer::removeInstanceFromPool($values);
-			} else { // it's a primary key, or an array of pks
-				foreach ((array) $values as $singleval) {
-					ModuleEntityPeer::removeInstanceFromPool($singleval);
-				}
-			}
-			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-			ModuleEntityPeer::clearRelatedInstancePool();
+			ScheduleSubscriptionUserPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1321,99 +1277,24 @@ abstract class BaseModuleEntityPeer {
 	}
 
 	/**
-	 * This is a method for emulating ON DELETE CASCADE for DBs that don't support this
-	 * feature (like MySQL or SQLite).
-	 *
-	 * This method is not very speedy because it must perform a query first to get
-	 * the implicated records and then perform the deletes by calling those Peer classes.
-	 *
-	 * This method should be used within a transaction if possible.
-	 *
-	 * @param      Criteria $criteria
-	 * @param      PropelPDO $con
-	 * @return     int The number of affected rows (if supported by underlying database driver).
-	 */
-	protected static function doOnDeleteCascade(Criteria $criteria, PropelPDO $con)
-	{
-		// initialize var to track total num of affected rows
-		$affectedRows = 0;
-
-		// first find the objects that are implicated by the $criteria
-		$objects = ModuleEntityPeer::doSelect($criteria, $con);
-		foreach ($objects as $obj) {
-
-
-			// delete related AlertSubscription objects
-			$criteria = new Criteria(AlertSubscriptionPeer::DATABASE_NAME);
-			
-			$criteria->add(AlertSubscriptionPeer::ENTITYNAME, $obj->getName());
-			$affectedRows += AlertSubscriptionPeer::doDelete($criteria, $con);
-
-			// delete related ScheduleSubscription objects
-			$criteria = new Criteria(ScheduleSubscriptionPeer::DATABASE_NAME);
-			
-			$criteria->add(ScheduleSubscriptionPeer::ENTITYNAME, $obj->getName());
-			$affectedRows += ScheduleSubscriptionPeer::doDelete($criteria, $con);
-
-			// delete related ModuleEntityField objects
-			$criteria = new Criteria(ModuleEntityFieldPeer::DATABASE_NAME);
-			
-			$criteria->add(ModuleEntityFieldPeer::ENTITYNAME, $obj->getName());
-			$affectedRows += ModuleEntityFieldPeer::doDelete($criteria, $con);
-		}
-		return $affectedRows;
-	}
-
-	/**
-	 * This is a method for emulating ON DELETE SET NULL DBs that don't support this
-	 * feature (like MySQL or SQLite).
-	 *
-	 * This method is not very speedy because it must perform a query first to get
-	 * the implicated records and then perform the deletes by calling those Peer classes.
-	 *
-	 * This method should be used within a transaction if possible.
-	 *
-	 * @param      Criteria $criteria
-	 * @param      PropelPDO $con
-	 * @return     void
-	 */
-	protected static function doOnDeleteSetNull(Criteria $criteria, PropelPDO $con)
-	{
-
-		// first find the objects that are implicated by the $criteria
-		$objects = ModuleEntityPeer::doSelect($criteria, $con);
-		foreach ($objects as $obj) {
-
-			// set fkey col in related ModuleEntityField rows to NULL
-			$selectCriteria = new Criteria(ModuleEntityPeer::DATABASE_NAME);
-			$updateValues = new Criteria(ModuleEntityPeer::DATABASE_NAME);
-			$selectCriteria->add(ModuleEntityFieldPeer::FOREIGNKEYTABLE, $obj->getName());
-			$updateValues->add(ModuleEntityFieldPeer::FOREIGNKEYTABLE, null);
-
-			BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
-
-		}
-	}
-
-	/**
-	 * Validates all modified columns of given ModuleEntity object.
+	 * Validates all modified columns of given ScheduleSubscriptionUser object.
 	 * If parameter $columns is either a single column name or an array of column names
 	 * than only those columns are validated.
 	 *
 	 * NOTICE: This does not apply to primary or foreign keys for now.
 	 *
-	 * @param      ModuleEntity $obj The object to validate.
+	 * @param      ScheduleSubscriptionUser $obj The object to validate.
 	 * @param      mixed $cols Column name or array of column names.
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(ModuleEntity $obj, $cols = null)
+	public static function doValidate(ScheduleSubscriptionUser $obj, $cols = null)
 	{
 		$columns = array();
 
 		if ($cols) {
-			$dbMap = Propel::getDatabaseMap(ModuleEntityPeer::DATABASE_NAME);
-			$tableMap = $dbMap->getTable(ModuleEntityPeer::TABLE_NAME);
+			$dbMap = Propel::getDatabaseMap(ScheduleSubscriptionUserPeer::DATABASE_NAME);
+			$tableMap = $dbMap->getTable(ScheduleSubscriptionUserPeer::TABLE_NAME);
 
 			if (! is_array($cols)) {
 				$cols = array($cols);
@@ -1429,63 +1310,35 @@ abstract class BaseModuleEntityPeer {
 
 		}
 
-		return BasePeer::doValidate(ModuleEntityPeer::DATABASE_NAME, ModuleEntityPeer::TABLE_NAME, $columns);
+		return BasePeer::doValidate(ScheduleSubscriptionUserPeer::DATABASE_NAME, ScheduleSubscriptionUserPeer::TABLE_NAME, $columns);
 	}
 
 	/**
-	 * Retrieve a single object by pkey.
-	 *
-	 * @param      string $pk the primary key.
-	 * @param      PropelPDO $con the connection to use
-	 * @return     ModuleEntity
+	 * Retrieve object using using composite pkey values.
+	 * @param      int $schedulesubscriptionid
+	 * @param      int $userid
+	 * @param      PropelPDO $con
+	 * @return     ScheduleSubscriptionUser
 	 */
-	public static function retrieveByPK($pk, PropelPDO $con = null)
-	{
-
-		if (null !== ($obj = ModuleEntityPeer::getInstanceFromPool((string) $pk))) {
-			return $obj;
+	public static function retrieveByPK($schedulesubscriptionid, $userid, PropelPDO $con = null) {
+		$_instancePoolKey = serialize(array((string) $schedulesubscriptionid, (string) $userid));
+ 		if (null !== ($obj = ScheduleSubscriptionUserPeer::getInstanceFromPool($_instancePoolKey))) {
+ 			return $obj;
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(ModuleEntityPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(ScheduleSubscriptionUserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
+		$criteria = new Criteria(ScheduleSubscriptionUserPeer::DATABASE_NAME);
+		$criteria->add(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID, $schedulesubscriptionid);
+		$criteria->add(ScheduleSubscriptionUserPeer::USERID, $userid);
+		$v = ScheduleSubscriptionUserPeer::doSelect($criteria, $con);
 
-		$criteria = new Criteria(ModuleEntityPeer::DATABASE_NAME);
-		$criteria->add(ModuleEntityPeer::NAME, $pk);
-
-		$v = ModuleEntityPeer::doSelect($criteria, $con);
-
-		return !empty($v) > 0 ? $v[0] : null;
+		return !empty($v) ? $v[0] : null;
 	}
-
-	/**
-	 * Retrieve multiple objects by pkey.
-	 *
-	 * @param      array $pks List of primary keys
-	 * @param      PropelPDO $con the connection to use
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function retrieveByPKs($pks, PropelPDO $con = null)
-	{
-		if ($con === null) {
-			$con = Propel::getConnection(ModuleEntityPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-		}
-
-		$objs = null;
-		if (empty($pks)) {
-			$objs = array();
-		} else {
-			$criteria = new Criteria(ModuleEntityPeer::DATABASE_NAME);
-			$criteria->add(ModuleEntityPeer::NAME, $pks, Criteria::IN);
-			$objs = ModuleEntityPeer::doSelect($criteria, $con);
-		}
-		return $objs;
-	}
-
-} // BaseModuleEntityPeer
+} // BaseScheduleSubscriptionUserPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseModuleEntityPeer::buildTableMap();
+BaseScheduleSubscriptionUserPeer::buildTableMap();
 

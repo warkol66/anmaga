@@ -58,6 +58,10 @@
  * @method     UserQuery rightJoinAlertSubscriptionUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AlertSubscriptionUser relation
  * @method     UserQuery innerJoinAlertSubscriptionUser($relationAlias = null) Adds a INNER JOIN clause to the query using the AlertSubscriptionUser relation
  *
+ * @method     UserQuery leftJoinScheduleSubscriptionUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduleSubscriptionUser relation
+ * @method     UserQuery rightJoinScheduleSubscriptionUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduleSubscriptionUser relation
+ * @method     UserQuery innerJoinScheduleSubscriptionUser($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduleSubscriptionUser relation
+ *
  * @method     UserQuery leftJoinClientQuote($relationAlias = null) Adds a LEFT JOIN clause to the query using the ClientQuote relation
  * @method     UserQuery rightJoinClientQuote($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ClientQuote relation
  * @method     UserQuery innerJoinClientQuote($relationAlias = null) Adds a INNER JOIN clause to the query using the ClientQuote relation
@@ -849,6 +853,70 @@ abstract class BaseUserQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query by a related ScheduleSubscriptionUser object
+	 *
+	 * @param     ScheduleSubscriptionUser $scheduleSubscriptionUser  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByScheduleSubscriptionUser($scheduleSubscriptionUser, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(UserPeer::ID, $scheduleSubscriptionUser->getUserid(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the ScheduleSubscriptionUser relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function joinScheduleSubscriptionUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('ScheduleSubscriptionUser');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'ScheduleSubscriptionUser');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the ScheduleSubscriptionUser relation ScheduleSubscriptionUser object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ScheduleSubscriptionUserQuery A secondary query class using the current class as primary query
+	 */
+	public function useScheduleSubscriptionUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		return $this
+			->joinScheduleSubscriptionUser($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'ScheduleSubscriptionUser', 'ScheduleSubscriptionUserQuery');
+	}
+
+	/**
 	 * Filter the query by a related ClientQuote object
 	 *
 	 * @param     ClientQuote $clientQuote  the related object to use as filter
@@ -1182,6 +1250,23 @@ abstract class BaseUserQuery extends ModelCriteria
 		return $this
 			->useAlertSubscriptionUserQuery()
 				->filterByAlertSubscription($alertSubscription, $comparison)
+			->endUse();
+	}
+	
+	/**
+	 * Filter the query by a related ScheduleSubscription object
+	 * using the common_scheduleSubscriptionUser table as cross reference
+	 *
+	 * @param     ScheduleSubscription $scheduleSubscription the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByScheduleSubscription($scheduleSubscription, $comparison = Criteria::EQUAL)
+	{
+		return $this
+			->useScheduleSubscriptionUserQuery()
+				->filterByScheduleSubscription($scheduleSubscription, $comparison)
 			->endUse();
 	}
 	
