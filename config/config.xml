@@ -64,6 +64,27 @@
 		</errorReporting>
 		<rowsPerPage>15</rowsPerPage>
 		<language>esp</language>
+		<schedule>
+			<timePeriod>
+				<type>
+					<value>MONTHS_COUNT</value>
+					<element_options>
+						<option_1>DAYS_COUNT</option_1>
+						<option_2>MONTHS_COUNT</option_2>
+					</element_options>
+				</type>
+			</timePeriod>
+		</schedule>
+		<alert>
+			<timePeriod>
+				<type>
+					<value>DAYS_COUNT</value>
+					<element_options>
+						<option_1>DAYS_COUNT</option_1>
+					</element_options>
+				</type>
+			</timePeriod>
+		</alert>
 	</system>
 	<multilang>
 		<language>esp</language>

@@ -433,6 +433,9 @@ abstract class BaseUserPeer {
 		// Invalidate objects in AlertSubscriptionUserPeer instance pool, 
 		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
 		AlertSubscriptionUserPeer::clearInstancePool();
+		// Invalidate objects in ScheduleSubscriptionUserPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		ScheduleSubscriptionUserPeer::clearInstancePool();
 	}
 
 	/**
@@ -1027,6 +1030,12 @@ abstract class BaseUserPeer {
 			
 			$criteria->add(AlertSubscriptionUserPeer::USERID, $obj->getId());
 			$affectedRows += AlertSubscriptionUserPeer::doDelete($criteria, $con);
+
+			// delete related ScheduleSubscriptionUser objects
+			$criteria = new Criteria(ScheduleSubscriptionUserPeer::DATABASE_NAME);
+			
+			$criteria->add(ScheduleSubscriptionUserPeer::USERID, $obj->getId());
+			$affectedRows += ScheduleSubscriptionUserPeer::doDelete($criteria, $con);
 		}
 		return $affectedRows;
 	}

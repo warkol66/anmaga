@@ -65,12 +65,14 @@ class UserTableMap extends TableMap {
     $this->addRelation('Level', 'Level', RelationMap::MANY_TO_ONE, array('levelId' => 'id', ), null, null);
     $this->addRelation('ActionLog', 'ActionLog', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('AlertSubscriptionUser', 'AlertSubscriptionUser', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), 'CASCADE', null);
+    $this->addRelation('ScheduleSubscriptionUser', 'ScheduleSubscriptionUser', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), 'CASCADE', null);
     $this->addRelation('ClientQuote', 'ClientQuote', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('SupplierQuoteItemComment', 'SupplierQuoteItemComment', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('ClientPurchaseOrder', 'ClientPurchaseOrder', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('SupplierPurchaseOrder', 'SupplierPurchaseOrder', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('UserGroup', 'UserGroup', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('AlertSubscription', 'AlertSubscription', RelationMap::MANY_TO_MANY, array(), null, null);
+    $this->addRelation('ScheduleSubscription', 'ScheduleSubscription', RelationMap::MANY_TO_MANY, array(), null, null);
     $this->addRelation('Group', 'Group', RelationMap::MANY_TO_MANY, array(), null, null);
 	} // buildRelations()
 

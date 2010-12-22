@@ -437,6 +437,15 @@ abstract class BaseModuleEntityFieldPeer {
 		// Invalidate objects in AlertSubscriptionPeer instance pool, 
 		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
 		AlertSubscriptionPeer::clearInstancePool();
+		// Invalidate objects in ScheduleSubscriptionPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		ScheduleSubscriptionPeer::clearInstancePool();
+		// Invalidate objects in ScheduleSubscriptionPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		ScheduleSubscriptionPeer::clearInstancePool();
+		// Invalidate objects in ScheduleSubscriptionPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		ScheduleSubscriptionPeer::clearInstancePool();
 		// Invalidate objects in ModuleEntityFieldPeer instance pool, 
 		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
 		ModuleEntityFieldPeer::clearInstancePool();
@@ -1510,6 +1519,24 @@ abstract class BaseModuleEntityFieldPeer {
 			
 			$criteria->add(AlertSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME, $obj->getUniquename());
 			$affectedRows += AlertSubscriptionPeer::doDelete($criteria, $con);
+
+			// delete related ScheduleSubscription objects
+			$criteria = new Criteria(ScheduleSubscriptionPeer::DATABASE_NAME);
+			
+			$criteria->add(ScheduleSubscriptionPeer::ENTITYNAMEFIELDUNIQUENAME, $obj->getUniquename());
+			$affectedRows += ScheduleSubscriptionPeer::doDelete($criteria, $con);
+
+			// delete related ScheduleSubscription objects
+			$criteria = new Criteria(ScheduleSubscriptionPeer::DATABASE_NAME);
+			
+			$criteria->add(ScheduleSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME, $obj->getUniquename());
+			$affectedRows += ScheduleSubscriptionPeer::doDelete($criteria, $con);
+
+			// delete related ScheduleSubscription objects
+			$criteria = new Criteria(ScheduleSubscriptionPeer::DATABASE_NAME);
+			
+			$criteria->add(ScheduleSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME, $obj->getUniquename());
+			$affectedRows += ScheduleSubscriptionPeer::doDelete($criteria, $con);
 
 			// delete related ModuleEntityFieldValidation objects
 			$criteria = new Criteria(ModuleEntityFieldValidationPeer::DATABASE_NAME);

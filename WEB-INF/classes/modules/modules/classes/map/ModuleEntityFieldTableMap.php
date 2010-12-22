@@ -70,6 +70,9 @@ class ModuleEntityFieldTableMap extends TableMap {
     $this->addRelation('AlertSubscriptionRelatedByEntitynamefielduniquename', 'AlertSubscription', RelationMap::ONE_TO_MANY, array('uniqueName' => 'entityNameFieldUniqueName', ), 'CASCADE', null);
     $this->addRelation('AlertSubscriptionRelatedByEntitydatefielduniquename', 'AlertSubscription', RelationMap::ONE_TO_MANY, array('uniqueName' => 'entityDateFieldUniqueName', ), 'CASCADE', null);
     $this->addRelation('AlertSubscriptionRelatedByEntitybooleanfielduniquename', 'AlertSubscription', RelationMap::ONE_TO_MANY, array('uniqueName' => 'entityBooleanFieldUniqueName', ), 'CASCADE', null);
+    $this->addRelation('ScheduleSubscriptionRelatedByEntitynamefielduniquename', 'ScheduleSubscription', RelationMap::ONE_TO_MANY, array('uniqueName' => 'entityNameFieldUniqueName', ), 'CASCADE', null);
+    $this->addRelation('ScheduleSubscriptionRelatedByEntitydatefielduniquename', 'ScheduleSubscription', RelationMap::ONE_TO_MANY, array('uniqueName' => 'entityDateFieldUniqueName', ), 'CASCADE', null);
+    $this->addRelation('ScheduleSubscriptionRelatedByEntitybooleanfielduniquename', 'ScheduleSubscription', RelationMap::ONE_TO_MANY, array('uniqueName' => 'entityBooleanFieldUniqueName', ), 'CASCADE', null);
     $this->addRelation('ModuleEntityRelatedByScopefielduniquename', 'ModuleEntity', RelationMap::ONE_TO_MANY, array('uniqueName' => 'scopeFieldUniqueName', ), null, null);
     $this->addRelation('ModuleEntityFieldRelatedByUniquename', 'ModuleEntityField', RelationMap::ONE_TO_MANY, array('uniqueName' => 'foreignKeyRemote', ), 'SET NULL', null);
     $this->addRelation('ModuleEntityFieldValidation', 'ModuleEntityFieldValidation', RelationMap::ONE_TO_MANY, array('uniqueName' => 'entityFieldUniqueName', ), 'CASCADE', null);

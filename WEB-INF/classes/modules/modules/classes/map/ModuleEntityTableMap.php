@@ -57,6 +57,7 @@ class ModuleEntityTableMap extends TableMap {
     $this->addRelation('Module', 'Module', RelationMap::MANY_TO_ONE, array('moduleName' => 'name', ), null, null);
     $this->addRelation('ModuleEntityFieldRelatedByScopefielduniquename', 'ModuleEntityField', RelationMap::MANY_TO_ONE, array('scopeFieldUniqueName' => 'uniqueName', ), null, null);
     $this->addRelation('AlertSubscription', 'AlertSubscription', RelationMap::ONE_TO_MANY, array('name' => 'entityName', ), 'CASCADE', null);
+    $this->addRelation('ScheduleSubscription', 'ScheduleSubscription', RelationMap::ONE_TO_MANY, array('name' => 'entityName', ), 'CASCADE', null);
     $this->addRelation('ModuleEntityFieldRelatedByEntityname', 'ModuleEntityField', RelationMap::ONE_TO_MANY, array('name' => 'entityName', ), 'CASCADE', null);
     $this->addRelation('ModuleEntityFieldRelatedByForeignkeytable', 'ModuleEntityField', RelationMap::ONE_TO_MANY, array('name' => 'foreignKeyTable', ), 'SET NULL', null);
 	} // buildRelations()

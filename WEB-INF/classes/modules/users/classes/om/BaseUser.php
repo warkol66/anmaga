@@ -142,6 +142,11 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	protected $collAlertSubscriptionUsers;
 
 	/**
+	 * @var        array ScheduleSubscriptionUser[] Collection to store aggregation of ScheduleSubscriptionUser objects.
+	 */
+	protected $collScheduleSubscriptionUsers;
+
+	/**
 	 * @var        array ClientQuote[] Collection to store aggregation of ClientQuote objects.
 	 */
 	protected $collClientQuotes;
@@ -170,6 +175,11 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	 * @var        array AlertSubscription[] Collection to store aggregation of AlertSubscription objects.
 	 */
 	protected $collAlertSubscriptions;
+
+	/**
+	 * @var        array ScheduleSubscription[] Collection to store aggregation of ScheduleSubscription objects.
+	 */
+	protected $collScheduleSubscriptions;
 
 	/**
 	 * @var        array Group[] Collection to store aggregation of Group objects.
@@ -1173,6 +1183,8 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 			$this->collAlertSubscriptionUsers = null;
 
+			$this->collScheduleSubscriptionUsers = null;
+
 			$this->collClientQuotes = null;
 
 			$this->collSupplierQuoteItemComments = null;
@@ -1184,6 +1196,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$this->collUserGroups = null;
 
 			$this->collAlertSubscriptions = null;
+			$this->collScheduleSubscriptions = null;
 			$this->collGroups = null;
 		} // if (deep)
 	}
@@ -1365,6 +1378,14 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				}
 			}
 
+			if ($this->collScheduleSubscriptionUsers !== null) {
+				foreach ($this->collScheduleSubscriptionUsers as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collClientQuotes !== null) {
 				foreach ($this->collClientQuotes as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -1498,6 +1519,14 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 				if ($this->collAlertSubscriptionUsers !== null) {
 					foreach ($this->collAlertSubscriptionUsers as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collScheduleSubscriptionUsers !== null) {
+					foreach ($this->collScheduleSubscriptionUsers as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1920,6 +1949,12 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				}
 			}
 
+			foreach ($this->getScheduleSubscriptionUsers() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addScheduleSubscriptionUser($relObj->copy($deepCopy));
+				}
+			}
+
 			foreach ($this->getClientQuotes() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addClientQuote($relObj->copy($deepCopy));
@@ -2310,6 +2345,140 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		$query->joinWith('AlertSubscription', $join_behavior);
 
 		return $this->getAlertSubscriptionUsers($query, $con);
+	}
+
+	/**
+	 * Clears out the collScheduleSubscriptionUsers collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addScheduleSubscriptionUsers()
+	 */
+	public function clearScheduleSubscriptionUsers()
+	{
+		$this->collScheduleSubscriptionUsers = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collScheduleSubscriptionUsers collection.
+	 *
+	 * By default this just sets the collScheduleSubscriptionUsers collection to an empty array (like clearcollScheduleSubscriptionUsers());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initScheduleSubscriptionUsers()
+	{
+		$this->collScheduleSubscriptionUsers = new PropelObjectCollection();
+		$this->collScheduleSubscriptionUsers->setModel('ScheduleSubscriptionUser');
+	}
+
+	/**
+	 * Gets an array of ScheduleSubscriptionUser objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array ScheduleSubscriptionUser[] List of ScheduleSubscriptionUser objects
+	 * @throws     PropelException
+	 */
+	public function getScheduleSubscriptionUsers($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collScheduleSubscriptionUsers || null !== $criteria) {
+			if ($this->isNew() && null === $this->collScheduleSubscriptionUsers) {
+				// return empty collection
+				$this->initScheduleSubscriptionUsers();
+			} else {
+				$collScheduleSubscriptionUsers = ScheduleSubscriptionUserQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collScheduleSubscriptionUsers;
+				}
+				$this->collScheduleSubscriptionUsers = $collScheduleSubscriptionUsers;
+			}
+		}
+		return $this->collScheduleSubscriptionUsers;
+	}
+
+	/**
+	 * Returns the number of related ScheduleSubscriptionUser objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related ScheduleSubscriptionUser objects.
+	 * @throws     PropelException
+	 */
+	public function countScheduleSubscriptionUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collScheduleSubscriptionUsers || null !== $criteria) {
+			if ($this->isNew() && null === $this->collScheduleSubscriptionUsers) {
+				return 0;
+			} else {
+				$query = ScheduleSubscriptionUserQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByUser($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collScheduleSubscriptionUsers);
+		}
+	}
+
+	/**
+	 * Method called to associate a ScheduleSubscriptionUser object to this object
+	 * through the ScheduleSubscriptionUser foreign key attribute.
+	 *
+	 * @param      ScheduleSubscriptionUser $l ScheduleSubscriptionUser
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addScheduleSubscriptionUser(ScheduleSubscriptionUser $l)
+	{
+		if ($this->collScheduleSubscriptionUsers === null) {
+			$this->initScheduleSubscriptionUsers();
+		}
+		if (!$this->collScheduleSubscriptionUsers->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collScheduleSubscriptionUsers[]= $l;
+			$l->setUser($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this User is new, it will return
+	 * an empty collection; or if this User has previously
+	 * been saved, it will retrieve related ScheduleSubscriptionUsers from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in User.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array ScheduleSubscriptionUser[] List of ScheduleSubscriptionUser objects
+	 */
+	public function getScheduleSubscriptionUsersJoinScheduleSubscription($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = ScheduleSubscriptionUserQuery::create(null, $criteria);
+		$query->joinWith('ScheduleSubscription', $join_behavior);
+
+		return $this->getScheduleSubscriptionUsers($query, $con);
 	}
 
 	/**
@@ -3296,6 +3465,119 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Clears out the collScheduleSubscriptions collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addScheduleSubscriptions()
+	 */
+	public function clearScheduleSubscriptions()
+	{
+		$this->collScheduleSubscriptions = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collScheduleSubscriptions collection.
+	 *
+	 * By default this just sets the collScheduleSubscriptions collection to an empty collection (like clearScheduleSubscriptions());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initScheduleSubscriptions()
+	{
+		$this->collScheduleSubscriptions = new PropelObjectCollection();
+		$this->collScheduleSubscriptions->setModel('ScheduleSubscription');
+	}
+
+	/**
+	 * Gets a collection of ScheduleSubscription objects related by a many-to-many relationship
+	 * to the current object by way of the common_scheduleSubscriptionUser cross-reference table.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     PropelCollection|array ScheduleSubscription[] List of ScheduleSubscription objects
+	 */
+	public function getScheduleSubscriptions($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collScheduleSubscriptions || null !== $criteria) {
+			if ($this->isNew() && null === $this->collScheduleSubscriptions) {
+				// return empty collection
+				$this->initScheduleSubscriptions();
+			} else {
+				$collScheduleSubscriptions = ScheduleSubscriptionQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collScheduleSubscriptions;
+				}
+				$this->collScheduleSubscriptions = $collScheduleSubscriptions;
+			}
+		}
+		return $this->collScheduleSubscriptions;
+	}
+
+	/**
+	 * Gets the number of ScheduleSubscription objects related by a many-to-many relationship
+	 * to the current object by way of the common_scheduleSubscriptionUser cross-reference table.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      boolean $distinct Set to true to force count distinct
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     int the number of related ScheduleSubscription objects
+	 */
+	public function countScheduleSubscriptions($criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collScheduleSubscriptions || null !== $criteria) {
+			if ($this->isNew() && null === $this->collScheduleSubscriptions) {
+				return 0;
+			} else {
+				$query = ScheduleSubscriptionQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByUser($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collScheduleSubscriptions);
+		}
+	}
+
+	/**
+	 * Associate a ScheduleSubscription object to this object
+	 * through the common_scheduleSubscriptionUser cross reference table.
+	 *
+	 * @param      ScheduleSubscription $scheduleSubscription The ScheduleSubscriptionUser object to relate
+	 * @return     void
+	 */
+	public function addScheduleSubscription($scheduleSubscription)
+	{
+		if ($this->collScheduleSubscriptions === null) {
+			$this->initScheduleSubscriptions();
+		}
+		if (!$this->collScheduleSubscriptions->contains($scheduleSubscription)) { // only add it if the **same** object is not already associated
+			$scheduleSubscriptionUser = new ScheduleSubscriptionUser();
+			$scheduleSubscriptionUser->setScheduleSubscription($scheduleSubscription);
+			$this->addScheduleSubscriptionUser($scheduleSubscriptionUser);
+
+			$this->collScheduleSubscriptions[]= $scheduleSubscription;
+		}
+	}
+
+	/**
 	 * Clears out the collGroups collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
@@ -3460,6 +3742,11 @@ abstract class BaseUser extends BaseObject  implements Persistent
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collScheduleSubscriptionUsers) {
+				foreach ((array) $this->collScheduleSubscriptionUsers as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 			if ($this->collClientQuotes) {
 				foreach ((array) $this->collClientQuotes as $o) {
 					$o->clearAllReferences($deep);
@@ -3489,6 +3776,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 		$this->collActionLogs = null;
 		$this->collAlertSubscriptionUsers = null;
+		$this->collScheduleSubscriptionUsers = null;
 		$this->collClientQuotes = null;
 		$this->collSupplierQuoteItemComments = null;
 		$this->collClientPurchaseOrders = null;
