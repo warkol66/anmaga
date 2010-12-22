@@ -14,15 +14,10 @@
   include_once 'Locale.php';
   include_once 'PropertyMessageResources.php';
 
-require_once 'propel/Propel.php';
-ini_set("include_path",ini_get("include_path").PATH_SEPARATOR.dirname(__FILE__)."/classes/propel/build/classes/");
-ini_set("include_path",ini_get("include_path").PATH_SEPARATOR.dirname(__FILE__)."/classes/propel/build/classes/anmaga");
-ini_set("include_path",ini_get("include_path").PATH_SEPARATOR.dirname(__FILE__)."/classes/ml/build/classes/");
+require_once 'lib/Propel.php';
 Propel::init("$moduleRootDir/config/anmaga-conf.php");
-require_once("UserPeer.php");
-require_once("AffiliateUserPeer.php");
-require_once("ProductPeer.php");
-require_once("OrderItemPeer.php");
-require_once("UserByRegistrationPeer.php");
 
-?>
+//ponemos el server en UTC
+date_default_timezone_set('UTC');
+
+require_once("BaseAction.php");

@@ -505,7 +505,7 @@
 								 name = "affiliatesUsersWelcome"
 								scope = "request"
 						 validate = "true">
-				<description value="Página de bienvenida"/>
+				<description value="Pï¿½gina de bienvenida"/>
 				<forward name="success" path="AffiliatesUsersWelcome.tpl"/>
 		</action>
 
@@ -1312,7 +1312,7 @@
 <!-- End Module Orders -->
 
 
-<!-- ========== Action Mapping Módulo Logs  ============================== -->
+<!-- ========== Action Mapping Mï¿½dulo Logs  ============================== -->
 
 	<action-mappings        module = "Logs">
 
@@ -1504,7 +1504,7 @@
 	<!-- Load our PlugIn class here (case sensetive class name)					     -->
 	<!-- Note: The attribute names must match the class methods					     -->
 	<!-- Eg: 'key' maps to 'setKey(..)'															         -->
-	<plug-in className="SmartyMLPlugInDriver"
+	<plug-in className="SmartyPlugInDriver"
 								 key="SMARTY_PLUGIN">
 		<!-- And set some custom propertied on the PlugIn class					       -->
 		<!-- Note: The property name must match the class variable name exactly -->
