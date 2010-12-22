@@ -40,7 +40,7 @@ $timerRun				= NULL;	// Timer switch. Boolean 1=on, 0=off
 $start					= NULL;	// Timer start time
 $end						= NULL;	// Timer end time
 $run						= NULL;	// Timer run time
-
+$propelVersion  = NULL; // Version de propel
 
 // Include the bootup config file [WEB-INF\boot.xml]
 include 'boot.ini.php';
@@ -54,6 +54,8 @@ include $appServerRootDir.'/WEB-INF/classes/phpmvc/utils/ClassPath.php';
 // Setup the app server paths
 include $appServerRootDir.'/WEB-INF/GlobalPaths.php';
 $globalPaths = GlobalPaths::getGlobalPaths();
+$propelVersionPath='WEB-INF/lib/pear/propel_'.$propelVersion;
+array_push($globalPaths,$propelVersionPath);
 $gPath = ClassPath::getClassPath($appServerRootDir, $globalPaths, $osType);
 
 // Setup the module paths

@@ -1,0 +1,10 @@
+# Sqlfile -> Database map
+affiliates.classes.schema.sql=anmaga
+catalog.classes.schema.sql=anmaga
+categories.classes.schema.sql=anmaga
+common.classes.schema.sql=anmaga
+logs.classes.schema.sql=anmaga
+modules.classes.schema.sql=anmaga
+orders.classes.schema.sql=anmaga
+security.classes.schema.sql=anmaga
+users.classes.schema.sql=anmaga

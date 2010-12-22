@@ -24,5 +24,5 @@ else {
 		//echo "data cargado";
 	}
 }
-
+require "config_module.php";
 ?>

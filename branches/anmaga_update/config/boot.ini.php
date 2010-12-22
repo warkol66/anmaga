@@ -64,7 +64,4 @@ $prependFile = 'WEB-INF/Prepend.php';
 // Action ID [do]
 $actionID = 'do';
 
-// Welcome path
-$welcomePath = 'usersLogin';
-
 ?>
