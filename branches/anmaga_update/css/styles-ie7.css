@@ -1,0 +1,7 @@
+/* CSS Document */
+#leftcolumn li a:hover { 
+	width:150px; 
+}
+#rightcolumn { 
+	width: 790px;  /*   760px ORIGINAL */
+}

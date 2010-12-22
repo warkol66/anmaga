@@ -1,0 +1,51 @@
+/*  Condicionales para IE 6 o menor*/
+
+
+#rightcolumn { 
+	width: 790px;  /*   760px ORIGINAL */
+}
+#leftcolumn{
+	margin:0;
+	padding-left: 5px;
+}
+
+
+#leftcolumn ul { 
+	margin-left: 0;
+	width:145px;
+	float:left;
+}
+
+#leftcolumn li a { 
+	width:150px; /* 150px ORIGINAL */
+}
+
+#leftcolumn li a:hover { 
+	width:150px; /* 150px ORIGINAL */
+	}
+	
+li#titDependencias, 
+li#titConfiguracion, 
+li#titAdministracion { 
+	width:135px;
+padding-left: 10px;
+margin-left:0px;
+}
+
+.titleMenu { 
+	width:150px;
+padding-left: 10px;
+margin-left:0px;
+}
+
+#leftcolumn{
+	background-image:url(../images/leftcolumn_bottom.jpg);
+	background-position: 5px bottom;
+	background-repeat:no-repeat;
+	padding-bottom: 150px;	
+}
+
+/* NEW! */
+#divSearch{
+	margin: 0 0 0 18px;
+}

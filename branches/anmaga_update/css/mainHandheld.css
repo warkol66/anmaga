@@ -1,0 +1,15 @@
+/* CSS Document */
+@import url("style.css");  /* Importar los estilos que cambien de color  */
+@import url("style2.css"); /*  font-size: en PIXEL*/
+@import url("datePicker.css");
+
+.cabezal {
+	border-bottom: solid #00008B thin;
+	color: #000000;
+}
+.headText {
+	display: block;
+}
+col.colCollapse {
+	display:none;
+}

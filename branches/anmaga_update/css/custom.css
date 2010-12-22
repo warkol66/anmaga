@@ -1,0 +1,358 @@
+/* Estilo AZUL CLARO, reemplazo 438e89 con 438e89 E5EDFF*/ 
+.botones_desac {
+	color: #999999;
+	background-image: url(../images/ButtonDarkGreen.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+	background-color: #F5F5F5;
+	border: 1px solid #438e89;
+}
+a.botones_desac:link {
+	color: #999999;
+	background-image: url(../images/ButtonDarkGreen.png);
+	background-color: #F5F5F5;
+}
+a.botones_desac:visited {
+	color: #999999;
+	background-image: url(../images/ButtonDarkGreen.png);
+	background-color: #F5F5F5;
+}
+a.botones_desac:hover {
+	color: #999999;
+	background-image: url(../images/ButtonDarkGreen.png);
+	background-color: #F5F5F5;
+}
+a.botones_desac:active {
+	color: #999999;
+	background-image: url(../images/ButtonDarkGreen.png);
+	background-color: #F5F5F5;
+}
+.thresultado {
+	color: #FFFFFF;
+	background-color: #438e89;
+}
+.botones {
+	background-repeat: no-repeat;
+	background-position: left center;
+}
+.row_odd {
+	background: #BFD3FF; /* #BFD3FF o #AFC3FE  #FFCBCB*/
+}
+.row_even {
+	background: #D6DBE9; /* #D6DBE9 o #C6CBD9*/
+}
+.tableTdBorders {
+	border-collapse: collapse;
+}
+table.tableTdBorders th {
+	border: 1px solid #00008B;
+	padding: 5px;
+}
+table.tableTdBorders td {
+	border: 1px solid #00008B;
+	padding: 4px;
+}
+/*table.tableTdBorders td:first-child { */
+/*	font-weight: bolder;	
+}*/
+.tdBorders {
+	border: 1px solid #00008B;
+}
+.mandatory {
+	display: inline;
+	vertical-align: top;
+	color: #FF0000;
+}
+
+/* New Styles*/
+.menuButton {
+	color: #00008B;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-repeat: no-repeat;
+	background-position: left center;
+	background-color: #F5F5F5;
+	border: 1px solid #00008B;
+}
+a.menuButton:link {
+	color: #00008B;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-color: #F5F5F5;
+}
+a.menuButton:visited {
+	color: #00008B;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-color: #F5F5F5;
+}
+a.menuButton:hover {
+	color: #0000CD;
+	background-image: url(../images/menuBullet10_Blue_over.gif);
+	background-color: #FFFFFF;
+}
+a.menuButton:active {
+	color: #0000CD;
+	background-image: url(../images/menuBullet10_Blue_over.gif);
+	background-color: #F5F5F5;
+}
+.menuSubButton {
+	color: #00008B;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-repeat: no-repeat;
+	background-position: left center;
+	background-color: #F5F5F5;
+}
+a.menuSubButton:link {
+	color: #00008B;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-color: #F5F5F5;
+}
+a.menuSubButton:visited {
+	color: #00008B;
+	background-image: url(../images/menuBullet10_Blue.gif);
+	background-color: #F5F5F5;
+}
+a.menuSubButton:hover {
+	color: #0000CD;
+	background-image: url(../images/menuBullet10_Blue_over.gif);
+	background-color: #FFFFFF;
+}
+a.menuSubButton:active {
+	color: #0000CD;
+	background-image: url(../images/menuBullet10_Blue_over.gif);
+	background-color: #F5F5F5;
+}
+.menuSection {
+	border: 1px solid #00008B;
+}
+.title {
+	color: #00008B;
+}
+.backgroundTitle {
+	background: url(mer/tablafondo1.gif);
+	border: 1px solid #999999;
+	color: #00008B;
+}
+.underlineTitle {
+	background: url(mer/back_gris_tit.gif);
+	border: #999999 1px solid;
+}
+.buttonCell {
+	background-color: #FFFFFF;
+}
+.dataTitle {
+	background-color: #EFEFEF;
+	color: #00008B;
+	border: 3px solid #ffffff;
+}
+.button {
+	background: #DCDCDC;
+}
+a.button:active {
+	background-color: #FFFFFF;
+	color: #B22222;
+}
+.tdTitle {
+	background-color: #EFEFEF;
+	color: #00008B;
+	border: 3px solid #ffffff;
+}
+.thFillTitle {
+	background-color: #00008B;
+	color: #FFFFFF;
+}
+.deactivated {
+	color: #999999;
+}
+.tableNoTdBorders {
+	border-collapse: collapse;
+	border: none;
+}
+
+
+
+
+.edit {
+	color: #007D62;
+}
+a.edit:link{
+	color: #007D62;
+}
+a.edit:visited{
+	color: #007D62;
+}
+a.edit:hover{
+	color: #FFFFFF;
+	background-color: #44A08C;
+}
+.delete {
+	color: #CF2600;
+}
+a.delete:link{
+	color: #CF2600;
+}
+a.delete:visited{
+	color: #CF2600;
+}
+a.delete:hover{
+	color: #FFFFFF;
+	background-color: #D54322;
+}
+.data {
+	color: #000000;
+}
+a.data:link{
+	color: #0000CD;
+}
+a.data:visited{	
+	color: #0000CD;
+}
+a.data:hover{
+	color: #FFFFFF;
+	background-color: #0000CD;
+}
+.detail {
+	color: #000066;
+}
+a.detail:link{
+	color: #000066;
+}
+a.detail:visited{
+	color: #000066;
+}
+a.detail:hover{
+	color: #FFFFFF;
+	background-color: #000066;
+}
+.textButton {
+	background-color: #DCDCDC;
+	border-color: #DCDCDC;
+}
+
+caption {
+}
+table.tableTdBorders caption {
+	background-color: #EFEFEF;
+	color: #00008B;
+	border: 1px solid #00008B;
+}
+
+
+fieldset {
+}
+
+/* NEW */
+.buttonImageDelete {
+	background: url(../images/linkImageDelete.png) center no-repeat;
+}
+.buttonImageDeleteDisabled {
+	background: url(../images/linkImageDeleteDesabled.png) center no-repeat;
+}
+.buttonImageEdit {
+	background: url(../images/linkImageEdit.png) no-repeat center;
+}
+.buttonImageEditDisabled {
+	background: url(../images/linkImageEditDisabled.png) no-repeat center;
+}
+.buttonImageAdd {
+	background: url(../images/linkImageAdd.png) no-repeat center;
+}
+.buttonImageAddDisabled {
+	background: url(../images/linkImageAddDisabled.png) no-repeat center;
+}
+.buttonImageView {
+	background: url(../images/linkImageView.png) no-repeat center;
+}
+.buttonImageViewDisabled {
+	background: url(../images/linkImageViewDisabled.png) no-repeat center;
+}
+.buttonImageGoTo {
+	background: url(../images/linkImageGoTo.png) no-repeat center;
+}
+.buttonImageBack {
+	background: url(../images/linkImageBack.png) no-repeat center;
+}
+.buttonImageViewGantt {
+	background: url(../images/linkImageViewGantt.png) no-repeat center;
+}
+.buttonImageActivate {
+	background: url(../images/linkImageActivate.png) no-repeat center;
+}
+.linkImageDelete {
+	background: url(../images/linkImageDelete.png) center no-repeat;
+}
+.linkImageDeleteDisabled {
+	background: url(../images/linkImageDeleteDesabled.png) center no-repeat;
+}
+.linkImageEdit {
+	background: url(../images/linkImageEdit.png) no-repeat center;
+}
+.linkImageEditDisabled {
+	background: url(../images/linkImageEditDisabled.png) no-repeat center;
+}
+.linkImageAdd {
+	background: url(../images/linkImageAdd.png) no-repeat center;
+}
+.linkImageAddDisabled {
+	background: url(../images/linkImageAddDisabled.png) no-repeat center;
+}
+.linkImageView {
+	background: url(../images/linkImageView.png) no-repeat center;
+}
+.linkImageViewDisabled {
+	background: url(../images/linkImageViewDisabled.png) no-repeat center;
+}
+.linkImageGoTo {
+	background: url(../images/linkImageGoTo.png) no-repeat center;
+}
+.linkImageBack {
+	background: url(../images/linkImageBack.png) no-repeat center;
+}
+.linkImageViewGantt {
+	background: url(../images/linkImageViewGantt.png) no-repeat center;
+}
+.linkImageActivate {
+	background: url(../images/linkImageActivate.png) no-repeat center;
+}
+.buttonImageLogin {
+	font-size: 0px !Important;
+	width: 93px;
+	height: 48px;
+	color: #ffffff !Important;
+	background-color: transparent;
+	border: none;
+	background: url(../images/button_login.gif) no-repeat center;
+	cursor:pointer;	
+}
+
+.errorMessage {
+	color: #B22222;
+	font-weight: bold;
+	padding: 8px;
+	margin: 9px;
+	border: 1px solid #B22222;
+	width: 350px;
+	text-align: center;
+}
+.successMessage {
+	color: #007D62;
+	font-weight: bold;
+	padding: 8px;
+	margin: 9px;
+	border: 1px solid #007D62;
+	width: 350px;
+	text-align: center;
+}
+.infoMessage {
+	color: #00008B;
+	font-weight: bold;
+	padding: 8px;
+	margin: 9px;
+	border: 1px solid #00008B;
+}
+fieldset {  
+	background-color: #f7f7f8;
+}
+legend {  
+	color:#0066CC
+}
+
+
