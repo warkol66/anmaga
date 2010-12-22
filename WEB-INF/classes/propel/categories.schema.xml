@@ -1,9 +1,0 @@
- <database defaultIdMethod="native" package="categories.classes" name="anmaga" >
-
-  <table phpName="Category" name="category" description="Categorias" >
-    <column autoIncrement="true" type="INTEGER" name="id" required="true" description="" primaryKey='true' />
-    <column size="255" type="VARCHAR" name="name" required="true" description="Category name" />
-    <column type="BOOLEAN" name="active" required="true" description="Is category active?" />
-  </table>
-  
-  </database>
