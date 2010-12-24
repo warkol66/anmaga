@@ -438,7 +438,7 @@ class UserPeer extends BaseUserPeer {
 				$_SESSION['lastLogin'] = $user->getLastLogin();
 				$user->setLastLogin(time());
 				$user->save();
-				if (is_null($user->getpasswordupdated()) && ConfigModule::get("users","forceFirstPasswordChange"))
+				if (is_null($user->getPasswordUpdated()) && ConfigModule::get("users","forceFirstPasswordChange"))
 					$_SESSION['firstLogin'] = "firstLogin";
 				else
 					unset($_SESSION['firstLogin']);

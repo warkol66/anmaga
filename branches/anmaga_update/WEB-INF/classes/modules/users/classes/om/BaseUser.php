@@ -43,22 +43,16 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	protected $password;
 
 	/**
+	 * The value for the passwordupdated field.
+	 * @var        string
+	 */
+	protected $passwordupdated;
+
+	/**
 	 * The value for the active field.
 	 * @var        boolean
 	 */
 	protected $active;
-
-	/**
-	 * The value for the created field.
-	 * @var        string
-	 */
-	protected $created;
-
-	/**
-	 * The value for the updated field.
-	 * @var        string
-	 */
-	protected $updated;
 
 	/**
 	 * The value for the levelid field.
@@ -217,6 +211,44 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Get the [optionally formatted] temporal [passwordupdated] column value.
+	 * Fecha de actualizacion de la clave
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getPasswordupdated($format = '%Y/%m/%d')
+	{
+		if ($this->passwordupdated === null) {
+			return null;
+		}
+
+
+		if ($this->passwordupdated === '0000-00-00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->passwordupdated);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->passwordupdated, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
 	 * Get the [active] column value.
 	 * Is user active?
 	 * @return     boolean
@@ -224,82 +256,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	public function getActive()
 	{
 		return $this->active;
-	}
-
-	/**
-	 * Get the [optionally formatted] temporal [created] column value.
-	 * Creation date for
-	 *
-	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
-	 *							If format is NULL, then the raw DateTime object will be returned.
-	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-	 * @throws     PropelException - if unable to parse/validate the date/time value.
-	 */
-	public function getCreated($format = 'Y-m-d H:i:s')
-	{
-		if ($this->created === null) {
-			return null;
-		}
-
-
-		if ($this->created === '0000-00-00 00:00:00') {
-			// while technically this is not a default value of NULL,
-			// this seems to be closest in meaning.
-			return null;
-		} else {
-			try {
-				$dt = new DateTime($this->created);
-			} catch (Exception $x) {
-				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created, true), $x);
-			}
-		}
-
-		if ($format === null) {
-			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
-			return $dt;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $dt->format('U'));
-		} else {
-			return $dt->format($format);
-		}
-	}
-
-	/**
-	 * Get the [optionally formatted] temporal [updated] column value.
-	 * Last update date
-	 *
-	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
-	 *							If format is NULL, then the raw DateTime object will be returned.
-	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-	 * @throws     PropelException - if unable to parse/validate the date/time value.
-	 */
-	public function getUpdated($format = 'Y-m-d H:i:s')
-	{
-		if ($this->updated === null) {
-			return null;
-		}
-
-
-		if ($this->updated === '0000-00-00 00:00:00') {
-			// while technically this is not a default value of NULL,
-			// this seems to be closest in meaning.
-			return null;
-		} else {
-			try {
-				$dt = new DateTime($this->updated);
-			} catch (Exception $x) {
-				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->updated, true), $x);
-			}
-		}
-
-		if ($format === null) {
-			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
-			return $dt;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $dt->format('U'));
-		} else {
-			return $dt->format($format);
-		}
 	}
 
 	/**
@@ -623,6 +579,55 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	} // setPassword()
 
 	/**
+	 * Sets the value of [passwordupdated] column to a normalized version of the date/time value specified.
+	 * Fecha de actualizacion de la clave
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setPasswordupdated($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->passwordupdated !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->passwordupdated !== null && $tmpDt = new DateTime($this->passwordupdated)) ? $tmpDt->format('Y-m-d') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->passwordupdated = ($dt ? $dt->format('Y-m-d') : null);
+				$this->modifiedColumns[] = UserPeer::PASSWORDUPDATED;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setPasswordupdated()
+
+	/**
 	 * Set the value of [active] column.
 	 * Is user active?
 	 * @param      boolean $v new value
@@ -641,104 +646,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 		return $this;
 	} // setActive()
-
-	/**
-	 * Sets the value of [created] column to a normalized version of the date/time value specified.
-	 * Creation date for
-	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
-	 *						be treated as NULL for temporal objects.
-	 * @return     User The current object (for fluent API support)
-	 */
-	public function setCreated($v)
-	{
-		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
-		// -- which is unexpected, to say the least.
-		if ($v === null || $v === '') {
-			$dt = null;
-		} elseif ($v instanceof DateTime) {
-			$dt = $v;
-		} else {
-			// some string/numeric value passed; we normalize that so that we can
-			// validate it.
-			try {
-				if (is_numeric($v)) { // if it's a unix timestamp
-					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
-					// We have to explicitly specify and then change the time zone because of a
-					// DateTime bug: http://bugs.php.net/bug.php?id=43003
-					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
-				} else {
-					$dt = new DateTime($v);
-				}
-			} catch (Exception $x) {
-				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
-			}
-		}
-
-		if ( $this->created !== null || $dt !== null ) {
-			// (nested ifs are a little easier to read in this case)
-
-			$currNorm = ($this->created !== null && $tmpDt = new DateTime($this->created)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
-
-			if ( ($currNorm !== $newNorm) // normalized values don't match 
-					)
-			{
-				$this->created = ($dt ? $dt->format('Y-m-d H:i:s') : null);
-				$this->modifiedColumns[] = UserPeer::CREATED;
-			}
-		} // if either are not null
-
-		return $this;
-	} // setCreated()
-
-	/**
-	 * Sets the value of [updated] column to a normalized version of the date/time value specified.
-	 * Last update date
-	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
-	 *						be treated as NULL for temporal objects.
-	 * @return     User The current object (for fluent API support)
-	 */
-	public function setUpdated($v)
-	{
-		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
-		// -- which is unexpected, to say the least.
-		if ($v === null || $v === '') {
-			$dt = null;
-		} elseif ($v instanceof DateTime) {
-			$dt = $v;
-		} else {
-			// some string/numeric value passed; we normalize that so that we can
-			// validate it.
-			try {
-				if (is_numeric($v)) { // if it's a unix timestamp
-					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
-					// We have to explicitly specify and then change the time zone because of a
-					// DateTime bug: http://bugs.php.net/bug.php?id=43003
-					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
-				} else {
-					$dt = new DateTime($v);
-				}
-			} catch (Exception $x) {
-				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
-			}
-		}
-
-		if ( $this->updated !== null || $dt !== null ) {
-			// (nested ifs are a little easier to read in this case)
-
-			$currNorm = ($this->updated !== null && $tmpDt = new DateTime($this->updated)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
-
-			if ( ($currNorm !== $newNorm) // normalized values don't match 
-					)
-			{
-				$this->updated = ($dt ? $dt->format('Y-m-d H:i:s') : null);
-				$this->modifiedColumns[] = UserPeer::UPDATED;
-			}
-		} // if either are not null
-
-		return $this;
-	} // setUpdated()
 
 	/**
 	 * Set the value of [levelid] column.
@@ -1164,21 +1071,20 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->username = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->password = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-			$this->active = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
-			$this->created = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-			$this->updated = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-			$this->levelid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-			$this->lastlogin = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-			$this->timezone = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-			$this->recoveryhash = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-			$this->recoveryhashcreatedon = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-			$this->name = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-			$this->surname = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-			$this->mailaddress = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-			$this->mailaddressalt = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-			$this->deleted_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-			$this->created_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-			$this->updated_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+			$this->passwordupdated = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->active = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
+			$this->levelid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->lastlogin = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->timezone = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->recoveryhash = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->recoveryhashcreatedon = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->name = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+			$this->surname = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->mailaddress = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+			$this->mailaddressalt = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+			$this->deleted_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+			$this->created_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+			$this->updated_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -1187,7 +1093,7 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 18; // 18 = UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 17; // 17 = UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating User object", $e);
@@ -1631,48 +1537,45 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				return $this->getPassword();
 				break;
 			case 3:
-				return $this->getActive();
+				return $this->getPasswordupdated();
 				break;
 			case 4:
-				return $this->getCreated();
+				return $this->getActive();
 				break;
 			case 5:
-				return $this->getUpdated();
-				break;
-			case 6:
 				return $this->getLevelid();
 				break;
-			case 7:
+			case 6:
 				return $this->getLastlogin();
 				break;
-			case 8:
+			case 7:
 				return $this->getTimezone();
 				break;
-			case 9:
+			case 8:
 				return $this->getRecoveryhash();
 				break;
-			case 10:
+			case 9:
 				return $this->getRecoveryhashcreatedon();
 				break;
-			case 11:
+			case 10:
 				return $this->getName();
 				break;
-			case 12:
+			case 11:
 				return $this->getSurname();
 				break;
-			case 13:
+			case 12:
 				return $this->getMailaddress();
 				break;
-			case 14:
+			case 13:
 				return $this->getMailaddressalt();
 				break;
-			case 15:
+			case 14:
 				return $this->getDeletedAt();
 				break;
-			case 16:
+			case 15:
 				return $this->getCreatedAt();
 				break;
-			case 17:
+			case 16:
 				return $this->getUpdatedAt();
 				break;
 			default:
@@ -1702,21 +1605,20 @@ abstract class BaseUser extends BaseObject  implements Persistent
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getUsername(),
 			$keys[2] => $this->getPassword(),
-			$keys[3] => $this->getActive(),
-			$keys[4] => $this->getCreated(),
-			$keys[5] => $this->getUpdated(),
-			$keys[6] => $this->getLevelid(),
-			$keys[7] => $this->getLastlogin(),
-			$keys[8] => $this->getTimezone(),
-			$keys[9] => $this->getRecoveryhash(),
-			$keys[10] => $this->getRecoveryhashcreatedon(),
-			$keys[11] => $this->getName(),
-			$keys[12] => $this->getSurname(),
-			$keys[13] => $this->getMailaddress(),
-			$keys[14] => $this->getMailaddressalt(),
-			$keys[15] => $this->getDeletedAt(),
-			$keys[16] => $this->getCreatedAt(),
-			$keys[17] => $this->getUpdatedAt(),
+			$keys[3] => $this->getPasswordupdated(),
+			$keys[4] => $this->getActive(),
+			$keys[5] => $this->getLevelid(),
+			$keys[6] => $this->getLastlogin(),
+			$keys[7] => $this->getTimezone(),
+			$keys[8] => $this->getRecoveryhash(),
+			$keys[9] => $this->getRecoveryhashcreatedon(),
+			$keys[10] => $this->getName(),
+			$keys[11] => $this->getSurname(),
+			$keys[12] => $this->getMailaddress(),
+			$keys[13] => $this->getMailaddressalt(),
+			$keys[14] => $this->getDeletedAt(),
+			$keys[15] => $this->getCreatedAt(),
+			$keys[16] => $this->getUpdatedAt(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aLevel) {
@@ -1763,48 +1665,45 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				$this->setPassword($value);
 				break;
 			case 3:
-				$this->setActive($value);
+				$this->setPasswordupdated($value);
 				break;
 			case 4:
-				$this->setCreated($value);
+				$this->setActive($value);
 				break;
 			case 5:
-				$this->setUpdated($value);
-				break;
-			case 6:
 				$this->setLevelid($value);
 				break;
-			case 7:
+			case 6:
 				$this->setLastlogin($value);
 				break;
-			case 8:
+			case 7:
 				$this->setTimezone($value);
 				break;
-			case 9:
+			case 8:
 				$this->setRecoveryhash($value);
 				break;
-			case 10:
+			case 9:
 				$this->setRecoveryhashcreatedon($value);
 				break;
-			case 11:
+			case 10:
 				$this->setName($value);
 				break;
-			case 12:
+			case 11:
 				$this->setSurname($value);
 				break;
-			case 13:
+			case 12:
 				$this->setMailaddress($value);
 				break;
-			case 14:
+			case 13:
 				$this->setMailaddressalt($value);
 				break;
-			case 15:
+			case 14:
 				$this->setDeletedAt($value);
 				break;
-			case 16:
+			case 15:
 				$this->setCreatedAt($value);
 				break;
-			case 17:
+			case 16:
 				$this->setUpdatedAt($value);
 				break;
 		} // switch()
@@ -1834,21 +1733,20 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setUsername($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setPassword($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setActive($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setCreated($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setUpdated($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setLevelid($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setLastlogin($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setTimezone($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setRecoveryhash($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setRecoveryhashcreatedon($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setName($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setSurname($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setMailaddress($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setMailaddressalt($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setDeletedAt($arr[$keys[15]]);
-		if (array_key_exists($keys[16], $arr)) $this->setCreatedAt($arr[$keys[16]]);
-		if (array_key_exists($keys[17], $arr)) $this->setUpdatedAt($arr[$keys[17]]);
+		if (array_key_exists($keys[3], $arr)) $this->setPasswordupdated($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setActive($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setLevelid($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setLastlogin($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setTimezone($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setRecoveryhash($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setRecoveryhashcreatedon($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setName($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setSurname($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setMailaddress($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setMailaddressalt($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setDeletedAt($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setCreatedAt($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setUpdatedAt($arr[$keys[16]]);
 	}
 
 	/**
@@ -1863,9 +1761,8 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		if ($this->isColumnModified(UserPeer::ID)) $criteria->add(UserPeer::ID, $this->id);
 		if ($this->isColumnModified(UserPeer::USERNAME)) $criteria->add(UserPeer::USERNAME, $this->username);
 		if ($this->isColumnModified(UserPeer::PASSWORD)) $criteria->add(UserPeer::PASSWORD, $this->password);
+		if ($this->isColumnModified(UserPeer::PASSWORDUPDATED)) $criteria->add(UserPeer::PASSWORDUPDATED, $this->passwordupdated);
 		if ($this->isColumnModified(UserPeer::ACTIVE)) $criteria->add(UserPeer::ACTIVE, $this->active);
-		if ($this->isColumnModified(UserPeer::CREATED)) $criteria->add(UserPeer::CREATED, $this->created);
-		if ($this->isColumnModified(UserPeer::UPDATED)) $criteria->add(UserPeer::UPDATED, $this->updated);
 		if ($this->isColumnModified(UserPeer::LEVELID)) $criteria->add(UserPeer::LEVELID, $this->levelid);
 		if ($this->isColumnModified(UserPeer::LASTLOGIN)) $criteria->add(UserPeer::LASTLOGIN, $this->lastlogin);
 		if ($this->isColumnModified(UserPeer::TIMEZONE)) $criteria->add(UserPeer::TIMEZONE, $this->timezone);
@@ -1941,9 +1838,8 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	{
 		$copyObj->setUsername($this->username);
 		$copyObj->setPassword($this->password);
+		$copyObj->setPasswordupdated($this->passwordupdated);
 		$copyObj->setActive($this->active);
-		$copyObj->setCreated($this->created);
-		$copyObj->setUpdated($this->updated);
 		$copyObj->setLevelid($this->levelid);
 		$copyObj->setLastlogin($this->lastlogin);
 		$copyObj->setTimezone($this->timezone);
@@ -2891,9 +2787,8 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		$this->id = null;
 		$this->username = null;
 		$this->password = null;
+		$this->passwordupdated = null;
 		$this->active = null;
-		$this->created = null;
-		$this->updated = null;
 		$this->levelid = null;
 		$this->lastlogin = null;
 		$this->timezone = null;

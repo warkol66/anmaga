@@ -40,9 +40,8 @@ class UserTableMap extends TableMap {
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('USERNAME', 'Username', 'VARCHAR', true, 255, null);
 		$this->addColumn('PASSWORD', 'Password', 'VARCHAR', true, 255, null);
+		$this->addColumn('PASSWORDUPDATED', 'Passwordupdated', 'DATE', false, null, null);
 		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null, null);
-		$this->addColumn('CREATED', 'Created', 'TIMESTAMP', true, null, null);
-		$this->addColumn('UPDATED', 'Updated', 'TIMESTAMP', true, null, null);
 		$this->addForeignKey('LEVELID', 'Levelid', 'INTEGER', 'users_level', 'ID', false, null, null);
 		$this->addColumn('LASTLOGIN', 'Lastlogin', 'TIMESTAMP', false, null, null);
 		$this->addColumn('TIMEZONE', 'Timezone', 'VARCHAR', false, 25, null);
