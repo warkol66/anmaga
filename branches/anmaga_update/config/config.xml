@@ -25,6 +25,16 @@
 			<applicationTimeZoneGMT>
 				<element_type>TIMEZONE</element_type>
 			</applicationTimeZoneGMT>
+			<dateFormat>
+				<value>d-m-Y</value>
+				<element_type>Options</element_type>
+				<element_options>
+					<option_1>d-m-Y</option_1>
+					<option_2>m-d-Y</option_2>
+					<option_3>d-m-y</option_3>
+					<option_4>m-d-y</option_4>
+				</element_options>
+			</dateFormat>
 			<thousandsSeparator>.</thousandsSeparator>
 			<decimalSeparator>,</decimalSeparator>
 			<numberOfDecimals>2</numberOfDecimals>
@@ -39,13 +49,15 @@
 			<affiliateNews>Novedades: distinguidos Clientes, Bienvenido al sistema Anmaga.</affiliateNews>
 		</parameters>
 		<errorReporting>
-			<value>E_ALL ^ E_NOTICE</value>
+			<value>E_ALL &amp; ~E_NOTICE ~E_WARNING</value>
 			<element_type>Options</element_type>
 			<element_options>
-				<option_1></option_1>
-				<option_2>E_ALL ^ E_NOTICE</option_2>
+				<option_1>NONE</option_1>
+				<option_2>E_ALL &amp; ~E_NOTICE</option_2>
 				<option_3>E_ALL</option_3>
 				<option_4>E_STRICT</option_4>
+				<option_5>E_ALL &amp; E_STRICT</option_5>
+				<option_6>E_ALL &amp; ~E_NOTICE ~E_WARNING</option_6>
 			</element_options>
 		</errorReporting>
 		<noCheckPermissionActions>
@@ -129,6 +141,7 @@
 			</catalogPricesAutoUpdate>
 		</noCheckLoginActions>
 		<rowsPerPage>20</rowsPerPage>
+		<language>esp</language>
 	</system>
 	<mluse>
 		<language>esp</language>

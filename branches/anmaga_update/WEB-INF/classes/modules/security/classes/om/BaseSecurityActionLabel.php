@@ -49,9 +49,10 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 	protected $label;
 
 	/**
-	 * @var        SecurityAction one-to-one related SecurityAction object
+	 * The value for the description field.
+	 * @var        string
 	 */
-	protected $singleSecurityAction;
+	protected $description;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -105,6 +106,16 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 	public function getLabel()
 	{
 		return $this->label;
+	}
+
+	/**
+	 * Get the [description] column value.
+	 * Descripcion
+	 * @return     string
+	 */
+	public function getDescription()
+	{
+		return $this->description;
 	}
 
 	/**
@@ -188,6 +199,26 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 	} // setLabel()
 
 	/**
+	 * Set the value of [description] column.
+	 * Descripcion
+	 * @param      string $v new value
+	 * @return     SecurityActionLabel The current object (for fluent API support)
+	 */
+	public function setDescription($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->description !== $v) {
+			$this->description = $v;
+			$this->modifiedColumns[] = SecurityActionLabelPeer::DESCRIPTION;
+		}
+
+		return $this;
+	} // setDescription()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -223,6 +254,7 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 			$this->action = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->language = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->label = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -231,7 +263,7 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 4; // 4 = SecurityActionLabelPeer::NUM_COLUMNS - SecurityActionLabelPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 5; // 5 = SecurityActionLabelPeer::NUM_COLUMNS - SecurityActionLabelPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating SecurityActionLabel object", $e);
@@ -292,8 +324,6 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 		$this->hydrate($row, 0, true); // rehydrate
 
 		if ($deep) {  // also de-associate any related objects?
-
-			$this->singleSecurityAction = null;
 
 		} // if (deep)
 	}
@@ -428,12 +458,6 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
-			if ($this->singleSecurityAction !== null) {
-				if (!$this->singleSecurityAction->isDeleted()) {
-						$affectedRows += $this->singleSecurityAction->save($con);
-				}
-			}
-
 			$this->alreadyInSave = false;
 
 		}
@@ -505,12 +529,6 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 			}
 
 
-				if ($this->singleSecurityAction !== null) {
-					if (!$this->singleSecurityAction->validate($columns)) {
-						$failureMap = array_merge($failureMap, $this->singleSecurityAction->getValidationFailures());
-					}
-				}
-
 
 			$this->alreadyInValidation = false;
 		}
@@ -556,6 +574,9 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 			case 3:
 				return $this->getLabel();
 				break;
+			case 4:
+				return $this->getDescription();
+				break;
 			default:
 				return null;
 				break;
@@ -583,6 +604,7 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 			$keys[1] => $this->getAction(),
 			$keys[2] => $this->getLanguage(),
 			$keys[3] => $this->getLabel(),
+			$keys[4] => $this->getDescription(),
 		);
 		return $result;
 	}
@@ -626,6 +648,9 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 			case 3:
 				$this->setLabel($value);
 				break;
+			case 4:
+				$this->setDescription($value);
+				break;
 		} // switch()
 	}
 
@@ -654,6 +679,7 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 		if (array_key_exists($keys[1], $arr)) $this->setAction($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setLanguage($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setLabel($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
 	}
 
 	/**
@@ -669,6 +695,7 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 		if ($this->isColumnModified(SecurityActionLabelPeer::ACTION)) $criteria->add(SecurityActionLabelPeer::ACTION, $this->action);
 		if ($this->isColumnModified(SecurityActionLabelPeer::LANGUAGE)) $criteria->add(SecurityActionLabelPeer::LANGUAGE, $this->language);
 		if ($this->isColumnModified(SecurityActionLabelPeer::LABEL)) $criteria->add(SecurityActionLabelPeer::LABEL, $this->label);
+		if ($this->isColumnModified(SecurityActionLabelPeer::DESCRIPTION)) $criteria->add(SecurityActionLabelPeer::DESCRIPTION, $this->description);
 
 		return $criteria;
 	}
@@ -740,19 +767,7 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 		$copyObj->setAction($this->action);
 		$copyObj->setLanguage($this->language);
 		$copyObj->setLabel($this->label);
-
-		if ($deepCopy) {
-			// important: temporarily setNew(false) because this affects the behavior of
-			// the getter/setter methods for fkey referrer objects.
-			$copyObj->setNew(false);
-
-			$relObj = $this->getSecurityAction();
-			if ($relObj) {
-				$copyObj->setSecurityAction($relObj->copy($deepCopy));
-			}
-
-		} // if ($deepCopy)
-
+		$copyObj->setDescription($this->description);
 
 		$copyObj->setNew(true);
 		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -797,42 +812,6 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Gets a single SecurityAction object, which is related to this object by a one-to-one relationship.
-	 *
-	 * @param      PropelPDO $con optional connection object
-	 * @return     SecurityAction
-	 * @throws     PropelException
-	 */
-	public function getSecurityAction(PropelPDO $con = null)
-	{
-
-		if ($this->singleSecurityAction === null && !$this->isNew()) {
-			$this->singleSecurityAction = SecurityActionQuery::create()->findPk($this->getPrimaryKey(), $con);
-		}
-
-		return $this->singleSecurityAction;
-	}
-
-	/**
-	 * Sets a single SecurityAction object as related to this object by a one-to-one relationship.
-	 *
-	 * @param      SecurityAction $v SecurityAction
-	 * @return     SecurityActionLabel The current object (for fluent API support)
-	 * @throws     PropelException
-	 */
-	public function setSecurityAction(SecurityAction $v = null)
-	{
-		$this->singleSecurityAction = $v;
-
-		// Make sure that that the passed-in SecurityAction isn't already associated with this object
-		if ($v !== null && $v->getSecurityActionLabel() === null) {
-			$v->setSecurityActionLabel($this);
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
 	public function clear()
@@ -841,6 +820,7 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 		$this->action = null;
 		$this->language = null;
 		$this->label = null;
+		$this->description = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
@@ -861,12 +841,8 @@ abstract class BaseSecurityActionLabel extends BaseObject  implements Persistent
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
-			if ($this->singleSecurityAction) {
-				$this->singleSecurityAction->clearAllReferences($deep);
-			}
 		} // if ($deep)
 
-		$this->singleSecurityAction = null;
 	}
 
 	/**

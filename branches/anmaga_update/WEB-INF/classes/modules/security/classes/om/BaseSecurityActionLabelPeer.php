@@ -26,7 +26,7 @@ abstract class BaseSecurityActionLabelPeer {
 	const TM_CLASS = 'SecurityActionLabelTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 4;
+	const NUM_COLUMNS = 5;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -42,6 +42,9 @@ abstract class BaseSecurityActionLabelPeer {
 
 	/** the column name for the LABEL field */
 	const LABEL = 'security_actionLabel.LABEL';
+
+	/** the column name for the DESCRIPTION field */
+	const DESCRIPTION = 'security_actionLabel.DESCRIPTION';
 
 	/**
 	 * An identiy map to hold any loaded instances of SecurityActionLabel objects.
@@ -59,12 +62,12 @@ abstract class BaseSecurityActionLabelPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Action', 'Language', 'Label', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'action', 'language', 'label', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::ACTION, self::LANGUAGE, self::LABEL, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'ACTION', 'LANGUAGE', 'LABEL', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'action', 'language', 'label', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Action', 'Language', 'Label', 'Description', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'action', 'language', 'label', 'description', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::ACTION, self::LANGUAGE, self::LABEL, self::DESCRIPTION, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'ACTION', 'LANGUAGE', 'LABEL', 'DESCRIPTION', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'action', 'language', 'label', 'description', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	/**
@@ -74,12 +77,12 @@ abstract class BaseSecurityActionLabelPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Action' => 1, 'Language' => 2, 'Label' => 3, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'action' => 1, 'language' => 2, 'label' => 3, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::ACTION => 1, self::LANGUAGE => 2, self::LABEL => 3, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'ACTION' => 1, 'LANGUAGE' => 2, 'LABEL' => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'action' => 1, 'language' => 2, 'label' => 3, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Action' => 1, 'Language' => 2, 'Label' => 3, 'Description' => 4, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'action' => 1, 'language' => 2, 'label' => 3, 'description' => 4, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::ACTION => 1, self::LANGUAGE => 2, self::LABEL => 3, self::DESCRIPTION => 4, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'ACTION' => 1, 'LANGUAGE' => 2, 'LABEL' => 3, 'DESCRIPTION' => 4, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'action' => 1, 'language' => 2, 'label' => 3, 'description' => 4, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	/**
@@ -155,11 +158,13 @@ abstract class BaseSecurityActionLabelPeer {
 			$criteria->addSelectColumn(SecurityActionLabelPeer::ACTION);
 			$criteria->addSelectColumn(SecurityActionLabelPeer::LANGUAGE);
 			$criteria->addSelectColumn(SecurityActionLabelPeer::LABEL);
+			$criteria->addSelectColumn(SecurityActionLabelPeer::DESCRIPTION);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.ACTION');
 			$criteria->addSelectColumn($alias . '.LANGUAGE');
 			$criteria->addSelectColumn($alias . '.LABEL');
+			$criteria->addSelectColumn($alias . '.DESCRIPTION');
 		}
 	}
 

@@ -26,7 +26,7 @@ abstract class BaseSecurityActionPeer {
 	const TM_CLASS = 'SecurityActionTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 7;
+	const NUM_COLUMNS = 9;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -46,11 +46,17 @@ abstract class BaseSecurityActionPeer {
 	/** the column name for the ACCESSAFFILIATEUSER field */
 	const ACCESSAFFILIATEUSER = 'security_action.ACCESSAFFILIATEUSER';
 
+	/** the column name for the ACCESSREGISTRATIONUSER field */
+	const ACCESSREGISTRATIONUSER = 'security_action.ACCESSREGISTRATIONUSER';
+
 	/** the column name for the ACTIVE field */
 	const ACTIVE = 'security_action.ACTIVE';
 
 	/** the column name for the PAIR field */
 	const PAIR = 'security_action.PAIR';
+
+	/** the column name for the NOCHECKLOGIN field */
+	const NOCHECKLOGIN = 'security_action.NOCHECKLOGIN';
 
 	/**
 	 * An identiy map to hold any loaded instances of SecurityAction objects.
@@ -68,12 +74,12 @@ abstract class BaseSecurityActionPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Action', 'Module', 'Section', 'Access', 'Accessaffiliateuser', 'Active', 'Pair', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('action', 'module', 'section', 'access', 'accessaffiliateuser', 'active', 'pair', ),
-		BasePeer::TYPE_COLNAME => array (self::ACTION, self::MODULE, self::SECTION, self::ACCESS, self::ACCESSAFFILIATEUSER, self::ACTIVE, self::PAIR, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ACTION', 'MODULE', 'SECTION', 'ACCESS', 'ACCESSAFFILIATEUSER', 'ACTIVE', 'PAIR', ),
-		BasePeer::TYPE_FIELDNAME => array ('action', 'module', 'section', 'access', 'accessAffiliateUser', 'active', 'pair', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+		BasePeer::TYPE_PHPNAME => array ('Action', 'Module', 'Section', 'Access', 'Accessaffiliateuser', 'Accessregistrationuser', 'Active', 'Pair', 'Nochecklogin', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('action', 'module', 'section', 'access', 'accessaffiliateuser', 'accessregistrationuser', 'active', 'pair', 'nochecklogin', ),
+		BasePeer::TYPE_COLNAME => array (self::ACTION, self::MODULE, self::SECTION, self::ACCESS, self::ACCESSAFFILIATEUSER, self::ACCESSREGISTRATIONUSER, self::ACTIVE, self::PAIR, self::NOCHECKLOGIN, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ACTION', 'MODULE', 'SECTION', 'ACCESS', 'ACCESSAFFILIATEUSER', 'ACCESSREGISTRATIONUSER', 'ACTIVE', 'PAIR', 'NOCHECKLOGIN', ),
+		BasePeer::TYPE_FIELDNAME => array ('action', 'module', 'section', 'access', 'accessAffiliateUser', 'accessRegistrationUser', 'active', 'pair', 'noCheckLogin', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	/**
@@ -83,12 +89,12 @@ abstract class BaseSecurityActionPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Action' => 0, 'Module' => 1, 'Section' => 2, 'Access' => 3, 'Accessaffiliateuser' => 4, 'Active' => 5, 'Pair' => 6, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('action' => 0, 'module' => 1, 'section' => 2, 'access' => 3, 'accessaffiliateuser' => 4, 'active' => 5, 'pair' => 6, ),
-		BasePeer::TYPE_COLNAME => array (self::ACTION => 0, self::MODULE => 1, self::SECTION => 2, self::ACCESS => 3, self::ACCESSAFFILIATEUSER => 4, self::ACTIVE => 5, self::PAIR => 6, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ACTION' => 0, 'MODULE' => 1, 'SECTION' => 2, 'ACCESS' => 3, 'ACCESSAFFILIATEUSER' => 4, 'ACTIVE' => 5, 'PAIR' => 6, ),
-		BasePeer::TYPE_FIELDNAME => array ('action' => 0, 'module' => 1, 'section' => 2, 'access' => 3, 'accessAffiliateUser' => 4, 'active' => 5, 'pair' => 6, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+		BasePeer::TYPE_PHPNAME => array ('Action' => 0, 'Module' => 1, 'Section' => 2, 'Access' => 3, 'Accessaffiliateuser' => 4, 'Accessregistrationuser' => 5, 'Active' => 6, 'Pair' => 7, 'Nochecklogin' => 8, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('action' => 0, 'module' => 1, 'section' => 2, 'access' => 3, 'accessaffiliateuser' => 4, 'accessregistrationuser' => 5, 'active' => 6, 'pair' => 7, 'nochecklogin' => 8, ),
+		BasePeer::TYPE_COLNAME => array (self::ACTION => 0, self::MODULE => 1, self::SECTION => 2, self::ACCESS => 3, self::ACCESSAFFILIATEUSER => 4, self::ACCESSREGISTRATIONUSER => 5, self::ACTIVE => 6, self::PAIR => 7, self::NOCHECKLOGIN => 8, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ACTION' => 0, 'MODULE' => 1, 'SECTION' => 2, 'ACCESS' => 3, 'ACCESSAFFILIATEUSER' => 4, 'ACCESSREGISTRATIONUSER' => 5, 'ACTIVE' => 6, 'PAIR' => 7, 'NOCHECKLOGIN' => 8, ),
+		BasePeer::TYPE_FIELDNAME => array ('action' => 0, 'module' => 1, 'section' => 2, 'access' => 3, 'accessAffiliateUser' => 4, 'accessRegistrationUser' => 5, 'active' => 6, 'pair' => 7, 'noCheckLogin' => 8, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	/**
@@ -165,16 +171,20 @@ abstract class BaseSecurityActionPeer {
 			$criteria->addSelectColumn(SecurityActionPeer::SECTION);
 			$criteria->addSelectColumn(SecurityActionPeer::ACCESS);
 			$criteria->addSelectColumn(SecurityActionPeer::ACCESSAFFILIATEUSER);
+			$criteria->addSelectColumn(SecurityActionPeer::ACCESSREGISTRATIONUSER);
 			$criteria->addSelectColumn(SecurityActionPeer::ACTIVE);
 			$criteria->addSelectColumn(SecurityActionPeer::PAIR);
+			$criteria->addSelectColumn(SecurityActionPeer::NOCHECKLOGIN);
 		} else {
 			$criteria->addSelectColumn($alias . '.ACTION');
 			$criteria->addSelectColumn($alias . '.MODULE');
 			$criteria->addSelectColumn($alias . '.SECTION');
 			$criteria->addSelectColumn($alias . '.ACCESS');
 			$criteria->addSelectColumn($alias . '.ACCESSAFFILIATEUSER');
+			$criteria->addSelectColumn($alias . '.ACCESSREGISTRATIONUSER');
 			$criteria->addSelectColumn($alias . '.ACTIVE');
 			$criteria->addSelectColumn($alias . '.PAIR');
+			$criteria->addSelectColumn($alias . '.NOCHECKLOGIN');
 		}
 	}
 
@@ -461,7 +471,7 @@ abstract class BaseSecurityActionPeer {
 	}
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related SecurityActionLabel table
+	 * Returns the number of rows matching criteria, joining the related SecurityModule table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -469,7 +479,7 @@ abstract class BaseSecurityActionPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinSecurityActionLabel(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinSecurityModule(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -496,7 +506,7 @@ abstract class BaseSecurityActionPeer {
 			$con = Propel::getConnection(SecurityActionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(SecurityActionPeer::ACTION, SecurityActionLabelPeer::ACTION, $join_behavior);
+		$criteria->addJoin(SecurityActionPeer::MODULE, SecurityModulePeer::MODULE, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -511,7 +521,7 @@ abstract class BaseSecurityActionPeer {
 
 
 	/**
-	 * Selects a collection of SecurityAction objects pre-filled with their SecurityActionLabel objects.
+	 * Selects a collection of SecurityAction objects pre-filled with their SecurityModule objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -519,7 +529,7 @@ abstract class BaseSecurityActionPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinSecurityActionLabel(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinSecurityModule(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -530,9 +540,9 @@ abstract class BaseSecurityActionPeer {
 
 		SecurityActionPeer::addSelectColumns($criteria);
 		$startcol = (SecurityActionPeer::NUM_COLUMNS - SecurityActionPeer::NUM_LAZY_LOAD_COLUMNS);
-		SecurityActionLabelPeer::addSelectColumns($criteria);
+		SecurityModulePeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(SecurityActionPeer::ACTION, SecurityActionLabelPeer::ACTION, $join_behavior);
+		$criteria->addJoin(SecurityActionPeer::MODULE, SecurityModulePeer::MODULE, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -552,21 +562,20 @@ abstract class BaseSecurityActionPeer {
 				SecurityActionPeer::addInstanceToPool($obj1, $key1);
 			} // if $obj1 already loaded
 
-			$key2 = SecurityActionLabelPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			$key2 = SecurityModulePeer::getPrimaryKeyHashFromRow($row, $startcol);
 			if ($key2 !== null) {
-				$obj2 = SecurityActionLabelPeer::getInstanceFromPool($key2);
+				$obj2 = SecurityModulePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = SecurityActionLabelPeer::getOMClass(false);
+					$cls = SecurityModulePeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
-					SecurityActionLabelPeer::addInstanceToPool($obj2, $key2);
+					SecurityModulePeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 
-				// Add the $obj1 (SecurityAction) to $obj2 (SecurityActionLabel)
-				// one to one relationship
-				$obj1->setSecurityActionLabel($obj2);
+				// Add the $obj1 (SecurityAction) to $obj2 (SecurityModule)
+				$obj2->addSecurityAction($obj1);
 
 			} // if joined row was not null
 
@@ -613,7 +622,7 @@ abstract class BaseSecurityActionPeer {
 			$con = Propel::getConnection(SecurityActionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(SecurityActionPeer::ACTION, SecurityActionLabelPeer::ACTION, $join_behavior);
+		$criteria->addJoin(SecurityActionPeer::MODULE, SecurityModulePeer::MODULE, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -648,10 +657,10 @@ abstract class BaseSecurityActionPeer {
 		SecurityActionPeer::addSelectColumns($criteria);
 		$startcol2 = (SecurityActionPeer::NUM_COLUMNS - SecurityActionPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		SecurityActionLabelPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (SecurityActionLabelPeer::NUM_COLUMNS - SecurityActionLabelPeer::NUM_LAZY_LOAD_COLUMNS);
+		SecurityModulePeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (SecurityModulePeer::NUM_COLUMNS - SecurityModulePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(SecurityActionPeer::ACTION, SecurityActionLabelPeer::ACTION, $join_behavior);
+		$criteria->addJoin(SecurityActionPeer::MODULE, SecurityModulePeer::MODULE, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -670,22 +679,22 @@ abstract class BaseSecurityActionPeer {
 				SecurityActionPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-			// Add objects for joined SecurityActionLabel rows
+			// Add objects for joined SecurityModule rows
 
-			$key2 = SecurityActionLabelPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+			$key2 = SecurityModulePeer::getPrimaryKeyHashFromRow($row, $startcol2);
 			if ($key2 !== null) {
-				$obj2 = SecurityActionLabelPeer::getInstanceFromPool($key2);
+				$obj2 = SecurityModulePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = SecurityActionLabelPeer::getOMClass(false);
+					$cls = SecurityModulePeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					SecurityActionLabelPeer::addInstanceToPool($obj2, $key2);
+					SecurityModulePeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 loaded
 
-				// Add the $obj1 (SecurityAction) to the collection in $obj2 (SecurityActionLabel)
-				$obj1->setSecurityActionLabel($obj2);
+				// Add the $obj1 (SecurityAction) to the collection in $obj2 (SecurityModule)
+				$obj2->addSecurityAction($obj1);
 			} // if joined row not null
 
 			$results[] = $obj1;

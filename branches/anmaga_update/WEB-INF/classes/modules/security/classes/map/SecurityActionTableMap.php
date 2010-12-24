@@ -37,13 +37,15 @@ class SecurityActionTableMap extends TableMap {
 		$this->setPackage('security.classes');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ACTION', 'Action', 'VARCHAR' , 'security_actionLabel', 'ACTION', true, 100, null);
-		$this->addColumn('MODULE', 'Module', 'VARCHAR', false, 100, null);
+		$this->addPrimaryKey('ACTION', 'Action', 'VARCHAR', true, 100, null);
+		$this->addForeignKey('MODULE', 'Module', 'VARCHAR', 'security_module', 'MODULE', false, 100, null);
 		$this->addColumn('SECTION', 'Section', 'VARCHAR', false, 100, null);
 		$this->addColumn('ACCESS', 'Access', 'INTEGER', false, null, null);
 		$this->addColumn('ACCESSAFFILIATEUSER', 'Accessaffiliateuser', 'INTEGER', false, null, null);
+		$this->addColumn('ACCESSREGISTRATIONUSER', 'Accessregistrationuser', 'INTEGER', false, null, null);
 		$this->addColumn('ACTIVE', 'Active', 'INTEGER', false, null, null);
 		$this->addColumn('PAIR', 'Pair', 'VARCHAR', false, 100, null);
+		$this->addColumn('NOCHECKLOGIN', 'Nochecklogin', 'BOOLEAN', false, null, false);
 		// validators
 	} // initialize()
 
@@ -52,7 +54,7 @@ class SecurityActionTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('SecurityActionLabel', 'SecurityActionLabel', RelationMap::MANY_TO_ONE, array('action' => 'action', ), null, null);
+    $this->addRelation('SecurityModule', 'SecurityModule', RelationMap::MANY_TO_ONE, array('module' => 'module', ), null, null);
     $this->addRelation('ActionLog', 'ActionLog', RelationMap::ONE_TO_MANY, array('action' => 'action', ), null, null);
 	} // buildRelations()
 

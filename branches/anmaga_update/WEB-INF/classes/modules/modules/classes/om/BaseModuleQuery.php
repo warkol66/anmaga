@@ -26,6 +26,10 @@
  * @method     ModuleQuery rightJoinModuleLabel($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ModuleLabel relation
  * @method     ModuleQuery innerJoinModuleLabel($relationAlias = null) Adds a INNER JOIN clause to the query using the ModuleLabel relation
  *
+ * @method     ModuleQuery leftJoinMultilangText($relationAlias = null) Adds a LEFT JOIN clause to the query using the MultilangText relation
+ * @method     ModuleQuery rightJoinMultilangText($relationAlias = null) Adds a RIGHT JOIN clause to the query using the MultilangText relation
+ * @method     ModuleQuery innerJoinMultilangText($relationAlias = null) Adds a INNER JOIN clause to the query using the MultilangText relation
+ *
  * @method     Module findOne(PropelPDO $con = null) Return the first Module matching the query
  * @method     Module findOneOrCreate(PropelPDO $con = null) Return the first Module matching the query, or a new Module object populated from the query conditions when no match is found
  *
@@ -327,6 +331,70 @@ abstract class BaseModuleQuery extends ModelCriteria
 		return $this
 			->joinModuleLabel($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'ModuleLabel', 'ModuleLabelQuery');
+	}
+
+	/**
+	 * Filter the query by a related MultilangText object
+	 *
+	 * @param     MultilangText $multilangText  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ModuleQuery The current query, for fluid interface
+	 */
+	public function filterByMultilangText($multilangText, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(ModulePeer::NAME, $multilangText->getModulename(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the MultilangText relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ModuleQuery The current query, for fluid interface
+	 */
+	public function joinMultilangText($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('MultilangText');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'MultilangText');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the MultilangText relation MultilangText object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    MultilangTextQuery A secondary query class using the current class as primary query
+	 */
+	public function useMultilangTextQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		return $this
+			->joinMultilangText($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'MultilangText', 'MultilangTextQuery');
 	}
 
 	/**
