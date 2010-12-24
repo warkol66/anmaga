@@ -135,6 +135,17 @@ class Common {
 	}
 
 	/**
+	 * Indica si es un usuario comun.
+	 */
+	function isSystemUser() {
+	
+		if (isset($_SESSION["loginUser"]))
+				return true;
+		return false;
+	
+	}
+	
+	/**
 	 * Indica si el usuario es administrador
 	 */
 	function isAdmin() {
