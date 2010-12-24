@@ -9,9 +9,8 @@
  * @method     UserQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     UserQuery orderByUsername($order = Criteria::ASC) Order by the username column
  * @method     UserQuery orderByPassword($order = Criteria::ASC) Order by the password column
+ * @method     UserQuery orderByPasswordupdated($order = Criteria::ASC) Order by the passwordUpdated column
  * @method     UserQuery orderByActive($order = Criteria::ASC) Order by the active column
- * @method     UserQuery orderByCreated($order = Criteria::ASC) Order by the created column
- * @method     UserQuery orderByUpdated($order = Criteria::ASC) Order by the updated column
  * @method     UserQuery orderByLevelid($order = Criteria::ASC) Order by the levelId column
  * @method     UserQuery orderByLastlogin($order = Criteria::ASC) Order by the lastLogin column
  * @method     UserQuery orderByTimezone($order = Criteria::ASC) Order by the timezone column
@@ -28,9 +27,8 @@
  * @method     UserQuery groupById() Group by the id column
  * @method     UserQuery groupByUsername() Group by the username column
  * @method     UserQuery groupByPassword() Group by the password column
+ * @method     UserQuery groupByPasswordupdated() Group by the passwordUpdated column
  * @method     UserQuery groupByActive() Group by the active column
- * @method     UserQuery groupByCreated() Group by the created column
- * @method     UserQuery groupByUpdated() Group by the updated column
  * @method     UserQuery groupByLevelid() Group by the levelId column
  * @method     UserQuery groupByLastlogin() Group by the lastLogin column
  * @method     UserQuery groupByTimezone() Group by the timezone column
@@ -78,9 +76,8 @@
  * @method     User findOneById(int $id) Return the first User filtered by the id column
  * @method     User findOneByUsername(string $username) Return the first User filtered by the username column
  * @method     User findOneByPassword(string $password) Return the first User filtered by the password column
+ * @method     User findOneByPasswordupdated(string $passwordUpdated) Return the first User filtered by the passwordUpdated column
  * @method     User findOneByActive(boolean $active) Return the first User filtered by the active column
- * @method     User findOneByCreated(string $created) Return the first User filtered by the created column
- * @method     User findOneByUpdated(string $updated) Return the first User filtered by the updated column
  * @method     User findOneByLevelid(int $levelId) Return the first User filtered by the levelId column
  * @method     User findOneByLastlogin(string $lastLogin) Return the first User filtered by the lastLogin column
  * @method     User findOneByTimezone(string $timezone) Return the first User filtered by the timezone column
@@ -97,9 +94,8 @@
  * @method     array findById(int $id) Return User objects filtered by the id column
  * @method     array findByUsername(string $username) Return User objects filtered by the username column
  * @method     array findByPassword(string $password) Return User objects filtered by the password column
+ * @method     array findByPasswordupdated(string $passwordUpdated) Return User objects filtered by the passwordUpdated column
  * @method     array findByActive(boolean $active) Return User objects filtered by the active column
- * @method     array findByCreated(string $created) Return User objects filtered by the created column
- * @method     array findByUpdated(string $updated) Return User objects filtered by the updated column
  * @method     array findByLevelid(int $levelId) Return User objects filtered by the levelId column
  * @method     array findByLastlogin(string $lastLogin) Return User objects filtered by the lastLogin column
  * @method     array findByTimezone(string $timezone) Return User objects filtered by the timezone column
@@ -287,6 +283,37 @@ abstract class BaseUserQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query on the passwordUpdated column
+	 * 
+	 * @param     string|array $passwordupdated The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByPasswordupdated($passwordupdated = null, $comparison = null)
+	{
+		if (is_array($passwordupdated)) {
+			$useMinMax = false;
+			if (isset($passwordupdated['min'])) {
+				$this->addUsingAlias(UserPeer::PASSWORDUPDATED, $passwordupdated['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($passwordupdated['max'])) {
+				$this->addUsingAlias(UserPeer::PASSWORDUPDATED, $passwordupdated['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::PASSWORDUPDATED, $passwordupdated, $comparison);
+	}
+
+	/**
 	 * Filter the query on the active column
 	 * 
 	 * @param     boolean|string $active The value to use as filter.
@@ -301,68 +328,6 @@ abstract class BaseUserQuery extends ModelCriteria
 			$active = in_array(strtolower($active), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
 		}
 		return $this->addUsingAlias(UserPeer::ACTIVE, $active, $comparison);
-	}
-
-	/**
-	 * Filter the query on the created column
-	 * 
-	 * @param     string|array $created The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    UserQuery The current query, for fluid interface
-	 */
-	public function filterByCreated($created = null, $comparison = null)
-	{
-		if (is_array($created)) {
-			$useMinMax = false;
-			if (isset($created['min'])) {
-				$this->addUsingAlias(UserPeer::CREATED, $created['min'], Criteria::GREATER_EQUAL);
-				$useMinMax = true;
-			}
-			if (isset($created['max'])) {
-				$this->addUsingAlias(UserPeer::CREATED, $created['max'], Criteria::LESS_EQUAL);
-				$useMinMax = true;
-			}
-			if ($useMinMax) {
-				return $this;
-			}
-			if (null === $comparison) {
-				$comparison = Criteria::IN;
-			}
-		}
-		return $this->addUsingAlias(UserPeer::CREATED, $created, $comparison);
-	}
-
-	/**
-	 * Filter the query on the updated column
-	 * 
-	 * @param     string|array $updated The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    UserQuery The current query, for fluid interface
-	 */
-	public function filterByUpdated($updated = null, $comparison = null)
-	{
-		if (is_array($updated)) {
-			$useMinMax = false;
-			if (isset($updated['min'])) {
-				$this->addUsingAlias(UserPeer::UPDATED, $updated['min'], Criteria::GREATER_EQUAL);
-				$useMinMax = true;
-			}
-			if (isset($updated['max'])) {
-				$this->addUsingAlias(UserPeer::UPDATED, $updated['max'], Criteria::LESS_EQUAL);
-				$useMinMax = true;
-			}
-			if ($useMinMax) {
-				return $this;
-			}
-			if (null === $comparison) {
-				$comparison = Criteria::IN;
-			}
-		}
-		return $this->addUsingAlias(UserPeer::UPDATED, $updated, $comparison);
 	}
 
 	/**

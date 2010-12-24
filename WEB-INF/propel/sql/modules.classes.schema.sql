@@ -58,5 +58,100 @@ CREATE TABLE `modules_label`
 		ON DELETE CASCADE
 ) ENGINE=MyISAM COMMENT='Etiquetas de modulos ';
 
+#-----------------------------------------------------------------------------
+#-- modules_entity
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `modules_entity`;
+
+
+CREATE TABLE `modules_entity`
+(
+	`moduleName` VARCHAR(50)  NOT NULL COMMENT 'nombre del modulo',
+	`name` VARCHAR(50)  NOT NULL COMMENT 'Nombre de la entidad',
+	`phpName` VARCHAR(50)   COMMENT 'Nombre de la Clase',
+	`description` VARCHAR(255)   COMMENT 'Descripcion de la entidad',
+	`softDelete` BOOL   COMMENT 'Indica si usa softdelete',
+	`relation` BOOL   COMMENT 'Indica si es una entidad principal o una relacion de dos entidades',
+	`saveLog` BOOL   COMMENT 'Indica si guarda log de cambios',
+	`nestedset` BOOL   COMMENT 'Indica si es una entidad nestedset',
+	`scopeFieldUniqueName` VARCHAR(100)   COMMENT 'Indica el campo que es usado como scope en el nestedset',
+	PRIMARY KEY (`name`),
+	INDEX `modules_entity_FI_1` (`moduleName`),
+	CONSTRAINT `modules_entity_FK_1`
+		FOREIGN KEY (`moduleName`)
+		REFERENCES `modules_module` (`name`),
+	INDEX `modules_entity_FI_2` (`scopeFieldUniqueName`),
+	CONSTRAINT `modules_entity_FK_2`
+		FOREIGN KEY (`scopeFieldUniqueName`)
+		REFERENCES `modules_entityField` (`uniqueName`)
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Entidades de modulos ';
+
+#-----------------------------------------------------------------------------
+#-- modules_entityField
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `modules_entityField`;
+
+
+CREATE TABLE `modules_entityField`
+(
+	`uniqueName` VARCHAR(100)  NOT NULL COMMENT 'Nombre unico del campo',
+	`entityName` VARCHAR(50)  NOT NULL COMMENT 'Nombre de la entidad',
+	`name` VARCHAR(50)  NOT NULL COMMENT 'Nombre del campo (max 50 caracteres)',
+	`description` VARCHAR(255)   COMMENT 'Descripcion del campo (comment)',
+	`isRequired` BOOL   COMMENT 'Indica si es obligatorio',
+	`isPrimaryKey` BOOL   COMMENT 'Indica si clave primaria',
+	`isAutoIncrement` BOOL   COMMENT 'Indica si el campo es autoincremental',
+	`order` INTEGER  NOT NULL COMMENT 'Orden',
+	`type` INTEGER  NOT NULL COMMENT 'Tipo de campo',
+	`unique` BOOL   COMMENT 'Indica si es unica',
+	`size` INTEGER   COMMENT 'Size del campo',
+	`aggregateExpression` VARCHAR(255)   COMMENT 'Detalles de la expresion agregada',
+	`label` VARCHAR(255)   COMMENT 'Etiqueta para el formulario',
+	`formFieldType` INTEGER   COMMENT 'Tipo de campo para formulario',
+	`formFieldSize` INTEGER   COMMENT 'Size del campo en formulario',
+	`formFieldLines` INTEGER   COMMENT 'Size del campo en formulario lineas',
+	`formFieldUseCalendar` BOOL   COMMENT 'Si utiliza o no el calendario en formulario',
+	`foreignKeyTable` VARCHAR(50)   COMMENT 'Entidad con la que enlaza la clave remota',
+	`foreignKeyRemote` VARCHAR(100)   COMMENT 'Nombre del campo en la tabla remota',
+	PRIMARY KEY (`uniqueName`),
+	INDEX `modules_entityField_FI_1` (`entityName`),
+	CONSTRAINT `modules_entityField_FK_1`
+		FOREIGN KEY (`entityName`)
+		REFERENCES `modules_entity` (`name`)
+		ON DELETE CASCADE,
+	INDEX `modules_entityField_FI_2` (`foreignKeyTable`),
+	CONSTRAINT `modules_entityField_FK_2`
+		FOREIGN KEY (`foreignKeyTable`)
+		REFERENCES `modules_entity` (`name`)
+		ON DELETE SET NULL,
+	INDEX `modules_entityField_FI_3` (`foreignKeyRemote`),
+	CONSTRAINT `modules_entityField_FK_3`
+		FOREIGN KEY (`foreignKeyRemote`)
+		REFERENCES `modules_entityField` (`uniqueName`)
+		ON DELETE SET NULL
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Campos de las entidades de modulos';
+
+#-----------------------------------------------------------------------------
+#-- modules_entityFieldValidation
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `modules_entityFieldValidation`;
+
+
+CREATE TABLE `modules_entityFieldValidation`
+(
+	`entityFieldUniqueName` VARCHAR(100)  NOT NULL COMMENT 'Nombre unico del campo',
+	`name` VARCHAR(50)  NOT NULL COMMENT 'Nombre del validador',
+	`value` VARCHAR(50)   COMMENT 'Valor del validador',
+	`message` VARCHAR(255)   COMMENT 'Mensaje',
+	PRIMARY KEY (`entityFieldUniqueName`,`name`),
+	CONSTRAINT `modules_entityFieldValidation_FK_1`
+		FOREIGN KEY (`entityFieldUniqueName`)
+		REFERENCES `modules_entityField` (`uniqueName`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM COMMENT='Validaciones de los campos de las entidades de modulos ';
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
