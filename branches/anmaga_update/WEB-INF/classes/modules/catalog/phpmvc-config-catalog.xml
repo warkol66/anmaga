@@ -185,7 +185,79 @@
 					 validate = "true">
 			<forward name="success" path="Main.php?do=catalogMeasureUnitsList&amp;message=deleted_ok" redirect="true" />
 		</action>
+<!-- End Section MeasureUnits -->		
+<!-- Module Catalog - Section AffilateProductsImport -->
+
+    <action    path = "catalogAffiliateProductsImport"
+               type = "CatalogAffiliateProductsImportAction"
+               name = "catalogAffiliateProductsImport"
+              scope = "request"
+           validate = "true">
+		<forward name="success"  path="CatalogAffiliateProductsImport.tpl" />
+    </action>
+ 
+   
+    <action    path = "catalogAffiliateProductsDoImport"
+               type = "CatalogAffiliateProductsDoImportAction"
+               name = "catalogAffiliateProductsDoImport"
+              scope = "request"
+           validate = "true">
+		<forward name="success"  path="CatalogAffiliateProductsImport.tpl" />
+    </action>
+
+<!-- End Section AffilateProductsImport -->
+
+<!-- Section AffiliateProductCodes -->
+    <action    path = "catalogAffiliateProductCodesEdit"
+               type = "CatalogAffiliateProductCodesEditAction"
+               name = "catalogAffiliateProductCodesEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="CatalogAffiliateProductCodesEdit.tpl" />
+    </action>
+
+    <action    path = "catalogAffiliateProductCodesDoEdit"
+               type = "CatalogAffiliateProductCodesDoEditAction"
+               name = "catalogAffiliateProductCodesDoEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=catalogAffiliateProductCodesList&amp;message=ok" redirect="true" />
+    <forward name="failure" path="CatalogAffiliateProductCodesEdit.tpl" />
+    </action>
+
+    <action    path = "catalogAffiliateProductCodesList"
+               type = "CatalogAffiliateProductCodesListAction"
+               name = "catalogAffiliateProductCodesList"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="CatalogAffiliateProductCodesList.tpl" />
+    </action>
+
+    <action    path = "catalogAffiliateProductCodesDoDel"
+               type = "CatalogAffiliateProductCodesDoDelAction"
+               name = "catalogAffiliateProductCodesDoDel"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="Main.php?do=catalogAffiliateProductCodesList&amp;message=deleted_ok" redirect="true" />
+    </action>
+
+	<action    path = "catalogAffiliateProductList"
+						 type = "CatalogAffiliateProductListAction"
+						 name = "catalogAffiliateProductList"
+						scope = "request"
+				 validate = "true">
+		<forward name="success" path="CatalogAffiliateProductList.tpl" />
+	</action>
+
+	<action    path = "catalogPricesAutoUpdate"
+						 type = "CatalogPricesAutoUpdateAction"
+						 name = "catalogPricesAutoUpdate"
+						scope = "request"
+				 validate = "true">	
+	</action>
+	
+
+<!-- End Section AffiliateProductCodes -->
 	</action-mappings>
-<!-- End Section MeasureUnits -->
 
 <!-- End Module Catalog -->
