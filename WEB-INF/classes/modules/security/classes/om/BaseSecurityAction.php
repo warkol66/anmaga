@@ -55,6 +55,12 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	protected $accessaffiliateuser;
 
 	/**
+	 * The value for the accessregistrationuser field.
+	 * @var        int
+	 */
+	protected $accessregistrationuser;
+
+	/**
 	 * The value for the active field.
 	 * @var        int
 	 */
@@ -67,9 +73,16 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	protected $pair;
 
 	/**
-	 * @var        SecurityActionLabel
+	 * The value for the nochecklogin field.
+	 * Note: this column has a database default value of: false
+	 * @var        boolean
 	 */
-	protected $aSecurityActionLabel;
+	protected $nochecklogin;
+
+	/**
+	 * @var        SecurityModule
+	 */
+	protected $aSecurityModule;
 
 	/**
 	 * @var        array ActionLog[] Collection to store aggregation of ActionLog objects.
@@ -89,6 +102,27 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	 * @var        boolean
 	 */
 	protected $alreadyInValidation = false;
+
+	/**
+	 * Applies default values to this object.
+	 * This method should be called from the object's constructor (or
+	 * equivalent initialization method).
+	 * @see        __construct()
+	 */
+	public function applyDefaultValues()
+	{
+		$this->nochecklogin = false;
+	}
+
+	/**
+	 * Initializes internal state of BaseSecurityAction object.
+	 * @see        applyDefaults()
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+		$this->applyDefaultValues();
+	}
 
 	/**
 	 * Get the [action] column value.
@@ -141,6 +175,16 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Get the [accessregistrationuser] column value.
+	 * El acceso a ese action para los usuarios por registracion
+	 * @return     int
+	 */
+	public function getAccessregistrationuser()
+	{
+		return $this->accessregistrationuser;
+	}
+
+	/**
 	 * Get the [active] column value.
 	 * Si el action esta activo o no
 	 * @return     int
@@ -161,6 +205,16 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Get the [nochecklogin] column value.
+	 * Si no se chequea login ese action
+	 * @return     boolean
+	 */
+	public function getNochecklogin()
+	{
+		return $this->nochecklogin;
+	}
+
+	/**
 	 * Set the value of [action] column.
 	 * Action pagina
 	 * @param      string $v new value
@@ -175,10 +229,6 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 		if ($this->action !== $v) {
 			$this->action = $v;
 			$this->modifiedColumns[] = SecurityActionPeer::ACTION;
-		}
-
-		if ($this->aSecurityActionLabel !== null && $this->aSecurityActionLabel->getAction() !== $v) {
-			$this->aSecurityActionLabel = null;
 		}
 
 		return $this;
@@ -199,6 +249,10 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 		if ($this->module !== $v) {
 			$this->module = $v;
 			$this->modifiedColumns[] = SecurityActionPeer::MODULE;
+		}
+
+		if ($this->aSecurityModule !== null && $this->aSecurityModule->getModule() !== $v) {
+			$this->aSecurityModule = null;
 		}
 
 		return $this;
@@ -265,6 +319,26 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	} // setAccessaffiliateuser()
 
 	/**
+	 * Set the value of [accessregistrationuser] column.
+	 * El acceso a ese action para los usuarios por registracion
+	 * @param      int $v new value
+	 * @return     SecurityAction The current object (for fluent API support)
+	 */
+	public function setAccessregistrationuser($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->accessregistrationuser !== $v) {
+			$this->accessregistrationuser = $v;
+			$this->modifiedColumns[] = SecurityActionPeer::ACCESSREGISTRATIONUSER;
+		}
+
+		return $this;
+	} // setAccessregistrationuser()
+
+	/**
 	 * Set the value of [active] column.
 	 * Si el action esta activo o no
 	 * @param      int $v new value
@@ -305,6 +379,26 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	} // setPair()
 
 	/**
+	 * Set the value of [nochecklogin] column.
+	 * Si no se chequea login ese action
+	 * @param      boolean $v new value
+	 * @return     SecurityAction The current object (for fluent API support)
+	 */
+	public function setNochecklogin($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->nochecklogin !== $v || $this->isNew()) {
+			$this->nochecklogin = $v;
+			$this->modifiedColumns[] = SecurityActionPeer::NOCHECKLOGIN;
+		}
+
+		return $this;
+	} // setNochecklogin()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -314,6 +408,10 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	 */
 	public function hasOnlyDefaultValues()
 	{
+			if ($this->nochecklogin !== false) {
+				return false;
+			}
+
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -341,8 +439,10 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 			$this->section = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->access = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
 			$this->accessaffiliateuser = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-			$this->active = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-			$this->pair = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->accessregistrationuser = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->active = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+			$this->pair = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->nochecklogin = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -351,7 +451,7 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 7; // 7 = SecurityActionPeer::NUM_COLUMNS - SecurityActionPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 9; // 9 = SecurityActionPeer::NUM_COLUMNS - SecurityActionPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating SecurityAction object", $e);
@@ -374,8 +474,8 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	public function ensureConsistency()
 	{
 
-		if ($this->aSecurityActionLabel !== null && $this->action !== $this->aSecurityActionLabel->getAction()) {
-			$this->aSecurityActionLabel = null;
+		if ($this->aSecurityModule !== null && $this->module !== $this->aSecurityModule->getModule()) {
+			$this->aSecurityModule = null;
 		}
 	} // ensureConsistency
 
@@ -416,7 +516,7 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->aSecurityActionLabel = null;
+			$this->aSecurityModule = null;
 			$this->collActionLogs = null;
 
 		} // if (deep)
@@ -534,11 +634,11 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aSecurityActionLabel !== null) {
-				if ($this->aSecurityActionLabel->isModified() || $this->aSecurityActionLabel->isNew()) {
-					$affectedRows += $this->aSecurityActionLabel->save($con);
+			if ($this->aSecurityModule !== null) {
+				if ($this->aSecurityModule->isModified() || $this->aSecurityModule->isNew()) {
+					$affectedRows += $this->aSecurityModule->save($con);
 				}
-				$this->setSecurityActionLabel($this->aSecurityActionLabel);
+				$this->setSecurityModule($this->aSecurityModule);
 			}
 
 
@@ -635,9 +735,9 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aSecurityActionLabel !== null) {
-				if (!$this->aSecurityActionLabel->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aSecurityActionLabel->getValidationFailures());
+			if ($this->aSecurityModule !== null) {
+				if (!$this->aSecurityModule->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aSecurityModule->getValidationFailures());
 				}
 			}
 
@@ -704,10 +804,16 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 				return $this->getAccessaffiliateuser();
 				break;
 			case 5:
-				return $this->getActive();
+				return $this->getAccessregistrationuser();
 				break;
 			case 6:
+				return $this->getActive();
+				break;
+			case 7:
 				return $this->getPair();
+				break;
+			case 8:
+				return $this->getNochecklogin();
 				break;
 			default:
 				return null;
@@ -738,12 +844,14 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 			$keys[2] => $this->getSection(),
 			$keys[3] => $this->getAccess(),
 			$keys[4] => $this->getAccessaffiliateuser(),
-			$keys[5] => $this->getActive(),
-			$keys[6] => $this->getPair(),
+			$keys[5] => $this->getAccessregistrationuser(),
+			$keys[6] => $this->getActive(),
+			$keys[7] => $this->getPair(),
+			$keys[8] => $this->getNochecklogin(),
 		);
 		if ($includeForeignObjects) {
-			if (null !== $this->aSecurityActionLabel) {
-				$result['SecurityActionLabel'] = $this->aSecurityActionLabel->toArray($keyType, $includeLazyLoadColumns, true);
+			if (null !== $this->aSecurityModule) {
+				$result['SecurityModule'] = $this->aSecurityModule->toArray($keyType, $includeLazyLoadColumns, true);
 			}
 		}
 		return $result;
@@ -792,10 +900,16 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 				$this->setAccessaffiliateuser($value);
 				break;
 			case 5:
-				$this->setActive($value);
+				$this->setAccessregistrationuser($value);
 				break;
 			case 6:
+				$this->setActive($value);
+				break;
+			case 7:
 				$this->setPair($value);
+				break;
+			case 8:
+				$this->setNochecklogin($value);
 				break;
 		} // switch()
 	}
@@ -826,8 +940,10 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 		if (array_key_exists($keys[2], $arr)) $this->setSection($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setAccess($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setAccessaffiliateuser($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setActive($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setPair($arr[$keys[6]]);
+		if (array_key_exists($keys[5], $arr)) $this->setAccessregistrationuser($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setActive($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setPair($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setNochecklogin($arr[$keys[8]]);
 	}
 
 	/**
@@ -844,8 +960,10 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 		if ($this->isColumnModified(SecurityActionPeer::SECTION)) $criteria->add(SecurityActionPeer::SECTION, $this->section);
 		if ($this->isColumnModified(SecurityActionPeer::ACCESS)) $criteria->add(SecurityActionPeer::ACCESS, $this->access);
 		if ($this->isColumnModified(SecurityActionPeer::ACCESSAFFILIATEUSER)) $criteria->add(SecurityActionPeer::ACCESSAFFILIATEUSER, $this->accessaffiliateuser);
+		if ($this->isColumnModified(SecurityActionPeer::ACCESSREGISTRATIONUSER)) $criteria->add(SecurityActionPeer::ACCESSREGISTRATIONUSER, $this->accessregistrationuser);
 		if ($this->isColumnModified(SecurityActionPeer::ACTIVE)) $criteria->add(SecurityActionPeer::ACTIVE, $this->active);
 		if ($this->isColumnModified(SecurityActionPeer::PAIR)) $criteria->add(SecurityActionPeer::PAIR, $this->pair);
+		if ($this->isColumnModified(SecurityActionPeer::NOCHECKLOGIN)) $criteria->add(SecurityActionPeer::NOCHECKLOGIN, $this->nochecklogin);
 
 		return $criteria;
 	}
@@ -912,8 +1030,10 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 		$copyObj->setSection($this->section);
 		$copyObj->setAccess($this->access);
 		$copyObj->setAccessaffiliateuser($this->accessaffiliateuser);
+		$copyObj->setAccessregistrationuser($this->accessregistrationuser);
 		$copyObj->setActive($this->active);
 		$copyObj->setPair($this->pair);
+		$copyObj->setNochecklogin($this->nochecklogin);
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -971,25 +1091,26 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Declares an association between this object and a SecurityActionLabel object.
+	 * Declares an association between this object and a SecurityModule object.
 	 *
-	 * @param      SecurityActionLabel $v
+	 * @param      SecurityModule $v
 	 * @return     SecurityAction The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setSecurityActionLabel(SecurityActionLabel $v = null)
+	public function setSecurityModule(SecurityModule $v = null)
 	{
 		if ($v === null) {
-			$this->setAction(NULL);
+			$this->setModule(NULL);
 		} else {
-			$this->setAction($v->getAction());
+			$this->setModule($v->getModule());
 		}
 
-		$this->aSecurityActionLabel = $v;
+		$this->aSecurityModule = $v;
 
-		// Add binding for other direction of this 1:1 relationship.
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the SecurityModule object, it will not be re-added.
 		if ($v !== null) {
-			$v->setSecurityAction($this);
+			$v->addSecurityAction($this);
 		}
 
 		return $this;
@@ -997,22 +1118,25 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 
 
 	/**
-	 * Get the associated SecurityActionLabel object
+	 * Get the associated SecurityModule object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     SecurityActionLabel The associated SecurityActionLabel object.
+	 * @return     SecurityModule The associated SecurityModule object.
 	 * @throws     PropelException
 	 */
-	public function getSecurityActionLabel(PropelPDO $con = null)
+	public function getSecurityModule(PropelPDO $con = null)
 	{
-		if ($this->aSecurityActionLabel === null && (($this->action !== "" && $this->action !== null))) {
-			$this->aSecurityActionLabel = SecurityActionLabelQuery::create()
-				->filterBySecurityAction($this) // here
-				->findOne($con);
-			// Because this foreign key represents a one-to-one relationship, we will create a bi-directional association.
-			$this->aSecurityActionLabel->setSecurityAction($this);
+		if ($this->aSecurityModule === null && (($this->module !== "" && $this->module !== null))) {
+			$this->aSecurityModule = SecurityModuleQuery::create()->findPk($this->module, $con);
+			/* The following can be used additionally to
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aSecurityModule->addSecurityActions($this);
+			 */
 		}
-		return $this->aSecurityActionLabel;
+		return $this->aSecurityModule;
 	}
 
 	/**
@@ -1159,11 +1283,14 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 		$this->section = null;
 		$this->access = null;
 		$this->accessaffiliateuser = null;
+		$this->accessregistrationuser = null;
 		$this->active = null;
 		$this->pair = null;
+		$this->nochecklogin = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
+		$this->applyDefaultValues();
 		$this->resetModified();
 		$this->setNew(true);
 		$this->setDeleted(false);
@@ -1189,7 +1316,7 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 		} // if ($deep)
 
 		$this->collActionLogs = null;
-		$this->aSecurityActionLabel = null;
+		$this->aSecurityModule = null;
 	}
 
 	/**

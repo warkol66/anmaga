@@ -1,4 +1,16 @@
 ﻿==============================
+Revisión 631 - Fecha 20101224
+------------------------------
+
+ALTER TABLE  `security_action` CHANGE  `accessUsersByAffiliate`  `accessAffiliateUser` INT( 11 ) NULL DEFAULT NULL COMMENT  'El acceso a ese action para los usuarios por afiliados';
+ALTER TABLE  `security_action` ADD  `accessRegistrationUser` INT NULL COMMENT  'El acceso a ese action para los usuarios por registracion' AFTER  `accessAffiliateUser`;
+ALTER TABLE  `security_action` ADD  `noCheckLogin` BOOLEAN NULL COMMENT  'Si no se chequea login ese action';
+
+ALTER TABLE `security_module` ADD `accessAffiliateUser` INTEGER COMMENT 'El acceso a ese modulo para los usuarios por afiliados';
+ALTER TABLE `security_module` ADD `accessRegistrationUser` INTEGER COMMENT 'El acceso a ese modulo para los usuarios por registracion';
+ALTER TABLE `security_module` ADD `noCheckLogin` TINYINT default 0 COMMENT 'Si no se chequea login ese modulo';
+
+==============================
 Revisión 261
 ------------------------------
 

@@ -40,6 +40,8 @@ class SecurityModuleTableMap extends TableMap {
 		$this->addPrimaryKey('MODULE', 'Module', 'VARCHAR', true, 100, null);
 		$this->addColumn('ACCESS', 'Access', 'INTEGER', false, null, null);
 		$this->addColumn('ACCESSAFFILIATEUSER', 'Accessaffiliateuser', 'INTEGER', false, null, null);
+		$this->addColumn('ACCESSREGISTRATIONUSER', 'Accessregistrationuser', 'INTEGER', false, null, null);
+		$this->addColumn('NOCHECKLOGIN', 'Nochecklogin', 'BOOLEAN', false, null, false);
 		// validators
 	} // initialize()
 
@@ -48,6 +50,7 @@ class SecurityModuleTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
+    $this->addRelation('SecurityAction', 'SecurityAction', RelationMap::ONE_TO_MANY, array('module' => 'module', ), null, null);
 	} // buildRelations()
 
 } // SecurityModuleTableMap

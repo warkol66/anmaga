@@ -9,14 +9,22 @@
  * @method     SecurityModuleQuery orderByModule($order = Criteria::ASC) Order by the module column
  * @method     SecurityModuleQuery orderByAccess($order = Criteria::ASC) Order by the access column
  * @method     SecurityModuleQuery orderByAccessaffiliateuser($order = Criteria::ASC) Order by the accessAffiliateUser column
+ * @method     SecurityModuleQuery orderByAccessregistrationuser($order = Criteria::ASC) Order by the accessRegistrationUser column
+ * @method     SecurityModuleQuery orderByNochecklogin($order = Criteria::ASC) Order by the noCheckLogin column
  *
  * @method     SecurityModuleQuery groupByModule() Group by the module column
  * @method     SecurityModuleQuery groupByAccess() Group by the access column
  * @method     SecurityModuleQuery groupByAccessaffiliateuser() Group by the accessAffiliateUser column
+ * @method     SecurityModuleQuery groupByAccessregistrationuser() Group by the accessRegistrationUser column
+ * @method     SecurityModuleQuery groupByNochecklogin() Group by the noCheckLogin column
  *
  * @method     SecurityModuleQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     SecurityModuleQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     SecurityModuleQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method     SecurityModuleQuery leftJoinSecurityAction($relationAlias = null) Adds a LEFT JOIN clause to the query using the SecurityAction relation
+ * @method     SecurityModuleQuery rightJoinSecurityAction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SecurityAction relation
+ * @method     SecurityModuleQuery innerJoinSecurityAction($relationAlias = null) Adds a INNER JOIN clause to the query using the SecurityAction relation
  *
  * @method     SecurityModule findOne(PropelPDO $con = null) Return the first SecurityModule matching the query
  * @method     SecurityModule findOneOrCreate(PropelPDO $con = null) Return the first SecurityModule matching the query, or a new SecurityModule object populated from the query conditions when no match is found
@@ -24,10 +32,14 @@
  * @method     SecurityModule findOneByModule(string $module) Return the first SecurityModule filtered by the module column
  * @method     SecurityModule findOneByAccess(int $access) Return the first SecurityModule filtered by the access column
  * @method     SecurityModule findOneByAccessaffiliateuser(int $accessAffiliateUser) Return the first SecurityModule filtered by the accessAffiliateUser column
+ * @method     SecurityModule findOneByAccessregistrationuser(int $accessRegistrationUser) Return the first SecurityModule filtered by the accessRegistrationUser column
+ * @method     SecurityModule findOneByNochecklogin(boolean $noCheckLogin) Return the first SecurityModule filtered by the noCheckLogin column
  *
  * @method     array findByModule(string $module) Return SecurityModule objects filtered by the module column
  * @method     array findByAccess(int $access) Return SecurityModule objects filtered by the access column
  * @method     array findByAccessaffiliateuser(int $accessAffiliateUser) Return SecurityModule objects filtered by the accessAffiliateUser column
+ * @method     array findByAccessregistrationuser(int $accessRegistrationUser) Return SecurityModule objects filtered by the accessRegistrationUser column
+ * @method     array findByNochecklogin(boolean $noCheckLogin) Return SecurityModule objects filtered by the noCheckLogin column
  *
  * @package    propel.generator.security.classes.om
  */
@@ -219,6 +231,118 @@ abstract class BaseSecurityModuleQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(SecurityModulePeer::ACCESSAFFILIATEUSER, $accessaffiliateuser, $comparison);
+	}
+
+	/**
+	 * Filter the query on the accessRegistrationUser column
+	 * 
+	 * @param     int|array $accessregistrationuser The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    SecurityModuleQuery The current query, for fluid interface
+	 */
+	public function filterByAccessregistrationuser($accessregistrationuser = null, $comparison = null)
+	{
+		if (is_array($accessregistrationuser)) {
+			$useMinMax = false;
+			if (isset($accessregistrationuser['min'])) {
+				$this->addUsingAlias(SecurityModulePeer::ACCESSREGISTRATIONUSER, $accessregistrationuser['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($accessregistrationuser['max'])) {
+				$this->addUsingAlias(SecurityModulePeer::ACCESSREGISTRATIONUSER, $accessregistrationuser['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(SecurityModulePeer::ACCESSREGISTRATIONUSER, $accessregistrationuser, $comparison);
+	}
+
+	/**
+	 * Filter the query on the noCheckLogin column
+	 * 
+	 * @param     boolean|string $nochecklogin The value to use as filter.
+	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    SecurityModuleQuery The current query, for fluid interface
+	 */
+	public function filterByNochecklogin($nochecklogin = null, $comparison = null)
+	{
+		if (is_string($nochecklogin)) {
+			$noCheckLogin = in_array(strtolower($nochecklogin), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
+		}
+		return $this->addUsingAlias(SecurityModulePeer::NOCHECKLOGIN, $nochecklogin, $comparison);
+	}
+
+	/**
+	 * Filter the query by a related SecurityAction object
+	 *
+	 * @param     SecurityAction $securityAction  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    SecurityModuleQuery The current query, for fluid interface
+	 */
+	public function filterBySecurityAction($securityAction, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(SecurityModulePeer::MODULE, $securityAction->getModule(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the SecurityAction relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    SecurityModuleQuery The current query, for fluid interface
+	 */
+	public function joinSecurityAction($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('SecurityAction');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'SecurityAction');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the SecurityAction relation SecurityAction object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    SecurityActionQuery A secondary query class using the current class as primary query
+	 */
+	public function useSecurityActionQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+	{
+		return $this
+			->joinSecurityAction($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'SecurityAction', 'SecurityActionQuery');
 	}
 
 	/**

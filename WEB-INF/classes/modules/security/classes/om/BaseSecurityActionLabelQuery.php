@@ -10,19 +10,17 @@
  * @method     SecurityActionLabelQuery orderByAction($order = Criteria::ASC) Order by the action column
  * @method     SecurityActionLabelQuery orderByLanguage($order = Criteria::ASC) Order by the language column
  * @method     SecurityActionLabelQuery orderByLabel($order = Criteria::ASC) Order by the label column
+ * @method     SecurityActionLabelQuery orderByDescription($order = Criteria::ASC) Order by the description column
  *
  * @method     SecurityActionLabelQuery groupById() Group by the id column
  * @method     SecurityActionLabelQuery groupByAction() Group by the action column
  * @method     SecurityActionLabelQuery groupByLanguage() Group by the language column
  * @method     SecurityActionLabelQuery groupByLabel() Group by the label column
+ * @method     SecurityActionLabelQuery groupByDescription() Group by the description column
  *
  * @method     SecurityActionLabelQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     SecurityActionLabelQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     SecurityActionLabelQuery innerJoin($relation) Adds a INNER JOIN clause to the query
- *
- * @method     SecurityActionLabelQuery leftJoinSecurityAction($relationAlias = null) Adds a LEFT JOIN clause to the query using the SecurityAction relation
- * @method     SecurityActionLabelQuery rightJoinSecurityAction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SecurityAction relation
- * @method     SecurityActionLabelQuery innerJoinSecurityAction($relationAlias = null) Adds a INNER JOIN clause to the query using the SecurityAction relation
  *
  * @method     SecurityActionLabel findOne(PropelPDO $con = null) Return the first SecurityActionLabel matching the query
  * @method     SecurityActionLabel findOneOrCreate(PropelPDO $con = null) Return the first SecurityActionLabel matching the query, or a new SecurityActionLabel object populated from the query conditions when no match is found
@@ -31,11 +29,13 @@
  * @method     SecurityActionLabel findOneByAction(string $action) Return the first SecurityActionLabel filtered by the action column
  * @method     SecurityActionLabel findOneByLanguage(string $language) Return the first SecurityActionLabel filtered by the language column
  * @method     SecurityActionLabel findOneByLabel(string $label) Return the first SecurityActionLabel filtered by the label column
+ * @method     SecurityActionLabel findOneByDescription(string $description) Return the first SecurityActionLabel filtered by the description column
  *
  * @method     array findById(int $id) Return SecurityActionLabel objects filtered by the id column
  * @method     array findByAction(string $action) Return SecurityActionLabel objects filtered by the action column
  * @method     array findByLanguage(string $language) Return SecurityActionLabel objects filtered by the language column
  * @method     array findByLabel(string $label) Return SecurityActionLabel objects filtered by the label column
+ * @method     array findByDescription(string $description) Return SecurityActionLabel objects filtered by the description column
  *
  * @package    propel.generator.security.classes.om
  */
@@ -241,67 +241,25 @@ abstract class BaseSecurityActionLabelQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query by a related SecurityAction object
-	 *
-	 * @param     SecurityAction $securityAction  the related object to use as filter
+	 * Filter the query on the description column
+	 * 
+	 * @param     string $description The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SecurityActionLabelQuery The current query, for fluid interface
 	 */
-	public function filterBySecurityAction($securityAction, $comparison = null)
+	public function filterByDescription($description = null, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(SecurityActionLabelPeer::ACTION, $securityAction->getAction(), $comparison);
-	}
-
-	/**
-	 * Adds a JOIN clause to the query using the SecurityAction relation
-	 * 
-	 * @param     string $relationAlias optional alias for the relation
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    SecurityActionLabelQuery The current query, for fluid interface
-	 */
-	public function joinSecurityAction($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('SecurityAction');
-		
-		// create a ModelJoin object for this join
-		$join = new ModelJoin();
-		$join->setJoinType($joinType);
-		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-		if ($previousJoin = $this->getPreviousJoin()) {
-			$join->setPreviousJoin($previousJoin);
+		if (null === $comparison) {
+			if (is_array($description)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $description)) {
+				$description = str_replace('*', '%', $description);
+				$comparison = Criteria::LIKE;
+			}
 		}
-		
-		// add the ModelJoin to the current object
-		if($relationAlias) {
-			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-			$this->addJoinObject($join, $relationAlias);
-		} else {
-			$this->addJoinObject($join, 'SecurityAction');
-		}
-		
-		return $this;
-	}
-
-	/**
-	 * Use the SecurityAction relation SecurityAction object
-	 *
-	 * @see       useQuery()
-	 * 
-	 * @param     string $relationAlias optional alias for the relation,
-	 *                                   to be used as main alias in the secondary query
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    SecurityActionQuery A secondary query class using the current class as primary query
-	 */
-	public function useSecurityActionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		return $this
-			->joinSecurityAction($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'SecurityAction', 'SecurityActionQuery');
+		return $this->addUsingAlias(SecurityActionLabelPeer::DESCRIPTION, $description, $comparison);
 	}
 
 	/**

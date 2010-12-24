@@ -55,6 +55,11 @@ abstract class BaseModule extends BaseObject  implements Persistent
 	protected $collModuleLabels;
 
 	/**
+	 * @var        array MultilangText[] Collection to store aggregation of MultilangText objects.
+	 */
+	protected $collMultilangTexts;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -297,6 +302,8 @@ abstract class BaseModule extends BaseObject  implements Persistent
 
 			$this->collModuleLabels = null;
 
+			$this->collMultilangTexts = null;
+
 		} // if (deep)
 	}
 
@@ -438,6 +445,14 @@ abstract class BaseModule extends BaseObject  implements Persistent
 				}
 			}
 
+			if ($this->collMultilangTexts !== null) {
+				foreach ($this->collMultilangTexts as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 
 		}
@@ -519,6 +534,14 @@ abstract class BaseModule extends BaseObject  implements Persistent
 
 				if ($this->collModuleLabels !== null) {
 					foreach ($this->collModuleLabels as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collMultilangTexts !== null) {
+					foreach ($this->collMultilangTexts as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -753,6 +776,12 @@ abstract class BaseModule extends BaseObject  implements Persistent
 			foreach ($this->getModuleLabels() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addModuleLabel($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getMultilangTexts() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addMultilangText($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1019,6 +1048,140 @@ abstract class BaseModule extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Clears out the collMultilangTexts collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addMultilangTexts()
+	 */
+	public function clearMultilangTexts()
+	{
+		$this->collMultilangTexts = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collMultilangTexts collection.
+	 *
+	 * By default this just sets the collMultilangTexts collection to an empty array (like clearcollMultilangTexts());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initMultilangTexts()
+	{
+		$this->collMultilangTexts = new PropelObjectCollection();
+		$this->collMultilangTexts->setModel('MultilangText');
+	}
+
+	/**
+	 * Gets an array of MultilangText objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Module is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array MultilangText[] List of MultilangText objects
+	 * @throws     PropelException
+	 */
+	public function getMultilangTexts($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collMultilangTexts || null !== $criteria) {
+			if ($this->isNew() && null === $this->collMultilangTexts) {
+				// return empty collection
+				$this->initMultilangTexts();
+			} else {
+				$collMultilangTexts = MultilangTextQuery::create(null, $criteria)
+					->filterByModule($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collMultilangTexts;
+				}
+				$this->collMultilangTexts = $collMultilangTexts;
+			}
+		}
+		return $this->collMultilangTexts;
+	}
+
+	/**
+	 * Returns the number of related MultilangText objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related MultilangText objects.
+	 * @throws     PropelException
+	 */
+	public function countMultilangTexts(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collMultilangTexts || null !== $criteria) {
+			if ($this->isNew() && null === $this->collMultilangTexts) {
+				return 0;
+			} else {
+				$query = MultilangTextQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByModule($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collMultilangTexts);
+		}
+	}
+
+	/**
+	 * Method called to associate a MultilangText object to this object
+	 * through the MultilangText foreign key attribute.
+	 *
+	 * @param      MultilangText $l MultilangText
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addMultilangText(MultilangText $l)
+	{
+		if ($this->collMultilangTexts === null) {
+			$this->initMultilangTexts();
+		}
+		if (!$this->collMultilangTexts->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collMultilangTexts[]= $l;
+			$l->setModule($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Module is new, it will return
+	 * an empty collection; or if this Module has previously
+	 * been saved, it will retrieve related MultilangTexts from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Module.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array MultilangText[] List of MultilangText objects
+	 */
+	public function getMultilangTextsJoinMultilangLanguage($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = MultilangTextQuery::create(null, $criteria);
+		$query->joinWith('MultilangLanguage', $join_behavior);
+
+		return $this->getMultilangTexts($query, $con);
+	}
+
+	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
 	public function clear()
@@ -1057,10 +1220,16 @@ abstract class BaseModule extends BaseObject  implements Persistent
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collMultilangTexts) {
+				foreach ((array) $this->collMultilangTexts as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
 		$this->collModuleDependencys = null;
 		$this->collModuleLabels = null;
+		$this->collMultilangTexts = null;
 	}
 
 	/**
