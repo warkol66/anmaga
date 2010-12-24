@@ -16,12 +16,12 @@
 			<forward name="success"  path="SecurityActionList.tpl" />
 		</action>
 
-		<action    path = "securityActionListUsersByAffiliate"
-							 type = "SecurityActionListUsersByAffiliateAction"
-							 name = "securityActionListUsersByAffiliate"
+		<action    path = "securityActionListAffiliatesUsers"
+							 type = "SecurityActionListAffiliatesUsersAction"
+							 name = "securityActionListAffiliatesUsers"
 							scope = "request"
 					 validate = "true">
-			<forward name="success"  path="SecurityActionListUsersByAffiliate.tpl" />
+			<forward name="success"  path="SecurityActionListAffiliatesUsers.tpl" />
 		</action>
 
 		<action    path = "securityActionDoSaveByAffiliate"
@@ -29,7 +29,7 @@
 							 name = "securityActionDoSaveByAffiliateAction"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="/Main.php?do=securityActionListUsersByAffiliate" redirect='true'/>
+			<forward name="success" path="/Main.php?do=securityActionListAffiliatesUsers" redirect='true'/>
 		</action>
 
 		<action    path = "securityActionDoSave"

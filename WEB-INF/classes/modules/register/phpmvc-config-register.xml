@@ -26,9 +26,9 @@
 			<forward name="success" path="UsersByRegistrationPasswordRecovery.tpl"/>
 		</action>
 		
-		<action    path = "usersByRegistratonDoPasswordRecovery"
-							 type = "UsersByRegistrationDoPasswordRecoveryAction"
-							 name = "usersByRegistrationDoPasswordRecovery"
+		<action    path = "usersByRegistrationDoPassRecovery"
+							 type = "UsersByRegistrationDoPassRecoveryAction"
+							 name = "usersByRegistrationDoPassRecovery"
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="Main.php?do=usersByRegistrationLogin&amp;message=passwordSent" redirect="true" />

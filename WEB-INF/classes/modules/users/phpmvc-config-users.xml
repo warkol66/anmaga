@@ -1,4 +1,6 @@
-<!-- Module Users -->
+<!-- ========== Action Mapping Module Users  ============================== -->
+
+<!-- Module Users-->
 	<action-mappings module="Users">
 		<action    path = "usersLogin"
 							 type = "UsersLoginAction"
@@ -7,6 +9,7 @@
 					 validate = "true">
 			<forward name="success" path="UsersLogin.tpl"/>
 			<forward name="maintenance" path="Maintenance.tpl"/>
+			<forward name="welcome" path="/Main.php?do=usersWelcome" redirect="true" />
 		</action>
 
 		<action    path = "usersDoLogin"
@@ -31,7 +34,7 @@
 							 name = "usersDoPasswordRecovery"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=usersLogin&amp;message=passwordSent" redirect="true" />
+			<forward name="success" path="/Main.php?do=usersLogin&amp;message=passwordSent" redirect="true" />
 			<forward name="failure" path="UsersPasswordRecovery.tpl"/>
 		</action>
 
@@ -65,6 +68,9 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="UsersList.tpl"/>
+			<forward name="include" path="UsersListInclude.tpl"/>
+			<forward name="includeLogged" path="UsersListIncludeLogged.tpl"/>
+			<forward name="includeNotLogged" path="UsersListIncludeNotLogged.tpl"/>
 		</action>
 
 		<action    path = "usersDoEdit"
