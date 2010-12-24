@@ -1,33 +1,16 @@
 <?php
-
-require_once("BaseAction.php");
+/** 
+ * UsersDoLogoutAction
+ *
+ * @package users 
+ */
 
 class UsersDoLogoutAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function UsersDoLogoutAction() {
 		;
 	}
 
-
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
@@ -43,15 +26,20 @@ class UsersDoLogoutAction extends BaseAction {
 
 		$module = "Users";
 
-		unset($_SESSION["login_user"]);
+		if (isset($_SESSION["loginUser"])) {
+			$user = $_SESSION["loginUser"];	
+			$username = $user->getUsername();
+		}		
 
-		if($_SESSION["loginUser"]){
+		if($_SESSION["lastLogin"])
+		unset($_SESSION["lastLogin"]);
+		
+		Common::doLog('success','username: ' . $username);
+		if($_SESSION["loginUser"])
 			unset($_SESSION["loginUser"]);
-		}
 
 		return $mapping->findForwardConfig('success');
 
 	}
 
 }
-?>

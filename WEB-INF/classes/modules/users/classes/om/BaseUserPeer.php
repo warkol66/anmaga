@@ -26,7 +26,7 @@ abstract class BaseUserPeer {
 	const TM_CLASS = 'UserTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 8;
+	const NUM_COLUMNS = 18;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -55,6 +55,36 @@ abstract class BaseUserPeer {
 	/** the column name for the LASTLOGIN field */
 	const LASTLOGIN = 'users_user.LASTLOGIN';
 
+	/** the column name for the TIMEZONE field */
+	const TIMEZONE = 'users_user.TIMEZONE';
+
+	/** the column name for the RECOVERYHASH field */
+	const RECOVERYHASH = 'users_user.RECOVERYHASH';
+
+	/** the column name for the RECOVERYHASHCREATEDON field */
+	const RECOVERYHASHCREATEDON = 'users_user.RECOVERYHASHCREATEDON';
+
+	/** the column name for the NAME field */
+	const NAME = 'users_user.NAME';
+
+	/** the column name for the SURNAME field */
+	const SURNAME = 'users_user.SURNAME';
+
+	/** the column name for the MAILADDRESS field */
+	const MAILADDRESS = 'users_user.MAILADDRESS';
+
+	/** the column name for the MAILADDRESSALT field */
+	const MAILADDRESSALT = 'users_user.MAILADDRESSALT';
+
+	/** the column name for the DELETED_AT field */
+	const DELETED_AT = 'users_user.DELETED_AT';
+
+	/** the column name for the CREATED_AT field */
+	const CREATED_AT = 'users_user.CREATED_AT';
+
+	/** the column name for the UPDATED_AT field */
+	const UPDATED_AT = 'users_user.UPDATED_AT';
+
 	/**
 	 * An identiy map to hold any loaded instances of User objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -71,12 +101,12 @@ abstract class BaseUserPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Username', 'Password', 'Active', 'Created', 'Updated', 'Levelid', 'Lastlogin', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'username', 'password', 'active', 'created', 'updated', 'levelid', 'lastlogin', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::USERNAME, self::PASSWORD, self::ACTIVE, self::CREATED, self::UPDATED, self::LEVELID, self::LASTLOGIN, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USERNAME', 'PASSWORD', 'ACTIVE', 'CREATED', 'UPDATED', 'LEVELID', 'LASTLOGIN', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'username', 'password', 'active', 'created', 'updated', 'levelId', 'lastLogin', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Username', 'Password', 'Active', 'Created', 'Updated', 'Levelid', 'Lastlogin', 'Timezone', 'Recoveryhash', 'Recoveryhashcreatedon', 'Name', 'Surname', 'Mailaddress', 'Mailaddressalt', 'DeletedAt', 'CreatedAt', 'UpdatedAt', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'username', 'password', 'active', 'created', 'updated', 'levelid', 'lastlogin', 'timezone', 'recoveryhash', 'recoveryhashcreatedon', 'name', 'surname', 'mailaddress', 'mailaddressalt', 'deletedAt', 'createdAt', 'updatedAt', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::USERNAME, self::PASSWORD, self::ACTIVE, self::CREATED, self::UPDATED, self::LEVELID, self::LASTLOGIN, self::TIMEZONE, self::RECOVERYHASH, self::RECOVERYHASHCREATEDON, self::NAME, self::SURNAME, self::MAILADDRESS, self::MAILADDRESSALT, self::DELETED_AT, self::CREATED_AT, self::UPDATED_AT, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USERNAME', 'PASSWORD', 'ACTIVE', 'CREATED', 'UPDATED', 'LEVELID', 'LASTLOGIN', 'TIMEZONE', 'RECOVERYHASH', 'RECOVERYHASHCREATEDON', 'NAME', 'SURNAME', 'MAILADDRESS', 'MAILADDRESSALT', 'DELETED_AT', 'CREATED_AT', 'UPDATED_AT', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'username', 'password', 'active', 'created', 'updated', 'levelId', 'lastLogin', 'timezone', 'recoveryHash', 'recoveryHashCreatedOn', 'name', 'surname', 'mailAddress', 'mailAddressAlt', 'deleted_at', 'created_at', 'updated_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
 	);
 
 	/**
@@ -86,12 +116,12 @@ abstract class BaseUserPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Username' => 1, 'Password' => 2, 'Active' => 3, 'Created' => 4, 'Updated' => 5, 'Levelid' => 6, 'Lastlogin' => 7, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'username' => 1, 'password' => 2, 'active' => 3, 'created' => 4, 'updated' => 5, 'levelid' => 6, 'lastlogin' => 7, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USERNAME => 1, self::PASSWORD => 2, self::ACTIVE => 3, self::CREATED => 4, self::UPDATED => 5, self::LEVELID => 6, self::LASTLOGIN => 7, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USERNAME' => 1, 'PASSWORD' => 2, 'ACTIVE' => 3, 'CREATED' => 4, 'UPDATED' => 5, 'LEVELID' => 6, 'LASTLOGIN' => 7, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'username' => 1, 'password' => 2, 'active' => 3, 'created' => 4, 'updated' => 5, 'levelId' => 6, 'lastLogin' => 7, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Username' => 1, 'Password' => 2, 'Active' => 3, 'Created' => 4, 'Updated' => 5, 'Levelid' => 6, 'Lastlogin' => 7, 'Timezone' => 8, 'Recoveryhash' => 9, 'Recoveryhashcreatedon' => 10, 'Name' => 11, 'Surname' => 12, 'Mailaddress' => 13, 'Mailaddressalt' => 14, 'DeletedAt' => 15, 'CreatedAt' => 16, 'UpdatedAt' => 17, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'username' => 1, 'password' => 2, 'active' => 3, 'created' => 4, 'updated' => 5, 'levelid' => 6, 'lastlogin' => 7, 'timezone' => 8, 'recoveryhash' => 9, 'recoveryhashcreatedon' => 10, 'name' => 11, 'surname' => 12, 'mailaddress' => 13, 'mailaddressalt' => 14, 'deletedAt' => 15, 'createdAt' => 16, 'updatedAt' => 17, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USERNAME => 1, self::PASSWORD => 2, self::ACTIVE => 3, self::CREATED => 4, self::UPDATED => 5, self::LEVELID => 6, self::LASTLOGIN => 7, self::TIMEZONE => 8, self::RECOVERYHASH => 9, self::RECOVERYHASHCREATEDON => 10, self::NAME => 11, self::SURNAME => 12, self::MAILADDRESS => 13, self::MAILADDRESSALT => 14, self::DELETED_AT => 15, self::CREATED_AT => 16, self::UPDATED_AT => 17, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USERNAME' => 1, 'PASSWORD' => 2, 'ACTIVE' => 3, 'CREATED' => 4, 'UPDATED' => 5, 'LEVELID' => 6, 'LASTLOGIN' => 7, 'TIMEZONE' => 8, 'RECOVERYHASH' => 9, 'RECOVERYHASHCREATEDON' => 10, 'NAME' => 11, 'SURNAME' => 12, 'MAILADDRESS' => 13, 'MAILADDRESSALT' => 14, 'DELETED_AT' => 15, 'CREATED_AT' => 16, 'UPDATED_AT' => 17, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'username' => 1, 'password' => 2, 'active' => 3, 'created' => 4, 'updated' => 5, 'levelId' => 6, 'lastLogin' => 7, 'timezone' => 8, 'recoveryHash' => 9, 'recoveryHashCreatedOn' => 10, 'name' => 11, 'surname' => 12, 'mailAddress' => 13, 'mailAddressAlt' => 14, 'deleted_at' => 15, 'created_at' => 16, 'updated_at' => 17, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
 	);
 
 	/**
@@ -171,6 +201,16 @@ abstract class BaseUserPeer {
 			$criteria->addSelectColumn(UserPeer::UPDATED);
 			$criteria->addSelectColumn(UserPeer::LEVELID);
 			$criteria->addSelectColumn(UserPeer::LASTLOGIN);
+			$criteria->addSelectColumn(UserPeer::TIMEZONE);
+			$criteria->addSelectColumn(UserPeer::RECOVERYHASH);
+			$criteria->addSelectColumn(UserPeer::RECOVERYHASHCREATEDON);
+			$criteria->addSelectColumn(UserPeer::NAME);
+			$criteria->addSelectColumn(UserPeer::SURNAME);
+			$criteria->addSelectColumn(UserPeer::MAILADDRESS);
+			$criteria->addSelectColumn(UserPeer::MAILADDRESSALT);
+			$criteria->addSelectColumn(UserPeer::DELETED_AT);
+			$criteria->addSelectColumn(UserPeer::CREATED_AT);
+			$criteria->addSelectColumn(UserPeer::UPDATED_AT);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.USERNAME');
@@ -180,6 +220,16 @@ abstract class BaseUserPeer {
 			$criteria->addSelectColumn($alias . '.UPDATED');
 			$criteria->addSelectColumn($alias . '.LEVELID');
 			$criteria->addSelectColumn($alias . '.LASTLOGIN');
+			$criteria->addSelectColumn($alias . '.TIMEZONE');
+			$criteria->addSelectColumn($alias . '.RECOVERYHASH');
+			$criteria->addSelectColumn($alias . '.RECOVERYHASHCREATEDON');
+			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.SURNAME');
+			$criteria->addSelectColumn($alias . '.MAILADDRESS');
+			$criteria->addSelectColumn($alias . '.MAILADDRESSALT');
+			$criteria->addSelectColumn($alias . '.DELETED_AT');
+			$criteria->addSelectColumn($alias . '.CREATED_AT');
+			$criteria->addSelectColumn($alias . '.UPDATED_AT');
 		}
 	}
 
@@ -214,6 +264,12 @@ abstract class BaseUserPeer {
 
 		if ($con === null) {
 			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+		// soft_delete behavior
+		if (UserQuery::isSoftDeleteEnabled()) {
+			$criteria->add(UserPeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			UserPeer::enableSoftDelete();
 		}
 		// BasePeer returns a PDOStatement
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -284,6 +340,12 @@ abstract class BaseUserPeer {
 
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
+		// soft_delete behavior
+		if (UserQuery::isSoftDeleteEnabled()) {
+			$criteria->add(UserPeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			UserPeer::enableSoftDelete();
+		}
 
 		// BasePeer returns a PDOStatement
 		return BasePeer::doSelect($criteria, $con);
@@ -373,6 +435,12 @@ abstract class BaseUserPeer {
 	 */
 	public static function clearRelatedInstancePool()
 	{
+		// Invalidate objects in AlertSubscriptionUserPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		AlertSubscriptionUserPeer::clearInstancePool();
+		// Invalidate objects in ScheduleSubscriptionUserPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		ScheduleSubscriptionUserPeer::clearInstancePool();
 	}
 
 	/**
@@ -503,6 +571,12 @@ abstract class BaseUserPeer {
 
 		$criteria->addJoin(UserPeer::LEVELID, LevelPeer::ID, $join_behavior);
 
+		// soft_delete behavior
+		if (UserQuery::isSoftDeleteEnabled()) {
+			$criteria->add(UserPeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			UserPeer::enableSoftDelete();
+		}
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -539,6 +613,12 @@ abstract class BaseUserPeer {
 
 		$criteria->addJoin(UserPeer::LEVELID, LevelPeer::ID, $join_behavior);
 
+		// soft_delete behavior
+		if (UserQuery::isSoftDeleteEnabled()) {
+			$criteria->add(UserPeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			UserPeer::enableSoftDelete();
+		}
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
@@ -619,6 +699,12 @@ abstract class BaseUserPeer {
 
 		$criteria->addJoin(UserPeer::LEVELID, LevelPeer::ID, $join_behavior);
 
+		// soft_delete behavior
+		if (UserQuery::isSoftDeleteEnabled()) {
+			$criteria->add(UserPeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			UserPeer::enableSoftDelete();
+		}
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -657,6 +743,12 @@ abstract class BaseUserPeer {
 
 		$criteria->addJoin(UserPeer::LEVELID, LevelPeer::ID, $join_behavior);
 
+		// soft_delete behavior
+		if (UserQuery::isSoftDeleteEnabled()) {
+			$criteria->add(UserPeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			UserPeer::enableSoftDelete();
+		}
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
@@ -825,7 +917,7 @@ abstract class BaseUserPeer {
 	 *
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 */
-	public static function doDeleteAll($con = null)
+	public static function doForceDeleteAll($con = null)
 	{
 		if ($con === null) {
 			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
@@ -835,6 +927,7 @@ abstract class BaseUserPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
+			$affectedRows += UserPeer::doOnDeleteCascade(new Criteria(UserPeer::DATABASE_NAME), $con);
 			$affectedRows += BasePeer::doDeleteAll(UserPeer::TABLE_NAME, $con, UserPeer::DATABASE_NAME);
 			// Because this db requires some delete cascade/set null emulation, we have to
 			// clear the cached instance *after* the emulation has happened (since
@@ -860,31 +953,21 @@ abstract class BaseUserPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	 public static function doDelete($values, PropelPDO $con = null)
+	 public static function doForceDelete($values, PropelPDO $con = null)
 	 {
 		if ($con === null) {
 			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
-			// invalidate the cache for all objects of this type, since we have no
-			// way of knowing (without running a query) what objects should be invalidated
-			// from the cache based on this Criteria.
-			UserPeer::clearInstancePool();
 			// rename for clarity
 			$criteria = clone $values;
 		} elseif ($values instanceof User) { // it's a model object
-			// invalidate the cache for this single object
-			UserPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
 		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(UserPeer::ID, (array) $values, Criteria::IN);
-			// invalidate the cache for this object(s)
-			foreach ((array) $values as $singleval) {
-				UserPeer::removeInstanceFromPool($singleval);
-			}
 		}
 
 		// Set the correct dbName
@@ -897,6 +980,23 @@ abstract class BaseUserPeer {
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
 			
+			// cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
+			$c = clone $criteria;
+			$affectedRows += UserPeer::doOnDeleteCascade($c, $con);
+			
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			if ($values instanceof Criteria) {
+				UserPeer::clearInstancePool();
+			} elseif ($values instanceof User) { // it's a model object
+				UserPeer::removeInstanceFromPool($values);
+			} else { // it's a primary key, or an array of pks
+				foreach ((array) $values as $singleval) {
+					UserPeer::removeInstanceFromPool($singleval);
+				}
+			}
+			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
 			UserPeer::clearRelatedInstancePool();
 			$con->commit();
@@ -905,6 +1005,44 @@ abstract class BaseUserPeer {
 			$con->rollBack();
 			throw $e;
 		}
+	}
+
+	/**
+	 * This is a method for emulating ON DELETE CASCADE for DBs that don't support this
+	 * feature (like MySQL or SQLite).
+	 *
+	 * This method is not very speedy because it must perform a query first to get
+	 * the implicated records and then perform the deletes by calling those Peer classes.
+	 *
+	 * This method should be used within a transaction if possible.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      PropelPDO $con
+	 * @return     int The number of affected rows (if supported by underlying database driver).
+	 */
+	protected static function doOnDeleteCascade(Criteria $criteria, PropelPDO $con)
+	{
+		// initialize var to track total num of affected rows
+		$affectedRows = 0;
+
+		// first find the objects that are implicated by the $criteria
+		$objects = UserPeer::doSelect($criteria, $con);
+		foreach ($objects as $obj) {
+
+
+			// delete related AlertSubscriptionUser objects
+			$criteria = new Criteria(AlertSubscriptionUserPeer::DATABASE_NAME);
+			
+			$criteria->add(AlertSubscriptionUserPeer::USERID, $obj->getId());
+			$affectedRows += AlertSubscriptionUserPeer::doDelete($criteria, $con);
+
+			// delete related ScheduleSubscriptionUser objects
+			$criteria = new Criteria(ScheduleSubscriptionUserPeer::DATABASE_NAME);
+			
+			$criteria->add(ScheduleSubscriptionUserPeer::USERID, $obj->getId());
+			$affectedRows += ScheduleSubscriptionUserPeer::doDelete($criteria, $con);
+		}
+		return $affectedRows;
 	}
 
 	/**
@@ -993,6 +1131,118 @@ abstract class BaseUserPeer {
 			$objs = UserPeer::doSelect($criteria, $con);
 		}
 		return $objs;
+	}
+
+	// soft_delete behavior
+	
+	/**
+	 * Enable the soft_delete behavior for this model
+	 */
+	public static function enableSoftDelete()
+	{
+		UserQuery::enableSoftDelete();
+		// some soft_deleted objects may be in the instance pool
+		UserPeer::clearInstancePool();
+	}
+	
+	/**
+	 * Disable the soft_delete behavior for this model
+	 */
+	public static function disableSoftDelete()
+	{
+		UserQuery::disableSoftDelete();
+	}
+	
+	/**
+	 * Check the soft_delete behavior for this model
+	 * @return boolean true if the soft_delete behavior is enabled
+	 */
+	public static function isSoftDeleteEnabled()
+	{
+		return UserQuery::isSoftDeleteEnabled();
+	}
+	
+	/**
+	 * Soft delete records, given a User or Criteria object OR a primary key value.
+	 *
+	 * @param			 mixed $values Criteria or User object or primary key or array of primary keys
+	 *							which is used to create the DELETE statement
+	 * @param			 PropelPDO $con the connection to use
+	 * @return		 int	The number of affected rows (if supported by underlying database driver).
+	 * @throws		 PropelException Any exceptions caught during processing will be
+	 *							rethrown wrapped into a PropelException.
+	 */
+	public static function doSoftDelete($values, PropelPDO $con = null)
+	{
+		if ($values instanceof Criteria) {
+			// rename for clarity
+			$criteria = clone $values;
+		} elseif ($values instanceof User) {
+			// create criteria based on pk values
+			$criteria = $values->buildPkeyCriteria();
+		} else {
+			// it must be the primary key
+			$criteria = new Criteria(self::DATABASE_NAME);
+			$criteria->add(UserPeer::ID, (array) $values, Criteria::IN);
+		}
+		$criteria->add(UserPeer::DELETED_AT, time());
+		return UserPeer::doUpdate($criteria, $con);
+	}
+	
+	/**
+	 * Delete or soft delete records, depending on UserPeer::$softDelete
+	 *
+	 * @param			 mixed $values Criteria or User object or primary key or array of primary keys
+	 *							which is used to create the DELETE statement
+	 * @param			 PropelPDO $con the connection to use
+	 * @return		 int	The number of affected rows (if supported by underlying database driver).
+	 * @throws		 PropelException Any exceptions caught during processing will be
+	 *							rethrown wrapped into a PropelException.
+	 */
+	public static function doDelete($values, PropelPDO $con = null)
+	{
+		if (UserPeer::isSoftDeleteEnabled()) {
+			return UserPeer::doSoftDelete($values, $con);
+		} else {
+			return UserPeer::doForceDelete($values, $con);
+		} 
+	}
+	/**
+	 * Method to soft delete all rows from the users_user table.
+	 *
+	 * @param			 PropelPDO $con the connection to use
+	 * @return		 int The number of affected rows (if supported by underlying database driver).
+	 * @throws		 PropelException Any exceptions caught during processing will be
+	 *							rethrown wrapped into a PropelException.
+	 */
+	public static function doSoftDeleteAll(PropelPDO $con = null)
+	{
+		if ($con === null) {
+			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+		}
+		$selectCriteria = new Criteria();
+		$selectCriteria->add(UserPeer::DELETED_AT, null, Criteria::ISNULL);
+		$selectCriteria->setDbName(UserPeer::DATABASE_NAME);
+		$modifyCriteria = new Criteria();
+		$modifyCriteria->add(UserPeer::DELETED_AT, time());
+		return BasePeer::doUpdate($selectCriteria, $modifyCriteria, $con);
+	}
+	
+	/**
+	 * Delete or soft delete all records, depending on UserPeer::$softDelete
+	 *
+	 * @param			 PropelPDO $con the connection to use
+	 * @return		 int	The number of affected rows (if supported by underlying database driver).
+	 * @throws		 PropelException Any exceptions caught during processing will be
+	 *							rethrown wrapped into a PropelException.
+	 */
+	public static function doDeleteAll(PropelPDO $con = null)
+	{
+		if (UserPeer::isSoftDeleteEnabled()) {
+			return UserPeer::doSoftDeleteAll($con);
+		} else {
+			return UserPeer::doForceDeleteAll($con);
+		} 
 	}
 
 } // BaseUserPeer

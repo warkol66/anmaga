@@ -14,6 +14,16 @@
  * @method     UserQuery orderByUpdated($order = Criteria::ASC) Order by the updated column
  * @method     UserQuery orderByLevelid($order = Criteria::ASC) Order by the levelId column
  * @method     UserQuery orderByLastlogin($order = Criteria::ASC) Order by the lastLogin column
+ * @method     UserQuery orderByTimezone($order = Criteria::ASC) Order by the timezone column
+ * @method     UserQuery orderByRecoveryhash($order = Criteria::ASC) Order by the recoveryHash column
+ * @method     UserQuery orderByRecoveryhashcreatedon($order = Criteria::ASC) Order by the recoveryHashCreatedOn column
+ * @method     UserQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method     UserQuery orderBySurname($order = Criteria::ASC) Order by the surname column
+ * @method     UserQuery orderByMailaddress($order = Criteria::ASC) Order by the mailAddress column
+ * @method     UserQuery orderByMailaddressalt($order = Criteria::ASC) Order by the mailAddressAlt column
+ * @method     UserQuery orderByDeletedAt($order = Criteria::ASC) Order by the deleted_at column
+ * @method     UserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method     UserQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method     UserQuery groupById() Group by the id column
  * @method     UserQuery groupByUsername() Group by the username column
@@ -23,6 +33,16 @@
  * @method     UserQuery groupByUpdated() Group by the updated column
  * @method     UserQuery groupByLevelid() Group by the levelId column
  * @method     UserQuery groupByLastlogin() Group by the lastLogin column
+ * @method     UserQuery groupByTimezone() Group by the timezone column
+ * @method     UserQuery groupByRecoveryhash() Group by the recoveryHash column
+ * @method     UserQuery groupByRecoveryhashcreatedon() Group by the recoveryHashCreatedOn column
+ * @method     UserQuery groupByName() Group by the name column
+ * @method     UserQuery groupBySurname() Group by the surname column
+ * @method     UserQuery groupByMailaddress() Group by the mailAddress column
+ * @method     UserQuery groupByMailaddressalt() Group by the mailAddressAlt column
+ * @method     UserQuery groupByDeletedAt() Group by the deleted_at column
+ * @method     UserQuery groupByCreatedAt() Group by the created_at column
+ * @method     UserQuery groupByUpdatedAt() Group by the updated_at column
  *
  * @method     UserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     UserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -35,6 +55,14 @@
  * @method     UserQuery leftJoinActionLog($relationAlias = null) Adds a LEFT JOIN clause to the query using the ActionLog relation
  * @method     UserQuery rightJoinActionLog($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ActionLog relation
  * @method     UserQuery innerJoinActionLog($relationAlias = null) Adds a INNER JOIN clause to the query using the ActionLog relation
+ *
+ * @method     UserQuery leftJoinAlertSubscriptionUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the AlertSubscriptionUser relation
+ * @method     UserQuery rightJoinAlertSubscriptionUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AlertSubscriptionUser relation
+ * @method     UserQuery innerJoinAlertSubscriptionUser($relationAlias = null) Adds a INNER JOIN clause to the query using the AlertSubscriptionUser relation
+ *
+ * @method     UserQuery leftJoinScheduleSubscriptionUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduleSubscriptionUser relation
+ * @method     UserQuery rightJoinScheduleSubscriptionUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduleSubscriptionUser relation
+ * @method     UserQuery innerJoinScheduleSubscriptionUser($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduleSubscriptionUser relation
  *
  * @method     UserQuery leftJoinUserInfo($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserInfo relation
  * @method     UserQuery rightJoinUserInfo($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserInfo relation
@@ -55,6 +83,16 @@
  * @method     User findOneByUpdated(string $updated) Return the first User filtered by the updated column
  * @method     User findOneByLevelid(int $levelId) Return the first User filtered by the levelId column
  * @method     User findOneByLastlogin(string $lastLogin) Return the first User filtered by the lastLogin column
+ * @method     User findOneByTimezone(string $timezone) Return the first User filtered by the timezone column
+ * @method     User findOneByRecoveryhash(string $recoveryHash) Return the first User filtered by the recoveryHash column
+ * @method     User findOneByRecoveryhashcreatedon(string $recoveryHashCreatedOn) Return the first User filtered by the recoveryHashCreatedOn column
+ * @method     User findOneByName(string $name) Return the first User filtered by the name column
+ * @method     User findOneBySurname(string $surname) Return the first User filtered by the surname column
+ * @method     User findOneByMailaddress(string $mailAddress) Return the first User filtered by the mailAddress column
+ * @method     User findOneByMailaddressalt(string $mailAddressAlt) Return the first User filtered by the mailAddressAlt column
+ * @method     User findOneByDeletedAt(string $deleted_at) Return the first User filtered by the deleted_at column
+ * @method     User findOneByCreatedAt(string $created_at) Return the first User filtered by the created_at column
+ * @method     User findOneByUpdatedAt(string $updated_at) Return the first User filtered by the updated_at column
  *
  * @method     array findById(int $id) Return User objects filtered by the id column
  * @method     array findByUsername(string $username) Return User objects filtered by the username column
@@ -64,11 +102,25 @@
  * @method     array findByUpdated(string $updated) Return User objects filtered by the updated column
  * @method     array findByLevelid(int $levelId) Return User objects filtered by the levelId column
  * @method     array findByLastlogin(string $lastLogin) Return User objects filtered by the lastLogin column
+ * @method     array findByTimezone(string $timezone) Return User objects filtered by the timezone column
+ * @method     array findByRecoveryhash(string $recoveryHash) Return User objects filtered by the recoveryHash column
+ * @method     array findByRecoveryhashcreatedon(string $recoveryHashCreatedOn) Return User objects filtered by the recoveryHashCreatedOn column
+ * @method     array findByName(string $name) Return User objects filtered by the name column
+ * @method     array findBySurname(string $surname) Return User objects filtered by the surname column
+ * @method     array findByMailaddress(string $mailAddress) Return User objects filtered by the mailAddress column
+ * @method     array findByMailaddressalt(string $mailAddressAlt) Return User objects filtered by the mailAddressAlt column
+ * @method     array findByDeletedAt(string $deleted_at) Return User objects filtered by the deleted_at column
+ * @method     array findByCreatedAt(string $created_at) Return User objects filtered by the created_at column
+ * @method     array findByUpdatedAt(string $updated_at) Return User objects filtered by the updated_at column
  *
  * @package    propel.generator.users.classes.om
  */
 abstract class BaseUserQuery extends ModelCriteria
 {
+
+	// soft_delete behavior
+	protected static $softDelete = true;
+	protected $localSoftDelete = true;
 
 	/**
 	 * Initializes internal state of BaseUserQuery object.
@@ -376,6 +428,262 @@ abstract class BaseUserQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query on the timezone column
+	 * 
+	 * @param     string $timezone The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByTimezone($timezone = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($timezone)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $timezone)) {
+				$timezone = str_replace('*', '%', $timezone);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::TIMEZONE, $timezone, $comparison);
+	}
+
+	/**
+	 * Filter the query on the recoveryHash column
+	 * 
+	 * @param     string $recoveryhash The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByRecoveryhash($recoveryhash = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($recoveryhash)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $recoveryhash)) {
+				$recoveryhash = str_replace('*', '%', $recoveryhash);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::RECOVERYHASH, $recoveryhash, $comparison);
+	}
+
+	/**
+	 * Filter the query on the recoveryHashCreatedOn column
+	 * 
+	 * @param     string|array $recoveryhashcreatedon The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByRecoveryhashcreatedon($recoveryhashcreatedon = null, $comparison = null)
+	{
+		if (is_array($recoveryhashcreatedon)) {
+			$useMinMax = false;
+			if (isset($recoveryhashcreatedon['min'])) {
+				$this->addUsingAlias(UserPeer::RECOVERYHASHCREATEDON, $recoveryhashcreatedon['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($recoveryhashcreatedon['max'])) {
+				$this->addUsingAlias(UserPeer::RECOVERYHASHCREATEDON, $recoveryhashcreatedon['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::RECOVERYHASHCREATEDON, $recoveryhashcreatedon, $comparison);
+	}
+
+	/**
+	 * Filter the query on the name column
+	 * 
+	 * @param     string $name The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByName($name = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($name)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $name)) {
+				$name = str_replace('*', '%', $name);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::NAME, $name, $comparison);
+	}
+
+	/**
+	 * Filter the query on the surname column
+	 * 
+	 * @param     string $surname The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterBySurname($surname = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($surname)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $surname)) {
+				$surname = str_replace('*', '%', $surname);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::SURNAME, $surname, $comparison);
+	}
+
+	/**
+	 * Filter the query on the mailAddress column
+	 * 
+	 * @param     string $mailaddress The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByMailaddress($mailaddress = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($mailaddress)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $mailaddress)) {
+				$mailaddress = str_replace('*', '%', $mailaddress);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::MAILADDRESS, $mailaddress, $comparison);
+	}
+
+	/**
+	 * Filter the query on the mailAddressAlt column
+	 * 
+	 * @param     string $mailaddressalt The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByMailaddressalt($mailaddressalt = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($mailaddressalt)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $mailaddressalt)) {
+				$mailaddressalt = str_replace('*', '%', $mailaddressalt);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::MAILADDRESSALT, $mailaddressalt, $comparison);
+	}
+
+	/**
+	 * Filter the query on the deleted_at column
+	 * 
+	 * @param     string|array $deletedAt The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByDeletedAt($deletedAt = null, $comparison = null)
+	{
+		if (is_array($deletedAt)) {
+			$useMinMax = false;
+			if (isset($deletedAt['min'])) {
+				$this->addUsingAlias(UserPeer::DELETED_AT, $deletedAt['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($deletedAt['max'])) {
+				$this->addUsingAlias(UserPeer::DELETED_AT, $deletedAt['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::DELETED_AT, $deletedAt, $comparison);
+	}
+
+	/**
+	 * Filter the query on the created_at column
+	 * 
+	 * @param     string|array $createdAt The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByCreatedAt($createdAt = null, $comparison = null)
+	{
+		if (is_array($createdAt)) {
+			$useMinMax = false;
+			if (isset($createdAt['min'])) {
+				$this->addUsingAlias(UserPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($createdAt['max'])) {
+				$this->addUsingAlias(UserPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::CREATED_AT, $createdAt, $comparison);
+	}
+
+	/**
+	 * Filter the query on the updated_at column
+	 * 
+	 * @param     string|array $updatedAt The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByUpdatedAt($updatedAt = null, $comparison = null)
+	{
+		if (is_array($updatedAt)) {
+			$useMinMax = false;
+			if (isset($updatedAt['min'])) {
+				$this->addUsingAlias(UserPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($updatedAt['max'])) {
+				$this->addUsingAlias(UserPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(UserPeer::UPDATED_AT, $updatedAt, $comparison);
+	}
+
+	/**
 	 * Filter the query by a related Level object
 	 *
 	 * @param     Level $level  the related object to use as filter
@@ -501,6 +809,134 @@ abstract class BaseUserQuery extends ModelCriteria
 		return $this
 			->joinActionLog($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'ActionLog', 'ActionLogQuery');
+	}
+
+	/**
+	 * Filter the query by a related AlertSubscriptionUser object
+	 *
+	 * @param     AlertSubscriptionUser $alertSubscriptionUser  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByAlertSubscriptionUser($alertSubscriptionUser, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(UserPeer::ID, $alertSubscriptionUser->getUserid(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the AlertSubscriptionUser relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function joinAlertSubscriptionUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('AlertSubscriptionUser');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'AlertSubscriptionUser');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the AlertSubscriptionUser relation AlertSubscriptionUser object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    AlertSubscriptionUserQuery A secondary query class using the current class as primary query
+	 */
+	public function useAlertSubscriptionUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		return $this
+			->joinAlertSubscriptionUser($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'AlertSubscriptionUser', 'AlertSubscriptionUserQuery');
+	}
+
+	/**
+	 * Filter the query by a related ScheduleSubscriptionUser object
+	 *
+	 * @param     ScheduleSubscriptionUser $scheduleSubscriptionUser  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByScheduleSubscriptionUser($scheduleSubscriptionUser, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(UserPeer::ID, $scheduleSubscriptionUser->getUserid(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the ScheduleSubscriptionUser relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function joinScheduleSubscriptionUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('ScheduleSubscriptionUser');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'ScheduleSubscriptionUser');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the ScheduleSubscriptionUser relation ScheduleSubscriptionUser object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ScheduleSubscriptionUserQuery A secondary query class using the current class as primary query
+	 */
+	public function useScheduleSubscriptionUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		return $this
+			->joinScheduleSubscriptionUser($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'ScheduleSubscriptionUser', 'ScheduleSubscriptionUserQuery');
 	}
 
 	/**
@@ -632,6 +1068,40 @@ abstract class BaseUserQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query by a related AlertSubscription object
+	 * using the common_alertSubscriptionUser table as cross reference
+	 *
+	 * @param     AlertSubscription $alertSubscription the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByAlertSubscription($alertSubscription, $comparison = Criteria::EQUAL)
+	{
+		return $this
+			->useAlertSubscriptionUserQuery()
+				->filterByAlertSubscription($alertSubscription, $comparison)
+			->endUse();
+	}
+	
+	/**
+	 * Filter the query by a related ScheduleSubscription object
+	 * using the common_scheduleSubscriptionUser table as cross reference
+	 *
+	 * @param     ScheduleSubscription $scheduleSubscription the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByScheduleSubscription($scheduleSubscription, $comparison = Criteria::EQUAL)
+	{
+		return $this
+			->useScheduleSubscriptionUserQuery()
+				->filterByScheduleSubscription($scheduleSubscription, $comparison)
+			->endUse();
+	}
+	
+	/**
 	 * Exclude object from result
 	 *
 	 * @param     User $user Object to remove from the list of results
@@ -645,6 +1115,195 @@ abstract class BaseUserQuery extends ModelCriteria
 	  }
 	  
 		return $this;
+	}
+
+	/**
+	 * Code to execute before every SELECT statement
+	 * 
+	 * @param     PropelPDO $con The connection object used by the query
+	 */
+	protected function basePreSelect(PropelPDO $con)
+	{
+		// soft_delete behavior
+		if (UserQuery::isSoftDeleteEnabled() && $this->localSoftDelete) {
+			$this->addUsingAlias(UserPeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			UserPeer::enableSoftDelete();
+		}
+		
+		return $this->preSelect($con);
+	}
+
+	/**
+	 * Code to execute before every DELETE statement
+	 * 
+	 * @param     PropelPDO $con The connection object used by the query
+	 */
+	protected function basePreDelete(PropelPDO $con)
+	{
+		// soft_delete behavior
+		if (UserQuery::isSoftDeleteEnabled() && $this->localSoftDelete) {
+			return $this->softDelete($con);
+		} else {
+			return $this->hasWhereClause() ? $this->forceDelete($con) : $this->forceDeleteAll($con);
+		}
+		
+		return $this->preDelete($con);
+	}
+
+	// soft_delete behavior
+	
+	/**
+	 * Temporarily disable the filter on deleted rows
+	 * Valid only for the current query
+	 * 
+	 * @see UserQuery::disableSoftDelete() to disable the filter for more than one query
+	 *
+	 * @return UserQuery The current query, for fuid interface
+	 */
+	public function includeDeleted()
+	{
+		$this->localSoftDelete = false;
+		return $this;
+	}
+	
+	/**
+	 * Soft delete the selected rows
+	 *
+	 * @param			PropelPDO $con an optional connection object
+	 *
+	 * @return		int Number of updated rows
+	 */
+	public function softDelete(PropelPDO $con = null)
+	{
+		return $this->update(array('DeletedAt' => time()), $con);
+	}
+	
+	/**
+	 * Bypass the soft_delete behavior and force a hard delete of the selected rows
+	 *
+	 * @param			PropelPDO $con an optional connection object
+	 *
+	 * @return		int Number of deleted rows
+	 */
+	public function forceDelete(PropelPDO $con = null)
+	{
+		return UserPeer::doForceDelete($this, $con);
+	}
+	
+	/**
+	 * Bypass the soft_delete behavior and force a hard delete of all the rows
+	 *
+	 * @param			PropelPDO $con an optional connection object
+	 *
+	 * @return		int Number of deleted rows
+	 */
+	public function forceDeleteAll(PropelPDO $con = null)
+	{
+		return UserPeer::doForceDeleteAll($con);}
+	
+	/**
+	 * Undelete selected rows
+	 *
+	 * @param			PropelPDO $con an optional connection object
+	 *
+	 * @return		int The number of rows affected by this update and any referring fk objects' save() operations.
+	 */
+	public function unDelete(PropelPDO $con = null)
+	{
+		return $this->update(array('DeletedAt' => null), $con);
+	}
+		
+	/**
+	 * Enable the soft_delete behavior for this model
+	 */
+	public static function enableSoftDelete()
+	{
+		self::$softDelete = true;
+	}
+	
+	/**
+	 * Disable the soft_delete behavior for this model
+	 */
+	public static function disableSoftDelete()
+	{
+		self::$softDelete = false;
+	}
+	
+	/**
+	 * Check the soft_delete behavior for this model
+	 *
+	 * @return boolean true if the soft_delete behavior is enabled
+	 */
+	public static function isSoftDeleteEnabled()
+	{
+		return self::$softDelete;
+	}
+
+	// timestampable behavior
+	
+	/**
+	 * Filter by the latest updated
+	 *
+	 * @param      int $nbDays Maximum age of the latest update in days
+	 *
+	 * @return     UserQuery The current query, for fuid interface
+	 */
+	public function recentlyUpdated($nbDays = 7)
+	{
+		return $this->addUsingAlias(UserPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+	}
+	
+	/**
+	 * Filter by the latest created
+	 *
+	 * @param      int $nbDays Maximum age of in days
+	 *
+	 * @return     UserQuery The current query, for fuid interface
+	 */
+	public function recentlyCreated($nbDays = 7)
+	{
+		return $this->addUsingAlias(UserPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+	}
+	
+	/**
+	 * Order by update date desc
+	 *
+	 * @return     UserQuery The current query, for fuid interface
+	 */
+	public function lastUpdatedFirst()
+	{
+		return $this->addDescendingOrderByColumn(UserPeer::UPDATED_AT);
+	}
+	
+	/**
+	 * Order by update date asc
+	 *
+	 * @return     UserQuery The current query, for fuid interface
+	 */
+	public function firstUpdatedFirst()
+	{
+		return $this->addAscendingOrderByColumn(UserPeer::UPDATED_AT);
+	}
+	
+	/**
+	 * Order by create date desc
+	 *
+	 * @return     UserQuery The current query, for fuid interface
+	 */
+	public function lastCreatedFirst()
+	{
+		return $this->addDescendingOrderByColumn(UserPeer::CREATED_AT);
+	}
+	
+	/**
+	 * Order by create date asc
+	 *
+	 * @return     UserQuery The current query, for fuid interface
+	 */
+	public function firstCreatedFirst()
+	{
+		return $this->addAscendingOrderByColumn(UserPeer::CREATED_AT);
 	}
 
 } // BaseUserQuery

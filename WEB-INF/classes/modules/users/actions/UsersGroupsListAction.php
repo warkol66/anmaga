@@ -1,38 +1,20 @@
 <?php
-
-require_once("BaseAction.php");
-require_once("GroupPeer.php");
-require_once("GroupCategoryPeer.php");
+/** 
+ * UsersGroupsDoEditAction
+ *
+ * @package users 
+ * @subpackage groups 
+ */
 
 class UsersGroupsListAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function UsersGroupsListAction() {
 		;
 	}
 
-
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -46,15 +28,15 @@ class UsersGroupsListAction extends BaseAction {
 		$module = "Users";
 		$section = "Groups";
 
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
 		$groups = GroupPeer::getAll();
 		$smarty->assign("groups",$groups);
 
-    $smarty->assign("message",$_GET["message"]);
+		$smarty->assign("message",$_GET["message"]);
 
-    if ( !empty($_GET["group"]) ) {
+		if ( !empty($_GET["group"]) ) {
 			//voy a editar un grupo
 
 			try {
@@ -62,10 +44,10 @@ class UsersGroupsListAction extends BaseAction {
 				$smarty->assign("currentGroup",$group);
 				$groupCategories = $group->getCategories();
 				$smarty->assign("currentGroupCategories",$groupCategories);
-        $notAssignedCategories = $group->getNotAssignedCategories();
-		    $smarty->assign("categories",$notAssignedCategories);
-	    	$smarty->assign("accion","edicion");
-	  	}
+				$notAssignedCategories = $group->getNotAssignedCategories();
+				$smarty->assign("categories",$notAssignedCategories);
+				$smarty->assign("accion","edicion");
+			}
 			catch (PropelException $e) {
 			}
 		}
@@ -74,4 +56,3 @@ class UsersGroupsListAction extends BaseAction {
 	}
 
 }
-?>
