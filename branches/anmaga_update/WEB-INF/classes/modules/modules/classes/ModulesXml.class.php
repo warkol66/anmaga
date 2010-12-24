@@ -6,7 +6,7 @@ require_once("config/DBConnection.inc.php");
 /**
 * Utilizada para obtener informacion de las solicitudes.
 *
-* @package mod_solicitudes
+* @package modules
 */
 class ModulesXml {
 

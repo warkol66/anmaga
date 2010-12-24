@@ -1,5 +1,4 @@
-Error: Ha intentado desactivar un m&oacute;dulo que necesita la desactivaci&oacute;n de lo(s) siguiente(s) m&oacute;dulo(s):<br>|-foreach from=$dependenciesName item=dependencyName-||-$dependencyName-|<br>|-/foreach-|
-
+<div id="messageResult" class="resultFailure">Ha ocurrido un error. Ha intentado desactivar un módulo que necesita la desactivación de lo(s) siguiente(s) módulo(s):<ul>|-foreach from=$dependenciesName item=dependencyName-|<li>|-$dependencyName-|</li>|-/foreach-|</ul></div>
 <script language="JavaScript">
 	$('active_|-$moduleName-|').checked = true;
 	$('messageMod').innerHTML = "";
