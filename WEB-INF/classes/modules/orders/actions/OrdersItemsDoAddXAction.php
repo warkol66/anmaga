@@ -80,7 +80,7 @@ class OrdersItemsDoAddXAction extends BaseAction {
 			
 			try {
 				//damos el alta del producto
-				$item = $order->addItem($order->getId(),$product->getId(),$product->getPrice(),$_POST['productQuantity']);
+				$item = $order->addItem($product->getCode(),$product->getPrice(),$_POST['productQuantity']);
 			}
 			catch(PropelException $exp) {
 				//hubo una excepcion

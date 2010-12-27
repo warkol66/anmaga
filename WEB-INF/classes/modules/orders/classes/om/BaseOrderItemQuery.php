@@ -8,13 +8,13 @@
  *
  * @method     OrderItemQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     OrderItemQuery orderByOrderid($order = Criteria::ASC) Order by the orderId column
- * @method     OrderItemQuery orderByProductid($order = Criteria::ASC) Order by the productId column
+ * @method     OrderItemQuery orderByProductcode($order = Criteria::ASC) Order by the productCode column
  * @method     OrderItemQuery orderByPrice($order = Criteria::ASC) Order by the price column
  * @method     OrderItemQuery orderByQuantity($order = Criteria::ASC) Order by the quantity column
  *
  * @method     OrderItemQuery groupById() Group by the id column
  * @method     OrderItemQuery groupByOrderid() Group by the orderId column
- * @method     OrderItemQuery groupByProductid() Group by the productId column
+ * @method     OrderItemQuery groupByProductcode() Group by the productCode column
  * @method     OrderItemQuery groupByPrice() Group by the price column
  * @method     OrderItemQuery groupByQuantity() Group by the quantity column
  *
@@ -35,13 +35,13 @@
  *
  * @method     OrderItem findOneById(int $id) Return the first OrderItem filtered by the id column
  * @method     OrderItem findOneByOrderid(int $orderId) Return the first OrderItem filtered by the orderId column
- * @method     OrderItem findOneByProductid(int $productId) Return the first OrderItem filtered by the productId column
+ * @method     OrderItem findOneByProductcode(string $productCode) Return the first OrderItem filtered by the productCode column
  * @method     OrderItem findOneByPrice(double $price) Return the first OrderItem filtered by the price column
  * @method     OrderItem findOneByQuantity(int $quantity) Return the first OrderItem filtered by the quantity column
  *
  * @method     array findById(int $id) Return OrderItem objects filtered by the id column
  * @method     array findByOrderid(int $orderId) Return OrderItem objects filtered by the orderId column
- * @method     array findByProductid(int $productId) Return OrderItem objects filtered by the productId column
+ * @method     array findByProductcode(string $productCode) Return OrderItem objects filtered by the productCode column
  * @method     array findByPrice(double $price) Return OrderItem objects filtered by the price column
  * @method     array findByQuantity(int $quantity) Return OrderItem objects filtered by the quantity column
  *
@@ -202,34 +202,25 @@ abstract class BaseOrderItemQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query on the productId column
+	 * Filter the query on the productCode column
 	 * 
-	 * @param     int|array $productid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $productcode The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderItemQuery The current query, for fluid interface
 	 */
-	public function filterByProductid($productid = null, $comparison = null)
+	public function filterByProductcode($productcode = null, $comparison = null)
 	{
-		if (is_array($productid)) {
-			$useMinMax = false;
-			if (isset($productid['min'])) {
-				$this->addUsingAlias(OrderItemPeer::PRODUCTID, $productid['min'], Criteria::GREATER_EQUAL);
-				$useMinMax = true;
-			}
-			if (isset($productid['max'])) {
-				$this->addUsingAlias(OrderItemPeer::PRODUCTID, $productid['max'], Criteria::LESS_EQUAL);
-				$useMinMax = true;
-			}
-			if ($useMinMax) {
-				return $this;
-			}
-			if (null === $comparison) {
+		if (null === $comparison) {
+			if (is_array($productcode)) {
 				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $productcode)) {
+				$productcode = str_replace('*', '%', $productcode);
+				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(OrderItemPeer::PRODUCTID, $productid, $comparison);
+		return $this->addUsingAlias(OrderItemPeer::PRODUCTCODE, $productcode, $comparison);
 	}
 
 	/**
@@ -369,7 +360,7 @@ abstract class BaseOrderItemQuery extends ModelCriteria
 	public function filterByProduct($product, $comparison = null)
 	{
 		return $this
-			->addUsingAlias(OrderItemPeer::PRODUCTID, $product->getId(), $comparison);
+			->addUsingAlias(OrderItemPeer::PRODUCTCODE, $product->getCode(), $comparison);
 	}
 
 	/**
@@ -380,7 +371,7 @@ abstract class BaseOrderItemQuery extends ModelCriteria
 	 *
 	 * @return    OrderItemQuery The current query, for fluid interface
 	 */
-	public function joinProduct($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinProduct($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
 		$tableMap = $this->getTableMap();
 		$relationMap = $tableMap->getRelation('Product');
@@ -415,7 +406,7 @@ abstract class BaseOrderItemQuery extends ModelCriteria
 	 *
 	 * @return    ProductQuery A secondary query class using the current class as primary query
 	 */
-	public function useProductQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useProductQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
 		return $this
 			->joinProduct($relationAlias, $joinType)

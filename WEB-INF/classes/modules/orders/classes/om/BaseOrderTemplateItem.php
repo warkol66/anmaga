@@ -37,10 +37,10 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 	protected $ordertemplateid;
 
 	/**
-	 * The value for the productid field.
-	 * @var        int
+	 * The value for the productcode field.
+	 * @var        string
 	 */
-	protected $productid;
+	protected $productcode;
 
 	/**
 	 * The value for the price field.
@@ -99,13 +99,13 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [productid] column value.
-	 * Id del usuario
-	 * @return     int
+	 * Get the [productcode] column value.
+	 * Codigo del producto
+	 * @return     string
 	 */
-	public function getProductid()
+	public function getProductcode()
 	{
-		return $this->productid;
+		return $this->productcode;
 	}
 
 	/**
@@ -173,28 +173,28 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 	} // setOrdertemplateid()
 
 	/**
-	 * Set the value of [productid] column.
-	 * Id del usuario
-	 * @param      int $v new value
+	 * Set the value of [productcode] column.
+	 * Codigo del producto
+	 * @param      string $v new value
 	 * @return     OrderTemplateItem The current object (for fluent API support)
 	 */
-	public function setProductid($v)
+	public function setProductcode($v)
 	{
 		if ($v !== null) {
-			$v = (int) $v;
+			$v = (string) $v;
 		}
 
-		if ($this->productid !== $v) {
-			$this->productid = $v;
-			$this->modifiedColumns[] = OrderTemplateItemPeer::PRODUCTID;
+		if ($this->productcode !== $v) {
+			$this->productcode = $v;
+			$this->modifiedColumns[] = OrderTemplateItemPeer::PRODUCTCODE;
 		}
 
-		if ($this->aProduct !== null && $this->aProduct->getId() !== $v) {
+		if ($this->aProduct !== null && $this->aProduct->getCode() !== $v) {
 			$this->aProduct = null;
 		}
 
 		return $this;
-	} // setProductid()
+	} // setProductcode()
 
 	/**
 	 * Set the value of [price] column.
@@ -270,7 +270,7 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->ordertemplateid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-			$this->productid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->productcode = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->price = ($row[$startcol + 3] !== null) ? (double) $row[$startcol + 3] : null;
 			$this->quantity = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
 			$this->resetModified();
@@ -307,7 +307,7 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 		if ($this->aOrderTemplate !== null && $this->ordertemplateid !== $this->aOrderTemplate->getId()) {
 			$this->aOrderTemplate = null;
 		}
-		if ($this->aProduct !== null && $this->productid !== $this->aProduct->getId()) {
+		if ($this->aProduct !== null && $this->productcode !== $this->aProduct->getCode()) {
 			$this->aProduct = null;
 		}
 	} // ensureConsistency
@@ -632,7 +632,7 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 				return $this->getOrdertemplateid();
 				break;
 			case 2:
-				return $this->getProductid();
+				return $this->getProductcode();
 				break;
 			case 3:
 				return $this->getPrice();
@@ -666,7 +666,7 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getOrdertemplateid(),
-			$keys[2] => $this->getProductid(),
+			$keys[2] => $this->getProductcode(),
 			$keys[3] => $this->getPrice(),
 			$keys[4] => $this->getQuantity(),
 		);
@@ -715,7 +715,7 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 				$this->setOrdertemplateid($value);
 				break;
 			case 2:
-				$this->setProductid($value);
+				$this->setProductcode($value);
 				break;
 			case 3:
 				$this->setPrice($value);
@@ -749,7 +749,7 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setOrdertemplateid($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setProductid($arr[$keys[2]]);
+		if (array_key_exists($keys[2], $arr)) $this->setProductcode($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setPrice($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setQuantity($arr[$keys[4]]);
 	}
@@ -765,7 +765,7 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 
 		if ($this->isColumnModified(OrderTemplateItemPeer::ID)) $criteria->add(OrderTemplateItemPeer::ID, $this->id);
 		if ($this->isColumnModified(OrderTemplateItemPeer::ORDERTEMPLATEID)) $criteria->add(OrderTemplateItemPeer::ORDERTEMPLATEID, $this->ordertemplateid);
-		if ($this->isColumnModified(OrderTemplateItemPeer::PRODUCTID)) $criteria->add(OrderTemplateItemPeer::PRODUCTID, $this->productid);
+		if ($this->isColumnModified(OrderTemplateItemPeer::PRODUCTCODE)) $criteria->add(OrderTemplateItemPeer::PRODUCTCODE, $this->productcode);
 		if ($this->isColumnModified(OrderTemplateItemPeer::PRICE)) $criteria->add(OrderTemplateItemPeer::PRICE, $this->price);
 		if ($this->isColumnModified(OrderTemplateItemPeer::QUANTITY)) $criteria->add(OrderTemplateItemPeer::QUANTITY, $this->quantity);
 
@@ -830,7 +830,7 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 		$copyObj->setOrdertemplateid($this->ordertemplateid);
-		$copyObj->setProductid($this->productid);
+		$copyObj->setProductcode($this->productcode);
 		$copyObj->setPrice($this->price);
 		$copyObj->setQuantity($this->quantity);
 
@@ -935,9 +935,9 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 	public function setProduct(Product $v = null)
 	{
 		if ($v === null) {
-			$this->setProductid(NULL);
+			$this->setProductcode(NULL);
 		} else {
-			$this->setProductid($v->getId());
+			$this->setProductcode($v->getCode());
 		}
 
 		$this->aProduct = $v;
@@ -961,8 +961,10 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 	 */
 	public function getProduct(PropelPDO $con = null)
 	{
-		if ($this->aProduct === null && ($this->productid !== null)) {
-			$this->aProduct = ProductQuery::create()->findPk($this->productid, $con);
+		if ($this->aProduct === null && (($this->productcode !== "" && $this->productcode !== null))) {
+			$this->aProduct = ProductQuery::create()
+				->filterByOrderTemplateItem($this) // here
+				->findOne($con);
 			/* The following can be used additionally to
 				 guarantee the related object contains a reference
 				 to this object.  This level of coupling may, however, be
@@ -981,7 +983,7 @@ abstract class BaseOrderTemplateItem extends BaseObject  implements Persistent
 	{
 		$this->id = null;
 		$this->ordertemplateid = null;
-		$this->productid = null;
+		$this->productcode = null;
 		$this->price = null;
 		$this->quantity = null;
 		$this->alreadyInSave = false;

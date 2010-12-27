@@ -11,15 +11,15 @@ class OrderTemplateItemPeer extends BaseOrderTemplateItemPeer {
   * Crea un order template item nuevo.
   *
   * @param int $orderTemplateId orderTemplateId del odertemplateitem
-  * @param int $productId productId del odertemplateitem
+  * @param int $productCode productCode del odertemplateitem
   * @param float $price price del odertemplateitem
   * @param int $quantity quantity del odertemplateitem
   * @return boolean true si se creo el odertemplateitem correctamente, false sino
 	*/
-	function create($orderTemplateId,$productId,$price,$quantity) {
+	function create($orderTemplateId,$productCode,$price,$quantity) {
     $ordertemplateitemObj = new OrderTemplateItem();
     $ordertemplateitemObj->setorderTemplateId($orderTemplateId);
-		$ordertemplateitemObj->setproductId($productId);
+		$ordertemplateitemObj->setproductCode($productCode);
 		$ordertemplateitemObj->setprice($price);
 		$ordertemplateitemObj->setquantity($quantity);
 		$ordertemplateitemObj->save();
@@ -31,14 +31,14 @@ class OrderTemplateItemPeer extends BaseOrderTemplateItemPeer {
   *
   * @param int $id id del odertemplateitem
   * @param int $orderTemplateId orderTemplateId del odertemplateitem
-  * @param int $productId productId del odertemplateitem
+  * @param int $productCode productCode del odertemplateitem
   * @param float $price price del odertemplateitem
   * @param int $quantity quantity del odertemplateitem
   * @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
-  function update($id,$orderTemplateId,$productId,$price,$quantity) {
+  function update($id,$orderTemplateId,$productCode,$price,$quantity) {
   	$ordertemplateitemObj = OrderTemplateItemPeer::retrieveByPK($id);
-    $ordertemplateitemObj->setorderTemplateId($orderTemplateId);$ordertemplateitemObj->setproductId($productId);$ordertemplateitemObj->setprice($price);$ordertemplateitemObj->setquantity($quantity);    $ordertemplateitemObj->save();
+    $ordertemplateitemObj->setorderTemplateId($orderTemplateId);$ordertemplateitemObj->setproductCode($productCode);$ordertemplateitemObj->setprice($price);$ordertemplateitemObj->setquantity($quantity);    $ordertemplateitemObj->save();
 		return true;
   }
 

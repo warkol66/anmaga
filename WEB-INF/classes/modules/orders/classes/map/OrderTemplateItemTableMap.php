@@ -39,7 +39,7 @@ class OrderTemplateItemTableMap extends TableMap {
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addForeignKey('ORDERTEMPLATEID', 'Ordertemplateid', 'INTEGER', 'orders_orderTemplate', 'ID', true, null, null);
-		$this->addForeignKey('PRODUCTID', 'Productid', 'INTEGER', 'product', 'ID', true, null, null);
+		$this->addForeignKey('PRODUCTCODE', 'Productcode', 'VARCHAR', 'product', 'CODE', false, 255, null);
 		$this->addColumn('PRICE', 'Price', 'FLOAT', false, null, null);
 		$this->addColumn('QUANTITY', 'Quantity', 'INTEGER', false, null, null);
 		// validators
@@ -51,7 +51,7 @@ class OrderTemplateItemTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('OrderTemplate', 'OrderTemplate', RelationMap::MANY_TO_ONE, array('orderTemplateId' => 'id', ), 'CASCADE', null);
-    $this->addRelation('Product', 'Product', RelationMap::MANY_TO_ONE, array('productId' => 'id', ), null, null);
+    $this->addRelation('Product', 'Product', RelationMap::MANY_TO_ONE, array('productCode' => 'code', ), null, null);
 	} // buildRelations()
 
 } // OrderTemplateItemTableMap

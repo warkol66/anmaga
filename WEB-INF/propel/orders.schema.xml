@@ -23,14 +23,14 @@
 <table phpName="OrderItem" name="orders_orderItem" description="Item del Pedido de Productos">
   <column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id del item del pedido" primaryKey='true' />
   <column name="orderId" type="INTEGER"  required="true" description="Id del pedido" />
-  <column name="productId" type="INTEGER"  required="true" description="Id del usuario" />
+  <column name="productCode" size="255" type="VARCHAR" description="Codigo del producto" />
   <column name="price" type="FLOAT" description="Precio del producto" />
   <column name="quantity" type="INTEGER" description="Cantidad del producto en el pedido" />
   <foreign-key foreignTable="orders_order" onDelete="cascade">
     <reference local="orderId" foreign="id" />
   </foreign-key>
   <foreign-key foreignTable="product" >
-    <reference local="productId" foreign="id" />
+    <reference local="productCode" foreign="code" />
   </foreign-key>
 </table>
 
@@ -75,14 +75,14 @@
 <table phpName="OrderTemplateItem" name="orders_orderTemplateItem" description="Item de la Plantilla de Pedido de Productos">
   <column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id del item del pedido" primaryKey='true' />
   <column name="orderTemplateId" type="INTEGER"  required="true" description="Id del pedido" />
-  <column name="productId" type="INTEGER"  required="true" description="Id del usuario" />
+  <column name="productCode" size="255" type="VARCHAR" description="Codigo del producto" />
   <column name="price" type="FLOAT" description="Precio del producto" />
   <column name="quantity" type="INTEGER" description="Cantidad del producto en el pedido" />
   <foreign-key foreignTable="orders_orderTemplate" onDelete="cascade">
     <reference local="orderTemplateId" foreign="id" />
   </foreign-key>
   <foreign-key foreignTable="product" >
-    <reference local="productId" foreign="id" />
+    <reference local="productCode" foreign="code" />
   </foreign-key>
 </table>
 
