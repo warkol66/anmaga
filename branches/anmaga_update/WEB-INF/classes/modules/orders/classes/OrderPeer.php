@@ -378,7 +378,7 @@ class OrderPeer extends BaseOrderPeer {
 							$results["productsFound"]++;
 							//cargo el item solo si el precio es igual
 							if ($price == $item["price"]) {
-								OrderItemPeer::create($orderId,$product->getId(),$item["price"],$item["quantity"]);	
+								OrderItemPeer::create($orderId,$product->getCode(),$item["price"],$item["quantity"]);	
 								//agrego el producto en la lista de codigos de productos por afiliado
 								//AffiliateProductCodePeer::create($user->getAffiliateId(),$product->getCode(),$item["affiliateProductCode"]);
 							}

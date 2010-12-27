@@ -46,7 +46,7 @@ CREATE TABLE `orders_orderItem`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del item del pedido',
 	`orderId` INTEGER  NOT NULL COMMENT 'Id del pedido',
-	`productId` INTEGER  NOT NULL COMMENT 'Id del usuario',
+	`productCode` VARCHAR(255)   COMMENT 'Codigo del producto',
 	`price` FLOAT   COMMENT 'Precio del producto',
 	`quantity` INTEGER   COMMENT 'Cantidad del producto en el pedido',
 	PRIMARY KEY (`id`),
@@ -55,10 +55,10 @@ CREATE TABLE `orders_orderItem`
 		FOREIGN KEY (`orderId`)
 		REFERENCES `orders_order` (`id`)
 		ON DELETE CASCADE,
-	INDEX `orders_orderItem_FI_2` (`productId`),
+	INDEX `orders_orderItem_FI_2` (`productCode`),
 	CONSTRAINT `orders_orderItem_FK_2`
-		FOREIGN KEY (`productId`)
-		REFERENCES `product` (`id`)
+		FOREIGN KEY (`productCode`)
+		REFERENCES `product` (`code`)
 ) ENGINE=MyISAM COMMENT='Item del Pedido de Productos';
 
 #-----------------------------------------------------------------------------
@@ -135,7 +135,7 @@ CREATE TABLE `orders_orderTemplateItem`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del item del pedido',
 	`orderTemplateId` INTEGER  NOT NULL COMMENT 'Id del pedido',
-	`productId` INTEGER  NOT NULL COMMENT 'Id del usuario',
+	`productCode` VARCHAR(255)   COMMENT 'Codigo del producto',
 	`price` FLOAT   COMMENT 'Precio del producto',
 	`quantity` INTEGER   COMMENT 'Cantidad del producto en el pedido',
 	PRIMARY KEY (`id`),
@@ -144,10 +144,10 @@ CREATE TABLE `orders_orderTemplateItem`
 		FOREIGN KEY (`orderTemplateId`)
 		REFERENCES `orders_orderTemplate` (`id`)
 		ON DELETE CASCADE,
-	INDEX `orders_orderTemplateItem_FI_2` (`productId`),
+	INDEX `orders_orderTemplateItem_FI_2` (`productCode`),
 	CONSTRAINT `orders_orderTemplateItem_FK_2`
-		FOREIGN KEY (`productId`)
-		REFERENCES `product` (`id`)
+		FOREIGN KEY (`productCode`)
+		REFERENCES `product` (`code`)
 ) ENGINE=MyISAM COMMENT='Item de la Plantilla de Pedido de Productos';
 
 # This restores the fkey checks, after having unset them earlier

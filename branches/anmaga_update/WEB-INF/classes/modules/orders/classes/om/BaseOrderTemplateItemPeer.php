@@ -37,8 +37,8 @@ abstract class BaseOrderTemplateItemPeer {
 	/** the column name for the ORDERTEMPLATEID field */
 	const ORDERTEMPLATEID = 'orders_orderTemplateItem.ORDERTEMPLATEID';
 
-	/** the column name for the PRODUCTID field */
-	const PRODUCTID = 'orders_orderTemplateItem.PRODUCTID';
+	/** the column name for the PRODUCTCODE field */
+	const PRODUCTCODE = 'orders_orderTemplateItem.PRODUCTCODE';
 
 	/** the column name for the PRICE field */
 	const PRICE = 'orders_orderTemplateItem.PRICE';
@@ -62,11 +62,11 @@ abstract class BaseOrderTemplateItemPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Ordertemplateid', 'Productid', 'Price', 'Quantity', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'ordertemplateid', 'productid', 'price', 'quantity', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::ORDERTEMPLATEID, self::PRODUCTID, self::PRICE, self::QUANTITY, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'ORDERTEMPLATEID', 'PRODUCTID', 'PRICE', 'QUANTITY', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'orderTemplateId', 'productId', 'price', 'quantity', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Ordertemplateid', 'Productcode', 'Price', 'Quantity', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'ordertemplateid', 'productcode', 'price', 'quantity', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::ORDERTEMPLATEID, self::PRODUCTCODE, self::PRICE, self::QUANTITY, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'ORDERTEMPLATEID', 'PRODUCTCODE', 'PRICE', 'QUANTITY', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'orderTemplateId', 'productCode', 'price', 'quantity', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
@@ -77,11 +77,11 @@ abstract class BaseOrderTemplateItemPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Ordertemplateid' => 1, 'Productid' => 2, 'Price' => 3, 'Quantity' => 4, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'ordertemplateid' => 1, 'productid' => 2, 'price' => 3, 'quantity' => 4, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::ORDERTEMPLATEID => 1, self::PRODUCTID => 2, self::PRICE => 3, self::QUANTITY => 4, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'ORDERTEMPLATEID' => 1, 'PRODUCTID' => 2, 'PRICE' => 3, 'QUANTITY' => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'orderTemplateId' => 1, 'productId' => 2, 'price' => 3, 'quantity' => 4, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Ordertemplateid' => 1, 'Productcode' => 2, 'Price' => 3, 'Quantity' => 4, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'ordertemplateid' => 1, 'productcode' => 2, 'price' => 3, 'quantity' => 4, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::ORDERTEMPLATEID => 1, self::PRODUCTCODE => 2, self::PRICE => 3, self::QUANTITY => 4, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'ORDERTEMPLATEID' => 1, 'PRODUCTCODE' => 2, 'PRICE' => 3, 'QUANTITY' => 4, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'orderTemplateId' => 1, 'productCode' => 2, 'price' => 3, 'quantity' => 4, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
@@ -156,13 +156,13 @@ abstract class BaseOrderTemplateItemPeer {
 		if (null === $alias) {
 			$criteria->addSelectColumn(OrderTemplateItemPeer::ID);
 			$criteria->addSelectColumn(OrderTemplateItemPeer::ORDERTEMPLATEID);
-			$criteria->addSelectColumn(OrderTemplateItemPeer::PRODUCTID);
+			$criteria->addSelectColumn(OrderTemplateItemPeer::PRODUCTCODE);
 			$criteria->addSelectColumn(OrderTemplateItemPeer::PRICE);
 			$criteria->addSelectColumn(OrderTemplateItemPeer::QUANTITY);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.ORDERTEMPLATEID');
-			$criteria->addSelectColumn($alias . '.PRODUCTID');
+			$criteria->addSelectColumn($alias . '.PRODUCTCODE');
 			$criteria->addSelectColumn($alias . '.PRICE');
 			$criteria->addSelectColumn($alias . '.QUANTITY');
 		}
@@ -536,7 +536,7 @@ abstract class BaseOrderTemplateItemPeer {
 			$con = Propel::getConnection(OrderTemplateItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTCODE, ProductPeer::CODE, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -638,7 +638,7 @@ abstract class BaseOrderTemplateItemPeer {
 		$startcol = (OrderTemplateItemPeer::NUM_COLUMNS - OrderTemplateItemPeer::NUM_LAZY_LOAD_COLUMNS);
 		ProductPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTCODE, ProductPeer::CODE, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -720,7 +720,7 @@ abstract class BaseOrderTemplateItemPeer {
 
 		$criteria->addJoin(OrderTemplateItemPeer::ORDERTEMPLATEID, OrderTemplatePeer::ID, $join_behavior);
 
-		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTCODE, ProductPeer::CODE, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -763,7 +763,7 @@ abstract class BaseOrderTemplateItemPeer {
 
 		$criteria->addJoin(OrderTemplateItemPeer::ORDERTEMPLATEID, OrderTemplatePeer::ID, $join_behavior);
 
-		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTCODE, ProductPeer::CODE, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -861,7 +861,7 @@ abstract class BaseOrderTemplateItemPeer {
 			$con = Propel::getConnection(OrderTemplateItemPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTCODE, ProductPeer::CODE, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -952,7 +952,7 @@ abstract class BaseOrderTemplateItemPeer {
 		ProductPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTID, ProductPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTCODE, ProductPeer::CODE, $join_behavior);
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);

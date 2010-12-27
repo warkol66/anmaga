@@ -1,4 +1,23 @@
 ﻿==============================
+Revisión 643 - Fecha 20101227
+------------------------------
+#Migración para cambiar la relación orderItem<<->product para que se haga por código de producto en lugar de id.
+
+#Cambiamos el campo para que concuerde con el tipo de campo referenciado.
+ALTER TABLE  `orders_orderItem` CHANGE  `productId`  `productCode` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT  'Codigo del producto';
+
+#Reemplazamos los valores de las referencias para tomar los codigos de producto.
+UPDATE `orders_orderItem` LEFT JOIN `product` ON `orders_orderItem`.`productCode`=`product`.`id` SET `orders_orderItem`.`productCode`=`product`.`code`;
+
+#Hacemos lo mismo para los orderTemplateItem
+
+#Cambiamos el campo para que concuerde con el tipo de campo referenciado.
+ALTER TABLE  `orders_orderTemplateItem` CHANGE  `productId`  `productCode` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT  'Codigo del producto';
+
+#Reemplazamos los valores de las referencias para tomar los codigos de producto.
+UPDATE `orders_orderTemplateItem` LEFT JOIN `product` ON `orders_orderTemplateItem`.`productCode`=`product`.`id` SET `orders_orderTemplateItem`.`productCode`=`product`.`code`;
+
+==============================
 Revisión 638 - Fecha 20101224
 ------------------------------
 #-----------------------------------------------------------------------------

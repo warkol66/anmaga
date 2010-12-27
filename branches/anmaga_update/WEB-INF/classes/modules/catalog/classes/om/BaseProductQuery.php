@@ -608,7 +608,7 @@ abstract class BaseProductQuery extends ModelCriteria
 	public function filterByOrderItem($orderItem, $comparison = null)
 	{
 		return $this
-			->addUsingAlias(ProductPeer::ID, $orderItem->getProductid(), $comparison);
+			->addUsingAlias(ProductPeer::CODE, $orderItem->getProductcode(), $comparison);
 	}
 
 	/**
@@ -619,7 +619,7 @@ abstract class BaseProductQuery extends ModelCriteria
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
 	 */
-	public function joinOrderItem($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinOrderItem($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
 		$tableMap = $this->getTableMap();
 		$relationMap = $tableMap->getRelation('OrderItem');
@@ -654,7 +654,7 @@ abstract class BaseProductQuery extends ModelCriteria
 	 *
 	 * @return    OrderItemQuery A secondary query class using the current class as primary query
 	 */
-	public function useOrderItemQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useOrderItemQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
 		return $this
 			->joinOrderItem($relationAlias, $joinType)
@@ -672,7 +672,7 @@ abstract class BaseProductQuery extends ModelCriteria
 	public function filterByOrderTemplateItem($orderTemplateItem, $comparison = null)
 	{
 		return $this
-			->addUsingAlias(ProductPeer::ID, $orderTemplateItem->getProductid(), $comparison);
+			->addUsingAlias(ProductPeer::CODE, $orderTemplateItem->getProductcode(), $comparison);
 	}
 
 	/**
@@ -683,7 +683,7 @@ abstract class BaseProductQuery extends ModelCriteria
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
 	 */
-	public function joinOrderTemplateItem($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinOrderTemplateItem($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
 		$tableMap = $this->getTableMap();
 		$relationMap = $tableMap->getRelation('OrderTemplateItem');
@@ -718,7 +718,7 @@ abstract class BaseProductQuery extends ModelCriteria
 	 *
 	 * @return    OrderTemplateItemQuery A secondary query class using the current class as primary query
 	 */
-	public function useOrderTemplateItemQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useOrderTemplateItemQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
 		return $this
 			->joinOrderTemplateItem($relationAlias, $joinType)
