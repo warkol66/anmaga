@@ -1,3 +1,2 @@
-	<tr>
-		<td class='celldato'><span class='titulo2'>|-$category->getName()-|</span></td>
-	</tr>
+<p>Categorías del módulo</p>
+|-include file="CategoriesListInclude.tpl" categories=$parentUserCategories-|

@@ -4,7 +4,7 @@
 /**
  * Base static class for performing query and update operations on the 'users_groupCategory' table.
  *
- * Groups / Categories
+ * Groups_Categories
  *
  * @package    propel.generator.users.classes.om
  */

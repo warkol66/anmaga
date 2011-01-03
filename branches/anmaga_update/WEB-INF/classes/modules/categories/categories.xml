@@ -1,7 +1,0 @@
-<config>
-		<label>categories</label>
-		<description>Administrador de Categorias</description>
-		<alwaysActive>1</alwaysActive>
-		<moduleDependencies>
-		</moduleDependencies>
-</config>

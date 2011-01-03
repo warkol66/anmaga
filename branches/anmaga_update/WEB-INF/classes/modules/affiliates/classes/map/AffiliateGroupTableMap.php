@@ -52,6 +52,7 @@ class AffiliateGroupTableMap extends TableMap {
 	{
     $this->addRelation('AffiliateUserGroup', 'AffiliateUserGroup', RelationMap::ONE_TO_MANY, array('id' => 'groupId', ), 'CASCADE', null);
     $this->addRelation('AffiliateGroupCategory', 'AffiliateGroupCategory', RelationMap::ONE_TO_MANY, array('id' => 'groupId', ), 'CASCADE', null);
+    $this->addRelation('Category', 'Category', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null);
 	} // buildRelations()
 
 } // AffiliateGroupTableMap

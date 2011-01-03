@@ -9,10 +9,12 @@
  * @method     ModuleQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method     ModuleQuery orderByActive($order = Criteria::ASC) Order by the active column
  * @method     ModuleQuery orderByAlwaysactive($order = Criteria::ASC) Order by the alwaysActive column
+ * @method     ModuleQuery orderByHascategories($order = Criteria::ASC) Order by the hasCategories column
  *
  * @method     ModuleQuery groupByName() Group by the name column
  * @method     ModuleQuery groupByActive() Group by the active column
  * @method     ModuleQuery groupByAlwaysactive() Group by the alwaysActive column
+ * @method     ModuleQuery groupByHascategories() Group by the hasCategories column
  *
  * @method     ModuleQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ModuleQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -40,10 +42,12 @@
  * @method     Module findOneByName(string $name) Return the first Module filtered by the name column
  * @method     Module findOneByActive(boolean $active) Return the first Module filtered by the active column
  * @method     Module findOneByAlwaysactive(boolean $alwaysActive) Return the first Module filtered by the alwaysActive column
+ * @method     Module findOneByHascategories(boolean $hasCategories) Return the first Module filtered by the hasCategories column
  *
  * @method     array findByName(string $name) Return Module objects filtered by the name column
  * @method     array findByActive(boolean $active) Return Module objects filtered by the active column
  * @method     array findByAlwaysactive(boolean $alwaysActive) Return Module objects filtered by the alwaysActive column
+ * @method     array findByHascategories(boolean $hasCategories) Return Module objects filtered by the hasCategories column
  *
  * @package    propel.generator.modules.classes.om
  */
@@ -207,6 +211,23 @@ abstract class BaseModuleQuery extends ModelCriteria
 			$alwaysActive = in_array(strtolower($alwaysactive), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
 		}
 		return $this->addUsingAlias(ModulePeer::ALWAYSACTIVE, $alwaysactive, $comparison);
+	}
+
+	/**
+	 * Filter the query on the hasCategories column
+	 * 
+	 * @param     boolean|string $hascategories The value to use as filter.
+	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ModuleQuery The current query, for fluid interface
+	 */
+	public function filterByHascategories($hascategories = null, $comparison = null)
+	{
+		if (is_string($hascategories)) {
+			$hasCategories = in_array(strtolower($hascategories), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
+		}
+		return $this->addUsingAlias(ModulePeer::HASCATEGORIES, $hascategories, $comparison);
 	}
 
 	/**

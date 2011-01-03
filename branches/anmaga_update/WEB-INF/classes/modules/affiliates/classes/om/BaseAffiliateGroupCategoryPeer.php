@@ -4,7 +4,7 @@
 /**
  * Base static class for performing query and update operations on the 'affiliates_groupCategory' table.
  *
- * Groups / Categories
+ * Groups_Categories
  *
  * @package    propel.generator.affiliates.classes.om
  */

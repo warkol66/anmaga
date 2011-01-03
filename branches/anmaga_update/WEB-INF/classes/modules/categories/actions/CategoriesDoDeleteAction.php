@@ -44,16 +44,21 @@ class CategoriesDoDeleteAction extends BaseAction {
 
 		$module = "Categories";
 
-    $smarty->assign("module",$module);
+	    $smarty->assign("module",$module);
 
-    $categoryPeer = new CategoryPeer();
+	    $categoryPeer = new CategoryPeer();
 
-    if ( $categoryPeer->delete($_POST["id"]) )
-			return $mapping->findForwardConfig('success');
-		else
-			return $mapping->findForwardConfig('failure');		
+	    if ( $categoryPeer->delete($_POST["id"]) )
+				$myRedirectConfig = $mapping->findForwardConfig('success');
+			else
+				$myRedirectConfig = $mapping->findForwardConfig('failure');		
 
-	}
+			$myRedirectPath = $myRedirectConfig->getpath();
+			$myRedirectPath .= '&module=' . $_POST['module'];
+			$fc = new ForwardConfig($myRedirectPath, True);
+			return $fc;
+
+		}
 
 }
 ?>

@@ -45,6 +45,13 @@ abstract class BaseModule extends BaseObject  implements Persistent
 	protected $alwaysactive;
 
 	/**
+	 * The value for the hascategories field.
+	 * Note: this column has a database default value of: false
+	 * @var        boolean
+	 */
+	protected $hascategories;
+
+	/**
 	 * @var        array ModuleDependency[] Collection to store aggregation of ModuleDependency objects.
 	 */
 	protected $collModuleDependencys;
@@ -88,6 +95,7 @@ abstract class BaseModule extends BaseObject  implements Persistent
 	{
 		$this->active = false;
 		$this->alwaysactive = false;
+		$this->hascategories = false;
 	}
 
 	/**
@@ -128,6 +136,16 @@ abstract class BaseModule extends BaseObject  implements Persistent
 	public function getAlwaysactive()
 	{
 		return $this->alwaysactive;
+	}
+
+	/**
+	 * Get the [hascategories] column value.
+	 * El Modulo tiene categorias relacionadas?
+	 * @return     boolean
+	 */
+	public function getHascategories()
+	{
+		return $this->hascategories;
 	}
 
 	/**
@@ -191,6 +209,26 @@ abstract class BaseModule extends BaseObject  implements Persistent
 	} // setAlwaysactive()
 
 	/**
+	 * Set the value of [hascategories] column.
+	 * El Modulo tiene categorias relacionadas?
+	 * @param      boolean $v new value
+	 * @return     Module The current object (for fluent API support)
+	 */
+	public function setHascategories($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->hascategories !== $v || $this->isNew()) {
+			$this->hascategories = $v;
+			$this->modifiedColumns[] = ModulePeer::HASCATEGORIES;
+		}
+
+		return $this;
+	} // setHascategories()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -205,6 +243,10 @@ abstract class BaseModule extends BaseObject  implements Persistent
 			}
 
 			if ($this->alwaysactive !== false) {
+				return false;
+			}
+
+			if ($this->hascategories !== false) {
 				return false;
 			}
 
@@ -233,6 +275,7 @@ abstract class BaseModule extends BaseObject  implements Persistent
 			$this->name = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
 			$this->active = ($row[$startcol + 1] !== null) ? (boolean) $row[$startcol + 1] : null;
 			$this->alwaysactive = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
+			$this->hascategories = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -241,7 +284,7 @@ abstract class BaseModule extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 3; // 3 = ModulePeer::NUM_COLUMNS - ModulePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 4; // 4 = ModulePeer::NUM_COLUMNS - ModulePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Module object", $e);
@@ -613,6 +656,9 @@ abstract class BaseModule extends BaseObject  implements Persistent
 			case 2:
 				return $this->getAlwaysactive();
 				break;
+			case 3:
+				return $this->getHascategories();
+				break;
 			default:
 				return null;
 				break;
@@ -639,6 +685,7 @@ abstract class BaseModule extends BaseObject  implements Persistent
 			$keys[0] => $this->getName(),
 			$keys[1] => $this->getActive(),
 			$keys[2] => $this->getAlwaysactive(),
+			$keys[3] => $this->getHascategories(),
 		);
 		return $result;
 	}
@@ -679,6 +726,9 @@ abstract class BaseModule extends BaseObject  implements Persistent
 			case 2:
 				$this->setAlwaysactive($value);
 				break;
+			case 3:
+				$this->setHascategories($value);
+				break;
 		} // switch()
 	}
 
@@ -706,6 +756,7 @@ abstract class BaseModule extends BaseObject  implements Persistent
 		if (array_key_exists($keys[0], $arr)) $this->setName($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setActive($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setAlwaysactive($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setHascategories($arr[$keys[3]]);
 	}
 
 	/**
@@ -720,6 +771,7 @@ abstract class BaseModule extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ModulePeer::NAME)) $criteria->add(ModulePeer::NAME, $this->name);
 		if ($this->isColumnModified(ModulePeer::ACTIVE)) $criteria->add(ModulePeer::ACTIVE, $this->active);
 		if ($this->isColumnModified(ModulePeer::ALWAYSACTIVE)) $criteria->add(ModulePeer::ALWAYSACTIVE, $this->alwaysactive);
+		if ($this->isColumnModified(ModulePeer::HASCATEGORIES)) $criteria->add(ModulePeer::HASCATEGORIES, $this->hascategories);
 
 		return $criteria;
 	}
@@ -784,6 +836,7 @@ abstract class BaseModule extends BaseObject  implements Persistent
 		$copyObj->setName($this->name);
 		$copyObj->setActive($this->active);
 		$copyObj->setAlwaysactive($this->alwaysactive);
+		$copyObj->setHascategories($this->hascategories);
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1352,6 +1405,7 @@ abstract class BaseModule extends BaseObject  implements Persistent
 		$this->name = null;
 		$this->active = null;
 		$this->alwaysactive = null;
+		$this->hascategories = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();

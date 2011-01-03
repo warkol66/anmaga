@@ -15,8 +15,9 @@ CREATE TABLE `modules_module`
 	`name` VARCHAR(255)  NOT NULL COMMENT 'nombre del modulo',
 	`active` TINYINT default 0 NOT NULL COMMENT 'Estado del modulo',
 	`alwaysActive` TINYINT default 0 NOT NULL COMMENT 'Modulo siempre activo',
+	`hasCategories` TINYINT default 0 NOT NULL COMMENT 'El Modulo tiene categorias relacionadas?',
 	PRIMARY KEY (`name`)
-) ENGINE=MyISAM COMMENT=' Registro de modulos';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=' Registro de modulos';
 
 #-----------------------------------------------------------------------------
 #-- modules_dependency
@@ -27,14 +28,14 @@ DROP TABLE IF EXISTS `modules_dependency`;
 
 CREATE TABLE `modules_dependency`
 (
-	`moduleName` VARCHAR(255)  NOT NULL COMMENT 'Modulo',
-	`dependence` VARCHAR(255)  NOT NULL COMMENT 'Modulos de los cuales depende',
+	`moduleName` VARCHAR(50)  NOT NULL COMMENT 'Modulo',
+	`dependence` VARCHAR(50)  NOT NULL COMMENT 'Modulos de los cuales depende',
 	PRIMARY KEY (`moduleName`,`dependence`),
 	CONSTRAINT `modules_dependency_FK_1`
 		FOREIGN KEY (`moduleName`)
 		REFERENCES `modules_module` (`name`)
 		ON DELETE CASCADE
-) ENGINE=MyISAM COMMENT='Dependencia de modulos ';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Dependencia de modulos ';
 
 #-----------------------------------------------------------------------------
 #-- modules_label
@@ -56,7 +57,7 @@ CREATE TABLE `modules_label`
 		FOREIGN KEY (`name`)
 		REFERENCES `modules_module` (`name`)
 		ON DELETE CASCADE
-) ENGINE=MyISAM COMMENT='Etiquetas de modulos ';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Etiquetas de modulos ';
 
 #-----------------------------------------------------------------------------
 #-- modules_entity

@@ -4,19 +4,28 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 #-----------------------------------------------------------------------------
-#-- category
+#-- categories_category
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `category`;
+DROP TABLE IF EXISTS `categories_category`;
 
 
-CREATE TABLE `category`
+CREATE TABLE `categories_category`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de la categoria',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Category name',
+	`order` INTEGER(4)   COMMENT 'Orden',
+	`module` VARCHAR(255) default ''  COMMENT 'Module name if it is for a module',
 	`active` TINYINT  NOT NULL COMMENT 'Is category active?',
+	`isPublic` TINYINT default 0 NOT NULL COMMENT 'Is category public?',
+	`oldId` INTEGER(5)  NOT NULL COMMENT 'Old Id',
+	`deleted_at` DATETIME,
+	`tree_left` INTEGER,
+	`tree_right` INTEGER,
+	`tree_level` INTEGER,
+	`scope` INTEGER,
 	PRIMARY KEY (`id`)
-) ENGINE=MyISAM COMMENT='Categorias';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Categorias';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

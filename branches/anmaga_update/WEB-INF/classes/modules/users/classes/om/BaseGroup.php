@@ -65,6 +65,11 @@ abstract class BaseGroup extends BaseObject  implements Persistent
 	protected $collGroupCategorys;
 
 	/**
+	 * @var        array Category[] Collection to store aggregation of Category objects.
+	 */
+	protected $collCategorys;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -453,6 +458,7 @@ abstract class BaseGroup extends BaseObject  implements Persistent
 
 			$this->collGroupCategorys = null;
 
+			$this->collCategorys = null;
 		} // if (deep)
 	}
 
@@ -1250,6 +1256,119 @@ abstract class BaseGroup extends BaseObject  implements Persistent
 		$query->joinWith('Category', $join_behavior);
 
 		return $this->getGroupCategorys($query, $con);
+	}
+
+	/**
+	 * Clears out the collCategorys collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addCategorys()
+	 */
+	public function clearCategorys()
+	{
+		$this->collCategorys = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collCategorys collection.
+	 *
+	 * By default this just sets the collCategorys collection to an empty collection (like clearCategorys());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initCategorys()
+	{
+		$this->collCategorys = new PropelObjectCollection();
+		$this->collCategorys->setModel('Category');
+	}
+
+	/**
+	 * Gets a collection of Category objects related by a many-to-many relationship
+	 * to the current object by way of the users_groupCategory cross-reference table.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Group is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     PropelCollection|array Category[] List of Category objects
+	 */
+	public function getCategorys($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collCategorys || null !== $criteria) {
+			if ($this->isNew() && null === $this->collCategorys) {
+				// return empty collection
+				$this->initCategorys();
+			} else {
+				$collCategorys = CategoryQuery::create(null, $criteria)
+					->filterByGroup($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collCategorys;
+				}
+				$this->collCategorys = $collCategorys;
+			}
+		}
+		return $this->collCategorys;
+	}
+
+	/**
+	 * Gets the number of Category objects related by a many-to-many relationship
+	 * to the current object by way of the users_groupCategory cross-reference table.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      boolean $distinct Set to true to force count distinct
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     int the number of related Category objects
+	 */
+	public function countCategorys($criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collCategorys || null !== $criteria) {
+			if ($this->isNew() && null === $this->collCategorys) {
+				return 0;
+			} else {
+				$query = CategoryQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByGroup($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collCategorys);
+		}
+	}
+
+	/**
+	 * Associate a Category object to this object
+	 * through the users_groupCategory cross reference table.
+	 *
+	 * @param      Category $category The GroupCategory object to relate
+	 * @return     void
+	 */
+	public function addCategory($category)
+	{
+		if ($this->collCategorys === null) {
+			$this->initCategorys();
+		}
+		if (!$this->collCategorys->contains($category)) { // only add it if the **same** object is not already associated
+			$groupCategory = new GroupCategory();
+			$groupCategory->setCategory($category);
+			$this->addGroupCategory($groupCategory);
+
+			$this->collCategorys[]= $category;
+		}
 	}
 
 	/**

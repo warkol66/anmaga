@@ -4,7 +4,7 @@
 /**
  * Base class that represents a query for the 'users_groupCategory' table.
  *
- * Groups / Categories
+ * Groups_Categories
  *
  * @method     GroupCategoryQuery orderByGroupid($order = Criteria::ASC) Order by the groupId column
  * @method     GroupCategoryQuery orderByCategoryid($order = Criteria::ASC) Order by the categoryId column
