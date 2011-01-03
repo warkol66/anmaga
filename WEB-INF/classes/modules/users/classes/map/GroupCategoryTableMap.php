@@ -38,7 +38,7 @@ class GroupCategoryTableMap extends TableMap {
 		$this->setUseIdGenerator(false);
 		// columns
 		$this->addForeignPrimaryKey('GROUPID', 'Groupid', 'INTEGER' , 'users_group', 'ID', true, null, null);
-		$this->addForeignPrimaryKey('CATEGORYID', 'Categoryid', 'INTEGER' , 'category', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('CATEGORYID', 'Categoryid', 'INTEGER' , 'categories_category', 'ID', true, null, null);
 		// validators
 	} // initialize()
 
@@ -48,7 +48,7 @@ class GroupCategoryTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('Group', 'Group', RelationMap::MANY_TO_ONE, array('groupId' => 'id', ), 'CASCADE', null);
-    $this->addRelation('Category', 'Category', RelationMap::MANY_TO_ONE, array('categoryId' => 'id', ), null, null);
+    $this->addRelation('Category', 'Category', RelationMap::MANY_TO_ONE, array('categoryId' => 'id', ), 'CASCADE', null);
 	} // buildRelations()
 
 } // GroupCategoryTableMap

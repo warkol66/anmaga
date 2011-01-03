@@ -2,7 +2,7 @@
 
 
 /**
- * Base class that represents a row from the 'category' table.
+ * Base class that represents a row from the 'categories_category' table.
  *
  * Categorias
  *
@@ -37,10 +37,66 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	protected $name;
 
 	/**
+	 * The value for the order field.
+	 * @var        int
+	 */
+	protected $order;
+
+	/**
+	 * The value for the module field.
+	 * Note: this column has a database default value of: ''
+	 * @var        string
+	 */
+	protected $module;
+
+	/**
 	 * The value for the active field.
 	 * @var        boolean
 	 */
 	protected $active;
+
+	/**
+	 * The value for the ispublic field.
+	 * Note: this column has a database default value of: false
+	 * @var        boolean
+	 */
+	protected $ispublic;
+
+	/**
+	 * The value for the oldid field.
+	 * @var        int
+	 */
+	protected $oldid;
+
+	/**
+	 * The value for the deleted_at field.
+	 * @var        string
+	 */
+	protected $deleted_at;
+
+	/**
+	 * The value for the tree_left field.
+	 * @var        int
+	 */
+	protected $tree_left;
+
+	/**
+	 * The value for the tree_right field.
+	 * @var        int
+	 */
+	protected $tree_right;
+
+	/**
+	 * The value for the tree_level field.
+	 * @var        int
+	 */
+	protected $tree_level;
+
+	/**
+	 * The value for the scope field.
+	 * @var        int
+	 */
+	protected $scope;
 
 	/**
 	 * @var        array AffiliateGroupCategory[] Collection to store aggregation of AffiliateGroupCategory objects.
@@ -51,6 +107,16 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	 * @var        array GroupCategory[] Collection to store aggregation of GroupCategory objects.
 	 */
 	protected $collGroupCategorys;
+
+	/**
+	 * @var        array AffiliateGroup[] Collection to store aggregation of AffiliateGroup objects.
+	 */
+	protected $collAffiliateGroups;
+
+	/**
+	 * @var        array Group[] Collection to store aggregation of Group objects.
+	 */
+	protected $collGroups;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -66,9 +132,52 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	 */
 	protected $alreadyInValidation = false;
 
+	// nested_set behavior
+	
+	/**
+	 * Queries to be executed in the save transaction
+	 * @var        array
+	 */
+	protected $nestedSetQueries = array();
+	
+	/**
+	 * Internal cache for children nodes
+	 * @var        null|PropelObjectCollection
+	 */
+	protected $collNestedSetChildren = null;
+	
+	/**
+	 * Internal cache for parent node
+	 * @var        null|Category
+	 */
+	protected $aNestedSetParent = null;
+	
+
+	/**
+	 * Applies default values to this object.
+	 * This method should be called from the object's constructor (or
+	 * equivalent initialization method).
+	 * @see        __construct()
+	 */
+	public function applyDefaultValues()
+	{
+		$this->module = '';
+		$this->ispublic = false;
+	}
+
+	/**
+	 * Initializes internal state of BaseCategory object.
+	 * @see        applyDefaults()
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+		$this->applyDefaultValues();
+	}
+
 	/**
 	 * Get the [id] column value.
-	 * 
+	 * Id de la categoria
 	 * @return     int
 	 */
 	public function getId()
@@ -87,6 +196,26 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Get the [order] column value.
+	 * Orden
+	 * @return     int
+	 */
+	public function getOrder()
+	{
+		return $this->order;
+	}
+
+	/**
+	 * Get the [module] column value.
+	 * Module name if it is for a module
+	 * @return     string
+	 */
+	public function getModule()
+	{
+		return $this->module;
+	}
+
+	/**
 	 * Get the [active] column value.
 	 * Is category active?
 	 * @return     boolean
@@ -97,8 +226,106 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Set the value of [id] column.
+	 * Get the [ispublic] column value.
+	 * Is category public?
+	 * @return     boolean
+	 */
+	public function getIspublic()
+	{
+		return $this->ispublic;
+	}
+
+	/**
+	 * Get the [oldid] column value.
+	 * Old Id
+	 * @return     int
+	 */
+	public function getOldid()
+	{
+		return $this->oldid;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [deleted_at] column value.
 	 * 
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getDeletedAt($format = 'Y-m-d H:i:s')
+	{
+		if ($this->deleted_at === null) {
+			return null;
+		}
+
+
+		if ($this->deleted_at === '0000-00-00 00:00:00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->deleted_at);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->deleted_at, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [tree_left] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getTreeLeft()
+	{
+		return $this->tree_left;
+	}
+
+	/**
+	 * Get the [tree_right] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getTreeRight()
+	{
+		return $this->tree_right;
+	}
+
+	/**
+	 * Get the [tree_level] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getTreeLevel()
+	{
+		return $this->tree_level;
+	}
+
+	/**
+	 * Get the [scope] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getScope()
+	{
+		return $this->scope;
+	}
+
+	/**
+	 * Set the value of [id] column.
+	 * Id de la categoria
 	 * @param      int $v new value
 	 * @return     Category The current object (for fluent API support)
 	 */
@@ -137,6 +364,46 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	} // setName()
 
 	/**
+	 * Set the value of [order] column.
+	 * Orden
+	 * @param      int $v new value
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setOrder($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->order !== $v) {
+			$this->order = $v;
+			$this->modifiedColumns[] = CategoryPeer::ORDER;
+		}
+
+		return $this;
+	} // setOrder()
+
+	/**
+	 * Set the value of [module] column.
+	 * Module name if it is for a module
+	 * @param      string $v new value
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setModule($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->module !== $v || $this->isNew()) {
+			$this->module = $v;
+			$this->modifiedColumns[] = CategoryPeer::MODULE;
+		}
+
+		return $this;
+	} // setModule()
+
+	/**
 	 * Set the value of [active] column.
 	 * Is category active?
 	 * @param      boolean $v new value
@@ -157,6 +424,175 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	} // setActive()
 
 	/**
+	 * Set the value of [ispublic] column.
+	 * Is category public?
+	 * @param      boolean $v new value
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setIspublic($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->ispublic !== $v || $this->isNew()) {
+			$this->ispublic = $v;
+			$this->modifiedColumns[] = CategoryPeer::ISPUBLIC;
+		}
+
+		return $this;
+	} // setIspublic()
+
+	/**
+	 * Set the value of [oldid] column.
+	 * Old Id
+	 * @param      int $v new value
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setOldid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->oldid !== $v) {
+			$this->oldid = $v;
+			$this->modifiedColumns[] = CategoryPeer::OLDID;
+		}
+
+		return $this;
+	} // setOldid()
+
+	/**
+	 * Sets the value of [deleted_at] column to a normalized version of the date/time value specified.
+	 * 
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setDeletedAt($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->deleted_at !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->deleted_at !== null && $tmpDt = new DateTime($this->deleted_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->deleted_at = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+				$this->modifiedColumns[] = CategoryPeer::DELETED_AT;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setDeletedAt()
+
+	/**
+	 * Set the value of [tree_left] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setTreeLeft($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->tree_left !== $v) {
+			$this->tree_left = $v;
+			$this->modifiedColumns[] = CategoryPeer::TREE_LEFT;
+		}
+
+		return $this;
+	} // setTreeLeft()
+
+	/**
+	 * Set the value of [tree_right] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setTreeRight($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->tree_right !== $v) {
+			$this->tree_right = $v;
+			$this->modifiedColumns[] = CategoryPeer::TREE_RIGHT;
+		}
+
+		return $this;
+	} // setTreeRight()
+
+	/**
+	 * Set the value of [tree_level] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setTreeLevel($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->tree_level !== $v) {
+			$this->tree_level = $v;
+			$this->modifiedColumns[] = CategoryPeer::TREE_LEVEL;
+		}
+
+		return $this;
+	} // setTreeLevel()
+
+	/**
+	 * Set the value of [scope] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setScope($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->scope !== $v) {
+			$this->scope = $v;
+			$this->modifiedColumns[] = CategoryPeer::SCOPE;
+		}
+
+		return $this;
+	} // setScope()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -166,6 +602,14 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	 */
 	public function hasOnlyDefaultValues()
 	{
+			if ($this->module !== '') {
+				return false;
+			}
+
+			if ($this->ispublic !== false) {
+				return false;
+			}
+
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -190,7 +634,16 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-			$this->active = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
+			$this->order = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->module = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->active = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
+			$this->ispublic = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
+			$this->oldid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+			$this->deleted_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->tree_left = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+			$this->tree_right = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+			$this->tree_level = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+			$this->scope = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -199,7 +652,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 3; // 3 = CategoryPeer::NUM_COLUMNS - CategoryPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 12; // 12 = CategoryPeer::NUM_COLUMNS - CategoryPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Category object", $e);
@@ -265,6 +718,8 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 
 			$this->collGroupCategorys = null;
 
+			$this->collAffiliateGroups = null;
+			$this->collGroups = null;
 		} // if (deep)
 	}
 
@@ -290,11 +745,29 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
+			// soft_delete behavior
+			if (!empty($ret) && CategoryQuery::isSoftDeleteEnabled()) {
+				$this->setDeletedAt(time());
+				$this->save($con);
+				$con->commit();
+				CategoryPeer::removeInstanceFromPool($this);
+				return;
+			}
+			// nested_set behavior
+			if ($this->isRoot()) {
+				throw new PropelException('Deletion of a root node is disabled for nested sets. Use CategoryPeer::deleteTree($scope) instead to delete an entire tree');
+			}
+			$this->deleteDescendants($con);
+
 			if ($ret) {
 				CategoryQuery::create()
 					->filterByPrimaryKey($this->getPrimaryKey())
 					->delete($con);
 				$this->postDelete($con);
+				// nested_set behavior
+				// fill up the room that was used by the node
+				CategoryPeer::shiftRLValues(-2, $this->getRightValue() + 1, null, $this->getScopeValue(), $con);
+
 				$con->commit();
 				$this->setDeleted(true);
 			} else {
@@ -333,6 +806,8 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		$isInsert = $this->isNew();
 		try {
 			$ret = $this->preSave($con);
+			// nested_set behavior
+			$this->processNestedSetQueries($con);
 			if ($isInsert) {
 				$ret = $ret && $this->preInsert($con);
 			} else {
@@ -541,7 +1016,34 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 				return $this->getName();
 				break;
 			case 2:
+				return $this->getOrder();
+				break;
+			case 3:
+				return $this->getModule();
+				break;
+			case 4:
 				return $this->getActive();
+				break;
+			case 5:
+				return $this->getIspublic();
+				break;
+			case 6:
+				return $this->getOldid();
+				break;
+			case 7:
+				return $this->getDeletedAt();
+				break;
+			case 8:
+				return $this->getTreeLeft();
+				break;
+			case 9:
+				return $this->getTreeRight();
+				break;
+			case 10:
+				return $this->getTreeLevel();
+				break;
+			case 11:
+				return $this->getScope();
 				break;
 			default:
 				return null;
@@ -568,7 +1070,16 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
-			$keys[2] => $this->getActive(),
+			$keys[2] => $this->getOrder(),
+			$keys[3] => $this->getModule(),
+			$keys[4] => $this->getActive(),
+			$keys[5] => $this->getIspublic(),
+			$keys[6] => $this->getOldid(),
+			$keys[7] => $this->getDeletedAt(),
+			$keys[8] => $this->getTreeLeft(),
+			$keys[9] => $this->getTreeRight(),
+			$keys[10] => $this->getTreeLevel(),
+			$keys[11] => $this->getScope(),
 		);
 		return $result;
 	}
@@ -607,7 +1118,34 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 				$this->setName($value);
 				break;
 			case 2:
+				$this->setOrder($value);
+				break;
+			case 3:
+				$this->setModule($value);
+				break;
+			case 4:
 				$this->setActive($value);
+				break;
+			case 5:
+				$this->setIspublic($value);
+				break;
+			case 6:
+				$this->setOldid($value);
+				break;
+			case 7:
+				$this->setDeletedAt($value);
+				break;
+			case 8:
+				$this->setTreeLeft($value);
+				break;
+			case 9:
+				$this->setTreeRight($value);
+				break;
+			case 10:
+				$this->setTreeLevel($value);
+				break;
+			case 11:
+				$this->setScope($value);
 				break;
 		} // switch()
 	}
@@ -635,7 +1173,16 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setActive($arr[$keys[2]]);
+		if (array_key_exists($keys[2], $arr)) $this->setOrder($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setModule($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setActive($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setIspublic($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setOldid($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setDeletedAt($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setTreeLeft($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setTreeRight($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setTreeLevel($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setScope($arr[$keys[11]]);
 	}
 
 	/**
@@ -649,7 +1196,16 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 
 		if ($this->isColumnModified(CategoryPeer::ID)) $criteria->add(CategoryPeer::ID, $this->id);
 		if ($this->isColumnModified(CategoryPeer::NAME)) $criteria->add(CategoryPeer::NAME, $this->name);
+		if ($this->isColumnModified(CategoryPeer::ORDER)) $criteria->add(CategoryPeer::ORDER, $this->order);
+		if ($this->isColumnModified(CategoryPeer::MODULE)) $criteria->add(CategoryPeer::MODULE, $this->module);
 		if ($this->isColumnModified(CategoryPeer::ACTIVE)) $criteria->add(CategoryPeer::ACTIVE, $this->active);
+		if ($this->isColumnModified(CategoryPeer::ISPUBLIC)) $criteria->add(CategoryPeer::ISPUBLIC, $this->ispublic);
+		if ($this->isColumnModified(CategoryPeer::OLDID)) $criteria->add(CategoryPeer::OLDID, $this->oldid);
+		if ($this->isColumnModified(CategoryPeer::DELETED_AT)) $criteria->add(CategoryPeer::DELETED_AT, $this->deleted_at);
+		if ($this->isColumnModified(CategoryPeer::TREE_LEFT)) $criteria->add(CategoryPeer::TREE_LEFT, $this->tree_left);
+		if ($this->isColumnModified(CategoryPeer::TREE_RIGHT)) $criteria->add(CategoryPeer::TREE_RIGHT, $this->tree_right);
+		if ($this->isColumnModified(CategoryPeer::TREE_LEVEL)) $criteria->add(CategoryPeer::TREE_LEVEL, $this->tree_level);
+		if ($this->isColumnModified(CategoryPeer::SCOPE)) $criteria->add(CategoryPeer::SCOPE, $this->scope);
 
 		return $criteria;
 	}
@@ -712,7 +1268,16 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 		$copyObj->setName($this->name);
+		$copyObj->setOrder($this->order);
+		$copyObj->setModule($this->module);
 		$copyObj->setActive($this->active);
+		$copyObj->setIspublic($this->ispublic);
+		$copyObj->setOldid($this->oldid);
+		$copyObj->setDeletedAt($this->deleted_at);
+		$copyObj->setTreeLeft($this->tree_left);
+		$copyObj->setTreeRight($this->tree_right);
+		$copyObj->setTreeLevel($this->tree_level);
+		$copyObj->setScope($this->scope);
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1045,16 +1610,252 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Clears out the collAffiliateGroups collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addAffiliateGroups()
+	 */
+	public function clearAffiliateGroups()
+	{
+		$this->collAffiliateGroups = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collAffiliateGroups collection.
+	 *
+	 * By default this just sets the collAffiliateGroups collection to an empty collection (like clearAffiliateGroups());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initAffiliateGroups()
+	{
+		$this->collAffiliateGroups = new PropelObjectCollection();
+		$this->collAffiliateGroups->setModel('AffiliateGroup');
+	}
+
+	/**
+	 * Gets a collection of AffiliateGroup objects related by a many-to-many relationship
+	 * to the current object by way of the affiliates_groupCategory cross-reference table.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Category is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     PropelCollection|array AffiliateGroup[] List of AffiliateGroup objects
+	 */
+	public function getAffiliateGroups($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collAffiliateGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAffiliateGroups) {
+				// return empty collection
+				$this->initAffiliateGroups();
+			} else {
+				$collAffiliateGroups = AffiliateGroupQuery::create(null, $criteria)
+					->filterByCategory($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collAffiliateGroups;
+				}
+				$this->collAffiliateGroups = $collAffiliateGroups;
+			}
+		}
+		return $this->collAffiliateGroups;
+	}
+
+	/**
+	 * Gets the number of AffiliateGroup objects related by a many-to-many relationship
+	 * to the current object by way of the affiliates_groupCategory cross-reference table.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      boolean $distinct Set to true to force count distinct
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     int the number of related AffiliateGroup objects
+	 */
+	public function countAffiliateGroups($criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collAffiliateGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAffiliateGroups) {
+				return 0;
+			} else {
+				$query = AffiliateGroupQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByCategory($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collAffiliateGroups);
+		}
+	}
+
+	/**
+	 * Associate a AffiliateGroup object to this object
+	 * through the affiliates_groupCategory cross reference table.
+	 *
+	 * @param      AffiliateGroup $affiliateGroup The AffiliateGroupCategory object to relate
+	 * @return     void
+	 */
+	public function addAffiliateGroup($affiliateGroup)
+	{
+		if ($this->collAffiliateGroups === null) {
+			$this->initAffiliateGroups();
+		}
+		if (!$this->collAffiliateGroups->contains($affiliateGroup)) { // only add it if the **same** object is not already associated
+			$affiliateGroupCategory = new AffiliateGroupCategory();
+			$affiliateGroupCategory->setAffiliateGroup($affiliateGroup);
+			$this->addAffiliateGroupCategory($affiliateGroupCategory);
+
+			$this->collAffiliateGroups[]= $affiliateGroup;
+		}
+	}
+
+	/**
+	 * Clears out the collGroups collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addGroups()
+	 */
+	public function clearGroups()
+	{
+		$this->collGroups = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collGroups collection.
+	 *
+	 * By default this just sets the collGroups collection to an empty collection (like clearGroups());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initGroups()
+	{
+		$this->collGroups = new PropelObjectCollection();
+		$this->collGroups->setModel('Group');
+	}
+
+	/**
+	 * Gets a collection of Group objects related by a many-to-many relationship
+	 * to the current object by way of the users_groupCategory cross-reference table.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Category is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     PropelCollection|array Group[] List of Group objects
+	 */
+	public function getGroups($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collGroups) {
+				// return empty collection
+				$this->initGroups();
+			} else {
+				$collGroups = GroupQuery::create(null, $criteria)
+					->filterByCategory($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collGroups;
+				}
+				$this->collGroups = $collGroups;
+			}
+		}
+		return $this->collGroups;
+	}
+
+	/**
+	 * Gets the number of Group objects related by a many-to-many relationship
+	 * to the current object by way of the users_groupCategory cross-reference table.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      boolean $distinct Set to true to force count distinct
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     int the number of related Group objects
+	 */
+	public function countGroups($criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collGroups) {
+				return 0;
+			} else {
+				$query = GroupQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByCategory($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collGroups);
+		}
+	}
+
+	/**
+	 * Associate a Group object to this object
+	 * through the users_groupCategory cross reference table.
+	 *
+	 * @param      Group $group The GroupCategory object to relate
+	 * @return     void
+	 */
+	public function addGroup($group)
+	{
+		if ($this->collGroups === null) {
+			$this->initGroups();
+		}
+		if (!$this->collGroups->contains($group)) { // only add it if the **same** object is not already associated
+			$groupCategory = new GroupCategory();
+			$groupCategory->setGroup($group);
+			$this->addGroupCategory($groupCategory);
+
+			$this->collGroups[]= $group;
+		}
+	}
+
+	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
 	public function clear()
 	{
 		$this->id = null;
 		$this->name = null;
+		$this->order = null;
+		$this->module = null;
 		$this->active = null;
+		$this->ispublic = null;
+		$this->oldid = null;
+		$this->deleted_at = null;
+		$this->tree_left = null;
+		$this->tree_right = null;
+		$this->tree_level = null;
+		$this->scope = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
+		$this->applyDefaultValues();
 		$this->resetModified();
 		$this->setNew(true);
 		$this->setDeleted(false);
@@ -1084,8 +1885,901 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 			}
 		} // if ($deep)
 
+		// nested_set behavior
+		$this->collNestedSetChildren = null;
+		$this->aNestedSetParent = null;
 		$this->collAffiliateGroupCategorys = null;
 		$this->collGroupCategorys = null;
+	}
+
+	// soft_delete behavior
+	
+	/**
+	 * Bypass the soft_delete behavior and force a hard delete of the current object
+	 */
+	public function forceDelete(PropelPDO $con = null)
+	{
+		CategoryPeer::disableSoftDelete();
+		$this->delete($con);
+	}
+	
+	/**
+	 * Undelete a row that was soft_deleted
+	 *
+	 * @return		 int The number of rows affected by this update and any referring fk objects' save() operations.
+	 */
+	public function unDelete(PropelPDO $con = null)
+	{
+		$this->setDeletedAt(null);
+		return $this->save($con);
+	}
+
+	// nested_set behavior
+	
+	/**
+	 * Execute queries that were saved to be run inside the save transaction
+	 */
+	protected function processNestedSetQueries($con)
+	{
+		foreach ($this->nestedSetQueries as $query) {
+			$query['arguments'][]= $con;
+			call_user_func_array($query['callable'], $query['arguments']);
+		}
+		$this->nestedSetQueries = array();
+	}
+	
+	/**
+	 * Wraps the getter for the nested set left value
+	 *
+	 * @return     int
+	 */
+	public function getLeftValue()
+	{
+		return $this->tree_left;
+	}
+	
+	/**
+	 * Wraps the getter for the nested set right value
+	 *
+	 * @return     int
+	 */
+	public function getRightValue()
+	{
+		return $this->tree_right;
+	}
+	
+	/**
+	 * Wraps the getter for the nested set level
+	 *
+	 * @return     int
+	 */
+	public function getLevel()
+	{
+		return $this->tree_level;
+	}
+	
+	/**
+	 * Wraps the getter for the scope value
+	 *
+	 * @return     int or null if scope is disabled
+	 */
+	public function getScopeValue()
+	{
+		return $this->scope;
+	}
+	
+	/**
+	 * Set the value left column
+	 *
+	 * @param      int $v new value
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setLeftValue($v)
+	{
+		return $this->setTreeLeft($v);
+	}
+	
+	/**
+	 * Set the value of right column
+	 *
+	 * @param      int $v new value
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setRightValue($v)
+	{
+		return $this->setTreeRight($v);
+	}
+	
+	/**
+	 * Set the value of level column
+	 *
+	 * @param      int $v new value
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setLevel($v)
+	{
+		return $this->setTreeLevel($v);
+	}
+	
+	/**
+	 * Set the value of scope column
+	 *
+	 * @param      int $v new value
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setScopeValue($v)
+	{
+		return $this->setScope($v);
+	}
+	
+	/**
+	 * Creates the supplied node as the root node.
+	 *
+	 * @return     Category The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function makeRoot()
+	{
+		if ($this->getLeftValue() || $this->getRightValue()) {
+			throw new PropelException('Cannot turn an existing node into a root node.');
+		}
+	
+		$this->setLeftValue(1);
+		$this->setRightValue(2);
+		$this->setLevel(0);
+		return $this;
+	}
+	
+	/**
+	 * Tests if onbject is a node, i.e. if it is inserted in the tree
+	 *
+	 * @return     bool
+	 */
+	public function isInTree()
+	{
+		return $this->getLeftValue() > 0 && $this->getRightValue() > $this->getLeftValue();
+	}
+	
+	/**
+	 * Tests if node is a root
+	 *
+	 * @return     bool
+	 */
+	public function isRoot()
+	{
+		return $this->isInTree() && $this->getLeftValue() == 1;
+	}
+	
+	/**
+	 * Tests if node is a leaf
+	 *
+	 * @return     bool
+	 */
+	public function isLeaf()
+	{
+		return $this->isInTree() &&  ($this->getRightValue() - $this->getLeftValue()) == 1;
+	}
+	
+	/**
+	 * Tests if node is a descendant of another node
+	 *
+	 * @param      Category $node Propel node object
+	 * @return     bool
+	 */
+	public function isDescendantOf($parent)
+	{
+		if ($this->getScopeValue() !== $parent->getScopeValue()) {
+			throw new PropelException('Comparing two nodes of different trees');
+		}
+		return $this->isInTree() && $this->getLeftValue() > $parent->getLeftValue() && $this->getRightValue() < $parent->getRightValue();
+	}
+	
+	/**
+	 * Tests if node is a ancestor of another node
+	 *
+	 * @param      Category $node Propel node object
+	 * @return     bool
+	 */
+	public function isAncestorOf($child)
+	{
+		return $child->isDescendantOf($this);
+	}
+	
+	/**
+	 * Tests if object has an ancestor
+	 *
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     bool
+	 */
+	public function hasParent(PropelPDO $con = null)
+	{
+		return $this->getLevel() > 0;
+	}
+	
+	/**
+	 * Sets the cache for parent node of the current object.
+	 * Warning: this does not move the current object in the tree.
+	 * Use moveTofirstChildOf() or moveToLastChildOf() for that purpose
+	 *
+	 * @param      Category $parent
+	 * @return     Category The current object, for fluid interface
+	 */
+	public function setParent($parent = null)
+	{
+		$this->aNestedSetParent = $parent;
+		return $this;
+	}
+	
+	/**
+	 * Gets parent node for the current object if it exists
+	 * The result is cached so further calls to the same method don't issue any queries
+	 *
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     mixed 		Propel object if exists else false
+	 */
+	public function getParent(PropelPDO $con = null)
+	{
+		if ($this->aNestedSetParent === null && $this->hasParent()) {
+			$this->aNestedSetParent = CategoryQuery::create()
+				->ancestorsOf($this)
+				->orderByLevel(true)
+				->findOne($con);
+		}
+		return $this->aNestedSetParent;
+	}
+	
+	/**
+	 * Determines if the node has previous sibling
+	 *
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     bool
+	 */
+	public function hasPrevSibling(PropelPDO $con = null)
+	{
+		if (!CategoryPeer::isValid($this)) {
+			return false;
+		}
+		return CategoryQuery::create()
+			->filterByTreeRight($this->getLeftValue() - 1)
+			->inTree($this->getScopeValue())
+			->count($con) > 0;
+	}
+	
+	/**
+	 * Gets previous sibling for the given node if it exists
+	 *
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     mixed 		Propel object if exists else false
+	 */
+	public function getPrevSibling(PropelPDO $con = null)
+	{
+		return CategoryQuery::create()
+			->filterByTreeRight($this->getLeftValue() - 1)
+			->inTree($this->getScopeValue())
+			->findOne($con);
+	}
+	
+	/**
+	 * Determines if the node has next sibling
+	 *
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     bool
+	 */
+	public function hasNextSibling(PropelPDO $con = null)
+	{
+		if (!CategoryPeer::isValid($this)) {
+			return false;
+		}
+		return CategoryQuery::create()
+			->filterByTreeLeft($this->getRightValue() + 1)
+			->inTree($this->getScopeValue())
+			->count($con) > 0;
+	}
+	
+	/**
+	 * Gets next sibling for the given node if it exists
+	 *
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     mixed 		Propel object if exists else false
+	 */
+	public function getNextSibling(PropelPDO $con = null)
+	{
+		return CategoryQuery::create()
+			->filterByTreeLeft($this->getRightValue() + 1)
+			->inTree($this->getScopeValue())
+			->findOne($con);
+	}
+	
+	/**
+	 * Clears out the $collNestedSetChildren collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 */
+	public function clearNestedSetChildren()
+	{
+		$this->collNestedSetChildren = null;
+	}
+	
+	/**
+	 * Initializes the $collNestedSetChildren collection.
+	 *
+	 * @return     void
+	 */
+	public function initNestedSetChildren()
+	{
+		$this->collNestedSetChildren = new PropelObjectCollection();
+		$this->collNestedSetChildren->setModel('Category');
+	}
+	
+	/**
+	 * Adds an element to the internal $collNestedSetChildren collection.
+	 * Beware that this doesn't insert a node in the tree.
+	 * This method is only used to facilitate children hydration.
+	 *
+	 * @param      Category $category
+	 *
+	 * @return     void
+	 */
+	public function addNestedSetChild($category)
+	{
+		if ($this->collNestedSetChildren === null) {
+			$this->initNestedSetChildren();
+		}
+		if (!$this->collNestedSetChildren->contains($category)) { // only add it if the **same** object is not already associated
+			$this->collNestedSetChildren[]= $category;
+			$category->setParent($this);
+		}
+	}
+	
+	/**
+	 * Tests if node has children
+	 *
+	 * @return     bool
+	 */
+	public function hasChildren()
+	{
+		return ($this->getRightValue() - $this->getLeftValue()) > 1;
+	}
+	
+	/**
+	 * Gets the children of the given node
+	 *
+	 * @param      Criteria  $criteria Criteria to filter results.
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     array     List of Category objects
+	 */
+	public function getChildren($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collNestedSetChildren || null !== $criteria) {
+			if ($this->isLeaf() || ($this->isNew() && null === $this->collNestedSetChildren)) {
+				// return empty collection
+				$this->initNestedSetChildren();
+			} else {
+				$collNestedSetChildren = CategoryQuery::create(null, $criteria)
+	  			->childrenOf($this)
+	  			->orderByBranch()
+					->find($con);
+				if (null !== $criteria) {
+					return $collNestedSetChildren;
+				}
+				$this->collNestedSetChildren = $collNestedSetChildren;
+			}
+		}
+		return $this->collNestedSetChildren;
+	}
+	
+	/**
+	 * Gets number of children for the given node
+	 *
+	 * @param      Criteria  $criteria Criteria to filter results. 
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     int       Number of children
+	 */
+	public function countChildren($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collNestedSetChildren || null !== $criteria) {
+			if ($this->isLeaf() || ($this->isNew() && null === $this->collNestedSetChildren)) {
+				return 0;
+			} else {
+				return CategoryQuery::create(null, $criteria)
+					->childrenOf($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collNestedSetChildren);
+		}
+	}
+	
+	/**
+	 * Gets the first child of the given node
+	 *
+	 * @param      Criteria $query Criteria to filter results. 
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     array 		List of Category objects
+	 */
+	public function getFirstChild($query = null, PropelPDO $con = null)
+	{
+		if($this->isLeaf()) {
+			return array();
+		} else {
+			return CategoryQuery::create(null, $query)
+				->childrenOf($this)
+				->orderByBranch()
+				->findOne($con);
+		}
+	}
+	
+	/**
+	 * Gets the last child of the given node
+	 *
+	 * @param      Criteria $query Criteria to filter results. 
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     array 		List of Category objects
+	 */
+	public function getLastChild($query = null, PropelPDO $con = null)
+	{
+		if($this->isLeaf()) {
+			return array();
+		} else {
+			return CategoryQuery::create(null, $query)
+				->childrenOf($this)
+				->orderByBranch(true)
+				->findOne($con);
+		}
+	}
+	
+	/**
+	 * Gets the siblings of the given node
+	 *
+	 * @param      bool			$includeNode Whether to include the current node or not
+	 * @param      Criteria $query Criteria to filter results. 
+	 * @param      PropelPDO $con Connection to use.
+	 *
+	 * @return     array 		List of Category objects
+	 */
+	public function getSiblings($includeNode = false, $query = null, PropelPDO $con = null)
+	{
+		if($this->isRoot()) {
+			return array();
+		} else {
+			 $query = CategoryQuery::create(null, $query)
+					->childrenOf($this->getParent($con))
+					->orderByBranch();
+			if (!$includeNode) {
+				$query->prune($this);
+			}
+			return $query->find($con);
+		}
+	}
+	
+	/**
+	 * Gets descendants for the given node
+	 *
+	 * @param      Criteria $query Criteria to filter results. 
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     array 		List of Category objects
+	 */
+	public function getDescendants($query = null, PropelPDO $con = null)
+	{
+		if($this->isLeaf()) {
+			return array();
+		} else {
+			return CategoryQuery::create(null, $query)
+				->descendantsOf($this)
+				->orderByBranch()
+				->find($con);
+		}
+	}
+	
+	/**
+	 * Gets number of descendants for the given node
+	 *
+	 * @param      Criteria $query Criteria to filter results. 
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     int 		Number of descendants
+	 */
+	public function countDescendants($query = null, PropelPDO $con = null)
+	{
+		if($this->isLeaf()) {
+			// save one query
+			return 0;
+		} else {
+			return CategoryQuery::create(null, $query)
+				->descendantsOf($this)
+				->count($con);
+		}
+	}
+	
+	/**
+	 * Gets descendants for the given node, plus the current node
+	 *
+	 * @param      Criteria $query Criteria to filter results. 
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     array 		List of Category objects
+	 */
+	public function getBranch($query = null, PropelPDO $con = null)
+	{
+		return CategoryQuery::create(null, $query)
+			->branchOf($this)
+			->orderByBranch()
+			->find($con);
+	}
+	
+	/**
+	 * Gets ancestors for the given node, starting with the root node
+	 * Use it for breadcrumb paths for instance
+	 *
+	 * @param      Criteria $query Criteria to filter results. 
+	 * @param      PropelPDO $con Connection to use.
+	 * @return     array 		List of Category objects
+	 */
+	public function getAncestors($query = null, PropelPDO $con = null)
+	{
+		if($this->isRoot()) {
+			// save one query
+			return array();
+		} else {
+			return CategoryQuery::create(null, $query)
+				->ancestorsOf($this)
+				->orderByBranch()
+				->find($con);
+		}
+	}
+	
+	/**
+	 * Inserts the given $child node as first child of current
+	 * The modifications in the current object and the tree
+	 * are not persisted until the child object is saved.
+	 *
+	 * @param      Category $child	Propel object for child node
+	 *
+	 * @return     Category The current Propel object
+	 */
+	public function addChild(Category $child)
+	{
+		if ($this->isNew()) {
+			throw new PropelException('A Category object must not be new to accept children.');
+		}
+		$child->insertAsFirstChildOf($this);
+		return $this;
+	}
+	
+	/**
+	 * Inserts the current node as first child of given $parent node
+	 * The modifications in the current object and the tree
+	 * are not persisted until the current object is saved.
+	 *
+	 * @param      Category $parent	Propel object for parent node
+	 *
+	 * @return     Category The current Propel object
+	 */
+	public function insertAsFirstChildOf($parent)
+	{
+		if ($this->isInTree()) {
+			throw new PropelException('A Category object must not already be in the tree to be inserted. Use the moveToFirstChildOf() instead.');
+		}
+		$left = $parent->getLeftValue() + 1;
+		// Update node properties
+		$this->setLeftValue($left);
+		$this->setRightValue($left + 1);
+		$this->setLevel($parent->getLevel() + 1);
+		$scope = $parent->getScopeValue();
+		$this->setScopeValue($scope);
+		// update the children collection of the parent
+		$parent->addNestedSetChild($this);
+		
+		// Keep the tree modification query for the save() transaction
+		$this->nestedSetQueries []= array(
+			'callable'  => array('CategoryPeer', 'makeRoomForLeaf'),
+			'arguments' => array($left, $scope)
+		);
+		return $this;
+	}
+	
+	/**
+	 * Inserts the current node as last child of given $parent node
+	 * The modifications in the current object and the tree
+	 * are not persisted until the current object is saved.
+	 *
+	 * @param      Category $parent	Propel object for parent node
+	 *
+	 * @return     Category The current Propel object
+	 */
+	public function insertAsLastChildOf($parent)
+	{
+		if ($this->isInTree()) {
+			throw new PropelException('A Category object must not already be in the tree to be inserted. Use the moveToLastChildOf() instead.');
+		}
+		$left = $parent->getRightValue();
+		// Update node properties
+		$this->setLeftValue($left);
+		$this->setRightValue($left + 1);
+		$this->setLevel($parent->getLevel() + 1);
+		$scope = $parent->getScopeValue();
+		$this->setScopeValue($scope);
+		// update the children collection of the parent
+		$parent->addNestedSetChild($this);
+		
+		// Keep the tree modification query for the save() transaction
+		$this->nestedSetQueries []= array(
+			'callable'  => array('CategoryPeer', 'makeRoomForLeaf'),
+			'arguments' => array($left, $scope)
+		);
+		return $this;
+	}
+	
+	/**
+	 * Inserts the current node as prev sibling given $sibling node
+	 * The modifications in the current object and the tree
+	 * are not persisted until the current object is saved.
+	 *
+	 * @param      Category $sibling	Propel object for parent node
+	 *
+	 * @return     Category The current Propel object
+	 */
+	public function insertAsPrevSiblingOf($sibling)
+	{
+		if ($this->isInTree()) {
+			throw new PropelException('A Category object must not already be in the tree to be inserted. Use the moveToPrevSiblingOf() instead.');
+		}
+		$left = $sibling->getLeftValue();
+		// Update node properties
+		$this->setLeftValue($left);
+		$this->setRightValue($left + 1);
+		$this->setLevel($sibling->getLevel());
+		$scope = $sibling->getScopeValue();
+		$this->setScopeValue($scope);
+		// Keep the tree modification query for the save() transaction
+		$this->nestedSetQueries []= array(
+			'callable'  => array('CategoryPeer', 'makeRoomForLeaf'),
+			'arguments' => array($left, $scope)
+		);
+		return $this;
+	}
+	
+	/**
+	 * Inserts the current node as next sibling given $sibling node
+	 * The modifications in the current object and the tree
+	 * are not persisted until the current object is saved.
+	 *
+	 * @param      Category $sibling	Propel object for parent node
+	 *
+	 * @return     Category The current Propel object
+	 */
+	public function insertAsNextSiblingOf($sibling)
+	{
+		if ($this->isInTree()) {
+			throw new PropelException('A Category object must not already be in the tree to be inserted. Use the moveToNextSiblingOf() instead.');
+		}
+		$left = $sibling->getRightValue() + 1;
+		// Update node properties
+		$this->setLeftValue($left);
+		$this->setRightValue($left + 1);
+		$this->setLevel($sibling->getLevel());
+		$scope = $sibling->getScopeValue();
+		$this->setScopeValue($scope);
+		// Keep the tree modification query for the save() transaction
+		$this->nestedSetQueries []= array(
+			'callable'  => array('CategoryPeer', 'makeRoomForLeaf'),
+			'arguments' => array($left, $scope)
+		);
+		return $this;
+	}
+	
+	/**
+	 * Moves current node and its subtree to be the first child of $parent
+	 * The modifications in the current object and the tree are immediate
+	 *
+	 * @param      Category $parent	Propel object for parent node
+	 * @param      PropelPDO $con	Connection to use.
+	 *
+	 * @return     Category The current Propel object
+	 */
+	public function moveToFirstChildOf($parent, PropelPDO $con = null)
+	{
+		if (!$this->isInTree()) {
+			throw new PropelException('A Category object must be already in the tree to be moved. Use the insertAsFirstChildOf() instead.');
+		}
+		if ($parent->getScopeValue() != $this->getScopeValue()) {
+			throw new PropelException('Moving nodes across trees is not supported');
+		}
+		if ($parent->isDescendantOf($this)) {
+			throw new PropelException('Cannot move a node as child of one of its subtree nodes.');
+		}
+		
+		$this->moveSubtreeTo($parent->getLeftValue() + 1, $parent->getLevel() - $this->getLevel() + 1, $con);
+		
+		return $this;
+	}
+	
+	/**
+	 * Moves current node and its subtree to be the last child of $parent
+	 * The modifications in the current object and the tree are immediate
+	 *
+	 * @param      Category $parent	Propel object for parent node
+	 * @param      PropelPDO $con	Connection to use.
+	 *
+	 * @return     Category The current Propel object
+	 */
+	public function moveToLastChildOf($parent, PropelPDO $con = null)
+	{
+		if (!$this->isInTree()) {
+			throw new PropelException('A Category object must be already in the tree to be moved. Use the insertAsLastChildOf() instead.');
+		}
+		if ($parent->getScopeValue() != $this->getScopeValue()) {
+			throw new PropelException('Moving nodes across trees is not supported');
+		}
+		if ($parent->isDescendantOf($this)) {
+			throw new PropelException('Cannot move a node as child of one of its subtree nodes.');
+		}
+		
+		$this->moveSubtreeTo($parent->getRightValue(), $parent->getLevel() - $this->getLevel() + 1, $con);
+		
+		return $this;
+	}
+	
+	/**
+	 * Moves current node and its subtree to be the previous sibling of $sibling
+	 * The modifications in the current object and the tree are immediate
+	 *
+	 * @param      Category $sibling	Propel object for sibling node
+	 * @param      PropelPDO $con	Connection to use.
+	 *
+	 * @return     Category The current Propel object
+	 */
+	public function moveToPrevSiblingOf($sibling, PropelPDO $con = null)
+	{
+		if (!$this->isInTree()) {
+			throw new PropelException('A Category object must be already in the tree to be moved. Use the insertAsPrevSiblingOf() instead.');
+		}
+		if ($sibling->isRoot()) {
+			throw new PropelException('Cannot move to previous sibling of a root node.');
+		}
+		if ($sibling->getScopeValue() != $this->getScopeValue()) {
+			throw new PropelException('Moving nodes across trees is not supported');
+		}
+		if ($sibling->isDescendantOf($this)) {
+			throw new PropelException('Cannot move a node as sibling of one of its subtree nodes.');
+		}
+		
+		$this->moveSubtreeTo($sibling->getLeftValue(), $sibling->getLevel() - $this->getLevel(), $con);
+		
+		return $this;
+	}
+	
+	/**
+	 * Moves current node and its subtree to be the next sibling of $sibling
+	 * The modifications in the current object and the tree are immediate
+	 *
+	 * @param      Category $sibling	Propel object for sibling node
+	 * @param      PropelPDO $con	Connection to use.
+	 *
+	 * @return     Category The current Propel object
+	 */
+	public function moveToNextSiblingOf($sibling, PropelPDO $con = null)
+	{
+		if (!$this->isInTree()) {
+			throw new PropelException('A Category object must be already in the tree to be moved. Use the insertAsNextSiblingOf() instead.');
+		}
+		if ($sibling->isRoot()) {
+			throw new PropelException('Cannot move to next sibling of a root node.');
+		}
+		if ($sibling->getScopeValue() != $this->getScopeValue()) {
+			throw new PropelException('Moving nodes across trees is not supported');
+		}
+		if ($sibling->isDescendantOf($this)) {
+			throw new PropelException('Cannot move a node as sibling of one of its subtree nodes.');
+		}
+		
+		$this->moveSubtreeTo($sibling->getRightValue() + 1, $sibling->getLevel() - $this->getLevel(), $con);
+		
+		return $this;
+	}
+	
+	/**
+	 * Move current node and its children to location $destLeft and updates rest of tree
+	 *
+	 * @param      int	$destLeft Destination left value
+	 * @param      int	$levelDelta Delta to add to the levels
+	 * @param      PropelPDO $con		Connection to use.
+	 */
+	protected function moveSubtreeTo($destLeft, $levelDelta, PropelPDO $con = null)
+	{
+		$left  = $this->getLeftValue();
+		$right = $this->getRightValue();
+		$scope = $this->getScopeValue();
+	
+		$treeSize = $right - $left +1;
+		
+		if ($con === null) {
+			$con = Propel::getConnection(CategoryPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+		}
+			
+		$con->beginTransaction();
+		try {
+			// make room next to the target for the subtree
+			CategoryPeer::shiftRLValues($treeSize, $destLeft, null, $scope, $con);
+		
+			if ($left >= $destLeft) { // src was shifted too?
+				$left += $treeSize;
+				$right += $treeSize;
+			}
+			
+			if ($levelDelta) {
+				// update the levels of the subtree
+				CategoryPeer::shiftLevel($levelDelta, $left, $right, $scope, $con);
+			}
+			
+			// move the subtree to the target
+			CategoryPeer::shiftRLValues($destLeft - $left, $left, $right, $scope, $con);
+		
+			// remove the empty room at the previous location of the subtree
+			CategoryPeer::shiftRLValues(-$treeSize, $right + 1, null, $scope, $con);
+			
+			// update all loaded nodes
+			CategoryPeer::updateLoadedNodes($con);
+			
+			$con->commit();
+		} catch (PropelException $e) {
+			$con->rollback();
+			throw $e;
+		}
+	}
+	
+	/**
+	 * Deletes all descendants for the given node
+	 * Instance pooling is wiped out by this command, 
+	 * so existing Category instances are probably invalid (except for the current one)
+	 *
+	 * @param      PropelPDO $con Connection to use.
+	 *
+	 * @return     int 		number of deleted nodes
+	 */
+	public function deleteDescendants(PropelPDO $con = null)
+	{
+		if($this->isLeaf()) {
+			// save one query
+			return;
+		}
+		if ($con === null) {
+			$con = Propel::getConnection(CategoryPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+		$left = $this->getLeftValue();
+		$right = $this->getRightValue();
+		$scope = $this->getScopeValue();
+		$con->beginTransaction();
+		try {
+			// delete descendant nodes (will empty the instance pool)
+			$ret = CategoryQuery::create()
+				->descendantsOf($this)
+				->delete($con);
+			
+			// fill up the room that was used by descendants
+			CategoryPeer::shiftRLValues($left - $right + 1, $right, null, $scope, $con);
+			
+			// fix the right value for the current node, which is now a leaf
+			$this->setRightValue($left + 1);
+			
+			$con->commit();
+		} catch (Exception $e) {
+			$con->rollback();
+			throw $e;
+		}
+		
+		return $ret;
+	}
+	
+	/**
+	 * Returns a pre-order iterator for this node and its children.
+	 *
+	 * @return     RecursiveIterator
+	 */
+	public function getIterator()
+	{
+		return new NestedSetRecursiveIterator($this);
 	}
 
 	/**

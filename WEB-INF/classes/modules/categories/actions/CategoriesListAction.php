@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("CategoryPeer.php");
-
 class CategoriesListAction extends BaseAction {
 
 
@@ -48,15 +45,27 @@ class CategoriesListAction extends BaseAction {
     $smarty->assign("module",$module);
     $smarty->assign("section",$section);
 
-    $user = $_SESSION["loginUser"];
-    $categories = $user->getCategories();
-
-    $smarty->assign("categories",$categories);
+		$categoryPeer = new CategoryPeer();
+    $smarty->assign("categoryPeer",$categoryPeer);
     
+    $this->applyFilters($categoryPeer, $_GET['filters'], $smarty);
+		
+    $user = $_SESSION["loginUser"];
+		
+    $categories = $categoryPeer->getAllByUserFiltered($user);
+    $smarty->assign("userCategories",$categories);
+		$parentCategories = $categoryPeer->getAllParentsByUserFiltered($user);
+		$smarty->assign("parentUserCategories",$parentCategories);
+	    
+		//categoria para select de modulos
+		$modules = ModulePeer::getAllWithCategories();
+		$smarty->assign('modules',$modules);
+		
+		$moduleObj = ModulePeer::get($_GET['filters']['searchModule']);
+		$smarty->assign('moduleObj',$moduleObj);
+	
     $smarty->assign("message",$_GET["message"]);
 
 		return $mapping->findForwardConfig('success');
 	}
-
 }
-?>

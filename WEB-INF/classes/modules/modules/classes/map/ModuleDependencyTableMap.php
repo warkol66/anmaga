@@ -37,8 +37,8 @@ class ModuleDependencyTableMap extends TableMap {
 		$this->setPackage('modules.classes');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('MODULENAME', 'Modulename', 'VARCHAR' , 'modules_module', 'NAME', true, 255, null);
-		$this->addPrimaryKey('DEPENDENCE', 'Dependence', 'VARCHAR', true, 255, null);
+		$this->addForeignPrimaryKey('MODULENAME', 'Modulename', 'VARCHAR' , 'modules_module', 'NAME', true, 50, null);
+		$this->addPrimaryKey('DEPENDENCE', 'Dependence', 'VARCHAR', true, 50, null);
 		// validators
 	} // initialize()
 

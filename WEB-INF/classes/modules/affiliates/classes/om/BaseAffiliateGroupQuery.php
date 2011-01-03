@@ -414,6 +414,23 @@ abstract class BaseAffiliateGroupQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query by a related Category object
+	 * using the affiliates_groupCategory table as cross reference
+	 *
+	 * @param     Category $category the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateGroupQuery The current query, for fluid interface
+	 */
+	public function filterByCategory($category, $comparison = Criteria::EQUAL)
+	{
+		return $this
+			->useAffiliateGroupCategoryQuery()
+				->filterByCategory($category, $comparison)
+			->endUse();
+	}
+	
+	/**
 	 * Exclude object from result
 	 *
 	 * @param     AffiliateGroup $affiliateGroup Object to remove from the list of results

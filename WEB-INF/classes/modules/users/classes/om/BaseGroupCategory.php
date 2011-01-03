@@ -4,7 +4,7 @@
 /**
  * Base class that represents a row from the 'users_groupCategory' table.
  *
- * Groups / Categories
+ * Groups_Categories
  *
  * @package    propel.generator.users.classes.om
  */

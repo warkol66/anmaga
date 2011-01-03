@@ -131,8 +131,9 @@ CREATE TABLE `users_groupCategory`
 	INDEX `users_groupCategory_FI_2` (`categoryId`),
 	CONSTRAINT `users_groupCategory_FK_2`
 		FOREIGN KEY (`categoryId`)
-		REFERENCES `category` (`id`)
-) ENGINE=MyISAM COMMENT='Groups / Categories';
+		REFERENCES `categories_category` (`id`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Groups_Categories';
 
 #-----------------------------------------------------------------------------
 #-- usersByRegistration_user

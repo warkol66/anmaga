@@ -4,7 +4,7 @@
 /**
  * Base class that represents a row from the 'affiliates_groupCategory' table.
  *
- * Groups / Categories
+ * Groups_Categories
  *
  * @package    propel.generator.affiliates.classes.om
  */

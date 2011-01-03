@@ -4,7 +4,7 @@
 /**
  * Base class that represents a query for the 'affiliates_groupCategory' table.
  *
- * Groups / Categories
+ * Groups_Categories
  *
  * @method     AffiliateGroupCategoryQuery orderByGroupid($order = Criteria::ASC) Order by the groupId column
  * @method     AffiliateGroupCategoryQuery orderByCategoryid($order = Criteria::ASC) Order by the categoryId column

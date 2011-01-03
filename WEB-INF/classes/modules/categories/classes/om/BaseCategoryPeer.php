@@ -2,7 +2,7 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'category' table.
+ * Base static class for performing query and update operations on the 'categories_category' table.
  *
  * Categorias
  *
@@ -14,7 +14,7 @@ abstract class BaseCategoryPeer {
 	const DATABASE_NAME = 'anmaga';
 
 	/** the table name for this class */
-	const TABLE_NAME = 'category';
+	const TABLE_NAME = 'categories_category';
 
 	/** the related Propel class for this table */
 	const OM_CLASS = 'Category';
@@ -26,19 +26,46 @@ abstract class BaseCategoryPeer {
 	const TM_CLASS = 'CategoryTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 3;
+	const NUM_COLUMNS = 12;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** the column name for the ID field */
-	const ID = 'category.ID';
+	const ID = 'categories_category.ID';
 
 	/** the column name for the NAME field */
-	const NAME = 'category.NAME';
+	const NAME = 'categories_category.NAME';
+
+	/** the column name for the ORDER field */
+	const ORDER = 'categories_category.ORDER';
+
+	/** the column name for the MODULE field */
+	const MODULE = 'categories_category.MODULE';
 
 	/** the column name for the ACTIVE field */
-	const ACTIVE = 'category.ACTIVE';
+	const ACTIVE = 'categories_category.ACTIVE';
+
+	/** the column name for the ISPUBLIC field */
+	const ISPUBLIC = 'categories_category.ISPUBLIC';
+
+	/** the column name for the OLDID field */
+	const OLDID = 'categories_category.OLDID';
+
+	/** the column name for the DELETED_AT field */
+	const DELETED_AT = 'categories_category.DELETED_AT';
+
+	/** the column name for the TREE_LEFT field */
+	const TREE_LEFT = 'categories_category.TREE_LEFT';
+
+	/** the column name for the TREE_RIGHT field */
+	const TREE_RIGHT = 'categories_category.TREE_RIGHT';
+
+	/** the column name for the TREE_LEVEL field */
+	const TREE_LEVEL = 'categories_category.TREE_LEVEL';
+
+	/** the column name for the SCOPE field */
+	const SCOPE = 'categories_category.SCOPE';
 
 	/**
 	 * An identiy map to hold any loaded instances of Category objects.
@@ -49,6 +76,28 @@ abstract class BaseCategoryPeer {
 	public static $instances = array();
 
 
+	// nested_set behavior
+	
+	/**
+	 * Left column for the set
+	 */
+	const LEFT_COL = 'categories_category.TREE_LEFT';
+	
+	/**
+	 * Right column for the set
+	 */
+	const RIGHT_COL = 'categories_category.TREE_RIGHT';
+	
+	/**
+	 * Level column for the set
+	 */
+	const LEVEL_COL = 'categories_category.TREE_LEVEL';
+	
+	/**
+	 * Scope column for the set
+	 */
+	const SCOPE_COL = 'categories_category.SCOPE';
+
 	/**
 	 * holds an array of fieldnames
 	 *
@@ -56,12 +105,12 @@ abstract class BaseCategoryPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Active', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'active', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ACTIVE, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ACTIVE', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'active', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Order', 'Module', 'Active', 'Ispublic', 'Oldid', 'DeletedAt', 'TreeLeft', 'TreeRight', 'TreeLevel', 'Scope', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'order', 'module', 'active', 'ispublic', 'oldid', 'deletedAt', 'treeLeft', 'treeRight', 'treeLevel', 'scope', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ORDER, self::MODULE, self::ACTIVE, self::ISPUBLIC, self::OLDID, self::DELETED_AT, self::TREE_LEFT, self::TREE_RIGHT, self::TREE_LEVEL, self::SCOPE, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ORDER', 'MODULE', 'ACTIVE', 'ISPUBLIC', 'OLDID', 'DELETED_AT', 'TREE_LEFT', 'TREE_RIGHT', 'TREE_LEVEL', 'SCOPE', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'order', 'module', 'active', 'isPublic', 'oldId', 'deleted_at', 'tree_left', 'tree_right', 'tree_level', 'scope', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
 	);
 
 	/**
@@ -71,12 +120,12 @@ abstract class BaseCategoryPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Active' => 2, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'active' => 2, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ACTIVE => 2, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ACTIVE' => 2, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'active' => 2, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Order' => 2, 'Module' => 3, 'Active' => 4, 'Ispublic' => 5, 'Oldid' => 6, 'DeletedAt' => 7, 'TreeLeft' => 8, 'TreeRight' => 9, 'TreeLevel' => 10, 'Scope' => 11, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'order' => 2, 'module' => 3, 'active' => 4, 'ispublic' => 5, 'oldid' => 6, 'deletedAt' => 7, 'treeLeft' => 8, 'treeRight' => 9, 'treeLevel' => 10, 'scope' => 11, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ORDER => 2, self::MODULE => 3, self::ACTIVE => 4, self::ISPUBLIC => 5, self::OLDID => 6, self::DELETED_AT => 7, self::TREE_LEFT => 8, self::TREE_RIGHT => 9, self::TREE_LEVEL => 10, self::SCOPE => 11, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ORDER' => 2, 'MODULE' => 3, 'ACTIVE' => 4, 'ISPUBLIC' => 5, 'OLDID' => 6, 'DELETED_AT' => 7, 'TREE_LEFT' => 8, 'TREE_RIGHT' => 9, 'TREE_LEVEL' => 10, 'SCOPE' => 11, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'order' => 2, 'module' => 3, 'active' => 4, 'isPublic' => 5, 'oldId' => 6, 'deleted_at' => 7, 'tree_left' => 8, 'tree_right' => 9, 'tree_level' => 10, 'scope' => 11, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
 	);
 
 	/**
@@ -150,11 +199,29 @@ abstract class BaseCategoryPeer {
 		if (null === $alias) {
 			$criteria->addSelectColumn(CategoryPeer::ID);
 			$criteria->addSelectColumn(CategoryPeer::NAME);
+			$criteria->addSelectColumn(CategoryPeer::ORDER);
+			$criteria->addSelectColumn(CategoryPeer::MODULE);
 			$criteria->addSelectColumn(CategoryPeer::ACTIVE);
+			$criteria->addSelectColumn(CategoryPeer::ISPUBLIC);
+			$criteria->addSelectColumn(CategoryPeer::OLDID);
+			$criteria->addSelectColumn(CategoryPeer::DELETED_AT);
+			$criteria->addSelectColumn(CategoryPeer::TREE_LEFT);
+			$criteria->addSelectColumn(CategoryPeer::TREE_RIGHT);
+			$criteria->addSelectColumn(CategoryPeer::TREE_LEVEL);
+			$criteria->addSelectColumn(CategoryPeer::SCOPE);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.NAME');
+			$criteria->addSelectColumn($alias . '.ORDER');
+			$criteria->addSelectColumn($alias . '.MODULE');
 			$criteria->addSelectColumn($alias . '.ACTIVE');
+			$criteria->addSelectColumn($alias . '.ISPUBLIC');
+			$criteria->addSelectColumn($alias . '.OLDID');
+			$criteria->addSelectColumn($alias . '.DELETED_AT');
+			$criteria->addSelectColumn($alias . '.TREE_LEFT');
+			$criteria->addSelectColumn($alias . '.TREE_RIGHT');
+			$criteria->addSelectColumn($alias . '.TREE_LEVEL');
+			$criteria->addSelectColumn($alias . '.SCOPE');
 		}
 	}
 
@@ -189,6 +256,12 @@ abstract class BaseCategoryPeer {
 
 		if ($con === null) {
 			$con = Propel::getConnection(CategoryPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+		// soft_delete behavior
+		if (CategoryQuery::isSoftDeleteEnabled()) {
+			$criteria->add(CategoryPeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			CategoryPeer::enableSoftDelete();
 		}
 		// BasePeer returns a PDOStatement
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -259,6 +332,12 @@ abstract class BaseCategoryPeer {
 
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
+		// soft_delete behavior
+		if (CategoryQuery::isSoftDeleteEnabled()) {
+			$criteria->add(CategoryPeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			CategoryPeer::enableSoftDelete();
+		}
 
 		// BasePeer returns a PDOStatement
 		return BasePeer::doSelect($criteria, $con);
@@ -343,11 +422,17 @@ abstract class BaseCategoryPeer {
 	}
 	
 	/**
-	 * Method to invalidate the instance pool of all tables related to category
+	 * Method to invalidate the instance pool of all tables related to categories_category
 	 * by a foreign key with ON DELETE CASCADE
 	 */
 	public static function clearRelatedInstancePool()
 	{
+		// Invalidate objects in AffiliateGroupCategoryPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		AffiliateGroupCategoryPeer::clearInstancePool();
+		// Invalidate objects in GroupCategoryPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		GroupCategoryPeer::clearInstancePool();
 	}
 
 	/**
@@ -562,11 +647,11 @@ abstract class BaseCategoryPeer {
 	}
 
 	/**
-	 * Method to DELETE all rows from the category table.
+	 * Method to DELETE all rows from the categories_category table.
 	 *
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 */
-	public static function doDeleteAll($con = null)
+	public static function doForceDeleteAll($con = null)
 	{
 		if ($con === null) {
 			$con = Propel::getConnection(CategoryPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
@@ -576,6 +661,7 @@ abstract class BaseCategoryPeer {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
+			$affectedRows += CategoryPeer::doOnDeleteCascade(new Criteria(CategoryPeer::DATABASE_NAME), $con);
 			$affectedRows += BasePeer::doDeleteAll(CategoryPeer::TABLE_NAME, $con, CategoryPeer::DATABASE_NAME);
 			// Because this db requires some delete cascade/set null emulation, we have to
 			// clear the cached instance *after* the emulation has happened (since
@@ -601,31 +687,21 @@ abstract class BaseCategoryPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	 public static function doDelete($values, PropelPDO $con = null)
+	 public static function doForceDelete($values, PropelPDO $con = null)
 	 {
 		if ($con === null) {
 			$con = Propel::getConnection(CategoryPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
-			// invalidate the cache for all objects of this type, since we have no
-			// way of knowing (without running a query) what objects should be invalidated
-			// from the cache based on this Criteria.
-			CategoryPeer::clearInstancePool();
 			// rename for clarity
 			$criteria = clone $values;
 		} elseif ($values instanceof Category) { // it's a model object
-			// invalidate the cache for this single object
-			CategoryPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
 		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
 			$criteria->add(CategoryPeer::ID, (array) $values, Criteria::IN);
-			// invalidate the cache for this object(s)
-			foreach ((array) $values as $singleval) {
-				CategoryPeer::removeInstanceFromPool($singleval);
-			}
 		}
 
 		// Set the correct dbName
@@ -638,6 +714,23 @@ abstract class BaseCategoryPeer {
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
 			
+			// cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
+			$c = clone $criteria;
+			$affectedRows += CategoryPeer::doOnDeleteCascade($c, $con);
+			
+			// Because this db requires some delete cascade/set null emulation, we have to
+			// clear the cached instance *after* the emulation has happened (since
+			// instances get re-added by the select statement contained therein).
+			if ($values instanceof Criteria) {
+				CategoryPeer::clearInstancePool();
+			} elseif ($values instanceof Category) { // it's a model object
+				CategoryPeer::removeInstanceFromPool($values);
+			} else { // it's a primary key, or an array of pks
+				foreach ((array) $values as $singleval) {
+					CategoryPeer::removeInstanceFromPool($singleval);
+				}
+			}
+			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
 			CategoryPeer::clearRelatedInstancePool();
 			$con->commit();
@@ -646,6 +739,44 @@ abstract class BaseCategoryPeer {
 			$con->rollBack();
 			throw $e;
 		}
+	}
+
+	/**
+	 * This is a method for emulating ON DELETE CASCADE for DBs that don't support this
+	 * feature (like MySQL or SQLite).
+	 *
+	 * This method is not very speedy because it must perform a query first to get
+	 * the implicated records and then perform the deletes by calling those Peer classes.
+	 *
+	 * This method should be used within a transaction if possible.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      PropelPDO $con
+	 * @return     int The number of affected rows (if supported by underlying database driver).
+	 */
+	protected static function doOnDeleteCascade(Criteria $criteria, PropelPDO $con)
+	{
+		// initialize var to track total num of affected rows
+		$affectedRows = 0;
+
+		// first find the objects that are implicated by the $criteria
+		$objects = CategoryPeer::doSelect($criteria, $con);
+		foreach ($objects as $obj) {
+
+
+			// delete related AffiliateGroupCategory objects
+			$criteria = new Criteria(AffiliateGroupCategoryPeer::DATABASE_NAME);
+			
+			$criteria->add(AffiliateGroupCategoryPeer::CATEGORYID, $obj->getId());
+			$affectedRows += AffiliateGroupCategoryPeer::doDelete($criteria, $con);
+
+			// delete related GroupCategory objects
+			$criteria = new Criteria(GroupCategoryPeer::DATABASE_NAME);
+			
+			$criteria->add(GroupCategoryPeer::CATEGORYID, $obj->getId());
+			$affectedRows += GroupCategoryPeer::doDelete($criteria, $con);
+		}
+		return $affectedRows;
 	}
 
 	/**
@@ -734,6 +865,374 @@ abstract class BaseCategoryPeer {
 			$objs = CategoryPeer::doSelect($criteria, $con);
 		}
 		return $objs;
+	}
+
+	// soft_delete behavior
+	
+	/**
+	 * Enable the soft_delete behavior for this model
+	 */
+	public static function enableSoftDelete()
+	{
+		CategoryQuery::enableSoftDelete();
+		// some soft_deleted objects may be in the instance pool
+		CategoryPeer::clearInstancePool();
+	}
+	
+	/**
+	 * Disable the soft_delete behavior for this model
+	 */
+	public static function disableSoftDelete()
+	{
+		CategoryQuery::disableSoftDelete();
+	}
+	
+	/**
+	 * Check the soft_delete behavior for this model
+	 * @return boolean true if the soft_delete behavior is enabled
+	 */
+	public static function isSoftDeleteEnabled()
+	{
+		return CategoryQuery::isSoftDeleteEnabled();
+	}
+	
+	/**
+	 * Soft delete records, given a Category or Criteria object OR a primary key value.
+	 *
+	 * @param			 mixed $values Criteria or Category object or primary key or array of primary keys
+	 *							which is used to create the DELETE statement
+	 * @param			 PropelPDO $con the connection to use
+	 * @return		 int	The number of affected rows (if supported by underlying database driver).
+	 * @throws		 PropelException Any exceptions caught during processing will be
+	 *							rethrown wrapped into a PropelException.
+	 */
+	public static function doSoftDelete($values, PropelPDO $con = null)
+	{
+		if ($values instanceof Criteria) {
+			// rename for clarity
+			$criteria = clone $values;
+		} elseif ($values instanceof Category) {
+			// create criteria based on pk values
+			$criteria = $values->buildPkeyCriteria();
+		} else {
+			// it must be the primary key
+			$criteria = new Criteria(self::DATABASE_NAME);
+			$criteria->add(CategoryPeer::ID, (array) $values, Criteria::IN);
+		}
+		$criteria->add(CategoryPeer::DELETED_AT, time());
+		return CategoryPeer::doUpdate($criteria, $con);
+	}
+	
+	/**
+	 * Delete or soft delete records, depending on CategoryPeer::$softDelete
+	 *
+	 * @param			 mixed $values Criteria or Category object or primary key or array of primary keys
+	 *							which is used to create the DELETE statement
+	 * @param			 PropelPDO $con the connection to use
+	 * @return		 int	The number of affected rows (if supported by underlying database driver).
+	 * @throws		 PropelException Any exceptions caught during processing will be
+	 *							rethrown wrapped into a PropelException.
+	 */
+	public static function doDelete($values, PropelPDO $con = null)
+	{
+		if (CategoryPeer::isSoftDeleteEnabled()) {
+			return CategoryPeer::doSoftDelete($values, $con);
+		} else {
+			return CategoryPeer::doForceDelete($values, $con);
+		} 
+	}
+	/**
+	 * Method to soft delete all rows from the categories_category table.
+	 *
+	 * @param			 PropelPDO $con the connection to use
+	 * @return		 int The number of affected rows (if supported by underlying database driver).
+	 * @throws		 PropelException Any exceptions caught during processing will be
+	 *							rethrown wrapped into a PropelException.
+	 */
+	public static function doSoftDeleteAll(PropelPDO $con = null)
+	{
+		if ($con === null) {
+			$con = Propel::getConnection(CategoryPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+		}
+		$selectCriteria = new Criteria();
+		$selectCriteria->add(CategoryPeer::DELETED_AT, null, Criteria::ISNULL);
+		$selectCriteria->setDbName(CategoryPeer::DATABASE_NAME);
+		$modifyCriteria = new Criteria();
+		$modifyCriteria->add(CategoryPeer::DELETED_AT, time());
+		return BasePeer::doUpdate($selectCriteria, $modifyCriteria, $con);
+	}
+	
+	/**
+	 * Delete or soft delete all records, depending on CategoryPeer::$softDelete
+	 *
+	 * @param			 PropelPDO $con the connection to use
+	 * @return		 int	The number of affected rows (if supported by underlying database driver).
+	 * @throws		 PropelException Any exceptions caught during processing will be
+	 *							rethrown wrapped into a PropelException.
+	 */
+	public static function doDeleteAll(PropelPDO $con = null)
+	{
+		if (CategoryPeer::isSoftDeleteEnabled()) {
+			return CategoryPeer::doSoftDeleteAll($con);
+		} else {
+			return CategoryPeer::doForceDeleteAll($con);
+		} 
+	}
+
+	// nested_set behavior
+	
+	/**
+	 * Returns the root nodes for the tree
+	 *
+	 * @param      PropelPDO $con	Connection to use.
+	 * @return     Category			Propel object for root node
+	 */
+	public static function retrieveRoots(Criteria $criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(CategoryPeer::DATABASE_NAME);
+		}
+		$criteria->add(CategoryPeer::LEFT_COL, 1, Criteria::EQUAL);
+	
+		return CategoryPeer::doSelect($criteria, $con);
+	}
+	
+	/**
+	 * Returns the root node for a given scope
+	 *
+	 * @param      int $scope		Scope to determine which root node to return
+	 * @param      PropelPDO $con	Connection to use.
+	 * @return     Category			Propel object for root node
+	 */
+	public static function retrieveRoot($scope = null, PropelPDO $con = null)
+	{
+		$c = new Criteria(CategoryPeer::DATABASE_NAME);
+		$c->add(CategoryPeer::LEFT_COL, 1, Criteria::EQUAL);
+		$c->add(CategoryPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+	
+		return CategoryPeer::doSelectOne($c, $con);
+	}
+	
+	/**
+	 * Returns the whole tree node for a given scope
+	 *
+	 * @param      int $scope		Scope to determine which root node to return
+	 * @param      Criteria $criteria	Optional Criteria to filter the query
+	 * @param      PropelPDO $con	Connection to use.
+	 * @return     Category			Propel object for root node
+	 */
+	public static function retrieveTree($scope = null, Criteria $criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(CategoryPeer::DATABASE_NAME);
+		}
+		$criteria->addAscendingOrderByColumn(CategoryPeer::LEFT_COL);
+		$criteria->add(CategoryPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+		
+		return CategoryPeer::doSelect($criteria, $con);
+	}
+	
+	/**
+	 * Tests if node is valid
+	 *
+	 * @param      Category $node	Propel object for src node
+	 * @return     bool
+	 */
+	public static function isValid(Category $node = null)
+	{
+		if (is_object($node) && $node->getRightValue() > $node->getLeftValue()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Delete an entire tree
+	 * 
+	 * @param      int $scope		Scope to determine which tree to delete
+	 * @param      PropelPDO $con	Connection to use.
+	 *
+	 * @return     int  The number of deleted nodes
+	 */
+	public static function deleteTree($scope = null, PropelPDO $con = null)
+	{
+		$c = new Criteria(CategoryPeer::DATABASE_NAME);
+		$c->add(CategoryPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+		return CategoryPeer::doDelete($c, $con);
+	}
+	
+	/**
+	 * Adds $delta to all L and R values that are >= $first and <= $last.
+	 * '$delta' can also be negative.
+	 *
+	 * @param      int $delta		Value to be shifted by, can be negative
+	 * @param      int $first		First node to be shifted
+	 * @param      int $last			Last node to be shifted (optional)
+	 * @param      int $scope		Scope to use for the shift
+	 * @param      PropelPDO $con		Connection to use.
+	 */
+	public static function shiftRLValues($delta, $first, $last = null, $scope = null, PropelPDO $con = null)
+	{
+		if ($con === null) {
+			$con = Propel::getConnection(CategoryPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+		}
+	
+		// Shift left column values
+		$whereCriteria = new Criteria(CategoryPeer::DATABASE_NAME);
+		$criterion = $whereCriteria->getNewCriterion(CategoryPeer::LEFT_COL, $first, Criteria::GREATER_EQUAL);
+		if (null !== $last) {
+			$criterion->addAnd($whereCriteria->getNewCriterion(CategoryPeer::LEFT_COL, $last, Criteria::LESS_EQUAL));
+		}
+		$whereCriteria->add($criterion);
+		$whereCriteria->add(CategoryPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+		
+		$valuesCriteria = new Criteria(CategoryPeer::DATABASE_NAME);
+		$valuesCriteria->add(CategoryPeer::LEFT_COL, array('raw' => CategoryPeer::LEFT_COL . ' + ?', 'value' => $delta), Criteria::CUSTOM_EQUAL);
+	
+		BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
+	
+		// Shift right column values
+		$whereCriteria = new Criteria(CategoryPeer::DATABASE_NAME);
+		$criterion = $whereCriteria->getNewCriterion(CategoryPeer::RIGHT_COL, $first, Criteria::GREATER_EQUAL);
+		if (null !== $last) {
+			$criterion->addAnd($whereCriteria->getNewCriterion(CategoryPeer::RIGHT_COL, $last, Criteria::LESS_EQUAL));
+		}
+		$whereCriteria->add($criterion);
+		$whereCriteria->add(CategoryPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+	
+		$valuesCriteria = new Criteria(CategoryPeer::DATABASE_NAME);
+		$valuesCriteria->add(CategoryPeer::RIGHT_COL, array('raw' => CategoryPeer::RIGHT_COL . ' + ?', 'value' => $delta), Criteria::CUSTOM_EQUAL);
+	
+		BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
+	}
+	
+	/**
+	 * Adds $delta to level for nodes having left value >= $first and right value <= $last.
+	 * '$delta' can also be negative.
+	 *
+	 * @param      int $delta		Value to be shifted by, can be negative
+	 * @param      int $first		First node to be shifted
+	 * @param      int $last			Last node to be shifted
+	 * @param      int $scope		Scope to use for the shift
+	 * @param      PropelPDO $con		Connection to use.
+	 */
+	public static function shiftLevel($delta, $first, $last, $scope = null, PropelPDO $con = null)
+	{
+		if ($con === null) {
+			$con = Propel::getConnection(CategoryPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+		}
+	
+		$whereCriteria = new Criteria(CategoryPeer::DATABASE_NAME);
+		$whereCriteria->add(CategoryPeer::LEFT_COL, $first, Criteria::GREATER_EQUAL);
+		$whereCriteria->add(CategoryPeer::RIGHT_COL, $last, Criteria::LESS_EQUAL);
+		$whereCriteria->add(CategoryPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+		
+		$valuesCriteria = new Criteria(CategoryPeer::DATABASE_NAME);
+		$valuesCriteria->add(CategoryPeer::LEVEL_COL, array('raw' => CategoryPeer::LEVEL_COL . ' + ?', 'value' => $delta), Criteria::CUSTOM_EQUAL);
+	
+		BasePeer::doUpdate($whereCriteria, $valuesCriteria, $con);
+	}
+	
+	/**
+	 * Reload all already loaded nodes to sync them with updated db
+	 *
+	 * @param      PropelPDO $con		Connection to use.
+	 */
+	public static function updateLoadedNodes(PropelPDO $con = null)
+	{
+		if (Propel::isInstancePoolingEnabled()) {
+			$keys = array();
+			foreach (CategoryPeer::$instances as $obj) {
+				$keys[] = $obj->getPrimaryKey();
+			}
+	
+			if (!empty($keys)) {
+				// We don't need to alter the object instance pool; we're just modifying these ones
+				// already in the pool.
+				$criteria = new Criteria(CategoryPeer::DATABASE_NAME);
+				$criteria->add(CategoryPeer::ID, $keys, Criteria::IN);
+	
+				$stmt = CategoryPeer::doSelectStmt($criteria, $con);
+				while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+					$key = CategoryPeer::getPrimaryKeyHashFromRow($row, 0);
+					if (null !== ($object = CategoryPeer::getInstanceFromPool($key))) {
+						$object->setLeftValue($row[8]);
+						$object->setRightValue($row[9]);
+						$object->setLevel($row[10]);
+						$object->clearNestedSetChildren();
+					}
+				}
+				$stmt->closeCursor();
+			}
+		}
+	}
+	
+	/**
+	 * Update the tree to allow insertion of a leaf at the specified position
+	 *
+	 * @param      int $left	left column value
+	 * @param      integer $scope	scope column value
+	 * @param      PropelPDO $con	Connection to use.
+	 */
+	public static function makeRoomForLeaf($left, $scope, PropelPDO $con = null)
+	{	
+		// Update database nodes
+		CategoryPeer::shiftRLValues(2, $left, null, $scope, $con);
+	
+		// Update all loaded nodes
+		CategoryPeer::updateLoadedNodes($con);
+	}
+	
+	/**
+	 * Update the tree to allow insertion of a leaf at the specified position
+	 *
+	 * @param      integer $scope	scope column value
+	 * @param      PropelPDO $con	Connection to use.
+	 */
+	public static function fixLevels($scope, PropelPDO $con = null)
+	{
+		$c = new Criteria();
+		$c->add(CategoryPeer::SCOPE_COL, $scope, Criteria::EQUAL);
+		$c->addAscendingOrderByColumn(CategoryPeer::LEFT_COL);
+		$stmt = CategoryPeer::doSelectStmt($c, $con);
+		
+		// set the class once to avoid overhead in the loop
+		$cls = CategoryPeer::getOMClass(false);
+		$level = null;
+		// iterate over the statement
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+	
+			// hydrate object
+			$key = CategoryPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null === ($obj = CategoryPeer::getInstanceFromPool($key))) {
+				$obj = new $cls();
+				$obj->hydrate($row);
+				CategoryPeer::addInstanceToPool($obj, $key);
+			}
+			
+			// compute level
+			// Algorithm shamelessly stolen from sfPropelActAsNestedSetBehaviorPlugin
+			// Probably authored by Tristan Rivoallan
+			if ($level === null) {
+				$level = 0;
+				$i = 0;
+				$prev = array($obj->getRightValue());
+			} else {
+				while ($obj->getRightValue() > $prev[$i]) {
+					$i--;
+				}
+				$level = ++$i;
+				$prev[$i] = $obj->getRightValue();
+			}
+			
+			// update level in node if necessary
+			if ($obj->getLevel() !== $level) {
+				$obj->setLevel($level);
+				$obj->save($con);
+			}
+		}
+		$stmt->closeCursor();
 	}
 
 } // BaseCategoryPeer

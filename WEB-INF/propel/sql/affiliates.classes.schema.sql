@@ -166,8 +166,9 @@ CREATE TABLE `affiliates_groupCategory`
 	INDEX `affiliates_groupCategory_FI_2` (`categoryId`),
 	CONSTRAINT `affiliates_groupCategory_FK_2`
 		FOREIGN KEY (`categoryId`)
-		REFERENCES `category` (`id`)
-) ENGINE=MyISAM COMMENT='Groups / Categories';
+		REFERENCES `categories_category` (`id`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Groups_Categories';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

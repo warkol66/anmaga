@@ -1,9 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("CategoryPeer.php");
-require_once("GroupCategoryPeer.php");
-
 class CategoriesDoEditXAction extends BaseAction {
 
 
@@ -33,9 +29,8 @@ class CategoriesDoEditXAction extends BaseAction {
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
-    
-		$this->template->template = "template_ajax.tpl";
-
+		$this->template->template = "TemplateAjax.tpl";
+		
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
@@ -44,31 +39,46 @@ class CategoriesDoEditXAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
-		
+
 		$module = "Categories";
+   		$smarty->assign("module",$module);
+      
+		if (Common::isAffiliatedUser())
+			$user = Common::getAffiliatedLogged();
+		
+		if (Common::isAdmin())
+			$user = Common::getAdminLogged();				
 
-    $smarty->assign("module",$module);
-
-		if ( $_POST["accion"] == "edicion" ) {
+    $categoryParams = $_POST['category'];
+    
+		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un category existente
-
-			CategoryPeer::update($_POST["id"],$_POST["name"]);
-      return $mapping->findForwardConfig('success');
+			CategoryPeer::update($_POST['id'], $categoryParams);
+      		return $mapping->findForwardConfig('success');
 		}
-		else {
-		  //estoy creando un nuevo category
+		else {  //estoy creando un nuevo category
+			if (empty($categoryParams['name'])) {
+				$parentCategories = $user->getParentCategoriesByModule($categoryParams['module']);
+				$smarty->assign("parentUserCategories",$parentCategories);
+				return $mapping->findForwardConfig('failure');
+			}
 
-			$categoryId = CategoryPeer::create($_POST["name"]);
+			$newCategory = CategoryPeer::create($categoryParams);
+			$smarty->assign("category",$newCategory);
+			
+			$parentCategories = $user->getParentCategoriesByModule($categoryParams['module']);
+			$smarty->assign("parentUserCategories",$parentCategories);
+			
 			//le asigno permisos a la categoria creada a todos los grupos al cual pertenece el usuario
-			$user = getLoginUser();
-			$user->setGroupsToCategory($categoryId);
-
-			$category = CategoryPeer::get($categoryId);
-			$smarty->assign("category",$category);
+			//separacion entre caso de usuario dependencia y usuario administrador	
+			if (isset($user)) {
+				$user->setGroupsToCategory($newCategory->getId());
+			}
+			
+		
 			return $mapping->findForwardConfig('success');
 		}
 
 	}
 
 }
-?>

@@ -1,4 +1,91 @@
 ﻿==============================
+Revisión 644 - Fecha 20110103
+------------------------------
+
+#Revisar que las siguientes tablas estén vacías o no existan antes de cargar esta actualización:
+#category, categories_category, users_groupCategory, affiliates_groupCategory.
+
+#-----------------------------------------------------------------------------
+#-- categories_category
+#-----------------------------------------------------------------------------
+DROP TABLE IF EXISTS `category`;
+DROP TABLE IF EXISTS `categories_category`;
+
+
+CREATE TABLE `categories_category`
+(
+  `id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de la categoria',
+  `name` VARCHAR(255)  NOT NULL COMMENT 'Category name',
+  `order` INTEGER(4)   COMMENT 'Orden',
+  `module` VARCHAR(255) default ''  COMMENT 'Module name if it is for a module',
+  `active` TINYINT  NOT NULL COMMENT 'Is category active?',
+  `isPublic` TINYINT default 0 NOT NULL COMMENT 'Is category public?',
+  `oldId` INTEGER(5)  NOT NULL COMMENT 'Old Id',
+  `deleted_at` DATETIME,
+  `tree_left` INTEGER,
+  `tree_right` INTEGER,
+  `tree_level` INTEGER,
+  `scope` INTEGER,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Categorias';
+
+#-----------------------------------------------------------------------------
+#-- users_groupCategory
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `users_groupCategory`;
+
+
+CREATE TABLE `users_groupCategory`
+(
+	`groupId` INTEGER  NOT NULL COMMENT 'Group ID',
+	`categoryId` INTEGER  NOT NULL COMMENT 'Category ID',
+	PRIMARY KEY (`groupId`,`categoryId`),
+	CONSTRAINT `users_groupCategory_FK_1`
+		FOREIGN KEY (`groupId`)
+		REFERENCES `users_group` (`id`)
+		ON DELETE CASCADE,
+	INDEX `users_groupCategory_FI_2` (`categoryId`),
+	CONSTRAINT `users_groupCategory_FK_2`
+		FOREIGN KEY (`categoryId`)
+		REFERENCES `categories_category` (`id`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Groups_Categories';
+
+#-----------------------------------------------------------------------------
+#-- affiliates_groupCategory
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `affiliates_groupCategory`;
+
+
+CREATE TABLE `affiliates_groupCategory`
+(
+	`groupId` INTEGER  NOT NULL COMMENT 'Group ID',
+	`categoryId` INTEGER  NOT NULL COMMENT 'Category ID',
+	PRIMARY KEY (`groupId`,`categoryId`),
+	CONSTRAINT `affiliates_groupCategory_FK_1`
+		FOREIGN KEY (`groupId`)
+		REFERENCES `affiliates_group` (`id`)
+		ON DELETE CASCADE,
+	INDEX `affiliates_groupCategory_FI_2` (`categoryId`),
+	CONSTRAINT `affiliates_groupCategory_FK_2`
+		FOREIGN KEY (`categoryId`)
+		REFERENCES `categories_category` (`id`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Groups_Categories';
+
+#Actualizaciones en modulo Modules.
+ALTER TABLE `modules_module` ADD `hasCategories` TINYINT default 0 NOT NULL COMMENT 'El Modulo tiene categorias relacionadas?';
+
+ALTER TABLE `modules_dependency` MODIFY `moduleName` VARCHAR(50)  NOT NULL COMMENT 'Modulo';
+ALTER TABLE `modules_dependency` MODIFY `dependence` VARCHAR(50)  NOT NULL COMMENT 'Modulos de los cuales depende';
+
+ALTER TABLE `modules_module` CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+ALTER TABLE `modules_dependency` CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+ALTER TABLE `modules_label` CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+
+==============================
 Revisión 643 - Fecha 20101227
 ------------------------------
 #Migración para cambiar la relación orderItem<<->product para que se haga por código de producto en lugar de id.

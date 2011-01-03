@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'category' table.
+ * This class defines the structure of the 'categories_category' table.
  *
  *
  *
@@ -31,7 +31,7 @@ class CategoryTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('category');
+		$this->setName('categories_category');
 		$this->setPhpName('Category');
 		$this->setClassname('Category');
 		$this->setPackage('categories.classes');
@@ -39,7 +39,16 @@ class CategoryTableMap extends TableMap {
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
+		$this->addColumn('ORDER', 'Order', 'INTEGER', false, 4, null);
+		$this->addColumn('MODULE', 'Module', 'VARCHAR', false, 255, '');
 		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null, null);
+		$this->addColumn('ISPUBLIC', 'Ispublic', 'BOOLEAN', true, null, false);
+		$this->addColumn('OLDID', 'Oldid', 'INTEGER', true, 5, null);
+		$this->addColumn('DELETED_AT', 'DeletedAt', 'TIMESTAMP', false, null, null);
+		$this->addColumn('TREE_LEFT', 'TreeLeft', 'INTEGER', false, null, null);
+		$this->addColumn('TREE_RIGHT', 'TreeRight', 'INTEGER', false, null, null);
+		$this->addColumn('TREE_LEVEL', 'TreeLevel', 'INTEGER', false, null, null);
+		$this->addColumn('SCOPE', 'Scope', 'INTEGER', false, null, null);
 		// validators
 	} // initialize()
 
@@ -48,8 +57,24 @@ class CategoryTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('AffiliateGroupCategory', 'AffiliateGroupCategory', RelationMap::ONE_TO_MANY, array('id' => 'categoryId', ), null, null);
-    $this->addRelation('GroupCategory', 'GroupCategory', RelationMap::ONE_TO_MANY, array('id' => 'categoryId', ), null, null);
+    $this->addRelation('AffiliateGroupCategory', 'AffiliateGroupCategory', RelationMap::ONE_TO_MANY, array('id' => 'categoryId', ), 'CASCADE', null);
+    $this->addRelation('GroupCategory', 'GroupCategory', RelationMap::ONE_TO_MANY, array('id' => 'categoryId', ), 'CASCADE', null);
+    $this->addRelation('AffiliateGroup', 'AffiliateGroup', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null);
+    $this->addRelation('Group', 'Group', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null);
 	} // buildRelations()
+
+	/**
+	 * 
+	 * Gets the list of behaviors registered for this table
+	 * 
+	 * @return array Associative array (name => parameters) of behaviors
+	 */
+	public function getBehaviors()
+	{
+		return array(
+			'soft_delete' => array('deleted_column' => 'deleted_at', ),
+			'nested_set' => array('left_column' => 'tree_left', 'right_column' => 'tree_right', 'level_column' => 'tree_level', 'use_scope' => 'true', 'scope_column' => 'scope', 'method_proxies' => 'false', ),
+		);
+	} // getBehaviors()
 
 } // CategoryTableMap

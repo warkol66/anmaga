@@ -40,6 +40,7 @@ class ModuleTableMap extends TableMap {
 		$this->addPrimaryKey('NAME', 'Name', 'VARCHAR', true, 255, null);
 		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null, false);
 		$this->addColumn('ALWAYSACTIVE', 'Alwaysactive', 'BOOLEAN', true, null, false);
+		$this->addColumn('HASCATEGORIES', 'Hascategories', 'BOOLEAN', true, null, false);
 		// validators
 	} // initialize()
 

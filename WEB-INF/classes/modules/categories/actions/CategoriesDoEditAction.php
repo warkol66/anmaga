@@ -50,28 +50,32 @@ class CategoriesDoEditAction extends BaseAction {
     $smarty->assign("section",$section);
 
     $categoryPeer = new CategoryPeer();
+    $categoryParams = $_POST['category'];
 
 		if ( $_POST["accion"] == "edicion" ) {
 			//estoy editando un category existente
 
-			if ( $categoryPeer->update($_POST["id"],$_POST["name"],$_POST["hierarchyActors"]) )
-      	return $mapping->findForwardConfig('success');
-      else
-      	return $mapping->findForwardConfig('success');
+			if ($categoryPeer->update($_POST['id'], $categoryParams))
+				$myRedirectConfig = $mapping->findForwardConfig('success');
+			else
+				$myRedirectConfig = $mapping->findForwardConfig('failure');
+
+			$myRedirectPath = $myRedirectConfig->getpath();
+			$myRedirectPath .= '&categoryModule=' . $categoryParams['module'];
+			$fc = new ForwardConfig($myRedirectPath, True);
+			return $fc;
 
 		}
 		else {
 		  //estoy creando un nuevo category
 
-			$categoryId = $categoryPeer->create($_POST["name"]);
+			$categoryId = $categoryPeer->create($categoryParams);
 			//le asigno permisos a la categoria creada a todos los grupos al cual pertenece el usuario
 			$user = getLoginUser();
-			$user->setGroupsToCategory($categoryId);
-
 			return $mapping->findForwardConfig('success');
+	
 		}
 
 	}
 
 }
-?>

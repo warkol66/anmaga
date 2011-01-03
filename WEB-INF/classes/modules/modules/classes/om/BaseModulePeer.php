@@ -26,7 +26,7 @@ abstract class BaseModulePeer {
 	const TM_CLASS = 'ModuleTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 3;
+	const NUM_COLUMNS = 4;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -39,6 +39,9 @@ abstract class BaseModulePeer {
 
 	/** the column name for the ALWAYSACTIVE field */
 	const ALWAYSACTIVE = 'modules_module.ALWAYSACTIVE';
+
+	/** the column name for the HASCATEGORIES field */
+	const HASCATEGORIES = 'modules_module.HASCATEGORIES';
 
 	/**
 	 * An identiy map to hold any loaded instances of Module objects.
@@ -56,12 +59,12 @@ abstract class BaseModulePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Name', 'Active', 'Alwaysactive', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('name', 'active', 'alwaysactive', ),
-		BasePeer::TYPE_COLNAME => array (self::NAME, self::ACTIVE, self::ALWAYSACTIVE, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('NAME', 'ACTIVE', 'ALWAYSACTIVE', ),
-		BasePeer::TYPE_FIELDNAME => array ('name', 'active', 'alwaysActive', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Name', 'Active', 'Alwaysactive', 'Hascategories', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('name', 'active', 'alwaysactive', 'hascategories', ),
+		BasePeer::TYPE_COLNAME => array (self::NAME, self::ACTIVE, self::ALWAYSACTIVE, self::HASCATEGORIES, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('NAME', 'ACTIVE', 'ALWAYSACTIVE', 'HASCATEGORIES', ),
+		BasePeer::TYPE_FIELDNAME => array ('name', 'active', 'alwaysActive', 'hasCategories', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -71,12 +74,12 @@ abstract class BaseModulePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Name' => 0, 'Active' => 1, 'Alwaysactive' => 2, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('name' => 0, 'active' => 1, 'alwaysactive' => 2, ),
-		BasePeer::TYPE_COLNAME => array (self::NAME => 0, self::ACTIVE => 1, self::ALWAYSACTIVE => 2, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('NAME' => 0, 'ACTIVE' => 1, 'ALWAYSACTIVE' => 2, ),
-		BasePeer::TYPE_FIELDNAME => array ('name' => 0, 'active' => 1, 'alwaysActive' => 2, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Name' => 0, 'Active' => 1, 'Alwaysactive' => 2, 'Hascategories' => 3, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('name' => 0, 'active' => 1, 'alwaysactive' => 2, 'hascategories' => 3, ),
+		BasePeer::TYPE_COLNAME => array (self::NAME => 0, self::ACTIVE => 1, self::ALWAYSACTIVE => 2, self::HASCATEGORIES => 3, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('NAME' => 0, 'ACTIVE' => 1, 'ALWAYSACTIVE' => 2, 'HASCATEGORIES' => 3, ),
+		BasePeer::TYPE_FIELDNAME => array ('name' => 0, 'active' => 1, 'alwaysActive' => 2, 'hasCategories' => 3, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -151,10 +154,12 @@ abstract class BaseModulePeer {
 			$criteria->addSelectColumn(ModulePeer::NAME);
 			$criteria->addSelectColumn(ModulePeer::ACTIVE);
 			$criteria->addSelectColumn(ModulePeer::ALWAYSACTIVE);
+			$criteria->addSelectColumn(ModulePeer::HASCATEGORIES);
 		} else {
 			$criteria->addSelectColumn($alias . '.NAME');
 			$criteria->addSelectColumn($alias . '.ACTIVE');
 			$criteria->addSelectColumn($alias . '.ALWAYSACTIVE');
+			$criteria->addSelectColumn($alias . '.HASCATEGORIES');
 		}
 	}
 
