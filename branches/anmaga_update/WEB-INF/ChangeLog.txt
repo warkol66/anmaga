@@ -1,4 +1,57 @@
 ﻿==============================
+Revisión 645 - Fecha 20110104
+------------------------------
+
+#Esto es por si es necesario cargar el modulo Catalog en la tabla de modulos.
+
+INSERT INTO `modules_module` (
+`name` ,
+`active` ,
+`alwaysActive` ,
+`hasCategories`
+)
+VALUES (
+'catalog',  '1',  '0',  '1'
+);
+
+INSERT INTO `modules_label` (
+`id` ,
+`name` ,
+`label` ,
+`description` ,
+`language`
+)
+VALUES (
+NULL ,  'catalog',  'Catálogo',  'Catálogo de Productos',  'esp'
+), (
+NULL ,  'catalog',  'Catalog',  'Products Catalog',  'eng';
+
+#-----------------------------------------------------------------------------
+#-- catalog_productCategory
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `catalog_productCategory`;
+DROP TABLE IF EXISTS `productCategory`;
+
+
+CREATE TABLE `catalog_productCategory`
+(
+  `productCode` VARCHAR(255)  NOT NULL COMMENT 'Codigo del producto',
+  `categoryId` INTEGER(5)  NOT NULL COMMENT 'Category Id',
+  PRIMARY KEY (`productCode`,`categoryId`),
+  INDEX `catalog_productCategory_FI_1` (`categoryId`),
+  CONSTRAINT `catalog_productCategory_FK_1`
+    FOREIGN KEY (`categoryId`)
+    REFERENCES `categories_category` (`id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `catalog_productCategory_FK_2`
+    FOREIGN KEY (`productCode`)
+    REFERENCES `product` (`code`)
+    ON DELETE CASCADE
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Relacion Categorias y Productos';
+
+
+==============================
 Revisión 644 - Fecha 20110103
 ------------------------------
 

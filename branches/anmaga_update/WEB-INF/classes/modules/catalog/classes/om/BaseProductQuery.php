@@ -42,6 +42,10 @@
  * @method     ProductQuery rightJoinAffiliateProduct($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AffiliateProduct relation
  * @method     ProductQuery innerJoinAffiliateProduct($relationAlias = null) Adds a INNER JOIN clause to the query using the AffiliateProduct relation
  *
+ * @method     ProductQuery leftJoinProductCategory($relationAlias = null) Adds a LEFT JOIN clause to the query using the ProductCategory relation
+ * @method     ProductQuery rightJoinProductCategory($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ProductCategory relation
+ * @method     ProductQuery innerJoinProductCategory($relationAlias = null) Adds a INNER JOIN clause to the query using the ProductCategory relation
+ *
  * @method     ProductQuery leftJoinOrderItem($relationAlias = null) Adds a LEFT JOIN clause to the query using the OrderItem relation
  * @method     ProductQuery rightJoinOrderItem($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OrderItem relation
  * @method     ProductQuery innerJoinOrderItem($relationAlias = null) Adds a INNER JOIN clause to the query using the OrderItem relation
@@ -598,6 +602,70 @@ abstract class BaseProductQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query by a related ProductCategory object
+	 *
+	 * @param     ProductCategory $productCategory  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ProductQuery The current query, for fluid interface
+	 */
+	public function filterByProductCategory($productCategory, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(ProductPeer::CODE, $productCategory->getProductcode(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the ProductCategory relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ProductQuery The current query, for fluid interface
+	 */
+	public function joinProductCategory($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('ProductCategory');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'ProductCategory');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the ProductCategory relation ProductCategory object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    ProductCategoryQuery A secondary query class using the current class as primary query
+	 */
+	public function useProductCategoryQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		return $this
+			->joinProductCategory($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'ProductCategory', 'ProductCategoryQuery');
+	}
+
+	/**
 	 * Filter the query by a related OrderItem object
 	 *
 	 * @param     OrderItem $orderItem  the related object to use as filter
@@ -725,6 +793,23 @@ abstract class BaseProductQuery extends ModelCriteria
 			->useQuery($relationAlias ? $relationAlias : 'OrderTemplateItem', 'OrderTemplateItemQuery');
 	}
 
+	/**
+	 * Filter the query by a related Category object
+	 * using the catalog_productCategory table as cross reference
+	 *
+	 * @param     Category $category the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ProductQuery The current query, for fluid interface
+	 */
+	public function filterByCategory($category, $comparison = Criteria::EQUAL)
+	{
+		return $this
+			->useProductCategoryQuery()
+				->filterByCategory($category, $comparison)
+			->endUse();
+	}
+	
 	/**
 	 * Exclude object from result
 	 *

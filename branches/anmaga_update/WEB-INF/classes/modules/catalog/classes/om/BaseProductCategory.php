@@ -2,9 +2,9 @@
 
 
 /**
- * Base class that represents a row from the 'productCategory' table.
+ * Base class that represents a row from the 'catalog_productCategory' table.
  *
- * Categorias de Productos
+ * Relacion Categorias y Productos
  *
  * @package    propel.generator.catalog.classes.om
  */
@@ -25,16 +25,26 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 	protected static $peer;
 
 	/**
-	 * The value for the id field.
-	 * @var        int
-	 */
-	protected $id;
-
-	/**
-	 * The value for the description field.
+	 * The value for the productcode field.
 	 * @var        string
 	 */
-	protected $description;
+	protected $productcode;
+
+	/**
+	 * The value for the categoryid field.
+	 * @var        int
+	 */
+	protected $categoryid;
+
+	/**
+	 * @var        Category
+	 */
+	protected $aCategory;
+
+	/**
+	 * @var        Product
+	 */
+	protected $aProduct;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -51,64 +61,72 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 	protected $alreadyInValidation = false;
 
 	/**
-	 * Get the [id] column value.
-	 * Id de la categoria
-	 * @return     int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-
-	/**
-	 * Get the [description] column value.
-	 * Descripcion
+	 * Get the [productcode] column value.
+	 * Codigo del producto
 	 * @return     string
 	 */
-	public function getDescription()
+	public function getProductcode()
 	{
-		return $this->description;
+		return $this->productcode;
 	}
 
 	/**
-	 * Set the value of [id] column.
-	 * Id de la categoria
-	 * @param      int $v new value
-	 * @return     ProductCategory The current object (for fluent API support)
+	 * Get the [categoryid] column value.
+	 * Category Id
+	 * @return     int
 	 */
-	public function setId($v)
+	public function getCategoryid()
 	{
-		if ($v !== null) {
-			$v = (int) $v;
-		}
-
-		if ($this->id !== $v) {
-			$this->id = $v;
-			$this->modifiedColumns[] = ProductCategoryPeer::ID;
-		}
-
-		return $this;
-	} // setId()
+		return $this->categoryid;
+	}
 
 	/**
-	 * Set the value of [description] column.
-	 * Descripcion
+	 * Set the value of [productcode] column.
+	 * Codigo del producto
 	 * @param      string $v new value
 	 * @return     ProductCategory The current object (for fluent API support)
 	 */
-	public function setDescription($v)
+	public function setProductcode($v)
 	{
 		if ($v !== null) {
 			$v = (string) $v;
 		}
 
-		if ($this->description !== $v) {
-			$this->description = $v;
-			$this->modifiedColumns[] = ProductCategoryPeer::DESCRIPTION;
+		if ($this->productcode !== $v) {
+			$this->productcode = $v;
+			$this->modifiedColumns[] = ProductCategoryPeer::PRODUCTCODE;
+		}
+
+		if ($this->aProduct !== null && $this->aProduct->getCode() !== $v) {
+			$this->aProduct = null;
 		}
 
 		return $this;
-	} // setDescription()
+	} // setProductcode()
+
+	/**
+	 * Set the value of [categoryid] column.
+	 * Category Id
+	 * @param      int $v new value
+	 * @return     ProductCategory The current object (for fluent API support)
+	 */
+	public function setCategoryid($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->categoryid !== $v) {
+			$this->categoryid = $v;
+			$this->modifiedColumns[] = ProductCategoryPeer::CATEGORYID;
+		}
+
+		if ($this->aCategory !== null && $this->aCategory->getId() !== $v) {
+			$this->aCategory = null;
+		}
+
+		return $this;
+	} // setCategoryid()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -142,8 +160,8 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 	{
 		try {
 
-			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-			$this->description = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+			$this->productcode = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
+			$this->categoryid = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -175,6 +193,12 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 	public function ensureConsistency()
 	{
 
+		if ($this->aProduct !== null && $this->productcode !== $this->aProduct->getCode()) {
+			$this->aProduct = null;
+		}
+		if ($this->aCategory !== null && $this->categoryid !== $this->aCategory->getId()) {
+			$this->aCategory = null;
+		}
 	} // ensureConsistency
 
 	/**
@@ -214,6 +238,8 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 
 		if ($deep) {  // also de-associate any related objects?
 
+			$this->aCategory = null;
+			$this->aProduct = null;
 		} // if (deep)
 	}
 
@@ -324,24 +350,35 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 		if (!$this->alreadyInSave) {
 			$this->alreadyInSave = true;
 
-			if ($this->isNew() ) {
-				$this->modifiedColumns[] = ProductCategoryPeer::ID;
+			// We call the save method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->aCategory !== null) {
+				if ($this->aCategory->isModified() || $this->aCategory->isNew()) {
+					$affectedRows += $this->aCategory->save($con);
+				}
+				$this->setCategory($this->aCategory);
 			}
+
+			if ($this->aProduct !== null) {
+				if ($this->aProduct->isModified() || $this->aProduct->isNew()) {
+					$affectedRows += $this->aProduct->save($con);
+				}
+				$this->setProduct($this->aProduct);
+			}
+
 
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
 					$criteria = $this->buildCriteria();
-					if ($criteria->keyContainsValue(ProductCategoryPeer::ID) ) {
-						throw new PropelException('Cannot insert a value for auto-increment primary key ('.ProductCategoryPeer::ID.')');
-					}
-
 					$pk = BasePeer::doInsert($criteria, $con);
-					$affectedRows = 1;
-					$this->setId($pk);  //[IMV] update autoincrement primary key
+					$affectedRows += 1;
 					$this->setNew(false);
 				} else {
-					$affectedRows = ProductCategoryPeer::doUpdate($this, $con);
+					$affectedRows += ProductCategoryPeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
@@ -413,6 +450,24 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 			$failureMap = array();
 
 
+			// We call the validate method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->aCategory !== null) {
+				if (!$this->aCategory->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aCategory->getValidationFailures());
+				}
+			}
+
+			if ($this->aProduct !== null) {
+				if (!$this->aProduct->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aProduct->getValidationFailures());
+				}
+			}
+
+
 			if (($retval = ProductCategoryPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
@@ -452,10 +507,10 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 	{
 		switch($pos) {
 			case 0:
-				return $this->getId();
+				return $this->getProductcode();
 				break;
 			case 1:
-				return $this->getDescription();
+				return $this->getCategoryid();
 				break;
 			default:
 				return null;
@@ -473,16 +528,25 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
 	{
 		$keys = ProductCategoryPeer::getFieldNames($keyType);
 		$result = array(
-			$keys[0] => $this->getId(),
-			$keys[1] => $this->getDescription(),
+			$keys[0] => $this->getProductcode(),
+			$keys[1] => $this->getCategoryid(),
 		);
+		if ($includeForeignObjects) {
+			if (null !== $this->aCategory) {
+				$result['Category'] = $this->aCategory->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+			if (null !== $this->aProduct) {
+				$result['Product'] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+		}
 		return $result;
 	}
 
@@ -514,10 +578,10 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 	{
 		switch($pos) {
 			case 0:
-				$this->setId($value);
+				$this->setProductcode($value);
 				break;
 			case 1:
-				$this->setDescription($value);
+				$this->setCategoryid($value);
 				break;
 		} // switch()
 	}
@@ -543,8 +607,8 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 	{
 		$keys = ProductCategoryPeer::getFieldNames($keyType);
 
-		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setDescription($arr[$keys[1]]);
+		if (array_key_exists($keys[0], $arr)) $this->setProductcode($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setCategoryid($arr[$keys[1]]);
 	}
 
 	/**
@@ -556,8 +620,8 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 	{
 		$criteria = new Criteria(ProductCategoryPeer::DATABASE_NAME);
 
-		if ($this->isColumnModified(ProductCategoryPeer::ID)) $criteria->add(ProductCategoryPeer::ID, $this->id);
-		if ($this->isColumnModified(ProductCategoryPeer::DESCRIPTION)) $criteria->add(ProductCategoryPeer::DESCRIPTION, $this->description);
+		if ($this->isColumnModified(ProductCategoryPeer::PRODUCTCODE)) $criteria->add(ProductCategoryPeer::PRODUCTCODE, $this->productcode);
+		if ($this->isColumnModified(ProductCategoryPeer::CATEGORYID)) $criteria->add(ProductCategoryPeer::CATEGORYID, $this->categoryid);
 
 		return $criteria;
 	}
@@ -573,29 +637,36 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 	public function buildPkeyCriteria()
 	{
 		$criteria = new Criteria(ProductCategoryPeer::DATABASE_NAME);
-		$criteria->add(ProductCategoryPeer::ID, $this->id);
+		$criteria->add(ProductCategoryPeer::PRODUCTCODE, $this->productcode);
+		$criteria->add(ProductCategoryPeer::CATEGORYID, $this->categoryid);
 
 		return $criteria;
 	}
 
 	/**
-	 * Returns the primary key for this object (row).
-	 * @return     int
+	 * Returns the composite primary key for this object.
+	 * The array elements will be in same order as specified in XML.
+	 * @return     array
 	 */
 	public function getPrimaryKey()
 	{
-		return $this->getId();
+		$pks = array();
+		$pks[0] = $this->getProductcode();
+		$pks[1] = $this->getCategoryid();
+
+		return $pks;
 	}
 
 	/**
-	 * Generic method to set the primary key (id column).
+	 * Set the [composite] primary key.
 	 *
-	 * @param      int $key Primary key.
+	 * @param      array $keys The elements of the composite key (order must match the order in XML file).
 	 * @return     void
 	 */
-	public function setPrimaryKey($key)
+	public function setPrimaryKey($keys)
 	{
-		$this->setId($key);
+		$this->setProductcode($keys[0]);
+		$this->setCategoryid($keys[1]);
 	}
 
 	/**
@@ -604,7 +675,7 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 	 */
 	public function isPrimaryKeyNull()
 	{
-		return null === $this->getId();
+		return (null === $this->getProductcode()) && (null === $this->getCategoryid());
 	}
 
 	/**
@@ -619,10 +690,10 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-		$copyObj->setDescription($this->description);
+		$copyObj->setProductcode($this->productcode);
+		$copyObj->setCategoryid($this->categoryid);
 
 		$copyObj->setNew(true);
-		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
 	}
 
 	/**
@@ -664,12 +735,112 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Declares an association between this object and a Category object.
+	 *
+	 * @param      Category $v
+	 * @return     ProductCategory The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setCategory(Category $v = null)
+	{
+		if ($v === null) {
+			$this->setCategoryid(NULL);
+		} else {
+			$this->setCategoryid($v->getId());
+		}
+
+		$this->aCategory = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Category object, it will not be re-added.
+		if ($v !== null) {
+			$v->addProductCategory($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Category object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Category The associated Category object.
+	 * @throws     PropelException
+	 */
+	public function getCategory(PropelPDO $con = null)
+	{
+		if ($this->aCategory === null && ($this->categoryid !== null)) {
+			$this->aCategory = CategoryQuery::create()->findPk($this->categoryid, $con);
+			/* The following can be used additionally to
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aCategory->addProductCategorys($this);
+			 */
+		}
+		return $this->aCategory;
+	}
+
+	/**
+	 * Declares an association between this object and a Product object.
+	 *
+	 * @param      Product $v
+	 * @return     ProductCategory The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setProduct(Product $v = null)
+	{
+		if ($v === null) {
+			$this->setProductcode(NULL);
+		} else {
+			$this->setProductcode($v->getCode());
+		}
+
+		$this->aProduct = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Product object, it will not be re-added.
+		if ($v !== null) {
+			$v->addProductCategory($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Product object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Product The associated Product object.
+	 * @throws     PropelException
+	 */
+	public function getProduct(PropelPDO $con = null)
+	{
+		if ($this->aProduct === null && (($this->productcode !== "" && $this->productcode !== null))) {
+			$this->aProduct = ProductQuery::create()
+				->filterByProductCategory($this) // here
+				->findOne($con);
+			/* The following can be used additionally to
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aProduct->addProductCategorys($this);
+			 */
+		}
+		return $this->aProduct;
+	}
+
+	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
 	public function clear()
 	{
-		$this->id = null;
-		$this->description = null;
+		$this->productcode = null;
+		$this->categoryid = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
@@ -692,6 +863,8 @@ abstract class BaseProductCategory extends BaseObject  implements Persistent
 		if ($deep) {
 		} // if ($deep)
 
+		$this->aCategory = null;
+		$this->aProduct = null;
 	}
 
 	/**

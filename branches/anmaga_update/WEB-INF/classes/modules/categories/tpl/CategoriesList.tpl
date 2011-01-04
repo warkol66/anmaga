@@ -37,6 +37,7 @@
 		<p><label for="category[name]">Nombre Categoría</label>
 		<input type="text" name="category[name]" id="name" value='' size="50" />
 		</p>
+		|-include file="FiltersRedirectInclude.tpl"-|
 		<input type="hidden" name="category[module]" value="|-$filters.searchModule-|" id="selectedModule">
 		<p><label for="category[parentId]">Dentro de</label>
 		<select name="category[parentId]" id="selectAddCategory">

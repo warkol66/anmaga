@@ -1,9 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("CategoryPeer.php");
-require_once("GroupCategoryPeer.php");
-
 class CategoriesDoEditAction extends BaseAction {
 
 

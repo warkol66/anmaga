@@ -430,6 +430,9 @@ abstract class BaseCategoryPeer {
 		// Invalidate objects in AffiliateGroupCategoryPeer instance pool, 
 		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
 		AffiliateGroupCategoryPeer::clearInstancePool();
+		// Invalidate objects in ProductCategoryPeer instance pool, 
+		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+		ProductCategoryPeer::clearInstancePool();
 		// Invalidate objects in GroupCategoryPeer instance pool, 
 		// since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
 		GroupCategoryPeer::clearInstancePool();
@@ -769,6 +772,12 @@ abstract class BaseCategoryPeer {
 			
 			$criteria->add(AffiliateGroupCategoryPeer::CATEGORYID, $obj->getId());
 			$affectedRows += AffiliateGroupCategoryPeer::doDelete($criteria, $con);
+
+			// delete related ProductCategory objects
+			$criteria = new Criteria(ProductCategoryPeer::DATABASE_NAME);
+			
+			$criteria->add(ProductCategoryPeer::CATEGORYID, $obj->getId());
+			$affectedRows += ProductCategoryPeer::doDelete($criteria, $con);
 
 			// delete related GroupCategory objects
 			$criteria = new Criteria(GroupCategoryPeer::DATABASE_NAME);

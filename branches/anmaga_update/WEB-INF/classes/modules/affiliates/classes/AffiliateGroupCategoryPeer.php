@@ -1,8 +1,5 @@
 <?php
 
-require 'categories/classes/om/BaseAffiliateGroupCategoryPeer.php';
-
-
 /**
  * Skeleton subclass for performing query and update operations on the 'affiliates_groupCategory' table.
  *

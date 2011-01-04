@@ -1,8 +1,5 @@
 <?php
 
-require 'categories/classes/om/BaseGroupCategory.php';
-
-
 /**
  * Skeleton subclass for representing a row from the 'users_groupCategory' table.
  *
