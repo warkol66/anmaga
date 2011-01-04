@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Skeleton subclass for performing query and update operations on the 'users_groupCategory' table.
  *

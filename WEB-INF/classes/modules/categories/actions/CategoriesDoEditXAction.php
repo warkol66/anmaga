@@ -43,6 +43,8 @@ class CategoriesDoEditXAction extends BaseAction {
 		$module = "Categories";
    		$smarty->assign("module",$module);
       
+    $categoryPeer = new CategoryPeer;
+      
 		if (Common::isAffiliatedUser())
 			$user = Common::getAffiliatedLogged();
 		
@@ -57,28 +59,30 @@ class CategoriesDoEditXAction extends BaseAction {
       		return $mapping->findForwardConfig('success');
 		}
 		else {  //estoy creando un nuevo category
+		  $this->applyFilters($categoryPeer, $_POST['filters'], $smarty);
 			if (empty($categoryParams['name'])) {
-				$parentCategories = $user->getParentCategoriesByModule($categoryParams['module']);
-				$smarty->assign("parentUserCategories",$parentCategories);
+			  $parentCategories = $categoryPeer->getAllParentsByUserFiltered($user);
+        $smarty->assign("parentUserCategories",$parentCategories);
 				return $mapping->findForwardConfig('failure');
 			}
-
+      
 			$newCategory = CategoryPeer::create($categoryParams);
+      $parentCategories = $categoryPeer->getAllParentsByUserFiltered($user);
+      $smarty->assign("parentUserCategories",$parentCategories);
+      
+      if (empty($newCategory))
+        return $mapping->findForwardConfig('failure');
+        
 			$smarty->assign("category",$newCategory);
-			
-			$parentCategories = $user->getParentCategoriesByModule($categoryParams['module']);
-			$smarty->assign("parentUserCategories",$parentCategories);
-			
+
 			//le asigno permisos a la categoria creada a todos los grupos al cual pertenece el usuario
 			//separacion entre caso de usuario dependencia y usuario administrador	
 			if (isset($user)) {
 				$user->setGroupsToCategory($newCategory->getId());
 			}
 			
-		
 			return $mapping->findForwardConfig('success');
 		}
 
 	}
-
 }

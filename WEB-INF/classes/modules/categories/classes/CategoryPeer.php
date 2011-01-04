@@ -91,7 +91,8 @@ class CategoryPeer extends BaseCategoryPeer {
         ;
       }
     
-      $groupPeer->addCategoryToGroup($object->getId(),$group->getId());
+      if (!empty($group))
+        $groupPeer->addCategoryToGroup($object->getId(),$group->getId());
       
       return $object;
     }

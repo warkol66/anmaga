@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'productCategory' table.
+ * This class defines the structure of the 'catalog_productCategory' table.
  *
  *
  *
@@ -31,14 +31,14 @@ class ProductCategoryTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('productCategory');
+		$this->setName('catalog_productCategory');
 		$this->setPhpName('ProductCategory');
 		$this->setClassname('ProductCategory');
 		$this->setPackage('catalog.classes');
-		$this->setUseIdGenerator(true);
+		$this->setUseIdGenerator(false);
 		// columns
-		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
+		$this->addForeignPrimaryKey('PRODUCTCODE', 'Productcode', 'VARCHAR' , 'product', 'CODE', true, 255, null);
+		$this->addForeignPrimaryKey('CATEGORYID', 'Categoryid', 'INTEGER' , 'categories_category', 'ID', true, 5, null);
 		// validators
 	} // initialize()
 
@@ -47,6 +47,8 @@ class ProductCategoryTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
+    $this->addRelation('Category', 'Category', RelationMap::MANY_TO_ONE, array('categoryId' => 'id', ), 'CASCADE', null);
+    $this->addRelation('Product', 'Product', RelationMap::MANY_TO_ONE, array('productCode' => 'code', ), 'CASCADE', null);
 	} // buildRelations()
 
 } // ProductCategoryTableMap

@@ -104,6 +104,11 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	protected $collAffiliateGroupCategorys;
 
 	/**
+	 * @var        array ProductCategory[] Collection to store aggregation of ProductCategory objects.
+	 */
+	protected $collProductCategorys;
+
+	/**
 	 * @var        array GroupCategory[] Collection to store aggregation of GroupCategory objects.
 	 */
 	protected $collGroupCategorys;
@@ -112,6 +117,11 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	 * @var        array AffiliateGroup[] Collection to store aggregation of AffiliateGroup objects.
 	 */
 	protected $collAffiliateGroups;
+
+	/**
+	 * @var        array Product[] Collection to store aggregation of Product objects.
+	 */
+	protected $collProducts;
 
 	/**
 	 * @var        array Group[] Collection to store aggregation of Group objects.
@@ -716,9 +726,12 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 
 			$this->collAffiliateGroupCategorys = null;
 
+			$this->collProductCategorys = null;
+
 			$this->collGroupCategorys = null;
 
 			$this->collAffiliateGroups = null;
+			$this->collProducts = null;
 			$this->collGroups = null;
 		} // if (deep)
 	}
@@ -881,6 +894,14 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 				}
 			}
 
+			if ($this->collProductCategorys !== null) {
+				foreach ($this->collProductCategorys as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collGroupCategorys !== null) {
 				foreach ($this->collGroupCategorys as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -962,6 +983,14 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 
 				if ($this->collAffiliateGroupCategorys !== null) {
 					foreach ($this->collAffiliateGroupCategorys as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collProductCategorys !== null) {
+					foreach ($this->collProductCategorys as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1290,6 +1319,12 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 				}
 			}
 
+			foreach ($this->getProductCategorys() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addProductCategory($relObj->copy($deepCopy));
+				}
+			}
+
 			foreach ($this->getGroupCategorys() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addGroupCategory($relObj->copy($deepCopy));
@@ -1473,6 +1508,140 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		$query->joinWith('AffiliateGroup', $join_behavior);
 
 		return $this->getAffiliateGroupCategorys($query, $con);
+	}
+
+	/**
+	 * Clears out the collProductCategorys collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addProductCategorys()
+	 */
+	public function clearProductCategorys()
+	{
+		$this->collProductCategorys = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collProductCategorys collection.
+	 *
+	 * By default this just sets the collProductCategorys collection to an empty array (like clearcollProductCategorys());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initProductCategorys()
+	{
+		$this->collProductCategorys = new PropelObjectCollection();
+		$this->collProductCategorys->setModel('ProductCategory');
+	}
+
+	/**
+	 * Gets an array of ProductCategory objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Category is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array ProductCategory[] List of ProductCategory objects
+	 * @throws     PropelException
+	 */
+	public function getProductCategorys($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collProductCategorys || null !== $criteria) {
+			if ($this->isNew() && null === $this->collProductCategorys) {
+				// return empty collection
+				$this->initProductCategorys();
+			} else {
+				$collProductCategorys = ProductCategoryQuery::create(null, $criteria)
+					->filterByCategory($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collProductCategorys;
+				}
+				$this->collProductCategorys = $collProductCategorys;
+			}
+		}
+		return $this->collProductCategorys;
+	}
+
+	/**
+	 * Returns the number of related ProductCategory objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related ProductCategory objects.
+	 * @throws     PropelException
+	 */
+	public function countProductCategorys(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collProductCategorys || null !== $criteria) {
+			if ($this->isNew() && null === $this->collProductCategorys) {
+				return 0;
+			} else {
+				$query = ProductCategoryQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByCategory($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collProductCategorys);
+		}
+	}
+
+	/**
+	 * Method called to associate a ProductCategory object to this object
+	 * through the ProductCategory foreign key attribute.
+	 *
+	 * @param      ProductCategory $l ProductCategory
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addProductCategory(ProductCategory $l)
+	{
+		if ($this->collProductCategorys === null) {
+			$this->initProductCategorys();
+		}
+		if (!$this->collProductCategorys->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collProductCategorys[]= $l;
+			$l->setCategory($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Category is new, it will return
+	 * an empty collection; or if this Category has previously
+	 * been saved, it will retrieve related ProductCategorys from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Category.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array ProductCategory[] List of ProductCategory objects
+	 */
+	public function getProductCategorysJoinProduct($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = ProductCategoryQuery::create(null, $criteria);
+		$query->joinWith('Product', $join_behavior);
+
+		return $this->getProductCategorys($query, $con);
 	}
 
 	/**
@@ -1723,6 +1892,119 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Clears out the collProducts collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addProducts()
+	 */
+	public function clearProducts()
+	{
+		$this->collProducts = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collProducts collection.
+	 *
+	 * By default this just sets the collProducts collection to an empty collection (like clearProducts());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initProducts()
+	{
+		$this->collProducts = new PropelObjectCollection();
+		$this->collProducts->setModel('Product');
+	}
+
+	/**
+	 * Gets a collection of Product objects related by a many-to-many relationship
+	 * to the current object by way of the catalog_productCategory cross-reference table.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Category is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     PropelCollection|array Product[] List of Product objects
+	 */
+	public function getProducts($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collProducts || null !== $criteria) {
+			if ($this->isNew() && null === $this->collProducts) {
+				// return empty collection
+				$this->initProducts();
+			} else {
+				$collProducts = ProductQuery::create(null, $criteria)
+					->filterByCategory($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collProducts;
+				}
+				$this->collProducts = $collProducts;
+			}
+		}
+		return $this->collProducts;
+	}
+
+	/**
+	 * Gets the number of Product objects related by a many-to-many relationship
+	 * to the current object by way of the catalog_productCategory cross-reference table.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      boolean $distinct Set to true to force count distinct
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     int the number of related Product objects
+	 */
+	public function countProducts($criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collProducts || null !== $criteria) {
+			if ($this->isNew() && null === $this->collProducts) {
+				return 0;
+			} else {
+				$query = ProductQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByCategory($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collProducts);
+		}
+	}
+
+	/**
+	 * Associate a Product object to this object
+	 * through the catalog_productCategory cross reference table.
+	 *
+	 * @param      Product $product The ProductCategory object to relate
+	 * @return     void
+	 */
+	public function addProduct($product)
+	{
+		if ($this->collProducts === null) {
+			$this->initProducts();
+		}
+		if (!$this->collProducts->contains($product)) { // only add it if the **same** object is not already associated
+			$productCategory = new ProductCategory();
+			$productCategory->setProduct($product);
+			$this->addProductCategory($productCategory);
+
+			$this->collProducts[]= $product;
+		}
+	}
+
+	/**
 	 * Clears out the collGroups collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
@@ -1878,6 +2160,11 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collProductCategorys) {
+				foreach ((array) $this->collProductCategorys as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 			if ($this->collGroupCategorys) {
 				foreach ((array) $this->collGroupCategorys as $o) {
 					$o->clearAllReferences($deep);
@@ -1889,6 +2176,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		$this->collNestedSetChildren = null;
 		$this->aNestedSetParent = null;
 		$this->collAffiliateGroupCategorys = null;
+		$this->collProductCategorys = null;
 		$this->collGroupCategorys = null;
 	}
 

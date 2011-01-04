@@ -57,8 +57,10 @@ class ProductTableMap extends TableMap {
     $this->addRelation('Unit', 'Unit', RelationMap::MANY_TO_ONE, array('unitId' => 'id', ), null, null);
     $this->addRelation('MeasureUnit', 'MeasureUnit', RelationMap::MANY_TO_ONE, array('measureUnitId' => 'id', ), null, null);
     $this->addRelation('AffiliateProduct', 'AffiliateProduct', RelationMap::ONE_TO_MANY, array('id' => 'productId', ), null, null);
+    $this->addRelation('ProductCategory', 'ProductCategory', RelationMap::ONE_TO_MANY, array('code' => 'productCode', ), 'CASCADE', null);
     $this->addRelation('OrderItem', 'OrderItem', RelationMap::ONE_TO_MANY, array('code' => 'productCode', ), null, null);
     $this->addRelation('OrderTemplateItem', 'OrderTemplateItem', RelationMap::ONE_TO_MANY, array('code' => 'productCode', ), null, null);
+    $this->addRelation('Category', 'Category', RelationMap::MANY_TO_MANY, array(), null, null);
 	} // buildRelations()
 
 } // ProductTableMap

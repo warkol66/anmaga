@@ -58,8 +58,10 @@ class CategoryTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('AffiliateGroupCategory', 'AffiliateGroupCategory', RelationMap::ONE_TO_MANY, array('id' => 'categoryId', ), 'CASCADE', null);
+    $this->addRelation('ProductCategory', 'ProductCategory', RelationMap::ONE_TO_MANY, array('id' => 'categoryId', ), 'CASCADE', null);
     $this->addRelation('GroupCategory', 'GroupCategory', RelationMap::ONE_TO_MANY, array('id' => 'categoryId', ), 'CASCADE', null);
     $this->addRelation('AffiliateGroup', 'AffiliateGroup', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null);
+    $this->addRelation('Product', 'Product', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null);
     $this->addRelation('Group', 'Group', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null);
 	} // buildRelations()
 

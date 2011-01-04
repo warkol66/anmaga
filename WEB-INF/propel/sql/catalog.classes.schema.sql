@@ -106,18 +106,27 @@ CREATE TABLE `measureUnit`
 ) ENGINE=MyISAM COMMENT='Unidad de Medida';
 
 #-----------------------------------------------------------------------------
-#-- productCategory
+#-- catalog_productCategory
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `productCategory`;
+DROP TABLE IF EXISTS `catalog_productCategory`;
 
 
-CREATE TABLE `productCategory`
+CREATE TABLE `catalog_productCategory`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de la categoria',
-	`description` VARCHAR(255)   COMMENT 'Descripcion',
-	PRIMARY KEY (`id`)
-) ENGINE=MyISAM COMMENT='Categorias de Productos';
+	`productCode` VARCHAR(255)  NOT NULL COMMENT 'Codigo del producto',
+	`categoryId` INTEGER(5)  NOT NULL COMMENT 'Category Id',
+	PRIMARY KEY (`productCode`,`categoryId`),
+	INDEX `catalog_productCategory_FI_1` (`categoryId`),
+	CONSTRAINT `catalog_productCategory_FK_1`
+		FOREIGN KEY (`categoryId`)
+		REFERENCES `categories_category` (`id`)
+		ON DELETE CASCADE,
+	CONSTRAINT `catalog_productCategory_FK_2`
+		FOREIGN KEY (`productCode`)
+		REFERENCES `product` (`code`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Relacion Categorias y Productos';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

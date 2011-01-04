@@ -1,8 +1,5 @@
 <?php
 
-require 'categories/classes/om/BaseAffiliateGroupCategory.php';
-
-
 /**
  * Skeleton subclass for representing a row from the 'affiliates_groupCategory' table.
  *

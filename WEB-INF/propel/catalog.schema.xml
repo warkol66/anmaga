@@ -61,10 +61,24 @@
   	<column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id de la unidad de medida" primaryKey='true' />
   	<column name="name" type="VARCHAR" size="255" required="true" description="Unidad de Medida" />
   </table>
+  
+  <table name="catalog_productCategory" phpName='ProductCategory' isCrossRef="true" description="Relacion Categorias y Productos">
+    <column name="productCode" required="true" primaryKey="true" size="255" type="VARCHAR" description="Codigo del producto"/>
+    <column name="categoryId" required="true" primaryKey="true" type="INTEGER" size="5" description="Category Id"/>
 
-  <table phpName="ProductCategory" name="productCategory" description="Categorias de Productos">
-    <column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id de la categoria" primaryKey='true' />
-    <column name="description" size="255" type="VARCHAR" required="false" description="Descripcion" />
+    <foreign-key foreignTable="categories_category" onDelete="CASCADE">
+      <reference local="categoryId" foreign="id" />
+    </foreign-key>
+
+    <foreign-key foreignTable="product" onDelete="CASCADE">
+      <reference local="productCode" foreign="code" />
+    </foreign-key>
+
+    <vendor type="mysql">
+      <parameter name="Charset" value="utf8"/>
+      <parameter name="Collate" value="utf8_general_ci"/>
+    </vendor>
+
   </table>
 
 
