@@ -44,7 +44,7 @@ class UsersCaptchaGenerationAction extends BaseAction {
 		$module = "users";
 		$smarty->assign("module",$module);
 				
-		//$this->template->template = "template_ajax.tpl";
+		//$this->template->template = "TemplateAjax.tpl";
 		
 		$width = isset($_GET['width']) ? $_GET['width'] : '120';
 		$height = isset($_GET['height']) ? $_GET['height'] : '40';

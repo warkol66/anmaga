@@ -34,7 +34,7 @@ class OrdersItemsDoDeleteXAction extends BaseAction {
 
     BaseAction::execute($mapping, $form, $request, $response);
     
-		$this->template->template = "template_ajax.tpl";
+		$this->template->template = "TemplateAjax.tpl";
 
 		//////////
 		// Access the Smarty PlugIn instance

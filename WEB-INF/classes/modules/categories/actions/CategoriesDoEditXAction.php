@@ -80,7 +80,6 @@ class CategoriesDoEditXAction extends BaseAction {
 			if (isset($user)) {
 				$user->setGroupsToCategory($newCategory->getId());
 			}
-			
 			return $mapping->findForwardConfig('success');
 		}
 
