@@ -24,7 +24,7 @@ INSERT INTO `modules_label` (
 VALUES (
 NULL ,  'catalog',  'Catálogo',  'Catálogo de Productos',  'esp'
 ), (
-NULL ,  'catalog',  'Catalog',  'Products Catalog',  'eng';
+NULL ,  'catalog',  'Catalog',  'Products Catalog',  'eng');
 
 #-----------------------------------------------------------------------------
 #-- catalog_productCategory
