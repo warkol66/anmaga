@@ -8,13 +8,7 @@
 <!--[if !IE]> <link href="css/style_ns6+.css" rel="stylesheet" type="text/css" media="screen"> <![endif]-->
 <link rel="stylesheet" href="css/mainHandheld.css" type="text/css" media="handheld">
 <link rel="shortcut icon" href="images/favicon.ico">
-<script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/functions.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/datePicker.js"></script>
-<script language="JavaScript" type="text/javascript" src="scripts/scriptaculous.js"></script>
-<script language="JavaScript" type="text/JavaScript">
-	var url="|-$systemUrl-|";
-</script>
+|-include file='TemplateJsIncludes.tpl'-|
 </head>
 <body leftmargin='2' topmargin='2'> 
 <table width="955" border="0" cellspacing="0" cellpadding="0"> 
