@@ -44,6 +44,7 @@ class CategoryTableMap extends TableMap {
 		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null, null);
 		$this->addColumn('ISPUBLIC', 'Ispublic', 'BOOLEAN', true, null, false);
 		$this->addColumn('OLDID', 'Oldid', 'INTEGER', true, 5, null);
+		$this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
 		$this->addColumn('DELETED_AT', 'DeletedAt', 'TIMESTAMP', false, null, null);
 		$this->addColumn('TREE_LEFT', 'TreeLeft', 'INTEGER', false, null, null);
 		$this->addColumn('TREE_RIGHT', 'TreeRight', 'INTEGER', false, null, null);

@@ -19,6 +19,7 @@ CREATE TABLE `categories_category`
 	`active` TINYINT  NOT NULL COMMENT 'Is category active?',
 	`isPublic` TINYINT default 0 NOT NULL COMMENT 'Is category public?',
 	`oldId` INTEGER(5)  NOT NULL COMMENT 'Old Id',
+	`description` VARCHAR(255)   COMMENT 'Descripcion de la categoria',
 	`deleted_at` DATETIME,
 	`tree_left` INTEGER,
 	`tree_right` INTEGER,

@@ -26,7 +26,7 @@ abstract class BaseCategoryPeer {
 	const TM_CLASS = 'CategoryTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 12;
+	const NUM_COLUMNS = 13;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -51,6 +51,9 @@ abstract class BaseCategoryPeer {
 
 	/** the column name for the OLDID field */
 	const OLDID = 'categories_category.OLDID';
+
+	/** the column name for the DESCRIPTION field */
+	const DESCRIPTION = 'categories_category.DESCRIPTION';
 
 	/** the column name for the DELETED_AT field */
 	const DELETED_AT = 'categories_category.DELETED_AT';
@@ -105,12 +108,12 @@ abstract class BaseCategoryPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Order', 'Module', 'Active', 'Ispublic', 'Oldid', 'DeletedAt', 'TreeLeft', 'TreeRight', 'TreeLevel', 'Scope', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'order', 'module', 'active', 'ispublic', 'oldid', 'deletedAt', 'treeLeft', 'treeRight', 'treeLevel', 'scope', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ORDER, self::MODULE, self::ACTIVE, self::ISPUBLIC, self::OLDID, self::DELETED_AT, self::TREE_LEFT, self::TREE_RIGHT, self::TREE_LEVEL, self::SCOPE, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ORDER', 'MODULE', 'ACTIVE', 'ISPUBLIC', 'OLDID', 'DELETED_AT', 'TREE_LEFT', 'TREE_RIGHT', 'TREE_LEVEL', 'SCOPE', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'order', 'module', 'active', 'isPublic', 'oldId', 'deleted_at', 'tree_left', 'tree_right', 'tree_level', 'scope', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Order', 'Module', 'Active', 'Ispublic', 'Oldid', 'Description', 'DeletedAt', 'TreeLeft', 'TreeRight', 'TreeLevel', 'Scope', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'order', 'module', 'active', 'ispublic', 'oldid', 'description', 'deletedAt', 'treeLeft', 'treeRight', 'treeLevel', 'scope', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ORDER, self::MODULE, self::ACTIVE, self::ISPUBLIC, self::OLDID, self::DESCRIPTION, self::DELETED_AT, self::TREE_LEFT, self::TREE_RIGHT, self::TREE_LEVEL, self::SCOPE, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ORDER', 'MODULE', 'ACTIVE', 'ISPUBLIC', 'OLDID', 'DESCRIPTION', 'DELETED_AT', 'TREE_LEFT', 'TREE_RIGHT', 'TREE_LEVEL', 'SCOPE', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'order', 'module', 'active', 'isPublic', 'oldId', 'description', 'deleted_at', 'tree_left', 'tree_right', 'tree_level', 'scope', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
 	);
 
 	/**
@@ -120,12 +123,12 @@ abstract class BaseCategoryPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Order' => 2, 'Module' => 3, 'Active' => 4, 'Ispublic' => 5, 'Oldid' => 6, 'DeletedAt' => 7, 'TreeLeft' => 8, 'TreeRight' => 9, 'TreeLevel' => 10, 'Scope' => 11, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'order' => 2, 'module' => 3, 'active' => 4, 'ispublic' => 5, 'oldid' => 6, 'deletedAt' => 7, 'treeLeft' => 8, 'treeRight' => 9, 'treeLevel' => 10, 'scope' => 11, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ORDER => 2, self::MODULE => 3, self::ACTIVE => 4, self::ISPUBLIC => 5, self::OLDID => 6, self::DELETED_AT => 7, self::TREE_LEFT => 8, self::TREE_RIGHT => 9, self::TREE_LEVEL => 10, self::SCOPE => 11, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ORDER' => 2, 'MODULE' => 3, 'ACTIVE' => 4, 'ISPUBLIC' => 5, 'OLDID' => 6, 'DELETED_AT' => 7, 'TREE_LEFT' => 8, 'TREE_RIGHT' => 9, 'TREE_LEVEL' => 10, 'SCOPE' => 11, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'order' => 2, 'module' => 3, 'active' => 4, 'isPublic' => 5, 'oldId' => 6, 'deleted_at' => 7, 'tree_left' => 8, 'tree_right' => 9, 'tree_level' => 10, 'scope' => 11, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Order' => 2, 'Module' => 3, 'Active' => 4, 'Ispublic' => 5, 'Oldid' => 6, 'Description' => 7, 'DeletedAt' => 8, 'TreeLeft' => 9, 'TreeRight' => 10, 'TreeLevel' => 11, 'Scope' => 12, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'order' => 2, 'module' => 3, 'active' => 4, 'ispublic' => 5, 'oldid' => 6, 'description' => 7, 'deletedAt' => 8, 'treeLeft' => 9, 'treeRight' => 10, 'treeLevel' => 11, 'scope' => 12, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ORDER => 2, self::MODULE => 3, self::ACTIVE => 4, self::ISPUBLIC => 5, self::OLDID => 6, self::DESCRIPTION => 7, self::DELETED_AT => 8, self::TREE_LEFT => 9, self::TREE_RIGHT => 10, self::TREE_LEVEL => 11, self::SCOPE => 12, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ORDER' => 2, 'MODULE' => 3, 'ACTIVE' => 4, 'ISPUBLIC' => 5, 'OLDID' => 6, 'DESCRIPTION' => 7, 'DELETED_AT' => 8, 'TREE_LEFT' => 9, 'TREE_RIGHT' => 10, 'TREE_LEVEL' => 11, 'SCOPE' => 12, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'order' => 2, 'module' => 3, 'active' => 4, 'isPublic' => 5, 'oldId' => 6, 'description' => 7, 'deleted_at' => 8, 'tree_left' => 9, 'tree_right' => 10, 'tree_level' => 11, 'scope' => 12, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
 	);
 
 	/**
@@ -204,6 +207,7 @@ abstract class BaseCategoryPeer {
 			$criteria->addSelectColumn(CategoryPeer::ACTIVE);
 			$criteria->addSelectColumn(CategoryPeer::ISPUBLIC);
 			$criteria->addSelectColumn(CategoryPeer::OLDID);
+			$criteria->addSelectColumn(CategoryPeer::DESCRIPTION);
 			$criteria->addSelectColumn(CategoryPeer::DELETED_AT);
 			$criteria->addSelectColumn(CategoryPeer::TREE_LEFT);
 			$criteria->addSelectColumn(CategoryPeer::TREE_RIGHT);
@@ -217,6 +221,7 @@ abstract class BaseCategoryPeer {
 			$criteria->addSelectColumn($alias . '.ACTIVE');
 			$criteria->addSelectColumn($alias . '.ISPUBLIC');
 			$criteria->addSelectColumn($alias . '.OLDID');
+			$criteria->addSelectColumn($alias . '.DESCRIPTION');
 			$criteria->addSelectColumn($alias . '.DELETED_AT');
 			$criteria->addSelectColumn($alias . '.TREE_LEFT');
 			$criteria->addSelectColumn($alias . '.TREE_RIGHT');
@@ -1166,9 +1171,9 @@ abstract class BaseCategoryPeer {
 				while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 					$key = CategoryPeer::getPrimaryKeyHashFromRow($row, 0);
 					if (null !== ($object = CategoryPeer::getInstanceFromPool($key))) {
-						$object->setLeftValue($row[8]);
-						$object->setRightValue($row[9]);
-						$object->setLevel($row[10]);
+						$object->setLeftValue($row[9]);
+						$object->setRightValue($row[10]);
+						$object->setLevel($row[11]);
 						$object->clearNestedSetChildren();
 					}
 				}
