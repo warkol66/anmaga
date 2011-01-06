@@ -13,6 +13,7 @@
  * @method     CategoryQuery orderByActive($order = Criteria::ASC) Order by the active column
  * @method     CategoryQuery orderByIspublic($order = Criteria::ASC) Order by the isPublic column
  * @method     CategoryQuery orderByOldid($order = Criteria::ASC) Order by the oldId column
+ * @method     CategoryQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     CategoryQuery orderByDeletedAt($order = Criteria::ASC) Order by the deleted_at column
  * @method     CategoryQuery orderByTreeLeft($order = Criteria::ASC) Order by the tree_left column
  * @method     CategoryQuery orderByTreeRight($order = Criteria::ASC) Order by the tree_right column
@@ -26,6 +27,7 @@
  * @method     CategoryQuery groupByActive() Group by the active column
  * @method     CategoryQuery groupByIspublic() Group by the isPublic column
  * @method     CategoryQuery groupByOldid() Group by the oldId column
+ * @method     CategoryQuery groupByDescription() Group by the description column
  * @method     CategoryQuery groupByDeletedAt() Group by the deleted_at column
  * @method     CategoryQuery groupByTreeLeft() Group by the tree_left column
  * @method     CategoryQuery groupByTreeRight() Group by the tree_right column
@@ -58,6 +60,7 @@
  * @method     Category findOneByActive(boolean $active) Return the first Category filtered by the active column
  * @method     Category findOneByIspublic(boolean $isPublic) Return the first Category filtered by the isPublic column
  * @method     Category findOneByOldid(int $oldId) Return the first Category filtered by the oldId column
+ * @method     Category findOneByDescription(string $description) Return the first Category filtered by the description column
  * @method     Category findOneByDeletedAt(string $deleted_at) Return the first Category filtered by the deleted_at column
  * @method     Category findOneByTreeLeft(int $tree_left) Return the first Category filtered by the tree_left column
  * @method     Category findOneByTreeRight(int $tree_right) Return the first Category filtered by the tree_right column
@@ -71,6 +74,7 @@
  * @method     array findByActive(boolean $active) Return Category objects filtered by the active column
  * @method     array findByIspublic(boolean $isPublic) Return Category objects filtered by the isPublic column
  * @method     array findByOldid(int $oldId) Return Category objects filtered by the oldId column
+ * @method     array findByDescription(string $description) Return Category objects filtered by the description column
  * @method     array findByDeletedAt(string $deleted_at) Return Category objects filtered by the deleted_at column
  * @method     array findByTreeLeft(int $tree_left) Return Category objects filtered by the tree_left column
  * @method     array findByTreeRight(int $tree_right) Return Category objects filtered by the tree_right column
@@ -344,6 +348,28 @@ abstract class BaseCategoryQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(CategoryPeer::OLDID, $oldid, $comparison);
+	}
+
+	/**
+	 * Filter the query on the description column
+	 * 
+	 * @param     string $description The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    CategoryQuery The current query, for fluid interface
+	 */
+	public function filterByDescription($description = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($description)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $description)) {
+				$description = str_replace('*', '%', $description);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(CategoryPeer::DESCRIPTION, $description, $comparison);
 	}
 
 	/**

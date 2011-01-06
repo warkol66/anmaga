@@ -69,6 +69,12 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	protected $oldid;
 
 	/**
+	 * The value for the description field.
+	 * @var        string
+	 */
+	protected $description;
+
+	/**
 	 * The value for the deleted_at field.
 	 * @var        string
 	 */
@@ -253,6 +259,16 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	public function getOldid()
 	{
 		return $this->oldid;
+	}
+
+	/**
+	 * Get the [description] column value.
+	 * Descripcion de la categoria
+	 * @return     string
+	 */
+	public function getDescription()
+	{
+		return $this->description;
 	}
 
 	/**
@@ -474,6 +490,26 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	} // setOldid()
 
 	/**
+	 * Set the value of [description] column.
+	 * Descripcion de la categoria
+	 * @param      string $v new value
+	 * @return     Category The current object (for fluent API support)
+	 */
+	public function setDescription($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->description !== $v) {
+			$this->description = $v;
+			$this->modifiedColumns[] = CategoryPeer::DESCRIPTION;
+		}
+
+		return $this;
+	} // setDescription()
+
+	/**
 	 * Sets the value of [deleted_at] column to a normalized version of the date/time value specified.
 	 * 
 	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
@@ -649,11 +685,12 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 			$this->active = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
 			$this->ispublic = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
 			$this->oldid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-			$this->deleted_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-			$this->tree_left = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-			$this->tree_right = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
-			$this->tree_level = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-			$this->scope = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
+			$this->description = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->deleted_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->tree_left = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+			$this->tree_right = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+			$this->tree_level = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
+			$this->scope = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -662,7 +699,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 12; // 12 = CategoryPeer::NUM_COLUMNS - CategoryPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 13; // 13 = CategoryPeer::NUM_COLUMNS - CategoryPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Category object", $e);
@@ -1060,18 +1097,21 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 				return $this->getOldid();
 				break;
 			case 7:
-				return $this->getDeletedAt();
+				return $this->getDescription();
 				break;
 			case 8:
-				return $this->getTreeLeft();
+				return $this->getDeletedAt();
 				break;
 			case 9:
-				return $this->getTreeRight();
+				return $this->getTreeLeft();
 				break;
 			case 10:
-				return $this->getTreeLevel();
+				return $this->getTreeRight();
 				break;
 			case 11:
+				return $this->getTreeLevel();
+				break;
+			case 12:
 				return $this->getScope();
 				break;
 			default:
@@ -1104,11 +1144,12 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 			$keys[4] => $this->getActive(),
 			$keys[5] => $this->getIspublic(),
 			$keys[6] => $this->getOldid(),
-			$keys[7] => $this->getDeletedAt(),
-			$keys[8] => $this->getTreeLeft(),
-			$keys[9] => $this->getTreeRight(),
-			$keys[10] => $this->getTreeLevel(),
-			$keys[11] => $this->getScope(),
+			$keys[7] => $this->getDescription(),
+			$keys[8] => $this->getDeletedAt(),
+			$keys[9] => $this->getTreeLeft(),
+			$keys[10] => $this->getTreeRight(),
+			$keys[11] => $this->getTreeLevel(),
+			$keys[12] => $this->getScope(),
 		);
 		return $result;
 	}
@@ -1162,18 +1203,21 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 				$this->setOldid($value);
 				break;
 			case 7:
-				$this->setDeletedAt($value);
+				$this->setDescription($value);
 				break;
 			case 8:
-				$this->setTreeLeft($value);
+				$this->setDeletedAt($value);
 				break;
 			case 9:
-				$this->setTreeRight($value);
+				$this->setTreeLeft($value);
 				break;
 			case 10:
-				$this->setTreeLevel($value);
+				$this->setTreeRight($value);
 				break;
 			case 11:
+				$this->setTreeLevel($value);
+				break;
+			case 12:
 				$this->setScope($value);
 				break;
 		} // switch()
@@ -1207,11 +1251,12 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		if (array_key_exists($keys[4], $arr)) $this->setActive($arr[$keys[4]]);
 		if (array_key_exists($keys[5], $arr)) $this->setIspublic($arr[$keys[5]]);
 		if (array_key_exists($keys[6], $arr)) $this->setOldid($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setDeletedAt($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setTreeLeft($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setTreeRight($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setTreeLevel($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setScope($arr[$keys[11]]);
+		if (array_key_exists($keys[7], $arr)) $this->setDescription($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setDeletedAt($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setTreeLeft($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setTreeRight($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setTreeLevel($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setScope($arr[$keys[12]]);
 	}
 
 	/**
@@ -1230,6 +1275,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		if ($this->isColumnModified(CategoryPeer::ACTIVE)) $criteria->add(CategoryPeer::ACTIVE, $this->active);
 		if ($this->isColumnModified(CategoryPeer::ISPUBLIC)) $criteria->add(CategoryPeer::ISPUBLIC, $this->ispublic);
 		if ($this->isColumnModified(CategoryPeer::OLDID)) $criteria->add(CategoryPeer::OLDID, $this->oldid);
+		if ($this->isColumnModified(CategoryPeer::DESCRIPTION)) $criteria->add(CategoryPeer::DESCRIPTION, $this->description);
 		if ($this->isColumnModified(CategoryPeer::DELETED_AT)) $criteria->add(CategoryPeer::DELETED_AT, $this->deleted_at);
 		if ($this->isColumnModified(CategoryPeer::TREE_LEFT)) $criteria->add(CategoryPeer::TREE_LEFT, $this->tree_left);
 		if ($this->isColumnModified(CategoryPeer::TREE_RIGHT)) $criteria->add(CategoryPeer::TREE_RIGHT, $this->tree_right);
@@ -1302,6 +1348,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		$copyObj->setActive($this->active);
 		$copyObj->setIspublic($this->ispublic);
 		$copyObj->setOldid($this->oldid);
+		$copyObj->setDescription($this->description);
 		$copyObj->setDeletedAt($this->deleted_at);
 		$copyObj->setTreeLeft($this->tree_left);
 		$copyObj->setTreeRight($this->tree_right);
@@ -2129,6 +2176,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		$this->active = null;
 		$this->ispublic = null;
 		$this->oldid = null;
+		$this->description = null;
 		$this->deleted_at = null;
 		$this->tree_left = null;
 		$this->tree_right = null;
