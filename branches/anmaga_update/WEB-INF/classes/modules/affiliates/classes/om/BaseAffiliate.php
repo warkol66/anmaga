@@ -83,6 +83,11 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	protected $collOrderTemplates;
 
 	/**
+	 * @var        array Product[] Collection to store aggregation of Product objects.
+	 */
+	protected $collProducts;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -307,6 +312,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 
 			$this->collOrderTemplates = null;
 
+			$this->collProducts = null;
 		} // if (deep)
 	}
 
@@ -1942,6 +1948,119 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 		$query->joinWith('Branch', $join_behavior);
 
 		return $this->getOrderTemplates($query, $con);
+	}
+
+	/**
+	 * Clears out the collProducts collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addProducts()
+	 */
+	public function clearProducts()
+	{
+		$this->collProducts = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collProducts collection.
+	 *
+	 * By default this just sets the collProducts collection to an empty collection (like clearProducts());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initProducts()
+	{
+		$this->collProducts = new PropelObjectCollection();
+		$this->collProducts->setModel('Product');
+	}
+
+	/**
+	 * Gets a collection of Product objects related by a many-to-many relationship
+	 * to the current object by way of the catalog_affiliateProduct cross-reference table.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Affiliate is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     PropelCollection|array Product[] List of Product objects
+	 */
+	public function getProducts($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collProducts || null !== $criteria) {
+			if ($this->isNew() && null === $this->collProducts) {
+				// return empty collection
+				$this->initProducts();
+			} else {
+				$collProducts = ProductQuery::create(null, $criteria)
+					->filterByAffiliate($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collProducts;
+				}
+				$this->collProducts = $collProducts;
+			}
+		}
+		return $this->collProducts;
+	}
+
+	/**
+	 * Gets the number of Product objects related by a many-to-many relationship
+	 * to the current object by way of the catalog_affiliateProduct cross-reference table.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      boolean $distinct Set to true to force count distinct
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     int the number of related Product objects
+	 */
+	public function countProducts($criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collProducts || null !== $criteria) {
+			if ($this->isNew() && null === $this->collProducts) {
+				return 0;
+			} else {
+				$query = ProductQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByAffiliate($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collProducts);
+		}
+	}
+
+	/**
+	 * Associate a Product object to this object
+	 * through the catalog_affiliateProduct cross reference table.
+	 *
+	 * @param      Product $product The AffiliateProduct object to relate
+	 * @return     void
+	 */
+	public function addProduct($product)
+	{
+		if ($this->collProducts === null) {
+			$this->initProducts();
+		}
+		if (!$this->collProducts->contains($product)) { // only add it if the **same** object is not already associated
+			$affiliateProduct = new AffiliateProduct();
+			$affiliateProduct->setProduct($product);
+			$this->addAffiliateProduct($affiliateProduct);
+
+			$this->collProducts[]= $product;
+		}
 	}
 
 	/**

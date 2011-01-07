@@ -1,6 +1,6 @@
 <h2>Pedidos</h2>
 <h1>Plantilla de pedido</h1>
-<p>A continuación se muestra la plantilla de pedido: |-$orderTemplate->getName()-|. Las plantillas se pueden utilizar para repetir pedidos pulsando el botón "Agregar al carrito".</p>
+<p>A continuaciï¿½n se muestra la plantilla de pedido: |-$orderTemplate->getName()-|. Las plantillas se pueden utilizar para repetir pedidos pulsando el botï¿½n "Agregar al carrito".</p>
 <div id="div_order">
 
 	<p><strong>Name:</strong> |-$orderTemplate->getName()-|</p>
@@ -20,10 +20,10 @@
 				<th class="thFillTitle">Total</th>				
 			</tr>
 		</thead>
-		<tbody>  |-foreach from=$orderTemplate->getOrderTemplateItems() item=item name=for_products-| |-assign var=product value=$item->getProduct()-| |-assign var=productNode value=$product->getNode()-|
+		<tbody>  |-foreach from=$orderTemplate->getOrderTemplateItems() item=item name=for_products-| |-assign var=product value=$item->getProduct()-| 
 		<tr>
 			<td class="tdSize1">|-$product->getcode()-|</td>
-			<td class="tdSize1">|-$productNode->getname()-|</td>
+			<td class="tdSize1">|-$product->getname()-|</td>
 			<td class="tdSize1">|-$item->getprice()|number_format:2:",":"."-|</td>
 			<td class="tdSize1">|-$item->getQuantity()-|</td>
 			<td class="tdSize1">|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity()-|</td>

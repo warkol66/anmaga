@@ -35,10 +35,9 @@
 		</thead> 
 		<tbody>  |-foreach from=$order->getOrderItems() item=item name=for_products-|
 		|-assign var=product value=$item->getProduct()-|
-		|-assign var=productNode value=$product->getNode()-|
 		<tr> 
 			<td nowrap class="tdSize1 top center">|-$product->getcode()-|</td> 
-			<td class="tdSize1 top">|-$productNode->getname()-|</td> 
+			<td class="tdSize1 top">|-$product->getname()-|</td> 
 			<td class="tdSize1 bottom right">|-$item->getprice()|system_numeric_format-|</td> 
 			<td class="tdSize1 bottom right">|-$item->getQuantity()|system_numeric_format-|</td> 
 			<td class="tdSize1 bottom right">|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-||-$totalItem|system_numeric_format-|</td> 
@@ -71,8 +70,8 @@ Detalle del Pedido
 
 Código		Producto			Precio	Cantidad	Total
 -------------------------------------------------------------------------------
-|-foreach from=$order->getOrderItems() item=item name=for_products-||-assign var=product value=$item->getProduct()-||-assign var=productNode value=$product->getNode()-|
-|-$product->getcode()-|	|-$productNode->getname()|truncate:30:"...":true-|	|-$item->getprice()|system_numeric_format-|	|-$item->getQuantity()|system_numeric_format-|	|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-||-$totalItem|system_numeric_format-|
+|-foreach from=$order->getOrderItems() item=item name=for_products-||-assign var=product value=$item->getProduct()-|
+|-$product->getcode()-|	|-$product->getname()|truncate:30:"...":true-|	|-$item->getprice()|system_numeric_format-|	|-$item->getQuantity()|system_numeric_format-|	|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-||-$totalItem|system_numeric_format-|
 |-foreachelse-|
 Sin Productos
 |-/foreach-|

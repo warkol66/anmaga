@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("ProductPeer.php");
-
 class CatalogProductsDoEditAction extends BaseAction {
 
 
@@ -47,23 +44,21 @@ class CatalogProductsDoEditAction extends BaseAction {
 
 		$moduleSection = "Products";
     $smarty->assign("moduleSection",$section);
-
+    
+    $params = $_POST["product"];
+    $params['price'] = Common::convertToMysqlNumericFormat($params['price']);
+    $params['image'] = $_FILES['image'];
 
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un producto existente
 
-			$price = Common::convertToMysqlNumericFormat($_POST["price"]);
-
-			ProductPeer::update($_POST["id"],$_POST["code"],$_POST["name"],$_POST["description"],$price,$_FILES["image"],$_POST["parentNodeId"],$_POST["unitId"],$_POST["measureUnitId"],$_POST["orderCode"],$_POST["salesUnit"]);
+			ProductPeer::update($_POST["id"], $params);
      	return $mapping->findForwardConfig('success');
-
 		}
 		else {
 		  //estoy creando un nuevo producto
 
-			$price = Common::convertToMysqlNumericFormat($_POST["price"]);
-
-      if ( !ProductPeer::create($_POST["code"],$_POST["name"],$_POST["description"],$price,$_FILES["image"],$_POST["parentNodeId"],$_POST["unitId"],$_POST["measureUnitId"],$_POST["orderCode"],$_POST["salesUnit"]) ) {
+      if ( !ProductPeer::create($params) ) {
 				return $mapping->findForwardConfig('failure');
       }
 

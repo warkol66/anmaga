@@ -37,6 +37,12 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	protected $code;
 
 	/**
+	 * The value for the name field.
+	 * @var        string
+	 */
+	protected $name;
+
+	/**
 	 * The value for the description field.
 	 * @var        string
 	 */
@@ -75,6 +81,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 
 	/**
 	 * The value for the salesunit field.
+	 * Note: this column has a database default value of: 1
 	 * @var        int
 	 */
 	protected $salesunit;
@@ -110,6 +117,11 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	protected $collOrderTemplateItems;
 
 	/**
+	 * @var        array Affiliate[] Collection to store aggregation of Affiliate objects.
+	 */
+	protected $collAffiliates;
+
+	/**
 	 * @var        array Category[] Collection to store aggregation of Category objects.
 	 */
 	protected $collCategorys;
@@ -137,6 +149,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	public function applyDefaultValues()
 	{
 		$this->active = true;
+		$this->salesunit = 1;
 	}
 
 	/**
@@ -167,6 +180,16 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	public function getCode()
 	{
 		return $this->code;
+	}
+
+	/**
+	 * Get the [name] column value.
+	 * Nombre del producto
+	 * @return     string
+	 */
+	public function getName()
+	{
+		return $this->name;
 	}
 
 	/**
@@ -278,6 +301,26 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 
 		return $this;
 	} // setCode()
+
+	/**
+	 * Set the value of [name] column.
+	 * Nombre del producto
+	 * @param      string $v new value
+	 * @return     Product The current object (for fluent API support)
+	 */
+	public function setName($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->name !== $v) {
+			$this->name = $v;
+			$this->modifiedColumns[] = ProductPeer::NAME;
+		}
+
+		return $this;
+	} // setName()
 
 	/**
 	 * Set the value of [description] column.
@@ -419,7 +462,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 			$v = (int) $v;
 		}
 
-		if ($this->salesunit !== $v) {
+		if ($this->salesunit !== $v || $this->isNew()) {
 			$this->salesunit = $v;
 			$this->modifiedColumns[] = ProductPeer::SALESUNIT;
 		}
@@ -438,6 +481,10 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	public function hasOnlyDefaultValues()
 	{
 			if ($this->active !== true) {
+				return false;
+			}
+
+			if ($this->salesunit !== 1) {
 				return false;
 			}
 
@@ -465,13 +512,14 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->code = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-			$this->description = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-			$this->price = ($row[$startcol + 3] !== null) ? (double) $row[$startcol + 3] : null;
-			$this->unitid = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-			$this->measureunitid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-			$this->active = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-			$this->ordercode = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-			$this->salesunit = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+			$this->name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->description = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->price = ($row[$startcol + 4] !== null) ? (double) $row[$startcol + 4] : null;
+			$this->unitid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->measureunitid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+			$this->active = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+			$this->ordercode = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->salesunit = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -480,7 +528,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 9; // 9 = ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 10; // 10 = ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Product object", $e);
@@ -558,6 +606,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 
 			$this->collOrderTemplateItems = null;
 
+			$this->collAffiliates = null;
 			$this->collCategorys = null;
 		} // if (deep)
 	}
@@ -904,24 +953,27 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 				return $this->getCode();
 				break;
 			case 2:
-				return $this->getDescription();
+				return $this->getName();
 				break;
 			case 3:
-				return $this->getPrice();
+				return $this->getDescription();
 				break;
 			case 4:
-				return $this->getUnitid();
+				return $this->getPrice();
 				break;
 			case 5:
-				return $this->getMeasureunitid();
+				return $this->getUnitid();
 				break;
 			case 6:
-				return $this->getActive();
+				return $this->getMeasureunitid();
 				break;
 			case 7:
-				return $this->getOrdercode();
+				return $this->getActive();
 				break;
 			case 8:
+				return $this->getOrdercode();
+				break;
+			case 9:
 				return $this->getSalesunit();
 				break;
 			default:
@@ -950,13 +1002,14 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getCode(),
-			$keys[2] => $this->getDescription(),
-			$keys[3] => $this->getPrice(),
-			$keys[4] => $this->getUnitid(),
-			$keys[5] => $this->getMeasureunitid(),
-			$keys[6] => $this->getActive(),
-			$keys[7] => $this->getOrdercode(),
-			$keys[8] => $this->getSalesunit(),
+			$keys[2] => $this->getName(),
+			$keys[3] => $this->getDescription(),
+			$keys[4] => $this->getPrice(),
+			$keys[5] => $this->getUnitid(),
+			$keys[6] => $this->getMeasureunitid(),
+			$keys[7] => $this->getActive(),
+			$keys[8] => $this->getOrdercode(),
+			$keys[9] => $this->getSalesunit(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aUnit) {
@@ -1003,24 +1056,27 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 				$this->setCode($value);
 				break;
 			case 2:
-				$this->setDescription($value);
+				$this->setName($value);
 				break;
 			case 3:
-				$this->setPrice($value);
+				$this->setDescription($value);
 				break;
 			case 4:
-				$this->setUnitid($value);
+				$this->setPrice($value);
 				break;
 			case 5:
-				$this->setMeasureunitid($value);
+				$this->setUnitid($value);
 				break;
 			case 6:
-				$this->setActive($value);
+				$this->setMeasureunitid($value);
 				break;
 			case 7:
-				$this->setOrdercode($value);
+				$this->setActive($value);
 				break;
 			case 8:
+				$this->setOrdercode($value);
+				break;
+			case 9:
 				$this->setSalesunit($value);
 				break;
 		} // switch()
@@ -1049,13 +1105,14 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setCode($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setDescription($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setPrice($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setUnitid($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setMeasureunitid($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setActive($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setOrdercode($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setSalesunit($arr[$keys[8]]);
+		if (array_key_exists($keys[2], $arr)) $this->setName($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setPrice($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setUnitid($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setMeasureunitid($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setActive($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setOrdercode($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setSalesunit($arr[$keys[9]]);
 	}
 
 	/**
@@ -1069,6 +1126,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 
 		if ($this->isColumnModified(ProductPeer::ID)) $criteria->add(ProductPeer::ID, $this->id);
 		if ($this->isColumnModified(ProductPeer::CODE)) $criteria->add(ProductPeer::CODE, $this->code);
+		if ($this->isColumnModified(ProductPeer::NAME)) $criteria->add(ProductPeer::NAME, $this->name);
 		if ($this->isColumnModified(ProductPeer::DESCRIPTION)) $criteria->add(ProductPeer::DESCRIPTION, $this->description);
 		if ($this->isColumnModified(ProductPeer::PRICE)) $criteria->add(ProductPeer::PRICE, $this->price);
 		if ($this->isColumnModified(ProductPeer::UNITID)) $criteria->add(ProductPeer::UNITID, $this->unitid);
@@ -1138,6 +1196,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 		$copyObj->setCode($this->code);
+		$copyObj->setName($this->name);
 		$copyObj->setDescription($this->description);
 		$copyObj->setPrice($this->price);
 		$copyObj->setUnitid($this->unitid);
@@ -1855,6 +1914,119 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Clears out the collAffiliates collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addAffiliates()
+	 */
+	public function clearAffiliates()
+	{
+		$this->collAffiliates = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collAffiliates collection.
+	 *
+	 * By default this just sets the collAffiliates collection to an empty collection (like clearAffiliates());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initAffiliates()
+	{
+		$this->collAffiliates = new PropelObjectCollection();
+		$this->collAffiliates->setModel('Affiliate');
+	}
+
+	/**
+	 * Gets a collection of Affiliate objects related by a many-to-many relationship
+	 * to the current object by way of the catalog_affiliateProduct cross-reference table.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Product is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     PropelCollection|array Affiliate[] List of Affiliate objects
+	 */
+	public function getAffiliates($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collAffiliates || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAffiliates) {
+				// return empty collection
+				$this->initAffiliates();
+			} else {
+				$collAffiliates = AffiliateQuery::create(null, $criteria)
+					->filterByProduct($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collAffiliates;
+				}
+				$this->collAffiliates = $collAffiliates;
+			}
+		}
+		return $this->collAffiliates;
+	}
+
+	/**
+	 * Gets the number of Affiliate objects related by a many-to-many relationship
+	 * to the current object by way of the catalog_affiliateProduct cross-reference table.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      boolean $distinct Set to true to force count distinct
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     int the number of related Affiliate objects
+	 */
+	public function countAffiliates($criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collAffiliates || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAffiliates) {
+				return 0;
+			} else {
+				$query = AffiliateQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByProduct($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collAffiliates);
+		}
+	}
+
+	/**
+	 * Associate a Affiliate object to this object
+	 * through the catalog_affiliateProduct cross reference table.
+	 *
+	 * @param      Affiliate $affiliate The AffiliateProduct object to relate
+	 * @return     void
+	 */
+	public function addAffiliate($affiliate)
+	{
+		if ($this->collAffiliates === null) {
+			$this->initAffiliates();
+		}
+		if (!$this->collAffiliates->contains($affiliate)) { // only add it if the **same** object is not already associated
+			$affiliateProduct = new AffiliateProduct();
+			$affiliateProduct->setAffiliate($affiliate);
+			$this->addAffiliateProduct($affiliateProduct);
+
+			$this->collAffiliates[]= $affiliate;
+		}
+	}
+
+	/**
 	 * Clears out the collCategorys collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
@@ -1974,6 +2146,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	{
 		$this->id = null;
 		$this->code = null;
+		$this->name = null;
 		$this->description = null;
 		$this->price = null;
 		$this->unitid = null;

@@ -1,6 +1,6 @@
  <database defaultIdMethod="native" package="catalog.classes" name="anmaga" >
  
- <table phpName="AffiliateProduct" name="catalog_affiliateProduct" description="Precios de Productos por Afiliado">
+ <table phpName="AffiliateProduct" name="catalog_affiliateProduct" isCrossRef="true" description="Precios de Productos por Afiliado">
      <column name="productId" type="INTEGER" description="Producto" required="true" primaryKey='true' />
      <column name="affiliateId" type="INTEGER" description="Afiliado" required="true" primaryKey='true' />
      <column name="price" type="FLOAT" description="Precio del producto" />
@@ -33,13 +33,14 @@
   <table phpName="Product" name="product" description="Producto">
     <column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id del producto" primaryKey='true' />
     <column name="code" size="255" type="VARCHAR" description="Codigo del producto" />
+    <column name="name" size="255" type="VARCHAR" required="true" description="Nombre del producto" />
     <column name="description" size="255" type="VARCHAR" required="false" description="Descripcion" />
     <column name="price" type="FLOAT" description="Precio del producto" />
     <column name="unitId" type="INTEGER" description="Unidades" />
     <column name="measureUnitId" type="INTEGER" description="Unidad de Medida" />
     <column name="active" required="true" default="true"  type="BOOLEAN"  description="Is product active?"/>
     <column name="orderCode" size="255" type="VARCHAR" description="Codigo de ordenamiento del producto" />
-    <column name="salesUnit" type="INTEGER" description="Multiplo de la unidad de medida en que se puede ordenar el producto" />
+    <column name="salesUnit" type="INTEGER" default="1" description="Multiplo de la unidad de medida en que se puede ordenar el producto" />
 		<unique>
 			<unique-column name="code" />
 		</unique>

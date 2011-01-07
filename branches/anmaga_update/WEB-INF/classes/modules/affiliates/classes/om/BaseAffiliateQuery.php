@@ -752,6 +752,23 @@ abstract class BaseAffiliateQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query by a related Product object
+	 * using the catalog_affiliateProduct table as cross reference
+	 *
+	 * @param     Product $product the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateQuery The current query, for fluid interface
+	 */
+	public function filterByProduct($product, $comparison = Criteria::EQUAL)
+	{
+		return $this
+			->useAffiliateProductQuery()
+				->filterByProduct($product, $comparison)
+			->endUse();
+	}
+	
+	/**
 	 * Exclude object from result
 	 *
 	 * @param     Affiliate $affiliate Object to remove from the list of results

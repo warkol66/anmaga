@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("ProductPeer.php");
-
 class CatalogProductsGetImageAction extends BaseAction {
 
 

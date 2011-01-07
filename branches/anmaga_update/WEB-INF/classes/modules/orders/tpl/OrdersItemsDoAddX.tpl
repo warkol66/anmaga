@@ -1,7 +1,6 @@
-|-assign var=productNode value=$product->getNode()-| 
 <tr id="row|-$item->getId()-|"> 
 	<td nowrap class="tdSize1 top center">|-$product->getcode()-|</td> 
-	<td class="tdSize1 top">|-$productNode->getname()-|</td> 
+	<td class="tdSize1 top">|-$product->getname()-|</td> 
 	<td class="tdSize1 bottom right">|-$item->getprice()|system_numeric_format-|</td>
 	<td class="tdSize1 bottom right"><span id="quantity|-$item->getId()-|">|-$item->getQuantity()-|</span></td> 
 	<script type="text/javascript">

@@ -1,11 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("NodePeer.php");
-require_once("TreePeer.php");
-require_once("UnitPeer.php");
-require_once("MeasureUnitPeer.php");
-
 class CatalogProductsEditAction extends BaseAction {
 
 
@@ -53,7 +47,7 @@ class CatalogProductsEditAction extends BaseAction {
 
 		$smarty->assign("parentNodeId",$_GET["parentNodeId"]);
 		
-		$productCategories = TreePeer::getAllOnlyKind("ProductCategory");
+		$productCategories = CategoryPeer::getAllByModule("catalog");
     $smarty->assign("productCategories",$productCategories);
     
 		$units = UnitPeer::getAll();
@@ -64,23 +58,20 @@ class CatalogProductsEditAction extends BaseAction {
 
     if ( !empty($_GET["id"]) ) {
 			//voy a editar un producto
-
-			$node = NodePeer::get($_GET["id"]);
-
-			$smarty->assign("node",$node);
-			$smarty->assign("parentNodeId",$node->getParentId());
+			$product = ProductPeer::get($_GET["id"]);
+      
+			//$smarty->assign("parentNodeId",$node->getParentId());
 
 	    $smarty->assign("action","edit");
 		}
 		else {
 			//voy a crear un producto nuevo
-
+      $product = new Product;
 			$smarty->assign("action","create");
 		}
-
+    $smarty->assign("product",$product);
 		$smarty->assign("message",$_GET["message"]);
 
 		return $mapping->findForwardConfig('success');
 	}
-
 }

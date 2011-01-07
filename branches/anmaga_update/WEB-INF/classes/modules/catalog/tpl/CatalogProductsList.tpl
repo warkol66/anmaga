@@ -8,21 +8,22 @@
 		<form action="Main.php" method="get"> 
 			<p> 
 |-if $productCategories|@count neq 0-|
-				<label for="parentNodeId">Categor&iacute;a</label> 
-				<select name="parentNodeId" id="parentNodeId"> 
-					<option value="">Select Category</option> 
+				<label for="categoryId">Categor&iacute;a</label> 
+				<select name="filters[categoryId]" id="categoryId"> 
+					<option value="all">Seleccione una categoria</option> 
+					<option value="">Sin categoria</option> 
 						|-include file="CatalogProductCategoriesIncludeOptions.tpl" productCategories=$productCategories-|
 				</select> 
 			</p> |-/if-|
 			<p> 
 				<label>Rango de precio desde: </label>
-				<input type="text" name="priceFrom" value="|-$priceFrom-|" /> 
+				<input type="text" name="filters[priceFrom]" value="|-$filters.priceFrom-|" /> 
 				<label>hasta:</label> 
-				<input type="text" name="priceTo" value="|-$priceTo-|" /> 
+				<input type="text" name="filters[priceTo]" value="|-$filters.priceTo-|" /> 
 			</p> 
 			<p> 
 				<label>Código: </label>
-				<input type="text" name="productCode" value="|-$productCode-|" /> 
+				<input type="text" name="filters[code]" value="|-$filters.code-|" /> 
 			</p> 
 			<p> 
 				<input type="hidden" name="do" value="catalogProductsList" /> 
@@ -42,25 +43,23 @@
 				<th class="thFillTitle">Nombre</th> 
 				<th class="thFillTitle">Descripción</th> 
 				<th class="thFillTitle">Precio</th> 
-				<th class="thFillTitle">Categoría</th> 
 				<th class="thFillTitle">Unidad</th> 
 				<th class="thFillTitle">Unidad de Medida</th> 
 				<th class="thFillTitle">&nbsp;</th> 
 			</tr> 
 		</thead> 
-		<tbody>  |-foreach from=$products item=node name=for_products-| |-assign var=product value=$node->getInfo()-| |-assign var=parentNode value=$node->getParentNode()-| |-assign var=unit value=$product->getUnit()-| |-assign var=measureUnit value=$product->getMeasureUnit()-|
+		<tbody>  |-foreach from=$products item=product name=for_products-|  |-assign var=unit value=$product->getUnit()-| |-assign var=measureUnit value=$product->getMeasureUnit()-|
 		<tr> 
-			<td class="tdSize1">|-$node->getid()-|</td> 
+			<td class="tdSize1">|-$product->getid()-|</td> 
 			<td class="tdSize1">|-$product->getcode()-|</td> 
-			<td class="tdSize1">|-$node->getname()-|</td> 
+			<td class="tdSize1">|-$product->getname()-|</td> 
 			<td class="tdSize1">|-$product->getdescription()-|</td> 
 			<td class="tdSize1 right">|-$product->getprice()|system_numeric_format-|</td> 
-			<td class="tdSize1">|-if $parentNode-||-$parentNode->getName()-||-/if-|</td> 
 			<td class="tdSize1 center">|-if $unit-||-$unit->getName()-||-/if-|</td> 
 			<td class="tdSize1 center">|-if $measureUnit-||-$measureUnit->getName()-||-/if-|</td> 
 			<td class="tdSize1" nowrap> <form action="Main.php" method="get" style="display:inline;"> 
 					<input type="hidden" name="do" value="catalogProductsEdit" /> 
-					<input type="hidden" name="id" value="|-$node->getid()-|" /> 
+					<input type="hidden" name="id" value="|-$product->getid()-|" /> 
 					<input type="submit" name="submit_go_edit_product" value="Editar" class="buttonImageEdit" /> 
 				</form> 
 				<form action="Main.php" method="post" style="display:inline;"> 
@@ -70,9 +69,14 @@
 				</form></td> 
 		</tr> 
 		|-/foreach-|
-		<tr> 
-			<td colspan="9" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
-		</tr> 
+		|-if isset($pager) && ($pager->getTotalPages() gt 1)-|
+  		<tr> 
+  			<td colspan="9" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
+  		</tr> 
+		|-/if-|
+    <tr class="thFillTitle">
+      <th colspan="8"><div class="rightLink"><a href="Main.php?do=projectsEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addNew">Agregar ##projects,1,Proyecto##</a></div></th>
+    </tr>
 		</tbody> 
   </table> 
 </div>

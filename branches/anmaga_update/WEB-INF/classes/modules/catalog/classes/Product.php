@@ -14,26 +14,23 @@
 class Product extends BaseProduct {
 
 	function getNode() {
+	  //TODO: eliminar esto.
 		require_once("NodePeer.php");
 		return NodePeer::getByObjectIdAndKind($this->getId(),"Product");
 	}
 	
 	public function getPrice() {
-	
 		if (Common::isAffiliatedUser() && AffiliateProductPeer::affiliateHasPriceList(Common::getAffiliatedId())) {
-			
-			$cond = new Criteria();
-			$cond->add(AffiliateProductPeer::AFFILIATEID,Common::getAffiliatedId());
-			$cond->add(AffiliateProductPeer::PRODUCTID,$this->getId());
-			$todosObj = AffiliateProductPeer::doSelect($cond);
-			$specialPrice= $todosObj[0];
-			return $specialPrice->getPrice();
-			
+      return AffiliateProductQuery::create()->join('Product')
+                                     ->filterByAffiliateId(Common::getAffiliatedId())
+                                     ->useQuery('Product')
+                                      ->filterByPrimaryKey($this->getPrimaryKey())
+                                     ->endUse()
+                                     ->select('Price')
+                                     ->findOne();
 		}
 		
 		return parent::getPrice();
-				
-		
 	}
 	
 	/**

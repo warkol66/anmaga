@@ -1,9 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("TreePeer.php");
-require_once("AffiliatePeer.php");
-
 class CatalogAffiliateProductListAction extends BaseAction {
 
 
@@ -50,19 +46,20 @@ class CatalogAffiliateProductListAction extends BaseAction {
 		$affiliates = AffiliatePeer::getAll();
 		$smarty->assign('affiliates',$affiliates);
 				
-		$productCategories = TreePeer::getAllOnlyKind("ProductCategory");
+		$productCategories = CategoryPeer::getAllByModule("catalog");
 		$smarty->assign("productCategories",$productCategories);
+    
+    $productPeer = new ProductPeer;
 		
-		if (!empty($_GET['affiliateId'])) {		
-				
+		if (!empty($_GET['affiliateId'])) {
+		  $productPeer->setSearchAffiliateId($_GET['affiliateId']);
+		  $pager = $productPeer->getAllPaginatedFiltered($_GET["page"]);		
 			
-			$pager = TreePeer::getAllByAffiliatePaginated($_GET['affiliateId'],$_GET["page"]);
-			
-			$productNodes = $pager->getResult();
+			$products = $pager->getResult();
 			$smarty->assign("pager",$pager);
 			$url = "Main.php?do=catalogAffiliateProductList&affiliateId=" . $_GET['affiliateId'];
 			$smarty->assign("url",$url);
-			$smarty->assign("productNodes",$productNodes);
+			$smarty->assign("products",$products);
 			$smarty->assign("affiliateId",$_GET['affiliateId']);
 		}
 		

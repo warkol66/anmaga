@@ -36,7 +36,7 @@
 		|-foreach from=$affiliateproductcodes item=affiliateproductcode name=for_affiliateproductcodes-|
 			<tr>
 				<td class="tdSize1 right">|-$affiliateproductcode->getproductCodeAffiliate()-|</td>
-				<td class="tdSize1">|-assign var=product value=$affiliateproductcode->getProduct()-||-if $product ne ""-||-assign var=productNode value=$product->getNode()-||-$product->getCode()-|, |-$productNode->getName()-||-/if-|</td>
+				<td class="tdSize1">|-assign var=product value=$affiliateproductcode->getProduct()-||-if $product ne ""-||-$product->getCode()-|, |-$product->getName()-||-/if-|</td>
 				<td nowrap>
 					<form action="Main.php" method="get" style="display:inline;">
 						<input type="hidden" name="do" value="catalogAffiliateProductCodesEdit" />

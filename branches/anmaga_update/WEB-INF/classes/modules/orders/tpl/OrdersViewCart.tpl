@@ -19,10 +19,10 @@
 			</tr>
 		</thead>
 		|-assign var=total value=0-|
-		<tbody>  |-foreach from=$orderItems item=item name=for_products-| |-assign var=product value=$item->getProduct()-| |-assign var=productNode value=$product->getNode()-|
+		<tbody>  |-foreach from=$orderItems item=item name=for_products-| |-assign var=product value=$item->getProduct()-|
 		<tr id="product_|-$product->getId()-|">
 			<td align="center" class="tdSize1">|-$product->getcode()-|</td>
-			<td class="tdSize1">|-$productNode->getname()-|</td>
+			<td class="tdSize1">|-$product->getname()-|</td>
 			<td nowrap class="tdSize1 right">|-$product->getprice()|system_numeric_format-|</td>
 			<td align="center" nowrap class="tdSize1">|-$product->getSalesUnit()-|</td>
 			<td nowrap class="tdSize1 right">
