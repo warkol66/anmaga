@@ -16,10 +16,10 @@
 			</tr>
 		</thead>
 		|-assign var=total value=0-|
-		<tbody>  |-foreach from=$orderItems item=item name=for_products-| |-assign var=product value=$item->getProduct()-| |-assign var=productNode value=$product->getNode()-|
+		<tbody>  |-foreach from=$orderItems item=item name=for_products-| |-assign var=product value=$item->getProduct()-|
 		<tr>
 			<td align="right" class="tdSize1">|-$product->getcode()-|</td>
-			<td class="tdSize1">|-$productNode->getname()-|</td>
+			<td class="tdSize1">|-$product->getname()-|</td>
 			<td nowrap class="tdSize1 right">|-$product->getprice()|number_format:2:",":"."-|</td>
 			<td nowrap class="tdSize1 right">|-$product->getSalesUnit()-|</td>
 			<td nowrap class="tdSize1 right">|-math equation="x * y" x=$product->getprice() y=$product->getSalesUnit() assign=totalItem-||-$totalItem|number_format:2:",":"."-|</td>

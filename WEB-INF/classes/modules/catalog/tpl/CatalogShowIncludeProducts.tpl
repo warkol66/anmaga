@@ -21,10 +21,10 @@
 				<th width="5%" class="thFillTitle">&nbsp;</th>
 			</tr>
 		</thead>
-		<tbody>  |-foreach from=$productNodes item=productNode name=for_products-| |-assign var=product value=$productNode->getInfo()-|
+		<tbody>  |-foreach from=$products item=product name=for_products-|
 		<tr>
 			<td nowrap class="tdSize1 right">|-$product->getcode()-|</td>
-			<td class="tdSize1">|-$productNode->getname()-|</td>
+			<td class="tdSize1">|-$product->getname()-|</td>
 			<td class="tdSize1">|-$product->getdescription()-|</td>
 			<td nowrap class="tdSize1 right">|-if $product->getprice() neq 0-||-$product->getprice()|number_format:2:",":"."-||-/if-|</td>
 			<td nowrap class="tdSize1 right">|-$product->getSalesUnit()-|</td>

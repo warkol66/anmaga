@@ -13,4 +13,21 @@
  */
 class ProductQuery extends BaseProductQuery {
 
+  public function filterByCategoryId($categoryId, $comparison = Criteria::EQUAL)
+  {
+    $this->join('ProductCategory', Criteria::LEFT_JOIN);
+    if ($categoryId === null)
+      return $this->where('ProductCategory.Categoryid IS NULL');
+      
+    return $this->where('ProductCategory.Categoryid = ?', $categoryId);
+  }
+  
+  public function filterByAffiliateId($affiliateId, $comparison = Criteria::EQUAL)
+  {
+    return $this
+      ->join('AffiliateProduct')
+      ->useQuery('AffiliateProduct')
+        ->filterByAffiliateId($affiliateId, $comparison)
+      ->endUse();
+  }
 } // ProductQuery

@@ -8,6 +8,7 @@
  *
  * @method     ProductQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ProductQuery orderByCode($order = Criteria::ASC) Order by the code column
+ * @method     ProductQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method     ProductQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     ProductQuery orderByPrice($order = Criteria::ASC) Order by the price column
  * @method     ProductQuery orderByUnitid($order = Criteria::ASC) Order by the unitId column
@@ -18,6 +19,7 @@
  *
  * @method     ProductQuery groupById() Group by the id column
  * @method     ProductQuery groupByCode() Group by the code column
+ * @method     ProductQuery groupByName() Group by the name column
  * @method     ProductQuery groupByDescription() Group by the description column
  * @method     ProductQuery groupByPrice() Group by the price column
  * @method     ProductQuery groupByUnitid() Group by the unitId column
@@ -59,6 +61,7 @@
  *
  * @method     Product findOneById(int $id) Return the first Product filtered by the id column
  * @method     Product findOneByCode(string $code) Return the first Product filtered by the code column
+ * @method     Product findOneByName(string $name) Return the first Product filtered by the name column
  * @method     Product findOneByDescription(string $description) Return the first Product filtered by the description column
  * @method     Product findOneByPrice(double $price) Return the first Product filtered by the price column
  * @method     Product findOneByUnitid(int $unitId) Return the first Product filtered by the unitId column
@@ -69,6 +72,7 @@
  *
  * @method     array findById(int $id) Return Product objects filtered by the id column
  * @method     array findByCode(string $code) Return Product objects filtered by the code column
+ * @method     array findByName(string $name) Return Product objects filtered by the name column
  * @method     array findByDescription(string $description) Return Product objects filtered by the description column
  * @method     array findByPrice(double $price) Return Product objects filtered by the price column
  * @method     array findByUnitid(int $unitId) Return Product objects filtered by the unitId column
@@ -222,6 +226,28 @@ abstract class BaseProductQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(ProductPeer::CODE, $code, $comparison);
+	}
+
+	/**
+	 * Filter the query on the name column
+	 * 
+	 * @param     string $name The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ProductQuery The current query, for fluid interface
+	 */
+	public function filterByName($name = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($name)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $name)) {
+				$name = str_replace('*', '%', $name);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(ProductPeer::NAME, $name, $comparison);
 	}
 
 	/**
@@ -793,6 +819,23 @@ abstract class BaseProductQuery extends ModelCriteria
 			->useQuery($relationAlias ? $relationAlias : 'OrderTemplateItem', 'OrderTemplateItemQuery');
 	}
 
+	/**
+	 * Filter the query by a related Affiliate object
+	 * using the catalog_affiliateProduct table as cross reference
+	 *
+	 * @param     Affiliate $affiliate the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ProductQuery The current query, for fluid interface
+	 */
+	public function filterByAffiliate($affiliate, $comparison = Criteria::EQUAL)
+	{
+		return $this
+			->useAffiliateProductQuery()
+				->filterByAffiliate($affiliate, $comparison)
+			->endUse();
+	}
+	
 	/**
 	 * Filter the query by a related Category object
 	 * using the catalog_productCategory table as cross reference

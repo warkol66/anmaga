@@ -19,8 +19,7 @@
 		 <label for="productCode">Producto</label>
 				<select name="productCode"> 
 					|- foreach from=$products item=product -|
-						|-assign var=productNode value=$product->getNode()-| 
-					<option value="|-$product->getCode()-|"|-if $affiliateproductcode->getProductCode() eq $product->getCode()-| selected="selected"|-/if-|>|- $product->getCode()-|, |- $productNode->getName()|truncate:62:"...":true-|</option> 
+					<option value="|-$product->getCode()-|"|-if $affiliateproductcode->getProductCode() eq $product->getCode()-| selected="selected"|-/if-|>|- $product->getCode()-|, |- $product->getName()|truncate:62:"...":true-|</option> 
 					|-/foreach-|
 				</select>
 		<br>

@@ -7,59 +7,81 @@
  */
 class ProductPeer extends BaseProductPeer {
 
-	private $searchParentNodeId;
+	private $searchCategoryId;
+  private $searchAffiliateId;
 	private $searchPriceFrom;
 	private $searchPriceTo;
-	private $searchByCode;
+	private $searchCode;
+  
+  function __construct() {
+    $this->searchCategoryId = 'all';
+  }
+  //mapea las condiciones del filtro
+  var $filterConditions = array(
+    "categoryId"=>"setSearchCategoryId",
+    "affiliateId"=>"setSearchAffiliateId",
+    "priceFrom"=>"setSearchPriceFrom",
+    "priceTo"=>"setSearchPriceTo",
+    "code"=>"setSearchCode"
+  );
+  
+  function setSearchCategoryId($categoryId) {
+    if ($categoryId === '')
+      $categoryId = null;
+    $this->searchCategoryId = $categoryId;
+  }
+  
+  function setSearchAffiliateId($affiliateId) {
+    $this->searchAffiliateId = $affiliateId;
+  }
+  
+  function setSearchPriceFrom($priceFrom) {
+    $this->searchPriceFrom = $priceFrom;
+  }
 
-	/**
-	* Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
-	*
-	* @return int Cantidad de filas por pagina
-	*/
-	function getRowsPerPage() {
-		global $system;
-		return $system["config"]["system"]["rowsPerPage"];
-	}
+  function setSearchPriceTo($priceTo) {
+    $this->searchPriceTo = $priceTo;
+  }
+
+  function setSearchCode($productCode) {
+    $this->searchCode = $productCode;
+  }
 
   /**
   * Crea un product nuevo.
   *
-  * @param string $code code del product
-  * @param string $name name del product
-  * @param string $description description del product
-  * @param float $price price del product
-  * @param array $image image del product
-  * @param integer $parentNodeId Id del nodo padre
-  * @param integer $unitId Id de la unidad
-  * @param integer $measureUnitId Id de la unidad de medida
-  * @param string $orderCode orderCode del product  
-  * @param integer $salesUnit Unidad de venta, 1 por defecto
-  * @return int Id del nodo creado
+  * @params array de parametros para crear el objeto.
+  * @return objeto creado. False si ocurrio algun error.
 	*/
-	function create($code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId,$orderCode=null,$salesUnit=1) {
+	function create($params) {
     try {
 			$productObj = new Product();
-			$productObj->setCode($code);
-			if (!empty($orderCode))
-				$productObj->setOrderCode($orderCode);
-			$productObj->setDescription($description);
-			$productObj->setPrice($price);
-			$productObj->setUnitId($unitId);
-			$productObj->setMeasureUnitId($measureUnitId);
-			if (!empty($salesUnit))			
-				$productObj->setSalesUnit($salesUnit);
-			$productObj->save();
-			
+			foreach ($params as $key => $value) {
+        $setMethod = "set".$key;
+        if ( method_exists($productObj,$setMethod) ) {          
+          if (!empty($value) || $value == "0")
+            $productObj->$setMethod($value);
+          else
+            $productObj->$setMethod(null);
+        }
+      }
+      $image = $params['image'];
 			if (!empty($image['tmp_name'])) {
 				ProductPeer::createImages($image,$productObj->getId());
 			}
+      if (!empty($params['categoryId'])) {
+        $category = CategoryQuery::create()->findPk($params['categoryId']);
+        if (!empty($category))
+          $productObj->addCategory($category);
+      }
+      $productObj->save();
 
-	    require_once("NodePeer.php");
-  	  return NodePeer::create($name,"Product",$productObj->getId(),$parentNodeId,0);
+	    return $productObj;
   	}
 		catch (PropelException $e) {
-			return false;
+		  if (ConfigModule::get("global","showPropelExceptions"))
+        print_r($exp->getMessage());
+      return false;
 		}
 	}
 	
@@ -146,99 +168,59 @@ class ProductPeer extends BaseProductPeer {
   /**
   * Crea un product nuevo, reemplazando al producto de igual codigo, si existia.
   *
-  * @param string $code code del product
-  * @param string $name name del product
-  * @param string $description description del product
-  * @param float $price price del product
-  * @param array $image image del product
-  * @param integer $parentNodeId Id del nodo padre
-  * @param integer $unitId Id de la unidad  
-  * @param integer $measureUnitId Id de la unidad de medida
-  * @param string $orderCode orderCode del product    
-  * @param integer $salesUnit Unidad de venta, 1 por defecto
-  * @return int Id del nodo creado
+  * @params array de parametros del objeto.
+  * @return objeto creado. False si ocurrio algun error.
 	*/
-	function createAndReplace($code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId,$orderCode=null,$salesUnit=1) {
-    try {
-			$oldProduct = ProductPeer::getByCode($code);
-			if (!empty($oldProduct))
-				$productObj = $oldProduct;
-			else
-				$productObj = new Product();
-  	  		$productObj->setCode($code);
-			if (!empty($orderCode))
-				$productObj->setOrderCode($orderCode);	  
-			$productObj->setDescription($description);
-			$productObj->setPrice($price);
-			$productObj->setUnitId($unitId);
-			$productObj->setMeasureUnitId($measureUnitId);
-			if (!empty($salesUnit))			
-				$productObj->setSalesUnit($salesUnit);
-			$productObj->save();
-
-			if (!empty($image['tmp_name'])) {
-				ProductPeer::createImages($image,$productObj->getId());
-			}
-
-			if (!empty($oldProduct)) {
-				$productObj->setActive(true);
-				$productObj->save();
-			  	$node = $productObj->getNode();
-			  	$node->setName($name);
-			  	$node->setParentId($parentNodeId);
-			  	$node->save();
-				return $node->getId();
-			}
-			else {
-				require_once("NodePeer.php");
-				return NodePeer::create($name,"Product",$productObj->getId(),$parentNodeId,0);
-  		}
-  	}
-		catch (PropelException $e) {
-			return false;
-		}
+	function createAndReplace($params) {
+	  if (!isset($params['salesUnit']))  
+      $params['salesUnit'] = 1;
+    $productObj = ProductPeer::getByCode($params['code']);
+    if (empty($productObj))
+      $productObj = ProductPeer::create($params);
+    else
+      $productObj = ProductPeer::update($productObj->getId(), $params);
 	}
 
 
   /**
   * Actualiza la informacion de un product.
   *
-  * @param int $id id del nodo del product
-  * @param string $code code del product
-  * @param string $name name del product
-  * @param string $description description del product
-  * @param float $price price del product
-  * @param array $image image del product
-  * @param integer $parentNodeId Id del nodo padre
-  * @param integer $unitId Id de la unidad  
-  * @param integer $measureUnitId Id de la unidad de medida    
-  * @param string $orderCode orderCode del product    
-  * @param integer $salesUnit Unidad de venta, 1 por defecto  
-  * @return boolean true si se actualizo la informacion correctamente, false sino
+  * Por defecto el producto actualizado queda activado.
+  * 
+  * @params array de parametros.
+  * @return objecto actualizado, false si pcurrio algun error.
 	*/
-  function update($id,$code,$name,$description,$price,$image,$parentNodeId=0,$unitId,$measureUnitId,$orderCode=null,$salesUnit=1) {
-    require_once("NodePeer.php");
-		$node = NodePeer::get($id);
-		$node->setName($name);
-		$node->setParentId($parentNodeId);
-		$node->save();
-
-  		$productObj = $node->getInfo();
-    	$productObj->setcode($code);
-		if (!empty($orderCode))
-			$productObj->setOrderCode($orderCode);
-	
-		$productObj->setdescription($description);
-		$productObj->setprice($price);
-		$productObj->setUnitId($unitId);
-		$productObj->setMeasureUnitId($measureUnitId);
-		if (!empty($salesUnit))			
-			$productObj->setSalesUnit($salesUnit);
-		if (!empty($image['tmp_name'])) {
-			ProductPeer::createImages($image,$productObj->getId());
-		}
-		$productObj->save();
-		return true;
+  function update($id, $params) {
+    // Por defecto vamos a activar el producto al actualizarlo.
+    if (!isset($params['active']))
+      $params['active'] = true;
+    try {
+  		$productObj = ProductPeer::get($id);
+      foreach ($params as $key => $value) {
+        $setMethod = "set".$key;
+        if ( method_exists($productObj,$setMethod) ) {          
+          if (!empty($value) || $value == "0")
+            $productObj->$setMethod($value);
+          else
+            $productObj->$setMethod(null);
+        }
+      }
+      $image = $params['image'];
+  		if (!empty($image['tmp_name'])) {
+  			ProductPeer::createImages($image,$productObj->getId());
+  		}
+      if (!empty($params['categoryId'])) {
+        $category = CategoryQuery::create()->findPk($params['categoryId']);
+        if (!empty($category))
+          $productObj->addCategory($category);
+      }
+  		$productObj->save();
+  		return true;
+    } catch (PropelException $e) {
+      if (ConfigModule::get("global","showPropelExceptions"))
+        print_r($exp->getMessage());
+      return false;
+    }
   }
 
 	/**
@@ -250,7 +232,7 @@ class ProductPeer extends BaseProductPeer {
   function delete($id) {
   	$productObj = ProductPeer::retrieveByPK($id);
     $productObj->setActive(false);
-	$productObj->save();
+	  $productObj->save();
 		return true;
   }
 
@@ -260,32 +242,17 @@ class ProductPeer extends BaseProductPeer {
 	* @return void
 	*/
   function deleteAll() {
-  	$products = ProductPeer::getAll();
-	foreach ($products as $productObj) {
-    	$productObj->setActive(false);
-		$productObj->save();
-	}
-	return;
+    ProductQuery::create()->update(array('Active' => 'false'));
   }
 
 	/**
 	* Elimina todos los productos.
 	*
-	* @param int $parentNodeId Id del nodo de la categoria padre
+	* @param int $categoryId Id de la categoria
 	* @return void
 	*/
-  function deleteAllByParentId($parentNodeId) {
-	$cond = new Criteria();
-	$cond->add(NodePeer::KIND, "Product");
-	$cond->addJoin(NodePeer::OBJECTID, ProductPeer::ID);
-	$cond->add(ProductPeer::ACTIVE, true);		
-	$cond->add(NodePeer::PARENTID, $parentNodeId);
-	$products = ProductPeer::doSelect($cond);
-	foreach ($products as $productObj) {
-    	$productObj->setActive(false);
-		$productObj->save();
-	}
-	return;
+  function deleteAllByCategoryId($categoryId) {
+    ProductQuery::create()->filterByCategoryId($categoryId)->update(array('Active', false));
   }
 
   /**
@@ -305,10 +272,7 @@ class ProductPeer extends BaseProductPeer {
 	*	@return array Informacion sobre todos los products
   */
 	function getAll() {
-		$cond = new Criteria();
-		$cond->add(ProductPeer::ACTIVE, true);
-		$alls = ProductPeer::doSelect($cond);
-		return $alls;
+		return ProductQuery::create()->filterByActive(true)->find();
   }
 
   /**
@@ -317,14 +281,11 @@ class ProductPeer extends BaseProductPeer {
   *	@return array Informacion sobre todos los products
   */
 	function getAllWithStock() {
-		$cond = new Criteria();
-		$cond->add(ProductPeer::ACTIVE, true);
-		//regla de negocio, aquellos productos de precio cero no tienen stock y no pueden ser comprados.
-		$cond->add(ProductPeer::PRICE, 0, Criteria::NOT_EQUAL);
-		$alls = ProductPeer::doSelect($cond);
-		return $alls;
+	  //regla de negocio, aquellos productos de precio cero no tienen stock y no pueden ser comprados.
+		return ProductQuery::create()->filterByActive(true)
+                                 ->filterByPrice(0, Criteria::NOT_EQUAL)
+		                             ->find();
   }
-
   
   /**
   * Obtiene todos los productos paginados.
@@ -333,7 +294,7 @@ class ProductPeer extends BaseProductPeer {
   */
 	function getAllPaginated($page=1,$perPage=-1) {
 		if ($perPage == -1)
-			$perPage = 	ProductPeer::getRowsPerPage();
+			$perPage = Common::getRowsPerPage();
 		if (empty($page))
 			$page = 1;
 		require_once("lib/util/PropelPager.php");
@@ -352,10 +313,7 @@ class ProductPeer extends BaseProductPeer {
 	*	@return Product Producto con el codigo pasado como parametro
   */
 	function getByCode($code) {
-		$cond = new Criteria();
-		$cond->add(ProductPeer::CODE, $code);
-		$alls = ProductPeer::doSelect($cond);
-		return $alls[0];
+		return ProductQuery::create()->filterByCode($code)->findOne();
   }
 
   /**
@@ -365,13 +323,8 @@ class ProductPeer extends BaseProductPeer {
 	*	@return Product Producto con el codigo pasado como parametro
   */
 	function getByCodeModified($code) {
-		$con = Propel::getConnection(ProductPeer::DATABASE_NAME);
-		$sql = "SELECT * FROM ".ProductPeer::TABLE_NAME." WHERE REPLACE(code,'-','') = '".$code."'";
-		$stmt = $con->createStatement();
-		$rs = $stmt->executeQuery($sql, ResultSet::FETCHMODE_NUM);
-		
-		$objects = parent::populateObjects($rs);
-		return $objects[0]; 		
+	  $code = str_replace('-', '', $code);
+		return ProductPeer::getByCode($code); 		
   }
   
   /**
@@ -476,21 +429,6 @@ class ProductPeer extends BaseProductPeer {
 	
   }
   
-  function setSearchParentNodeId($parentNodeId) {
-  	$this->searchParentNodeId = $parentNodeId;
-  }
-  
-  function setSearchPriceFrom($priceFrom) {
-  	$this->searchPriceFrom = $priceFrom;
-  }
-
-  function setSearchPriceTo($priceTo) {
-  	$this->searchPriceTo = $priceTo;
-  }
-
-  function setSearchByCode($productCode) {
-  	$this->searchByCode = $productCode;
-  }
 
 
   /**
@@ -498,51 +436,51 @@ class ProductPeer extends BaseProductPeer {
 	*
 	*	@return array Informacion sobre los productos
   */
-	function getAllNodesPaginated($page=1,$perPage=-1) {
+	function getAllPaginatedFiltered($page=1,$perPage=-1) {
 		if ($perPage == -1)
-			$perPage = 	ProductPeer::getRowsPerPage();
+			$perPage = 	Common::getRowsPerPage();
 		if (empty($page))
 			$page = 1;
-		require_once("lib/util/PropelPager.php");
-		$cond = new Criteria();
-		$cond->add(NodePeer::KIND, "Product");
-		$cond->addJoin(NodePeer::OBJECTID, ProductPeer::ID);
-		$cond->add(ProductPeer::ACTIVE, true);
+		$cond = new ProductQuery();
+		$cond->filterByActive(true);
 		
-    if (!empty($this->searchParentNodeId))
-			$cond->add(NodePeer::PARENTID, $this->searchParentNodeId);
+    //print_r($this->searchCategoryId);die;
+    if ($this->searchCategoryId != 'all')
+			$cond->filterByCategoryId($this->searchCategoryId);
+      
+    if (!empty($this->searchAffiliateId))
+      $cond->filterByAffiliateId($this->searchAffiliateId);
 
-    if (!empty($this->searchByCode))
-			$cond->add(ProductPeer::CODE,"%".$this->searchByCode."%",Criteria::LIKE);
-
-    if ( !empty($this->searchPriceFrom) || !empty($this->searchPriceTo) ) {    	
-    	if ( !empty($this->searchPriceFrom) ) {
-				$criterion = $cond->getNewCriterion(ProductPeer::PRICE, $this->searchPriceFrom, Criteria::GREATER_EQUAL);
-			}
-    	if ( !empty($this->searchPriceTo) ) {
-      	if (!empty($criterion))
-      		$criterion->addAnd($cond->getNewCriterion(ProductPeer::PRICE, $this->searchPriceTo, Criteria::LESS_EQUAL));
-        else
-        	$criterion = $cond->getNewCriterion(ProductPeer::PRICE, $this->searchPriceTo, Criteria::LESS_EQUAL);
-     	}
-      $cond->add($criterion);
+    if (!empty($this->searchCode))
+			$cond->filterByCode("%".$this->searchCode."%",Criteria::LIKE);
+   	
+    if ( !empty($this->searchPriceFrom) ) {
+			$cond->filterByPrice($this->searchPriceFrom, Criteria::GREATER_EQUAL);
+		}
+    if ( !empty($this->searchPriceTo) ) {
+    	$cond->filterByPrice($this->searchPriceTo, Criteria::LESS_EQUAL);
     }
 
-		$pager = new PropelPager($cond,"NodePeer", "doSelect",$page,$perPage);
+		$pager = new PropelPager($cond,"ProductPeer", "doSelect",$page,$perPage);
 		return $pager;
 	 }
 	
 	/**
-	* Obtiene todos los productos.
+	* Obtiene todos los productos que cuelgan de alguna categoria.
 	*
 	* @return array Informacion sobre los productos
 	*/
-	function getAllNodes() {
-		$cond = new Criteria();
-		$cond->add(NodePeer::KIND, "Product");
-		$cond->addJoin(NodePeer::OBJECTID, ProductPeer::ID);
-		$cond->add(ProductPeer::ACTIVE, true);		
-		return NodePeer::doSelect($cond);
-	 }	
-
+	function getAllCategorized() {
+	  return ProductQuery::create()->filterByActive(true)
+                                 ->join('ProductCategory')
+                                 ->find();
+	}
+  
+  function getAllUncategorized() {
+    return ProductQuery::create()->filterByActive(true)
+                                 ->join('ProductCategory', Criteria::LEFT_JOIN)
+                                 ->where('ProductCategory.Categoryid IS NULL')
+                                 ->find();
+  }
+  
 }

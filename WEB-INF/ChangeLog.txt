@@ -1,4 +1,22 @@
 ﻿==============================
+Revisión 649 - Fecha 20110107
+------------------------------
+#El nombre del producto pasa del node al product
+ALTER TABLE `product` ADD `name` VARCHAR(255)  NOT NULL COMMENT 'Nombre del producto';
+
+UPDATE `product` 
+INNER JOIN `node` 
+ON (`product`.`id`=`node`.`objectId`) 
+SET `product`.`name`=`node`.`name` 
+WHERE `node`.`kind` LIKE 'Product';
+
+#El valor por defecto del salesUnit se hace mediante propel/sql, ya no manualmente.
+ALTER TABLE `product` MODIFY `salesUnit` INTEGER default 1  COMMENT 'Multiplo de la unidad de medida en que se puede ordenar el producto';
+==============================
+Revisión 648 - Fecha 20110106
+------------------------------
+ALTER TABLE `categories_category` ADD `description` VARCHAR(255) COMMENT 'Descripcion de la categoria';
+==============================
 Revisión 645 - Fecha 20110104
 ------------------------------
 

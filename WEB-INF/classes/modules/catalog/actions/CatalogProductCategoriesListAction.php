@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("TreePeer.php");
-
 class CatalogProductCategoriesListAction extends BaseAction {
 
 
@@ -48,7 +45,7 @@ class CatalogProductCategoriesListAction extends BaseAction {
 		$moduleSection = "ProductCategories";
 		$smarty->assign("moduleSection",$section);
 
-		$productCategories = TreePeer::getAllOnlyKind("ProductCategory");
+		$productCategories = CategoryPeer::getAllByModule("catalog");
 
 		$smarty->assign("productCategories",$productCategories);
 

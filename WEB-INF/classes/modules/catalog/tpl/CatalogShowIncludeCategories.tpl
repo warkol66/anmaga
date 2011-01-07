@@ -1,11 +1,9 @@
 					<ul>
-						|-foreach from=$productCategories item=node name=for_productCategories-|
-							|-assign var=productCategory value=$node.node-|
-							|-assign var=category value=$productCategory->getInfo()-|
+						|-foreach from=$productCategories item=productCategory name=for_productCategories-|
 							<li>
 								<a href="Main.php?do=catalogShow&categoryId=|-$productCategory->getId()-|">|-$productCategory->getName()-|</a>
-								|-if $node.childs|@count gt 0-|
-									|-include file="CatalogShowIncludeCategories.tpl" productCategories=$node.childs-|
+								|-if $productCategory->hasChildren()-|
+									|-include file="CatalogShowIncludeCategories.tpl" productCategories=$productCategory->getChildren()-|
 								|-/if-|
 							</li>
 						|-/foreach-|

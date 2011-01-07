@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("ProductPeer.php");
-
 class CatalogProductsDoDeleteAction extends BaseAction {
 
 
@@ -47,7 +44,6 @@ class CatalogProductsDoDeleteAction extends BaseAction {
 
 		$moduleSection = "Products";
     $smarty->assign("moduleSection",$section);
-
 
     ProductPeer::delete($_POST["id"]);
 

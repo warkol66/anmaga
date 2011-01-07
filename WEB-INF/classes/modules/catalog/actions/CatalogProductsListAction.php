@@ -1,9 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("ProductPeer.php");
-require_once("TreePeer.php");
-
 class CatalogProductsListAction extends BaseAction {
 
 
@@ -49,41 +45,30 @@ class CatalogProductsListAction extends BaseAction {
 		$moduleSection = "Products";
     $smarty->assign("moduleSection",$section);
 		
-		$smarty->assign("parentNodeId",$_GET["parentNodeId"]);	
-		$smarty->assign("priceFrom",$_GET["priceFrom"]);
-		$smarty->assign("priceTo",$_GET["priceTo"]);
-		$smarty->assign("productCode",$_GET["productCode"]);
-
-		$productCategories = TreePeer::getAllOnlyKind("ProductCategory");
+		$productCategories = CategoryPeer::getAllByModule("catalog");
     $smarty->assign("productCategories",$productCategories);
 
 		$productPeer = new ProductPeer();
+    $filters = $_GET['filters'];
+    $this->applyFilters($productPeer, $filters, $smarty);
 		
 		if ($_GET["csv"] == "1") {
-			$products = $productPeer->getAllNodes();
+			$products = $productPeer->getAll();
 			$smarty->assign("products",$products);
 			$this->template->template = "TemplateCsv.tpl";	
 			header("content-disposition: attachment; filename=products.csv");
 			header("Content-type: text/csv; charset=UTF-8");			
 			return $mapping->findForwardConfig('csv');
 		}
-		
-
-		if (!empty($_GET["priceFrom"]))
-			$productPeer->setSearchPriceFrom($_GET["priceFrom"]);
-		if (!empty($_GET["priceTo"]))
-			$productPeer->setSearchPriceTo($_GET["priceTo"]);
-		if (!empty($_GET["parentNodeId"]))
-			$productPeer->setSearchParentNodeId($_GET["parentNodeId"]);
-		if (!empty($_GET["productCode"]))
-			$productPeer->setSearchByCode($_GET["productCode"]);
-
-    $pager = $productPeer->getAllNodesPaginated($_GET["page"]);
+    $pager = $productPeer->getAllPaginatedFiltered($_GET["page"]);
 
 		$smarty->assign("products",$pager->getResult());
 		$smarty->assign("pager",$pager);
-		$url = "Main.php?do=catalogProductsList&parentNodeId=".$_GET["parentNodeId"]."&priceFrom=".$_GET["priceFrom"]."&priceTo=".$_GET["priceTo"];
-		$smarty->assign("url",$url);
+    
+    $url = "Main.php?do=catalogProductsList";
+    foreach ($filters as $key => $value)
+      $url .= "&filters[$key]=$value";
+    $smarty->assign("url",$url);
 
     $smarty->assign("message",$_GET["message"]);
 

@@ -26,7 +26,7 @@ abstract class BaseProductPeer {
 	const TM_CLASS = 'ProductTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 9;
+	const NUM_COLUMNS = 10;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -36,6 +36,9 @@ abstract class BaseProductPeer {
 
 	/** the column name for the CODE field */
 	const CODE = 'product.CODE';
+
+	/** the column name for the NAME field */
+	const NAME = 'product.NAME';
 
 	/** the column name for the DESCRIPTION field */
 	const DESCRIPTION = 'product.DESCRIPTION';
@@ -74,12 +77,12 @@ abstract class BaseProductPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Code', 'Description', 'Price', 'Unitid', 'Measureunitid', 'Active', 'Ordercode', 'Salesunit', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'code', 'description', 'price', 'unitid', 'measureunitid', 'active', 'ordercode', 'salesunit', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::CODE, self::DESCRIPTION, self::PRICE, self::UNITID, self::MEASUREUNITID, self::ACTIVE, self::ORDERCODE, self::SALESUNIT, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CODE', 'DESCRIPTION', 'PRICE', 'UNITID', 'MEASUREUNITID', 'ACTIVE', 'ORDERCODE', 'SALESUNIT', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'code', 'description', 'price', 'unitId', 'measureUnitId', 'active', 'orderCode', 'salesUnit', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Code', 'Name', 'Description', 'Price', 'Unitid', 'Measureunitid', 'Active', 'Ordercode', 'Salesunit', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'code', 'name', 'description', 'price', 'unitid', 'measureunitid', 'active', 'ordercode', 'salesunit', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::CODE, self::NAME, self::DESCRIPTION, self::PRICE, self::UNITID, self::MEASUREUNITID, self::ACTIVE, self::ORDERCODE, self::SALESUNIT, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CODE', 'NAME', 'DESCRIPTION', 'PRICE', 'UNITID', 'MEASUREUNITID', 'ACTIVE', 'ORDERCODE', 'SALESUNIT', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'code', 'name', 'description', 'price', 'unitId', 'measureUnitId', 'active', 'orderCode', 'salesUnit', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	/**
@@ -89,12 +92,12 @@ abstract class BaseProductPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Code' => 1, 'Description' => 2, 'Price' => 3, 'Unitid' => 4, 'Measureunitid' => 5, 'Active' => 6, 'Ordercode' => 7, 'Salesunit' => 8, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'code' => 1, 'description' => 2, 'price' => 3, 'unitid' => 4, 'measureunitid' => 5, 'active' => 6, 'ordercode' => 7, 'salesunit' => 8, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CODE => 1, self::DESCRIPTION => 2, self::PRICE => 3, self::UNITID => 4, self::MEASUREUNITID => 5, self::ACTIVE => 6, self::ORDERCODE => 7, self::SALESUNIT => 8, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CODE' => 1, 'DESCRIPTION' => 2, 'PRICE' => 3, 'UNITID' => 4, 'MEASUREUNITID' => 5, 'ACTIVE' => 6, 'ORDERCODE' => 7, 'SALESUNIT' => 8, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'code' => 1, 'description' => 2, 'price' => 3, 'unitId' => 4, 'measureUnitId' => 5, 'active' => 6, 'orderCode' => 7, 'salesUnit' => 8, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Code' => 1, 'Name' => 2, 'Description' => 3, 'Price' => 4, 'Unitid' => 5, 'Measureunitid' => 6, 'Active' => 7, 'Ordercode' => 8, 'Salesunit' => 9, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'description' => 3, 'price' => 4, 'unitid' => 5, 'measureunitid' => 6, 'active' => 7, 'ordercode' => 8, 'salesunit' => 9, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CODE => 1, self::NAME => 2, self::DESCRIPTION => 3, self::PRICE => 4, self::UNITID => 5, self::MEASUREUNITID => 6, self::ACTIVE => 7, self::ORDERCODE => 8, self::SALESUNIT => 9, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CODE' => 1, 'NAME' => 2, 'DESCRIPTION' => 3, 'PRICE' => 4, 'UNITID' => 5, 'MEASUREUNITID' => 6, 'ACTIVE' => 7, 'ORDERCODE' => 8, 'SALESUNIT' => 9, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'description' => 3, 'price' => 4, 'unitId' => 5, 'measureUnitId' => 6, 'active' => 7, 'orderCode' => 8, 'salesUnit' => 9, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	/**
@@ -168,6 +171,7 @@ abstract class BaseProductPeer {
 		if (null === $alias) {
 			$criteria->addSelectColumn(ProductPeer::ID);
 			$criteria->addSelectColumn(ProductPeer::CODE);
+			$criteria->addSelectColumn(ProductPeer::NAME);
 			$criteria->addSelectColumn(ProductPeer::DESCRIPTION);
 			$criteria->addSelectColumn(ProductPeer::PRICE);
 			$criteria->addSelectColumn(ProductPeer::UNITID);
@@ -178,6 +182,7 @@ abstract class BaseProductPeer {
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.CODE');
+			$criteria->addSelectColumn($alias . '.NAME');
 			$criteria->addSelectColumn($alias . '.DESCRIPTION');
 			$criteria->addSelectColumn($alias . '.PRICE');
 			$criteria->addSelectColumn($alias . '.UNITID');

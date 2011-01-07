@@ -1,12 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("ProductPeer.php");
-require_once("ProductCategoryPeer.php"); 
-require_once("UnitPeer.php");
-require_once("MeasureUnitPeer.php");
-require_once("NodePeer.php");
-
 class CatalogProductsDoLoadInCategoryAction extends BaseAction {
 
 
@@ -53,6 +46,8 @@ class CatalogProductsDoLoadInCategoryAction extends BaseAction {
     $smarty->assign("moduleSection",$section);
 
 		$loaded = 0;
+    
+    $productKeys = array('code', 'name', 'description', 'price', 'unused', 'unitId', 'measureUnitId', 'orderCode', 'salesUnit');
 
 		if (!empty($_FILES["csv"])) {
 
@@ -65,10 +60,10 @@ class CatalogProductsDoLoadInCategoryAction extends BaseAction {
 
 			switch ($_POST["mode"]) {
 				case "1": //Reemplaza todo el catalogo de esa categoria
-					if (empty($_POST["parentNodeId"])) 
+					if (empty($_POST["categoryId"])) 
 						ProductPeer::deleteAll();
 					else
-						ProductPeer::deleteAllByParentId($_POST["parentNodeId"]);
+						ProductPeer::deleteAllByCategoryId($_POST["categoryId"]);
 					break;
 				case "2": //Reemplaza codigos existentes
 					break;
@@ -78,36 +73,40 @@ class CatalogProductsDoLoadInCategoryAction extends BaseAction {
      				break;
      	}
 
-			foreach ($products as $product) {
+			foreach ($products as $product) { 
 				//solo cargo si son 7 o mas elementos
 				if (count($product) > 6) {
+				  $product = array_combine($productKeys, $product);
+          unset($product['unused']);
+          $product['image'] = NULL;
+          $product['categoryId'] = $_POST["categoryId"];
 					//Busco la unidad
-					$unit = UnitPeer::getByName($product[5]);
+					$unit = UnitPeer::getByName($product['unitId']);
 					if (!empty($unit))
-						$unitId = $unit->getId();
+						$product['unitId'] = $unit->getId();
 					else
-						$unitId = 0;
+						$product['unitId'] = 0;
 					//Busco la unidad de medida
-					$measureUnit = MeasureUnitPeer::getByName($product[6]);
+					$measureUnit = MeasureUnitPeer::getByName($product['measureUnitId']);
 					if (!empty($measureUnit))
-						$measureUnitId = $measureUnit->getId();
+						$product['measureUnitId'] = $measureUnit->getId();
 					else
-						$measureUnitId = 0;
+						$product['measureUnitId'] = 0;
 					switch ($_POST["mode"]) {
 						case "1": //Reemplaza todo el catalogo de esa categoria
-        					if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"],$unitId,$measureUnitId,$product[7],$product[8]) > 0 )
+        					if ( ProductPeer::createAndReplace($product) > 0 )
         						$loaded++;
 							break;
 						case "2": //Reemplaza codigos existentes
-        					if ( ProductPeer::createAndReplace($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"],$unitId,$measureUnitId,$product[7],$product[8]) > 0 )
+        					if ( ProductPeer::createAndReplace($product) > 0 )
         						$loaded++;
 							break;
 						case "4": //Solo actualiza los precios
-							if ( ProductPeer::updatePrice($product[0],$product[3]) )
+							if ( ProductPeer::updatePrice($product['code'],$product['price']) )
 								$loaded++;
 							break; 							
 						default: //Solo agrega nuevos
-        					if ( ProductPeer::create($product[0],$product[1],$product[2],$product[3],null,$_POST["parentNodeId"],$unitId,$measureUnitId,$product[7],$product[8]) > 0 )
+        					if ( ProductPeer::create($product) > 0 )
         						$loaded++;
         					break;
      				}
@@ -118,10 +117,9 @@ class CatalogProductsDoLoadInCategoryAction extends BaseAction {
 
     $myRedirectConfig = $mapping->findForwardConfig('success');
     $myRedirectPath = $myRedirectConfig->getpath();
-		$queryData = '&id='.$_POST["parentNodeId"].'&loaded='.$loaded;
+		$queryData = '&id='.$_POST["categoryId"].'&loaded='.$loaded;
 		$myRedirectPath .= $queryData;
 		$fc = new ForwardConfig($myRedirectPath, True);
     return $fc;
 	}
-
 }

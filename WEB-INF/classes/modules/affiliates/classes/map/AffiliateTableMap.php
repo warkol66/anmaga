@@ -56,6 +56,7 @@ class AffiliateTableMap extends TableMap {
     $this->addRelation('Order', 'Order', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('OrderStateChange', 'OrderStateChange', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('OrderTemplate', 'OrderTemplate', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
+    $this->addRelation('Product', 'Product', RelationMap::MANY_TO_MANY, array(), null, null);
 	} // buildRelations()
 
 } // AffiliateTableMap

@@ -12,7 +12,7 @@
 				<input type="submit" name="search" value="Ver Lista de Precios" />
 			</form>
 </p>
-|-if isset($productNodes)-|
+|-if isset($products)-|
 	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products"> 
 		<thead> 
 			<tr> 
@@ -23,11 +23,11 @@
 				<th width="5%" class="thFillTitle">Precio</th> 
 			</tr>
 		</thead>
-		<tbody>  |-foreach from=$productNodes item=productNode name=for_products-| |-assign var=product value=$productNode->getInfo()-|
+		<tbody>  |-foreach from=$products item=product name=for_products-|
 		<tr>
 			<td nowrap class="tdSize1 right">|-$product->getcode()-|</td>
 			<td nowrap class="tdSize1 right">|-$product->getAffiliateCode($affiliateId)-| </td>
-			<td class="tdSize1">|-$productNode->getname()-|</td>
+			<td class="tdSize1">|-$product->getname()-|</td>
 			<td class="tdSize1">|-$product->getdescription()-|</td>
 			<td nowrap class="tdSize1 right">|-if $product->getAffiliatePrice($affiliateId) neq 0-||-$product->getAffiliatePrice($affiliateId)|system_numeric_format-||-/if-|</td>
 		</tr>

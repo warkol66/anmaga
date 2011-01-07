@@ -39,13 +39,14 @@ class ProductTableMap extends TableMap {
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('CODE', 'Code', 'VARCHAR', false, 255, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
 		$this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
 		$this->addColumn('PRICE', 'Price', 'FLOAT', false, null, null);
 		$this->addForeignKey('UNITID', 'Unitid', 'INTEGER', 'unit', 'ID', false, null, null);
 		$this->addForeignKey('MEASUREUNITID', 'Measureunitid', 'INTEGER', 'measureUnit', 'ID', false, null, null);
 		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null, true);
 		$this->addColumn('ORDERCODE', 'Ordercode', 'VARCHAR', false, 255, null);
-		$this->addColumn('SALESUNIT', 'Salesunit', 'INTEGER', false, null, null);
+		$this->addColumn('SALESUNIT', 'Salesunit', 'INTEGER', false, null, 1);
 		// validators
 	} // initialize()
 
@@ -60,6 +61,7 @@ class ProductTableMap extends TableMap {
     $this->addRelation('ProductCategory', 'ProductCategory', RelationMap::ONE_TO_MANY, array('code' => 'productCode', ), 'CASCADE', null);
     $this->addRelation('OrderItem', 'OrderItem', RelationMap::ONE_TO_MANY, array('code' => 'productCode', ), null, null);
     $this->addRelation('OrderTemplateItem', 'OrderTemplateItem', RelationMap::ONE_TO_MANY, array('code' => 'productCode', ), null, null);
+    $this->addRelation('Affiliate', 'Affiliate', RelationMap::MANY_TO_MANY, array(), null, null);
     $this->addRelation('Category', 'Category', RelationMap::MANY_TO_MANY, array(), null, null);
 	} // buildRelations()
 

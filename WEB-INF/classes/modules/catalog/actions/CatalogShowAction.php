@@ -1,9 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("TreePeer.php");
-require_once("AffiliateProductPeer.php");
-
 class CatalogShowAction extends BaseAction {
 
 
@@ -45,45 +41,33 @@ class CatalogShowAction extends BaseAction {
 
 		$module = "Catalog";
 	  $smarty->assign("module",$module);
-		$productCategories = TreePeer::getAllOnlyKind("ProductCategory");
+		$productCategories = CategoryPeer::getAllByModule("catalog");
 		$smarty->assign("productCategories",$productCategories);
-		
+		$productPeer = new ProductPeer;
 			
 		if (Common::isAffiliatedUser() && AffiliateProductPeer::affiliateHasPriceList(Common::getAffiliatedId())) {
 				//CASO ESPECIAL DE LISTA DE PRECIOS SEPARADA POR AFILIADO
-	
-				if (!empty($_GET["categoryId"])) {
-			    	$categoryNode = NodePeer::get($_GET["categoryId"]);
-			      	$smarty->assign("categoryNode",$categoryNode);
-			      	$pager = $categoryNode->getChildsOnlyKindPaginatedAffiliate("Product",$_GET["page"]);
-					}
-				else {
-					$pager = TreePeer::getAllRootsByKindPaginatedAffiliate("Product",$_GET["page"]);
-				}
-
+        $productPeer->setSearchAffiliateId(Common::getAffiliatedId());
 		}
-		else {
-
-			if (!empty($_GET["categoryId"])) {
-		    	$categoryNode = NodePeer::get($_GET["categoryId"]);
-		      	$smarty->assign("categoryNode",$categoryNode);
-		      	$pager = $categoryNode->getChildsProductsPaginated($_GET["page"]);
-				}
-			else {
-				$pager = TreePeer::getAllRootsProductsPaginated($_GET["page"]);
-			}
-			
-			
-		}
-		
-		$productNodes = $pager->getResult();
+    
+    if (!empty($_GET["categoryId"])) {
+      $category = CategoryPeer::get($_GET["categoryId"]);
+      $smarty->assign("category",$category);
+      $productPeer->setSearchCategoryId($_GET["categoryId"]);
+    } else {
+      // vamos a buscar las que no tienen categorias.
+      $productPeer->setSearchCategoryId(null);
+    }
+    
+    $pager = $productPeer->getAllPaginatedFiltered($_GET["page"]);
+		$products = $pager->getResult();
 		$smarty->assign("pager",$pager);
 		$url = "Main.php?do=catalogShow";
-		if (!empty($categoryNode))
-			$url .= "&categoryId=".$categoryNode->getId();
+		if (!empty($category))
+			$url .= "&categoryId=".$category->getId();
 		$smarty->assign("url",$url);
-		$smarty->assign("productNodes",$productNodes);
-	   	$smarty->assign("message",$_GET["message"]);	
+		$smarty->assign("products",$products);
+	  $smarty->assign("message",$_GET["message"]);	
 		
 		return $mapping->findForwardConfig('success');
 		
