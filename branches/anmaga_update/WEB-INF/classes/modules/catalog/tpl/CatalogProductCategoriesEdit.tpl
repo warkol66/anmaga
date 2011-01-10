@@ -9,18 +9,17 @@
 		<fieldset title="Formulario de edicin de datos de una categoria de producto">
      <legend>Categoría de Producto</legend>
 		 		<p>|-if $action eq "edit"-|Editar|-else-|Crear|-/if-| Categorías de Productos</p>
-			|-if $action eq "edit"-||-assign var=category value=$node->getInfo()-||-/if-|
 			<p>
 				<label for="name">Categoría</label>
-				<input type="text" id="name" name="name" value="|-if $action eq 'edit'-||-$node->getname()-||-/if-|" title="name" size="45" maxlength="255" />
+				<input type="text" id="name" name="category[name]" value="|-$category->getname()-|" title="name" size="45" maxlength="255" />
 			</p>
 			<p>
 				<label for="description">Descripción</label>
-				<textarea name="description" cols="45" rows="5" wrap="virtual" id="description">|-if $action eq "edit"-||-$category->getdescription()-||-/if-|</textarea>
+				<textarea name="category[description]" cols="45" rows="5" wrap="virtual" id="description">|-$category->getdescription()-|</textarea>
 			</p>
 			|-if $action eq "edit"-|
 			<div>
-				<img src="Main.php?do=productCategoriesGetImage&id=|-$category->getId()-|" alt="|-$node->getname()-|" />
+				<img src="Main.php?do=productCategoriesGetImage&id=|-$category->getId()-|" alt="|-$category->getname()-|" />
 			</div>
 			|-/if-|
 			<p>
@@ -29,9 +28,10 @@
 			</p>
 			<p>
 				|-if $action eq "edit"-|
-				<input type="hidden" name="id" id="id" value="|-if $action eq "edit"-||-$node->getid()-||-/if-|" />
+				<input type="hidden" name="id" id="id" value="|-$category->getid()-|" />
 				|-/if-|
-				<input type="hidden" name="parentNodeId" id="parentNodeId" value="|-$parentNodeId-|" />
+				<input type="hidden" name="category[parentId]" id="parentCategoryId" value="|-$parentCategoryId-|" />
+				<input type="hidden" name="category[module]" id="module" value="|-$category->getModule()-|" />
 				<input type="hidden" name="action" id="action" value="|-$action-|" />
 				<input type="hidden" name="do" id="do" value="catalogProductCategoriesDoEdit" />
 				<input type="submit" id="button_edit_productcategory" name="button_edit_productcategory" title="Aceptar" value="Aceptar" class="button" />
@@ -57,7 +57,7 @@
 			<input type="radio" name="mode" value="4">Solo Actualizar Precios (Código;precio)</input>
 		</p>
 		<p>
-			<input type="hidden" name="parentNodeId" id="parentNodeId" value="|-$node->getId()-|" />
+			<input type="hidden" name="parentCategoryId" id="parentCategoryId" value="|-$category->getId()-|" />
 			<input type="hidden" name="do" id="do" value="catalogProductsDoLoadInCategory" />
 			<input type="submit" value="Cargar" class="button" />
 		</p>

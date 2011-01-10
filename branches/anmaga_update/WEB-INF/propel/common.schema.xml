@@ -177,20 +177,7 @@
 			<parameter name="Collate" value="utf8_general_ci"/>
 		</vendor>
 	</table>
-
-
-  <table phpName="Node" name="node" description="Nodo del Arbol" >
-    <column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id del nodo" primaryKey='true' />
-    <column name="name" size="255" type="VARCHAR" required="true" description="Nombre del nodo" />
-    <column name="kind" size="255" type="VARCHAR" required="true" description="Tipo de nodo" />
-    <column name="objectId" type="INTEGER" description="Id del objeto relacionado al nodo" />
-    <column name="parentId" type="INTEGER" description="Id del nodo padre" />
-    <column name="position" type="INTEGER" description="Orden entre los hermanos del nodo" />
-		<foreign-key foreignTable="node" >
-			<reference local="parentId" foreign="id" />
-		</foreign-key>
-  </table>
-
+	
 <table phpName="Branch" name="branch" description="Sucursales de Afiliados">
   <column name="id" autoIncrement="true" type="INTEGER" required="true" description="Id de la sucursal" primaryKey='true' />
   <column name="affiliateId" type="INTEGER"  required="true" description="Id del afiliado" />

@@ -45,8 +45,6 @@ class CatalogProductsEditAction extends BaseAction {
 		$moduleSection = "Products";
     $smarty->assign("moduleSection",$section);
 
-		$smarty->assign("parentNodeId",$_GET["parentNodeId"]);
-		
 		$productCategories = CategoryPeer::getAllByModule("catalog");
     $smarty->assign("productCategories",$productCategories);
     
@@ -59,9 +57,6 @@ class CatalogProductsEditAction extends BaseAction {
     if ( !empty($_GET["id"]) ) {
 			//voy a editar un producto
 			$product = ProductPeer::get($_GET["id"]);
-      
-			//$smarty->assign("parentNodeId",$node->getParentId());
-
 	    $smarty->assign("action","edit");
 		}
 		else {

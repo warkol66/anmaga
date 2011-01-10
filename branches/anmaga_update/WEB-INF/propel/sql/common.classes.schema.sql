@@ -217,28 +217,6 @@ CREATE TABLE `common_scheduleSubscriptionUser`
 ) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Relacion ScheduleSubscription - User';
 
 #-----------------------------------------------------------------------------
-#-- node
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `node`;
-
-
-CREATE TABLE `node`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del nodo',
-	`name` VARCHAR(255)  NOT NULL COMMENT 'Nombre del nodo',
-	`kind` VARCHAR(255)  NOT NULL COMMENT 'Tipo de nodo',
-	`objectId` INTEGER   COMMENT 'Id del objeto relacionado al nodo',
-	`parentId` INTEGER   COMMENT 'Id del nodo padre',
-	`position` INTEGER   COMMENT 'Orden entre los hermanos del nodo',
-	PRIMARY KEY (`id`),
-	INDEX `node_FI_1` (`parentId`),
-	CONSTRAINT `node_FK_1`
-		FOREIGN KEY (`parentId`)
-		REFERENCES `node` (`id`)
-) ENGINE=MyISAM COMMENT='Nodo del Arbol';
-
-#-----------------------------------------------------------------------------
 #-- branch
 #-----------------------------------------------------------------------------
 

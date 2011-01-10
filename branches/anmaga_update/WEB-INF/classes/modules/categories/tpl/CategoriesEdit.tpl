@@ -14,6 +14,10 @@
 			<label for="category[name]">Nombre</label>
 		<input type="text" name="category[name]" id="name" value='|-$category->getName()-|' size="50" />
 		</p>
+		<p>
+      <label for="description">Descripción</label>
+      <textarea name="category[description]" cols="45" rows="5" wrap="virtual" id="description">|-$category->getdescription()-|</textarea>
+    </p>
 	|-if $category->isParent()-|
 		<p><label for="category[module]">Módulo</label>
 		<select name="category[module]">

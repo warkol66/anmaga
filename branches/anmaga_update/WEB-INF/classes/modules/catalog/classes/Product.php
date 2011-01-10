@@ -13,12 +13,6 @@
  */
 class Product extends BaseProduct {
 
-	function getNode() {
-	  //TODO: eliminar esto.
-		require_once("NodePeer.php");
-		return NodePeer::getByObjectIdAndKind($this->getId(),"Product");
-	}
-	
 	public function getPrice() {
 		if (Common::isAffiliatedUser() && AffiliateProductPeer::affiliateHasPriceList(Common::getAffiliatedId())) {
       return AffiliateProductQuery::create()->join('Product')

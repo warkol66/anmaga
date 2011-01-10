@@ -8,62 +8,48 @@
 class ProductCategoryPeer extends BaseProductCategoryPeer {
 
   /**
-  * Crea un product category nuevo.
+  * Crea una categoria de producto.
   *
-  * @param string $description Descripcion de la categoria
-  * @param string $name Nombre de la categoria
-  * @param array $image image del product
-  * @param int $parentNodeId Id del nodo padre
-  * @return boolean true si se creo el productcategory correctamente, false sino
+  * @param mixed $params array asociativo de parametros
+  * @return la categoria si se creo la categoria correctamente, false sino
 	*/
-	function create($description,$name,$image,$parentNodeId=0) {
-    $productCategoryObj = new ProductCategory();
-    $productCategoryObj->setdescription($description);
-		$productCategoryObj->save();
-
-		$uploadfile = 'WEB-INF/productCategories/' . $productCategoryObj->getId();
-
-		move_uploaded_file($image['tmp_name'], $uploadfile);
-
-    require_once("NodePeer.php");
-    return NodePeer::create($name,"ProductCategory",$productCategoryObj->getId(),$parentNodeId,0);
+	function create($params) {
+    $productCategoryObj = CategoryPeer::create($params);
+    
+    $image = $params['image'];
+    if (!empty($image) && !empty($productCategoryObj)) {
+		  $uploadfile = 'WEB-INF/productCategories/' . $productCategoryObj->getId();
+		  move_uploaded_file($image['tmp_name'], $uploadfile);
+    }
+    return $productCategoryObj;
 	}
 
   /**
-  * Actualiza la informacion de un product category.
+  * Actualiza la informacion de una categoria de producto.
   *
-  * @param int $id id del productcategory
-  * @param string $description description del productcategory
-  * @param string $name Nombre de la categoria
-  * @param array $image image del product
-  * @return boolean true si se actualizo la informacion correctamente, false sino
+  * @param int $id id de la categoria
+  * @param mixed $params array asociativo de parametros
+  * @return la categoria si se actualizo la informacion correctamente, false sino
 	*/
-  function update($id,$description,$name,$image) {
-    require_once("NodePeer.php");
-		$node = NodePeer::get($id);
-		$node->setName($name);
-		$node->save();
+  function update($id,$params) {
+    $productCategoryObj = CategoryPeer::update($id,$params);
 
-  	$productCategoryObj = $node->getInfo();
-    $productCategoryObj->setdescription($description);
-		if (!empty($image)) {
+    $image = $params['image'];
+		if (!empty($image) && !empty($productCategoryObj)) {
 			$uploadfile = 'WEB-INF/productCategories/' . $productCategoryObj->getId();
   		move_uploaded_file($image['tmp_name'], $uploadfile);
   	}
-		$productCategoryObj->save();
-		return true;
+		return $productCategoryObj;
   }
 
 	/**
-	* Elimina un product category a partir de los valores de la clave.
+	* Elimina una categoria de producto a partir de los valores de la clave.
 	*
-  * @param int $id id del productcategory
-	*	@return boolean true si se elimino correctamente el productcategory, false sino
+  * @param int $id id de la categoria de producto
+	*	@return boolean true si se elimino correctamente la categoria, false sino
 	*/
   function delete($id) {
-  	$productcategoryObj = ProductCategoryPeer::retrieveByPK($id);
-    $productcategoryObj->delete();
-		return true;
+  	return CategoryPeer::delete($id);
   }
 
   /**
@@ -73,33 +59,26 @@ class ProductCategoryPeer extends BaseProductCategoryPeer {
   * @return array Informacion del productcategory
   */
   function get($id) {
-		$productCategoryObj = ProductCategoryPeer::retrieveByPK($id);
-    return $productCategoryObj;
+		return CategoryQuery::create()->filterByModule('catalog')->filterById($id)->findOne();
   }
   
   /**
-  * Obtiene si existe un product category.
+  * Obtiene si existe una categoria de producto.
   *
-  * @param int $id id del productcategory
+  * @param int $id id de la categoria
   * @return boolean true si existe la categoria con ese id, false sino
   */
   function exists($id) {
-    require_once("NodePeer.php");
-		$node = NodePeer::get($id);
-		if ( !empty($node) and $node->getKind() == "ProductCategory" )
-			return true;
-		return false;
+    return CategoryQuery::create()->filterByModule('catalog')->filterById($id)->count() > 0;
   }
 
   /**
-  * Obtiene todos los product categories.
+  * Obtiene todas las categories de productos.
 	*
 	*	@return array Informacion sobre todos los productcategories
   */
 	function getAll() {
-		$cond = new Criteria();
-		$alls = ProductCategoryPeer::doSelect($cond);
-		return $alls;
+		return CategoryQuery::create()->filterByModule('catalog')->find();
   }
   
   /**
