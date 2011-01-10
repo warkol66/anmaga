@@ -13,10 +13,4 @@
  */
 class ProductCategory extends BaseProductCategory {
 
-	function getNode() {
-	  //TODO: eliminar esto.
-		require_once("NodePeer.php");	                   		
-		return NodePeer::getByObjectIdAndKind($this->getId(),"ProductCategory");
-	}
-
 }

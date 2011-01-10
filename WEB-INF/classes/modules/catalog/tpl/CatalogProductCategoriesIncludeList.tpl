@@ -8,13 +8,11 @@
 		</tr>
 	</thead>
 	<tbody>
-	|-foreach from=$productCategories item=node name=for_productCategories-|
-		|-assign var=productCategory value=$node.node-|
-		|-assign var=category value=$productCategory->getInfo()-|
+	|-foreach from=$productCategories item=productCategory name=for_productCategories-|
 		<tr>
 			<td>|-$productCategory->getId()-|</td>
 			<td>|-$productCategory->getName()-|</td>
-			<td>|-$category->getDescription()-|</td>
+			<td>|-$productCategory->getDescription()-|</td>
 			<td nowrap>
 				<form action="Main.php" method="get">
 					<input type="hidden" name="do" value="catalogProductCategoriesEdit" />
@@ -28,14 +26,14 @@
 				</form>
 				<form action="Main.php" method="get">
 					<input type="hidden" name="do" value="catalogProductCategoriesEdit" />
-					<input type="hidden" name="parentNodeId" value="|-$productCategory->getid()-|" />
+					<input type="hidden" name="parentCategoryId" value="|-$productCategory->getid()-|" />
 					<input type="submit" name="submit_go_add_productcategory" value="Agregar Subcategoria" class="smallButton" />
 				</form>								</td>
 		</tr>
-		|-if $node.childs|@count gt 0-|
+		|-if $productCategory->hasChildren()-|
 		<tr>
 			<td>Subcategor&iacute;as</td>
-			<td colspan="3">|-include file="CatalogProductCategoriesIncludeList.tpl" productCategories=$node.childs-|</td>
+			<td colspan="3">|-include file="CatalogProductCategoriesIncludeList.tpl" productCategories=$productCategory->getChildren()-|</td>
 		</tr>
 		|-/if-|
 	|-/foreach-|

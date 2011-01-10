@@ -183,7 +183,7 @@ class CategoryPeer extends BaseCategoryPeer {
     }
     return false;
   }
-
+  
   /**
   * Obtiene todas las categorias.
 	*

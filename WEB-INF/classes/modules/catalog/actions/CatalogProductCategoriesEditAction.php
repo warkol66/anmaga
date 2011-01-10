@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("NodePeer.php");
-
 class CatalogProductCategoriesEditAction extends BaseAction {
 
 
@@ -48,24 +45,21 @@ class CatalogProductCategoriesEditAction extends BaseAction {
 		$moduleSection = "ProductCategories";
     $smarty->assign("moduleSection",$section);
 
-
-		$smarty->assign("parentNodeId",$_GET["parentNodeId"]);
+		$smarty->assign("parentCategoryId",$_GET["parentCategoryId"]);
 
     if ( !empty($_GET["id"]) ) {
 			//voy a editar un area
-
-			$node = NodePeer::get($_GET["id"]);
-
-			$smarty->assign("node",$node);
-			$smarty->assign("parentNodeId",$node->getParentId());
-			
+			$category = CategoryPeer::get($_GET["id"]);
+			$smarty->assign("parentCategoryId",$category->getParentId());
 	    $smarty->assign("action","edit");
-		}
-		else {
+		} else {
 			//voy a crear un area nuevo
-			
+			$category = new Category;
+      $category->setModule('catalog');
 			$smarty->assign("action","create");
 		}
+    
+    $smarty->assign("category",$category);
 
 		$smarty->assign("message",$_GET["message"]);
 		$smarty->assign("loaded",$_GET["loaded"]);

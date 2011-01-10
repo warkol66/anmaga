@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("ProductCategoryPeer.php");
-
 class CatalogProductCategoriesDoEditAction extends BaseAction {
 
 
@@ -47,18 +44,21 @@ class CatalogProductCategoriesDoEditAction extends BaseAction {
 
 		$moduleSection = "ProductCategories";
     $smarty->assign("moduleSection",$section);
+    
+    $categoryParams = $_POST['category'];
+    $categoryParams['image'] = $_FILES['image'];
 
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un productcategory existente
 
-			ProductCategoryPeer::update($_POST["id"],$_POST["description"],$_POST["name"],$_FILES["image"]);
+			ProductCategoryPeer::update($_POST["id"], $categoryParams);
       return $mapping->findForwardConfig('success');
 
 		}
 		else {
 		  //estoy creando un nuevo productcategory
 
-      if ( !ProductCategoryPeer::create($_POST["description"],$_POST["name"],$_FILES["image"],$_POST["parentNodeId"]) ) {
+      if ( !ProductCategoryPeer::create($categoryParams) ) {
 				$smarty->assign("id",$_POST["id"]);
 				$smarty->assign("description",$_POST["description"]);
 				$smarty->assign("action","create");
