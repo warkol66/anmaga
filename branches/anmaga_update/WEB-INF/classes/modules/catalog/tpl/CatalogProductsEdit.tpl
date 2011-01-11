@@ -40,6 +40,7 @@
 			<input type="file" id="image" name="image" title="image" /> 
 		</p> 
 		<br clear="all">
+		|-if $product->getId() eq ''-|
 		<p> 
 			<label for="categoryId">Categoría</label> 
 			<select name="product[categoryId]" id="categoryId"> 
@@ -47,6 +48,7 @@
 									|-include file="CatalogProductCategoriesIncludeOptions.tpl" productCategories=$productCategories-|
 			</select> 
 		</p>
+		|-/if-|
 		<br clear="all">
 		<p> 
 			<label for="unitId">Unidad</label> 
@@ -82,3 +84,6 @@
 		</fieldset> 
 	</form> 
 </div>
+|-if $product->getId() ne ''-|
+|-include file="CatalogProductsEditCategoriesInclude.tpl"-|
+|-/if-|
