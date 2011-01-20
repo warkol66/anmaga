@@ -53,6 +53,11 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	protected $collAffiliateUsers;
 
 	/**
+	 * @var        array AffiliateBranch[] Collection to store aggregation of AffiliateBranch objects.
+	 */
+	protected $collAffiliateBranchs;
+
+	/**
 	 * @var        array AffiliateProduct[] Collection to store aggregation of AffiliateProduct objects.
 	 */
 	protected $collAffiliateProducts;
@@ -61,11 +66,6 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	 * @var        array AffiliateProductCode[] Collection to store aggregation of AffiliateProductCode objects.
 	 */
 	protected $collAffiliateProductCodes;
-
-	/**
-	 * @var        array Branch[] Collection to store aggregation of Branch objects.
-	 */
-	protected $collBranchs;
 
 	/**
 	 * @var        array Order[] Collection to store aggregation of Order objects.
@@ -300,11 +300,11 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 
 			$this->collAffiliateUsers = null;
 
+			$this->collAffiliateBranchs = null;
+
 			$this->collAffiliateProducts = null;
 
 			$this->collAffiliateProductCodes = null;
-
-			$this->collBranchs = null;
 
 			$this->collOrders = null;
 
@@ -460,6 +460,14 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 				}
 			}
 
+			if ($this->collAffiliateBranchs !== null) {
+				foreach ($this->collAffiliateBranchs as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collAffiliateProducts !== null) {
 				foreach ($this->collAffiliateProducts as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -470,14 +478,6 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 
 			if ($this->collAffiliateProductCodes !== null) {
 				foreach ($this->collAffiliateProductCodes as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collBranchs !== null) {
-				foreach ($this->collBranchs as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -593,6 +593,14 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 					}
 				}
 
+				if ($this->collAffiliateBranchs !== null) {
+					foreach ($this->collAffiliateBranchs as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 				if ($this->collAffiliateProducts !== null) {
 					foreach ($this->collAffiliateProducts as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
@@ -603,14 +611,6 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 
 				if ($this->collAffiliateProductCodes !== null) {
 					foreach ($this->collAffiliateProductCodes as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collBranchs !== null) {
-					foreach ($this->collBranchs as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -870,6 +870,12 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 				}
 			}
 
+			foreach ($this->getAffiliateBranchs() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addAffiliateBranch($relObj->copy($deepCopy));
+				}
+			}
+
 			foreach ($this->getAffiliateProducts() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addAffiliateProduct($relObj->copy($deepCopy));
@@ -879,12 +885,6 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 			foreach ($this->getAffiliateProductCodes() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addAffiliateProductCode($relObj->copy($deepCopy));
-				}
-			}
-
-			foreach ($this->getBranchs() as $relObj) {
-				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addBranch($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1119,6 +1119,115 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 		$query->joinWith('AffiliateLevel', $join_behavior);
 
 		return $this->getAffiliateUsers($query, $con);
+	}
+
+	/**
+	 * Clears out the collAffiliateBranchs collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addAffiliateBranchs()
+	 */
+	public function clearAffiliateBranchs()
+	{
+		$this->collAffiliateBranchs = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collAffiliateBranchs collection.
+	 *
+	 * By default this just sets the collAffiliateBranchs collection to an empty array (like clearcollAffiliateBranchs());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initAffiliateBranchs()
+	{
+		$this->collAffiliateBranchs = new PropelObjectCollection();
+		$this->collAffiliateBranchs->setModel('AffiliateBranch');
+	}
+
+	/**
+	 * Gets an array of AffiliateBranch objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Affiliate is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array AffiliateBranch[] List of AffiliateBranch objects
+	 * @throws     PropelException
+	 */
+	public function getAffiliateBranchs($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collAffiliateBranchs || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAffiliateBranchs) {
+				// return empty collection
+				$this->initAffiliateBranchs();
+			} else {
+				$collAffiliateBranchs = AffiliateBranchQuery::create(null, $criteria)
+					->filterByAffiliate($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collAffiliateBranchs;
+				}
+				$this->collAffiliateBranchs = $collAffiliateBranchs;
+			}
+		}
+		return $this->collAffiliateBranchs;
+	}
+
+	/**
+	 * Returns the number of related AffiliateBranch objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related AffiliateBranch objects.
+	 * @throws     PropelException
+	 */
+	public function countAffiliateBranchs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collAffiliateBranchs || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAffiliateBranchs) {
+				return 0;
+			} else {
+				$query = AffiliateBranchQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByAffiliate($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collAffiliateBranchs);
+		}
+	}
+
+	/**
+	 * Method called to associate a AffiliateBranch object to this object
+	 * through the AffiliateBranch foreign key attribute.
+	 *
+	 * @param      AffiliateBranch $l AffiliateBranch
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addAffiliateBranch(AffiliateBranch $l)
+	{
+		if ($this->collAffiliateBranchs === null) {
+			$this->initAffiliateBranchs();
+		}
+		if (!$this->collAffiliateBranchs->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collAffiliateBranchs[]= $l;
+			$l->setAffiliate($this);
+		}
 	}
 
 	/**
@@ -1365,115 +1474,6 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Clears out the collBranchs collection
-	 *
-	 * This does not modify the database; however, it will remove any associated objects, causing
-	 * them to be refetched by subsequent calls to accessor method.
-	 *
-	 * @return     void
-	 * @see        addBranchs()
-	 */
-	public function clearBranchs()
-	{
-		$this->collBranchs = null; // important to set this to NULL since that means it is uninitialized
-	}
-
-	/**
-	 * Initializes the collBranchs collection.
-	 *
-	 * By default this just sets the collBranchs collection to an empty array (like clearcollBranchs());
-	 * however, you may wish to override this method in your stub class to provide setting appropriate
-	 * to your application -- for example, setting the initial array to the values stored in database.
-	 *
-	 * @return     void
-	 */
-	public function initBranchs()
-	{
-		$this->collBranchs = new PropelObjectCollection();
-		$this->collBranchs->setModel('Branch');
-	}
-
-	/**
-	 * Gets an array of Branch objects which contain a foreign key that references this object.
-	 *
-	 * If the $criteria is not null, it is used to always fetch the results from the database.
-	 * Otherwise the results are fetched from the database the first time, then cached.
-	 * Next time the same method is called without $criteria, the cached collection is returned.
-	 * If this Affiliate is new, it will return
-	 * an empty collection or the current collection; the criteria is ignored on a new object.
-	 *
-	 * @param      Criteria $criteria optional Criteria object to narrow the query
-	 * @param      PropelPDO $con optional connection object
-	 * @return     PropelCollection|array Branch[] List of Branch objects
-	 * @throws     PropelException
-	 */
-	public function getBranchs($criteria = null, PropelPDO $con = null)
-	{
-		if(null === $this->collBranchs || null !== $criteria) {
-			if ($this->isNew() && null === $this->collBranchs) {
-				// return empty collection
-				$this->initBranchs();
-			} else {
-				$collBranchs = BranchQuery::create(null, $criteria)
-					->filterByAffiliate($this)
-					->find($con);
-				if (null !== $criteria) {
-					return $collBranchs;
-				}
-				$this->collBranchs = $collBranchs;
-			}
-		}
-		return $this->collBranchs;
-	}
-
-	/**
-	 * Returns the number of related Branch objects.
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct
-	 * @param      PropelPDO $con
-	 * @return     int Count of related Branch objects.
-	 * @throws     PropelException
-	 */
-	public function countBranchs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-	{
-		if(null === $this->collBranchs || null !== $criteria) {
-			if ($this->isNew() && null === $this->collBranchs) {
-				return 0;
-			} else {
-				$query = BranchQuery::create(null, $criteria);
-				if($distinct) {
-					$query->distinct();
-				}
-				return $query
-					->filterByAffiliate($this)
-					->count($con);
-			}
-		} else {
-			return count($this->collBranchs);
-		}
-	}
-
-	/**
-	 * Method called to associate a Branch object to this object
-	 * through the Branch foreign key attribute.
-	 *
-	 * @param      Branch $l Branch
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function addBranch(Branch $l)
-	{
-		if ($this->collBranchs === null) {
-			$this->initBranchs();
-		}
-		if (!$this->collBranchs->contains($l)) { // only add it if the **same** object is not already associated
-			$this->collBranchs[]= $l;
-			$l->setAffiliate($this);
-		}
-	}
-
-	/**
 	 * Clears out the collOrders collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
@@ -1624,10 +1624,10 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
 	 * @return     PropelCollection|array Order[] List of Order objects
 	 */
-	public function getOrdersJoinBranch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getOrdersJoinAffiliateBranch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$query = OrderQuery::create(null, $criteria);
-		$query->joinWith('Branch', $join_behavior);
+		$query->joinWith('AffiliateBranch', $join_behavior);
 
 		return $this->getOrders($query, $con);
 	}
@@ -1942,10 +1942,10 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
 	 * @return     PropelCollection|array OrderTemplate[] List of OrderTemplate objects
 	 */
-	public function getOrderTemplatesJoinBranch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getOrderTemplatesJoinAffiliateBranch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$query = OrderTemplateQuery::create(null, $criteria);
-		$query->joinWith('Branch', $join_behavior);
+		$query->joinWith('AffiliateBranch', $join_behavior);
 
 		return $this->getOrderTemplates($query, $con);
 	}
@@ -2099,6 +2099,11 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collAffiliateBranchs) {
+				foreach ((array) $this->collAffiliateBranchs as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 			if ($this->collAffiliateProducts) {
 				foreach ((array) $this->collAffiliateProducts as $o) {
 					$o->clearAllReferences($deep);
@@ -2106,11 +2111,6 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 			}
 			if ($this->collAffiliateProductCodes) {
 				foreach ((array) $this->collAffiliateProductCodes as $o) {
-					$o->clearAllReferences($deep);
-				}
-			}
-			if ($this->collBranchs) {
-				foreach ((array) $this->collBranchs as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -2133,9 +2133,9 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 
 		$this->singleAffiliateInfo = null;
 		$this->collAffiliateUsers = null;
+		$this->collAffiliateBranchs = null;
 		$this->collAffiliateProducts = null;
 		$this->collAffiliateProductCodes = null;
-		$this->collBranchs = null;
 		$this->collOrders = null;
 		$this->collOrderStateChanges = null;
 		$this->collOrderTemplates = null;

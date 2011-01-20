@@ -572,7 +572,7 @@ abstract class BaseOrderPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related Branch table
+	 * Returns the number of rows matching criteria, joining the related AffiliateBranch table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -580,7 +580,7 @@ abstract class BaseOrderPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinBranch(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAffiliateBranch(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -607,7 +607,7 @@ abstract class BaseOrderPeer {
 			$con = Propel::getConnection(OrderPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(OrderPeer::BRANCHID, BranchPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderPeer::BRANCHID, AffiliateBranchPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -754,7 +754,7 @@ abstract class BaseOrderPeer {
 
 
 	/**
-	 * Selects a collection of Order objects pre-filled with their Branch objects.
+	 * Selects a collection of Order objects pre-filled with their AffiliateBranch objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -762,7 +762,7 @@ abstract class BaseOrderPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinBranch(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAffiliateBranch(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -773,9 +773,9 @@ abstract class BaseOrderPeer {
 
 		OrderPeer::addSelectColumns($criteria);
 		$startcol = (OrderPeer::NUM_COLUMNS - OrderPeer::NUM_LAZY_LOAD_COLUMNS);
-		BranchPeer::addSelectColumns($criteria);
+		AffiliateBranchPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(OrderPeer::BRANCHID, BranchPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderPeer::BRANCHID, AffiliateBranchPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -795,19 +795,19 @@ abstract class BaseOrderPeer {
 				OrderPeer::addInstanceToPool($obj1, $key1);
 			} // if $obj1 already loaded
 
-			$key2 = BranchPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			$key2 = AffiliateBranchPeer::getPrimaryKeyHashFromRow($row, $startcol);
 			if ($key2 !== null) {
-				$obj2 = BranchPeer::getInstanceFromPool($key2);
+				$obj2 = AffiliateBranchPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = BranchPeer::getOMClass(false);
+					$cls = AffiliateBranchPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
-					BranchPeer::addInstanceToPool($obj2, $key2);
+					AffiliateBranchPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 
-				// Add the $obj1 (Order) to $obj2 (Branch)
+				// Add the $obj1 (Order) to $obj2 (AffiliateBranch)
 				$obj2->addOrder($obj1);
 
 			} // if joined row was not null
@@ -859,7 +859,7 @@ abstract class BaseOrderPeer {
 
 		$criteria->addJoin(OrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
 
-		$criteria->addJoin(OrderPeer::BRANCHID, BranchPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderPeer::BRANCHID, AffiliateBranchPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -900,14 +900,14 @@ abstract class BaseOrderPeer {
 		AffiliatePeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		BranchPeer::addSelectColumns($criteria);
-		$startcol5 = $startcol4 + (BranchPeer::NUM_COLUMNS - BranchPeer::NUM_LAZY_LOAD_COLUMNS);
+		AffiliateBranchPeer::addSelectColumns($criteria);
+		$startcol5 = $startcol4 + (AffiliateBranchPeer::NUM_COLUMNS - AffiliateBranchPeer::NUM_LAZY_LOAD_COLUMNS);
 
 		$criteria->addJoin(OrderPeer::USERID, AffiliateUserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(OrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
 
-		$criteria->addJoin(OrderPeer::BRANCHID, BranchPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderPeer::BRANCHID, AffiliateBranchPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -962,21 +962,21 @@ abstract class BaseOrderPeer {
 				$obj3->addOrder($obj1);
 			} // if joined row not null
 
-			// Add objects for joined Branch rows
+			// Add objects for joined AffiliateBranch rows
 
-			$key4 = BranchPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+			$key4 = AffiliateBranchPeer::getPrimaryKeyHashFromRow($row, $startcol4);
 			if ($key4 !== null) {
-				$obj4 = BranchPeer::getInstanceFromPool($key4);
+				$obj4 = AffiliateBranchPeer::getInstanceFromPool($key4);
 				if (!$obj4) {
 
-					$cls = BranchPeer::getOMClass(false);
+					$cls = AffiliateBranchPeer::getOMClass(false);
 
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
-					BranchPeer::addInstanceToPool($obj4, $key4);
+					AffiliateBranchPeer::addInstanceToPool($obj4, $key4);
 				} // if obj4 loaded
 
-				// Add the $obj1 (Order) to the collection in $obj4 (Branch)
+				// Add the $obj1 (Order) to the collection in $obj4 (AffiliateBranch)
 				$obj4->addOrder($obj1);
 			} // if joined row not null
 
@@ -1025,7 +1025,7 @@ abstract class BaseOrderPeer {
 	
 		$criteria->addJoin(OrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
 
-		$criteria->addJoin(OrderPeer::BRANCHID, BranchPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderPeer::BRANCHID, AffiliateBranchPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -1077,7 +1077,7 @@ abstract class BaseOrderPeer {
 	
 		$criteria->addJoin(OrderPeer::USERID, AffiliateUserPeer::ID, $join_behavior);
 
-		$criteria->addJoin(OrderPeer::BRANCHID, BranchPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderPeer::BRANCHID, AffiliateBranchPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -1092,7 +1092,7 @@ abstract class BaseOrderPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related Branch table
+	 * Returns the number of rows matching criteria, joining the related AffiliateBranch table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -1100,7 +1100,7 @@ abstract class BaseOrderPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptBranch(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptAffiliateBranch(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -1170,12 +1170,12 @@ abstract class BaseOrderPeer {
 		AffiliatePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		BranchPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (BranchPeer::NUM_COLUMNS - BranchPeer::NUM_LAZY_LOAD_COLUMNS);
+		AffiliateBranchPeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (AffiliateBranchPeer::NUM_COLUMNS - AffiliateBranchPeer::NUM_LAZY_LOAD_COLUMNS);
 
 		$criteria->addJoin(OrderPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
 
-		$criteria->addJoin(OrderPeer::BRANCHID, BranchPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderPeer::BRANCHID, AffiliateBranchPeer::ID, $join_behavior);
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -1214,21 +1214,21 @@ abstract class BaseOrderPeer {
 
 			} // if joined row is not null
 
-				// Add objects for joined Branch rows
+				// Add objects for joined AffiliateBranch rows
 
-				$key3 = BranchPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+				$key3 = AffiliateBranchPeer::getPrimaryKeyHashFromRow($row, $startcol3);
 				if ($key3 !== null) {
-					$obj3 = BranchPeer::getInstanceFromPool($key3);
+					$obj3 = AffiliateBranchPeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$cls = BranchPeer::getOMClass(false);
+						$cls = AffiliateBranchPeer::getOMClass(false);
 
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
-					BranchPeer::addInstanceToPool($obj3, $key3);
+					AffiliateBranchPeer::addInstanceToPool($obj3, $key3);
 				} // if $obj3 already loaded
 
-				// Add the $obj1 (Order) to the collection in $obj3 (Branch)
+				// Add the $obj1 (Order) to the collection in $obj3 (AffiliateBranch)
 				$obj3->addOrder($obj1);
 
 			} // if joined row is not null
@@ -1267,12 +1267,12 @@ abstract class BaseOrderPeer {
 		AffiliateUserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		BranchPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (BranchPeer::NUM_COLUMNS - BranchPeer::NUM_LAZY_LOAD_COLUMNS);
+		AffiliateBranchPeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (AffiliateBranchPeer::NUM_COLUMNS - AffiliateBranchPeer::NUM_LAZY_LOAD_COLUMNS);
 
 		$criteria->addJoin(OrderPeer::USERID, AffiliateUserPeer::ID, $join_behavior);
 
-		$criteria->addJoin(OrderPeer::BRANCHID, BranchPeer::ID, $join_behavior);
+		$criteria->addJoin(OrderPeer::BRANCHID, AffiliateBranchPeer::ID, $join_behavior);
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -1311,21 +1311,21 @@ abstract class BaseOrderPeer {
 
 			} // if joined row is not null
 
-				// Add objects for joined Branch rows
+				// Add objects for joined AffiliateBranch rows
 
-				$key3 = BranchPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+				$key3 = AffiliateBranchPeer::getPrimaryKeyHashFromRow($row, $startcol3);
 				if ($key3 !== null) {
-					$obj3 = BranchPeer::getInstanceFromPool($key3);
+					$obj3 = AffiliateBranchPeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$cls = BranchPeer::getOMClass(false);
+						$cls = AffiliateBranchPeer::getOMClass(false);
 
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
-					BranchPeer::addInstanceToPool($obj3, $key3);
+					AffiliateBranchPeer::addInstanceToPool($obj3, $key3);
 				} // if $obj3 already loaded
 
-				// Add the $obj1 (Order) to the collection in $obj3 (Branch)
+				// Add the $obj1 (Order) to the collection in $obj3 (AffiliateBranch)
 				$obj3->addOrder($obj1);
 
 			} // if joined row is not null
@@ -1338,7 +1338,7 @@ abstract class BaseOrderPeer {
 
 
 	/**
-	 * Selects a collection of Order objects pre-filled with all related objects except Branch.
+	 * Selects a collection of Order objects pre-filled with all related objects except AffiliateBranch.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -1347,7 +1347,7 @@ abstract class BaseOrderPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptBranch(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptAffiliateBranch(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 

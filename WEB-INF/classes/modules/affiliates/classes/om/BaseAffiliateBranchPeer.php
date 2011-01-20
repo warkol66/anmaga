@@ -2,28 +2,28 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'branch' table.
+ * Base static class for performing query and update operations on the 'affiliates_branch' table.
  *
  * Sucursales de Afiliados
  *
- * @package    propel.generator.common.classes.om
+ * @package    propel.generator.affiliates.classes.om
  */
-abstract class BaseBranchPeer {
+abstract class BaseAffiliateBranchPeer {
 
 	/** the default database name for this class */
 	const DATABASE_NAME = 'anmaga';
 
 	/** the table name for this class */
-	const TABLE_NAME = 'branch';
+	const TABLE_NAME = 'affiliates_branch';
 
 	/** the related Propel class for this table */
-	const OM_CLASS = 'Branch';
+	const OM_CLASS = 'AffiliateBranch';
 
 	/** A class that can be returned by this peer. */
-	const CLASS_DEFAULT = 'common.classes.Branch';
+	const CLASS_DEFAULT = 'affiliates.classes.AffiliateBranch';
 
 	/** the related TableMap class for this table */
-	const TM_CLASS = 'BranchTableMap';
+	const TM_CLASS = 'AffiliateBranchTableMap';
 	
 	/** The total number of columns. */
 	const NUM_COLUMNS = 9;
@@ -32,37 +32,37 @@ abstract class BaseBranchPeer {
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** the column name for the ID field */
-	const ID = 'branch.ID';
+	const ID = 'affiliates_branch.ID';
 
 	/** the column name for the AFFILIATEID field */
-	const AFFILIATEID = 'branch.AFFILIATEID';
+	const AFFILIATEID = 'affiliates_branch.AFFILIATEID';
 
 	/** the column name for the NUMBER field */
-	const NUMBER = 'branch.NUMBER';
+	const NUMBER = 'affiliates_branch.NUMBER';
 
 	/** the column name for the CODE field */
-	const CODE = 'branch.CODE';
+	const CODE = 'affiliates_branch.CODE';
 
 	/** the column name for the NAME field */
-	const NAME = 'branch.NAME';
+	const NAME = 'affiliates_branch.NAME';
 
 	/** the column name for the PHONE field */
-	const PHONE = 'branch.PHONE';
+	const PHONE = 'affiliates_branch.PHONE';
 
 	/** the column name for the CONTACT field */
-	const CONTACT = 'branch.CONTACT';
+	const CONTACT = 'affiliates_branch.CONTACT';
 
 	/** the column name for the CONTACTEMAIL field */
-	const CONTACTEMAIL = 'branch.CONTACTEMAIL';
+	const CONTACTEMAIL = 'affiliates_branch.CONTACTEMAIL';
 
 	/** the column name for the MEMO field */
-	const MEMO = 'branch.MEMO';
+	const MEMO = 'affiliates_branch.MEMO';
 
 	/**
-	 * An identiy map to hold any loaded instances of Branch objects.
+	 * An identiy map to hold any loaded instances of AffiliateBranch objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
 	 * queries.
-	 * @var        array Branch[]
+	 * @var        array AffiliateBranch[]
 	 */
 	public static $instances = array();
 
@@ -143,12 +143,12 @@ abstract class BaseBranchPeer {
 	 *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
 	 * </code>
 	 * @param      string $alias The alias for the current table.
-	 * @param      string $column The column name for current table. (i.e. BranchPeer::COLUMN_NAME).
+	 * @param      string $column The column name for current table. (i.e. AffiliateBranchPeer::COLUMN_NAME).
 	 * @return     string
 	 */
 	public static function alias($alias, $column)
 	{
-		return str_replace(BranchPeer::TABLE_NAME.'.', $alias.'.', $column);
+		return str_replace(AffiliateBranchPeer::TABLE_NAME.'.', $alias.'.', $column);
 	}
 
 	/**
@@ -166,15 +166,15 @@ abstract class BaseBranchPeer {
 	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
 		if (null === $alias) {
-			$criteria->addSelectColumn(BranchPeer::ID);
-			$criteria->addSelectColumn(BranchPeer::AFFILIATEID);
-			$criteria->addSelectColumn(BranchPeer::NUMBER);
-			$criteria->addSelectColumn(BranchPeer::CODE);
-			$criteria->addSelectColumn(BranchPeer::NAME);
-			$criteria->addSelectColumn(BranchPeer::PHONE);
-			$criteria->addSelectColumn(BranchPeer::CONTACT);
-			$criteria->addSelectColumn(BranchPeer::CONTACTEMAIL);
-			$criteria->addSelectColumn(BranchPeer::MEMO);
+			$criteria->addSelectColumn(AffiliateBranchPeer::ID);
+			$criteria->addSelectColumn(AffiliateBranchPeer::AFFILIATEID);
+			$criteria->addSelectColumn(AffiliateBranchPeer::NUMBER);
+			$criteria->addSelectColumn(AffiliateBranchPeer::CODE);
+			$criteria->addSelectColumn(AffiliateBranchPeer::NAME);
+			$criteria->addSelectColumn(AffiliateBranchPeer::PHONE);
+			$criteria->addSelectColumn(AffiliateBranchPeer::CONTACT);
+			$criteria->addSelectColumn(AffiliateBranchPeer::CONTACTEMAIL);
+			$criteria->addSelectColumn(AffiliateBranchPeer::MEMO);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.AFFILIATEID');
@@ -204,21 +204,21 @@ abstract class BaseBranchPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(BranchPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(AffiliateBranchPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			BranchPeer::addSelectColumns($criteria);
+			AffiliateBranchPeer::addSelectColumns($criteria);
 		}
 
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 		$criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
 
 		if ($con === null) {
-			$con = Propel::getConnection(BranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(AffiliateBranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 		// BasePeer returns a PDOStatement
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -236,7 +236,7 @@ abstract class BaseBranchPeer {
 	 *
 	 * @param      Criteria $criteria object used to create the SELECT statement.
 	 * @param      PropelPDO $con
-	 * @return     Branch
+	 * @return     AffiliateBranch
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
@@ -244,7 +244,7 @@ abstract class BaseBranchPeer {
 	{
 		$critcopy = clone $criteria;
 		$critcopy->setLimit(1);
-		$objects = BranchPeer::doSelect($critcopy, $con);
+		$objects = AffiliateBranchPeer::doSelect($critcopy, $con);
 		if ($objects) {
 			return $objects[0];
 		}
@@ -261,7 +261,7 @@ abstract class BaseBranchPeer {
 	 */
 	public static function doSelect(Criteria $criteria, PropelPDO $con = null)
 	{
-		return BranchPeer::populateObjects(BranchPeer::doSelectStmt($criteria, $con));
+		return AffiliateBranchPeer::populateObjects(AffiliateBranchPeer::doSelectStmt($criteria, $con));
 	}
 	/**
 	 * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -279,12 +279,12 @@ abstract class BaseBranchPeer {
 	public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(BranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(AffiliateBranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		if (!$criteria->hasSelectClause()) {
 			$criteria = clone $criteria;
-			BranchPeer::addSelectColumns($criteria);
+			AffiliateBranchPeer::addSelectColumns($criteria);
 		}
 
 		// Set the correct dbName
@@ -302,10 +302,10 @@ abstract class BaseBranchPeer {
 	 * to the cache in order to ensure that the same objects are always returned by doSelect*()
 	 * and retrieveByPK*() calls.
 	 *
-	 * @param      Branch $value A Branch object.
+	 * @param      AffiliateBranch $value A AffiliateBranch object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(Branch $obj, $key = null)
+	public static function addInstanceToPool(AffiliateBranch $obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -323,18 +323,18 @@ abstract class BaseBranchPeer {
 	 * methods in your stub classes -- you may need to explicitly remove objects
 	 * from the cache in order to prevent returning objects that no longer exist.
 	 *
-	 * @param      mixed $value A Branch object or a primary key value.
+	 * @param      mixed $value A AffiliateBranch object or a primary key value.
 	 */
 	public static function removeInstanceFromPool($value)
 	{
 		if (Propel::isInstancePoolingEnabled() && $value !== null) {
-			if (is_object($value) && $value instanceof Branch) {
+			if (is_object($value) && $value instanceof AffiliateBranch) {
 				$key = (string) $value->getId();
 			} elseif (is_scalar($value)) {
 				// assume we've been passed a primary key
 				$key = (string) $value;
 			} else {
-				$e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Branch object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+				$e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or AffiliateBranch object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
 				throw $e;
 			}
 
@@ -349,7 +349,7 @@ abstract class BaseBranchPeer {
 	 * a multi-column primary key, a serialize()d version of the primary key will be returned.
 	 *
 	 * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-	 * @return     Branch Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+	 * @return     AffiliateBranch Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
 	 * @see        getPrimaryKeyHash()
 	 */
 	public static function getInstanceFromPool($key)
@@ -373,7 +373,7 @@ abstract class BaseBranchPeer {
 	}
 	
 	/**
-	 * Method to invalidate the instance pool of all tables related to branch
+	 * Method to invalidate the instance pool of all tables related to affiliates_branch
 	 * by a foreign key with ON DELETE CASCADE
 	 */
 	public static function clearRelatedInstancePool()
@@ -425,11 +425,11 @@ abstract class BaseBranchPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = BranchPeer::getOMClass(false);
+		$cls = AffiliateBranchPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key = BranchPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj = BranchPeer::getInstanceFromPool($key))) {
+			$key = AffiliateBranchPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj = AffiliateBranchPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
@@ -438,7 +438,7 @@ abstract class BaseBranchPeer {
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
-				BranchPeer::addInstanceToPool($obj, $key);
+				AffiliateBranchPeer::addInstanceToPool($obj, $key);
 			} // if key exists
 		}
 		$stmt->closeCursor();
@@ -451,21 +451,21 @@ abstract class BaseBranchPeer {
 	 * @param      int $startcol The 0-based offset for reading from the resultset row.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
-	 * @return     array (Branch object, last column rank)
+	 * @return     array (AffiliateBranch object, last column rank)
 	 */
 	public static function populateObject($row, $startcol = 0)
 	{
-		$key = BranchPeer::getPrimaryKeyHashFromRow($row, $startcol);
-		if (null !== ($obj = BranchPeer::getInstanceFromPool($key))) {
+		$key = AffiliateBranchPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = AffiliateBranchPeer::getInstanceFromPool($key))) {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + BranchPeer::NUM_COLUMNS;
+			$col = $startcol + AffiliateBranchPeer::NUM_COLUMNS;
 		} else {
-			$cls = BranchPeer::OM_CLASS;
+			$cls = AffiliateBranchPeer::OM_CLASS;
 			$obj = new $cls();
 			$col = $obj->hydrate($row, $startcol);
-			BranchPeer::addInstanceToPool($obj, $key);
+			AffiliateBranchPeer::addInstanceToPool($obj, $key);
 		}
 		return array($obj, $col);
 	}
@@ -487,14 +487,14 @@ abstract class BaseBranchPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(BranchPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(AffiliateBranchPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			BranchPeer::addSelectColumns($criteria);
+			AffiliateBranchPeer::addSelectColumns($criteria);
 		}
 		
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
@@ -503,10 +503,10 @@ abstract class BaseBranchPeer {
 		$criteria->setDbName(self::DATABASE_NAME);
 
 		if ($con === null) {
-			$con = Propel::getConnection(BranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(AffiliateBranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(BranchPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+		$criteria->addJoin(AffiliateBranchPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -521,11 +521,11 @@ abstract class BaseBranchPeer {
 
 
 	/**
-	 * Selects a collection of Branch objects pre-filled with their Affiliate objects.
+	 * Selects a collection of AffiliateBranch objects pre-filled with their Affiliate objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of Branch objects.
+	 * @return     array Array of AffiliateBranch objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
@@ -538,28 +538,28 @@ abstract class BaseBranchPeer {
 			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		BranchPeer::addSelectColumns($criteria);
-		$startcol = (BranchPeer::NUM_COLUMNS - BranchPeer::NUM_LAZY_LOAD_COLUMNS);
+		AffiliateBranchPeer::addSelectColumns($criteria);
+		$startcol = (AffiliateBranchPeer::NUM_COLUMNS - AffiliateBranchPeer::NUM_LAZY_LOAD_COLUMNS);
 		AffiliatePeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(BranchPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+		$criteria->addJoin(AffiliateBranchPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = BranchPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = BranchPeer::getInstanceFromPool($key1))) {
+			$key1 = AffiliateBranchPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = AffiliateBranchPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$cls = BranchPeer::getOMClass(false);
+				$cls = AffiliateBranchPeer::getOMClass(false);
 
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
-				BranchPeer::addInstanceToPool($obj1, $key1);
+				AffiliateBranchPeer::addInstanceToPool($obj1, $key1);
 			} // if $obj1 already loaded
 
 			$key2 = AffiliatePeer::getPrimaryKeyHashFromRow($row, $startcol);
@@ -574,8 +574,8 @@ abstract class BaseBranchPeer {
 					AffiliatePeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 
-				// Add the $obj1 (Branch) to $obj2 (Affiliate)
-				$obj2->addBranch($obj1);
+				// Add the $obj1 (AffiliateBranch) to $obj2 (Affiliate)
+				$obj2->addAffiliateBranch($obj1);
 
 			} // if joined row was not null
 
@@ -603,14 +603,14 @@ abstract class BaseBranchPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(BranchPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(AffiliateBranchPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			BranchPeer::addSelectColumns($criteria);
+			AffiliateBranchPeer::addSelectColumns($criteria);
 		}
 		
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
@@ -619,10 +619,10 @@ abstract class BaseBranchPeer {
 		$criteria->setDbName(self::DATABASE_NAME);
 
 		if ($con === null) {
-			$con = Propel::getConnection(BranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(AffiliateBranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(BranchPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+		$criteria->addJoin(AffiliateBranchPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -636,12 +636,12 @@ abstract class BaseBranchPeer {
 	}
 
 	/**
-	 * Selects a collection of Branch objects pre-filled with all related objects.
+	 * Selects a collection of AffiliateBranch objects pre-filled with all related objects.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of Branch objects.
+	 * @return     array Array of AffiliateBranch objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
@@ -654,29 +654,29 @@ abstract class BaseBranchPeer {
 			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		BranchPeer::addSelectColumns($criteria);
-		$startcol2 = (BranchPeer::NUM_COLUMNS - BranchPeer::NUM_LAZY_LOAD_COLUMNS);
+		AffiliateBranchPeer::addSelectColumns($criteria);
+		$startcol2 = (AffiliateBranchPeer::NUM_COLUMNS - AffiliateBranchPeer::NUM_LAZY_LOAD_COLUMNS);
 
 		AffiliatePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(BranchPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
+		$criteria->addJoin(AffiliateBranchPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = BranchPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = BranchPeer::getInstanceFromPool($key1))) {
+			$key1 = AffiliateBranchPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = AffiliateBranchPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://www.propelorm.org/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$cls = BranchPeer::getOMClass(false);
+				$cls = AffiliateBranchPeer::getOMClass(false);
 
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
-				BranchPeer::addInstanceToPool($obj1, $key1);
+				AffiliateBranchPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
 			// Add objects for joined Affiliate rows
@@ -693,8 +693,8 @@ abstract class BaseBranchPeer {
 					AffiliatePeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 loaded
 
-				// Add the $obj1 (Branch) to the collection in $obj2 (Affiliate)
-				$obj2->addBranch($obj1);
+				// Add the $obj1 (AffiliateBranch) to the collection in $obj2 (Affiliate)
+				$obj2->addAffiliateBranch($obj1);
 			} // if joined row not null
 
 			$results[] = $obj1;
@@ -720,10 +720,10 @@ abstract class BaseBranchPeer {
 	 */
 	public static function buildTableMap()
 	{
-	  $dbMap = Propel::getDatabaseMap(BaseBranchPeer::DATABASE_NAME);
-	  if (!$dbMap->hasTable(BaseBranchPeer::TABLE_NAME))
+	  $dbMap = Propel::getDatabaseMap(BaseAffiliateBranchPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseAffiliateBranchPeer::TABLE_NAME))
 	  {
-	    $dbMap->addTableObject(new BranchTableMap());
+	    $dbMap->addTableObject(new AffiliateBranchTableMap());
 	  }
 	}
 
@@ -740,13 +740,13 @@ abstract class BaseBranchPeer {
 	 */
 	public static function getOMClass($withPrefix = true)
 	{
-		return $withPrefix ? BranchPeer::CLASS_DEFAULT : BranchPeer::OM_CLASS;
+		return $withPrefix ? AffiliateBranchPeer::CLASS_DEFAULT : AffiliateBranchPeer::OM_CLASS;
 	}
 
 	/**
-	 * Method perform an INSERT on the database, given a Branch or Criteria object.
+	 * Method perform an INSERT on the database, given a AffiliateBranch or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or Branch object containing data that is used to create the INSERT statement.
+	 * @param      mixed $values Criteria or AffiliateBranch object containing data that is used to create the INSERT statement.
 	 * @param      PropelPDO $con the PropelPDO connection to use
 	 * @return     mixed The new primary key.
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -755,17 +755,17 @@ abstract class BaseBranchPeer {
 	public static function doInsert($values, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(BranchPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(AffiliateBranchPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 		} else {
-			$criteria = $values->buildCriteria(); // build Criteria from Branch object
+			$criteria = $values->buildCriteria(); // build Criteria from AffiliateBranch object
 		}
 
-		if ($criteria->containsKey(BranchPeer::ID) && $criteria->keyContainsValue(BranchPeer::ID) ) {
-			throw new PropelException('Cannot insert a value for auto-increment primary key ('.BranchPeer::ID.')');
+		if ($criteria->containsKey(AffiliateBranchPeer::ID) && $criteria->keyContainsValue(AffiliateBranchPeer::ID) ) {
+			throw new PropelException('Cannot insert a value for auto-increment primary key ('.AffiliateBranchPeer::ID.')');
 		}
 
 
@@ -787,9 +787,9 @@ abstract class BaseBranchPeer {
 	}
 
 	/**
-	 * Method perform an UPDATE on the database, given a Branch or Criteria object.
+	 * Method perform an UPDATE on the database, given a AffiliateBranch or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or Branch object containing data that is used to create the UPDATE statement.
+	 * @param      mixed $values Criteria or AffiliateBranch object containing data that is used to create the UPDATE statement.
 	 * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -798,7 +798,7 @@ abstract class BaseBranchPeer {
 	public static function doUpdate($values, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(BranchPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(AffiliateBranchPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$selectCriteria = new Criteria(self::DATABASE_NAME);
@@ -806,15 +806,15 @@ abstract class BaseBranchPeer {
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 
-			$comparison = $criteria->getComparison(BranchPeer::ID);
-			$value = $criteria->remove(BranchPeer::ID);
+			$comparison = $criteria->getComparison(AffiliateBranchPeer::ID);
+			$value = $criteria->remove(AffiliateBranchPeer::ID);
 			if ($value) {
-				$selectCriteria->add(BranchPeer::ID, $value, $comparison);
+				$selectCriteria->add(AffiliateBranchPeer::ID, $value, $comparison);
 			} else {
-				$selectCriteria->setPrimaryTableName(BranchPeer::TABLE_NAME);
+				$selectCriteria->setPrimaryTableName(AffiliateBranchPeer::TABLE_NAME);
 			}
 
-		} else { // $values is Branch object
+		} else { // $values is AffiliateBranch object
 			$criteria = $values->buildCriteria(); // gets full criteria
 			$selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
 		}
@@ -826,26 +826,26 @@ abstract class BaseBranchPeer {
 	}
 
 	/**
-	 * Method to DELETE all rows from the branch table.
+	 * Method to DELETE all rows from the affiliates_branch table.
 	 *
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 */
 	public static function doDeleteAll($con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(BranchPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(AffiliateBranchPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 		$affectedRows = 0; // initialize var to track total num of affected rows
 		try {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(BranchPeer::TABLE_NAME, $con, BranchPeer::DATABASE_NAME);
+			$affectedRows += BasePeer::doDeleteAll(AffiliateBranchPeer::TABLE_NAME, $con, AffiliateBranchPeer::DATABASE_NAME);
 			// Because this db requires some delete cascade/set null emulation, we have to
 			// clear the cached instance *after* the emulation has happened (since
 			// instances get re-added by the select statement contained therein).
-			BranchPeer::clearInstancePool();
-			BranchPeer::clearRelatedInstancePool();
+			AffiliateBranchPeer::clearInstancePool();
+			AffiliateBranchPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -855,9 +855,9 @@ abstract class BaseBranchPeer {
 	}
 
 	/**
-	 * Method perform a DELETE on the database, given a Branch or Criteria object OR a primary key value.
+	 * Method perform a DELETE on the database, given a AffiliateBranch or Criteria object OR a primary key value.
 	 *
-	 * @param      mixed $values Criteria or Branch object or primary key or array of primary keys
+	 * @param      mixed $values Criteria or AffiliateBranch object or primary key or array of primary keys
 	 *              which is used to create the DELETE statement
 	 * @param      PropelPDO $con the connection to use
 	 * @return     int 	The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -868,27 +868,27 @@ abstract class BaseBranchPeer {
 	 public static function doDelete($values, PropelPDO $con = null)
 	 {
 		if ($con === null) {
-			$con = Propel::getConnection(BranchPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(AffiliateBranchPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
 			// invalidate the cache for all objects of this type, since we have no
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
-			BranchPeer::clearInstancePool();
+			AffiliateBranchPeer::clearInstancePool();
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof Branch) { // it's a model object
+		} elseif ($values instanceof AffiliateBranch) { // it's a model object
 			// invalidate the cache for this single object
-			BranchPeer::removeInstanceFromPool($values);
+			AffiliateBranchPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
 		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(BranchPeer::ID, (array) $values, Criteria::IN);
+			$criteria->add(AffiliateBranchPeer::ID, (array) $values, Criteria::IN);
 			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				BranchPeer::removeInstanceFromPool($singleval);
+				AffiliateBranchPeer::removeInstanceFromPool($singleval);
 			}
 		}
 
@@ -903,7 +903,7 @@ abstract class BaseBranchPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-			BranchPeer::clearRelatedInstancePool();
+			AffiliateBranchPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -913,24 +913,24 @@ abstract class BaseBranchPeer {
 	}
 
 	/**
-	 * Validates all modified columns of given Branch object.
+	 * Validates all modified columns of given AffiliateBranch object.
 	 * If parameter $columns is either a single column name or an array of column names
 	 * than only those columns are validated.
 	 *
 	 * NOTICE: This does not apply to primary or foreign keys for now.
 	 *
-	 * @param      Branch $obj The object to validate.
+	 * @param      AffiliateBranch $obj The object to validate.
 	 * @param      mixed $cols Column name or array of column names.
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(Branch $obj, $cols = null)
+	public static function doValidate(AffiliateBranch $obj, $cols = null)
 	{
 		$columns = array();
 
 		if ($cols) {
-			$dbMap = Propel::getDatabaseMap(BranchPeer::DATABASE_NAME);
-			$tableMap = $dbMap->getTable(BranchPeer::TABLE_NAME);
+			$dbMap = Propel::getDatabaseMap(AffiliateBranchPeer::DATABASE_NAME);
+			$tableMap = $dbMap->getTable(AffiliateBranchPeer::TABLE_NAME);
 
 			if (! is_array($cols)) {
 				$cols = array($cols);
@@ -946,7 +946,7 @@ abstract class BaseBranchPeer {
 
 		}
 
-		return BasePeer::doValidate(BranchPeer::DATABASE_NAME, BranchPeer::TABLE_NAME, $columns);
+		return BasePeer::doValidate(AffiliateBranchPeer::DATABASE_NAME, AffiliateBranchPeer::TABLE_NAME, $columns);
 	}
 
 	/**
@@ -954,23 +954,23 @@ abstract class BaseBranchPeer {
 	 *
 	 * @param      int $pk the primary key.
 	 * @param      PropelPDO $con the connection to use
-	 * @return     Branch
+	 * @return     AffiliateBranch
 	 */
 	public static function retrieveByPK($pk, PropelPDO $con = null)
 	{
 
-		if (null !== ($obj = BranchPeer::getInstanceFromPool((string) $pk))) {
+		if (null !== ($obj = AffiliateBranchPeer::getInstanceFromPool((string) $pk))) {
 			return $obj;
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(BranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(AffiliateBranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria = new Criteria(BranchPeer::DATABASE_NAME);
-		$criteria->add(BranchPeer::ID, $pk);
+		$criteria = new Criteria(AffiliateBranchPeer::DATABASE_NAME);
+		$criteria->add(AffiliateBranchPeer::ID, $pk);
 
-		$v = BranchPeer::doSelect($criteria, $con);
+		$v = AffiliateBranchPeer::doSelect($criteria, $con);
 
 		return !empty($v) > 0 ? $v[0] : null;
 	}
@@ -986,23 +986,23 @@ abstract class BaseBranchPeer {
 	public static function retrieveByPKs($pks, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(BranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(AffiliateBranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		$objs = null;
 		if (empty($pks)) {
 			$objs = array();
 		} else {
-			$criteria = new Criteria(BranchPeer::DATABASE_NAME);
-			$criteria->add(BranchPeer::ID, $pks, Criteria::IN);
-			$objs = BranchPeer::doSelect($criteria, $con);
+			$criteria = new Criteria(AffiliateBranchPeer::DATABASE_NAME);
+			$criteria->add(AffiliateBranchPeer::ID, $pks, Criteria::IN);
+			$objs = AffiliateBranchPeer::doSelect($criteria, $con);
 		}
 		return $objs;
 	}
 
-} // BaseBranchPeer
+} // BaseAffiliateBranchPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseBranchPeer::buildTableMap();
+BaseAffiliateBranchPeer::buildTableMap();
 

@@ -32,8 +32,8 @@ CREATE TABLE `orders_order`
 	INDEX `orders_order_FI_3` (`branchId`),
 	CONSTRAINT `orders_order_FK_3`
 		FOREIGN KEY (`branchId`)
-		REFERENCES `branch` (`id`)
-) ENGINE=MyISAM COMMENT='Pedido de Productos';
+		REFERENCES `affiliates_branch` (`id`)
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Pedido de Productos';
 
 #-----------------------------------------------------------------------------
 #-- orders_orderItem
@@ -59,7 +59,7 @@ CREATE TABLE `orders_orderItem`
 	CONSTRAINT `orders_orderItem_FK_2`
 		FOREIGN KEY (`productCode`)
 		REFERENCES `product` (`code`)
-) ENGINE=MyISAM COMMENT='Item del Pedido de Productos';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Item del Pedido de Productos';
 
 #-----------------------------------------------------------------------------
 #-- orders_stateChanges
@@ -91,7 +91,7 @@ CREATE TABLE `orders_stateChanges`
 	CONSTRAINT `orders_stateChanges_FK_3`
 		FOREIGN KEY (`affiliateId`)
 		REFERENCES `affiliates_affiliate` (`id`)
-) ENGINE=MyISAM COMMENT='Cambios de Estado de Pedidos de Productos';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Cambios de Estado de Pedidos de Productos';
 
 #-----------------------------------------------------------------------------
 #-- orders_orderTemplate
@@ -121,8 +121,8 @@ CREATE TABLE `orders_orderTemplate`
 	INDEX `orders_orderTemplate_FI_3` (`branchId`),
 	CONSTRAINT `orders_orderTemplate_FK_3`
 		FOREIGN KEY (`branchId`)
-		REFERENCES `branch` (`id`)
-) ENGINE=MyISAM COMMENT='Plantillas de Pedido de Productos';
+		REFERENCES `affiliates_branch` (`id`)
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Plantillas de Pedido de Productos';
 
 #-----------------------------------------------------------------------------
 #-- orders_orderTemplateItem
@@ -148,7 +148,7 @@ CREATE TABLE `orders_orderTemplateItem`
 	CONSTRAINT `orders_orderTemplateItem_FK_2`
 		FOREIGN KEY (`productCode`)
 		REFERENCES `product` (`code`)
-) ENGINE=MyISAM COMMENT='Item de la Plantilla de Pedido de Productos';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Item de la Plantilla de Pedido de Productos';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

@@ -26,6 +26,10 @@
  * @method     AffiliateQuery rightJoinAffiliateUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AffiliateUser relation
  * @method     AffiliateQuery innerJoinAffiliateUser($relationAlias = null) Adds a INNER JOIN clause to the query using the AffiliateUser relation
  *
+ * @method     AffiliateQuery leftJoinAffiliateBranch($relationAlias = null) Adds a LEFT JOIN clause to the query using the AffiliateBranch relation
+ * @method     AffiliateQuery rightJoinAffiliateBranch($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AffiliateBranch relation
+ * @method     AffiliateQuery innerJoinAffiliateBranch($relationAlias = null) Adds a INNER JOIN clause to the query using the AffiliateBranch relation
+ *
  * @method     AffiliateQuery leftJoinAffiliateProduct($relationAlias = null) Adds a LEFT JOIN clause to the query using the AffiliateProduct relation
  * @method     AffiliateQuery rightJoinAffiliateProduct($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AffiliateProduct relation
  * @method     AffiliateQuery innerJoinAffiliateProduct($relationAlias = null) Adds a INNER JOIN clause to the query using the AffiliateProduct relation
@@ -33,10 +37,6 @@
  * @method     AffiliateQuery leftJoinAffiliateProductCode($relationAlias = null) Adds a LEFT JOIN clause to the query using the AffiliateProductCode relation
  * @method     AffiliateQuery rightJoinAffiliateProductCode($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AffiliateProductCode relation
  * @method     AffiliateQuery innerJoinAffiliateProductCode($relationAlias = null) Adds a INNER JOIN clause to the query using the AffiliateProductCode relation
- *
- * @method     AffiliateQuery leftJoinBranch($relationAlias = null) Adds a LEFT JOIN clause to the query using the Branch relation
- * @method     AffiliateQuery rightJoinBranch($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Branch relation
- * @method     AffiliateQuery innerJoinBranch($relationAlias = null) Adds a INNER JOIN clause to the query using the Branch relation
  *
  * @method     AffiliateQuery leftJoinOrder($relationAlias = null) Adds a LEFT JOIN clause to the query using the Order relation
  * @method     AffiliateQuery rightJoinOrder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Order relation
@@ -368,6 +368,70 @@ abstract class BaseAffiliateQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query by a related AffiliateBranch object
+	 *
+	 * @param     AffiliateBranch $affiliateBranch  the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateQuery The current query, for fluid interface
+	 */
+	public function filterByAffiliateBranch($affiliateBranch, $comparison = null)
+	{
+		return $this
+			->addUsingAlias(AffiliatePeer::ID, $affiliateBranch->getAffiliateid(), $comparison);
+	}
+
+	/**
+	 * Adds a JOIN clause to the query using the AffiliateBranch relation
+	 * 
+	 * @param     string $relationAlias optional alias for the relation
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    AffiliateQuery The current query, for fluid interface
+	 */
+	public function joinAffiliateBranch($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		$tableMap = $this->getTableMap();
+		$relationMap = $tableMap->getRelation('AffiliateBranch');
+		
+		// create a ModelJoin object for this join
+		$join = new ModelJoin();
+		$join->setJoinType($joinType);
+		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+		if ($previousJoin = $this->getPreviousJoin()) {
+			$join->setPreviousJoin($previousJoin);
+		}
+		
+		// add the ModelJoin to the current object
+		if($relationAlias) {
+			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+			$this->addJoinObject($join, $relationAlias);
+		} else {
+			$this->addJoinObject($join, 'AffiliateBranch');
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Use the AffiliateBranch relation AffiliateBranch object
+	 *
+	 * @see       useQuery()
+	 * 
+	 * @param     string $relationAlias optional alias for the relation,
+	 *                                   to be used as main alias in the secondary query
+	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+	 *
+	 * @return    AffiliateBranchQuery A secondary query class using the current class as primary query
+	 */
+	public function useAffiliateBranchQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	{
+		return $this
+			->joinAffiliateBranch($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'AffiliateBranch', 'AffiliateBranchQuery');
+	}
+
+	/**
 	 * Filter the query by a related AffiliateProduct object
 	 *
 	 * @param     AffiliateProduct $affiliateProduct  the related object to use as filter
@@ -493,70 +557,6 @@ abstract class BaseAffiliateQuery extends ModelCriteria
 		return $this
 			->joinAffiliateProductCode($relationAlias, $joinType)
 			->useQuery($relationAlias ? $relationAlias : 'AffiliateProductCode', 'AffiliateProductCodeQuery');
-	}
-
-	/**
-	 * Filter the query by a related Branch object
-	 *
-	 * @param     Branch $branch  the related object to use as filter
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    AffiliateQuery The current query, for fluid interface
-	 */
-	public function filterByBranch($branch, $comparison = null)
-	{
-		return $this
-			->addUsingAlias(AffiliatePeer::ID, $branch->getAffiliateid(), $comparison);
-	}
-
-	/**
-	 * Adds a JOIN clause to the query using the Branch relation
-	 * 
-	 * @param     string $relationAlias optional alias for the relation
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    AffiliateQuery The current query, for fluid interface
-	 */
-	public function joinBranch($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('Branch');
-		
-		// create a ModelJoin object for this join
-		$join = new ModelJoin();
-		$join->setJoinType($joinType);
-		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-		if ($previousJoin = $this->getPreviousJoin()) {
-			$join->setPreviousJoin($previousJoin);
-		}
-		
-		// add the ModelJoin to the current object
-		if($relationAlias) {
-			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-			$this->addJoinObject($join, $relationAlias);
-		} else {
-			$this->addJoinObject($join, 'Branch');
-		}
-		
-		return $this;
-	}
-
-	/**
-	 * Use the Branch relation Branch object
-	 *
-	 * @see       useQuery()
-	 * 
-	 * @param     string $relationAlias optional alias for the relation,
-	 *                                   to be used as main alias in the secondary query
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    BranchQuery A secondary query class using the current class as primary query
-	 */
-	public function useBranchQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		return $this
-			->joinBranch($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'Branch', 'BranchQuery');
 	}
 
 	/**

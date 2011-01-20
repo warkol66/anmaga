@@ -1,9 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("BranchPeer.php");
-require_once("AffiliatePeer.php");
-
 class AffiliatesBranchsListAction extends BaseAction {
 
 
@@ -46,7 +42,7 @@ class AffiliatesBranchsListAction extends BaseAction {
 		$module = "Affiliates";
 		$section = "Branchs";
 		
-		$branchPeer = new BranchPeer();
+		$branchPeer = new AffiliateBranchPeer();
 		
 		$url = "Main.php?do=affiliatesBranchsList";
 
@@ -77,4 +73,3 @@ class AffiliatesBranchsListAction extends BaseAction {
 	}
 
 }
-?>

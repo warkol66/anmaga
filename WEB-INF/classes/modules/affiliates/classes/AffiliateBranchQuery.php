@@ -1,7 +1,9 @@
 <?php
 
+
+
 /**
- * Skeleton subclass for performing query and update operations on the 'branch' table.
+ * Skeleton subclass for performing query and update operations on the 'affiliates_branch' table.
  *
  * Sucursales de Afiliados
  *
@@ -9,8 +11,8 @@
  * application requirements.  This class will only be generated as
  * long as it does not already exist in the output directory.
  *
- * @package    propel.generator.common.classes
+ * @package    propel.generator.affiliates.classes
  */
-class BranchQuery extends BaseBranchQuery {
+class AffiliateBranchQuery extends BaseAffiliateBranchQuery {
 
-} // BranchQuery
+} // AffiliateBranchQuery

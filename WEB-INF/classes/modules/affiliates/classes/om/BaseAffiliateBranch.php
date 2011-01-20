@@ -2,25 +2,25 @@
 
 
 /**
- * Base class that represents a row from the 'branch' table.
+ * Base class that represents a row from the 'affiliates_branch' table.
  *
  * Sucursales de Afiliados
  *
- * @package    propel.generator.common.classes.om
+ * @package    propel.generator.affiliates.classes.om
  */
-abstract class BaseBranch extends BaseObject  implements Persistent
+abstract class BaseAffiliateBranch extends BaseObject  implements Persistent
 {
 
 	/**
 	 * Peer class name
 	 */
-	const PEER = 'BranchPeer';
+	const PEER = 'AffiliateBranchPeer';
 
 	/**
 	 * The Peer class.
 	 * Instance provides a convenient way of calling static methods on a class
 	 * that calling code may not be able to identify.
-	 * @var        BranchPeer
+	 * @var        AffiliateBranchPeer
 	 */
 	protected static $peer;
 
@@ -201,7 +201,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * Set the value of [id] column.
 	 * Id de la sucursal
 	 * @param      int $v new value
-	 * @return     Branch The current object (for fluent API support)
+	 * @return     AffiliateBranch The current object (for fluent API support)
 	 */
 	public function setId($v)
 	{
@@ -211,7 +211,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 
 		if ($this->id !== $v) {
 			$this->id = $v;
-			$this->modifiedColumns[] = BranchPeer::ID;
+			$this->modifiedColumns[] = AffiliateBranchPeer::ID;
 		}
 
 		return $this;
@@ -221,7 +221,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * Set the value of [affiliateid] column.
 	 * Id del afiliado
 	 * @param      int $v new value
-	 * @return     Branch The current object (for fluent API support)
+	 * @return     AffiliateBranch The current object (for fluent API support)
 	 */
 	public function setAffiliateid($v)
 	{
@@ -231,7 +231,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 
 		if ($this->affiliateid !== $v) {
 			$this->affiliateid = $v;
-			$this->modifiedColumns[] = BranchPeer::AFFILIATEID;
+			$this->modifiedColumns[] = AffiliateBranchPeer::AFFILIATEID;
 		}
 
 		if ($this->aAffiliate !== null && $this->aAffiliate->getId() !== $v) {
@@ -245,7 +245,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * Set the value of [number] column.
 	 * Numero de la sucursal
 	 * @param      int $v new value
-	 * @return     Branch The current object (for fluent API support)
+	 * @return     AffiliateBranch The current object (for fluent API support)
 	 */
 	public function setNumber($v)
 	{
@@ -255,7 +255,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 
 		if ($this->number !== $v) {
 			$this->number = $v;
-			$this->modifiedColumns[] = BranchPeer::NUMBER;
+			$this->modifiedColumns[] = AffiliateBranchPeer::NUMBER;
 		}
 
 		return $this;
@@ -265,7 +265,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * Set the value of [code] column.
 	 * Codigo de la sucursal
 	 * @param      string $v new value
-	 * @return     Branch The current object (for fluent API support)
+	 * @return     AffiliateBranch The current object (for fluent API support)
 	 */
 	public function setCode($v)
 	{
@@ -275,7 +275,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 
 		if ($this->code !== $v) {
 			$this->code = $v;
-			$this->modifiedColumns[] = BranchPeer::CODE;
+			$this->modifiedColumns[] = AffiliateBranchPeer::CODE;
 		}
 
 		return $this;
@@ -285,7 +285,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * Set the value of [name] column.
 	 * Nombre de la sucursal
 	 * @param      string $v new value
-	 * @return     Branch The current object (for fluent API support)
+	 * @return     AffiliateBranch The current object (for fluent API support)
 	 */
 	public function setName($v)
 	{
@@ -295,7 +295,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 
 		if ($this->name !== $v) {
 			$this->name = $v;
-			$this->modifiedColumns[] = BranchPeer::NAME;
+			$this->modifiedColumns[] = AffiliateBranchPeer::NAME;
 		}
 
 		return $this;
@@ -305,7 +305,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * Set the value of [phone] column.
 	 * Telefono de la sucursal
 	 * @param      string $v new value
-	 * @return     Branch The current object (for fluent API support)
+	 * @return     AffiliateBranch The current object (for fluent API support)
 	 */
 	public function setPhone($v)
 	{
@@ -315,7 +315,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 
 		if ($this->phone !== $v) {
 			$this->phone = $v;
-			$this->modifiedColumns[] = BranchPeer::PHONE;
+			$this->modifiedColumns[] = AffiliateBranchPeer::PHONE;
 		}
 
 		return $this;
@@ -325,7 +325,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * Set the value of [contact] column.
 	 * Nombre de persona de contacto
 	 * @param      string $v new value
-	 * @return     Branch The current object (for fluent API support)
+	 * @return     AffiliateBranch The current object (for fluent API support)
 	 */
 	public function setContact($v)
 	{
@@ -335,7 +335,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 
 		if ($this->contact !== $v) {
 			$this->contact = $v;
-			$this->modifiedColumns[] = BranchPeer::CONTACT;
+			$this->modifiedColumns[] = AffiliateBranchPeer::CONTACT;
 		}
 
 		return $this;
@@ -345,7 +345,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * Set the value of [contactemail] column.
 	 * Email de persona de contacto
 	 * @param      string $v new value
-	 * @return     Branch The current object (for fluent API support)
+	 * @return     AffiliateBranch The current object (for fluent API support)
 	 */
 	public function setContactemail($v)
 	{
@@ -355,7 +355,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 
 		if ($this->contactemail !== $v) {
 			$this->contactemail = $v;
-			$this->modifiedColumns[] = BranchPeer::CONTACTEMAIL;
+			$this->modifiedColumns[] = AffiliateBranchPeer::CONTACTEMAIL;
 		}
 
 		return $this;
@@ -365,7 +365,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * Set the value of [memo] column.
 	 * Informacion adicional de la sucursal
 	 * @param      string $v new value
-	 * @return     Branch The current object (for fluent API support)
+	 * @return     AffiliateBranch The current object (for fluent API support)
 	 */
 	public function setMemo($v)
 	{
@@ -375,7 +375,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 
 		if ($this->memo !== $v) {
 			$this->memo = $v;
-			$this->modifiedColumns[] = BranchPeer::MEMO;
+			$this->modifiedColumns[] = AffiliateBranchPeer::MEMO;
 		}
 
 		return $this;
@@ -430,10 +430,10 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 9; // 9 = BranchPeer::NUM_COLUMNS - BranchPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 9; // 9 = AffiliateBranchPeer::NUM_COLUMNS - AffiliateBranchPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
-			throw new PropelException("Error populating Branch object", $e);
+			throw new PropelException("Error populating AffiliateBranch object", $e);
 		}
 	}
 
@@ -479,13 +479,13 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(BranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(AffiliateBranchPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		// We don't need to alter the object instance pool; we're just modifying this instance
 		// already in the pool.
 
-		$stmt = BranchPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+		$stmt = AffiliateBranchPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
 		$row = $stmt->fetch(PDO::FETCH_NUM);
 		$stmt->closeCursor();
 		if (!$row) {
@@ -519,14 +519,14 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(BranchPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(AffiliateBranchPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
 			if ($ret) {
-				BranchQuery::create()
+				AffiliateBranchQuery::create()
 					->filterByPrimaryKey($this->getPrimaryKey())
 					->delete($con);
 				$this->postDelete($con);
@@ -561,7 +561,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(BranchPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(AffiliateBranchPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$con->beginTransaction();
@@ -581,7 +581,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 					$this->postUpdate($con);
 				}
 				$this->postSave($con);
-				BranchPeer::addInstanceToPool($this);
+				AffiliateBranchPeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
 			}
@@ -623,15 +623,15 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 			}
 
 			if ($this->isNew() ) {
-				$this->modifiedColumns[] = BranchPeer::ID;
+				$this->modifiedColumns[] = AffiliateBranchPeer::ID;
 			}
 
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
 					$criteria = $this->buildCriteria();
-					if ($criteria->keyContainsValue(BranchPeer::ID) ) {
-						throw new PropelException('Cannot insert a value for auto-increment primary key ('.BranchPeer::ID.')');
+					if ($criteria->keyContainsValue(AffiliateBranchPeer::ID) ) {
+						throw new PropelException('Cannot insert a value for auto-increment primary key ('.AffiliateBranchPeer::ID.')');
 					}
 
 					$pk = BasePeer::doInsert($criteria, $con);
@@ -639,7 +639,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 					$this->setId($pk);  //[IMV] update autoincrement primary key
 					$this->setNew(false);
 				} else {
-					$affectedRows += BranchPeer::doUpdate($this, $con);
+					$affectedRows += AffiliateBranchPeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
@@ -739,7 +739,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 			}
 
 
-			if (($retval = BranchPeer::doValidate($this, $columns)) !== true) {
+			if (($retval = AffiliateBranchPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
@@ -778,7 +778,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 */
 	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = BranchPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = AffiliateBranchPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		$field = $this->getByPosition($pos);
 		return $field;
 	}
@@ -842,7 +842,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 */
 	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
 	{
-		$keys = BranchPeer::getFieldNames($keyType);
+		$keys = AffiliateBranchPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getAffiliateid(),
@@ -874,7 +874,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 */
 	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = BranchPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = AffiliateBranchPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		return $this->setByPosition($pos, $value);
 	}
 
@@ -938,7 +938,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 */
 	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
 	{
-		$keys = BranchPeer::getFieldNames($keyType);
+		$keys = AffiliateBranchPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setAffiliateid($arr[$keys[1]]);
@@ -958,17 +958,17 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 */
 	public function buildCriteria()
 	{
-		$criteria = new Criteria(BranchPeer::DATABASE_NAME);
+		$criteria = new Criteria(AffiliateBranchPeer::DATABASE_NAME);
 
-		if ($this->isColumnModified(BranchPeer::ID)) $criteria->add(BranchPeer::ID, $this->id);
-		if ($this->isColumnModified(BranchPeer::AFFILIATEID)) $criteria->add(BranchPeer::AFFILIATEID, $this->affiliateid);
-		if ($this->isColumnModified(BranchPeer::NUMBER)) $criteria->add(BranchPeer::NUMBER, $this->number);
-		if ($this->isColumnModified(BranchPeer::CODE)) $criteria->add(BranchPeer::CODE, $this->code);
-		if ($this->isColumnModified(BranchPeer::NAME)) $criteria->add(BranchPeer::NAME, $this->name);
-		if ($this->isColumnModified(BranchPeer::PHONE)) $criteria->add(BranchPeer::PHONE, $this->phone);
-		if ($this->isColumnModified(BranchPeer::CONTACT)) $criteria->add(BranchPeer::CONTACT, $this->contact);
-		if ($this->isColumnModified(BranchPeer::CONTACTEMAIL)) $criteria->add(BranchPeer::CONTACTEMAIL, $this->contactemail);
-		if ($this->isColumnModified(BranchPeer::MEMO)) $criteria->add(BranchPeer::MEMO, $this->memo);
+		if ($this->isColumnModified(AffiliateBranchPeer::ID)) $criteria->add(AffiliateBranchPeer::ID, $this->id);
+		if ($this->isColumnModified(AffiliateBranchPeer::AFFILIATEID)) $criteria->add(AffiliateBranchPeer::AFFILIATEID, $this->affiliateid);
+		if ($this->isColumnModified(AffiliateBranchPeer::NUMBER)) $criteria->add(AffiliateBranchPeer::NUMBER, $this->number);
+		if ($this->isColumnModified(AffiliateBranchPeer::CODE)) $criteria->add(AffiliateBranchPeer::CODE, $this->code);
+		if ($this->isColumnModified(AffiliateBranchPeer::NAME)) $criteria->add(AffiliateBranchPeer::NAME, $this->name);
+		if ($this->isColumnModified(AffiliateBranchPeer::PHONE)) $criteria->add(AffiliateBranchPeer::PHONE, $this->phone);
+		if ($this->isColumnModified(AffiliateBranchPeer::CONTACT)) $criteria->add(AffiliateBranchPeer::CONTACT, $this->contact);
+		if ($this->isColumnModified(AffiliateBranchPeer::CONTACTEMAIL)) $criteria->add(AffiliateBranchPeer::CONTACTEMAIL, $this->contactemail);
+		if ($this->isColumnModified(AffiliateBranchPeer::MEMO)) $criteria->add(AffiliateBranchPeer::MEMO, $this->memo);
 
 		return $criteria;
 	}
@@ -983,8 +983,8 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 */
 	public function buildPkeyCriteria()
 	{
-		$criteria = new Criteria(BranchPeer::DATABASE_NAME);
-		$criteria->add(BranchPeer::ID, $this->id);
+		$criteria = new Criteria(AffiliateBranchPeer::DATABASE_NAME);
+		$criteria->add(AffiliateBranchPeer::ID, $this->id);
 
 		return $criteria;
 	}
@@ -1024,7 +1024,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * If desired, this method can also make copies of all associated (fkey referrers)
 	 * objects.
 	 *
-	 * @param      object $copyObj An object of Branch (or compatible) type.
+	 * @param      object $copyObj An object of AffiliateBranch (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
 	 * @throws     PropelException
 	 */
@@ -1072,7 +1072,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * objects.
 	 *
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-	 * @return     Branch Clone of current object.
+	 * @return     AffiliateBranch Clone of current object.
 	 * @throws     PropelException
 	 */
 	public function copy($deepCopy = false)
@@ -1091,12 +1091,12 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * same instance for all member of this class. The method could therefore
 	 * be static, but this would prevent one from overriding the behavior.
 	 *
-	 * @return     BranchPeer
+	 * @return     AffiliateBranchPeer
 	 */
 	public function getPeer()
 	{
 		if (self::$peer === null) {
-			self::$peer = new BranchPeer();
+			self::$peer = new AffiliateBranchPeer();
 		}
 		return self::$peer;
 	}
@@ -1105,7 +1105,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * Declares an association between this object and a Affiliate object.
 	 *
 	 * @param      Affiliate $v
-	 * @return     Branch The current object (for fluent API support)
+	 * @return     AffiliateBranch The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
 	public function setAffiliate(Affiliate $v = null)
@@ -1121,7 +1121,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 		// Add binding for other direction of this n:n relationship.
 		// If this object has already been added to the Affiliate object, it will not be re-added.
 		if ($v !== null) {
-			$v->addBranch($this);
+			$v->addAffiliateBranch($this);
 		}
 
 		return $this;
@@ -1144,7 +1144,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 				 to this object.  This level of coupling may, however, be
 				 undesirable since it could result in an only partially populated collection
 				 in the referenced object.
-				 $this->aAffiliate->addBranchs($this);
+				 $this->aAffiliate->addAffiliateBranchs($this);
 			 */
 		}
 		return $this->aAffiliate;
@@ -1185,7 +1185,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * If the $criteria is not null, it is used to always fetch the results from the database.
 	 * Otherwise the results are fetched from the database the first time, then cached.
 	 * Next time the same method is called without $criteria, the cached collection is returned.
-	 * If this Branch is new, it will return
+	 * If this AffiliateBranch is new, it will return
 	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
 	 * @param      Criteria $criteria optional Criteria object to narrow the query
@@ -1201,7 +1201,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 				$this->initOrders();
 			} else {
 				$collOrders = OrderQuery::create(null, $criteria)
-					->filterByBranch($this)
+					->filterByAffiliateBranch($this)
 					->find($con);
 				if (null !== $criteria) {
 					return $collOrders;
@@ -1232,7 +1232,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 					$query->distinct();
 				}
 				return $query
-					->filterByBranch($this)
+					->filterByAffiliateBranch($this)
 					->count($con);
 			}
 		} else {
@@ -1255,7 +1255,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 		}
 		if (!$this->collOrders->contains($l)) { // only add it if the **same** object is not already associated
 			$this->collOrders[]= $l;
-			$l->setBranch($this);
+			$l->setAffiliateBranch($this);
 		}
 	}
 
@@ -1263,13 +1263,13 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	/**
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Branch is new, it will return
-	 * an empty collection; or if this Branch has previously
+	 * Otherwise if this AffiliateBranch is new, it will return
+	 * an empty collection; or if this AffiliateBranch has previously
 	 * been saved, it will retrieve related Orders from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Branch.
+	 * actually need in AffiliateBranch.
 	 *
 	 * @param      Criteria $criteria optional Criteria object to narrow the query
 	 * @param      PropelPDO $con optional connection object
@@ -1288,13 +1288,13 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	/**
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Branch is new, it will return
-	 * an empty collection; or if this Branch has previously
+	 * Otherwise if this AffiliateBranch is new, it will return
+	 * an empty collection; or if this AffiliateBranch has previously
 	 * been saved, it will retrieve related Orders from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Branch.
+	 * actually need in AffiliateBranch.
 	 *
 	 * @param      Criteria $criteria optional Criteria object to narrow the query
 	 * @param      PropelPDO $con optional connection object
@@ -1344,7 +1344,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	 * If the $criteria is not null, it is used to always fetch the results from the database.
 	 * Otherwise the results are fetched from the database the first time, then cached.
 	 * Next time the same method is called without $criteria, the cached collection is returned.
-	 * If this Branch is new, it will return
+	 * If this AffiliateBranch is new, it will return
 	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
 	 * @param      Criteria $criteria optional Criteria object to narrow the query
@@ -1360,7 +1360,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 				$this->initOrderTemplates();
 			} else {
 				$collOrderTemplates = OrderTemplateQuery::create(null, $criteria)
-					->filterByBranch($this)
+					->filterByAffiliateBranch($this)
 					->find($con);
 				if (null !== $criteria) {
 					return $collOrderTemplates;
@@ -1391,7 +1391,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 					$query->distinct();
 				}
 				return $query
-					->filterByBranch($this)
+					->filterByAffiliateBranch($this)
 					->count($con);
 			}
 		} else {
@@ -1414,7 +1414,7 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 		}
 		if (!$this->collOrderTemplates->contains($l)) { // only add it if the **same** object is not already associated
 			$this->collOrderTemplates[]= $l;
-			$l->setBranch($this);
+			$l->setAffiliateBranch($this);
 		}
 	}
 
@@ -1422,13 +1422,13 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	/**
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Branch is new, it will return
-	 * an empty collection; or if this Branch has previously
+	 * Otherwise if this AffiliateBranch is new, it will return
+	 * an empty collection; or if this AffiliateBranch has previously
 	 * been saved, it will retrieve related OrderTemplates from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Branch.
+	 * actually need in AffiliateBranch.
 	 *
 	 * @param      Criteria $criteria optional Criteria object to narrow the query
 	 * @param      PropelPDO $con optional connection object
@@ -1447,13 +1447,13 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 	/**
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Branch is new, it will return
-	 * an empty collection; or if this Branch has previously
+	 * Otherwise if this AffiliateBranch is new, it will return
+	 * an empty collection; or if this AffiliateBranch has previously
 	 * been saved, it will retrieve related OrderTemplates from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Branch.
+	 * actually need in AffiliateBranch.
 	 *
 	 * @param      Criteria $criteria optional Criteria object to narrow the query
 	 * @param      PropelPDO $con optional connection object
@@ -1538,4 +1538,4 @@ abstract class BaseBranch extends BaseObject  implements Persistent
 		return parent::__call($name, $params);
 	}
 
-} // BaseBranch
+} // BaseAffiliateBranch

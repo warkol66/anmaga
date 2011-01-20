@@ -42,7 +42,7 @@ class OrderTemplateTableMap extends TableMap {
 		$this->addColumn('CREATED', 'Created', 'TIMESTAMP', true, null, null);
 		$this->addForeignKey('USERID', 'Userid', 'INTEGER', 'affiliates_user', 'ID', true, null, null);
 		$this->addForeignKey('AFFILIATEID', 'Affiliateid', 'INTEGER', 'affiliates_affiliate', 'ID', true, null, null);
-		$this->addForeignKey('BRANCHID', 'Branchid', 'INTEGER', 'branch', 'ID', false, null, null);
+		$this->addForeignKey('BRANCHID', 'Branchid', 'INTEGER', 'affiliates_branch', 'ID', false, null, null);
 		$this->addColumn('TOTAL', 'Total', 'FLOAT', false, null, null);
 		// validators
 	} // initialize()
@@ -54,7 +54,7 @@ class OrderTemplateTableMap extends TableMap {
 	{
     $this->addRelation('AffiliateUser', 'AffiliateUser', RelationMap::MANY_TO_ONE, array('userId' => 'id', ), null, null);
     $this->addRelation('Affiliate', 'Affiliate', RelationMap::MANY_TO_ONE, array('affiliateId' => 'id', ), null, null);
-    $this->addRelation('Branch', 'Branch', RelationMap::MANY_TO_ONE, array('branchId' => 'id', ), null, null);
+    $this->addRelation('AffiliateBranch', 'AffiliateBranch', RelationMap::MANY_TO_ONE, array('branchId' => 'id', ), null, null);
     $this->addRelation('OrderTemplateItem', 'OrderTemplateItem', RelationMap::ONE_TO_MANY, array('id' => 'orderTemplateId', ), 'CASCADE', null);
 	} // buildRelations()
 

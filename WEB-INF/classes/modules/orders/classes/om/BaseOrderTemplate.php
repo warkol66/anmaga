@@ -77,9 +77,9 @@ abstract class BaseOrderTemplate extends BaseObject  implements Persistent
 	protected $aAffiliate;
 
 	/**
-	 * @var        Branch
+	 * @var        AffiliateBranch
 	 */
-	protected $aBranch;
+	protected $aAffiliateBranch;
 
 	/**
 	 * @var        array OrderTemplateItem[] Collection to store aggregation of OrderTemplateItem objects.
@@ -352,8 +352,8 @@ abstract class BaseOrderTemplate extends BaseObject  implements Persistent
 			$this->modifiedColumns[] = OrderTemplatePeer::BRANCHID;
 		}
 
-		if ($this->aBranch !== null && $this->aBranch->getId() !== $v) {
-			$this->aBranch = null;
+		if ($this->aAffiliateBranch !== null && $this->aAffiliateBranch->getId() !== $v) {
+			$this->aAffiliateBranch = null;
 		}
 
 		return $this;
@@ -455,8 +455,8 @@ abstract class BaseOrderTemplate extends BaseObject  implements Persistent
 		if ($this->aAffiliate !== null && $this->affiliateid !== $this->aAffiliate->getId()) {
 			$this->aAffiliate = null;
 		}
-		if ($this->aBranch !== null && $this->branchid !== $this->aBranch->getId()) {
-			$this->aBranch = null;
+		if ($this->aAffiliateBranch !== null && $this->branchid !== $this->aAffiliateBranch->getId()) {
+			$this->aAffiliateBranch = null;
 		}
 	} // ensureConsistency
 
@@ -499,7 +499,7 @@ abstract class BaseOrderTemplate extends BaseObject  implements Persistent
 
 			$this->aAffiliateUser = null;
 			$this->aAffiliate = null;
-			$this->aBranch = null;
+			$this->aAffiliateBranch = null;
 			$this->collOrderTemplateItems = null;
 
 		} // if (deep)
@@ -631,11 +631,11 @@ abstract class BaseOrderTemplate extends BaseObject  implements Persistent
 				$this->setAffiliate($this->aAffiliate);
 			}
 
-			if ($this->aBranch !== null) {
-				if ($this->aBranch->isModified() || $this->aBranch->isNew()) {
-					$affectedRows += $this->aBranch->save($con);
+			if ($this->aAffiliateBranch !== null) {
+				if ($this->aAffiliateBranch->isModified() || $this->aAffiliateBranch->isNew()) {
+					$affectedRows += $this->aAffiliateBranch->save($con);
 				}
-				$this->setBranch($this->aBranch);
+				$this->setAffiliateBranch($this->aAffiliateBranch);
 			}
 
 			if ($this->isNew() ) {
@@ -752,9 +752,9 @@ abstract class BaseOrderTemplate extends BaseObject  implements Persistent
 				}
 			}
 
-			if ($this->aBranch !== null) {
-				if (!$this->aBranch->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aBranch->getValidationFailures());
+			if ($this->aAffiliateBranch !== null) {
+				if (!$this->aAffiliateBranch->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aAffiliateBranch->getValidationFailures());
 				}
 			}
 
@@ -865,8 +865,8 @@ abstract class BaseOrderTemplate extends BaseObject  implements Persistent
 			if (null !== $this->aAffiliate) {
 				$result['Affiliate'] = $this->aAffiliate->toArray($keyType, $includeLazyLoadColumns, true);
 			}
-			if (null !== $this->aBranch) {
-				$result['Branch'] = $this->aBranch->toArray($keyType, $includeLazyLoadColumns, true);
+			if (null !== $this->aAffiliateBranch) {
+				$result['AffiliateBranch'] = $this->aAffiliateBranch->toArray($keyType, $includeLazyLoadColumns, true);
 			}
 		}
 		return $result;
@@ -1192,13 +1192,13 @@ abstract class BaseOrderTemplate extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Declares an association between this object and a Branch object.
+	 * Declares an association between this object and a AffiliateBranch object.
 	 *
-	 * @param      Branch $v
+	 * @param      AffiliateBranch $v
 	 * @return     OrderTemplate The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setBranch(Branch $v = null)
+	public function setAffiliateBranch(AffiliateBranch $v = null)
 	{
 		if ($v === null) {
 			$this->setBranchid(NULL);
@@ -1206,10 +1206,10 @@ abstract class BaseOrderTemplate extends BaseObject  implements Persistent
 			$this->setBranchid($v->getId());
 		}
 
-		$this->aBranch = $v;
+		$this->aAffiliateBranch = $v;
 
 		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the Branch object, it will not be re-added.
+		// If this object has already been added to the AffiliateBranch object, it will not be re-added.
 		if ($v !== null) {
 			$v->addOrderTemplate($this);
 		}
@@ -1219,25 +1219,25 @@ abstract class BaseOrderTemplate extends BaseObject  implements Persistent
 
 
 	/**
-	 * Get the associated Branch object
+	 * Get the associated AffiliateBranch object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     Branch The associated Branch object.
+	 * @return     AffiliateBranch The associated AffiliateBranch object.
 	 * @throws     PropelException
 	 */
-	public function getBranch(PropelPDO $con = null)
+	public function getAffiliateBranch(PropelPDO $con = null)
 	{
-		if ($this->aBranch === null && ($this->branchid !== null)) {
-			$this->aBranch = BranchQuery::create()->findPk($this->branchid, $con);
+		if ($this->aAffiliateBranch === null && ($this->branchid !== null)) {
+			$this->aAffiliateBranch = AffiliateBranchQuery::create()->findPk($this->branchid, $con);
 			/* The following can be used additionally to
 				 guarantee the related object contains a reference
 				 to this object.  This level of coupling may, however, be
 				 undesirable since it could result in an only partially populated collection
 				 in the referenced object.
-				 $this->aBranch->addOrderTemplates($this);
+				 $this->aAffiliateBranch->addOrderTemplates($this);
 			 */
 		}
-		return $this->aBranch;
+		return $this->aAffiliateBranch;
 	}
 
 	/**
@@ -1416,7 +1416,7 @@ abstract class BaseOrderTemplate extends BaseObject  implements Persistent
 		$this->collOrderTemplateItems = null;
 		$this->aAffiliateUser = null;
 		$this->aAffiliate = null;
-		$this->aBranch = null;
+		$this->aAffiliateBranch = null;
 	}
 
 	/**
