@@ -11,7 +11,7 @@
 	<tr>
 		<td><strong>Mayorista: |-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</strong></td>
 		<td><strong>Usuario: |-assign var=user value=$order->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</strong></td>
-		<td><strong>Sucursal: |-assign var=branch value=$order->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|</strong></td>
+		<td><strong>Sucursal: |-assign var=branch value=$order->getAffiliateBranch()-||-if $branch-||-$branch->getName()-||-/if-|</strong></td>
 	</tr>
 	<tr>
 		<td><strong>Estado Actual: <span id="state_actual">|-$order->getStateName()-|</span></strong></td>
@@ -61,7 +61,7 @@ Pedido: |-$order->getId()-|
 Fecha: |-$order->getDateCreated()|date_format:"%d-%m-%Y"-| - Número Pedido del Cliente: |-$order->getNumber()-|
 |-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-|Mayorista: |-$affiliate->getName()-|&nbsp;-|-/if-|
 |-assign var=user value=$order->getAffiliateUser()-||-if $user-|Usuario: |-$user->getUsername()-||-/if-|
-|-assign var=branch value=$order->getBranch()-||-if $branch-|Sucursal: |-$branch->getName()-||-/if-|
+|-assign var=branch value=$order->getAffiliateBranch()-||-if $branch-|Sucursal: |-$branch->getName()-||-/if-|
 
 Estado Actual: |-$order->getStateName()-|
 

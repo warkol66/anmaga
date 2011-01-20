@@ -2,100 +2,100 @@
 
 
 /**
- * Base class that represents a query for the 'branch' table.
+ * Base class that represents a query for the 'affiliates_branch' table.
  *
  * Sucursales de Afiliados
  *
- * @method     BranchQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     BranchQuery orderByAffiliateid($order = Criteria::ASC) Order by the affiliateId column
- * @method     BranchQuery orderByNumber($order = Criteria::ASC) Order by the number column
- * @method     BranchQuery orderByCode($order = Criteria::ASC) Order by the code column
- * @method     BranchQuery orderByName($order = Criteria::ASC) Order by the name column
- * @method     BranchQuery orderByPhone($order = Criteria::ASC) Order by the phone column
- * @method     BranchQuery orderByContact($order = Criteria::ASC) Order by the contact column
- * @method     BranchQuery orderByContactemail($order = Criteria::ASC) Order by the contactEmail column
- * @method     BranchQuery orderByMemo($order = Criteria::ASC) Order by the memo column
+ * @method     AffiliateBranchQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     AffiliateBranchQuery orderByAffiliateid($order = Criteria::ASC) Order by the affiliateId column
+ * @method     AffiliateBranchQuery orderByNumber($order = Criteria::ASC) Order by the number column
+ * @method     AffiliateBranchQuery orderByCode($order = Criteria::ASC) Order by the code column
+ * @method     AffiliateBranchQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method     AffiliateBranchQuery orderByPhone($order = Criteria::ASC) Order by the phone column
+ * @method     AffiliateBranchQuery orderByContact($order = Criteria::ASC) Order by the contact column
+ * @method     AffiliateBranchQuery orderByContactemail($order = Criteria::ASC) Order by the contactEmail column
+ * @method     AffiliateBranchQuery orderByMemo($order = Criteria::ASC) Order by the memo column
  *
- * @method     BranchQuery groupById() Group by the id column
- * @method     BranchQuery groupByAffiliateid() Group by the affiliateId column
- * @method     BranchQuery groupByNumber() Group by the number column
- * @method     BranchQuery groupByCode() Group by the code column
- * @method     BranchQuery groupByName() Group by the name column
- * @method     BranchQuery groupByPhone() Group by the phone column
- * @method     BranchQuery groupByContact() Group by the contact column
- * @method     BranchQuery groupByContactemail() Group by the contactEmail column
- * @method     BranchQuery groupByMemo() Group by the memo column
+ * @method     AffiliateBranchQuery groupById() Group by the id column
+ * @method     AffiliateBranchQuery groupByAffiliateid() Group by the affiliateId column
+ * @method     AffiliateBranchQuery groupByNumber() Group by the number column
+ * @method     AffiliateBranchQuery groupByCode() Group by the code column
+ * @method     AffiliateBranchQuery groupByName() Group by the name column
+ * @method     AffiliateBranchQuery groupByPhone() Group by the phone column
+ * @method     AffiliateBranchQuery groupByContact() Group by the contact column
+ * @method     AffiliateBranchQuery groupByContactemail() Group by the contactEmail column
+ * @method     AffiliateBranchQuery groupByMemo() Group by the memo column
  *
- * @method     BranchQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     BranchQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     BranchQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     AffiliateBranchQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     AffiliateBranchQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     AffiliateBranchQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     BranchQuery leftJoinAffiliate($relationAlias = null) Adds a LEFT JOIN clause to the query using the Affiliate relation
- * @method     BranchQuery rightJoinAffiliate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Affiliate relation
- * @method     BranchQuery innerJoinAffiliate($relationAlias = null) Adds a INNER JOIN clause to the query using the Affiliate relation
+ * @method     AffiliateBranchQuery leftJoinAffiliate($relationAlias = null) Adds a LEFT JOIN clause to the query using the Affiliate relation
+ * @method     AffiliateBranchQuery rightJoinAffiliate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Affiliate relation
+ * @method     AffiliateBranchQuery innerJoinAffiliate($relationAlias = null) Adds a INNER JOIN clause to the query using the Affiliate relation
  *
- * @method     BranchQuery leftJoinOrder($relationAlias = null) Adds a LEFT JOIN clause to the query using the Order relation
- * @method     BranchQuery rightJoinOrder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Order relation
- * @method     BranchQuery innerJoinOrder($relationAlias = null) Adds a INNER JOIN clause to the query using the Order relation
+ * @method     AffiliateBranchQuery leftJoinOrder($relationAlias = null) Adds a LEFT JOIN clause to the query using the Order relation
+ * @method     AffiliateBranchQuery rightJoinOrder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Order relation
+ * @method     AffiliateBranchQuery innerJoinOrder($relationAlias = null) Adds a INNER JOIN clause to the query using the Order relation
  *
- * @method     BranchQuery leftJoinOrderTemplate($relationAlias = null) Adds a LEFT JOIN clause to the query using the OrderTemplate relation
- * @method     BranchQuery rightJoinOrderTemplate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OrderTemplate relation
- * @method     BranchQuery innerJoinOrderTemplate($relationAlias = null) Adds a INNER JOIN clause to the query using the OrderTemplate relation
+ * @method     AffiliateBranchQuery leftJoinOrderTemplate($relationAlias = null) Adds a LEFT JOIN clause to the query using the OrderTemplate relation
+ * @method     AffiliateBranchQuery rightJoinOrderTemplate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OrderTemplate relation
+ * @method     AffiliateBranchQuery innerJoinOrderTemplate($relationAlias = null) Adds a INNER JOIN clause to the query using the OrderTemplate relation
  *
- * @method     Branch findOne(PropelPDO $con = null) Return the first Branch matching the query
- * @method     Branch findOneOrCreate(PropelPDO $con = null) Return the first Branch matching the query, or a new Branch object populated from the query conditions when no match is found
+ * @method     AffiliateBranch findOne(PropelPDO $con = null) Return the first AffiliateBranch matching the query
+ * @method     AffiliateBranch findOneOrCreate(PropelPDO $con = null) Return the first AffiliateBranch matching the query, or a new AffiliateBranch object populated from the query conditions when no match is found
  *
- * @method     Branch findOneById(int $id) Return the first Branch filtered by the id column
- * @method     Branch findOneByAffiliateid(int $affiliateId) Return the first Branch filtered by the affiliateId column
- * @method     Branch findOneByNumber(int $number) Return the first Branch filtered by the number column
- * @method     Branch findOneByCode(string $code) Return the first Branch filtered by the code column
- * @method     Branch findOneByName(string $name) Return the first Branch filtered by the name column
- * @method     Branch findOneByPhone(string $phone) Return the first Branch filtered by the phone column
- * @method     Branch findOneByContact(string $contact) Return the first Branch filtered by the contact column
- * @method     Branch findOneByContactemail(string $contactEmail) Return the first Branch filtered by the contactEmail column
- * @method     Branch findOneByMemo(string $memo) Return the first Branch filtered by the memo column
+ * @method     AffiliateBranch findOneById(int $id) Return the first AffiliateBranch filtered by the id column
+ * @method     AffiliateBranch findOneByAffiliateid(int $affiliateId) Return the first AffiliateBranch filtered by the affiliateId column
+ * @method     AffiliateBranch findOneByNumber(int $number) Return the first AffiliateBranch filtered by the number column
+ * @method     AffiliateBranch findOneByCode(string $code) Return the first AffiliateBranch filtered by the code column
+ * @method     AffiliateBranch findOneByName(string $name) Return the first AffiliateBranch filtered by the name column
+ * @method     AffiliateBranch findOneByPhone(string $phone) Return the first AffiliateBranch filtered by the phone column
+ * @method     AffiliateBranch findOneByContact(string $contact) Return the first AffiliateBranch filtered by the contact column
+ * @method     AffiliateBranch findOneByContactemail(string $contactEmail) Return the first AffiliateBranch filtered by the contactEmail column
+ * @method     AffiliateBranch findOneByMemo(string $memo) Return the first AffiliateBranch filtered by the memo column
  *
- * @method     array findById(int $id) Return Branch objects filtered by the id column
- * @method     array findByAffiliateid(int $affiliateId) Return Branch objects filtered by the affiliateId column
- * @method     array findByNumber(int $number) Return Branch objects filtered by the number column
- * @method     array findByCode(string $code) Return Branch objects filtered by the code column
- * @method     array findByName(string $name) Return Branch objects filtered by the name column
- * @method     array findByPhone(string $phone) Return Branch objects filtered by the phone column
- * @method     array findByContact(string $contact) Return Branch objects filtered by the contact column
- * @method     array findByContactemail(string $contactEmail) Return Branch objects filtered by the contactEmail column
- * @method     array findByMemo(string $memo) Return Branch objects filtered by the memo column
+ * @method     array findById(int $id) Return AffiliateBranch objects filtered by the id column
+ * @method     array findByAffiliateid(int $affiliateId) Return AffiliateBranch objects filtered by the affiliateId column
+ * @method     array findByNumber(int $number) Return AffiliateBranch objects filtered by the number column
+ * @method     array findByCode(string $code) Return AffiliateBranch objects filtered by the code column
+ * @method     array findByName(string $name) Return AffiliateBranch objects filtered by the name column
+ * @method     array findByPhone(string $phone) Return AffiliateBranch objects filtered by the phone column
+ * @method     array findByContact(string $contact) Return AffiliateBranch objects filtered by the contact column
+ * @method     array findByContactemail(string $contactEmail) Return AffiliateBranch objects filtered by the contactEmail column
+ * @method     array findByMemo(string $memo) Return AffiliateBranch objects filtered by the memo column
  *
- * @package    propel.generator.common.classes.om
+ * @package    propel.generator.affiliates.classes.om
  */
-abstract class BaseBranchQuery extends ModelCriteria
+abstract class BaseAffiliateBranchQuery extends ModelCriteria
 {
 
 	/**
-	 * Initializes internal state of BaseBranchQuery object.
+	 * Initializes internal state of BaseAffiliateBranchQuery object.
 	 *
 	 * @param     string $dbName The dabase name
 	 * @param     string $modelName The phpName of a model, e.g. 'Book'
 	 * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
 	 */
-	public function __construct($dbName = 'anmaga', $modelName = 'Branch', $modelAlias = null)
+	public function __construct($dbName = 'anmaga', $modelName = 'AffiliateBranch', $modelAlias = null)
 	{
 		parent::__construct($dbName, $modelName, $modelAlias);
 	}
 
 	/**
-	 * Returns a new BranchQuery object.
+	 * Returns a new AffiliateBranchQuery object.
 	 *
 	 * @param     string $modelAlias The alias of a model in the query
 	 * @param     Criteria $criteria Optional Criteria to build the query from
 	 *
-	 * @return    BranchQuery
+	 * @return    AffiliateBranchQuery
 	 */
 	public static function create($modelAlias = null, $criteria = null)
 	{
-		if ($criteria instanceof BranchQuery) {
+		if ($criteria instanceof AffiliateBranchQuery) {
 			return $criteria;
 		}
-		$query = new BranchQuery();
+		$query = new AffiliateBranchQuery();
 		if (null !== $modelAlias) {
 			$query->setModelAlias($modelAlias);
 		}
@@ -114,11 +114,11 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 * @param     mixed $key Primary key to use for the query
 	 * @param     PropelPDO $con an optional connection object
 	 *
-	 * @return    Branch|array|mixed the result, formatted by the current formatter
+	 * @return    AffiliateBranch|array|mixed the result, formatted by the current formatter
 	 */
 	public function findPk($key, $con = null)
 	{
-		if ((null !== ($obj = BranchPeer::getInstanceFromPool((string) $key))) && $this->getFormatter()->isObjectFormatter()) {
+		if ((null !== ($obj = AffiliateBranchPeer::getInstanceFromPool((string) $key))) && $this->getFormatter()->isObjectFormatter()) {
 			// the object is alredy in the instance pool
 			return $obj;
 		} else {
@@ -154,11 +154,11 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 *
 	 * @param     mixed $key Primary key to use for the query
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterByPrimaryKey($key)
 	{
-		return $this->addUsingAlias(BranchPeer::ID, $key, Criteria::EQUAL);
+		return $this->addUsingAlias(AffiliateBranchPeer::ID, $key, Criteria::EQUAL);
 	}
 
 	/**
@@ -166,11 +166,11 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 *
 	 * @param     array $keys The list of primary key to use for the query
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterByPrimaryKeys($keys)
 	{
-		return $this->addUsingAlias(BranchPeer::ID, $keys, Criteria::IN);
+		return $this->addUsingAlias(AffiliateBranchPeer::ID, $keys, Criteria::IN);
 	}
 
 	/**
@@ -180,14 +180,14 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterById($id = null, $comparison = null)
 	{
 		if (is_array($id) && null === $comparison) {
 			$comparison = Criteria::IN;
 		}
-		return $this->addUsingAlias(BranchPeer::ID, $id, $comparison);
+		return $this->addUsingAlias(AffiliateBranchPeer::ID, $id, $comparison);
 	}
 
 	/**
@@ -197,18 +197,18 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterByAffiliateid($affiliateid = null, $comparison = null)
 	{
 		if (is_array($affiliateid)) {
 			$useMinMax = false;
 			if (isset($affiliateid['min'])) {
-				$this->addUsingAlias(BranchPeer::AFFILIATEID, $affiliateid['min'], Criteria::GREATER_EQUAL);
+				$this->addUsingAlias(AffiliateBranchPeer::AFFILIATEID, $affiliateid['min'], Criteria::GREATER_EQUAL);
 				$useMinMax = true;
 			}
 			if (isset($affiliateid['max'])) {
-				$this->addUsingAlias(BranchPeer::AFFILIATEID, $affiliateid['max'], Criteria::LESS_EQUAL);
+				$this->addUsingAlias(AffiliateBranchPeer::AFFILIATEID, $affiliateid['max'], Criteria::LESS_EQUAL);
 				$useMinMax = true;
 			}
 			if ($useMinMax) {
@@ -218,7 +218,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 				$comparison = Criteria::IN;
 			}
 		}
-		return $this->addUsingAlias(BranchPeer::AFFILIATEID, $affiliateid, $comparison);
+		return $this->addUsingAlias(AffiliateBranchPeer::AFFILIATEID, $affiliateid, $comparison);
 	}
 
 	/**
@@ -228,18 +228,18 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterByNumber($number = null, $comparison = null)
 	{
 		if (is_array($number)) {
 			$useMinMax = false;
 			if (isset($number['min'])) {
-				$this->addUsingAlias(BranchPeer::NUMBER, $number['min'], Criteria::GREATER_EQUAL);
+				$this->addUsingAlias(AffiliateBranchPeer::NUMBER, $number['min'], Criteria::GREATER_EQUAL);
 				$useMinMax = true;
 			}
 			if (isset($number['max'])) {
-				$this->addUsingAlias(BranchPeer::NUMBER, $number['max'], Criteria::LESS_EQUAL);
+				$this->addUsingAlias(AffiliateBranchPeer::NUMBER, $number['max'], Criteria::LESS_EQUAL);
 				$useMinMax = true;
 			}
 			if ($useMinMax) {
@@ -249,7 +249,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 				$comparison = Criteria::IN;
 			}
 		}
-		return $this->addUsingAlias(BranchPeer::NUMBER, $number, $comparison);
+		return $this->addUsingAlias(AffiliateBranchPeer::NUMBER, $number, $comparison);
 	}
 
 	/**
@@ -259,7 +259,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 *            Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterByCode($code = null, $comparison = null)
 	{
@@ -271,7 +271,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(BranchPeer::CODE, $code, $comparison);
+		return $this->addUsingAlias(AffiliateBranchPeer::CODE, $code, $comparison);
 	}
 
 	/**
@@ -281,7 +281,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 *            Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterByName($name = null, $comparison = null)
 	{
@@ -293,7 +293,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(BranchPeer::NAME, $name, $comparison);
+		return $this->addUsingAlias(AffiliateBranchPeer::NAME, $name, $comparison);
 	}
 
 	/**
@@ -303,7 +303,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 *            Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterByPhone($phone = null, $comparison = null)
 	{
@@ -315,7 +315,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(BranchPeer::PHONE, $phone, $comparison);
+		return $this->addUsingAlias(AffiliateBranchPeer::PHONE, $phone, $comparison);
 	}
 
 	/**
@@ -325,7 +325,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 *            Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterByContact($contact = null, $comparison = null)
 	{
@@ -337,7 +337,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(BranchPeer::CONTACT, $contact, $comparison);
+		return $this->addUsingAlias(AffiliateBranchPeer::CONTACT, $contact, $comparison);
 	}
 
 	/**
@@ -347,7 +347,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 *            Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterByContactemail($contactemail = null, $comparison = null)
 	{
@@ -359,7 +359,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(BranchPeer::CONTACTEMAIL, $contactemail, $comparison);
+		return $this->addUsingAlias(AffiliateBranchPeer::CONTACTEMAIL, $contactemail, $comparison);
 	}
 
 	/**
@@ -369,7 +369,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 *            Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterByMemo($memo = null, $comparison = null)
 	{
@@ -381,7 +381,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(BranchPeer::MEMO, $memo, $comparison);
+		return $this->addUsingAlias(AffiliateBranchPeer::MEMO, $memo, $comparison);
 	}
 
 	/**
@@ -390,12 +390,12 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 * @param     Affiliate $affiliate  the related object to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterByAffiliate($affiliate, $comparison = null)
 	{
 		return $this
-			->addUsingAlias(BranchPeer::AFFILIATEID, $affiliate->getId(), $comparison);
+			->addUsingAlias(AffiliateBranchPeer::AFFILIATEID, $affiliate->getId(), $comparison);
 	}
 
 	/**
@@ -404,7 +404,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function joinAffiliate($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
@@ -454,12 +454,12 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 * @param     Order $order  the related object to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterByOrder($order, $comparison = null)
 	{
 		return $this
-			->addUsingAlias(BranchPeer::ID, $order->getBranchid(), $comparison);
+			->addUsingAlias(AffiliateBranchPeer::ID, $order->getBranchid(), $comparison);
 	}
 
 	/**
@@ -468,7 +468,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function joinOrder($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
@@ -518,12 +518,12 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 * @param     OrderTemplate $orderTemplate  the related object to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function filterByOrderTemplate($orderTemplate, $comparison = null)
 	{
 		return $this
-			->addUsingAlias(BranchPeer::ID, $orderTemplate->getBranchid(), $comparison);
+			->addUsingAlias(AffiliateBranchPeer::ID, $orderTemplate->getBranchid(), $comparison);
 	}
 
 	/**
@@ -532,7 +532,7 @@ abstract class BaseBranchQuery extends ModelCriteria
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
 	public function joinOrderTemplate($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
@@ -579,17 +579,17 @@ abstract class BaseBranchQuery extends ModelCriteria
 	/**
 	 * Exclude object from result
 	 *
-	 * @param     Branch $branch Object to remove from the list of results
+	 * @param     AffiliateBranch $affiliateBranch Object to remove from the list of results
 	 *
-	 * @return    BranchQuery The current query, for fluid interface
+	 * @return    AffiliateBranchQuery The current query, for fluid interface
 	 */
-	public function prune($branch = null)
+	public function prune($affiliateBranch = null)
 	{
-		if ($branch) {
-			$this->addUsingAlias(BranchPeer::ID, $branch->getId(), Criteria::NOT_EQUAL);
+		if ($affiliateBranch) {
+			$this->addUsingAlias(AffiliateBranchPeer::ID, $affiliateBranch->getId(), Criteria::NOT_EQUAL);
 	  }
 	  
 		return $this;
 	}
 
-} // BaseBranchQuery
+} // BaseAffiliateBranchQuery

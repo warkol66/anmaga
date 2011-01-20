@@ -1,4 +1,9 @@
 ﻿==============================
+Revisión 653 - Fecha 20110120
+------------------------------
+RENAME TABLE `branch`  TO `affiliates_branch`;
+
+==============================
 Revisión 649 - Fecha 20110107
 ------------------------------
 #El nombre del producto pasa del node al product

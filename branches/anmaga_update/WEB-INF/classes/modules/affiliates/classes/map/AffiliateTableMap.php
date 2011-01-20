@@ -50,9 +50,9 @@ class AffiliateTableMap extends TableMap {
 	{
     $this->addRelation('AffiliateInfo', 'AffiliateInfo', RelationMap::ONE_TO_ONE, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('AffiliateUser', 'AffiliateUser', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
+    $this->addRelation('AffiliateBranch', 'AffiliateBranch', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('AffiliateProduct', 'AffiliateProduct', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('AffiliateProductCode', 'AffiliateProductCode', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
-    $this->addRelation('Branch', 'Branch', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('Order', 'Order', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('OrderStateChange', 'OrderStateChange', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('OrderTemplate', 'OrderTemplate', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);

@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'branch' table.
+ * This class defines the structure of the 'affiliates_branch' table.
  *
  *
  *
@@ -12,14 +12,14 @@
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
  *
- * @package    propel.generator.common.classes.map
+ * @package    propel.generator.affiliates.classes.map
  */
-class BranchTableMap extends TableMap {
+class AffiliateBranchTableMap extends TableMap {
 
 	/**
 	 * The (dot-path) name of this class
 	 */
-	const CLASS_NAME = 'common.classes.map.BranchTableMap';
+	const CLASS_NAME = 'affiliates.classes.map.AffiliateBranchTableMap';
 
 	/**
 	 * Initialize the table attributes, columns and validators
@@ -31,10 +31,10 @@ class BranchTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('branch');
-		$this->setPhpName('Branch');
-		$this->setClassname('Branch');
-		$this->setPackage('common.classes');
+		$this->setName('affiliates_branch');
+		$this->setPhpName('AffiliateBranch');
+		$this->setClassname('AffiliateBranch');
+		$this->setPackage('affiliates.classes');
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
@@ -59,4 +59,4 @@ class BranchTableMap extends TableMap {
     $this->addRelation('OrderTemplate', 'OrderTemplate', RelationMap::ONE_TO_MANY, array('id' => 'branchId', ), null, null);
 	} // buildRelations()
 
-} // BranchTableMap
+} // AffiliateBranchTableMap

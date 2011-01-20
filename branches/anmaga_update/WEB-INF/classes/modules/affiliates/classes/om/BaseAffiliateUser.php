@@ -1802,10 +1802,10 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
 	 * @return     PropelCollection|array Order[] List of Order objects
 	 */
-	public function getOrdersJoinBranch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getOrdersJoinAffiliateBranch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$query = OrderQuery::create(null, $criteria);
-		$query->joinWith('Branch', $join_behavior);
+		$query->joinWith('AffiliateBranch', $join_behavior);
 
 		return $this->getOrders($query, $con);
 	}
@@ -2120,10 +2120,10 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
 	 * @return     PropelCollection|array OrderTemplate[] List of OrderTemplate objects
 	 */
-	public function getOrderTemplatesJoinBranch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getOrderTemplatesJoinAffiliateBranch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$query = OrderTemplateQuery::create(null, $criteria);
-		$query->joinWith('Branch', $join_behavior);
+		$query->joinWith('AffiliateBranch', $join_behavior);
 
 		return $this->getOrderTemplates($query, $con);
 	}

@@ -4,7 +4,7 @@
 |-assign var=productOrderCode value=$product->getOrderCode()-|
 |-assign var=productOrderCodePre value=$productOrderCode|truncate:1:""-|
 |-assign var=unit value=$product->getUnit()-|
-|-assign var=branch value=$order->getBranch()-||-if ($lastProductOrderCodePre ne $productOrderCodePre)-||-counter name=subnumber-||-counter start=0 assign=iteration name=iteration-||-/if-|
+|-assign var=branch value=$order->getAffiliateBranch()-||-if ($lastProductOrderCodePre ne $productOrderCodePre)-||-counter name=subnumber-||-counter start=0 assign=iteration name=iteration-||-/if-|
 	<cursor_profit_xml>
 		<nro_ord>|-if $order->getNumber() eq 0-||-$order->getId()-||-else-||-$order->getNumber()-||-/if-|_|-$subnumber-|</nro_ord>
 		<co_cli>|-if $branch-||-$branch->getCode()-||-/if-|</co_cli>

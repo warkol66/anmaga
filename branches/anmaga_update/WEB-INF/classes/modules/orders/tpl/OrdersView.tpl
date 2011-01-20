@@ -12,7 +12,7 @@
 	<tr>
 		<td><strong>Mayorista: |-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</strong></td>
 		<td><strong>Usuario: |-assign var=user value=$order->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</strong></td>
-		<td><strong>Sucursal: |-assign var=branch value=$order->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|</strong></td>
+		<td><strong>Sucursal: |-assign var=branch value=$order->getAffiliateBranch()-||-if $branch-||-$branch->getName()-||-/if-|</strong></td>
 	</tr>
 	<tr>
 		<td><strong>Estado Actual: <span id="state_actual">|-$order->getStateName()-|</span></strong></td>

@@ -26,7 +26,7 @@
 												<td class="tdSize1">|-$orderTemplate->getcreated()-|</td>
 												<td class="tdSize1">|-assign var=user value=$orderTemplate->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
 												|-if $all eq "1"-|<td class="tdSize1">|-assign var=affiliate value=$orderTemplate->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
-												<td class="tdSize1">|-assign var=branch value=$orderTemplate->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
+												<td class="tdSize1">|-assign var=branch value=$orderTemplate->getAffiliateBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
 												<td class="tdSize1">|-$orderTemplate->gettotal()-|</td>
 												<td>
 					<form action="Main.php" method="get">

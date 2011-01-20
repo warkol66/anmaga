@@ -15,9 +15,9 @@
 		<td><strong>Mayorista:</strong> |-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|<br> 
 </td>
 		<td><strong>Usuario:</strong> |-assign var=user value=$order->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
-		<td>|-assign var=currentBranch value=$order->getBranch()-|
+		<td>|-assign var=currentBranch value=$order->getAffiliateBranch()-|
 		<strong>Sucursal:</strong> <select name="branch">
-		|-assign var=currentBranch value=$order->getBranch()-|
+		|-assign var=currentBranch value=$order->getAffiliateBranch()-|
 		|- foreach from=$branches item=aBranch -|
 				<option value="|-$aBranch->getId()-|" |-if $currentBranch and ($currentBranch->getId() eq $aBranch->getId()) -||-assign var=selected value="0"-|selected="selected"|-/if-| >|-$aBranch->getName()-|</option>
 		|-/foreach-|

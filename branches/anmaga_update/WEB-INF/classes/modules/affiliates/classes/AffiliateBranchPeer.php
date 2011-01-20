@@ -1,11 +1,19 @@
 <?php
 
+
+
 /**
- * Class BranchPeer
+ * Skeleton subclass for performing query and update operations on the 'affiliates_branch' table.
  *
- * @package Branch
+ * Sucursales de Afiliados
+ *
+ * You should add additional methods to this class to meet the
+ * application requirements.  This class will only be generated as
+ * long as it does not already exist in the output directory.
+ *
+ * @package    propel.generator.affiliates.classes
  */
-class BranchPeer extends BaseBranchPeer {
+class AffiliateBranchPeer extends BaseAffiliateBranchPeer {
 
   private $searchAffiliateId;
   
@@ -61,7 +69,7 @@ class BranchPeer extends BaseBranchPeer {
   * @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
   function update($id,$affiliateId,$number,$name,$phone,$contact,$contactEmail,$memo,$code) {
-  	$branchObj = BranchPeer::retrieveByPK($id);
+  	$branchObj = AffiliateBranchPeer::retrieveByPK($id);
     $branchObj->setaffiliateId($affiliateId);
     $branchObj->setnumber($number);
     $branchObj->setname($name);
@@ -81,7 +89,7 @@ class BranchPeer extends BaseBranchPeer {
 	*	@return boolean true si se elimino correctamente el branch, false sino
 	*/
   function delete($id) {
-  	$branchObj = BranchPeer::retrieveByPK($id);
+  	$branchObj = AffiliateBranchPeer::retrieveByPK($id);
     $branchObj->delete();
 		return true;
   }
@@ -93,7 +101,7 @@ class BranchPeer extends BaseBranchPeer {
   * @return array Informacion del branch
   */
   function get($id) {
-		$branchObj = BranchPeer::retrieveByPK($id);
+		$branchObj = AffiliateBranchPeer::retrieveByPK($id);
     return $branchObj;
   }
 
@@ -104,7 +112,7 @@ class BranchPeer extends BaseBranchPeer {
   */
 	function getAll() {
 		$cond = new Criteria();
-		$alls = BranchPeer::doSelect($cond);
+		$alls = AffiliateBranchPeer::doSelect($cond);
 		return $alls;
   }
   
@@ -117,9 +125,9 @@ class BranchPeer extends BaseBranchPeer {
   */
   function getByNumber($number,$affiliateId) {
     $cond = new Criteria();
-    $cond->add(BranchPeer::NUMBER, $number);    
-    $cond->add(BranchPeer::AFFILIATEID, $affiliateId);    
-    $alls = BranchPeer::doSelect($cond);
+    $cond->add(AffiliateBranchPeer::NUMBER, $number);    
+    $cond->add(AffiliateBranchPeer::AFFILIATEID, $affiliateId);    
+    $alls = AffiliateBranchPeer::doSelect($cond);
     return $alls[0];
   }  
   
@@ -131,8 +139,8 @@ class BranchPeer extends BaseBranchPeer {
   */
   function getAllByAffiliateId($affiliateId) {
     $cond = new Criteria();
-    $cond->add(BranchPeer::AFFILIATEID, $affiliateId);
-    $alls = BranchPeer::doSelect($cond);
+    $cond->add(AffiliateBranchPeer::AFFILIATEID, $affiliateId);
+    $alls = AffiliateBranchPeer::doSelect($cond);
     return $alls;
   }  
   
@@ -144,8 +152,8 @@ class BranchPeer extends BaseBranchPeer {
   */
   function getByCode($code) {
     $cond = new Criteria();
-    $cond->add(BranchPeer::CODE, $code);
-    $result = BranchPeer::doSelect($cond);
+    $cond->add(AffiliateBranchPeer::CODE, $code);
+    $result = AffiliateBranchPeer::doSelect($cond);
     $branch = $result[0];
     return $branch;
   }  
@@ -163,16 +171,15 @@ class BranchPeer extends BaseBranchPeer {
   */
   function getSearchPaginated($page=1,$perPage=-1) {
     if ($perPage == -1)
-      $perPage = 	BranchPeer::getRowsPerPage();
+      $perPage = 	AffiliateBranchPeer::getRowsPerPage();
     if (empty($page))
       $page = 1;
-    require_once("lib/util/PropelPager.php");
     $cond = new Criteria();
     if (!empty($this->searchAffiliateId))
-      $cond->add(BranchPeer::AFFILIATEID, $this->searchAffiliateId);
+      $cond->add(AffiliateBranchPeer::AFFILIATEID, $this->searchAffiliateId);
        
-    $pager = new PropelPager($cond,"BranchPeer","doSelect",$page,$perPage);
+    $pager = new PropelPager($cond,"AffiliateBranchPeer","doSelect",$page,$perPage);
     return $pager;
   }  
   
-}
+} // AffiliateBranchPeer

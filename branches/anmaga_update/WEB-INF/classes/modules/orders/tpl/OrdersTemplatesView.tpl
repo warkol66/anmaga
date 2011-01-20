@@ -6,7 +6,7 @@
 	<p><strong>Name:</strong> |-$orderTemplate->getName()-|</p>
 	<p><strong>Created:</strong> |-$orderTemplate->getCreated()-|</p>
 	<p><strong>Affiliate:</strong> |-assign var=affiliate value=$orderTemplate->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</p>
-	<p><strong>Branch:</strong> |-assign var=branch value=$orderTemplate->getBranch()-||-if $branch-||-$branch->getName()-||-/if-|</p>
+	<p><strong>Branch:</strong> |-assign var=branch value=$orderTemplate->getAffiliateBranch()-||-if $branch-||-$branch->getName()-||-/if-|</p>
 	<p><strong>User:</strong> |-assign var=user value=$orderTemplate->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</p>
 
 
