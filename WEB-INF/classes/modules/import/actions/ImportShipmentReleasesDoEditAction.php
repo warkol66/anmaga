@@ -63,7 +63,8 @@ class ImportShipmentReleasesDoEditAction extends BaseAction {
 	}
 	
 	private function sendNotification(&$smarty, $shipmentRelease) {
-		$mailTo = 'axelsanguinetti@gmail.com';  //TODO: ver a quien va realmente esto.
+	  $importConfig = Common::getConfiguration('import');
+		$mailTo = $importConfig['shipmentReleases']['warehouseMail'];
 		$subject = Common::getTranslation('Notification', 'import');					
 		AlertSubscriptionPeer::sendAlertSmarty($shipmentRelease, $smarty, $this->template, 'ImportShipmentReleasesMail.tpl', $mailTo, $subject);
 	}

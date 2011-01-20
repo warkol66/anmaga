@@ -113,6 +113,9 @@
 		</smtpOptions>
 	</email>
 	<import>
+	  <shipmentReleases>
+	    <warehouseMail>gflamerich@gmail.com</warehouseMail>
+	  </shipmentReleases>
 		<clientQuoteRequest>
 			<onTime>
 				<value>9</value>
