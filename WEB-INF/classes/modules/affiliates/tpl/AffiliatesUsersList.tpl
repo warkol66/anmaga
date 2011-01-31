@@ -139,32 +139,38 @@
 |-/if-|
 
 
+
+<table cellpadding='5' cellspacing='1' width='100%' class='tableTdBorders'>
 |-if $loginUser ne ''-|
-<h3>Ver Usuarios por Afiliado</h3>
-			<form name="affiliateFilter" action="Main.php" method="get">
-			<select name="affiliateId">
+<tr>
+<td colspan="3">
+			<form action="Main.php" method="get">
+			<p>Filtrar por Afiliado
+			<select name="affiliateId" onchange="this.form.submit();">
 					<option value="0">Seleccione un Afiliado</option>
 					<option value="-1">Todos</option>
 				|-foreach from=$affiliates item=affiliate name=for_affiliate-|
 					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $affiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
 				|-/foreach-|
 			</select> 
+				|-if $affiliateId gt 0-|<input name="rmoveFilters" type="button" value="Quitar filtros" onclick="location.href='Main?do=affiliatesUsersList'" class='boton' />|-/if-|</p>
 			<input type="hidden" name="do" value="affiliatesUsersList" />
-			<input name="submit" type="submit" value="Consultar" class="button" />
 		</form>
+</td>
+</tr>
 |-/if-|
-
-<table cellpadding='5' cellspacing='1' width='100%' class='tableTdBorders'>
 	<tr>
 		<th>Identificación de Usuario</th>
+		<th>Afiliado</th>
 		<th>&nbsp;</th>
 	</tr>
 	|-foreach from=$users item=user name=for_users-|
 	<tr>
-		<td width="90%"><div class='titulo2'>|-$user->getUsername()-|</div></td>
-		<td width="10%" class='cellTextOptions' nowrap>|-if $loginUser ne '' && $affiliateId gt 0-|[ 
-			<form method="post"><input type="hidden" name="userId" value="|-$user->getId()-|" /><input type="hidden" name="affiliateId" value="|-$user->getAffiliateId()-|" /><input type="hidden" name="do" value="affiliatesSetOwner" /><a href="#" title="Set as Owner" onClick="javascript:this.parentNode.submit();">Set as Owner</a></form> ] |-/if-|<a href='Main.php?do=affiliatesUsersList&user=|-$user->getId()-|']'><img src="images/clear.png" class='iconEdit'></a>
-			<a href='Main.php?do=affiliatesUsersDoDelete&id=|-$user->getId()-|'><img src="images/clear.png" class='iconDelete'></a></td>
+		<td width="64%">|-$user->getUsername()-|</td>
+		<td width="34%">|-$user->getAffiliate()-|</td>
+		<td width="1%" nowrap>|-if $loginUser ne '' && $affiliateId gt 0-|
+		|-if $user->isAffiliateOwner()-|<img src="images/clear.png" class="iconActivate disabled" title="Este es el usuario dueño del afiliado" />|-else-|<form method="post"><input type="hidden" name="userId" value="|-$user->getId()-|" /><input type="hidden" name="affiliateId" value="|-$user->getAffiliateId()-|" /><input type="hidden" name="do" value="affiliatesSetOwner" /><a href="#" title="Fijar como dueño" onClick="javascript:this.parentNode.submit();"><img src="images/clear.png" class="iconActivate" /></a></form>|-/if-| |-/if-|<a href='Main.php?do=affiliatesUsersList&user=|-$user->getId()-|']'><img src="images/clear.png" class='iconEdit'></a>
+			|-if $user->isAffiliateOwner()-|<img title="Para eliminar este usuario debe asignar la administración del afiliado a otro usuario" src="images/clear.png" class='iconDelete disabled'>|-else-|<a href='Main.php?do=affiliatesUsersDoDelete&id=|-$user->getId()-|'><img src="images/clear.png" class='iconDelete'></a>|-/if-|</td>
 	</tr>
 	|-/foreach-|
 	<tr>

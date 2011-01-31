@@ -43,14 +43,80 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	protected $ownerid;
 
 	/**
-	 * @var        AffiliateInfo one-to-one related AffiliateInfo object
+	 * The value for the internalnumber field.
+	 * @var        string
 	 */
-	protected $singleAffiliateInfo;
+	protected $internalnumber;
+
+	/**
+	 * The value for the address field.
+	 * @var        string
+	 */
+	protected $address;
+
+	/**
+	 * The value for the phone field.
+	 * @var        string
+	 */
+	protected $phone;
+
+	/**
+	 * The value for the email field.
+	 * @var        string
+	 */
+	protected $email;
+
+	/**
+	 * The value for the contact field.
+	 * @var        string
+	 */
+	protected $contact;
+
+	/**
+	 * The value for the contactemail field.
+	 * @var        string
+	 */
+	protected $contactemail;
+
+	/**
+	 * The value for the web field.
+	 * @var        string
+	 */
+	protected $web;
+
+	/**
+	 * The value for the memo field.
+	 * @var        string
+	 */
+	protected $memo;
+
+	/**
+	 * The value for the deleted_at field.
+	 * @var        string
+	 */
+	protected $deleted_at;
+
+	/**
+	 * The value for the created_at field.
+	 * @var        string
+	 */
+	protected $created_at;
+
+	/**
+	 * The value for the updated_at field.
+	 * @var        string
+	 */
+	protected $updated_at;
+
+	/**
+	 * @var        AffiliateUser
+	 */
+	protected $aAffiliateUserRelatedByOwnerid;
 
 	/**
 	 * @var        array AffiliateUser[] Collection to store aggregation of AffiliateUser objects.
 	 */
-	protected $collAffiliateUsers;
+	protected $collAffiliateUsersRelatedByAffiliateid;
 
 	/**
 	 * @var        array AffiliateBranch[] Collection to store aggregation of AffiliateBranch objects.
@@ -132,6 +198,200 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Get the [internalnumber] column value.
+	 * Id interno
+	 * @return     string
+	 */
+	public function getInternalnumber()
+	{
+		return $this->internalnumber;
+	}
+
+	/**
+	 * Get the [address] column value.
+	 * Direccion afiliado
+	 * @return     string
+	 */
+	public function getAddress()
+	{
+		return $this->address;
+	}
+
+	/**
+	 * Get the [phone] column value.
+	 * Telefono afiliado
+	 * @return     string
+	 */
+	public function getPhone()
+	{
+		return $this->phone;
+	}
+
+	/**
+	 * Get the [email] column value.
+	 * Email afiliado
+	 * @return     string
+	 */
+	public function getEmail()
+	{
+		return $this->email;
+	}
+
+	/**
+	 * Get the [contact] column value.
+	 * Nombre de persona de contacto
+	 * @return     string
+	 */
+	public function getContact()
+	{
+		return $this->contact;
+	}
+
+	/**
+	 * Get the [contactemail] column value.
+	 * Email de persona de contacto
+	 * @return     string
+	 */
+	public function getContactemail()
+	{
+		return $this->contactemail;
+	}
+
+	/**
+	 * Get the [web] column value.
+	 * Direccion web del afiliado
+	 * @return     string
+	 */
+	public function getWeb()
+	{
+		return $this->web;
+	}
+
+	/**
+	 * Get the [memo] column value.
+	 * Informacion adicional del afiliado
+	 * @return     string
+	 */
+	public function getMemo()
+	{
+		return $this->memo;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [deleted_at] column value.
+	 * 
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getDeletedAt($format = 'Y-m-d H:i:s')
+	{
+		if ($this->deleted_at === null) {
+			return null;
+		}
+
+
+		if ($this->deleted_at === '0000-00-00 00:00:00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->deleted_at);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->deleted_at, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [created_at] column value.
+	 * 
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getCreatedAt($format = 'Y-m-d H:i:s')
+	{
+		if ($this->created_at === null) {
+			return null;
+		}
+
+
+		if ($this->created_at === '0000-00-00 00:00:00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->created_at);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_at, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [updated_at] column value.
+	 * 
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getUpdatedAt($format = 'Y-m-d H:i:s')
+	{
+		if ($this->updated_at === null) {
+			return null;
+		}
+
+
+		if ($this->updated_at === '0000-00-00 00:00:00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->updated_at);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->updated_at, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * Id afiliado
 	 * @param      int $v new value
@@ -188,8 +448,319 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 			$this->modifiedColumns[] = AffiliatePeer::OWNERID;
 		}
 
+		if ($this->aAffiliateUserRelatedByOwnerid !== null && $this->aAffiliateUserRelatedByOwnerid->getId() !== $v) {
+			$this->aAffiliateUserRelatedByOwnerid = null;
+		}
+
 		return $this;
 	} // setOwnerid()
+
+	/**
+	 * Set the value of [internalnumber] column.
+	 * Id interno
+	 * @param      string $v new value
+	 * @return     Affiliate The current object (for fluent API support)
+	 */
+	public function setInternalnumber($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->internalnumber !== $v) {
+			$this->internalnumber = $v;
+			$this->modifiedColumns[] = AffiliatePeer::INTERNALNUMBER;
+		}
+
+		return $this;
+	} // setInternalnumber()
+
+	/**
+	 * Set the value of [address] column.
+	 * Direccion afiliado
+	 * @param      string $v new value
+	 * @return     Affiliate The current object (for fluent API support)
+	 */
+	public function setAddress($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->address !== $v) {
+			$this->address = $v;
+			$this->modifiedColumns[] = AffiliatePeer::ADDRESS;
+		}
+
+		return $this;
+	} // setAddress()
+
+	/**
+	 * Set the value of [phone] column.
+	 * Telefono afiliado
+	 * @param      string $v new value
+	 * @return     Affiliate The current object (for fluent API support)
+	 */
+	public function setPhone($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->phone !== $v) {
+			$this->phone = $v;
+			$this->modifiedColumns[] = AffiliatePeer::PHONE;
+		}
+
+		return $this;
+	} // setPhone()
+
+	/**
+	 * Set the value of [email] column.
+	 * Email afiliado
+	 * @param      string $v new value
+	 * @return     Affiliate The current object (for fluent API support)
+	 */
+	public function setEmail($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->email !== $v) {
+			$this->email = $v;
+			$this->modifiedColumns[] = AffiliatePeer::EMAIL;
+		}
+
+		return $this;
+	} // setEmail()
+
+	/**
+	 * Set the value of [contact] column.
+	 * Nombre de persona de contacto
+	 * @param      string $v new value
+	 * @return     Affiliate The current object (for fluent API support)
+	 */
+	public function setContact($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->contact !== $v) {
+			$this->contact = $v;
+			$this->modifiedColumns[] = AffiliatePeer::CONTACT;
+		}
+
+		return $this;
+	} // setContact()
+
+	/**
+	 * Set the value of [contactemail] column.
+	 * Email de persona de contacto
+	 * @param      string $v new value
+	 * @return     Affiliate The current object (for fluent API support)
+	 */
+	public function setContactemail($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->contactemail !== $v) {
+			$this->contactemail = $v;
+			$this->modifiedColumns[] = AffiliatePeer::CONTACTEMAIL;
+		}
+
+		return $this;
+	} // setContactemail()
+
+	/**
+	 * Set the value of [web] column.
+	 * Direccion web del afiliado
+	 * @param      string $v new value
+	 * @return     Affiliate The current object (for fluent API support)
+	 */
+	public function setWeb($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->web !== $v) {
+			$this->web = $v;
+			$this->modifiedColumns[] = AffiliatePeer::WEB;
+		}
+
+		return $this;
+	} // setWeb()
+
+	/**
+	 * Set the value of [memo] column.
+	 * Informacion adicional del afiliado
+	 * @param      string $v new value
+	 * @return     Affiliate The current object (for fluent API support)
+	 */
+	public function setMemo($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->memo !== $v) {
+			$this->memo = $v;
+			$this->modifiedColumns[] = AffiliatePeer::MEMO;
+		}
+
+		return $this;
+	} // setMemo()
+
+	/**
+	 * Sets the value of [deleted_at] column to a normalized version of the date/time value specified.
+	 * 
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     Affiliate The current object (for fluent API support)
+	 */
+	public function setDeletedAt($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->deleted_at !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->deleted_at !== null && $tmpDt = new DateTime($this->deleted_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->deleted_at = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+				$this->modifiedColumns[] = AffiliatePeer::DELETED_AT;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setDeletedAt()
+
+	/**
+	 * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+	 * 
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     Affiliate The current object (for fluent API support)
+	 */
+	public function setCreatedAt($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->created_at !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->created_at = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+				$this->modifiedColumns[] = AffiliatePeer::CREATED_AT;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setCreatedAt()
+
+	/**
+	 * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
+	 * 
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     Affiliate The current object (for fluent API support)
+	 */
+	public function setUpdatedAt($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->updated_at !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->updated_at !== null && $tmpDt = new DateTime($this->updated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->updated_at = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+				$this->modifiedColumns[] = AffiliatePeer::UPDATED_AT;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setUpdatedAt()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -226,6 +797,17 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->ownerid = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->internalnumber = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->address = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->phone = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->email = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->contact = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->contactemail = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->web = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->memo = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+			$this->deleted_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->created_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+			$this->updated_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -234,7 +816,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 3; // 3 = AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 14; // 14 = AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Affiliate object", $e);
@@ -257,6 +839,9 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	public function ensureConsistency()
 	{
 
+		if ($this->aAffiliateUserRelatedByOwnerid !== null && $this->ownerid !== $this->aAffiliateUserRelatedByOwnerid->getId()) {
+			$this->aAffiliateUserRelatedByOwnerid = null;
+		}
 	} // ensureConsistency
 
 	/**
@@ -296,9 +881,8 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->singleAffiliateInfo = null;
-
-			$this->collAffiliateUsers = null;
+			$this->aAffiliateUserRelatedByOwnerid = null;
+			$this->collAffiliateUsersRelatedByAffiliateid = null;
 
 			$this->collAffiliateBranchs = null;
 
@@ -338,6 +922,14 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
+			// soft_delete behavior
+			if (!empty($ret) && AffiliateQuery::isSoftDeleteEnabled()) {
+				$this->setDeletedAt(time());
+				$this->save($con);
+				$con->commit();
+				AffiliatePeer::removeInstanceFromPool($this);
+				return;
+			}
 			if ($ret) {
 				AffiliateQuery::create()
 					->filterByPrimaryKey($this->getPrimaryKey())
@@ -383,8 +975,19 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 			$ret = $this->preSave($con);
 			if ($isInsert) {
 				$ret = $ret && $this->preInsert($con);
+				// timestampable behavior
+				if (!$this->isColumnModified(AffiliatePeer::CREATED_AT)) {
+					$this->setCreatedAt(time());
+				}
+				if (!$this->isColumnModified(AffiliatePeer::UPDATED_AT)) {
+					$this->setUpdatedAt(time());
+				}
 			} else {
 				$ret = $ret && $this->preUpdate($con);
+				// timestampable behavior
+				if ($this->isModified() && !$this->isColumnModified(AffiliatePeer::UPDATED_AT)) {
+					$this->setUpdatedAt(time());
+				}
 			}
 			if ($ret) {
 				$affectedRows = $this->doSave($con);
@@ -423,6 +1026,18 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 		if (!$this->alreadyInSave) {
 			$this->alreadyInSave = true;
 
+			// We call the save method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->aAffiliateUserRelatedByOwnerid !== null) {
+				if ($this->aAffiliateUserRelatedByOwnerid->isModified() || $this->aAffiliateUserRelatedByOwnerid->isNew()) {
+					$affectedRows += $this->aAffiliateUserRelatedByOwnerid->save($con);
+				}
+				$this->setAffiliateUserRelatedByOwnerid($this->aAffiliateUserRelatedByOwnerid);
+			}
+
 			if ($this->isNew() ) {
 				$this->modifiedColumns[] = AffiliatePeer::ID;
 			}
@@ -436,24 +1051,18 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 					}
 
 					$pk = BasePeer::doInsert($criteria, $con);
-					$affectedRows = 1;
+					$affectedRows += 1;
 					$this->setId($pk);  //[IMV] update autoincrement primary key
 					$this->setNew(false);
 				} else {
-					$affectedRows = AffiliatePeer::doUpdate($this, $con);
+					$affectedRows += AffiliatePeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
-			if ($this->singleAffiliateInfo !== null) {
-				if (!$this->singleAffiliateInfo->isDeleted()) {
-						$affectedRows += $this->singleAffiliateInfo->save($con);
-				}
-			}
-
-			if ($this->collAffiliateUsers !== null) {
-				foreach ($this->collAffiliateUsers as $referrerFK) {
+			if ($this->collAffiliateUsersRelatedByAffiliateid !== null) {
+				foreach ($this->collAffiliateUsersRelatedByAffiliateid as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -574,19 +1183,25 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 			$failureMap = array();
 
 
+			// We call the validate method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->aAffiliateUserRelatedByOwnerid !== null) {
+				if (!$this->aAffiliateUserRelatedByOwnerid->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aAffiliateUserRelatedByOwnerid->getValidationFailures());
+				}
+			}
+
+
 			if (($retval = AffiliatePeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
 
-				if ($this->singleAffiliateInfo !== null) {
-					if (!$this->singleAffiliateInfo->validate($columns)) {
-						$failureMap = array_merge($failureMap, $this->singleAffiliateInfo->getValidationFailures());
-					}
-				}
-
-				if ($this->collAffiliateUsers !== null) {
-					foreach ($this->collAffiliateUsers as $referrerFK) {
+				if ($this->collAffiliateUsersRelatedByAffiliateid !== null) {
+					foreach ($this->collAffiliateUsersRelatedByAffiliateid as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -683,6 +1298,39 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 			case 2:
 				return $this->getOwnerid();
 				break;
+			case 3:
+				return $this->getInternalnumber();
+				break;
+			case 4:
+				return $this->getAddress();
+				break;
+			case 5:
+				return $this->getPhone();
+				break;
+			case 6:
+				return $this->getEmail();
+				break;
+			case 7:
+				return $this->getContact();
+				break;
+			case 8:
+				return $this->getContactemail();
+				break;
+			case 9:
+				return $this->getWeb();
+				break;
+			case 10:
+				return $this->getMemo();
+				break;
+			case 11:
+				return $this->getDeletedAt();
+				break;
+			case 12:
+				return $this->getCreatedAt();
+				break;
+			case 13:
+				return $this->getUpdatedAt();
+				break;
 			default:
 				return null;
 				break;
@@ -699,17 +1347,34 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
 	{
 		$keys = AffiliatePeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getOwnerid(),
+			$keys[3] => $this->getInternalnumber(),
+			$keys[4] => $this->getAddress(),
+			$keys[5] => $this->getPhone(),
+			$keys[6] => $this->getEmail(),
+			$keys[7] => $this->getContact(),
+			$keys[8] => $this->getContactemail(),
+			$keys[9] => $this->getWeb(),
+			$keys[10] => $this->getMemo(),
+			$keys[11] => $this->getDeletedAt(),
+			$keys[12] => $this->getCreatedAt(),
+			$keys[13] => $this->getUpdatedAt(),
 		);
+		if ($includeForeignObjects) {
+			if (null !== $this->aAffiliateUserRelatedByOwnerid) {
+				$result['AffiliateUserRelatedByOwnerid'] = $this->aAffiliateUserRelatedByOwnerid->toArray($keyType, $includeLazyLoadColumns, true);
+			}
+		}
 		return $result;
 	}
 
@@ -749,6 +1414,39 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 			case 2:
 				$this->setOwnerid($value);
 				break;
+			case 3:
+				$this->setInternalnumber($value);
+				break;
+			case 4:
+				$this->setAddress($value);
+				break;
+			case 5:
+				$this->setPhone($value);
+				break;
+			case 6:
+				$this->setEmail($value);
+				break;
+			case 7:
+				$this->setContact($value);
+				break;
+			case 8:
+				$this->setContactemail($value);
+				break;
+			case 9:
+				$this->setWeb($value);
+				break;
+			case 10:
+				$this->setMemo($value);
+				break;
+			case 11:
+				$this->setDeletedAt($value);
+				break;
+			case 12:
+				$this->setCreatedAt($value);
+				break;
+			case 13:
+				$this->setUpdatedAt($value);
+				break;
 		} // switch()
 	}
 
@@ -776,6 +1474,17 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setOwnerid($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setInternalnumber($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setAddress($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setPhone($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setEmail($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setContact($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setContactemail($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setWeb($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setMemo($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setDeletedAt($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setCreatedAt($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setUpdatedAt($arr[$keys[13]]);
 	}
 
 	/**
@@ -790,6 +1499,17 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 		if ($this->isColumnModified(AffiliatePeer::ID)) $criteria->add(AffiliatePeer::ID, $this->id);
 		if ($this->isColumnModified(AffiliatePeer::NAME)) $criteria->add(AffiliatePeer::NAME, $this->name);
 		if ($this->isColumnModified(AffiliatePeer::OWNERID)) $criteria->add(AffiliatePeer::OWNERID, $this->ownerid);
+		if ($this->isColumnModified(AffiliatePeer::INTERNALNUMBER)) $criteria->add(AffiliatePeer::INTERNALNUMBER, $this->internalnumber);
+		if ($this->isColumnModified(AffiliatePeer::ADDRESS)) $criteria->add(AffiliatePeer::ADDRESS, $this->address);
+		if ($this->isColumnModified(AffiliatePeer::PHONE)) $criteria->add(AffiliatePeer::PHONE, $this->phone);
+		if ($this->isColumnModified(AffiliatePeer::EMAIL)) $criteria->add(AffiliatePeer::EMAIL, $this->email);
+		if ($this->isColumnModified(AffiliatePeer::CONTACT)) $criteria->add(AffiliatePeer::CONTACT, $this->contact);
+		if ($this->isColumnModified(AffiliatePeer::CONTACTEMAIL)) $criteria->add(AffiliatePeer::CONTACTEMAIL, $this->contactemail);
+		if ($this->isColumnModified(AffiliatePeer::WEB)) $criteria->add(AffiliatePeer::WEB, $this->web);
+		if ($this->isColumnModified(AffiliatePeer::MEMO)) $criteria->add(AffiliatePeer::MEMO, $this->memo);
+		if ($this->isColumnModified(AffiliatePeer::DELETED_AT)) $criteria->add(AffiliatePeer::DELETED_AT, $this->deleted_at);
+		if ($this->isColumnModified(AffiliatePeer::CREATED_AT)) $criteria->add(AffiliatePeer::CREATED_AT, $this->created_at);
+		if ($this->isColumnModified(AffiliatePeer::UPDATED_AT)) $criteria->add(AffiliatePeer::UPDATED_AT, $this->updated_at);
 
 		return $criteria;
 	}
@@ -853,20 +1573,26 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	{
 		$copyObj->setName($this->name);
 		$copyObj->setOwnerid($this->ownerid);
+		$copyObj->setInternalnumber($this->internalnumber);
+		$copyObj->setAddress($this->address);
+		$copyObj->setPhone($this->phone);
+		$copyObj->setEmail($this->email);
+		$copyObj->setContact($this->contact);
+		$copyObj->setContactemail($this->contactemail);
+		$copyObj->setWeb($this->web);
+		$copyObj->setMemo($this->memo);
+		$copyObj->setDeletedAt($this->deleted_at);
+		$copyObj->setCreatedAt($this->created_at);
+		$copyObj->setUpdatedAt($this->updated_at);
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
-			$relObj = $this->getAffiliateInfo();
-			if ($relObj) {
-				$copyObj->setAffiliateInfo($relObj->copy($deepCopy));
-			}
-
-			foreach ($this->getAffiliateUsers() as $relObj) {
+			foreach ($this->getAffiliateUsersRelatedByAffiliateid() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addAffiliateUser($relObj->copy($deepCopy));
+					$copyObj->addAffiliateUserRelatedByAffiliateid($relObj->copy($deepCopy));
 				}
 			}
 
@@ -952,68 +1678,81 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Gets a single AffiliateInfo object, which is related to this object by a one-to-one relationship.
+	 * Declares an association between this object and a AffiliateUser object.
 	 *
-	 * @param      PropelPDO $con optional connection object
-	 * @return     AffiliateInfo
-	 * @throws     PropelException
-	 */
-	public function getAffiliateInfo(PropelPDO $con = null)
-	{
-
-		if ($this->singleAffiliateInfo === null && !$this->isNew()) {
-			$this->singleAffiliateInfo = AffiliateInfoQuery::create()->findPk($this->getPrimaryKey(), $con);
-		}
-
-		return $this->singleAffiliateInfo;
-	}
-
-	/**
-	 * Sets a single AffiliateInfo object as related to this object by a one-to-one relationship.
-	 *
-	 * @param      AffiliateInfo $v AffiliateInfo
+	 * @param      AffiliateUser $v
 	 * @return     Affiliate The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setAffiliateInfo(AffiliateInfo $v = null)
+	public function setAffiliateUserRelatedByOwnerid(AffiliateUser $v = null)
 	{
-		$this->singleAffiliateInfo = $v;
+		if ($v === null) {
+			$this->setOwnerid(NULL);
+		} else {
+			$this->setOwnerid($v->getId());
+		}
 
-		// Make sure that that the passed-in AffiliateInfo isn't already associated with this object
-		if ($v !== null && $v->getAffiliate() === null) {
-			$v->setAffiliate($this);
+		$this->aAffiliateUserRelatedByOwnerid = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the AffiliateUser object, it will not be re-added.
+		if ($v !== null) {
+			$v->addAffiliateRelatedByOwnerid($this);
 		}
 
 		return $this;
 	}
 
+
 	/**
-	 * Clears out the collAffiliateUsers collection
+	 * Get the associated AffiliateUser object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     AffiliateUser The associated AffiliateUser object.
+	 * @throws     PropelException
+	 */
+	public function getAffiliateUserRelatedByOwnerid(PropelPDO $con = null)
+	{
+		if ($this->aAffiliateUserRelatedByOwnerid === null && ($this->ownerid !== null)) {
+			$this->aAffiliateUserRelatedByOwnerid = AffiliateUserQuery::create()->findPk($this->ownerid, $con);
+			/* The following can be used additionally to
+				 guarantee the related object contains a reference
+				 to this object.  This level of coupling may, however, be
+				 undesirable since it could result in an only partially populated collection
+				 in the referenced object.
+				 $this->aAffiliateUserRelatedByOwnerid->addAffiliatesRelatedByOwnerid($this);
+			 */
+		}
+		return $this->aAffiliateUserRelatedByOwnerid;
+	}
+
+	/**
+	 * Clears out the collAffiliateUsersRelatedByAffiliateid collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addAffiliateUsers()
+	 * @see        addAffiliateUsersRelatedByAffiliateid()
 	 */
-	public function clearAffiliateUsers()
+	public function clearAffiliateUsersRelatedByAffiliateid()
 	{
-		$this->collAffiliateUsers = null; // important to set this to NULL since that means it is uninitialized
+		$this->collAffiliateUsersRelatedByAffiliateid = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collAffiliateUsers collection.
+	 * Initializes the collAffiliateUsersRelatedByAffiliateid collection.
 	 *
-	 * By default this just sets the collAffiliateUsers collection to an empty array (like clearcollAffiliateUsers());
+	 * By default this just sets the collAffiliateUsersRelatedByAffiliateid collection to an empty array (like clearcollAffiliateUsersRelatedByAffiliateid());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
 	 * @return     void
 	 */
-	public function initAffiliateUsers()
+	public function initAffiliateUsersRelatedByAffiliateid()
 	{
-		$this->collAffiliateUsers = new PropelObjectCollection();
-		$this->collAffiliateUsers->setModel('AffiliateUser');
+		$this->collAffiliateUsersRelatedByAffiliateid = new PropelObjectCollection();
+		$this->collAffiliateUsersRelatedByAffiliateid->setModel('AffiliateUser');
 	}
 
 	/**
@@ -1030,23 +1769,23 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	 * @return     PropelCollection|array AffiliateUser[] List of AffiliateUser objects
 	 * @throws     PropelException
 	 */
-	public function getAffiliateUsers($criteria = null, PropelPDO $con = null)
+	public function getAffiliateUsersRelatedByAffiliateid($criteria = null, PropelPDO $con = null)
 	{
-		if(null === $this->collAffiliateUsers || null !== $criteria) {
-			if ($this->isNew() && null === $this->collAffiliateUsers) {
+		if(null === $this->collAffiliateUsersRelatedByAffiliateid || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAffiliateUsersRelatedByAffiliateid) {
 				// return empty collection
-				$this->initAffiliateUsers();
+				$this->initAffiliateUsersRelatedByAffiliateid();
 			} else {
-				$collAffiliateUsers = AffiliateUserQuery::create(null, $criteria)
-					->filterByAffiliate($this)
+				$collAffiliateUsersRelatedByAffiliateid = AffiliateUserQuery::create(null, $criteria)
+					->filterByAffiliateRelatedByAffiliateid($this)
 					->find($con);
 				if (null !== $criteria) {
-					return $collAffiliateUsers;
+					return $collAffiliateUsersRelatedByAffiliateid;
 				}
-				$this->collAffiliateUsers = $collAffiliateUsers;
+				$this->collAffiliateUsersRelatedByAffiliateid = $collAffiliateUsersRelatedByAffiliateid;
 			}
 		}
-		return $this->collAffiliateUsers;
+		return $this->collAffiliateUsersRelatedByAffiliateid;
 	}
 
 	/**
@@ -1058,10 +1797,10 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	 * @return     int Count of related AffiliateUser objects.
 	 * @throws     PropelException
 	 */
-	public function countAffiliateUsers(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countAffiliateUsersRelatedByAffiliateid(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if(null === $this->collAffiliateUsers || null !== $criteria) {
-			if ($this->isNew() && null === $this->collAffiliateUsers) {
+		if(null === $this->collAffiliateUsersRelatedByAffiliateid || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAffiliateUsersRelatedByAffiliateid) {
 				return 0;
 			} else {
 				$query = AffiliateUserQuery::create(null, $criteria);
@@ -1069,11 +1808,11 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 					$query->distinct();
 				}
 				return $query
-					->filterByAffiliate($this)
+					->filterByAffiliateRelatedByAffiliateid($this)
 					->count($con);
 			}
 		} else {
-			return count($this->collAffiliateUsers);
+			return count($this->collAffiliateUsersRelatedByAffiliateid);
 		}
 	}
 
@@ -1085,14 +1824,14 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addAffiliateUser(AffiliateUser $l)
+	public function addAffiliateUserRelatedByAffiliateid(AffiliateUser $l)
 	{
-		if ($this->collAffiliateUsers === null) {
-			$this->initAffiliateUsers();
+		if ($this->collAffiliateUsersRelatedByAffiliateid === null) {
+			$this->initAffiliateUsersRelatedByAffiliateid();
 		}
-		if (!$this->collAffiliateUsers->contains($l)) { // only add it if the **same** object is not already associated
-			$this->collAffiliateUsers[]= $l;
-			$l->setAffiliate($this);
+		if (!$this->collAffiliateUsersRelatedByAffiliateid->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collAffiliateUsersRelatedByAffiliateid[]= $l;
+			$l->setAffiliateRelatedByAffiliateid($this);
 		}
 	}
 
@@ -1102,7 +1841,7 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Affiliate is new, it will return
 	 * an empty collection; or if this Affiliate has previously
-	 * been saved, it will retrieve related AffiliateUsers from storage.
+	 * been saved, it will retrieve related AffiliateUsersRelatedByAffiliateid from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
@@ -1113,12 +1852,12 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
 	 * @return     PropelCollection|array AffiliateUser[] List of AffiliateUser objects
 	 */
-	public function getAffiliateUsersJoinAffiliateLevel($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getAffiliateUsersRelatedByAffiliateidJoinAffiliateLevel($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$query = AffiliateUserQuery::create(null, $criteria);
 		$query->joinWith('AffiliateLevel', $join_behavior);
 
-		return $this->getAffiliateUsers($query, $con);
+		return $this->getAffiliateUsersRelatedByAffiliateid($query, $con);
 	}
 
 	/**
@@ -2071,6 +2810,17 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 		$this->id = null;
 		$this->name = null;
 		$this->ownerid = null;
+		$this->internalnumber = null;
+		$this->address = null;
+		$this->phone = null;
+		$this->email = null;
+		$this->contact = null;
+		$this->contactemail = null;
+		$this->web = null;
+		$this->memo = null;
+		$this->deleted_at = null;
+		$this->created_at = null;
+		$this->updated_at = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
@@ -2091,11 +2841,8 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
-			if ($this->singleAffiliateInfo) {
-				$this->singleAffiliateInfo->clearAllReferences($deep);
-			}
-			if ($this->collAffiliateUsers) {
-				foreach ((array) $this->collAffiliateUsers as $o) {
+			if ($this->collAffiliateUsersRelatedByAffiliateid) {
+				foreach ((array) $this->collAffiliateUsersRelatedByAffiliateid as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -2131,14 +2878,49 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 			}
 		} // if ($deep)
 
-		$this->singleAffiliateInfo = null;
-		$this->collAffiliateUsers = null;
+		$this->collAffiliateUsersRelatedByAffiliateid = null;
 		$this->collAffiliateBranchs = null;
 		$this->collAffiliateProducts = null;
 		$this->collAffiliateProductCodes = null;
 		$this->collOrders = null;
 		$this->collOrderStateChanges = null;
 		$this->collOrderTemplates = null;
+		$this->aAffiliateUserRelatedByOwnerid = null;
+	}
+
+	// soft_delete behavior
+	
+	/**
+	 * Bypass the soft_delete behavior and force a hard delete of the current object
+	 */
+	public function forceDelete(PropelPDO $con = null)
+	{
+		AffiliatePeer::disableSoftDelete();
+		$this->delete($con);
+	}
+	
+	/**
+	 * Undelete a row that was soft_deleted
+	 *
+	 * @return		 int The number of rows affected by this update and any referring fk objects' save() operations.
+	 */
+	public function unDelete(PropelPDO $con = null)
+	{
+		$this->setDeletedAt(null);
+		return $this->save($con);
+	}
+
+	// timestampable behavior
+	
+	/**
+	 * Mark the current object so that the update date doesn't get updated during next save
+	 *
+	 * @return     Affiliate The current object (for fluent API support)
+	 */
+	public function keepUpdateDateUnchanged()
+	{
+		$this->modifiedColumns[] = AffiliatePeer::UPDATED_AT;
+		return $this;
 	}
 
 	/**

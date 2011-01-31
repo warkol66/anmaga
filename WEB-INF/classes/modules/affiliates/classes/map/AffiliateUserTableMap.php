@@ -41,11 +41,20 @@ class AffiliateUserTableMap extends TableMap {
 		$this->addForeignKey('AFFILIATEID', 'Affiliateid', 'INTEGER', 'affiliates_affiliate', 'ID', true, null, null);
 		$this->addColumn('USERNAME', 'Username', 'VARCHAR', true, 255, null);
 		$this->addColumn('PASSWORD', 'Password', 'VARCHAR', true, 255, null);
-		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null, null);
-		$this->addColumn('CREATED', 'Created', 'TIMESTAMP', true, null, null);
-		$this->addColumn('UPDATED', 'Updated', 'TIMESTAMP', true, null, null);
+		$this->addColumn('PASSWORDUPDATED', 'Passwordupdated', 'DATE', false, null, null);
+		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', false, null, null);
 		$this->addForeignKey('LEVELID', 'Levelid', 'INTEGER', 'affiliates_level', 'ID', false, null, null);
 		$this->addColumn('LASTLOGIN', 'Lastlogin', 'TIMESTAMP', false, null, null);
+		$this->addColumn('TIMEZONE', 'Timezone', 'VARCHAR', false, 25, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 255, null);
+		$this->addColumn('SURNAME', 'Surname', 'VARCHAR', false, 255, null);
+		$this->addColumn('MAILADDRESS', 'Mailaddress', 'VARCHAR', false, 255, null);
+		$this->addColumn('MAILADDRESSALT', 'Mailaddressalt', 'VARCHAR', false, 90, null);
+		$this->addColumn('RECOVERYHASH', 'Recoveryhash', 'VARCHAR', false, 255, null);
+		$this->addColumn('RECOVERYHASHCREATEDON', 'Recoveryhashcreatedon', 'TIMESTAMP', false, null, null);
+		$this->addColumn('DELETED_AT', 'DeletedAt', 'TIMESTAMP', false, null, null);
+		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
+		$this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
 		// validators
 	} // initialize()
 
@@ -55,12 +64,26 @@ class AffiliateUserTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('AffiliateLevel', 'AffiliateLevel', RelationMap::MANY_TO_ONE, array('levelId' => 'id', ), null, null);
-    $this->addRelation('Affiliate', 'Affiliate', RelationMap::MANY_TO_ONE, array('affiliateId' => 'id', ), null, null);
-    $this->addRelation('AffiliateUserInfo', 'AffiliateUserInfo', RelationMap::ONE_TO_ONE, array('id' => 'userId', ), null, null);
+    $this->addRelation('AffiliateRelatedByAffiliateid', 'Affiliate', RelationMap::MANY_TO_ONE, array('affiliateId' => 'id', ), null, null);
+    $this->addRelation('AffiliateRelatedByOwnerid', 'Affiliate', RelationMap::ONE_TO_MANY, array('id' => 'ownerId', ), null, null);
     $this->addRelation('AffiliateUserGroup', 'AffiliateUserGroup', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('Order', 'Order', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('OrderStateChange', 'OrderStateChange', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('OrderTemplate', 'OrderTemplate', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
 	} // buildRelations()
+
+	/**
+	 * 
+	 * Gets the list of behaviors registered for this table
+	 * 
+	 * @return array Associative array (name => parameters) of behaviors
+	 */
+	public function getBehaviors()
+	{
+		return array(
+			'soft_delete' => array('deleted_column' => 'deleted_at', ),
+			'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
+		);
+	} // getBehaviors()
 
 } // AffiliateUserTableMap

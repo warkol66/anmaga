@@ -182,11 +182,8 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
   * @return array Informacion del usuario
   */
 	function get($id) {
-		$cond = new AffiliateUserQuery();
-		$cond->add(AffiliateUserPeer::ID, $id);
-		$todosObj = $cond->joinWith('AffiliateUser.AffiliateUserInfo')->find();
-		
-		return $todosObj[0];
+		$user = AffiliateUserQuery::create()->findPk($id);
+		return $user;
 	}
 
 

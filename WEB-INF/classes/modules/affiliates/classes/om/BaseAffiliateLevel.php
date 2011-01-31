@@ -873,10 +873,10 @@ abstract class BaseAffiliateLevel extends BaseObject  implements Persistent
 	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
 	 * @return     PropelCollection|array AffiliateUser[] List of AffiliateUser objects
 	 */
-	public function getAffiliateUsersJoinAffiliate($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getAffiliateUsersJoinAffiliateRelatedByAffiliateid($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$query = AffiliateUserQuery::create(null, $criteria);
-		$query->joinWith('Affiliate', $join_behavior);
+		$query->joinWith('AffiliateRelatedByAffiliateid', $join_behavior);
 
 		return $this->getAffiliateUsers($query, $con);
 	}

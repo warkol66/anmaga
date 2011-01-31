@@ -15,20 +15,7 @@ CREATE TABLE `affiliates_affiliate`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id afiliado',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'nombre afiliado',
 	`ownerId` INTEGER   COMMENT 'Id del usuario administrador del afiliado',
-	PRIMARY KEY (`id`)
-) ENGINE=MyISAM COMMENT='Afiliados';
-
-#-----------------------------------------------------------------------------
-#-- affiliates_affiliateInfo
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `affiliates_affiliateInfo`;
-
-
-CREATE TABLE `affiliates_affiliateInfo`
-(
-	`affiliateId` INTEGER  NOT NULL COMMENT 'Id afiliado',
-	`affiliateInternalNumber` VARCHAR(12)   COMMENT 'Id interno',
+	`internalNumber` VARCHAR(12)   COMMENT 'Id interno',
 	`address` VARCHAR(255)   COMMENT 'Direccion afiliado',
 	`phone` VARCHAR(50)   COMMENT 'Telefono afiliado',
 	`email` VARCHAR(50)   COMMENT 'Email afiliado',
@@ -36,11 +23,15 @@ CREATE TABLE `affiliates_affiliateInfo`
 	`contactEmail` VARCHAR(100)   COMMENT 'Email de persona de contacto',
 	`web` VARCHAR(255)   COMMENT 'Direccion web del afiliado',
 	`memo` TEXT   COMMENT 'Informacion adicional del afiliado',
-	PRIMARY KEY (`affiliateId`),
-	CONSTRAINT `affiliates_affiliateInfo_FK_1`
-		FOREIGN KEY (`affiliateId`)
-		REFERENCES `affiliates_affiliate` (`id`)
-) ENGINE=MyISAM COMMENT='Informacion del afiliado';
+	`deleted_at` DATETIME,
+	`created_at` DATETIME,
+	`updated_at` DATETIME,
+	PRIMARY KEY (`id`),
+	INDEX `affiliates_affiliate_FI_1` (`ownerId`),
+	CONSTRAINT `affiliates_affiliate_FK_1`
+		FOREIGN KEY (`ownerId`)
+		REFERENCES `affiliates_user` (`id`)
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Afiliados';
 
 #-----------------------------------------------------------------------------
 #-- affiliates_user
@@ -55,11 +46,20 @@ CREATE TABLE `affiliates_user`
 	`affiliateId` INTEGER  NOT NULL COMMENT 'Id afiliado',
 	`username` VARCHAR(255)  NOT NULL COMMENT 'username',
 	`password` VARCHAR(255)  NOT NULL COMMENT 'password',
-	`active` TINYINT  NOT NULL COMMENT 'Is user active?',
-	`created` DATETIME  NOT NULL COMMENT 'Creation date for',
-	`updated` DATETIME  NOT NULL COMMENT 'Last update date',
+	`passwordUpdated` DATE   COMMENT 'Fecha de actualizacion de la clave',
+	`active` TINYINT   COMMENT 'Is user active?',
 	`levelId` INTEGER   COMMENT 'User Level',
 	`lastLogin` DATETIME   COMMENT 'Fecha del ultimo login del usuario',
+	`timezone` VARCHAR(25)   COMMENT 'Timezone GMT del usuario',
+	`name` VARCHAR(255)   COMMENT 'name',
+	`surname` VARCHAR(255)   COMMENT 'surname',
+	`mailAddress` VARCHAR(255)   COMMENT 'Email',
+	`mailAddressAlt` VARCHAR(90)   COMMENT 'Direccion electronica alternativa',
+	`recoveryHash` VARCHAR(255)   COMMENT 'Hash enviado para la recuperacion de clave',
+	`recoveryHashCreatedOn` DATETIME   COMMENT 'Momento de la solicitud para la recuperacion de clave',
+	`deleted_at` DATETIME,
+	`created_at` DATETIME,
+	`updated_at` DATETIME,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `affiliates_user_U_1` (`username`),
 	INDEX `affiliates_user_FI_1` (`levelId`),
@@ -70,26 +70,7 @@ CREATE TABLE `affiliates_user`
 	CONSTRAINT `affiliates_user_FK_2`
 		FOREIGN KEY (`affiliateId`)
 		REFERENCES `affiliates_affiliate` (`id`)
-) ENGINE=MyISAM COMMENT='Usuarios de afiliado';
-
-#-----------------------------------------------------------------------------
-#-- affiliates_userInfo
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `affiliates_userInfo`;
-
-
-CREATE TABLE `affiliates_userInfo`
-(
-	`userId` INTEGER  NOT NULL COMMENT 'User Id',
-	`name` VARCHAR(255)   COMMENT 'name',
-	`surname` VARCHAR(255)   COMMENT 'surname',
-	`mailAddress` VARCHAR(255)   COMMENT 'Email',
-	PRIMARY KEY (`userId`),
-	CONSTRAINT `affiliates_userInfo_FK_1`
-		FOREIGN KEY (`userId`)
-		REFERENCES `affiliates_user` (`id`)
-) ENGINE=MyISAM COMMENT='Information about users by affiliates';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Usuarios de afiliado';
 
 #-----------------------------------------------------------------------------
 #-- affiliates_level
