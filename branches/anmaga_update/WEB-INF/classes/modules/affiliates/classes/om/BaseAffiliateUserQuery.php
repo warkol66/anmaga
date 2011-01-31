@@ -10,21 +10,39 @@
  * @method     AffiliateUserQuery orderByAffiliateid($order = Criteria::ASC) Order by the affiliateId column
  * @method     AffiliateUserQuery orderByUsername($order = Criteria::ASC) Order by the username column
  * @method     AffiliateUserQuery orderByPassword($order = Criteria::ASC) Order by the password column
+ * @method     AffiliateUserQuery orderByPasswordupdated($order = Criteria::ASC) Order by the passwordUpdated column
  * @method     AffiliateUserQuery orderByActive($order = Criteria::ASC) Order by the active column
- * @method     AffiliateUserQuery orderByCreated($order = Criteria::ASC) Order by the created column
- * @method     AffiliateUserQuery orderByUpdated($order = Criteria::ASC) Order by the updated column
  * @method     AffiliateUserQuery orderByLevelid($order = Criteria::ASC) Order by the levelId column
  * @method     AffiliateUserQuery orderByLastlogin($order = Criteria::ASC) Order by the lastLogin column
+ * @method     AffiliateUserQuery orderByTimezone($order = Criteria::ASC) Order by the timezone column
+ * @method     AffiliateUserQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method     AffiliateUserQuery orderBySurname($order = Criteria::ASC) Order by the surname column
+ * @method     AffiliateUserQuery orderByMailaddress($order = Criteria::ASC) Order by the mailAddress column
+ * @method     AffiliateUserQuery orderByMailaddressalt($order = Criteria::ASC) Order by the mailAddressAlt column
+ * @method     AffiliateUserQuery orderByRecoveryhash($order = Criteria::ASC) Order by the recoveryHash column
+ * @method     AffiliateUserQuery orderByRecoveryhashcreatedon($order = Criteria::ASC) Order by the recoveryHashCreatedOn column
+ * @method     AffiliateUserQuery orderByDeletedAt($order = Criteria::ASC) Order by the deleted_at column
+ * @method     AffiliateUserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method     AffiliateUserQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method     AffiliateUserQuery groupById() Group by the id column
  * @method     AffiliateUserQuery groupByAffiliateid() Group by the affiliateId column
  * @method     AffiliateUserQuery groupByUsername() Group by the username column
  * @method     AffiliateUserQuery groupByPassword() Group by the password column
+ * @method     AffiliateUserQuery groupByPasswordupdated() Group by the passwordUpdated column
  * @method     AffiliateUserQuery groupByActive() Group by the active column
- * @method     AffiliateUserQuery groupByCreated() Group by the created column
- * @method     AffiliateUserQuery groupByUpdated() Group by the updated column
  * @method     AffiliateUserQuery groupByLevelid() Group by the levelId column
  * @method     AffiliateUserQuery groupByLastlogin() Group by the lastLogin column
+ * @method     AffiliateUserQuery groupByTimezone() Group by the timezone column
+ * @method     AffiliateUserQuery groupByName() Group by the name column
+ * @method     AffiliateUserQuery groupBySurname() Group by the surname column
+ * @method     AffiliateUserQuery groupByMailaddress() Group by the mailAddress column
+ * @method     AffiliateUserQuery groupByMailaddressalt() Group by the mailAddressAlt column
+ * @method     AffiliateUserQuery groupByRecoveryhash() Group by the recoveryHash column
+ * @method     AffiliateUserQuery groupByRecoveryhashcreatedon() Group by the recoveryHashCreatedOn column
+ * @method     AffiliateUserQuery groupByDeletedAt() Group by the deleted_at column
+ * @method     AffiliateUserQuery groupByCreatedAt() Group by the created_at column
+ * @method     AffiliateUserQuery groupByUpdatedAt() Group by the updated_at column
  *
  * @method     AffiliateUserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     AffiliateUserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -34,13 +52,13 @@
  * @method     AffiliateUserQuery rightJoinAffiliateLevel($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AffiliateLevel relation
  * @method     AffiliateUserQuery innerJoinAffiliateLevel($relationAlias = null) Adds a INNER JOIN clause to the query using the AffiliateLevel relation
  *
- * @method     AffiliateUserQuery leftJoinAffiliate($relationAlias = null) Adds a LEFT JOIN clause to the query using the Affiliate relation
- * @method     AffiliateUserQuery rightJoinAffiliate($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Affiliate relation
- * @method     AffiliateUserQuery innerJoinAffiliate($relationAlias = null) Adds a INNER JOIN clause to the query using the Affiliate relation
+ * @method     AffiliateUserQuery leftJoinAffiliateRelatedByAffiliateid($relationAlias = null) Adds a LEFT JOIN clause to the query using the AffiliateRelatedByAffiliateid relation
+ * @method     AffiliateUserQuery rightJoinAffiliateRelatedByAffiliateid($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AffiliateRelatedByAffiliateid relation
+ * @method     AffiliateUserQuery innerJoinAffiliateRelatedByAffiliateid($relationAlias = null) Adds a INNER JOIN clause to the query using the AffiliateRelatedByAffiliateid relation
  *
- * @method     AffiliateUserQuery leftJoinAffiliateUserInfo($relationAlias = null) Adds a LEFT JOIN clause to the query using the AffiliateUserInfo relation
- * @method     AffiliateUserQuery rightJoinAffiliateUserInfo($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AffiliateUserInfo relation
- * @method     AffiliateUserQuery innerJoinAffiliateUserInfo($relationAlias = null) Adds a INNER JOIN clause to the query using the AffiliateUserInfo relation
+ * @method     AffiliateUserQuery leftJoinAffiliateRelatedByOwnerid($relationAlias = null) Adds a LEFT JOIN clause to the query using the AffiliateRelatedByOwnerid relation
+ * @method     AffiliateUserQuery rightJoinAffiliateRelatedByOwnerid($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AffiliateRelatedByOwnerid relation
+ * @method     AffiliateUserQuery innerJoinAffiliateRelatedByOwnerid($relationAlias = null) Adds a INNER JOIN clause to the query using the AffiliateRelatedByOwnerid relation
  *
  * @method     AffiliateUserQuery leftJoinAffiliateUserGroup($relationAlias = null) Adds a LEFT JOIN clause to the query using the AffiliateUserGroup relation
  * @method     AffiliateUserQuery rightJoinAffiliateUserGroup($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AffiliateUserGroup relation
@@ -65,26 +83,48 @@
  * @method     AffiliateUser findOneByAffiliateid(int $affiliateId) Return the first AffiliateUser filtered by the affiliateId column
  * @method     AffiliateUser findOneByUsername(string $username) Return the first AffiliateUser filtered by the username column
  * @method     AffiliateUser findOneByPassword(string $password) Return the first AffiliateUser filtered by the password column
+ * @method     AffiliateUser findOneByPasswordupdated(string $passwordUpdated) Return the first AffiliateUser filtered by the passwordUpdated column
  * @method     AffiliateUser findOneByActive(boolean $active) Return the first AffiliateUser filtered by the active column
- * @method     AffiliateUser findOneByCreated(string $created) Return the first AffiliateUser filtered by the created column
- * @method     AffiliateUser findOneByUpdated(string $updated) Return the first AffiliateUser filtered by the updated column
  * @method     AffiliateUser findOneByLevelid(int $levelId) Return the first AffiliateUser filtered by the levelId column
  * @method     AffiliateUser findOneByLastlogin(string $lastLogin) Return the first AffiliateUser filtered by the lastLogin column
+ * @method     AffiliateUser findOneByTimezone(string $timezone) Return the first AffiliateUser filtered by the timezone column
+ * @method     AffiliateUser findOneByName(string $name) Return the first AffiliateUser filtered by the name column
+ * @method     AffiliateUser findOneBySurname(string $surname) Return the first AffiliateUser filtered by the surname column
+ * @method     AffiliateUser findOneByMailaddress(string $mailAddress) Return the first AffiliateUser filtered by the mailAddress column
+ * @method     AffiliateUser findOneByMailaddressalt(string $mailAddressAlt) Return the first AffiliateUser filtered by the mailAddressAlt column
+ * @method     AffiliateUser findOneByRecoveryhash(string $recoveryHash) Return the first AffiliateUser filtered by the recoveryHash column
+ * @method     AffiliateUser findOneByRecoveryhashcreatedon(string $recoveryHashCreatedOn) Return the first AffiliateUser filtered by the recoveryHashCreatedOn column
+ * @method     AffiliateUser findOneByDeletedAt(string $deleted_at) Return the first AffiliateUser filtered by the deleted_at column
+ * @method     AffiliateUser findOneByCreatedAt(string $created_at) Return the first AffiliateUser filtered by the created_at column
+ * @method     AffiliateUser findOneByUpdatedAt(string $updated_at) Return the first AffiliateUser filtered by the updated_at column
  *
  * @method     array findById(int $id) Return AffiliateUser objects filtered by the id column
  * @method     array findByAffiliateid(int $affiliateId) Return AffiliateUser objects filtered by the affiliateId column
  * @method     array findByUsername(string $username) Return AffiliateUser objects filtered by the username column
  * @method     array findByPassword(string $password) Return AffiliateUser objects filtered by the password column
+ * @method     array findByPasswordupdated(string $passwordUpdated) Return AffiliateUser objects filtered by the passwordUpdated column
  * @method     array findByActive(boolean $active) Return AffiliateUser objects filtered by the active column
- * @method     array findByCreated(string $created) Return AffiliateUser objects filtered by the created column
- * @method     array findByUpdated(string $updated) Return AffiliateUser objects filtered by the updated column
  * @method     array findByLevelid(int $levelId) Return AffiliateUser objects filtered by the levelId column
  * @method     array findByLastlogin(string $lastLogin) Return AffiliateUser objects filtered by the lastLogin column
+ * @method     array findByTimezone(string $timezone) Return AffiliateUser objects filtered by the timezone column
+ * @method     array findByName(string $name) Return AffiliateUser objects filtered by the name column
+ * @method     array findBySurname(string $surname) Return AffiliateUser objects filtered by the surname column
+ * @method     array findByMailaddress(string $mailAddress) Return AffiliateUser objects filtered by the mailAddress column
+ * @method     array findByMailaddressalt(string $mailAddressAlt) Return AffiliateUser objects filtered by the mailAddressAlt column
+ * @method     array findByRecoveryhash(string $recoveryHash) Return AffiliateUser objects filtered by the recoveryHash column
+ * @method     array findByRecoveryhashcreatedon(string $recoveryHashCreatedOn) Return AffiliateUser objects filtered by the recoveryHashCreatedOn column
+ * @method     array findByDeletedAt(string $deleted_at) Return AffiliateUser objects filtered by the deleted_at column
+ * @method     array findByCreatedAt(string $created_at) Return AffiliateUser objects filtered by the created_at column
+ * @method     array findByUpdatedAt(string $updated_at) Return AffiliateUser objects filtered by the updated_at column
  *
  * @package    propel.generator.affiliates.classes.om
  */
 abstract class BaseAffiliateUserQuery extends ModelCriteria
 {
+
+	// soft_delete behavior
+	protected static $softDelete = true;
+	protected $localSoftDelete = true;
 
 	/**
 	 * Initializes internal state of BaseAffiliateUserQuery object.
@@ -282,6 +322,37 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query on the passwordUpdated column
+	 * 
+	 * @param     string|array $passwordupdated The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateUserQuery The current query, for fluid interface
+	 */
+	public function filterByPasswordupdated($passwordupdated = null, $comparison = null)
+	{
+		if (is_array($passwordupdated)) {
+			$useMinMax = false;
+			if (isset($passwordupdated['min'])) {
+				$this->addUsingAlias(AffiliateUserPeer::PASSWORDUPDATED, $passwordupdated['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($passwordupdated['max'])) {
+				$this->addUsingAlias(AffiliateUserPeer::PASSWORDUPDATED, $passwordupdated['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(AffiliateUserPeer::PASSWORDUPDATED, $passwordupdated, $comparison);
+	}
+
+	/**
 	 * Filter the query on the active column
 	 * 
 	 * @param     boolean|string $active The value to use as filter.
@@ -296,68 +367,6 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 			$active = in_array(strtolower($active), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
 		}
 		return $this->addUsingAlias(AffiliateUserPeer::ACTIVE, $active, $comparison);
-	}
-
-	/**
-	 * Filter the query on the created column
-	 * 
-	 * @param     string|array $created The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    AffiliateUserQuery The current query, for fluid interface
-	 */
-	public function filterByCreated($created = null, $comparison = null)
-	{
-		if (is_array($created)) {
-			$useMinMax = false;
-			if (isset($created['min'])) {
-				$this->addUsingAlias(AffiliateUserPeer::CREATED, $created['min'], Criteria::GREATER_EQUAL);
-				$useMinMax = true;
-			}
-			if (isset($created['max'])) {
-				$this->addUsingAlias(AffiliateUserPeer::CREATED, $created['max'], Criteria::LESS_EQUAL);
-				$useMinMax = true;
-			}
-			if ($useMinMax) {
-				return $this;
-			}
-			if (null === $comparison) {
-				$comparison = Criteria::IN;
-			}
-		}
-		return $this->addUsingAlias(AffiliateUserPeer::CREATED, $created, $comparison);
-	}
-
-	/**
-	 * Filter the query on the updated column
-	 * 
-	 * @param     string|array $updated The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    AffiliateUserQuery The current query, for fluid interface
-	 */
-	public function filterByUpdated($updated = null, $comparison = null)
-	{
-		if (is_array($updated)) {
-			$useMinMax = false;
-			if (isset($updated['min'])) {
-				$this->addUsingAlias(AffiliateUserPeer::UPDATED, $updated['min'], Criteria::GREATER_EQUAL);
-				$useMinMax = true;
-			}
-			if (isset($updated['max'])) {
-				$this->addUsingAlias(AffiliateUserPeer::UPDATED, $updated['max'], Criteria::LESS_EQUAL);
-				$useMinMax = true;
-			}
-			if ($useMinMax) {
-				return $this;
-			}
-			if (null === $comparison) {
-				$comparison = Criteria::IN;
-			}
-		}
-		return $this->addUsingAlias(AffiliateUserPeer::UPDATED, $updated, $comparison);
 	}
 
 	/**
@@ -420,6 +429,262 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(AffiliateUserPeer::LASTLOGIN, $lastlogin, $comparison);
+	}
+
+	/**
+	 * Filter the query on the timezone column
+	 * 
+	 * @param     string $timezone The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateUserQuery The current query, for fluid interface
+	 */
+	public function filterByTimezone($timezone = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($timezone)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $timezone)) {
+				$timezone = str_replace('*', '%', $timezone);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(AffiliateUserPeer::TIMEZONE, $timezone, $comparison);
+	}
+
+	/**
+	 * Filter the query on the name column
+	 * 
+	 * @param     string $name The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateUserQuery The current query, for fluid interface
+	 */
+	public function filterByName($name = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($name)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $name)) {
+				$name = str_replace('*', '%', $name);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(AffiliateUserPeer::NAME, $name, $comparison);
+	}
+
+	/**
+	 * Filter the query on the surname column
+	 * 
+	 * @param     string $surname The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateUserQuery The current query, for fluid interface
+	 */
+	public function filterBySurname($surname = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($surname)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $surname)) {
+				$surname = str_replace('*', '%', $surname);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(AffiliateUserPeer::SURNAME, $surname, $comparison);
+	}
+
+	/**
+	 * Filter the query on the mailAddress column
+	 * 
+	 * @param     string $mailaddress The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateUserQuery The current query, for fluid interface
+	 */
+	public function filterByMailaddress($mailaddress = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($mailaddress)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $mailaddress)) {
+				$mailaddress = str_replace('*', '%', $mailaddress);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(AffiliateUserPeer::MAILADDRESS, $mailaddress, $comparison);
+	}
+
+	/**
+	 * Filter the query on the mailAddressAlt column
+	 * 
+	 * @param     string $mailaddressalt The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateUserQuery The current query, for fluid interface
+	 */
+	public function filterByMailaddressalt($mailaddressalt = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($mailaddressalt)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $mailaddressalt)) {
+				$mailaddressalt = str_replace('*', '%', $mailaddressalt);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(AffiliateUserPeer::MAILADDRESSALT, $mailaddressalt, $comparison);
+	}
+
+	/**
+	 * Filter the query on the recoveryHash column
+	 * 
+	 * @param     string $recoveryhash The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateUserQuery The current query, for fluid interface
+	 */
+	public function filterByRecoveryhash($recoveryhash = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($recoveryhash)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $recoveryhash)) {
+				$recoveryhash = str_replace('*', '%', $recoveryhash);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(AffiliateUserPeer::RECOVERYHASH, $recoveryhash, $comparison);
+	}
+
+	/**
+	 * Filter the query on the recoveryHashCreatedOn column
+	 * 
+	 * @param     string|array $recoveryhashcreatedon The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateUserQuery The current query, for fluid interface
+	 */
+	public function filterByRecoveryhashcreatedon($recoveryhashcreatedon = null, $comparison = null)
+	{
+		if (is_array($recoveryhashcreatedon)) {
+			$useMinMax = false;
+			if (isset($recoveryhashcreatedon['min'])) {
+				$this->addUsingAlias(AffiliateUserPeer::RECOVERYHASHCREATEDON, $recoveryhashcreatedon['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($recoveryhashcreatedon['max'])) {
+				$this->addUsingAlias(AffiliateUserPeer::RECOVERYHASHCREATEDON, $recoveryhashcreatedon['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(AffiliateUserPeer::RECOVERYHASHCREATEDON, $recoveryhashcreatedon, $comparison);
+	}
+
+	/**
+	 * Filter the query on the deleted_at column
+	 * 
+	 * @param     string|array $deletedAt The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateUserQuery The current query, for fluid interface
+	 */
+	public function filterByDeletedAt($deletedAt = null, $comparison = null)
+	{
+		if (is_array($deletedAt)) {
+			$useMinMax = false;
+			if (isset($deletedAt['min'])) {
+				$this->addUsingAlias(AffiliateUserPeer::DELETED_AT, $deletedAt['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($deletedAt['max'])) {
+				$this->addUsingAlias(AffiliateUserPeer::DELETED_AT, $deletedAt['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(AffiliateUserPeer::DELETED_AT, $deletedAt, $comparison);
+	}
+
+	/**
+	 * Filter the query on the created_at column
+	 * 
+	 * @param     string|array $createdAt The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateUserQuery The current query, for fluid interface
+	 */
+	public function filterByCreatedAt($createdAt = null, $comparison = null)
+	{
+		if (is_array($createdAt)) {
+			$useMinMax = false;
+			if (isset($createdAt['min'])) {
+				$this->addUsingAlias(AffiliateUserPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($createdAt['max'])) {
+				$this->addUsingAlias(AffiliateUserPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(AffiliateUserPeer::CREATED_AT, $createdAt, $comparison);
+	}
+
+	/**
+	 * Filter the query on the updated_at column
+	 * 
+	 * @param     string|array $updatedAt The value to use as filter.
+	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateUserQuery The current query, for fluid interface
+	 */
+	public function filterByUpdatedAt($updatedAt = null, $comparison = null)
+	{
+		if (is_array($updatedAt)) {
+			$useMinMax = false;
+			if (isset($updatedAt['min'])) {
+				$this->addUsingAlias(AffiliateUserPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($updatedAt['max'])) {
+				$this->addUsingAlias(AffiliateUserPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(AffiliateUserPeer::UPDATED_AT, $updatedAt, $comparison);
 	}
 
 	/**
@@ -494,24 +759,24 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
 	 */
-	public function filterByAffiliate($affiliate, $comparison = null)
+	public function filterByAffiliateRelatedByAffiliateid($affiliate, $comparison = null)
 	{
 		return $this
 			->addUsingAlias(AffiliateUserPeer::AFFILIATEID, $affiliate->getId(), $comparison);
 	}
 
 	/**
-	 * Adds a JOIN clause to the query using the Affiliate relation
+	 * Adds a JOIN clause to the query using the AffiliateRelatedByAffiliateid relation
 	 * 
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
 	 */
-	public function joinAffiliate($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinAffiliateRelatedByAffiliateid($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('Affiliate');
+		$relationMap = $tableMap->getRelation('AffiliateRelatedByAffiliateid');
 		
 		// create a ModelJoin object for this join
 		$join = new ModelJoin();
@@ -526,14 +791,14 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
 			$this->addJoinObject($join, $relationAlias);
 		} else {
-			$this->addJoinObject($join, 'Affiliate');
+			$this->addJoinObject($join, 'AffiliateRelatedByAffiliateid');
 		}
 		
 		return $this;
 	}
 
 	/**
-	 * Use the Affiliate relation Affiliate object
+	 * Use the AffiliateRelatedByAffiliateid relation Affiliate object
 	 *
 	 * @see       useQuery()
 	 * 
@@ -543,39 +808,39 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	 *
 	 * @return    AffiliateQuery A secondary query class using the current class as primary query
 	 */
-	public function useAffiliateQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useAffiliateRelatedByAffiliateidQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		return $this
-			->joinAffiliate($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'Affiliate', 'AffiliateQuery');
+			->joinAffiliateRelatedByAffiliateid($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'AffiliateRelatedByAffiliateid', 'AffiliateQuery');
 	}
 
 	/**
-	 * Filter the query by a related AffiliateUserInfo object
+	 * Filter the query by a related Affiliate object
 	 *
-	 * @param     AffiliateUserInfo $affiliateUserInfo  the related object to use as filter
+	 * @param     Affiliate $affiliate  the related object to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
 	 */
-	public function filterByAffiliateUserInfo($affiliateUserInfo, $comparison = null)
+	public function filterByAffiliateRelatedByOwnerid($affiliate, $comparison = null)
 	{
 		return $this
-			->addUsingAlias(AffiliateUserPeer::ID, $affiliateUserInfo->getUserid(), $comparison);
+			->addUsingAlias(AffiliateUserPeer::ID, $affiliate->getOwnerid(), $comparison);
 	}
 
 	/**
-	 * Adds a JOIN clause to the query using the AffiliateUserInfo relation
+	 * Adds a JOIN clause to the query using the AffiliateRelatedByOwnerid relation
 	 * 
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
 	 */
-	public function joinAffiliateUserInfo($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinAffiliateRelatedByOwnerid($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
 		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('AffiliateUserInfo');
+		$relationMap = $tableMap->getRelation('AffiliateRelatedByOwnerid');
 		
 		// create a ModelJoin object for this join
 		$join = new ModelJoin();
@@ -590,14 +855,14 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
 			$this->addJoinObject($join, $relationAlias);
 		} else {
-			$this->addJoinObject($join, 'AffiliateUserInfo');
+			$this->addJoinObject($join, 'AffiliateRelatedByOwnerid');
 		}
 		
 		return $this;
 	}
 
 	/**
-	 * Use the AffiliateUserInfo relation AffiliateUserInfo object
+	 * Use the AffiliateRelatedByOwnerid relation Affiliate object
 	 *
 	 * @see       useQuery()
 	 * 
@@ -605,13 +870,13 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	 *                                   to be used as main alias in the secondary query
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    AffiliateUserInfoQuery A secondary query class using the current class as primary query
+	 * @return    AffiliateQuery A secondary query class using the current class as primary query
 	 */
-	public function useAffiliateUserInfoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useAffiliateRelatedByOwneridQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
 	{
 		return $this
-			->joinAffiliateUserInfo($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'AffiliateUserInfo', 'AffiliateUserInfoQuery');
+			->joinAffiliateRelatedByOwnerid($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'AffiliateRelatedByOwnerid', 'AffiliateQuery');
 	}
 
 	/**
@@ -884,6 +1149,195 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	  }
 	  
 		return $this;
+	}
+
+	/**
+	 * Code to execute before every SELECT statement
+	 * 
+	 * @param     PropelPDO $con The connection object used by the query
+	 */
+	protected function basePreSelect(PropelPDO $con)
+	{
+		// soft_delete behavior
+		if (AffiliateUserQuery::isSoftDeleteEnabled() && $this->localSoftDelete) {
+			$this->addUsingAlias(AffiliateUserPeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			AffiliateUserPeer::enableSoftDelete();
+		}
+		
+		return $this->preSelect($con);
+	}
+
+	/**
+	 * Code to execute before every DELETE statement
+	 * 
+	 * @param     PropelPDO $con The connection object used by the query
+	 */
+	protected function basePreDelete(PropelPDO $con)
+	{
+		// soft_delete behavior
+		if (AffiliateUserQuery::isSoftDeleteEnabled() && $this->localSoftDelete) {
+			return $this->softDelete($con);
+		} else {
+			return $this->hasWhereClause() ? $this->forceDelete($con) : $this->forceDeleteAll($con);
+		}
+		
+		return $this->preDelete($con);
+	}
+
+	// soft_delete behavior
+	
+	/**
+	 * Temporarily disable the filter on deleted rows
+	 * Valid only for the current query
+	 * 
+	 * @see AffiliateUserQuery::disableSoftDelete() to disable the filter for more than one query
+	 *
+	 * @return AffiliateUserQuery The current query, for fuid interface
+	 */
+	public function includeDeleted()
+	{
+		$this->localSoftDelete = false;
+		return $this;
+	}
+	
+	/**
+	 * Soft delete the selected rows
+	 *
+	 * @param			PropelPDO $con an optional connection object
+	 *
+	 * @return		int Number of updated rows
+	 */
+	public function softDelete(PropelPDO $con = null)
+	{
+		return $this->update(array('DeletedAt' => time()), $con);
+	}
+	
+	/**
+	 * Bypass the soft_delete behavior and force a hard delete of the selected rows
+	 *
+	 * @param			PropelPDO $con an optional connection object
+	 *
+	 * @return		int Number of deleted rows
+	 */
+	public function forceDelete(PropelPDO $con = null)
+	{
+		return AffiliateUserPeer::doForceDelete($this, $con);
+	}
+	
+	/**
+	 * Bypass the soft_delete behavior and force a hard delete of all the rows
+	 *
+	 * @param			PropelPDO $con an optional connection object
+	 *
+	 * @return		int Number of deleted rows
+	 */
+	public function forceDeleteAll(PropelPDO $con = null)
+	{
+		return AffiliateUserPeer::doForceDeleteAll($con);}
+	
+	/**
+	 * Undelete selected rows
+	 *
+	 * @param			PropelPDO $con an optional connection object
+	 *
+	 * @return		int The number of rows affected by this update and any referring fk objects' save() operations.
+	 */
+	public function unDelete(PropelPDO $con = null)
+	{
+		return $this->update(array('DeletedAt' => null), $con);
+	}
+		
+	/**
+	 * Enable the soft_delete behavior for this model
+	 */
+	public static function enableSoftDelete()
+	{
+		self::$softDelete = true;
+	}
+	
+	/**
+	 * Disable the soft_delete behavior for this model
+	 */
+	public static function disableSoftDelete()
+	{
+		self::$softDelete = false;
+	}
+	
+	/**
+	 * Check the soft_delete behavior for this model
+	 *
+	 * @return boolean true if the soft_delete behavior is enabled
+	 */
+	public static function isSoftDeleteEnabled()
+	{
+		return self::$softDelete;
+	}
+
+	// timestampable behavior
+	
+	/**
+	 * Filter by the latest updated
+	 *
+	 * @param      int $nbDays Maximum age of the latest update in days
+	 *
+	 * @return     AffiliateUserQuery The current query, for fuid interface
+	 */
+	public function recentlyUpdated($nbDays = 7)
+	{
+		return $this->addUsingAlias(AffiliateUserPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+	}
+	
+	/**
+	 * Filter by the latest created
+	 *
+	 * @param      int $nbDays Maximum age of in days
+	 *
+	 * @return     AffiliateUserQuery The current query, for fuid interface
+	 */
+	public function recentlyCreated($nbDays = 7)
+	{
+		return $this->addUsingAlias(AffiliateUserPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+	}
+	
+	/**
+	 * Order by update date desc
+	 *
+	 * @return     AffiliateUserQuery The current query, for fuid interface
+	 */
+	public function lastUpdatedFirst()
+	{
+		return $this->addDescendingOrderByColumn(AffiliateUserPeer::UPDATED_AT);
+	}
+	
+	/**
+	 * Order by update date asc
+	 *
+	 * @return     AffiliateUserQuery The current query, for fuid interface
+	 */
+	public function firstUpdatedFirst()
+	{
+		return $this->addAscendingOrderByColumn(AffiliateUserPeer::UPDATED_AT);
+	}
+	
+	/**
+	 * Order by create date desc
+	 *
+	 * @return     AffiliateUserQuery The current query, for fuid interface
+	 */
+	public function lastCreatedFirst()
+	{
+		return $this->addDescendingOrderByColumn(AffiliateUserPeer::CREATED_AT);
+	}
+	
+	/**
+	 * Order by create date asc
+	 *
+	 * @return     AffiliateUserQuery The current query, for fuid interface
+	 */
+	public function firstCreatedFirst()
+	{
+		return $this->addAscendingOrderByColumn(AffiliateUserPeer::CREATED_AT);
 	}
 
 } // BaseAffiliateUserQuery

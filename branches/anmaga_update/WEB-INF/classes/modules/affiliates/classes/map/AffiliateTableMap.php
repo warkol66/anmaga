@@ -39,7 +39,18 @@ class AffiliateTableMap extends TableMap {
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
-		$this->addColumn('OWNERID', 'Ownerid', 'INTEGER', false, null, null);
+		$this->addForeignKey('OWNERID', 'Ownerid', 'INTEGER', 'affiliates_user', 'ID', false, null, null);
+		$this->addColumn('INTERNALNUMBER', 'Internalnumber', 'VARCHAR', false, 12, null);
+		$this->addColumn('ADDRESS', 'Address', 'VARCHAR', false, 255, null);
+		$this->addColumn('PHONE', 'Phone', 'VARCHAR', false, 50, null);
+		$this->addColumn('EMAIL', 'Email', 'VARCHAR', false, 50, null);
+		$this->addColumn('CONTACT', 'Contact', 'VARCHAR', false, 50, null);
+		$this->addColumn('CONTACTEMAIL', 'Contactemail', 'VARCHAR', false, 100, null);
+		$this->addColumn('WEB', 'Web', 'VARCHAR', false, 255, null);
+		$this->addColumn('MEMO', 'Memo', 'LONGVARCHAR', false, null, null);
+		$this->addColumn('DELETED_AT', 'DeletedAt', 'TIMESTAMP', false, null, null);
+		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
+		$this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
 		// validators
 	} // initialize()
 
@@ -48,8 +59,8 @@ class AffiliateTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('AffiliateInfo', 'AffiliateInfo', RelationMap::ONE_TO_ONE, array('id' => 'affiliateId', ), null, null);
-    $this->addRelation('AffiliateUser', 'AffiliateUser', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
+    $this->addRelation('AffiliateUserRelatedByOwnerid', 'AffiliateUser', RelationMap::MANY_TO_ONE, array('ownerId' => 'id', ), null, null);
+    $this->addRelation('AffiliateUserRelatedByAffiliateid', 'AffiliateUser', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('AffiliateBranch', 'AffiliateBranch', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('AffiliateProduct', 'AffiliateProduct', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('AffiliateProductCode', 'AffiliateProductCode', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
@@ -58,5 +69,19 @@ class AffiliateTableMap extends TableMap {
     $this->addRelation('OrderTemplate', 'OrderTemplate', RelationMap::ONE_TO_MANY, array('id' => 'affiliateId', ), null, null);
     $this->addRelation('Product', 'Product', RelationMap::MANY_TO_MANY, array(), null, null);
 	} // buildRelations()
+
+	/**
+	 * 
+	 * Gets the list of behaviors registered for this table
+	 * 
+	 * @return array Associative array (name => parameters) of behaviors
+	 */
+	public function getBehaviors()
+	{
+		return array(
+			'soft_delete' => array('deleted_column' => 'deleted_at', ),
+			'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
+		);
+	} // getBehaviors()
 
 } // AffiliateTableMap

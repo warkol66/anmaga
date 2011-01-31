@@ -1,4 +1,50 @@
 ﻿==============================
+Revisión 654 - Fecha 20110121
+------------------------------
+ALTER TABLE affiliates_user
+ADD 	`passwordUpdated` DATE   COMMENT 'Fecha de actualizacion de la clave',
+ADD 	`recoveryHash` VARCHAR(255)   COMMENT 'Hash enviado para la recuperacion de clave',
+ADD 	`recoveryHashCreatedOn` DATETIME   COMMENT 'Momento de la solicitud para la recuperacion de clave',
+ADD 	`name` VARCHAR(90)   COMMENT 'Nombre',
+ADD 	`surname` VARCHAR(90)   COMMENT 'Apellido',
+ADD 	`mailAddress` VARCHAR(90)   COMMENT 'Direccion electronica',
+ADD 	`mailAddressAlt` VARCHAR(90)   COMMENT 'Direccion electronica alternativa',
+ADD 	`deleted_at` DATETIME,
+ADD 	`created_at` DATETIME,
+ADD 	`updated_at` DATETIME,
+DROP `updated`,
+DROP `created`;
+
+UPDATE `affiliates_user` ,`affiliates_userInfo` SET `affiliates_user`.`name` = `affiliates_userInfo`.`name`,
+`affiliates_user`.`surname` = `affiliates_userInfo`.`surname`,
+`affiliates_user`.`mailAddress` = `affiliates_userInfo`.`mailAddress`,
+`passwordUpdated` = '2010-01-01'
+ WHERE `affiliates_userInfo`.`userId` = `affiliates_user`.`id`;
+
+ALTER TABLE affiliates_affiliate
+ADD 	`internalNumber` VARCHAR(12)   COMMENT 'Id interno',
+ADD 	`address` VARCHAR(255)   COMMENT 'Direccion afiliado',
+ADD 	`phone` VARCHAR(50)   COMMENT 'Telefono afiliado',
+ADD 	`email` VARCHAR(50)   COMMENT 'Email afiliado',
+ADD 	`contact` VARCHAR(50)   COMMENT 'Nombre de persona de contacto',
+ADD 	`contactEmail` VARCHAR(100)   COMMENT 'Email de persona de contacto',
+ADD 	`web` VARCHAR(255)   COMMENT 'Direccion web del afiliado',
+ADD 	`memo` TEXT   COMMENT 'Informacion adicional del afiliado',
+ADD 	`deleted_at` DATETIME,
+ADD 	`created_at` DATETIME,
+ADD 	`updated_at` DATETIME;
+
+UPDATE `affiliates_affiliate` ,`affiliates_affiliateInfo` SET `affiliates_affiliate`.`internalNumber` = `affiliates_affiliateInfo`.`affiliateInternalNumber`,
+`affiliates_affiliate`.`address` = `affiliates_affiliateInfo`.`address`,
+`affiliates_affiliate`.`phone` = `affiliates_affiliateInfo`.`phone`,
+`affiliates_affiliate`.`email` = `affiliates_affiliateInfo`.`email`,
+`affiliates_affiliate`.`contact` = `affiliates_affiliateInfo`.`contact`,
+`affiliates_affiliate`.`contactEmail` = `affiliates_affiliateInfo`.`contactEmail`,
+`affiliates_affiliate`.`web` = `affiliates_affiliateInfo`.`web`,
+`affiliates_affiliate`.`memo` = `affiliates_affiliateInfo`.`memo`
+ WHERE `affiliates_affiliateInfo`.`affiliateId` = `affiliates_affiliate`.`id`;
+
+==============================
 Revisión 653 - Fecha 20110120
 ------------------------------
 RENAME TABLE `branch`  TO `affiliates_branch`;

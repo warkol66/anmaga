@@ -584,3 +584,109 @@ li#titAdministracion {
 fieldset li {
 	margin-left: 35px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+fieldset label {
+	width: 140px;
+	float: left;
+	font-weight: bold;
+	vertical-align: text-top;
+	text-align: right;
+	padding-top: 2px;
+	margin-bottom: 0;
+	padding-right: 5px;
+	padding-bottom: 5px;
+	display: block;
+}
+fieldset p {
+	display: block;
+	height: auto;
+	clear: both;
+	padding-top: 4px;
+}
+fieldset fieldset legend {  
+	background-color: transparent;
+}
+fieldset fieldset label {
+	width: 30px;
+	font-weight: bold;
+	display: inline;
+}
+fieldset fieldset {
+	padding: 5px;
+	/*width: 40%;*/
+	margin-left: 120px;
+}
+fieldset fieldset label {
+	font-weight: bold;
+	display: inline;
+}
+fieldset li {
+	margin-left: 35px;
+}
+fieldset input, fieldset select, fieldset textarea, fieldset checkbox {
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* BOTON AGREGAR NUEVA ...  */
+a.addLink {
+	line-height: 1.4em;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+a.addLink:link, a.addLink:visited {
+	font-weight: bold;
+	padding: 0 5px 0 20px;
+	margin: 3px;
+	text-decoration: none;
+/*	background-image:
+	background-position:
+	background-repeat:*/
+}
+
+a.addLink:hover, a.addLink:active {
+	text-decoration: none;
+/*	color: */}
+/* /BOTON AGREGAR NUEVA ...  */
+
+a.searchLink:link, a.searchLink:active {
+	font-weight: bold;
+	padding: 0 5px 0 20px;
+	margin: 3px;
+	text-decoration: none;
+}
+a.searchLink:hover, a.searchLink:active {
+	text-decoration: none;
+/*	color: */}

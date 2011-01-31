@@ -26,7 +26,7 @@ abstract class BaseAffiliatePeer {
 	const TM_CLASS = 'AffiliateTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 3;
+	const NUM_COLUMNS = 14;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -39,6 +39,39 @@ abstract class BaseAffiliatePeer {
 
 	/** the column name for the OWNERID field */
 	const OWNERID = 'affiliates_affiliate.OWNERID';
+
+	/** the column name for the INTERNALNUMBER field */
+	const INTERNALNUMBER = 'affiliates_affiliate.INTERNALNUMBER';
+
+	/** the column name for the ADDRESS field */
+	const ADDRESS = 'affiliates_affiliate.ADDRESS';
+
+	/** the column name for the PHONE field */
+	const PHONE = 'affiliates_affiliate.PHONE';
+
+	/** the column name for the EMAIL field */
+	const EMAIL = 'affiliates_affiliate.EMAIL';
+
+	/** the column name for the CONTACT field */
+	const CONTACT = 'affiliates_affiliate.CONTACT';
+
+	/** the column name for the CONTACTEMAIL field */
+	const CONTACTEMAIL = 'affiliates_affiliate.CONTACTEMAIL';
+
+	/** the column name for the WEB field */
+	const WEB = 'affiliates_affiliate.WEB';
+
+	/** the column name for the MEMO field */
+	const MEMO = 'affiliates_affiliate.MEMO';
+
+	/** the column name for the DELETED_AT field */
+	const DELETED_AT = 'affiliates_affiliate.DELETED_AT';
+
+	/** the column name for the CREATED_AT field */
+	const CREATED_AT = 'affiliates_affiliate.CREATED_AT';
+
+	/** the column name for the UPDATED_AT field */
+	const UPDATED_AT = 'affiliates_affiliate.UPDATED_AT';
 
 	/**
 	 * An identiy map to hold any loaded instances of Affiliate objects.
@@ -56,12 +89,12 @@ abstract class BaseAffiliatePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Ownerid', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'ownerid', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::OWNERID, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'OWNERID', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'ownerId', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Ownerid', 'Internalnumber', 'Address', 'Phone', 'Email', 'Contact', 'Contactemail', 'Web', 'Memo', 'DeletedAt', 'CreatedAt', 'UpdatedAt', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'ownerid', 'internalnumber', 'address', 'phone', 'email', 'contact', 'contactemail', 'web', 'memo', 'deletedAt', 'createdAt', 'updatedAt', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::OWNERID, self::INTERNALNUMBER, self::ADDRESS, self::PHONE, self::EMAIL, self::CONTACT, self::CONTACTEMAIL, self::WEB, self::MEMO, self::DELETED_AT, self::CREATED_AT, self::UPDATED_AT, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'OWNERID', 'INTERNALNUMBER', 'ADDRESS', 'PHONE', 'EMAIL', 'CONTACT', 'CONTACTEMAIL', 'WEB', 'MEMO', 'DELETED_AT', 'CREATED_AT', 'UPDATED_AT', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'ownerId', 'internalNumber', 'address', 'phone', 'email', 'contact', 'contactEmail', 'web', 'memo', 'deleted_at', 'created_at', 'updated_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
 	);
 
 	/**
@@ -71,12 +104,12 @@ abstract class BaseAffiliatePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Ownerid' => 2, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'ownerid' => 2, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::OWNERID => 2, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'OWNERID' => 2, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'ownerId' => 2, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Ownerid' => 2, 'Internalnumber' => 3, 'Address' => 4, 'Phone' => 5, 'Email' => 6, 'Contact' => 7, 'Contactemail' => 8, 'Web' => 9, 'Memo' => 10, 'DeletedAt' => 11, 'CreatedAt' => 12, 'UpdatedAt' => 13, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'ownerid' => 2, 'internalnumber' => 3, 'address' => 4, 'phone' => 5, 'email' => 6, 'contact' => 7, 'contactemail' => 8, 'web' => 9, 'memo' => 10, 'deletedAt' => 11, 'createdAt' => 12, 'updatedAt' => 13, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::OWNERID => 2, self::INTERNALNUMBER => 3, self::ADDRESS => 4, self::PHONE => 5, self::EMAIL => 6, self::CONTACT => 7, self::CONTACTEMAIL => 8, self::WEB => 9, self::MEMO => 10, self::DELETED_AT => 11, self::CREATED_AT => 12, self::UPDATED_AT => 13, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'OWNERID' => 2, 'INTERNALNUMBER' => 3, 'ADDRESS' => 4, 'PHONE' => 5, 'EMAIL' => 6, 'CONTACT' => 7, 'CONTACTEMAIL' => 8, 'WEB' => 9, 'MEMO' => 10, 'DELETED_AT' => 11, 'CREATED_AT' => 12, 'UPDATED_AT' => 13, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'ownerId' => 2, 'internalNumber' => 3, 'address' => 4, 'phone' => 5, 'email' => 6, 'contact' => 7, 'contactEmail' => 8, 'web' => 9, 'memo' => 10, 'deleted_at' => 11, 'created_at' => 12, 'updated_at' => 13, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
 	);
 
 	/**
@@ -151,10 +184,32 @@ abstract class BaseAffiliatePeer {
 			$criteria->addSelectColumn(AffiliatePeer::ID);
 			$criteria->addSelectColumn(AffiliatePeer::NAME);
 			$criteria->addSelectColumn(AffiliatePeer::OWNERID);
+			$criteria->addSelectColumn(AffiliatePeer::INTERNALNUMBER);
+			$criteria->addSelectColumn(AffiliatePeer::ADDRESS);
+			$criteria->addSelectColumn(AffiliatePeer::PHONE);
+			$criteria->addSelectColumn(AffiliatePeer::EMAIL);
+			$criteria->addSelectColumn(AffiliatePeer::CONTACT);
+			$criteria->addSelectColumn(AffiliatePeer::CONTACTEMAIL);
+			$criteria->addSelectColumn(AffiliatePeer::WEB);
+			$criteria->addSelectColumn(AffiliatePeer::MEMO);
+			$criteria->addSelectColumn(AffiliatePeer::DELETED_AT);
+			$criteria->addSelectColumn(AffiliatePeer::CREATED_AT);
+			$criteria->addSelectColumn(AffiliatePeer::UPDATED_AT);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.NAME');
 			$criteria->addSelectColumn($alias . '.OWNERID');
+			$criteria->addSelectColumn($alias . '.INTERNALNUMBER');
+			$criteria->addSelectColumn($alias . '.ADDRESS');
+			$criteria->addSelectColumn($alias . '.PHONE');
+			$criteria->addSelectColumn($alias . '.EMAIL');
+			$criteria->addSelectColumn($alias . '.CONTACT');
+			$criteria->addSelectColumn($alias . '.CONTACTEMAIL');
+			$criteria->addSelectColumn($alias . '.WEB');
+			$criteria->addSelectColumn($alias . '.MEMO');
+			$criteria->addSelectColumn($alias . '.DELETED_AT');
+			$criteria->addSelectColumn($alias . '.CREATED_AT');
+			$criteria->addSelectColumn($alias . '.UPDATED_AT');
 		}
 	}
 
@@ -189,6 +244,12 @@ abstract class BaseAffiliatePeer {
 
 		if ($con === null) {
 			$con = Propel::getConnection(AffiliatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+		// soft_delete behavior
+		if (AffiliateQuery::isSoftDeleteEnabled()) {
+			$criteria->add(AffiliatePeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			AffiliatePeer::enableSoftDelete();
 		}
 		// BasePeer returns a PDOStatement
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -259,6 +320,12 @@ abstract class BaseAffiliatePeer {
 
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
+		// soft_delete behavior
+		if (AffiliateQuery::isSoftDeleteEnabled()) {
+			$criteria->add(AffiliatePeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			AffiliatePeer::enableSoftDelete();
+		}
 
 		// BasePeer returns a PDOStatement
 		return BasePeer::doSelect($criteria, $con);
@@ -439,6 +506,264 @@ abstract class BaseAffiliatePeer {
 		}
 		return array($obj, $col);
 	}
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related AffiliateUserRelatedByOwnerid table
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAffiliateUserRelatedByOwnerid(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// We need to set the primary table name, since in the case that there are no WHERE columns
+		// it will be impossible for the BasePeer::createSelectSql() method to determine which
+		// tables go into the FROM clause.
+		$criteria->setPrimaryTableName(AffiliatePeer::TABLE_NAME);
+
+		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->setDistinct();
+		}
+
+		if (!$criteria->hasSelectClause()) {
+			AffiliatePeer::addSelectColumns($criteria);
+		}
+		
+		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+		
+		// Set the correct dbName
+		$criteria->setDbName(self::DATABASE_NAME);
+
+		if ($con === null) {
+			$con = Propel::getConnection(AffiliatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+
+		$criteria->addJoin(AffiliatePeer::OWNERID, AffiliateUserPeer::ID, $join_behavior);
+
+		// soft_delete behavior
+		if (AffiliateQuery::isSoftDeleteEnabled()) {
+			$criteria->add(AffiliatePeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			AffiliatePeer::enableSoftDelete();
+		}
+		$stmt = BasePeer::doCount($criteria, $con);
+
+		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$count = (int) $row[0];
+		} else {
+			$count = 0; // no rows returned; we infer that means 0 matches.
+		}
+		$stmt->closeCursor();
+		return $count;
+	}
+
+
+	/**
+	 * Selects a collection of Affiliate objects pre-filled with their AffiliateUser objects.
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of Affiliate objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAffiliateUserRelatedByOwnerid(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		AffiliatePeer::addSelectColumns($criteria);
+		$startcol = (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
+		AffiliateUserPeer::addSelectColumns($criteria);
+
+		$criteria->addJoin(AffiliatePeer::OWNERID, AffiliateUserPeer::ID, $join_behavior);
+
+		// soft_delete behavior
+		if (AffiliateQuery::isSoftDeleteEnabled()) {
+			$criteria->add(AffiliatePeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			AffiliatePeer::enableSoftDelete();
+		}
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = AffiliatePeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = AffiliatePeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://www.propelorm.org/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+
+				$cls = AffiliatePeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				AffiliatePeer::addInstanceToPool($obj1, $key1);
+			} // if $obj1 already loaded
+
+			$key2 = AffiliateUserPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			if ($key2 !== null) {
+				$obj2 = AffiliateUserPeer::getInstanceFromPool($key2);
+				if (!$obj2) {
+
+					$cls = AffiliateUserPeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol);
+					AffiliateUserPeer::addInstanceToPool($obj2, $key2);
+				} // if obj2 already loaded
+
+				// Add the $obj1 (Affiliate) to $obj2 (AffiliateUser)
+				$obj2->addAffiliateRelatedByOwnerid($obj1);
+
+			} // if joined row was not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining all related tables
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// We need to set the primary table name, since in the case that there are no WHERE columns
+		// it will be impossible for the BasePeer::createSelectSql() method to determine which
+		// tables go into the FROM clause.
+		$criteria->setPrimaryTableName(AffiliatePeer::TABLE_NAME);
+
+		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->setDistinct();
+		}
+
+		if (!$criteria->hasSelectClause()) {
+			AffiliatePeer::addSelectColumns($criteria);
+		}
+		
+		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+		
+		// Set the correct dbName
+		$criteria->setDbName(self::DATABASE_NAME);
+
+		if ($con === null) {
+			$con = Propel::getConnection(AffiliatePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+
+		$criteria->addJoin(AffiliatePeer::OWNERID, AffiliateUserPeer::ID, $join_behavior);
+
+		// soft_delete behavior
+		if (AffiliateQuery::isSoftDeleteEnabled()) {
+			$criteria->add(AffiliatePeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			AffiliatePeer::enableSoftDelete();
+		}
+		$stmt = BasePeer::doCount($criteria, $con);
+
+		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$count = (int) $row[0];
+		} else {
+			$count = 0; // no rows returned; we infer that means 0 matches.
+		}
+		$stmt->closeCursor();
+		return $count;
+	}
+
+	/**
+	 * Selects a collection of Affiliate objects pre-filled with all related objects.
+	 *
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of Affiliate objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		AffiliatePeer::addSelectColumns($criteria);
+		$startcol2 = (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
+
+		AffiliateUserPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		$criteria->addJoin(AffiliatePeer::OWNERID, AffiliateUserPeer::ID, $join_behavior);
+
+		// soft_delete behavior
+		if (AffiliateQuery::isSoftDeleteEnabled()) {
+			$criteria->add(AffiliatePeer::DELETED_AT, null, Criteria::ISNULL);
+		} else {
+			AffiliatePeer::enableSoftDelete();
+		}
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = AffiliatePeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = AffiliatePeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://www.propelorm.org/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+				$cls = AffiliatePeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				AffiliatePeer::addInstanceToPool($obj1, $key1);
+			} // if obj1 already loaded
+
+			// Add objects for joined AffiliateUser rows
+
+			$key2 = AffiliateUserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+			if ($key2 !== null) {
+				$obj2 = AffiliateUserPeer::getInstanceFromPool($key2);
+				if (!$obj2) {
+
+					$cls = AffiliateUserPeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol2);
+					AffiliateUserPeer::addInstanceToPool($obj2, $key2);
+				} // if obj2 loaded
+
+				// Add the $obj1 (Affiliate) to the collection in $obj2 (AffiliateUser)
+				$obj2->addAffiliateRelatedByOwnerid($obj1);
+			} // if joined row not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
+
 	/**
 	 * Returns the TableMap related to this peer.
 	 * This method is not needed for general use but a specific application could have a need.
@@ -566,7 +891,7 @@ abstract class BaseAffiliatePeer {
 	 *
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 */
-	public static function doDeleteAll($con = null)
+	public static function doForceDeleteAll($con = null)
 	{
 		if ($con === null) {
 			$con = Propel::getConnection(AffiliatePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
@@ -601,7 +926,7 @@ abstract class BaseAffiliatePeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	 public static function doDelete($values, PropelPDO $con = null)
+	 public static function doForceDelete($values, PropelPDO $con = null)
 	 {
 		if ($con === null) {
 			$con = Propel::getConnection(AffiliatePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
@@ -734,6 +1059,118 @@ abstract class BaseAffiliatePeer {
 			$objs = AffiliatePeer::doSelect($criteria, $con);
 		}
 		return $objs;
+	}
+
+	// soft_delete behavior
+	
+	/**
+	 * Enable the soft_delete behavior for this model
+	 */
+	public static function enableSoftDelete()
+	{
+		AffiliateQuery::enableSoftDelete();
+		// some soft_deleted objects may be in the instance pool
+		AffiliatePeer::clearInstancePool();
+	}
+	
+	/**
+	 * Disable the soft_delete behavior for this model
+	 */
+	public static function disableSoftDelete()
+	{
+		AffiliateQuery::disableSoftDelete();
+	}
+	
+	/**
+	 * Check the soft_delete behavior for this model
+	 * @return boolean true if the soft_delete behavior is enabled
+	 */
+	public static function isSoftDeleteEnabled()
+	{
+		return AffiliateQuery::isSoftDeleteEnabled();
+	}
+	
+	/**
+	 * Soft delete records, given a Affiliate or Criteria object OR a primary key value.
+	 *
+	 * @param			 mixed $values Criteria or Affiliate object or primary key or array of primary keys
+	 *							which is used to create the DELETE statement
+	 * @param			 PropelPDO $con the connection to use
+	 * @return		 int	The number of affected rows (if supported by underlying database driver).
+	 * @throws		 PropelException Any exceptions caught during processing will be
+	 *							rethrown wrapped into a PropelException.
+	 */
+	public static function doSoftDelete($values, PropelPDO $con = null)
+	{
+		if ($values instanceof Criteria) {
+			// rename for clarity
+			$criteria = clone $values;
+		} elseif ($values instanceof Affiliate) {
+			// create criteria based on pk values
+			$criteria = $values->buildPkeyCriteria();
+		} else {
+			// it must be the primary key
+			$criteria = new Criteria(self::DATABASE_NAME);
+			$criteria->add(AffiliatePeer::ID, (array) $values, Criteria::IN);
+		}
+		$criteria->add(AffiliatePeer::DELETED_AT, time());
+		return AffiliatePeer::doUpdate($criteria, $con);
+	}
+	
+	/**
+	 * Delete or soft delete records, depending on AffiliatePeer::$softDelete
+	 *
+	 * @param			 mixed $values Criteria or Affiliate object or primary key or array of primary keys
+	 *							which is used to create the DELETE statement
+	 * @param			 PropelPDO $con the connection to use
+	 * @return		 int	The number of affected rows (if supported by underlying database driver).
+	 * @throws		 PropelException Any exceptions caught during processing will be
+	 *							rethrown wrapped into a PropelException.
+	 */
+	public static function doDelete($values, PropelPDO $con = null)
+	{
+		if (AffiliatePeer::isSoftDeleteEnabled()) {
+			return AffiliatePeer::doSoftDelete($values, $con);
+		} else {
+			return AffiliatePeer::doForceDelete($values, $con);
+		} 
+	}
+	/**
+	 * Method to soft delete all rows from the affiliates_affiliate table.
+	 *
+	 * @param			 PropelPDO $con the connection to use
+	 * @return		 int The number of affected rows (if supported by underlying database driver).
+	 * @throws		 PropelException Any exceptions caught during processing will be
+	 *							rethrown wrapped into a PropelException.
+	 */
+	public static function doSoftDeleteAll(PropelPDO $con = null)
+	{
+		if ($con === null) {
+			$con = Propel::getConnection(AffiliatePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+		}
+		$selectCriteria = new Criteria();
+		$selectCriteria->add(AffiliatePeer::DELETED_AT, null, Criteria::ISNULL);
+		$selectCriteria->setDbName(AffiliatePeer::DATABASE_NAME);
+		$modifyCriteria = new Criteria();
+		$modifyCriteria->add(AffiliatePeer::DELETED_AT, time());
+		return BasePeer::doUpdate($selectCriteria, $modifyCriteria, $con);
+	}
+	
+	/**
+	 * Delete or soft delete all records, depending on AffiliatePeer::$softDelete
+	 *
+	 * @param			 PropelPDO $con the connection to use
+	 * @return		 int	The number of affected rows (if supported by underlying database driver).
+	 * @throws		 PropelException Any exceptions caught during processing will be
+	 *							rethrown wrapped into a PropelException.
+	 */
+	public static function doDeleteAll(PropelPDO $con = null)
+	{
+		if (AffiliatePeer::isSoftDeleteEnabled()) {
+			return AffiliatePeer::doSoftDeleteAll($con);
+		} else {
+			return AffiliatePeer::doForceDeleteAll($con);
+		} 
 	}
 
 } // BaseAffiliatePeer
