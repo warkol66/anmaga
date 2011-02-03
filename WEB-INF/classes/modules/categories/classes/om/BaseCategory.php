@@ -51,6 +51,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 
 	/**
 	 * The value for the active field.
+	 * Note: this column has a database default value of: true
 	 * @var        boolean
 	 */
 	protected $active;
@@ -178,6 +179,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	public function applyDefaultValues()
 	{
 		$this->module = '';
+		$this->active = true;
 		$this->ispublic = false;
 	}
 
@@ -441,7 +443,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 			$v = (boolean) $v;
 		}
 
-		if ($this->active !== $v) {
+		if ($this->active !== $v || $this->isNew()) {
 			$this->active = $v;
 			$this->modifiedColumns[] = CategoryPeer::ACTIVE;
 		}
@@ -649,6 +651,10 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	public function hasOnlyDefaultValues()
 	{
 			if ($this->module !== '') {
+				return false;
+			}
+
+			if ($this->active !== true) {
 				return false;
 			}
 

@@ -60,40 +60,9 @@ class CategoryPeer extends BaseCategoryPeer {
           $object->$setMethod(null);
       }
     }
-    
-    $object->setActive(1);
-    $object->setModule($params['module']);
-    
-    if($params[parentId] != 0)
-      $parentNode = CategoryQuery::create()->findPk($params[parentId]);
-
-    if (empty($parentNode)){
-      $lastScope = CategoryQuery::create()->treeRoots()->orderByScope(Criteria::DESC)->findOne();
-      if (!empty($lastScope))
-        $scope = $lastScope->getScope() + 1;
-      else
-        $scope = 0;
-      $object->setScope($scope);
-      $object->makeRoot();
-    }
-    else
-      $object->insertAsLastChildOf($parentNode);
 
     try {
       $object->save();
-      
-      //regla de negocio, agregar siempre a grupo usuarios
-      $groupPeer = new GroupPeer();
-      $group = $groupPeer->get(3);
-      
-      if (empty($group)) {
-        //creamos el grupo usuarios
-        ;
-      }
-    
-      if (!empty($group))
-        $groupPeer->addCategoryToGroup($object->getId(),$group->getId());
-      
       return $object;
     }
     catch (PropelException $exp) {
@@ -110,7 +79,7 @@ class CategoryPeer extends BaseCategoryPeer {
   * @param string $name Nombre de la categoria
   * @return la categoria si se actualizo la informacion correctamente, false sino
 	*/
-  function update($id,$params){
+  function update($id, $params){
     $object = CategoryQuery::create()->findPk($id);
     foreach ($params as $key => $value) {
       $setMethod = "set".$key;
@@ -123,29 +92,7 @@ class CategoryPeer extends BaseCategoryPeer {
     }
 
     try {
-      
-      // TODO ver si se puede reducir la cantidad de llamadas a save.
-      // tener cuidado porque están para asegurar la consistencia con la info de la DB
-      // para las llamadas al getParent() sobretodo.
-      
       $object->save();
-
-      $parentNode = $object->getParent();
-
-      if ((!empty($parentNode)) && ($parentNode->getId() != $params[parentId])) {
-        $newParentNode = CategoryQuery::create()->findPk($params[parentId]);
-        if (!empty ($newParentNode)) {
-          $object->moveToLastChildOf($newParentNode);
-          $object->save();
-        }
-      }
-      
-      $parentNode = $object->getParent(); //Actualizamos por si ha cambiado
-      if ((!empty($parentNode)) && $parentNode->getModule() != $object->getModule()) {
-        $object->setModule($parentNode->getModule());
-        $object->save();
-      }
-
       return $object;
     } catch (PropelException $exp) {
       if (ConfigModule::get("global","showPropelExceptions"))

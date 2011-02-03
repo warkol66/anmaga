@@ -55,8 +55,12 @@ class CategoriesDoEditXAction extends BaseAction {
     
 		if ( $_POST["action"] == "edit" ) {
 			//estoy editando un category existente
-			CategoryPeer::update($_POST['id'], $categoryParams);
-      		return $mapping->findForwardConfig('success');
+			$category = $categoryPeer->get($_POST['id']);
+      Common::setObjectFromParams($category, $categoryParams);
+      if ($category->save())
+        return $mapping->findForwardConfig('success');
+      else
+        return $mapping->findForwardConfig('failure');
 		}
 		else {  //estoy creando un nuevo category
 		  $this->applyFilters($categoryPeer, $_POST['filters'], $smarty);
@@ -66,19 +70,23 @@ class CategoriesDoEditXAction extends BaseAction {
 				return $mapping->findForwardConfig('failure');
 			}
       
-			$newCategory = CategoryPeer::create($categoryParams);
+			$category = new Category;
+      Common::setObjectFromParams($category, $categoryParams);
+      if (!$category->save())
+        return $mapping->findForwardConfig('failure');
+        
       $parentCategories = $categoryPeer->getAllParentsByUserFiltered($user);
       $smarty->assign("parentUserCategories",$parentCategories);
       
-      if (empty($newCategory))
+      if (empty($category))
         return $mapping->findForwardConfig('failure');
         
-			$smarty->assign("category",$newCategory);
+			$smarty->assign("category",$category);
 
 			//le asigno permisos a la categoria creada a todos los grupos al cual pertenece el usuario
 			//separacion entre caso de usuario dependencia y usuario administrador	
 			if (isset($user)) {
-				$user->setGroupsToCategory($newCategory->getId());
+				$user->setGroupsToCategory($category->getId());
 			}
 			return $mapping->findForwardConfig('success');
 		}

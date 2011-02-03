@@ -41,7 +41,7 @@ class CategoryTableMap extends TableMap {
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
 		$this->addColumn('ORDER', 'Order', 'INTEGER', false, 4, null);
 		$this->addColumn('MODULE', 'Module', 'VARCHAR', false, 255, '');
-		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null, null);
+		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null, true);
 		$this->addColumn('ISPUBLIC', 'Ispublic', 'BOOLEAN', true, null, false);
 		$this->addColumn('OLDID', 'Oldid', 'INTEGER', true, 5, null);
 		$this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
