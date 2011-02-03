@@ -168,9 +168,30 @@
 	<tr>
 		<td width="64%">|-$user->getUsername()-|</td>
 		<td width="34%">|-$user->getAffiliate()-|</td>
-		<td width="1%" nowrap>|-if $loginUser ne '' && $affiliateId gt 0-|
-		|-if $user->isAffiliateOwner()-|<img src="images/clear.png" class="iconActivate disabled" title="Este es el usuario dueño del afiliado" />|-else-|<form method="post"><input type="hidden" name="userId" value="|-$user->getId()-|" /><input type="hidden" name="affiliateId" value="|-$user->getAffiliateId()-|" /><input type="hidden" name="do" value="affiliatesSetOwner" /><a href="#" title="Fijar como dueño" onClick="javascript:this.parentNode.submit();"><img src="images/clear.png" class="iconActivate" /></a></form>|-/if-| |-/if-|<a href='Main.php?do=affiliatesUsersList&user=|-$user->getId()-|']'><img src="images/clear.png" class='iconEdit'></a>
-			|-if $user->isAffiliateOwner()-|<img title="Para eliminar este usuario debe asignar la administración del afiliado a otro usuario" src="images/clear.png" class='iconDelete disabled'>|-else-|<a href='Main.php?do=affiliatesUsersDoDelete&id=|-$user->getId()-|'><img src="images/clear.png" class='iconDelete'></a>|-/if-|</td>
+		<td width="1%" nowrap>
+		    |-if $loginUser ne '' && $affiliateId gt 0-|
+				|-if $user->isAffiliateOwner()-|
+					<img src="images/clear.png" class="iconActivate disabled" title="Este es el usuario dueño del afiliado" />
+				|-else-|
+					<form method="post">
+						<input type="hidden" name="userId" value="|-$user->getId()-|" />
+						<input type="hidden" name="affiliateId" value="|-$user->getAffiliateId()-|" />
+						<input type="hidden" name="do" value="affiliatesSetOwner" />
+						<input type="submit" title="Fijar como dueño" value="Fijar como dueño" class="buttonImageActivate" />
+					</form>
+				|-/if-| 
+			|-/if-|
+			<form action="Main.php" method="get" style="display:inline;"> 
+			  <input type="hidden" name="do" value="affiliatesUsersList" /> 
+			  <input type="hidden" name="user" value="|-$user->getId()-|" /> 
+			  <input type="submit" name="submit_go_view_affiliate" title="Editar" value="Editar" class="buttonImageEdit" /> 
+			</form>
+			<form action="Main.php" method="post" style="display:inline;"> 
+			  <input type="hidden" name="do" value="affiliatesUsersDoDelete" /> 
+			  <input type="hidden" name="id" value="|-$user->getId()-|" /> 
+			  <input type="submit" name="submit_go_delete_affiliate" value="Borrar" |-if $user->isAffiliateOwner()-|title="Para eliminar este usuario debe asignar la administración del afiliado a otro usuario" class="buttonImageDeleteDisabled" onclick="return false;"|-else-|title="Eliminar" class="buttonImageDelete" onclick="return confirm('Seguro que desea eliminar el usuario?')"|-/if-|  /> 
+			</form>
+		</td>
 	</tr>
 	|-/foreach-|
 	<tr>
