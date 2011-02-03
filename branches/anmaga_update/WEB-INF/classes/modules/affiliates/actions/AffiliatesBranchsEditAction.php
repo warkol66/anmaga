@@ -21,23 +21,25 @@ class AffiliatesBranchsEditAction extends BaseAction {
 
 		$module = "Affiliates";
 		$section = "Branchs";
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
 		if (!empty($_SESSION["loginUser"])) {
 			$affiliates = AffiliatePeer::getAll();
 			$smarty->assign("affiliates",$affiliates);
-			$smarty->assign("all",1);
 		}
-		else
-			$smarty->assign("all",0);
 
-		if ( !empty($_GET["id"]) ) {
+		if (!empty($_GET["id"]) ) {
 			//voy a editar un branch
 			$branch = AffiliateBranchPeer::get($_GET["id"]);
 			$smarty->assign("branch",$branch);
 			$smarty->assign("action","edit");
 		}
-		else
+		else{
+			$branch = new AffiliateBranch();
+			$smarty->assign("branch",$branch);
 			$smarty->assign("action","create");
+		}
 
 		$smarty->assign("message",$_GET["message"]);
 		return $mapping->findForwardConfig('success');

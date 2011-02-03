@@ -7,12 +7,15 @@
 |-elseif $message eq "deleted_ok"-|
 	<div class="successMessage">Sucursal eliminada correctamente</div>
 |-/if-|
-|-if $all eq "1"-|
-	<div class="filter">
-	<p> 
+
+	<table width="100%" border="0" cellpadding="5" cellspacing="0" id="tabla-branchs" class="tableTdBorders"> 
+		<thead> 
+|-if $affiliates|@count gt 0-|			<tr>
+				<th colspan="8">
+	<div id="divSearch">
 		<form action="Main.php" method="get"> 
 				<label for="affiliateId">Afiliado:</label> 
-				<select name="affiliateId"> 
+				<select name="affiliateId"  onchange="this.form.submit();"> 
 					<option value="">Todos</option> 
 					|-foreach from=$affiliates item=affiliate-|
 					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $smarty.get.affiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option> 
@@ -21,60 +24,51 @@
 				<input type="hidden" name="do" value="affiliatesBranchsList" /> 
 				<input type="submit" value="Buscar" class="button" /> 
 		</form> 
-		</p>
 	</div>
-	<br>
-|-/if-|
-	<table width="100%" border="0" cellpadding="5" cellspacing="0" id="tabla-branchs" class="tableTdBorders"> 
-		<thead> 
+</th>
+			</tr>|-/if-|
 			<tr>
-				<th colspan="9"><div class="rightLink"><a href="Main.php?do=affiliatesBranchsEdit" class="agregarNueva">Agregar Sucursal</a></div></th>
+				<th colspan="8"><div class="rightLink"><a href="Main.php?do=affiliatesBranchsEdit" class="addLink">Agregar Sucursal</a></div></th>
 			</tr>
 			<tr> 
-				<th width="5%" class="thFillTitle">Id</th> 
-				|-if $all eq "1"-| 
-				<th width="20%" class="thFillTitle">Afiliado</th> 
-				|-/if-|
-				<th width="5%" class="thFillTitle">Nro.</th> 
-				<th width="5%" class="thFillTitle">Código</th>
-				<th width="15%" class="thFillTitle">Sucursal</th> 
-				<th width="10%" class="thFillTitle">Teléfono</th> 
-				<th width="10%" class="thFillTitle">Contacto</th> 
-				<th width="30%" class="thFillTitle">Memo</th> 
-				<th width="5%"  class="thFillTitle">&nbsp;</th> 
+				<th width="20%">Afiliado</th> 
+				<th width="5%">Nro.</th> 
+				<th width="5%">Código</th>
+				<th width="15%">Sucursal</th> 
+				<th width="10%">Teléfono</th> 
+				<th width="10%">Contacto</th> 
+				<th width="30%">Memo</th> 
+				<th width="5%">&nbsp;</th> 
 			</tr> 
 		</thead> 
 		<tbody>  |-foreach from=$branchs item=branch name=for_branchs-|
 		<tr> 
-			<td nowrap class="tdSize1 top center">|-$branch->getid()-|</td> 
-			|-if $all eq "1"-| 
-			<td class="tdSize1 top">|-assign var=affiliate value=$branch->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td> 
-			|-/if-|
-			<td class="tdSize1 top center">|-$branch->getnumber()-|</td> 
-      <td class="tdSize1 top center">|-$branch->getCode()-|</td> 
-			<td class="tdSize1 top">|-$branch->getname()-|</td> 
-			<td class="tdSize1 top">|-$branch->getphone()-|</td> 
-			<td class="tdSize1 top">|-$branch->getcontact()-||-if $branch->getcontactEmail() ne ''-|, email: |-$branch->getcontactEmail()-||-/if-|</td> 
-			<td class="tdSize1 top">|-$branch->getmemo()-|</td> 
+			<td>|-$branch->getAffiliate()-|</td> 
+			<td>|-$branch->getnumber()-|</td> 
+      <td>|-$branch->getCode()-|</td> 
+			<td>|-$branch->getname()-|</td> 
+			<td>|-$branch->getphone()-|</td> 
+			<td>|-$branch->getcontact()-||-if $branch->getcontactEmail() ne ''-|, email: |-$branch->getcontactEmail()-||-/if-|</td> 
+			<td>|-$branch->getmemo()-|</td> 
 			<td class="tdSize1 center" nowrap="nowrap"> <form action="Main.php" method="get" style="display:inline;"> 
 					<input type="hidden" name="do" value="affiliatesBranchsEdit" /> 
 					<input type="hidden" name="id" value="|-$branch->getid()-|" /> 
-					<input type="submit" name="submit_go_edit_branch" value="Editar" class="buttonImageEdit" /> 
+					<input type="submit" name="submit_go_edit_branch" value="Editar" class="iconEdit" /> 
 				</form> 
 				<form action="Main.php" method="post" style="display:inline;"> 
 					<input type="hidden" name="do" value="affiliatesBranchsDoDelete" /> 
 					<input type="hidden" name="id" value="|-$branch->getid()-|" /> 
-					<input type="submit" name="submit_go_delete_branch" value="Borrar" onclick="return confirm('¿Seguro que desea eliminar la sucursal?')" class="buttonImageDelete" /> 
+					<input type="submit" name="submit_go_delete_branch" value="Borrar" onclick="return confirm('¿Seguro que desea eliminar la sucursal?')" class="iconDelete" /> 
 			</form></td> 
 		</tr> 
 		|-/foreach-|
-	|-if $pager->getTotalPages() gt 1-|
+	|-if isset($pager) && $pager->getTotalPages() gt 1-|
 	<tr>
-		<td colspan="9" class="pages">|-include file="PaginateInclude.tpl"-|</td>
+		<td colspan="8" class="pages">|-include file="PaginateInclude.tpl"-|</td>
 	</tr>
 	|-/if-|						
 			<tr>
-				<th colspan="9"><div class="rightLink"><a href="Main.php?do=affiliatesBranchsEdit" class="agregarNueva">Agregar Sucursal</a></div></th>
+				<th colspan="8"><div class="rightLink"><a href="Main.php?do=affiliatesBranchsEdit" class="addLink">Agregar Sucursal</a></div></th>
 			</tr>
 		</tbody> 
 	</table> 
