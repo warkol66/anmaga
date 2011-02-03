@@ -36,25 +36,25 @@
 	</tr>
 	|-foreach from=$affiliates item=affiliate name=for_affiliate-|
 	<tr>
-		<td width="5%"><div>|-$affiliate->getId()-|</div></td>
-		<td width="85%"><div class='titulo2'>|-$affiliate->getName()-| |-if $affiliate->getOwnerId() neq "" -||-assign var=owner value=$affiliate->getOwner()-| [ Usuario Dueño: |-$owner->getUsername()-| ] |-/if-|</div></td>
+		<td width="5%">|-$affiliate->getId()-|</td>
+		<td width="85%">|-$affiliate->getName()-| |-if $affiliate->getOwnerId() neq "" -||-assign var=owner value=$affiliate->getOwner()-| [ Usuario Dueño: |-$owner->getUsername()-| ] |-/if-|</td>
 		<td width="10%" nowrap>
 			<form action="Main.php" method="get" style="display:inline;"> 
 			  <input type="hidden" name="do" value="affiliatesView" /> 
 			  <input type="hidden" name="id" value="|-$affiliate->getId()-|" /> 
-			  <input type="submit" name="submit_go_view_affiliate" value="Ver" class="buttonImageView" /> 
+			  <input type="submit" name="submit_go_view_affiliate" value="Ver" class="iconView" /> 
 			</form>
 			<form action="Main.php" method="get" style="display:inline;"> 
 			  <input type="hidden" name="do" value="affiliatesEdit" /> 
 			  <input type="hidden" name="id" value="|-$affiliate->getId()-|" /> 
-			  <input type="submit" name="submit_go_edit_affiliate" value="Editar" class="buttonImageEdit" /> 
+			  <input type="submit" name="submit_go_edit_affiliate" value="Editar" class="iconEdit" /> 
 			</form>
 			<form action="Main.php" method="post" style="display:inline;"> 
 			  <input type="hidden" name="do" value="affiliatesDoDelete" /> 
 			  <input type="hidden" name="affiliate" value="|-$affiliate->getId()-|" /> 
-			  <input type="submit" name="submit_go_delete_affiliate" value="Borrar" onclick="return confirm('Seguro que desea eliminar el afiliado?')" class="buttonImageDelete" /> 
+			  <input type="submit" name="submit_go_delete_affiliate" value="Borrar" onclick="return confirm('Seguro que desea eliminar el afiliado?')" class="iconDelete" /> 
 			</form>
-	    </td>
+    </td>
 	</tr>
 	|-/foreach-|
 		|-if isset($pager) && ($pager->getTotalPages() gt 1)-|
