@@ -70,16 +70,19 @@ class AffiliateUser extends BaseAffiliateUser {
   /**
   * Obtiene el nombre del afiliado
   *
-  * @return string Nombre dle afiliado
+  * @return string Nombre del afiliado
   */
 	function getAffiliate() {
 		$affiliateId = $this->getAffiliateId();
 		$affiliate = AffiliateQuery::create()->findPk($affiliateId);
-		return $affiliate->getName();
+		if($affiliate)
+			return $affiliate->getName();
+		else
+			return;
   }
 
   /**
-  * Determina si el usuario es ownes d eun afiliado
+  * Determina si el usuario es owner de un afiliado
   *
   * @return true o false 
   */

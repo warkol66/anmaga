@@ -15,4 +15,18 @@
  */
 class AffiliateBranch extends BaseAffiliateBranch {
 
+  /**
+  * Obtiene el nombre del afiliado
+  *
+  * @return string Nombre del afiliado
+  */
+	function getAffiliate() {
+		$affiliateId = $this->getAffiliateId();
+		$affiliate = AffiliateQuery::create()->findPk($affiliateId);
+		if($affiliate)
+			return $affiliate->getName();
+		else
+			return;
+  }
+
 } // AffiliateBranch
