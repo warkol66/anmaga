@@ -1,4 +1,10 @@
 ﻿==============================
+Revisión 656 - Fecha 20110203
+------------------------------
+#Ponemos valor por defecto 1 al campo active de categories.
+ALTER TABLE  `categories_category` CHANGE  `active`  `active` TINYINT( 4 ) NOT NULL DEFAULT  '1' COMMENT  'Is category active?'
+
+==============================
 Revisión 654 - Fecha 20110121
 ------------------------------
 ALTER TABLE affiliates_user

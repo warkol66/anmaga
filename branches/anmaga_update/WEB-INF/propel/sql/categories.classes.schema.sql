@@ -16,7 +16,7 @@ CREATE TABLE `categories_category`
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Category name',
 	`order` INTEGER(4)   COMMENT 'Orden',
 	`module` VARCHAR(255) default ''  COMMENT 'Module name if it is for a module',
-	`active` TINYINT  NOT NULL COMMENT 'Is category active?',
+	`active` TINYINT default 1 NOT NULL COMMENT 'Is category active?',
 	`isPublic` TINYINT default 0 NOT NULL COMMENT 'Is category public?',
 	`oldId` INTEGER(5)  NOT NULL COMMENT 'Old Id',
 	`description` VARCHAR(255)   COMMENT 'Descripcion de la categoria',
