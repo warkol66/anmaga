@@ -38,8 +38,23 @@
 	<tr>
 		<td width="5%"><div>|-$affiliate->getId()-|</div></td>
 		<td width="85%"><div class='titulo2'>|-$affiliate->getName()-| |-if $affiliate->getOwnerId() neq "" -||-assign var=owner value=$affiliate->getOwner()-| [ Usuario Dueño: |-$owner->getUsername()-| ] |-/if-|</div></td>
-		<td width="10%" nowrap><a href='Main.php?do=affiliatesViewAffiliate&id=|-$affiliate->getId()-|' title="Ver datos"><img src="images/clear.png" class="iconView" /></a> <a href='Main.php?do=affiliatesEdit&id=|-$affiliate->getId()-|' title="Editar"><img src="images/clear.png" class="iconEdit" /></a>
-			<a href='Main.php?do=affiliatesDoDelete&affiliate=|-$affiliate->getId()-|' title='Eliminar' onclick="return confirm('Esta opción eliminar permanentemente a este Grupo. ¿Está seguro que desea eliminarlo?');"><img src="images/clear.png" class="iconDelete" /></a></td>
+		<td width="10%" nowrap>
+			<form action="Main.php" method="get" style="display:inline;"> 
+			  <input type="hidden" name="do" value="affiliatesView" /> 
+			  <input type="hidden" name="id" value="|-$affiliate->getId()-|" /> 
+			  <input type="submit" name="submit_go_view_affiliate" value="Ver" class="buttonImageView" /> 
+			</form>
+			<form action="Main.php" method="get" style="display:inline;"> 
+			  <input type="hidden" name="do" value="affiliatesEdit" /> 
+			  <input type="hidden" name="id" value="|-$affiliate->getId()-|" /> 
+			  <input type="submit" name="submit_go_edit_affiliate" value="Editar" class="buttonImageEdit" /> 
+			</form>
+			<form action="Main.php" method="post" style="display:inline;"> 
+			  <input type="hidden" name="do" value="affiliatesDoDelete" /> 
+			  <input type="hidden" name="affiliate" value="|-$affiliate->getId()-|" /> 
+			  <input type="submit" name="submit_go_delete_affiliate" value="Borrar" onclick="return confirm('Seguro que desea eliminar el afiliado?')" class="buttonImageDelete" /> 
+			</form>
+	    </td>
 	</tr>
 	|-/foreach-|
 		|-if isset($pager) && ($pager->getTotalPages() gt 1)-|

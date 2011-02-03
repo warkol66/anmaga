@@ -244,7 +244,7 @@ fieldset {
 	background: url(../images/linkImageDelete.png) center no-repeat;
 }
 .buttonImageDeleteDisabled {
-	background: url(../images/linkImageDeleteDesabled.png) center no-repeat;
+	background: url(../images/linkImageDeleteDisabled.png) center no-repeat;
 }
 .buttonImageEdit {
 	background: url(../images/linkImageEdit.png) no-repeat center;

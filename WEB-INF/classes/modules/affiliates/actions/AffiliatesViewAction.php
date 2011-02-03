@@ -5,12 +5,12 @@ require_once("AffiliateInfoPeer.php");
 require_once("AffiliatePeer.php");
 
 
-class AffiliatesViewAffiliateAction extends BaseAction {
+class AffiliatesViewAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function AffiliatesViewAffiliateAction() {
+	function AffiliatesViewAction() {
 		;
 	}
 
