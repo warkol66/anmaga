@@ -119,6 +119,9 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 
 		$userByAffiliateInfo = new AffiliateUserInfo();
 		$userByAffiliateInfo->setUserId($userByAffiliate->getId());
+    $userByAffiliate->setName($name);
+    $userByAffiliate->setSurname($surname);
+    $userByAffiliate->setMailAddress($mailAddress);
 		$userByAffiliateInfo->setName($name);
 		$userByAffiliateInfo->setSurname($surname);
 		$userByAffiliateInfo->setMailAddress($mailAddress);
@@ -218,9 +221,12 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 		$userByAffiliate->save();
 			
 		$userByAffiliateInfo = AffiliateUserInfoPeer::retrieveByPK($id);
-		$userByAffiliateInfo->setName($name);
-		$userByAffiliateInfo->setSurname($surname);
-		$userByAffiliateInfo->setMailAddress($mailAddress);			
+		$userByAffiliate->setName($name);
+    $userByAffiliateInfo->setName($name);
+		$userByAffiliate->setSurname($surname);
+    $userByAffiliateInfo->setSurname($surname);
+		$userByAffiliate->setMailAddress($mailAddress);	
+    $userByAffiliateInfo->setMailAddress($mailAddress); 		
 		$userByAffiliateInfo->save();
 		return true;
 	}
