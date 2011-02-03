@@ -108,8 +108,8 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 		$userByAffiliate->setUsername($usernameLowercase);
 		$userByAffiliate->setAffiliateId($affiliateId);
 		$userByAffiliate->setActive(1);
-		$userByAffiliate->setCreated(now);
-		$userByAffiliate->setUpdated(now);
+		$userByAffiliate->setCreatedAt(now);
+		$userByAffiliate->setUpdatedAt(now);
 		$userByAffiliate->setLevelId($levelId);
 		if(!empty($password)){
 			$userByAffiliate->setPassword(md5($password."ASD"));
@@ -210,7 +210,7 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 		
 		$userByAffiliate->setUsername($usernameLowercase);
 		$userByAffiliate->setAffiliateId($affiliateId);
-		$userByAffiliate->setUpdated(now);
+		$userByAffiliate->setUpdatedAt(now);
 		$userByAffiliate->setLevelId($levelId);
 		if(!empty($password)){
 			$userByAffiliate->setPassword(md5($password."ASD"));

@@ -16,5 +16,17 @@
  * @package    anmaga
  */
 class AffiliateUserInfoPeer extends BaseAffiliateUserInfoPeer {
-
+  function getFromArray($params) {
+    $obj = new AffiliateUserInfo();
+    foreach ($params as $key => $value) {
+      $setMethod = "set".$key;
+      if ( method_exists($obj,$setMethod) ) {          
+        if (!empty($value) || $value == "0")
+          $obj->$setMethod($value);
+        else
+          $obj->$setMethod(null);
+      }
+    }   
+    return $obj;
+  }
 } // AffiliateUserInfoPeer
