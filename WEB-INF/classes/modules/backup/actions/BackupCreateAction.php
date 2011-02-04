@@ -1,12 +1,9 @@
 <?php
-/** 
+/**
  * BackupCreateAction
  *
- * @package backup 
+ * @package backup
  */
-set_time_limit(360);
-require_once("BaseAction.php");
-require_once("BackupPeer.php");
 
 class BackupCreateAction extends BaseAction {
 
@@ -14,22 +11,6 @@ class BackupCreateAction extends BaseAction {
 		;
 	}
 
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
 		BaseAction::execute($mapping, $form, $request, $response);
@@ -48,13 +29,13 @@ class BackupCreateAction extends BaseAction {
 
 		if (empty($_GET['mode'])) {
 			return $mapping->findForwardConfig('failure');
-			Common::doLog('failure');			
+			Common::doLog('failure');
 		}
 
 		$backupPeer = new BackupPeer();
 
 		if ($_GET['mode'] == 'data') {
-		
+
 			if ($backupPeer->createDataBackup()) {
 				Common::doLog('success');
 				return $mapping->findForwardConfig('success');
@@ -66,7 +47,7 @@ class BackupCreateAction extends BaseAction {
 		}
 
 		if ($_GET['mode'] == 'complete') {
-		
+
 			if ($backupPeer->createCompleteBackup()) {
 				Common::doLog('success');
 				return $mapping->findForwardConfig('success');
@@ -75,8 +56,8 @@ class BackupCreateAction extends BaseAction {
 				return $mapping->findForwardConfig('failure');
 				Common::doLog('failure');
 			}
-		}		
-		
+		}
+
 	}
 
 }

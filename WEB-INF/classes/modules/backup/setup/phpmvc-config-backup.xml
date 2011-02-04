@@ -1,14 +1,6 @@
 <!-- Module Backup -->
 	<action-mappings>
 
-		<action    path = "backupList"
-							 type = "BackupListAction"
-							 name = "backupList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="BackupList.tpl" />
-		</action>
-
 		<action    path = "backupCreate"
 							 type = "BackupCreateAction"
 							 name = "backupCreate"
@@ -43,9 +35,9 @@
 			<forward name="failure" path="/Main.php?do=backupList&amp;message=restore_error" redirect="true" />
 		</action>
 
-		<action    path = "backupDelete"
-							 type = "BackupDeleteAction"
-							 name = "backupDelete"
+		<action    path = "backupDoDelete"
+							 type = "BackupDoDeleteAction"
+							 name = "backupDoDelete"
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="/Main.php?do=backupList&amp;message=deleted" redirect="true" />
