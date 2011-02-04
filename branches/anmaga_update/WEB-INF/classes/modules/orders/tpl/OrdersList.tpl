@@ -57,31 +57,31 @@
 	<table width="100%" cellpadding="3" cellspacing="0" class="tableTdBorders" id="tabla-orders">
 		<thead>
 			<tr>
-				<th width="5%" class="thFillTitle">id</th>
-				|-if $all eq "1"-|<th width="10%" class="thFillTitle">Mayorista</th>|-/if-|
-				<th width="10%" class="thFillTitle">Fecha</th>
-				<th width="10%" class="thFillTitle">Número</th>
-				<th width="10%" class="thFillTitle">Usuario</th>
-				<th width="25%" class="thFillTitle">Sucursal</th>
-				<th width="10%" class="thFillTitle">Total</th>
-				<th width="15%" class="thFillTitle">Estado</th>
-				<th width="5%" class="thFillTitle">&nbsp;</th>
+				<th width="5%">id</th>
+				|-if $all eq "1"-|<th width="10%">Mayorista</th>|-/if-|
+				<th width="10%">Fecha</th>
+				<th width="10%">Número</th>
+				<th width="10%">Usuario</th>
+				<th width="25%">Sucursal</th>
+				<th width="10%">Total</th>
+				<th width="15%">Estado</th>
+				<th width="5%">&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
 		|-foreach from=$orders item=order name=for_orders-|
 			<tr>
 				<td class="tdSize1 right">|-$order->getid()-|</td>
-				|-if $all eq "1"-|<td class="tdSize1">|-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
-				<td nowrap class="tdSize1">|-$order->getcreated()|date_format:"%d-%m-%Y"-|</td>
-				<td nowrap class="tdSize1 right">|-if $order->getNumber() eq 0-||-$order->getId()-||-else-||-$order->getNumber()-||-/if-|</td>
-				<td class="tdSize1">|-assign var=user value=$order->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
-				<td class="tdSize1">|-assign var=branch value=$order->getAffiliateBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
-				<td align="right" class="tdSize1">|-$order->gettotal()|system_numeric_format-|</td>
-				<td nowrap class="tdSize1">|-$order->getStateName()-|</td>
+				|-if $all eq "1"-|<td>|-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
+				<td nowrap>|-$order->getcreated()|date_format:"%d-%m-%Y"-|</td>
+				<td nowrap>|-if $order->getNumber() eq 0-||-$order->getId()-||-else-||-$order->getNumber()-||-/if-|</td>
+				<td>|-assign var=user value=$order->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
+				<td>|-assign var=branch value=$order->getAffiliateBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
+				<td align="right">|-$order->gettotal()|system_numeric_format-|</td>
+				<td nowrap>|-$order->getStateName()-|</td>
 				<td nowrap>
-					<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersView&id=|-$order->getid()-|&page=|-$page-|'" value="Ver" class="buttonImageView" />
-					<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersEdit&id=|-$order->getid()-|&page=|-$page-|'" value="Editar" class="buttonImageEdit" />
+					<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersView&id=|-$order->getid()-|&page=|-$page-|'" value="Ver" class="iconView" />
+					<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersEdit&id=|-$order->getid()-|&page=|-$page-|'" value="Editar" class="iconEdit" />
 					|-if $all eq "0"-|
 					<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersDoAddToCart&id=|-$order->getid()-|'" value="Add To Cart" class="smallButton" />
 					|-/if-|

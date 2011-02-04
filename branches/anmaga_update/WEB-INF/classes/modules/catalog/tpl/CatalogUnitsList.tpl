@@ -9,10 +9,10 @@
 				 <th colspan="4"><div class="rightLink"><a href="Main.php?do=catalogUnitsEdit" class="agregarNueva">Agregar Unidad</a></div></th>
 			</tr>
 			<tr> 
-				<th width="20%" nowrap class="thFillTitle">Id</th> 
-				<th width="50%" nowrap class="thFillTitle">Nombre</th> 
-				<th width="20%" nowrap class="thFillTitle">Cantidad</th> 
-				<th width="10%" nowrap class="thFillTitle">&nbsp;</th> 
+				<th width="20%" nowrap>Id</th> 
+				<th width="50%" nowrap>Nombre</th> 
+				<th width="20%" nowrap>Cantidad</th> 
+				<th width="10%" nowrap>&nbsp;</th> 
 			</tr> 
 		</thead> 
 		<tbody>  
@@ -24,12 +24,12 @@
 			<td nowrap> <form action="Main.php" method="get"> 
 					<input type="hidden" name="do" value="catalogUnitsEdit" /> 
 					<input type="hidden" name="id" value="|-$unit->getid()-|" /> 
-					<input type="submit" name="submit_go_edit_unit" value="Editar" class="buttonImageEdit" /> 
+					<input type="submit" name="submit_go_edit_unit" value="Editar" class="iconEdit" /> 
 				</form> 
 				<form action="Main.php" method="post"> 
 					<input type="hidden" name="do" value="catalogUnitsDoDelete" /> 
 					<input type="hidden" name="id" value="|-$unit->getid()-|" /> 
-					<input type="submit" name="submit_go_delete_unit" value="Borrar" onclick="return confirm('Seguro que desea eliminar esta unidad?')" class="buttonImageDelete" /> 
+					<input type="submit" name="submit_go_delete_unit" value="Borrar" onclick="return confirm('Seguro que desea eliminar esta unidad?')" class="iconDelete" /> 
 				</form></td> 
 		</tr> 
 		|-/foreach-|

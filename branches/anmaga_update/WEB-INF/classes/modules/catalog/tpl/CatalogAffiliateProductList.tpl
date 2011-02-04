@@ -16,20 +16,20 @@
 	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products"> 
 		<thead> 
 			<tr> 
-				<th width="5%" class="thFillTitle">Código Producto</th> 
-				<th width="5%" class="thFillTitle">Código Producto Para Afiliado</th>
-				<th width="35%" class="thFillTitle">Nombre</th> 
-				<th width="50%" class="thFillTitle">Descripción</th> 
-				<th width="5%" class="thFillTitle">Precio</th> 
+				<th width="5%">Código Producto</th> 
+				<th width="5%">Código Producto Para Afiliado</th>
+				<th width="35%">Nombre</th> 
+				<th width="50%">Descripción</th> 
+				<th width="5%">Precio</th> 
 			</tr>
 		</thead>
 		<tbody>  |-foreach from=$products item=product name=for_products-|
 		<tr>
-			<td nowrap class="tdSize1 right">|-$product->getcode()-|</td>
-			<td nowrap class="tdSize1 right">|-$product->getAffiliateCode($affiliateId)-| </td>
-			<td class="tdSize1">|-$product->getname()-|</td>
-			<td class="tdSize1">|-$product->getdescription()-|</td>
-			<td nowrap class="tdSize1 right">|-if $product->getAffiliatePrice($affiliateId) neq 0-||-$product->getAffiliatePrice($affiliateId)|system_numeric_format-||-/if-|</td>
+			<td nowrap>|-$product->getcode()-|</td>
+			<td nowrap>|-$product->getAffiliateCode($affiliateId)-| </td>
+			<td>|-$product->getname()-|</td>
+			<td>|-$product->getdescription()-|</td>
+			<td nowrap align="right">|-if $product->getAffiliatePrice($affiliateId) neq 0-||-$product->getAffiliatePrice($affiliateId)|system_numeric_format-||-/if-|</td>
 		</tr>
 		|-foreachelse-|
 		<tr>

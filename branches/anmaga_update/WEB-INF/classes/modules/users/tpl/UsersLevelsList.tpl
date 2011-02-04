@@ -48,7 +48,7 @@
 			|-if $level->getId() gt 3-|
 			<a href='Main.php?do=usersLevelsDoDelete&level=|-$level->getId()-|' title='##115,Eliminar##' alt='##115,Eliminar##' onclick="return confirm('##256,Esta opción elimina permanentemente a este Nivel. ¿Está seguro que desea eliminarlo?##');"><img src="images/clear.png" class="iconDelete"></a>
 			|-else-|
-			<img src="images/clear.png" class="iconDeleteDisabled" title="No se puede eliminar." alt="No se puede eliminar.">
+			<img src="images/clear.png" class="iconDelete disabled" title="No se puede eliminar." alt="No se puede eliminar.">
 			|-/if-|</td>
 	</tr>
 	|-/foreach-|

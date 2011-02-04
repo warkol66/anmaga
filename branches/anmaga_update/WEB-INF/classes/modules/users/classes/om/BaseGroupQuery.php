@@ -414,6 +414,23 @@ abstract class BaseGroupQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query by a related User object
+	 * using the users_userGroup table as cross reference
+	 *
+	 * @param     User $user the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    GroupQuery The current query, for fluid interface
+	 */
+	public function filterByUser($user, $comparison = Criteria::EQUAL)
+	{
+		return $this
+			->useUserGroupQuery()
+				->filterByUser($user, $comparison)
+			->endUse();
+	}
+	
+	/**
 	 * Filter the query by a related Category object
 	 * using the users_groupCategory table as cross reference
 	 *

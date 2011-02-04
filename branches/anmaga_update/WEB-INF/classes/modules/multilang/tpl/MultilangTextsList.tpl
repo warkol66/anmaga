@@ -27,9 +27,9 @@
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" id="tabla-texts" class="tableTdBorders">
     <thead>
 			<tr>
-				 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a>&nbsp;<a href="Main.php?do=multilangTextsEditBulk&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,53,Agregar Múltiples Traducciones##">##multilang,53,Agregar Múltiples Traducciones##</a></div></th>
+				 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|"><div class="rightLink"><a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a>&nbsp;<a href="Main.php?do=multilangTextsEditBulk&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,53,Agregar Múltiples Traducciones##">##multilang,53,Agregar Múltiples Traducciones##</a></div></th>
 			</tr>
-      <tr class="thFillTitle">
+      <tr>
         <th width="5%">##multilang,7,Id##</th>
 				|-math equation = "90 / lang" lang=$appLanguages|@count assign="colwidth" format="%.0f"-|		
         |-foreach from=$appLanguages item=language name=for_languages-|
@@ -75,7 +75,7 @@
 			<td colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="pages">|-include file="PaginateInclude.tpl"-|</td>
 		</tr>
 		<tr>
-			 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a>&nbsp;<a href="Main.php?do=multilangTextsEditBulk&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,53,Agregar Múltiples Traducciones##">##multilang,53,Agregar Múltiples Traducciones##</a></div></th>
+			 <th colspan="|-math equation = 'lang + 2' lang=$appLanguages|@count-|"><div class="rightLink"><a href="Main.php?do=multilangTextsEdit&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,29,Agregar Traducción##">##multilang,29,Agregar Traducción##</a>&nbsp;<a href="Main.php?do=multilangTextsEditBulk&amp;moduleName=|-$moduleName-|" class="addLink" title="##multilang,53,Agregar Múltiples Traducciones##">##multilang,53,Agregar Múltiples Traducciones##</a></div></th>
 		</tr>
   </table>
 </div>

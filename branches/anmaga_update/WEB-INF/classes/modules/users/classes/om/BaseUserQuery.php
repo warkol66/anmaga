@@ -62,10 +62,6 @@
  * @method     UserQuery rightJoinScheduleSubscriptionUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduleSubscriptionUser relation
  * @method     UserQuery innerJoinScheduleSubscriptionUser($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduleSubscriptionUser relation
  *
- * @method     UserQuery leftJoinUserInfo($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserInfo relation
- * @method     UserQuery rightJoinUserInfo($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserInfo relation
- * @method     UserQuery innerJoinUserInfo($relationAlias = null) Adds a INNER JOIN clause to the query using the UserInfo relation
- *
  * @method     UserQuery leftJoinUserGroup($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserGroup relation
  * @method     UserQuery rightJoinUserGroup($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserGroup relation
  * @method     UserQuery innerJoinUserGroup($relationAlias = null) Adds a INNER JOIN clause to the query using the UserGroup relation
@@ -905,70 +901,6 @@ abstract class BaseUserQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query by a related UserInfo object
-	 *
-	 * @param     UserInfo $userInfo  the related object to use as filter
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    UserQuery The current query, for fluid interface
-	 */
-	public function filterByUserInfo($userInfo, $comparison = null)
-	{
-		return $this
-			->addUsingAlias(UserPeer::ID, $userInfo->getUserid(), $comparison);
-	}
-
-	/**
-	 * Adds a JOIN clause to the query using the UserInfo relation
-	 * 
-	 * @param     string $relationAlias optional alias for the relation
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    UserQuery The current query, for fluid interface
-	 */
-	public function joinUserInfo($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('UserInfo');
-		
-		// create a ModelJoin object for this join
-		$join = new ModelJoin();
-		$join->setJoinType($joinType);
-		$join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-		if ($previousJoin = $this->getPreviousJoin()) {
-			$join->setPreviousJoin($previousJoin);
-		}
-		
-		// add the ModelJoin to the current object
-		if($relationAlias) {
-			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-			$this->addJoinObject($join, $relationAlias);
-		} else {
-			$this->addJoinObject($join, 'UserInfo');
-		}
-		
-		return $this;
-	}
-
-	/**
-	 * Use the UserInfo relation UserInfo object
-	 *
-	 * @see       useQuery()
-	 * 
-	 * @param     string $relationAlias optional alias for the relation,
-	 *                                   to be used as main alias in the secondary query
-	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-	 *
-	 * @return    UserInfoQuery A secondary query class using the current class as primary query
-	 */
-	public function useUserInfoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-	{
-		return $this
-			->joinUserInfo($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'UserInfo', 'UserInfoQuery');
-	}
-
-	/**
 	 * Filter the query by a related UserGroup object
 	 *
 	 * @param     UserGroup $userGroup  the related object to use as filter
@@ -1063,6 +995,23 @@ abstract class BaseUserQuery extends ModelCriteria
 		return $this
 			->useScheduleSubscriptionUserQuery()
 				->filterByScheduleSubscription($scheduleSubscription, $comparison)
+			->endUse();
+	}
+	
+	/**
+	 * Filter the query by a related Group object
+	 * using the users_userGroup table as cross reference
+	 *
+	 * @param     Group $group the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    UserQuery The current query, for fluid interface
+	 */
+	public function filterByGroup($group, $comparison = Criteria::EQUAL)
+	{
+		return $this
+			->useUserGroupQuery()
+				->filterByGroup($group, $comparison)
 			->endUse();
 	}
 	

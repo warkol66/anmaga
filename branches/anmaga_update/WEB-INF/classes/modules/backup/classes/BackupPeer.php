@@ -460,7 +460,7 @@ class BackupPeer {
 			$footer = "#Renombre de tablas con camelcase.\n";
 
 			foreach ($tables as $table) {
-				$header .= "DROP TABLE ". $table .";\n";
+				$header .= "DROP TABLE IF EXISTS ". $table .";\n";
 				$footer .= "RENAME TABLE ". strtolower($table) . " TO " . $table .";\n";
 			}
 

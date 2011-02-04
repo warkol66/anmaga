@@ -1,8 +1,5 @@
 <?php
 
-//soporte GMT
-require_once('TimezonePeer.php');
-
 /**
  *
  * @package    users
@@ -183,13 +180,9 @@ class UserPeer extends BaseUserPeer {
 	* @param int $id Id del usuario
 	* @return array Informacion del usuario
 	*/
-	function getByUsername($username)
-	{
-		$cond = new Criteria();
-		$cond->setIgnoreCase(true);
-		$cond->add(UserPeer::USERNAME, $username);
-		$result = UserPeer::doSelectOne($cond);
-		return $result;
+	function getByUsername($username) {
+		$user = UserQuery::create()->setIgnoreCase(1)->findOneByUsername($username);
+		return $user;
 	}
 
 

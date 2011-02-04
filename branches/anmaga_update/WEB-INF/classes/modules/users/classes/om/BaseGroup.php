@@ -65,6 +65,11 @@ abstract class BaseGroup extends BaseObject  implements Persistent
 	protected $collGroupCategorys;
 
 	/**
+	 * @var        array User[] Collection to store aggregation of User objects.
+	 */
+	protected $collUsers;
+
+	/**
 	 * @var        array Category[] Collection to store aggregation of Category objects.
 	 */
 	protected $collCategorys;
@@ -458,6 +463,7 @@ abstract class BaseGroup extends BaseObject  implements Persistent
 
 			$this->collGroupCategorys = null;
 
+			$this->collUsers = null;
 			$this->collCategorys = null;
 		} // if (deep)
 	}
@@ -1256,6 +1262,119 @@ abstract class BaseGroup extends BaseObject  implements Persistent
 		$query->joinWith('Category', $join_behavior);
 
 		return $this->getGroupCategorys($query, $con);
+	}
+
+	/**
+	 * Clears out the collUsers collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addUsers()
+	 */
+	public function clearUsers()
+	{
+		$this->collUsers = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collUsers collection.
+	 *
+	 * By default this just sets the collUsers collection to an empty collection (like clearUsers());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initUsers()
+	{
+		$this->collUsers = new PropelObjectCollection();
+		$this->collUsers->setModel('User');
+	}
+
+	/**
+	 * Gets a collection of User objects related by a many-to-many relationship
+	 * to the current object by way of the users_userGroup cross-reference table.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this Group is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     PropelCollection|array User[] List of User objects
+	 */
+	public function getUsers($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collUsers || null !== $criteria) {
+			if ($this->isNew() && null === $this->collUsers) {
+				// return empty collection
+				$this->initUsers();
+			} else {
+				$collUsers = UserQuery::create(null, $criteria)
+					->filterByGroup($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collUsers;
+				}
+				$this->collUsers = $collUsers;
+			}
+		}
+		return $this->collUsers;
+	}
+
+	/**
+	 * Gets the number of User objects related by a many-to-many relationship
+	 * to the current object by way of the users_userGroup cross-reference table.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      boolean $distinct Set to true to force count distinct
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     int the number of related User objects
+	 */
+	public function countUsers($criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collUsers || null !== $criteria) {
+			if ($this->isNew() && null === $this->collUsers) {
+				return 0;
+			} else {
+				$query = UserQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByGroup($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collUsers);
+		}
+	}
+
+	/**
+	 * Associate a User object to this object
+	 * through the users_userGroup cross reference table.
+	 *
+	 * @param      User $user The UserGroup object to relate
+	 * @return     void
+	 */
+	public function addUser($user)
+	{
+		if ($this->collUsers === null) {
+			$this->initUsers();
+		}
+		if (!$this->collUsers->contains($user)) { // only add it if the **same** object is not already associated
+			$userGroup = new UserGroup();
+			$userGroup->setUser($user);
+			$this->addUserGroup($userGroup);
+
+			$this->collUsers[]= $user;
+		}
 	}
 
 	/**

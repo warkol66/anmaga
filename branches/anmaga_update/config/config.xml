@@ -42,7 +42,7 @@
 			<siteDescription>Sistema de Administración de Pedidos de Negociadora Anmaga</siteDescription>
 			<siteShortName>Anmaga</siteShortName>
 			<webmasterMail>gflamerich@gmail.com</webmasterMail>
-			<debugMail>gflamerich@gmail.com</debugMail>
+			<debugMail>dbugger.modulnet@gmail.com</debugMail>
 			<fromEmail>facturacion.anmaga@gmail.com</fromEmail>
 			<tablePrefix></tablePrefix>
 			<news>Novedades: Bienvenido al sistema Anmaga.</news>

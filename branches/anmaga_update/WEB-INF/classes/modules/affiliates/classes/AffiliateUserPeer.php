@@ -403,4 +403,15 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 		return $cond->find();
 	}
 
+	/**
+	* Obtiene la informacion de un usuario segun su nombre de usuario
+	*
+	* @param int $id Id del usuario
+	* @return array Informacion del usuario
+	*/
+	function getByUsername($username) {
+		$user = AffiliateUserQuery::create()->setIgnoreCase(1)->findOneByUsername($username);
+		return $user;
+	}
+
 } // AffiliateUserPeer
