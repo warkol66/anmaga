@@ -5,13 +5,13 @@
 		<p>Realice los cambios en el grupo de usuarios y haga click en "Aceptar" para guardar las modificaciones. </p>
 	|-/if-|
 |-if $message eq "deleted"-|
-	<div align='center' class='errorMessage'>Afiliado eliminado</div>
+	<div align='center' class='successMessage'>Afiliado eliminado</div>
 |-elseif $message eq "errorUpdate"-|
 	<div align='center' class='errorMessage'>Ha ocurrido un error al intentar guardar la información. Intente nuevamente.</div>
 |-elseif $message eq "saved"-|
-	<div align='center' class='errorMessage'>Grupo de Usuarios guardado</div>
+	<div align='center' class='successMessage'>Grupo de Usuarios guardado</div>
 |-elseif $message eq "edited"-|
-	<div align='center' class='errorMessage'>Afiliado guardado</div>
+	<div align='center' class='successMessage'>Afiliado guardado</div>
 |-elseif $message eq "blankName"-|
 	<div align='center' class='errorMessage'>El Grupo de Usuarios debe tener un Nombre</div>
 |-elseif $message eq "notAddedToGroup"-|
@@ -23,9 +23,9 @@
 	<tr>
 		<td colspan='3'><a href="javascript:void(null);" onClick='switch_vis("divSearch");' class="searchLink">Busqueda por nombre</a><div id="divSearch" style="display:|-if $filters|@count gt 0-|block|-else-|none|-/if-|;"><form action='Main.php' method='get'>
 				<input type="hidden" name="do" value="affiliatesList" />
-				Nombre: <input name="filters[name]" type="text" value="|-$filters.name-|" size="30" />
+				Nombre: <input name="filters[searchName]" type="text" value="|-$filters.searchName-|" size="30" />
 				&nbsp;&nbsp;<input type='submit' value='Buscar' class='boton' />
-				|-if $filters|@count gt 0-|<input name="rmoveFilters" type="button" value="Quitar filtros" onclick="location.href='Main?do=affiliatesList'" class='boton' />|-/if-|
+				|-if $filters|@count gt 0-|<input name="rmoveFilters" type="button" value="Quitar filtros" onclick="location.href='Main.php?do=affiliatesList'" class='boton' />|-/if-|
 			</form></div></td>
 	</tr>
 	<tr>
@@ -51,7 +51,7 @@
 			</form>
 			<form action="Main.php" method="post" style="display:inline;"> 
 			  <input type="hidden" name="do" value="affiliatesDoDelete" /> 
-			  <input type="hidden" name="affiliate" value="|-$affiliate->getId()-|" /> 
+			  <input type="hidden" name="id" value="|-$affiliate->getId()-|" /> 
 			  <input type="submit" name="submit_go_delete_affiliate" value="Borrar" onclick="return confirm('Seguro que desea eliminar el afiliado?')" class="iconDelete" /> 
 			</form>
     </td>

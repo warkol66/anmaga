@@ -1,4 +1,15 @@
 ﻿==============================
+Revisión 662 - Fecha 20110204
+------------------------------
+#Borramos tablas que ya no se usan más y que ni siquiera están en los esquemas.
+#La info contenida debería estar replicada en affiliates_affiliate. Revisar por si acaso.
+#Pero si se cargo la migración del commit 654 debería estar todo ok.
+
+DROP TABLE IF EXISTS `affiliates_affiliateInfo`;
+DROP TABLE IF EXISTS `affiliateInfo`;
+DROP TABLE IF EXISTS `affiliate`;
+
+==============================
 Revisión 661 - Fecha 20110204
 ------------------------------
 #Migramos la info del estado de activación de un usuario por afiliado para usar el soft delete.
@@ -6,7 +17,7 @@ UPDATE `affiliates_user` SET `deleted_at`=NOW() WHERE `active`=0;
 ALTER TABLE  `affiliates_user` DROP  `active`;
 
 #Eliminamos tabla de info.
-DROP TABLE  `affiliates_userInfo`
+DROP TABLE IF EXISTS `affiliates_userInfo`
 
 ==============================
 Revisión 656 - Fecha 20110203

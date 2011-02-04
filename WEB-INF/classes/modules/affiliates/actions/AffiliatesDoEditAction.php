@@ -31,7 +31,7 @@ class AffiliatesDoEditAction extends BaseAction {
 					return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'failure');
 	
 				$smarty->assign("message","ok");
-				return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'success-edit');
+				return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'success');
 			}
 		}
 		else {
@@ -47,7 +47,7 @@ class AffiliatesDoEditAction extends BaseAction {
 				$params["id"] = $affiliate->getId();
 				$logSufix = ', ' . Common::getTranslation("action: create","common");
 				Common::doLog('success-add',$_POST["userParams"]["name"]. $logSufix);
-				return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'success-add');
+				return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'success');
 			}
 		}
 	}
