@@ -10,7 +10,8 @@ class ConfigModule {
 			"developmentMode" => true,
 			"showPropelExceptions" => true,
 			"doLog" => false,
-			"unifiedUsernames" => true
+			"unifiedUsernames" => true,
+			"backupTimeLimit" => 720
 		),
 		"affiliates" => array(
 			"unifiedLogin" => false
