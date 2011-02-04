@@ -10,23 +10,23 @@
 	|-if $flag ne 1 -|
 	<tr> 
 		<td width="20%" nowrap class="tdTitle">ID interno</td> 
-		<td> |-$affiliateInfo->getAffiliateInternalNumber()-| </td> 
+		<td> |-$affiliate->getInternalNumber()-| </td> 
 	</tr> 
 	<tr> 
 		<td width="20%" nowrap class="tdTitle">Dirección</td> 
-		<td> |-$affiliateInfo->getAddress()-| </td> 
+		<td> |-$affiliate->getAddress()-| </td> 
 	</tr> 
 	<tr> 
 		<td width="20%" nowrap class="tdTitle">Teléfono</td> 
-		<td> |-$affiliateInfo->getPhone()-| </td> 
+		<td> |-$affiliate->getPhone()-| </td> 
 	</tr> 
 	<tr> 
 		<td width="20%" nowrap class="tdTitle">E-mail</td> 
-		<td> |-$affiliateInfo->getEmail()-| </td> 
+		<td> |-$affiliate->getEmail()-| </td> 
 	</tr> 
 	<tr> 
 		<td width="20%" nowrap class="tdTitle">Persona contacto</td> 
-		<td> |-$affiliateInfo->getContact()-| </td> 
+		<td> |-$affiliate->getContact()-| </td> 
 	</tr> 
 	|-/if-|
 	<tr align="right"> 

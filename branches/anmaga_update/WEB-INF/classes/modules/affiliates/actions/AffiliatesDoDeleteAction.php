@@ -1,7 +1,6 @@
 <?php
 
 require_once("BaseAction.php");
-require_once("AffiliatePeer.php");
 
 class AffiliatesDoDeleteAction extends BaseAction {
 
@@ -44,9 +43,9 @@ class AffiliatesDoDeleteAction extends BaseAction {
 
 		$module = "Affiliates";
 
-    $affiliatesPeer = new AffiliatePeer();
-
-    if ( $affiliatesPeer->delete($_GET["affiliate"]) )
+	    $affiliatesPeer = new AffiliatePeer();
+	
+	    if ( $affiliatesPeer->delete($_POST["id"]) )
 			return $mapping->findForwardConfig('success');
 		else
 			return $mapping->findForwardConfig('failure');

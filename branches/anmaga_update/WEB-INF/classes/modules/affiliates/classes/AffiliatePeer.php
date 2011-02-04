@@ -16,18 +16,19 @@
  * @package mer
  */	
 class AffiliatePeer extends BaseAffiliatePeer {
+	
+  private $searchName;
 
-  /**
-  * Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
-  *
-  * @return int Cantidad de filas por pagina
-  */
-  function getRowsPerPage() {
-    global $system;
-    return $system["config"]["system"]["rowsPerPage"];
+  //mapea las condiciones del filtro
+  var $filterConditions = array(
+	"searchName"=>"setSearchName",
+  );
+
+  public function setSearchName($name) {
+	$this->searchName = $name;
   }
 
-	function getAll() {
+  function getAll() {
 		$cond = new Criteria();
 		$todosObj = AffiliatePeer::doSelect($cond);
 		return $todosObj;
@@ -35,7 +36,7 @@ class AffiliatePeer extends BaseAffiliatePeer {
 
 	function getAllPaginated($page=1,$perPage=-1) {
     if ($perPage == -1)
-      $perPage = 	AffiliatePeer::getRowsPerPage();
+      $perPage = Common::getRowsPerPage();
     if (empty($page))
       $page = 1;
 		$cond = new Criteria();
@@ -47,7 +48,7 @@ class AffiliatePeer extends BaseAffiliatePeer {
 
 	function getByNamePaginated($name,$page=1,$perPage=-1) {
     if ($perPage == -1)
-      $perPage = 	AffiliatePeer::getRowsPerPage();
+      $perPage = Common::getRowsPerPage();
     if (empty($page))
       $page = 1;
 		$cond = new Criteria();
@@ -64,42 +65,68 @@ class AffiliatePeer extends BaseAffiliatePeer {
   }
 
   function getByName($name) {
-		$criteria = new Criteria();
-		$criteria->add(AffiliatePeer::NAME, $name);
-		$criteria->setIgnoreCase(true);
-		$result = AffiliatePeer::doSelect($criteria);
-		$affiliate = $result[0];
-		return $affiliate;
+  		return AffiliateQuery::create()->setIgnoreCase(true)->filterByName($name)->findOne();
   }
 
-  function update($id,$name) {
+  function update($id,$params) {
 		$affiliate = AffiliatePeer::retrieveByPK($id);
-		$affiliate->setName($name);
-		$affiliate->save();
+		Common::setObjectFromParams($affiliate, $params);
+		if ($affiliate->save())
+			return $affiliate;
 		return true;
   }
 
   function delete($id) {
-		$affiliate = AffiliatePeer::retrieveByPk($id);
-		$affiliate->delete();
+		AffiliateQuery::create()->filterByPrimaryKey($id)->delete();
 		return true;
   }
 
 
-  function add($name) {
+  function create($params) {
 		$affiliate = new Affiliate();		
-		$affiliate->setName($name);
-		$affiliate->save();
-		return $affiliate->getId();
+		Common::setObjectFromParams($affiliate, $params);
+		if ($affiliate->save())
+			return $affiliate;
+		return true;
   }
 
   function getByInternalNumber($internalNumber) {
-		$criteria = new Criteria();
-		$criteria->setIgnoreCase(true);
-		$criteria->addJoin(AffiliateInfoPeer::AFFILIATEID, AffiliatePeer::ID);
-		$criteria->add(AffiliateInfoPeer::AFFILIATEINTERNALNUMBER, $internalNumber);
-		$affiliateInfo = AffiliateInfoPeer::doSelectOne($criteria);
-		return $affiliateInfo;
+		return AffiliateQuery::create()->filterByInternalNumber($internalNumber)->findOne();
   }
+  
+  /**
+   * Retorna el criteria generado a partir de lso parï¿½metros de bï¿½squeda
+   *
+   * @return criteria $criteria Criteria con parï¿½metros de bï¿½squeda
+   */
+  private function getSearchCriteria() {
+	$criteria = new AffiliateQuery();
+	$criteria->setIgnoreCase(true);
+	$criteria->orderById();
+		
+	if (!empty($this->searchName)) {
+		$criteria->filterByName('%'.$this->searchName.'%', Criteria::LIKE);
+	}
+			
+	return $criteria;
+  }
+  
+	/**
+	* Obtiene todos los afiliados paginados segun la condicion de busqueda ingresada.
+	*
+	* @param int $page [optional] Numero de pagina actual
+	* @param int $perPage [optional] Cantidad de filas por pagina
+	* @return array Informacion sobre todos los afiliados
+	*/
+	function getSearchPaginated($page=1,$perPage=-1)
+	{
+		if ($perPage == -1)
+			$perPage = Common::getRowsPerPage();
+		if (empty($page))
+			$page = 1;
+		$cond = $this->getSearchCriteria();
+		$pager = new PropelPager($cond,"AffiliatePeer", "doSelect",$page,$perPage);
+		return $pager;
+	}
 
 } // AffiliatePeer

@@ -27,7 +27,7 @@ class AffiliatesUsersListAction extends BaseAction {
 
 		$usersPeer = new AffiliateUserPeer();
 		$filters = $_GET['filters'];
-		$this->applyFilters($usersPeer, $filters);
+		$this->applyFilters($usersPeer, $filters, $smarty);
 		
 		if (!empty($_GET["page"])){
 			$page = $_GET["page"];
@@ -67,7 +67,6 @@ class AffiliatesUsersListAction extends BaseAction {
 
 		$smarty->assign("users", $pager->getResult());
 		$smarty->assign("pager", $pager);
-		$smarty->assign("filters", $filters);
 		$smarty->assign("affId",$affiliateId);
 		$smarty->assign("message",$_GET["message"]);
 

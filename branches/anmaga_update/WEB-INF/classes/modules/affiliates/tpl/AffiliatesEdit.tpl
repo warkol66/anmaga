@@ -17,7 +17,7 @@
 			<input name="params[internalId]" type="text" value="|-$affiliate->getInternalNumber()-|" size="15"> 
 		</p>
 		 <p><label for="params[address]">Dirección</label>
-				<input name="params[addressv" type="text" value="|-$affiliate->getAddress()-|" size="55"> 
+				<input name="params[address]" type="text" value="|-$affiliate->getAddress()-|" size="55"> 
 		</p>
 		 <p><label for="params[phone]">Teléfono</label>
 				<input name="params[phone]" type="text" value="|-$affiliate->getPhone()-|" size="25"> 

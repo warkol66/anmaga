@@ -34,7 +34,7 @@
 </tr>
 |-/if-|
 	<tr class="thFillTitle">
-			<th colspan="8"><div class="rightLink"><a href="Main.php?do=affiliatesUsersEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addNew">Agregar ##affiliates,1,Afiliado##</a></div></th>
+			<th colspan="8"><div class="rightLink"><a href="Main.php?do=affiliatesUsersEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Agregar ##affiliates,1,Afiliado##</a></div></th>
 	</tr>
 	<tr>
 		<th>Identificación de Usuario</th>
@@ -77,7 +77,7 @@
 			</tr>							
 	|-/if-|
 	<tr class="thFillTitle">
-			<th colspan="8"><div class="rightLink"><a href="Main.php?do=affiliatesUsersEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addNew">Agregar ##affiliates,1,Afiliado##</a></div></th>
+			<th colspan="8"><div class="rightLink"><a href="Main.php?do=affiliatesUsersEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Agregar ##affiliates,1,Afiliado##</a></div></th>
 	</tr>
 </table>
 

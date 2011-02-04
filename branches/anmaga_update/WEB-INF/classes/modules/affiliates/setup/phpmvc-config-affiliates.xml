@@ -17,14 +17,6 @@
 			<forward name="success" path="AffiliatesEdit.tpl"/>
 		</action>
 
-		<action    path = "affiliatesAddAffiliate"
-							 type = "AffiliatesAddAffiliateAction"
-							 name = "affiliatesAddAffiliate"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="AffiliatesAdd.tpl"/>
-		</action>
-
 		<action    path = "affiliatesViewAffiliate"
 							 type = "AffiliatesViewAffiliateAction"
 							 name = "affiliatesViewAffiliate"
@@ -42,14 +34,6 @@
 			<forward name="failure" path="AffiliatesEdit.tpl"/>
 		</action>
 
-		<action    path = "affiliatesDoEditInfo"
-							 type = "AffiliatesDoEditInfoAction"
-							 name = "affiliatesDoEditInfo"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesList&amp;message=edited" redirect="true" />
-		</action>
-
 		<action    path = "affiliatesDoDelete"
 							 type = "AffiliatesDoDeleteAction"
 							 name = "affiliatesDoDelete"
@@ -57,15 +41,6 @@
 					 validate = "true">
 			<forward name="success" path="/Main.php?do=affiliatesList&amp;message=deleted" redirect="true" />
 			<forward name="failure" path="/Main.php?do=affiliatesList&amp;message=notdeleted" redirect="true" />
-		</action>
-
-		<action    path = "affiliatesDoAddAffiliate"
-							 type = "AffiliatesDoAddAffiliateAction"
-							 name = "affiliatesDoAddAffiliate"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesList&amp;message=created" redirect="true" />
-			<forward name="failure" path="AffiliatesAdd.tpl"/>
 		</action>
 
 <!-- Section Branches -->

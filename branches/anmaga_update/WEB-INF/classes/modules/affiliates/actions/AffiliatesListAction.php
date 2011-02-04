@@ -20,19 +20,22 @@ class AffiliatesListAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
-    $smarty->assign("module",$module);
+    	$smarty->assign("module",$module);
 
-    $smarty->assign("message",$_GET["message"]);
+    	$smarty->assign("message",$_GET["message"]);
+		
+		$affiliatePeer = new AffiliatePeer;
 
-		$name = $_GET["filters"]["name"];
+		$filters = $_GET["filters"];
+		
+		$this->applyFilters($affiliatePeer, $filters, $smarty);
 
-		if (!empty($name)) {
-			$pager = AffiliatePeer::getByNamePaginated($name,$_GET["page"]);
-			$smarty->assign("url","Main.php?do=affiliatesList&filters[name]=$name");
-			$smarty->assign("filters",$_GET["filters"]);
-		}
-		else
-    	$pager = AffiliatePeer::getAllPaginated($_GET["page"]);
+		$pager = $affiliatePeer->getSearchPaginated($_GET["page"]);
+		
+		$url = "Main.php?do=affiliatesList";
+		foreach ($filters as $key => $value)
+			$url .= "&filters[$key]=$value";
+		$smarty->assign("url",$url);
 
 		$smarty->assign("affiliates",$pager->getResult());
 		$smarty->assign("pager",$pager);

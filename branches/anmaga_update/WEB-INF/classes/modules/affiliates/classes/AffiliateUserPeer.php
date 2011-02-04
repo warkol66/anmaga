@@ -356,11 +356,11 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 	}
 	 	
    /**
-	* Obtiene todos los projects paginados segun la condicion de busqueda ingresada.
+	* Obtiene todos los usuarios por afiliado paginados segun la condicion de busqueda ingresada.
 	*
 	* @param int $page [optional] Numero de pagina actual
 	* @param int $perPage [optional] Cantidad de filas por pagina
-	* @return array Informacion sobre todos los projects
+	* @return array Informacion sobre todos los usuarios por afiliado
 	*/
 	function getSearchPaginated($page=1,$perPage=-1)
 	{
