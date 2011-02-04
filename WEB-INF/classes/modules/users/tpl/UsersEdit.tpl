@@ -149,14 +149,14 @@ function usersDoEditInfo(form){
 					<input type="hidden" name="do" id="do" value="usersDoDeleteFromGroupX" /> 
 					<input type="hidden" name="userId"  value="|-$currentUser->getId()-|" /> 
 					<input type="hidden" name="groupId"  value="|-$group->getId()-|" /> 
-					<input type="button" value="Eliminar" onClick="javascript:usersDoDeleteFromGroup(this.form)" class="buttonImageDelete" /> 
+					<input type="button" value="Eliminar" onClick="javascript:usersDoDeleteFromGroup(this.form)" class="iconDelete" /> 
 				</form> 
 			</li> 
 			|-/foreach-|
 		</ul> 
 	</div>
 	</fieldset>
-
+|-if $configModule->get('users','aditionalInfo')-|
 <fieldset title="Formulario de Información adicional">
 <legend>Información adicional del Usuario</legend>
 	<div id="AdditionalInfo"> <span id="userInfoMsgField"></span> 
@@ -197,6 +197,7 @@ function usersDoEditInfo(form){
 		</form> 
 		</div>
 	</fieldset>
+|-/if-|
 |-/if-|
 
 

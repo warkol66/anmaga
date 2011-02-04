@@ -1,4 +1,10 @@
 ﻿==============================
+Revisión 668 - Fecha 20110204
+------------------------------
+#Borramos tablas que ya no se usan más y que ni siquiera están en los esquemas.
+DROP TABLE IF EXISTS `users_userInfo`;
+
+==============================
 Revisión 662 - Fecha 20110204
 ------------------------------
 #Borramos tablas que ya no se usan más y que ni siquiera están en los esquemas.

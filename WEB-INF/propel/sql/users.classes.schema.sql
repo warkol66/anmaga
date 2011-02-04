@@ -38,25 +38,6 @@ CREATE TABLE `users_user`
 ) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Users';
 
 #-----------------------------------------------------------------------------
-#-- users_userInfo
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `users_userInfo`;
-
-
-CREATE TABLE `users_userInfo`
-(
-	`userId` INTEGER  NOT NULL COMMENT 'User Id',
-	`name` VARCHAR(255)   COMMENT 'name',
-	`surname` VARCHAR(255)   COMMENT 'surname',
-	`mailAddress` VARCHAR(255)   COMMENT 'Email',
-	PRIMARY KEY (`userId`),
-	CONSTRAINT `users_userInfo_FK_1`
-		FOREIGN KEY (`userId`)
-		REFERENCES `users_user` (`id`)
-) ENGINE=MyISAM COMMENT='Information about users';
-
-#-----------------------------------------------------------------------------
 #-- users_userGroup
 #-----------------------------------------------------------------------------
 
@@ -134,49 +115,6 @@ CREATE TABLE `users_groupCategory`
 		REFERENCES `categories_category` (`id`)
 		ON DELETE CASCADE
 ) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Groups_Categories';
-
-#-----------------------------------------------------------------------------
-#-- usersByRegistration_user
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `usersByRegistration_user`;
-
-
-CREATE TABLE `usersByRegistration_user`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'User Id',
-	`username` VARCHAR(255)  NOT NULL COMMENT 'username',
-	`password` VARCHAR(255)  NOT NULL COMMENT 'password',
-	`active` TINYINT  NOT NULL COMMENT 'Is user active?',
-	`created` DATETIME  NOT NULL COMMENT 'Creation date for',
-	`updated` DATETIME  NOT NULL COMMENT 'Last update date',
-	`ip` VARCHAR(255)  NOT NULL COMMENT 'Registration IP',
-	`lastLogin` DATETIME   COMMENT 'Fecha del ultimo login del usuario',
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `usersByRegistration_user_U_1` (`username`),
-	CONSTRAINT `usersByRegistration_user_FK_1`
-		FOREIGN KEY (`id`)
-		REFERENCES `usersByRegistration_userInfo` (`userId`)
-) ENGINE=MyISAM COMMENT='Users by registration';
-
-#-----------------------------------------------------------------------------
-#-- usersByRegistration_userInfo
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `usersByRegistration_userInfo`;
-
-
-CREATE TABLE `usersByRegistration_userInfo`
-(
-	`userId` INTEGER  NOT NULL COMMENT 'UserByRegistration Id',
-	`name` VARCHAR(255)   COMMENT 'name',
-	`surname` VARCHAR(255)   COMMENT 'surname',
-	`mailAddress` VARCHAR(255)   COMMENT 'Email',
-	PRIMARY KEY (`userId`),
-	CONSTRAINT `usersByRegistration_userInfo_FK_1`
-		FOREIGN KEY (`userId`)
-		REFERENCES `usersByRegistration_user` (`id`)
-) ENGINE=MyISAM COMMENT='Information about users by registration';
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

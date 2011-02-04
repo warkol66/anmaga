@@ -125,7 +125,7 @@ function usersDoDeleteFromGroup(form){
 					<input type="hidden" name="do" id="do" value="usersDoDeleteFromGroupX" /> 
 					<input type="hidden" name="userId"  value="|-$currentUser->getId()-|" /> 
 					<input type="hidden" name="groupId"  value="|-$group->getId()-|" /> 
-					<input type="button" value="Eliminar" onClick="javascript:usersDoDeleteFromGroup(this.form)" class="buttonImageDelete" /> 
+					<input type="button" value="Eliminar" onClick="javascript:usersDoDeleteFromGroup(this.form)" class="iconDelete" /> 
 				</form> 
 			</li> 
 			|-/foreach-|

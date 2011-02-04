@@ -147,11 +147,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	protected $collScheduleSubscriptionUsers;
 
 	/**
-	 * @var        UserInfo one-to-one related UserInfo object
-	 */
-	protected $singleUserInfo;
-
-	/**
 	 * @var        array UserGroup[] Collection to store aggregation of UserGroup objects.
 	 */
 	protected $collUserGroups;
@@ -165,6 +160,11 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	 * @var        array ScheduleSubscription[] Collection to store aggregation of ScheduleSubscription objects.
 	 */
 	protected $collScheduleSubscriptions;
+
+	/**
+	 * @var        array Group[] Collection to store aggregation of Group objects.
+	 */
+	protected $collGroups;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -1165,12 +1165,11 @@ abstract class BaseUser extends BaseObject  implements Persistent
 
 			$this->collScheduleSubscriptionUsers = null;
 
-			$this->singleUserInfo = null;
-
 			$this->collUserGroups = null;
 
 			$this->collAlertSubscriptions = null;
 			$this->collScheduleSubscriptions = null;
+			$this->collGroups = null;
 		} // if (deep)
 	}
 
@@ -1359,12 +1358,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				}
 			}
 
-			if ($this->singleUserInfo !== null) {
-				if (!$this->singleUserInfo->isDeleted()) {
-						$affectedRows += $this->singleUserInfo->save($con);
-				}
-			}
-
 			if ($this->collUserGroups !== null) {
 				foreach ($this->collUserGroups as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -1477,12 +1470,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
-					}
-				}
-
-				if ($this->singleUserInfo !== null) {
-					if (!$this->singleUserInfo->validate($columns)) {
-						$failureMap = array_merge($failureMap, $this->singleUserInfo->getValidationFailures());
 					}
 				}
 
@@ -1874,11 +1861,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addScheduleSubscriptionUser($relObj->copy($deepCopy));
 				}
-			}
-
-			$relObj = $this->getUserInfo();
-			if ($relObj) {
-				$copyObj->setUserInfo($relObj->copy($deepCopy));
 			}
 
 			foreach ($this->getUserGroups() as $relObj) {
@@ -2384,42 +2366,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Gets a single UserInfo object, which is related to this object by a one-to-one relationship.
-	 *
-	 * @param      PropelPDO $con optional connection object
-	 * @return     UserInfo
-	 * @throws     PropelException
-	 */
-	public function getUserInfo(PropelPDO $con = null)
-	{
-
-		if ($this->singleUserInfo === null && !$this->isNew()) {
-			$this->singleUserInfo = UserInfoQuery::create()->findPk($this->getPrimaryKey(), $con);
-		}
-
-		return $this->singleUserInfo;
-	}
-
-	/**
-	 * Sets a single UserInfo object as related to this object by a one-to-one relationship.
-	 *
-	 * @param      UserInfo $v UserInfo
-	 * @return     User The current object (for fluent API support)
-	 * @throws     PropelException
-	 */
-	public function setUserInfo(UserInfo $v = null)
-	{
-		$this->singleUserInfo = $v;
-
-		// Make sure that that the passed-in UserInfo isn't already associated with this object
-		if ($v !== null && $v->getUser() === null) {
-			$v->setUser($this);
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Clears out the collUserGroups collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
@@ -2780,6 +2726,119 @@ abstract class BaseUser extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Clears out the collGroups collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addGroups()
+	 */
+	public function clearGroups()
+	{
+		$this->collGroups = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collGroups collection.
+	 *
+	 * By default this just sets the collGroups collection to an empty collection (like clearGroups());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initGroups()
+	{
+		$this->collGroups = new PropelObjectCollection();
+		$this->collGroups->setModel('Group');
+	}
+
+	/**
+	 * Gets a collection of Group objects related by a many-to-many relationship
+	 * to the current object by way of the users_userGroup cross-reference table.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this User is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     PropelCollection|array Group[] List of Group objects
+	 */
+	public function getGroups($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collGroups) {
+				// return empty collection
+				$this->initGroups();
+			} else {
+				$collGroups = GroupQuery::create(null, $criteria)
+					->filterByUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collGroups;
+				}
+				$this->collGroups = $collGroups;
+			}
+		}
+		return $this->collGroups;
+	}
+
+	/**
+	 * Gets the number of Group objects related by a many-to-many relationship
+	 * to the current object by way of the users_userGroup cross-reference table.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      boolean $distinct Set to true to force count distinct
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     int the number of related Group objects
+	 */
+	public function countGroups($criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collGroups) {
+				return 0;
+			} else {
+				$query = GroupQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByUser($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collGroups);
+		}
+	}
+
+	/**
+	 * Associate a Group object to this object
+	 * through the users_userGroup cross reference table.
+	 *
+	 * @param      Group $group The UserGroup object to relate
+	 * @return     void
+	 */
+	public function addGroup($group)
+	{
+		if ($this->collGroups === null) {
+			$this->initGroups();
+		}
+		if (!$this->collGroups->contains($group)) { // only add it if the **same** object is not already associated
+			$userGroup = new UserGroup();
+			$userGroup->setGroup($group);
+			$this->addUserGroup($userGroup);
+
+			$this->collGroups[]= $group;
+		}
+	}
+
+	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
 	public function clear()
@@ -2836,9 +2895,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 					$o->clearAllReferences($deep);
 				}
 			}
-			if ($this->singleUserInfo) {
-				$this->singleUserInfo->clearAllReferences($deep);
-			}
 			if ($this->collUserGroups) {
 				foreach ((array) $this->collUserGroups as $o) {
 					$o->clearAllReferences($deep);
@@ -2849,7 +2905,6 @@ abstract class BaseUser extends BaseObject  implements Persistent
 		$this->collActionLogs = null;
 		$this->collAlertSubscriptionUsers = null;
 		$this->collScheduleSubscriptionUsers = null;
-		$this->singleUserInfo = null;
 		$this->collUserGroups = null;
 		$this->aLevel = null;
 	}

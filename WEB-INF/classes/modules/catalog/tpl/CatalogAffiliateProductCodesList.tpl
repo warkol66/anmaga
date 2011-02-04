@@ -27,27 +27,27 @@
 	<table id="tabla-affiliateproductcodes" width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 		<thead>
 			<tr>
-				<th width="20%" class="thFillTitle">Código</th>
-				<th width="75%" class="thFillTitle">C&oacute;digo Anmaga, Producto</th>
-				<th height="5%" class="thFillTitle">&nbsp;</th>
+				<th width="20%">Código</th>
+				<th width="75%">Código Anmaga, Producto</th>
+				<th height="5%">&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
 		|-foreach from=$affiliateproductcodes item=affiliateproductcode name=for_affiliateproductcodes-|
 			<tr>
-				<td class="tdSize1 right">|-$affiliateproductcode->getproductCodeAffiliate()-|</td>
-				<td class="tdSize1">|-assign var=product value=$affiliateproductcode->getProduct()-||-if $product ne ""-||-$product->getCode()-|, |-$product->getName()-||-/if-|</td>
+				<td>|-$affiliateproductcode->getproductCodeAffiliate()-|</td>
+				<td>|-assign var=product value=$affiliateproductcode->getProduct()-||-if $product ne ""-||-$product->getCode()-|, |-$product->getName()-||-/if-|</td>
 				<td nowrap>
 					<form action="Main.php" method="get" style="display:inline;">
 						<input type="hidden" name="do" value="catalogAffiliateProductCodesEdit" />
 						<input type="hidden" name="id" value="|-$affiliateproductcode->getid()-|" />
 						<input type="hidden" name="page" value="|-$page-|" />
-						<input type="submit" name="submit_go_edit_affiliateproductcode" value="Editar"  class="buttonImageEdit" />
+						<input type="submit" name="submit_go_edit_affiliateproductcode" value="Editar"  class="iconEdit" />
 					</form>
 					<form action="Main.php" method="post" style="display:inline;">
 						<input type="hidden" name="do" value="catalogAffiliateProductCodesDoDel" />
 						<input type="hidden" name="id" value="|-$affiliateproductcode->getid()-|" />
-						<input type="submit" name="submit_go_delete_affiliateproductcode" value="Borrar" onclick="return confirm('Seguro que desea eliminar el código equivalente de afiliado?')" class="buttonImageDelete" />
+						<input type="submit" name="submit_go_delete_affiliateproductcode" value="Borrar" onclick="return confirm('Seguro que desea eliminar el código equivalente de afiliado?')" class="iconDelete" />
 					</form>								</td>
 			</tr>
 		|-/foreach-|

@@ -12,13 +12,13 @@
 			<td colspan="7" class="pages">|-include file="PaginateNumberedInclude.tpl"-|</td>
 		</tr> 
 			<tr> 
-				<th width="5%" class="thFillTitle">Código</th> 
-				<th width="35%" class="thFillTitle">Nombre</th> 
-				<th width="40%" class="thFillTitle">Descripción</th> 
-				<th width="5%" class="thFillTitle">Precio Unitario</th> 
-				<th width="5%" class="thFillTitle">Unidad de Venta</th>
-				<th width="5%" class="thFillTitle">Precio</th>
-				<th width="5%" class="thFillTitle">&nbsp;</th>
+				<th width="5%">Código</th> 
+				<th width="35%">Nombre</th> 
+				<th width="40%">Descripción</th> 
+				<th width="5%">Precio Unitario</th> 
+				<th width="5%">Unidad de Venta</th>
+				<th width="5%">Precio</th>
+				<th width="5%">&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>  |-foreach from=$products item=product name=for_products-|

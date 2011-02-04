@@ -10,9 +10,9 @@
 			</tr>
 		<thead> 
 			<tr> 
-				<th width="20%" nowrap class="thFillTitle">Id</th> 
-				<th width="70%" nowrap class="thFillTitle">Nombre</th> 
-				<th width="10%" nowrap class="thFillTitle">&nbsp;</th> 
+				<th width="20%" nowrap>Id</th> 
+				<th width="70%" nowrap>Nombre</th> 
+				<th width="10%" nowrap>&nbsp;</th> 
 			</tr> 
 		</thead> 
 		<tbody>  
@@ -23,12 +23,12 @@
 			<td nowrap> <form action="Main.php" method="get"> 
 					<input type="hidden" name="do" value="catalogMeasureUnitsEdit" /> 
 					<input type="hidden" name="id" value="|-$measureunit->getid()-|" /> 
-					<input type="submit" name="submit_go_edit_measureunit" value="Editar" class="buttonImageEdit" /> 
+					<input type="submit" name="submit_go_edit_measureunit" value="Editar" class="iconEdit" /> 
 				</form> 
 				<form action="Main.php" method="post"> 
 					<input type="hidden" name="do" value="catalogMeasureUnitsDoDelete" /> 
 					<input type="hidden" name="id" value="|-$measureunit->getid()-|" /> 
-					<input type="submit" name="submit_go_delete_measureunit" value="Borrar" onclick="return confirm('Seguro que desea eliminar la unidad de medida?')" class="buttonImageDelete" /> 
+					<input type="submit" name="submit_go_delete_measureunit" value="Borrar" onclick="return confirm('Seguro que desea eliminar la unidad de medida?')" class="iconDelete" /> 
 			</form></td> 
 		</tr> 
 		|-/foreach-|

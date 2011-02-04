@@ -66,10 +66,10 @@ class UserTableMap extends TableMap {
     $this->addRelation('ActionLog', 'ActionLog', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('AlertSubscriptionUser', 'AlertSubscriptionUser', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), 'CASCADE', null);
     $this->addRelation('ScheduleSubscriptionUser', 'ScheduleSubscriptionUser', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), 'CASCADE', null);
-    $this->addRelation('UserInfo', 'UserInfo', RelationMap::ONE_TO_ONE, array('id' => 'userId', ), null, null);
     $this->addRelation('UserGroup', 'UserGroup', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('AlertSubscription', 'AlertSubscription', RelationMap::MANY_TO_MANY, array(), null, null);
     $this->addRelation('ScheduleSubscription', 'ScheduleSubscription', RelationMap::MANY_TO_MANY, array(), null, null);
+    $this->addRelation('Group', 'Group', RelationMap::MANY_TO_MANY, array(), null, null);
 	} // buildRelations()
 
 	/**

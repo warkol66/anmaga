@@ -10,22 +10,22 @@
 	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products">
 		<thead>
 			<tr>
-				<th width="10%" nowrap class="thFillTitle">Código</th>
-				<th width="45%" class="thFillTitle">Nombre</th>
-				<th width="10%" class="thFillTitle">Precio Unitario</th> 
-				<th width="15%" class="thFillTitle">Unidad de Venta</th>
-				<th width="15%" class="thFillTitle">Precio por Empaque </th>
-				<th width="5%" class="thFillTitle">Cantidad</th>
+				<th width="10%" nowrap>Código</th>
+				<th width="45%">Nombre</th>
+				<th width="10%">Precio Unitario</th> 
+				<th width="15%">Unidad de Venta</th>
+				<th width="15%">Precio por Empaque </th>
+				<th width="5%">Cantidad</th>
 			</tr>
 		</thead>
 		|-assign var=total value=0-|
 		<tbody>  |-foreach from=$orderItems item=item name=for_products-| |-assign var=product value=$item->getProduct()-|
 		<tr id="product_|-$product->getId()-|">
-			<td align="center" class="tdSize1">|-$product->getcode()-|</td>
-			<td class="tdSize1">|-$product->getname()-|</td>
-			<td nowrap class="tdSize1 right">|-$product->getprice()|system_numeric_format-|</td>
-			<td align="center" nowrap class="tdSize1">|-$product->getSalesUnit()-|</td>
-			<td nowrap class="tdSize1 right">
+			<td align="center">|-$product->getcode()-|</td>
+			<td>|-$product->getname()-|</td>
+			<td nowrap>|-$product->getprice()|system_numeric_format-|</td>
+			<td align="center" nowrap>|-$product->getSalesUnit()-|</td>
+			<td nowrap>
 				|-math equation="x * y" x=$product->getprice() y=$product->getSalesUnit() assign=totalItem-||-$totalItem|system_numeric_format-|
 				|-math equation="x + (y*z)" x=$total y=$totalItem z=$item->getQuantity() assign=total-|
 			</td>

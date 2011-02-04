@@ -57,10 +57,10 @@ function resetPassword(form){
 	</tr>
 	|-if $licensesLeft gt 0-|
 	<tr>
-		<th colspan="5" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=usersEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Agregar Usuario</a></div></th>
+		<th colspan="5"><div class="rightLink"><a href="Main.php?do=usersEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Agregar Usuario</a></div></th>
 	</tr>
 	|-/if-|
-	<tr class="thFillTitle">
+	<tr>
 		<th width="25%" nowrap >##162,Identificación de Usuario##</th>
 		<th width="20%">##163,Nombre##</th>
 		<th width="30%">##164,Apellido##</th>
@@ -93,7 +93,7 @@ function resetPassword(form){
 	|-/foreach-|
 	|-if $licensesLeft gt 0-|
 	<tr>
-		<th colspan="5" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=usersEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Agregar Usuario</a></div></th>
+		<th colspan="5"><div class="rightLink"><a href="Main.php?do=usersEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Agregar Usuario</a></div></th>
 	</tr>
 	|-else-|
 	<tr>
