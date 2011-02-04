@@ -9,10 +9,11 @@ class AffiliatesUsersDoEditAction extends BaseAction {
 
 	function assignObjects($smarty) {
 		if (empty($_POST["id"]))
-			$smarty->assign("currentAffiliateUser",AffiliateUserPeer::getFromArray($_POST["affiliateUser"]));
+			$affiliateUser = new AffiliateUser;
 		else
-			$smarty->assign("currentAffiliateUser",AffiliateUserPeer::get($_POST["id"]));
-		$smarty->assign("currentAffiliateUserInfo",AffiliateUserInfoPeer::getFromArray($_POST["affiliateUserInfo"]));
+			$affiliateUser = AffiliateUserPeer::get($_POST["id"]);
+		Common::setObjectFromParams($affiliateUser, $affiliateUserParams);
+		$smarty->assign("currentAffiliateUser", $affiliateUser);	
 		$timezonePeer = new TimezonePeer();
 		$smarty->assign('timezones',$timezonePeer->getAll());	
 		$levels = AffiliateLevelPeer::getAll();
@@ -76,15 +77,16 @@ class AffiliatesUsersDoEditAction extends BaseAction {
 		$usersPeer= new AffiliateUserPeer();
 		
 		$affiliateUserParams = $_POST["affiliateUser"];
-		$affiliateUserInfoParams = $_POST["affiliateUserInfo"];		
-
+		
 
 		if ( !empty($_SESSION["loginUser"]) )
 			$affiliateId = $_POST["affiliateUser"]["affiliateId"];
 		else
 			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
 		$smarty->assign("affiliateId",$affiliateId);
-
+		
+		$filters = array('searchAffiliateId' => $affiliateId);
+		
 		if ( empty($affiliateId) ) {
 			$this->assignObjects($smarty);
 			$smarty->assign("message","emptyAffiliate");			
@@ -97,25 +99,23 @@ class AffiliatesUsersDoEditAction extends BaseAction {
 			return $mapping->findForwardConfig('failure');
 		}	
 
-		if ( ( empty($_POST["id"]) && empty($_POST["pass"]) ) || ($_POST["pass"] != $_POST["pass2"]) ) {
+		if ( ( empty($_POST["id"]) && empty($affiliateUserParams["password"]) ) || ($affiliateUserParams["password"] != $affiliateUserParams["password2"]) ) {
 			$this->assignObjects($smarty);
 			$smarty->assign("message","wrongPassword");
 			return $mapping->findForwardConfig('failure');
 		}
 		
 		if (empty($_POST["id"]))
-			AffiliateUserPeer::create($affiliateId,$affiliateUserParams["username"],$affiliateUserParams["password"],$affiliateUserParams["levelId"],$affiliateUserInfoParams["name"],$affiliateUserInfoParams["surname"],$affiliateUserInfoParams["mailAddress"],$affiliateUserParams["timezone"]);
+			$affiliateUser = new AffiliateUser;
 		else
-			AffiliateUserPeer::update($_POST["id"],$affiliateId,$affiliateUserParams["username"],$affiliateUserParams["password"],$affiliateUserParams["levelId"],$affiliateUserInfoParams["name"],$affiliateUserInfoParams["surname"],$affiliateUserInfoParams["mailAddress"],$affiliateUserParams["timezone"]);
+			$affiliateUser = AffiliateUserPeer::get($_POST["id"]);
 		
-		$myRedirectConfig = $mapping->findForwardConfig('success');
-		$myRedirectPath = $myRedirectConfig->getpath();
-		$myReqQueryString = "&affiliateId=".$affiliateId;
-		$myReqQueryString = htmlentities(urlencode($myReqQueryString));
-		$myRedirectPath .= $myReqQueryString;
-		$fc = new ForwardConfig($myRedirectPath, True);
-		return $fc;		
-
+		Common::setObjectFromParams($affiliateUser, $affiliateUserParams);
+		if (!$affiliateUser->save()) {
+			$this->assignObjects($smarty);
+			$smarty->assign("message","errorUpdate");
+			return $mapping->findForwardConfig('failure');
+		}
+		return $this->addFiltersToForwards($filters, $mapping, 'success');
 	}
-
 }

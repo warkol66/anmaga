@@ -22,69 +22,62 @@ class AffiliatesUsersEditAction extends BaseAction {
 		$module = "Affiliates";
 		$section = "Users";
 
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+    	$smarty->assign("module",$module);
+    	$smarty->assign("section",$section);
 
 		$usersPeer = new AffiliateUserPeer;
 
 		//Si esta logueado un usuario comun
 		if (!empty($_SESSION["loginUser"])) {
 			$affiliateId = $_GET["affiliateId"];
-			if(!empty($affiliateId)) {
-				if ($affiliateId == -1){
+			if (!empty($affiliateId)) {
+				if ($affiliateId == -1) {
 					$users = $usersPeer->getAll();
 					$deletedUsers = $usersPeer->getDeleteds();
-				}
-				else{
+				} else {
 					$users = $usersPeer->getAffiliate($affiliateId);
 					$deletedUsers = $usersPeer->getDeletedsByAffiliate($affiliateId);
 				}
-			}
-    	else {
+			} else {
 				$users = $usersPeer->getAll();
 				$deletedUsers = $usersPeer->getDeleteds();
 			}
 			$affiliates = AffiliatePeer::getAll();
 			$smarty->assign("affiliates",$affiliates);
-		}
-		else {
-		  $affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
+		} else {
+			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
 			$users = $usersPeer->getAffiliate($affiliateId);
 			$deletedUsers = $usersPeer->getDeletedsByAffiliate($affiliateId);
 		}
 
 		$smarty->assign("affiliateId",$affiliateId);
 
-    if ( !empty($_GET["id"]) ) {
+    	if ( !empty($_GET["id"]) ) {
 			//voy a editar un usuario
 
 			$user = $usersPeer->get($_GET["id"]);
 			//echo "usuario $user ...";
-      $userInfo = AffiliateUserInfoQuery::create()->findPk($user->getPrimaryKey());
 
 			$groups = $usersPeer->getGroupsByUser($_GET["id"]);
 			$smarty->assign("currentUserGroups",$groups);
 
-	    $smarty->assign("accion","edicion");
+	    	$smarty->assign("accion","edicion");
 		} else {
 			//voy a crear un usuario nuevo
-      $user = new AffiliateUser;
-      $userInfo = new AffiliateUserInfo;
+      		$user = new AffiliateUser;
 			$smarty->assign("accion","creacion");
 		}
     
-    $smarty->assign("currentAffiliateUser", $user);
-    $smarty->assign("currentAffiliateUserInfo", $userInfo);
-    
-    $levels = AffiliateLevelPeer::getAll();
-    $smarty->assign("levels",$levels);
-    
-    $groups = AffiliateGroupPeer::getAll();
-    $smarty->assign("groups",$groups);
+	    $smarty->assign("currentAffiliateUser", $user);
+	    
+	    $levels = AffiliateLevelPeer::getAll();
+	    $smarty->assign("levels",$levels);
+	    
+	    $groups = AffiliateGroupPeer::getAll();
+	    $smarty->assign("groups",$groups);
 
 		$smarty->assign("message",$_GET["message"]);
 
 		return $mapping->findForwardConfig('success');
 	}
-
 }

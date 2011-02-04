@@ -13,24 +13,6 @@
 |-if $message eq "ownerNotEdited"-|
 <div align='center' class='errorMessage'>El dueño no ha sido modificado</div>
 |-/if-|
-|-if $message eq "wrongPassword"-|
-<div align='center' class='errorMessage'>Las contraseñas deben coincidir</div>
-|-/if-|
-|-if $message eq "emptyAffiliate"-|
-<div align='center' class='errorMessage'>Debe selecccionar un afiliado</div>
-|-/if-|
-|-if $message eq "errorUpdate"-|
-<div align='center' class='errorMessage'>Ha ocurrido un error al intentar guardar la información del usuario</div>
-|-/if-|
-|-if $message eq "saved"-|
-<div align='center' class='errorMessage'>Usuario guardado</div>
-|-/if-|
-|-if $message eq "notAddedToGroup"-|
-<div align='center' class='errorMessage'>Ha ocurrido un error al intentar agregar el usuario al grupo</div>
-|-/if-|
-|-if $message eq "notRemovedFromGroup"-|
-<div align='center' class='errorMessage'>Ha ocurrido un error al intentar eliminar el usuario al grupo</div>
-|-/if-|
 
 <table cellpadding='5' cellspacing='1' width='100%' class='tableTdBorders'>
 |-if $loginUser ne ''-|
@@ -38,19 +20,22 @@
 <td colspan="3">
 			<form action="Main.php" method="get">
 			<p>Filtrar por Afiliado
-			<select name="affiliateId" onchange="this.form.submit();">
+			<select name="filters[searchAffiliateId]" onchange="this.form.submit();">
 					<option value="0">Seleccione un Afiliado</option>
 					<option value="-1">Todos</option>
 				|-foreach from=$affiliates item=affiliate name=for_affiliate-|
-					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $affiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
+					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $filters.searchAffiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
 				|-/foreach-|
 			</select> 
-				|-if $affiliateId gt 0-|<input name="rmoveFilters" type="button" value="Quitar filtros" onclick="location.href='Main?do=affiliatesUsersList'" class='boton' />|-/if-|</p>
+				|-if $filters.searchAffiliateId gt 0-|<input name="rmoveFilters" type="button" value="Quitar filtros" onclick="location.href='Main?do=affiliatesUsersList'" class='boton' />|-/if-|</p>
 			<input type="hidden" name="do" value="affiliatesUsersList" />
 		</form>
 </td>
 </tr>
 |-/if-|
+	<tr class="thFillTitle">
+			<th colspan="8"><div class="rightLink"><a href="Main.php?do=affiliatesUsersEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addNew">Agregar ##affiliates,1,Afiliado##</a></div></th>
+	</tr>
 	<tr>
 		<th>Identificación de Usuario</th>
 		<th>Afiliado</th>
@@ -86,13 +71,13 @@
 		</td>
 	</tr>
 	|-/foreach-|
-	<tr>
-		<td class='cellboton' colspan='4'><form action='Main.php' method='get'>
-				<input type="hidden" name="do" value="affiliatesUsersList" />
-				<input type="hidden" name="user" value="" />
-				<input type="hidden" name="affiliateId" value="|-$affiliateId-|" />
-				<input type='submit' value='Nuevo Usuario' class='button' />
-			</form></td>
+	|-if isset($pager) && ($pager->getTotalPages() gt 1)-|
+			<tr> 
+				<td colspan="8" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
+			</tr>							
+	|-/if-|
+	<tr class="thFillTitle">
+			<th colspan="8"><div class="rightLink"><a href="Main.php?do=affiliatesUsersEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addNew">Agregar ##affiliates,1,Afiliado##</a></div></th>
 	</tr>
 </table>
 

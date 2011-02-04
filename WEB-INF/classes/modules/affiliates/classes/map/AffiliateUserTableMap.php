@@ -42,7 +42,6 @@ class AffiliateUserTableMap extends TableMap {
 		$this->addColumn('USERNAME', 'Username', 'VARCHAR', true, 255, null);
 		$this->addColumn('PASSWORD', 'Password', 'VARCHAR', true, 255, null);
 		$this->addColumn('PASSWORDUPDATED', 'Passwordupdated', 'DATE', false, null, null);
-		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', false, null, null);
 		$this->addForeignKey('LEVELID', 'Levelid', 'INTEGER', 'affiliates_level', 'ID', false, null, null);
 		$this->addColumn('LASTLOGIN', 'Lastlogin', 'TIMESTAMP', false, null, null);
 		$this->addColumn('TIMEZONE', 'Timezone', 'VARCHAR', false, 25, null);
@@ -56,6 +55,8 @@ class AffiliateUserTableMap extends TableMap {
 		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
 		$this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
 		// validators
+		$this->addValidator('AFFILIATEID', 'required', 'propel.validator.RequiredValidator', '', 'El usuario debe asociarse a un afiliado.');
+		$this->addValidator('USERNAME', 'unique', 'propel.validator.UniqueValidator', '', 'El nombre de usuario debe ser unico.');
 	} // initialize()
 
 	/**
@@ -70,6 +71,7 @@ class AffiliateUserTableMap extends TableMap {
     $this->addRelation('Order', 'Order', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('OrderStateChange', 'OrderStateChange', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
     $this->addRelation('OrderTemplate', 'OrderTemplate', RelationMap::ONE_TO_MANY, array('id' => 'userId', ), null, null);
+    $this->addRelation('AffiliateGroup', 'AffiliateGroup', RelationMap::MANY_TO_MANY, array(), null, null);
 	} // buildRelations()
 
 	/**

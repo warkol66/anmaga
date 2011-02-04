@@ -65,6 +65,11 @@ abstract class BaseAffiliateGroup extends BaseObject  implements Persistent
 	protected $collAffiliateGroupCategorys;
 
 	/**
+	 * @var        array AffiliateUser[] Collection to store aggregation of AffiliateUser objects.
+	 */
+	protected $collAffiliateUsers;
+
+	/**
 	 * @var        array Category[] Collection to store aggregation of Category objects.
 	 */
 	protected $collCategorys;
@@ -458,6 +463,7 @@ abstract class BaseAffiliateGroup extends BaseObject  implements Persistent
 
 			$this->collAffiliateGroupCategorys = null;
 
+			$this->collAffiliateUsers = null;
 			$this->collCategorys = null;
 		} // if (deep)
 	}
@@ -1256,6 +1262,119 @@ abstract class BaseAffiliateGroup extends BaseObject  implements Persistent
 		$query->joinWith('Category', $join_behavior);
 
 		return $this->getAffiliateGroupCategorys($query, $con);
+	}
+
+	/**
+	 * Clears out the collAffiliateUsers collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addAffiliateUsers()
+	 */
+	public function clearAffiliateUsers()
+	{
+		$this->collAffiliateUsers = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collAffiliateUsers collection.
+	 *
+	 * By default this just sets the collAffiliateUsers collection to an empty collection (like clearAffiliateUsers());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initAffiliateUsers()
+	{
+		$this->collAffiliateUsers = new PropelObjectCollection();
+		$this->collAffiliateUsers->setModel('AffiliateUser');
+	}
+
+	/**
+	 * Gets a collection of AffiliateUser objects related by a many-to-many relationship
+	 * to the current object by way of the affiliates_userGroup cross-reference table.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this AffiliateGroup is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     PropelCollection|array AffiliateUser[] List of AffiliateUser objects
+	 */
+	public function getAffiliateUsers($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collAffiliateUsers || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAffiliateUsers) {
+				// return empty collection
+				$this->initAffiliateUsers();
+			} else {
+				$collAffiliateUsers = AffiliateUserQuery::create(null, $criteria)
+					->filterByAffiliateGroup($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collAffiliateUsers;
+				}
+				$this->collAffiliateUsers = $collAffiliateUsers;
+			}
+		}
+		return $this->collAffiliateUsers;
+	}
+
+	/**
+	 * Gets the number of AffiliateUser objects related by a many-to-many relationship
+	 * to the current object by way of the affiliates_userGroup cross-reference table.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      boolean $distinct Set to true to force count distinct
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     int the number of related AffiliateUser objects
+	 */
+	public function countAffiliateUsers($criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collAffiliateUsers || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAffiliateUsers) {
+				return 0;
+			} else {
+				$query = AffiliateUserQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByAffiliateGroup($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collAffiliateUsers);
+		}
+	}
+
+	/**
+	 * Associate a AffiliateUser object to this object
+	 * through the affiliates_userGroup cross reference table.
+	 *
+	 * @param      AffiliateUser $affiliateUser The AffiliateUserGroup object to relate
+	 * @return     void
+	 */
+	public function addAffiliateUser($affiliateUser)
+	{
+		if ($this->collAffiliateUsers === null) {
+			$this->initAffiliateUsers();
+		}
+		if (!$this->collAffiliateUsers->contains($affiliateUser)) { // only add it if the **same** object is not already associated
+			$affiliateUserGroup = new AffiliateUserGroup();
+			$affiliateUserGroup->setAffiliateUser($affiliateUser);
+			$this->addAffiliateUserGroup($affiliateUserGroup);
+
+			$this->collAffiliateUsers[]= $affiliateUser;
+		}
 	}
 
 	/**

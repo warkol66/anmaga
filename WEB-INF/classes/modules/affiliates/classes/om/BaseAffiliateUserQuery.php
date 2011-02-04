@@ -11,7 +11,6 @@
  * @method     AffiliateUserQuery orderByUsername($order = Criteria::ASC) Order by the username column
  * @method     AffiliateUserQuery orderByPassword($order = Criteria::ASC) Order by the password column
  * @method     AffiliateUserQuery orderByPasswordupdated($order = Criteria::ASC) Order by the passwordUpdated column
- * @method     AffiliateUserQuery orderByActive($order = Criteria::ASC) Order by the active column
  * @method     AffiliateUserQuery orderByLevelid($order = Criteria::ASC) Order by the levelId column
  * @method     AffiliateUserQuery orderByLastlogin($order = Criteria::ASC) Order by the lastLogin column
  * @method     AffiliateUserQuery orderByTimezone($order = Criteria::ASC) Order by the timezone column
@@ -30,7 +29,6 @@
  * @method     AffiliateUserQuery groupByUsername() Group by the username column
  * @method     AffiliateUserQuery groupByPassword() Group by the password column
  * @method     AffiliateUserQuery groupByPasswordupdated() Group by the passwordUpdated column
- * @method     AffiliateUserQuery groupByActive() Group by the active column
  * @method     AffiliateUserQuery groupByLevelid() Group by the levelId column
  * @method     AffiliateUserQuery groupByLastlogin() Group by the lastLogin column
  * @method     AffiliateUserQuery groupByTimezone() Group by the timezone column
@@ -84,7 +82,6 @@
  * @method     AffiliateUser findOneByUsername(string $username) Return the first AffiliateUser filtered by the username column
  * @method     AffiliateUser findOneByPassword(string $password) Return the first AffiliateUser filtered by the password column
  * @method     AffiliateUser findOneByPasswordupdated(string $passwordUpdated) Return the first AffiliateUser filtered by the passwordUpdated column
- * @method     AffiliateUser findOneByActive(boolean $active) Return the first AffiliateUser filtered by the active column
  * @method     AffiliateUser findOneByLevelid(int $levelId) Return the first AffiliateUser filtered by the levelId column
  * @method     AffiliateUser findOneByLastlogin(string $lastLogin) Return the first AffiliateUser filtered by the lastLogin column
  * @method     AffiliateUser findOneByTimezone(string $timezone) Return the first AffiliateUser filtered by the timezone column
@@ -103,7 +100,6 @@
  * @method     array findByUsername(string $username) Return AffiliateUser objects filtered by the username column
  * @method     array findByPassword(string $password) Return AffiliateUser objects filtered by the password column
  * @method     array findByPasswordupdated(string $passwordUpdated) Return AffiliateUser objects filtered by the passwordUpdated column
- * @method     array findByActive(boolean $active) Return AffiliateUser objects filtered by the active column
  * @method     array findByLevelid(int $levelId) Return AffiliateUser objects filtered by the levelId column
  * @method     array findByLastlogin(string $lastLogin) Return AffiliateUser objects filtered by the lastLogin column
  * @method     array findByTimezone(string $timezone) Return AffiliateUser objects filtered by the timezone column
@@ -350,23 +346,6 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(AffiliateUserPeer::PASSWORDUPDATED, $passwordupdated, $comparison);
-	}
-
-	/**
-	 * Filter the query on the active column
-	 * 
-	 * @param     boolean|string $active The value to use as filter.
-	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    AffiliateUserQuery The current query, for fluid interface
-	 */
-	public function filterByActive($active = null, $comparison = null)
-	{
-		if (is_string($active)) {
-			$active = in_array(strtolower($active), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
-		}
-		return $this->addUsingAlias(AffiliateUserPeer::ACTIVE, $active, $comparison);
 	}
 
 	/**
@@ -1135,6 +1114,23 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 			->useQuery($relationAlias ? $relationAlias : 'OrderTemplate', 'OrderTemplateQuery');
 	}
 
+	/**
+	 * Filter the query by a related AffiliateGroup object
+	 * using the affiliates_userGroup table as cross reference
+	 *
+	 * @param     AffiliateGroup $affiliateGroup the related object to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    AffiliateUserQuery The current query, for fluid interface
+	 */
+	public function filterByAffiliateGroup($affiliateGroup, $comparison = Criteria::EQUAL)
+	{
+		return $this
+			->useAffiliateUserGroupQuery()
+				->filterByAffiliateGroup($affiliateGroup, $comparison)
+			->endUse();
+	}
+	
 	/**
 	 * Exclude object from result
 	 *

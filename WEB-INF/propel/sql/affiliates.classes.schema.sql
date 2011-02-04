@@ -47,7 +47,6 @@ CREATE TABLE `affiliates_user`
 	`username` VARCHAR(255)  NOT NULL COMMENT 'username',
 	`password` VARCHAR(255)  NOT NULL COMMENT 'password',
 	`passwordUpdated` DATE   COMMENT 'Fecha de actualizacion de la clave',
-	`active` TINYINT   COMMENT 'Is user active?',
 	`levelId` INTEGER   COMMENT 'User Level',
 	`lastLogin` DATETIME   COMMENT 'Fecha del ultimo login del usuario',
 	`timezone` VARCHAR(25)   COMMENT 'Timezone GMT del usuario',
