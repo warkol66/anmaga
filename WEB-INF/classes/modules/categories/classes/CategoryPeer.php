@@ -335,7 +335,7 @@ class CategoryPeer extends BaseCategoryPeer {
     if ($this->searchString)
       $criteria->add(CategoryPeer::NAME,"%".$this->searchString."%",Criteria::LIKE);
       
-    if ($this->searchModule)
+    if ($this->searchModule != 'all')
       $criteria->filterByModule($this->searchModule);
 
     return $criteria;

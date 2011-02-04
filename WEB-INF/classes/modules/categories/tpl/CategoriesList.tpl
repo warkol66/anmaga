@@ -8,7 +8,8 @@
 	<legend>Categorías del Sistema</legend>
 			<p><label for="filters[searchModule]">Módulo</label>
 			<select name="filters[searchModule]">
-				<option value='' selected="selected">|-"Global"|multilang_get_translation:"common"-|</option>
+				<option value="all" |-if isset($filters.searchModule) and ($filters.searchModule eq 'all')-| selected="selected" |-/if-|>|-"-- Seleccione uno --"|multilang_get_translation:"common"-|</option>
+				<option value="" |-if isset($filters.searchModule) and $filters.searchModule eq ''-| selected="selected" |-/if-|>|-"Global"|multilang_get_translation:"common"-|</option>
 			|-foreach from=$modules item=moduleObj-|
 				<option value="|-$moduleObj->getName()-|" |-if isset($filters.searchModule) and ($moduleObj->getName() eq $filters.searchModule)-|selected="selected"|-/if-|>|-$moduleObj->getName()|multilang_get_translation:"common"-|</option>
 			|-/foreach-|
@@ -38,7 +39,7 @@
 		<input type="text" name="category[name]" id="name" value='' size="50" />
 		</p>
 		|-include file="FiltersRedirectInclude.tpl"-|
-		<input type="hidden" name="category[module]" value="|-$filters.searchModule-|" id="selectedModule">
+		<input type="hidden" name="category[module]" value="|-if isset($filters.searchModule) and $filters.searchModule ne 'all'-||-$filters.searchModule-||-/if-|" id="selectedModule">
 		<p><label for="category[parentId]">Dentro de</label>
 		<select name="category[parentId]" id="selectAddCategory">
 			<option value="0">Ninguna</option>
