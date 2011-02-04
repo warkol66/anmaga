@@ -33,7 +33,6 @@
 		<column name="username" required="true"  type="VARCHAR" size="255" description="username"/>
 		<column name="password" required="true"  type="VARCHAR" size="255" description="password"/>
 		<column name="passwordUpdated" type="DATE" description="Fecha de actualizacion de la clave" />
-		<column name="active" type="BOOLEAN"  description="Is user active?"/>
 		<column name="levelId" type="INTEGER" description="User Level" />
 		<column name="lastLogin" type="TIMESTAMP" description="Fecha del ultimo login del usuario" />
 		<column name="timezone" type="VARCHAR" size="25" description="Timezone GMT del usuario" />
@@ -58,6 +57,14 @@
 		<foreign-key foreignTable="affiliates_affiliate" >
 			<reference local="affiliateId" foreign="id" />
 		</foreign-key>
+		
+		<validator column="affiliateId">
+		  <rule name="required" message="El usuario debe asociarse a un afiliado." />
+		</validator>
+		
+		<validator column="username">
+		  <rule name="unique" message="El nombre de usuario debe ser unico." />
+		</validator>
 
 		<vendor type="mysql">
 			<parameter name="Charset" value="utf8"/>
@@ -77,7 +84,7 @@
 
 	</table>
 
-  <table name="affiliates_userGroup" phpName='AffiliateUserGroup' description="Users / Groups">
+  <table name="affiliates_userGroup" phpName='AffiliateUserGroup' description="Users / Groups" isCrossRef="true">
   <column name="userId" required="true" primaryKey='true' type="INTEGER"  description="Group ID"/>
   <column name="groupId" required="true" primaryKey='true' type="INTEGER"  description="Group ID"/>
   <foreign-key foreignTable="affiliates_user">

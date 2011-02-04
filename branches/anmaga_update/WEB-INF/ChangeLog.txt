@@ -1,4 +1,14 @@
 ﻿==============================
+Revisión 661 - Fecha 20110204
+------------------------------
+#Migramos la info del estado de activación de un usuario por afiliado para usar el soft delete.
+UPDATE `affiliates_user` SET `deleted_at`=NOW() WHERE `active`=0;
+ALTER TABLE  `affiliates_user` DROP  `active`;
+
+#Eliminamos tabla de info.
+DROP TABLE  `affiliates_userInfo`
+
+==============================
 Revisión 656 - Fecha 20110203
 ------------------------------
 #Ponemos valor por defecto 1 al campo active de categories.

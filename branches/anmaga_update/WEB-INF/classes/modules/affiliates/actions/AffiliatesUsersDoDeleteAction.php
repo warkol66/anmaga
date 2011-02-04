@@ -49,9 +49,9 @@ class AffiliatesUsersDoDeleteAction extends BaseAction {
 
 		$usersPeer= new AffiliateUserPeer();
 
-	$id=$_GET["id"];
+		$id=$_POST["id"];
 
-    if ( $usersPeer->delete($id) )
+    	if ( $usersPeer->delete($id) )
 			return $mapping->findForwardConfig('success');
 		else
 			return $mapping->findForwardConfig('failure');

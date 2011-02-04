@@ -55,12 +55,6 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 	protected $passwordupdated;
 
 	/**
-	 * The value for the active field.
-	 * @var        boolean
-	 */
-	protected $active;
-
-	/**
 	 * The value for the levelid field.
 	 * @var        int
 	 */
@@ -168,6 +162,11 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 	protected $collOrderTemplates;
 
 	/**
+	 * @var        array AffiliateGroup[] Collection to store aggregation of AffiliateGroup objects.
+	 */
+	protected $collAffiliateGroups;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -257,16 +256,6 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 		} else {
 			return $dt->format($format);
 		}
-	}
-
-	/**
-	 * Get the [active] column value.
-	 * Is user active?
-	 * @return     boolean
-	 */
-	public function getActive()
-	{
-		return $this->active;
 	}
 
 	/**
@@ -661,26 +650,6 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 
 		return $this;
 	} // setPasswordupdated()
-
-	/**
-	 * Set the value of [active] column.
-	 * Is user active?
-	 * @param      boolean $v new value
-	 * @return     AffiliateUser The current object (for fluent API support)
-	 */
-	public function setActive($v)
-	{
-		if ($v !== null) {
-			$v = (boolean) $v;
-		}
-
-		if ($this->active !== $v) {
-			$this->active = $v;
-			$this->modifiedColumns[] = AffiliateUserPeer::ACTIVE;
-		}
-
-		return $this;
-	} // setActive()
 
 	/**
 	 * Set the value of [levelid] column.
@@ -1108,19 +1077,18 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 			$this->username = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->password = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
 			$this->passwordupdated = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-			$this->active = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
-			$this->levelid = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-			$this->lastlogin = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-			$this->timezone = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-			$this->name = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-			$this->surname = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-			$this->mailaddress = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-			$this->mailaddressalt = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-			$this->recoveryhash = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-			$this->recoveryhashcreatedon = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-			$this->deleted_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-			$this->created_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-			$this->updated_at = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+			$this->levelid = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->lastlogin = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->timezone = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->name = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->surname = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->mailaddress = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+			$this->mailaddressalt = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->recoveryhash = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+			$this->recoveryhashcreatedon = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+			$this->deleted_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+			$this->created_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+			$this->updated_at = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -1129,7 +1097,7 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 18; // 18 = AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 17; // 17 = AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating AffiliateUser object", $e);
@@ -1209,6 +1177,7 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 
 			$this->collOrderTemplates = null;
 
+			$this->collAffiliateGroups = null;
 		} // if (deep)
 	}
 
@@ -1598,42 +1567,39 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 				return $this->getPasswordupdated();
 				break;
 			case 5:
-				return $this->getActive();
-				break;
-			case 6:
 				return $this->getLevelid();
 				break;
-			case 7:
+			case 6:
 				return $this->getLastlogin();
 				break;
-			case 8:
+			case 7:
 				return $this->getTimezone();
 				break;
-			case 9:
+			case 8:
 				return $this->getName();
 				break;
-			case 10:
+			case 9:
 				return $this->getSurname();
 				break;
-			case 11:
+			case 10:
 				return $this->getMailaddress();
 				break;
-			case 12:
+			case 11:
 				return $this->getMailaddressalt();
 				break;
-			case 13:
+			case 12:
 				return $this->getRecoveryhash();
 				break;
-			case 14:
+			case 13:
 				return $this->getRecoveryhashcreatedon();
 				break;
-			case 15:
+			case 14:
 				return $this->getDeletedAt();
 				break;
-			case 16:
+			case 15:
 				return $this->getCreatedAt();
 				break;
-			case 17:
+			case 16:
 				return $this->getUpdatedAt();
 				break;
 			default:
@@ -1665,19 +1631,18 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 			$keys[2] => $this->getUsername(),
 			$keys[3] => $this->getPassword(),
 			$keys[4] => $this->getPasswordupdated(),
-			$keys[5] => $this->getActive(),
-			$keys[6] => $this->getLevelid(),
-			$keys[7] => $this->getLastlogin(),
-			$keys[8] => $this->getTimezone(),
-			$keys[9] => $this->getName(),
-			$keys[10] => $this->getSurname(),
-			$keys[11] => $this->getMailaddress(),
-			$keys[12] => $this->getMailaddressalt(),
-			$keys[13] => $this->getRecoveryhash(),
-			$keys[14] => $this->getRecoveryhashcreatedon(),
-			$keys[15] => $this->getDeletedAt(),
-			$keys[16] => $this->getCreatedAt(),
-			$keys[17] => $this->getUpdatedAt(),
+			$keys[5] => $this->getLevelid(),
+			$keys[6] => $this->getLastlogin(),
+			$keys[7] => $this->getTimezone(),
+			$keys[8] => $this->getName(),
+			$keys[9] => $this->getSurname(),
+			$keys[10] => $this->getMailaddress(),
+			$keys[11] => $this->getMailaddressalt(),
+			$keys[12] => $this->getRecoveryhash(),
+			$keys[13] => $this->getRecoveryhashcreatedon(),
+			$keys[14] => $this->getDeletedAt(),
+			$keys[15] => $this->getCreatedAt(),
+			$keys[16] => $this->getUpdatedAt(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aAffiliateLevel) {
@@ -1733,42 +1698,39 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 				$this->setPasswordupdated($value);
 				break;
 			case 5:
-				$this->setActive($value);
-				break;
-			case 6:
 				$this->setLevelid($value);
 				break;
-			case 7:
+			case 6:
 				$this->setLastlogin($value);
 				break;
-			case 8:
+			case 7:
 				$this->setTimezone($value);
 				break;
-			case 9:
+			case 8:
 				$this->setName($value);
 				break;
-			case 10:
+			case 9:
 				$this->setSurname($value);
 				break;
-			case 11:
+			case 10:
 				$this->setMailaddress($value);
 				break;
-			case 12:
+			case 11:
 				$this->setMailaddressalt($value);
 				break;
-			case 13:
+			case 12:
 				$this->setRecoveryhash($value);
 				break;
-			case 14:
+			case 13:
 				$this->setRecoveryhashcreatedon($value);
 				break;
-			case 15:
+			case 14:
 				$this->setDeletedAt($value);
 				break;
-			case 16:
+			case 15:
 				$this->setCreatedAt($value);
 				break;
-			case 17:
+			case 16:
 				$this->setUpdatedAt($value);
 				break;
 		} // switch()
@@ -1800,19 +1762,18 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 		if (array_key_exists($keys[2], $arr)) $this->setUsername($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setPassword($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setPasswordupdated($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setActive($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setLevelid($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setLastlogin($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setTimezone($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setName($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setSurname($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setMailaddress($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setMailaddressalt($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setRecoveryhash($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setRecoveryhashcreatedon($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setDeletedAt($arr[$keys[15]]);
-		if (array_key_exists($keys[16], $arr)) $this->setCreatedAt($arr[$keys[16]]);
-		if (array_key_exists($keys[17], $arr)) $this->setUpdatedAt($arr[$keys[17]]);
+		if (array_key_exists($keys[5], $arr)) $this->setLevelid($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setLastlogin($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setTimezone($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setName($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setSurname($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setMailaddress($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setMailaddressalt($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setRecoveryhash($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setRecoveryhashcreatedon($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setDeletedAt($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setCreatedAt($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setUpdatedAt($arr[$keys[16]]);
 	}
 
 	/**
@@ -1829,7 +1790,6 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 		if ($this->isColumnModified(AffiliateUserPeer::USERNAME)) $criteria->add(AffiliateUserPeer::USERNAME, $this->username);
 		if ($this->isColumnModified(AffiliateUserPeer::PASSWORD)) $criteria->add(AffiliateUserPeer::PASSWORD, $this->password);
 		if ($this->isColumnModified(AffiliateUserPeer::PASSWORDUPDATED)) $criteria->add(AffiliateUserPeer::PASSWORDUPDATED, $this->passwordupdated);
-		if ($this->isColumnModified(AffiliateUserPeer::ACTIVE)) $criteria->add(AffiliateUserPeer::ACTIVE, $this->active);
 		if ($this->isColumnModified(AffiliateUserPeer::LEVELID)) $criteria->add(AffiliateUserPeer::LEVELID, $this->levelid);
 		if ($this->isColumnModified(AffiliateUserPeer::LASTLOGIN)) $criteria->add(AffiliateUserPeer::LASTLOGIN, $this->lastlogin);
 		if ($this->isColumnModified(AffiliateUserPeer::TIMEZONE)) $criteria->add(AffiliateUserPeer::TIMEZONE, $this->timezone);
@@ -1907,7 +1867,6 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 		$copyObj->setUsername($this->username);
 		$copyObj->setPassword($this->password);
 		$copyObj->setPasswordupdated($this->passwordupdated);
-		$copyObj->setActive($this->active);
 		$copyObj->setLevelid($this->levelid);
 		$copyObj->setLastlogin($this->lastlogin);
 		$copyObj->setTimezone($this->timezone);
@@ -2820,6 +2779,119 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Clears out the collAffiliateGroups collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addAffiliateGroups()
+	 */
+	public function clearAffiliateGroups()
+	{
+		$this->collAffiliateGroups = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collAffiliateGroups collection.
+	 *
+	 * By default this just sets the collAffiliateGroups collection to an empty collection (like clearAffiliateGroups());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initAffiliateGroups()
+	{
+		$this->collAffiliateGroups = new PropelObjectCollection();
+		$this->collAffiliateGroups->setModel('AffiliateGroup');
+	}
+
+	/**
+	 * Gets a collection of AffiliateGroup objects related by a many-to-many relationship
+	 * to the current object by way of the affiliates_userGroup cross-reference table.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this AffiliateUser is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     PropelCollection|array AffiliateGroup[] List of AffiliateGroup objects
+	 */
+	public function getAffiliateGroups($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collAffiliateGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAffiliateGroups) {
+				// return empty collection
+				$this->initAffiliateGroups();
+			} else {
+				$collAffiliateGroups = AffiliateGroupQuery::create(null, $criteria)
+					->filterByAffiliateUser($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collAffiliateGroups;
+				}
+				$this->collAffiliateGroups = $collAffiliateGroups;
+			}
+		}
+		return $this->collAffiliateGroups;
+	}
+
+	/**
+	 * Gets the number of AffiliateGroup objects related by a many-to-many relationship
+	 * to the current object by way of the affiliates_userGroup cross-reference table.
+	 *
+	 * @param      Criteria $criteria Optional query object to filter the query
+	 * @param      boolean $distinct Set to true to force count distinct
+	 * @param      PropelPDO $con Optional connection object
+	 *
+	 * @return     int the number of related AffiliateGroup objects
+	 */
+	public function countAffiliateGroups($criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collAffiliateGroups || null !== $criteria) {
+			if ($this->isNew() && null === $this->collAffiliateGroups) {
+				return 0;
+			} else {
+				$query = AffiliateGroupQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByAffiliateUser($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collAffiliateGroups);
+		}
+	}
+
+	/**
+	 * Associate a AffiliateGroup object to this object
+	 * through the affiliates_userGroup cross reference table.
+	 *
+	 * @param      AffiliateGroup $affiliateGroup The AffiliateUserGroup object to relate
+	 * @return     void
+	 */
+	public function addAffiliateGroup($affiliateGroup)
+	{
+		if ($this->collAffiliateGroups === null) {
+			$this->initAffiliateGroups();
+		}
+		if (!$this->collAffiliateGroups->contains($affiliateGroup)) { // only add it if the **same** object is not already associated
+			$affiliateUserGroup = new AffiliateUserGroup();
+			$affiliateUserGroup->setAffiliateGroup($affiliateGroup);
+			$this->addAffiliateUserGroup($affiliateUserGroup);
+
+			$this->collAffiliateGroups[]= $affiliateGroup;
+		}
+	}
+
+	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
 	public function clear()
@@ -2829,7 +2901,6 @@ abstract class BaseAffiliateUser extends BaseObject  implements Persistent
 		$this->username = null;
 		$this->password = null;
 		$this->passwordupdated = null;
-		$this->active = null;
 		$this->levelid = null;
 		$this->lastlogin = null;
 		$this->timezone = null;

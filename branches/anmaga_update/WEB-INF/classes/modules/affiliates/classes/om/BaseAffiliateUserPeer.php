@@ -26,7 +26,7 @@ abstract class BaseAffiliateUserPeer {
 	const TM_CLASS = 'AffiliateUserTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 18;
+	const NUM_COLUMNS = 17;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -45,9 +45,6 @@ abstract class BaseAffiliateUserPeer {
 
 	/** the column name for the PASSWORDUPDATED field */
 	const PASSWORDUPDATED = 'affiliates_user.PASSWORDUPDATED';
-
-	/** the column name for the ACTIVE field */
-	const ACTIVE = 'affiliates_user.ACTIVE';
 
 	/** the column name for the LEVELID field */
 	const LEVELID = 'affiliates_user.LEVELID';
@@ -101,12 +98,12 @@ abstract class BaseAffiliateUserPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Affiliateid', 'Username', 'Password', 'Passwordupdated', 'Active', 'Levelid', 'Lastlogin', 'Timezone', 'Name', 'Surname', 'Mailaddress', 'Mailaddressalt', 'Recoveryhash', 'Recoveryhashcreatedon', 'DeletedAt', 'CreatedAt', 'UpdatedAt', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'affiliateid', 'username', 'password', 'passwordupdated', 'active', 'levelid', 'lastlogin', 'timezone', 'name', 'surname', 'mailaddress', 'mailaddressalt', 'recoveryhash', 'recoveryhashcreatedon', 'deletedAt', 'createdAt', 'updatedAt', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::AFFILIATEID, self::USERNAME, self::PASSWORD, self::PASSWORDUPDATED, self::ACTIVE, self::LEVELID, self::LASTLOGIN, self::TIMEZONE, self::NAME, self::SURNAME, self::MAILADDRESS, self::MAILADDRESSALT, self::RECOVERYHASH, self::RECOVERYHASHCREATEDON, self::DELETED_AT, self::CREATED_AT, self::UPDATED_AT, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'AFFILIATEID', 'USERNAME', 'PASSWORD', 'PASSWORDUPDATED', 'ACTIVE', 'LEVELID', 'LASTLOGIN', 'TIMEZONE', 'NAME', 'SURNAME', 'MAILADDRESS', 'MAILADDRESSALT', 'RECOVERYHASH', 'RECOVERYHASHCREATEDON', 'DELETED_AT', 'CREATED_AT', 'UPDATED_AT', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'affiliateId', 'username', 'password', 'passwordUpdated', 'active', 'levelId', 'lastLogin', 'timezone', 'name', 'surname', 'mailAddress', 'mailAddressAlt', 'recoveryHash', 'recoveryHashCreatedOn', 'deleted_at', 'created_at', 'updated_at', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Affiliateid', 'Username', 'Password', 'Passwordupdated', 'Levelid', 'Lastlogin', 'Timezone', 'Name', 'Surname', 'Mailaddress', 'Mailaddressalt', 'Recoveryhash', 'Recoveryhashcreatedon', 'DeletedAt', 'CreatedAt', 'UpdatedAt', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'affiliateid', 'username', 'password', 'passwordupdated', 'levelid', 'lastlogin', 'timezone', 'name', 'surname', 'mailaddress', 'mailaddressalt', 'recoveryhash', 'recoveryhashcreatedon', 'deletedAt', 'createdAt', 'updatedAt', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::AFFILIATEID, self::USERNAME, self::PASSWORD, self::PASSWORDUPDATED, self::LEVELID, self::LASTLOGIN, self::TIMEZONE, self::NAME, self::SURNAME, self::MAILADDRESS, self::MAILADDRESSALT, self::RECOVERYHASH, self::RECOVERYHASHCREATEDON, self::DELETED_AT, self::CREATED_AT, self::UPDATED_AT, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'AFFILIATEID', 'USERNAME', 'PASSWORD', 'PASSWORDUPDATED', 'LEVELID', 'LASTLOGIN', 'TIMEZONE', 'NAME', 'SURNAME', 'MAILADDRESS', 'MAILADDRESSALT', 'RECOVERYHASH', 'RECOVERYHASHCREATEDON', 'DELETED_AT', 'CREATED_AT', 'UPDATED_AT', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'affiliateId', 'username', 'password', 'passwordUpdated', 'levelId', 'lastLogin', 'timezone', 'name', 'surname', 'mailAddress', 'mailAddressAlt', 'recoveryHash', 'recoveryHashCreatedOn', 'deleted_at', 'created_at', 'updated_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
 	);
 
 	/**
@@ -116,12 +113,12 @@ abstract class BaseAffiliateUserPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Affiliateid' => 1, 'Username' => 2, 'Password' => 3, 'Passwordupdated' => 4, 'Active' => 5, 'Levelid' => 6, 'Lastlogin' => 7, 'Timezone' => 8, 'Name' => 9, 'Surname' => 10, 'Mailaddress' => 11, 'Mailaddressalt' => 12, 'Recoveryhash' => 13, 'Recoveryhashcreatedon' => 14, 'DeletedAt' => 15, 'CreatedAt' => 16, 'UpdatedAt' => 17, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'affiliateid' => 1, 'username' => 2, 'password' => 3, 'passwordupdated' => 4, 'active' => 5, 'levelid' => 6, 'lastlogin' => 7, 'timezone' => 8, 'name' => 9, 'surname' => 10, 'mailaddress' => 11, 'mailaddressalt' => 12, 'recoveryhash' => 13, 'recoveryhashcreatedon' => 14, 'deletedAt' => 15, 'createdAt' => 16, 'updatedAt' => 17, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::AFFILIATEID => 1, self::USERNAME => 2, self::PASSWORD => 3, self::PASSWORDUPDATED => 4, self::ACTIVE => 5, self::LEVELID => 6, self::LASTLOGIN => 7, self::TIMEZONE => 8, self::NAME => 9, self::SURNAME => 10, self::MAILADDRESS => 11, self::MAILADDRESSALT => 12, self::RECOVERYHASH => 13, self::RECOVERYHASHCREATEDON => 14, self::DELETED_AT => 15, self::CREATED_AT => 16, self::UPDATED_AT => 17, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'AFFILIATEID' => 1, 'USERNAME' => 2, 'PASSWORD' => 3, 'PASSWORDUPDATED' => 4, 'ACTIVE' => 5, 'LEVELID' => 6, 'LASTLOGIN' => 7, 'TIMEZONE' => 8, 'NAME' => 9, 'SURNAME' => 10, 'MAILADDRESS' => 11, 'MAILADDRESSALT' => 12, 'RECOVERYHASH' => 13, 'RECOVERYHASHCREATEDON' => 14, 'DELETED_AT' => 15, 'CREATED_AT' => 16, 'UPDATED_AT' => 17, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'affiliateId' => 1, 'username' => 2, 'password' => 3, 'passwordUpdated' => 4, 'active' => 5, 'levelId' => 6, 'lastLogin' => 7, 'timezone' => 8, 'name' => 9, 'surname' => 10, 'mailAddress' => 11, 'mailAddressAlt' => 12, 'recoveryHash' => 13, 'recoveryHashCreatedOn' => 14, 'deleted_at' => 15, 'created_at' => 16, 'updated_at' => 17, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Affiliateid' => 1, 'Username' => 2, 'Password' => 3, 'Passwordupdated' => 4, 'Levelid' => 5, 'Lastlogin' => 6, 'Timezone' => 7, 'Name' => 8, 'Surname' => 9, 'Mailaddress' => 10, 'Mailaddressalt' => 11, 'Recoveryhash' => 12, 'Recoveryhashcreatedon' => 13, 'DeletedAt' => 14, 'CreatedAt' => 15, 'UpdatedAt' => 16, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'affiliateid' => 1, 'username' => 2, 'password' => 3, 'passwordupdated' => 4, 'levelid' => 5, 'lastlogin' => 6, 'timezone' => 7, 'name' => 8, 'surname' => 9, 'mailaddress' => 10, 'mailaddressalt' => 11, 'recoveryhash' => 12, 'recoveryhashcreatedon' => 13, 'deletedAt' => 14, 'createdAt' => 15, 'updatedAt' => 16, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::AFFILIATEID => 1, self::USERNAME => 2, self::PASSWORD => 3, self::PASSWORDUPDATED => 4, self::LEVELID => 5, self::LASTLOGIN => 6, self::TIMEZONE => 7, self::NAME => 8, self::SURNAME => 9, self::MAILADDRESS => 10, self::MAILADDRESSALT => 11, self::RECOVERYHASH => 12, self::RECOVERYHASHCREATEDON => 13, self::DELETED_AT => 14, self::CREATED_AT => 15, self::UPDATED_AT => 16, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'AFFILIATEID' => 1, 'USERNAME' => 2, 'PASSWORD' => 3, 'PASSWORDUPDATED' => 4, 'LEVELID' => 5, 'LASTLOGIN' => 6, 'TIMEZONE' => 7, 'NAME' => 8, 'SURNAME' => 9, 'MAILADDRESS' => 10, 'MAILADDRESSALT' => 11, 'RECOVERYHASH' => 12, 'RECOVERYHASHCREATEDON' => 13, 'DELETED_AT' => 14, 'CREATED_AT' => 15, 'UPDATED_AT' => 16, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'affiliateId' => 1, 'username' => 2, 'password' => 3, 'passwordUpdated' => 4, 'levelId' => 5, 'lastLogin' => 6, 'timezone' => 7, 'name' => 8, 'surname' => 9, 'mailAddress' => 10, 'mailAddressAlt' => 11, 'recoveryHash' => 12, 'recoveryHashCreatedOn' => 13, 'deleted_at' => 14, 'created_at' => 15, 'updated_at' => 16, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
 	);
 
 	/**
@@ -198,7 +195,6 @@ abstract class BaseAffiliateUserPeer {
 			$criteria->addSelectColumn(AffiliateUserPeer::USERNAME);
 			$criteria->addSelectColumn(AffiliateUserPeer::PASSWORD);
 			$criteria->addSelectColumn(AffiliateUserPeer::PASSWORDUPDATED);
-			$criteria->addSelectColumn(AffiliateUserPeer::ACTIVE);
 			$criteria->addSelectColumn(AffiliateUserPeer::LEVELID);
 			$criteria->addSelectColumn(AffiliateUserPeer::LASTLOGIN);
 			$criteria->addSelectColumn(AffiliateUserPeer::TIMEZONE);
@@ -217,7 +213,6 @@ abstract class BaseAffiliateUserPeer {
 			$criteria->addSelectColumn($alias . '.USERNAME');
 			$criteria->addSelectColumn($alias . '.PASSWORD');
 			$criteria->addSelectColumn($alias . '.PASSWORDUPDATED');
-			$criteria->addSelectColumn($alias . '.ACTIVE');
 			$criteria->addSelectColumn($alias . '.LEVELID');
 			$criteria->addSelectColumn($alias . '.LASTLOGIN');
 			$criteria->addSelectColumn($alias . '.TIMEZONE');
@@ -1447,6 +1442,12 @@ abstract class BaseAffiliateUserPeer {
 				}
 			}
 		} else {
+
+		if ($obj->isNew() || $obj->isColumnModified(AffiliateUserPeer::AFFILIATEID))
+			$columns[AffiliateUserPeer::AFFILIATEID] = $obj->getAffiliateid();
+
+		if ($obj->isNew() || $obj->isColumnModified(AffiliateUserPeer::USERNAME))
+			$columns[AffiliateUserPeer::USERNAME] = $obj->getUsername();
 
 		}
 

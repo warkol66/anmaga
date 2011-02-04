@@ -18,10 +18,7 @@
 class AffiliateUser extends BaseAffiliateUser {
 
 	function getGroups() {
-		$cond = new Criteria();
-		$cond->add(AffiliateUserGroupPeer::USERID, $this->getId());
-		$todosObj = AffiliateUserGroupPeer::doSelectJoinGroup($cond);
-		return $todosObj;
+		return AffiliateUserGroupQuery::create()->filterByAffiliateUser()->find($this);
 	}
 	
    /**
@@ -30,17 +27,13 @@ class AffiliateUser extends BaseAffiliateUser {
     * @return array of Catetegory
     */
   function getCategories(){
-  	$sql = "SELECT ".AffiliateCategoryPeer::TABLE_NAME.".* FROM ".AffiliateUserGroupPeer::TABLE_NAME ." ,".
-						AffiliateGroupCategoryPeer::TABLE_NAME .", ".AffiliateCategoryPeer::TABLE_NAME .
-						" where ".AffiliateUserGroupPeer::USERID ." = '".$this->getId()."' and ".
-						AffiliateUserGroupPeer::GROUPID ." = ".AffiliateGroupCategoryPeer::GROUPID ." and ".
-						AffiliateGroupCategoryPeer::CATEGORYID ." = ".AffiliateCategoryPeer::ID ." and ".
-						AffiliateCategoryPeer::ACTIVE ." = 1";
-  	
-  	$con = Propel::getConnection(AffiliateUserPeer::DATABASE_NAME);
-    $stmt = $con->createStatement();
-    $rs = $stmt->executeQuery($sql, ResultSet::FETCHMODE_NUM);    
-    return BaseCategoryPeer::populateObjects($rs);
+  	return CategoryQuery::create()->join('AffiliateGroupCategory')
+								  ->join('AffiliateGroupCategory.AffiliateUserGroup')
+								  ->join('AffiliateUserGroup.AffiliateUser')
+								  ->useQuery('AffiliateUser')
+								  	->filterByPrimaryKey($this->getPrimaryKey())
+								  ->endUse()
+								  ->find();
   }
   
   /**
@@ -61,10 +54,8 @@ class AffiliateUser extends BaseAffiliateUser {
 
 
 
-	function getAll() {
-		$cond = new Criteria();
-		$todosObj = AffiliatePeer::doSelect($cond);
-		return $todosObj;
+  function getAll() {
+		return AffiliateUserQuery::create()->find();
   }
 
   /**
@@ -72,7 +63,7 @@ class AffiliateUser extends BaseAffiliateUser {
   *
   * @return string Nombre del afiliado
   */
-	function getAffiliate() {
+  function getAffiliate() {
 		$affiliateId = $this->getAffiliateId();
 		$affiliate = AffiliateQuery::create()->findPk($affiliateId);
 		if($affiliate)
@@ -94,5 +85,37 @@ class AffiliateUser extends BaseAffiliateUser {
 		else
 			return false;
   }
+	
+	/**
+	 * Redefinimos para que se pase a minusculas el username.
+	 */
+	public function setUserName($username) {
+		$usernameLowercase = strtolower($username);
+		parent::setUserName($usernameLowercase);
+		return $this;
+	}
+	
+	public function setPassword($password) {
+		if(!empty($password)){
+			parent::setPassword(md5($password."ASD"));
+		}
+		return $this;
+	}
+	
+	public function save(PropelPDO $con = null) {
+		try {
+			if ($this->validate()) { 
+				parent::save($con);
+				return true;
+			} else {
+				return false;
+			}
+		}
+		catch (PropelException $exp) {
+			if (ConfigModule::get("global","showPropelExceptions"))
+				print_r($exp->getMessage());
+			return false;
+		}
+	}
 
 } // AffiliateUser

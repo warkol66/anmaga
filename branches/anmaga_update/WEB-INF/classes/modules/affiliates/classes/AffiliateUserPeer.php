@@ -17,16 +17,24 @@
  */
 class AffiliateUserPeer extends BaseAffiliateUserPeer {
 
-		//Setea si se eliminan realmente los usuarios de la base de datos o se marcan como no activos
-		const DELETEUSERS = false;
+	//Setea si se eliminan realmente los usuarios de la base de datos o se usa soft delete
+	const DELETEUSERS = false;
+	
+	private $searchAffiliateId;
+	
+	
+	//mapea las condiciones del filtro
+	var $filterConditions = array(
+		"searchAffiliateId"=>"setSearchAffiliateId",
+	);
+	
+	public function setSearchAffiliateId($affiliateId) {
+		$this->searchAffiliateId = $affiliateId;
+	}
 
-	  function getAffiliate($affiliateId) {
-		$cond = new Criteria();
-		$cond->add(AffiliateUserPeer::AFFILIATEID,$affiliateId);
-		$cond->add(AffiliateUserPeer::ACTIVE,1);
-		$todosObj = AffiliateUserPeer ::doSelect($cond);
-		return $todosObj;
-  }
+	function getByAffiliateId($affiliateId) {
+		return AffiliateUserQuery::create()->findByAffiliateId($affiliateId);
+  	}
 
 	/**
 	* Obtiene todos los usuarios por afiliado.
@@ -34,53 +42,42 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 	*	@return array Informacion sobre todos los usuarios
 	*/
 	function getAll() {
-		$cond = new Criteria();
-		$cond->add(AffiliateUserPeer::ACTIVE,1);
-		$todosObj = AffiliateUserPeer::doSelect($cond);
-		return $todosObj;
-  }
+		return AffiliateUserQuery::create()->find();
+  	}
 
-  /**
-  * Obtiene todos los usuarios desactivados.
+  	/**
+  	* Obtiene todos los usuarios desactivados.
 	*
 	*	@return array Informacion sobre los usuarios
-  */
-	function getDeleteds() {
-		$cond = new Criteria();
-		$cond->add(AffiliateUserPeer::ACTIVE, 0);
-		$todosObj = AffiliateUserPeer::doSelect($cond);
-		return $todosObj;
-  }
+  	*/
+  	function getDeleteds() {
+		AffiliateUserQuery::disableSoftDelete();
+		return AffiliateUserQuery::create()->filterByDeletedAt(null, Criteria::ISNOTNULL)
+										   ->find();
+  	}
 
-  /**
-  * Obtiene todos los usuarios desactivados.
+  	/**
+  	* Obtiene todos los usuarios desactivados.
 	*
 	* @param int $affiliateId Id del afiliado
 	*	@return array Informacion sobre los usuarios
-  */
-	function getDeletedsByAffiliate($affiliateId) {
-		$cond = new Criteria();
-		$cond->add(AffiliateUserPeer::AFFILIATEID,$affiliateId);
-		$cond->add(AffiliateUserPeer::ACTIVE, 0);
-		$todosObj = AffiliateUserPeer::doSelect($cond);
-		return $todosObj;
-  }
+  	*/
+  	function getDeletedsByAffiliate($affiliateId) {
+		AffiliateUserQuery::disableSoftDelete();
+		return AffiliateUserQuery::create()->filterByAffiliateId($affiliateId)
+										   ->filterByDeletedAt(null, Criteria::ISNOTNULL)
+										   ->find();
+  	}
 
-  /*
-   * Verifica si ya existe un usuario con ese nombre de usuario
-   * @param string $username nombre de usuario
-   * @return boolean true si el nombre de usuario existe, false sino.
-   */
-  function usernameExists($username) {
-	$usernameLowercase = strtolower($username);
-	$crit = new Criteria();
-	$crit->add(AffiliateUserPeer::USERNAME,$usernameLowercase);
-	$result = AffiliateUserPeer::doSelect($crit);
-	if (empty($result))
-		return false;
-
-	return true;
-  }
+  	/*
+   	* Verifica si ya existe un usuario con ese nombre de usuario
+   	* @param string $username nombre de usuario
+   	* @return boolean true si el nombre de usuario existe, false sino.
+   	*/
+  	function usernameExists($username) {
+		$usernameLowercase = strtolower($username);
+		return AffiliateUserQuery::create()->filterByUserName($usernameLowercase)->count() > 0;
+  	}
 
 
   /**
@@ -94,40 +91,26 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
   * @param string $mailAddress Email del usuario
   * @return boolean true si se creo el usuario correctamente, false sino
 	*/
-	function create($affiliateId,$username,$password,$levelId,$name,$surname,$mailAddress) {
-
-		//regla de negocio, no se puede crear un usuario de afiliado sin afiliado que sea su duenio
-		if (empty($affiliateId))
-			return false;
-	
-		$usernameLowercase = strtolower($username);
-		if (AffiliateUserPeer::usernameExists($usernameLowercase))
-			return false;
-
-		$userByAffiliate = new AffiliateUser();		
-		$userByAffiliate->setUsername($usernameLowercase);
-		$userByAffiliate->setAffiliateId($affiliateId);
-		$userByAffiliate->setActive(1);
-		$userByAffiliate->setCreatedAt(now);
-		$userByAffiliate->setUpdatedAt(now);
-		$userByAffiliate->setLevelId($levelId);
-		if(!empty($password)){
-			$userByAffiliate->setPassword(md5($password."ASD"));
+	function create($params) {
+		$userByAffiliate = new AffiliateUser();
+		foreach ($params as $key => $value) {
+			$setMethod = "set".$key;
+			if ( method_exists($userByAffiliate,$setMethod) ) {
+				if (!empty($value) || $value == "0")
+					$userByAffiliate->$setMethod($value);
+				else
+					$userByAffiliate->$setMethod(null);
+			}
 		}
-		$userByAffiliate->save();
-
-
-		$userByAffiliateInfo = new AffiliateUserInfo();
-		$userByAffiliateInfo->setUserId($userByAffiliate->getId());
-    $userByAffiliate->setName($name);
-    $userByAffiliate->setSurname($surname);
-    $userByAffiliate->setMailAddress($mailAddress);
-		$userByAffiliateInfo->setName($name);
-		$userByAffiliateInfo->setSurname($surname);
-		$userByAffiliateInfo->setMailAddress($mailAddress);
-		$userByAffiliateInfo->save();
-
-		return $userByAffiliate;
+		try {
+			$userByAffiliate->save($con);
+			return $userByAffiliate;
+		}
+		catch (PropelException $exp) {
+			if (ConfigModule::get("global","showPropelExceptions"))
+				print_r($exp->getMessage());
+			return false;
+		}
 	}
 
 
@@ -138,14 +121,10 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 	* @param string $password Contrase�a 
 	* @return User Informacion sobre el usuario, false si no fue exitosa la autenticacion
 	*/
-  function auth($username,$password) {
-		$cond = new AffiliateUserQuery();
+  function auth($username, $password) {
 		
 		$usernameLowercase = strtolower($username);
-		$cond->add(AffiliateUserPeer::USERNAME, $usernameLowercase);
-		$cond->add(AffiliateUserPeer::ACTIVE, "1");
-		$todosObj = $cond->joinWith('AffiliateUser.AffiliateUserInfo')->find();
-		$user = $todosObj[0];
+		$user = AffiliateUserQuery::create()->filterByUsername($usernameLowercase)->findOne();
 
 		if ( !empty($user) ) {
 			if ( $user->getPassword() == md5($password."ASD") ) {
@@ -169,10 +148,9 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
   function delete($id) {
 		$affiliate = AffiliateUserPeer::retrieveByPk($id);
 		if (AffiliateUserPeer::DELETEUSERS)
-			$affiliate->delete();
+			$affiliate->forceDelete();
 		else {
-			$affiliate->setActive(0);
-			$affiliate->save();
+			$affiliate->delete();
 		}
 		return true;
   }
@@ -202,33 +180,27 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
   * @param string $mailAddress Email del usuario
   * @return boolean true si se actualizo la informacion correctamente
 	*/
-  function update($id,$affiliateId,$username,$password,$levelId,$name,$surname,$mailAddress) {
+  function update($id, $params) {
 		$userByAffiliate = AffiliateUserPeer::retrieveByPK($id);
-		$usernameLowercase = strtolower($username);
-		if (($userByAffiliate->getUsername()) != $usernameLowercase) {
-			//se cambio el nombre de usuario
-			if (AffiliateUserPeer::usernameExists($usernameLowercase))
-				return false;
-		}		
 		
-		$userByAffiliate->setUsername($usernameLowercase);
-		$userByAffiliate->setAffiliateId($affiliateId);
-		$userByAffiliate->setUpdatedAt(now);
-		$userByAffiliate->setLevelId($levelId);
-		if(!empty($password)){
-			$userByAffiliate->setPassword(md5($password."ASD"));
+		foreach ($params as $key => $value) {
+			$setMethod = "set".$key;
+			if ( method_exists($userByAffiliate,$setMethod) ) {
+				if (!empty($value) || $value == "0")
+					$userByAffiliate->$setMethod($value);
+				else
+					$userByAffiliate->$setMethod(null);
+			}
 		}
-		$userByAffiliate->save();
-			
-		$userByAffiliateInfo = AffiliateUserInfoPeer::retrieveByPK($id);
-		$userByAffiliate->setName($name);
-    $userByAffiliateInfo->setName($name);
-		$userByAffiliate->setSurname($surname);
-    $userByAffiliateInfo->setSurname($surname);
-		$userByAffiliate->setMailAddress($mailAddress);	
-    $userByAffiliateInfo->setMailAddress($mailAddress); 		
-		$userByAffiliateInfo->save();
-		return true;
+		try {
+			$userByAffiliate->save($con);
+			return $userByAffiliate;
+		}
+		catch (PropelException $exp) {
+			if (ConfigModule::get("global","showPropelExceptions"))
+				print_r($exp->getMessage());
+			return false;
+		}
 	}
   
   /**
@@ -238,10 +210,11 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
   * @return array Grupos de Usuarios
   */
   function getGroupsByUser($id) {
-		$cond = new Criteria();
-		$cond->add(AffiliateUserGroupPeer::USERID, $id);
-		$todosObj = AffiliateUserGroupPeer::doSelectJoinAffiliateGroup($cond);
-		return $todosObj;
+  		return AffiliateGroupQuery::create()->join('AffiliateUserGroup')
+											->useQuery('AffiliateUserGroup')
+  												->filterByUserId($id)
+											->endUse()
+  											->find();
   }
   
   /**
@@ -251,7 +224,7 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
   * @param int $group Id del grupo de usuarios
   * @return boolean true si se agrego correctamente, false sino
   */
-	function addUserToGroup($user,$group) {
+	function addUserToGroup($user, $group) {
 		try {
 			$userGroup = new AffiliateUserGroup();
 			$userGroup->setUserId($user);
@@ -271,14 +244,11 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
   * @param int $group Id del grupo de usuarios
   * @return boolean true si se elimino correctamente, false sino
   */
-	function removeUserFromGroup($user,$group) {
+	function removeUserFromGroup($user, $group) {
 		try {
-			$cond = new Criteria();
-			$cond->add(AffiliateUserGroupPeer::USERID, $user);
-			$cond->add(AffiliateUserGroupPeer::GROUPID, $group);
-			$todosObj = AffiliateUserGroupPeer::doSelect($cond);
-			$obj = $todosObj[0];
-			$obj->delete();
+			AffiliateUserGroupQuery::create()->filterByUserId($user)
+											 ->filterByGroupId($group)
+											 ->delete();
 			return true;
 		}
 		catch (PropelException $e) {
@@ -293,9 +263,10 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 	*	@return boolean true
 	*/
   function activate($id) {
+  		AffiliateUserQuery::disableSoftDelete();
 		$user = AffiliateUserPeer::retrieveByPk($id);
-		$user->setActive(1);
-		$user->save();
+		AffiliateUserQuery::enableSoftDelete();
+		$user->unDelete();
 		return true;
   }
 
@@ -310,18 +281,13 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 	* @param string $mailAddress Email
 	* @return array [0] -> User Informacion sobre el usuario; [1] -> New password, false si no fue exitosa la autenticacion de usuario e email
 	*/
-  function generatePassword($username,$mailAddress) {
-		$cond = new AffiliateUserQuery();
+  function generatePassword($username, $mailAddress) {
 		$usernameLowercase = strtolower($username);
-		$cond->add(AffiliateUserPeer::USERNAME, $usernameLowercase);
-		$cond->add(AffiliateUserPeer::ACTIVE, "1");
-		$todosObj = $cond->joinWith('AffiliateUser.AffiliateUserInfo')->find();
-		$user = $todosObj[0];
+		$user = AffiliateUserQuery::create()->filterByUsername($usernameLowercase)->findOne();
 		if ( !empty($user) ) {
-			$userInfo = $user->getAffiliateUserInfo();
-			if ( !empty($userInfo) && $userInfo->getMailAddress() == $mailAddress ) {
+			if ($user->getMailAddress() == $mailAddress ) {
 				$newPassword = AffiliateUserPeer::getNewPassword();
-				$user->setPassword(md5($newPassword."ASD"));
+				$user->setPassword($newPassword);
 				$user->save();
 				$result = array();
 				$result[0] = $user;
@@ -338,8 +304,8 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
   * @param int $length [optional] Longitud de la contrase�a
   * @return string Contrase�a
   */
-	function getNewPassword($length = 8)
-	{
+  function getNewPassword($length = 8)
+  {
   	// start with a blank password
 	  $password = "";
 
@@ -363,6 +329,78 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 	  }
   	// done!
 	  return $password;
+	}
+  
+  	/**
+	 * Retorna el criteria generado a partir de lso parï¿½metros de bï¿½squeda
+	 *
+	 * @return criteria $criteria Criteria con parï¿½metros de bï¿½squeda
+	 */
+	private function getSearchCriteria() {
+		$criteria = new AffiliateUserQuery();
+		$criteria->setIgnoreCase(true);
+		$criteria->orderById();
+		
+		if (!empty($_SESSION["loginUser"])) {
+			if (!empty($this->searchAffiliateId)) {
+				$affiliateId = $this->searchAffiliateId;
+				if ($affiliateId != -1)
+					$criteria->filterByAffiliateId($affiliateId);
+			}
+		} else if (!empty($_SESSION["loginAffiliateUser"])) {
+		  	$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
+			$criteria->filterByAffiliateId($affiliateId);
+		}
+			
+		return $criteria;
+	}
+	 	
+   /**
+	* Obtiene todos los projects paginados segun la condicion de busqueda ingresada.
+	*
+	* @param int $page [optional] Numero de pagina actual
+	* @param int $perPage [optional] Cantidad de filas por pagina
+	* @return array Informacion sobre todos los projects
+	*/
+	function getSearchPaginated($page=1,$perPage=-1)
+	{
+		if ($perPage == -1)
+			$perPage = Common::getRowsPerPage();
+		if (empty($page))
+			$page = 1;
+		$cond = $this->getSearchCriteria();
+		$pager = new PropelPager($cond,"AffiliateUserPeer", "doSelect",$page,$perPage);
+		return $pager;
+	}
+	
+	 /**
+	* Obtiene todos los usuarios por afiliado paginados.
+	*
+	* @param int $page [optional] Numero de pagina actual
+	* @param int $perPage [optional] Cantidad de filas por pagina
+	* @return array Informacion sobre todos los usuarios por afiliado
+	*/
+	function getAllPaginated($page=1,$perPage=-1)
+	{
+		if ($perPage == -1)
+			$perPage = 	Common::getRowsPerPage();
+
+		if (empty($page))
+			$page = 1;
+
+		$cond = new AffiliateUserQuery();
+
+		$pager = new PropelPager($cond,"AffiliateUserPeer", "doSelect",$page,$perPage);
+		return $pager;
+	 }
+	
+	/**
+	* Obtiene todas los usuarios por afiliado con las opciones de filtro asignadas al peer.
+	*
+	*/
+	function getAllFiltered() {
+		$cond = $this->getSearchCriteria();
+		return $cond->find();
 	}
 
 } // AffiliateUserPeer

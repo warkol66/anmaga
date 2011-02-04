@@ -8,6 +8,34 @@
 	|-/if-| 
 	<br />
 	<br />
+	
+|-if $message eq "wrongPassword"-|
+	<div align='center' class='errorMessage'>Las contraseñas deben coincidir</div>
+|-/if-|
+|-if $message eq "emptyAffiliate"-|
+	<div align='center' class='errorMessage'>Debe selecccionar un afiliado</div>
+|-/if-|
+|-if $message eq "errorUpdate"-|
+	<div align='center' class='errorMessage'>Ha ocurrido un error al intentar guardar la información del usuario</div>
+|-/if-|
+|-if $message eq "saved"-|
+	<div align='center' class='errorMessage'>Usuario guardado</div>
+|-/if-|
+|-if $message eq "notAddedToGroup"-|
+	<div align='center' class='errorMessage'>Ha ocurrido un error al intentar agregar el usuario al grupo</div>
+|-/if-|
+|-if $message eq "notRemovedFromGroup"-|
+	<div align='center' class='errorMessage'>Ha ocurrido un error al intentar eliminar el usuario al grupo</div>
+|-/if-|
+|-if $currentAffiliateUser->getValidationFailures()|@count > 0-|
+	<div class="errorMessage">
+		<ul>
+			|-foreach from=$currentAffiliateUser->getValidationFailures() item=error-|
+				<li>|-$error->getMessage()-|</li>
+			|-/foreach-|
+		</ul>
+	</div>
+|-/if-|
 <form method="post" action="Main.php?do=affiliatesUsersDoEdit">
 	<input type="hidden" name="id" value="|-$currentAffiliateUser->getId()-|" />
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tableTdBorders">
@@ -17,23 +45,23 @@
 		</tr>
 		<tr>
 			<td class="tdTitle">Nombre</td>
-			<td><input name="affiliateUserInfo[name]" type="text"  class="textodato" value="|-$currentAffiliateUserInfo->getName()-|" size="70" /></td>
+			<td><input name="affiliateUser[name]" type="text"  class="textodato" value="|-$currentAffiliateUser->getName()-|" size="70" /></td>
 		</tr>
 		<tr>
 			<td class="tdTitle">Apellido</td>
-			<td><input name="affiliateUserInfo[surname]" type="text"  class="textodato" value="|-$currentAffiliateUserInfo->getSurname()-|" size="70" /></td>
+			<td><input name="affiliateUser[surname]" type="text"  class="textodato" value="|-$currentAffiliateUser->getSurname()-|" size="70" /></td>
 		</tr>
 		<tr>
 			<td class="tdTitle">E-mail</td>
-			<td><input name="affiliateUserInfo[mailAddress]" type="text"  class="textodato" value="|-$currentAffiliateUserInfo->getMailAddress()-|" size="70" /></td>
+			<td><input name="affiliateUser[mailAddress]" type="text"  class="textodato" value="|-$currentAffiliateUser->getMailAddress()-|" size="70" /></td>
 		</tr>
 		<tr>
 			<td class="tdTitle">Contraseña</td>
-			<td><input name="affiliateUserInfo[pass]" type="password" class="textodato" value="" size="20" /></td>
+			<td><input name="affiliateUser[password]" type="password" class="textodato" value="" size="20" /></td>
 		</tr>
 		<tr>
 			<td class="tdTitle">Repetir Contraseña</td>
-			<td><input name="affiliateUserInfo[pass2]" type="password" class="textodato" value="" size="20" /></td>
+			<td><input name="affiliateUser[password2]" type="password" class="textodato" value="" size="20" /></td>
 		</tr>
 		<tr>
 			<td class="tdTitle">Nivel de Usuario</td>

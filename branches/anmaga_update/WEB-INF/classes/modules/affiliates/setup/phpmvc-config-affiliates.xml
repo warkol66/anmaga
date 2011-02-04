@@ -121,7 +121,7 @@
 								scope = "request"
 						 validate = "true">
 			<forward name="success" path="/Main.php?do=affiliatesUsersList&amp;message=saved" redirect="true" />
-			<forward name="failure" path="AffiliatesUsersList.tpl" />
+			<forward name="failure" path="AffiliatesUsersEdit.tpl" />
 		</action>
 
 		<action      path = "affiliatesUsersDoDelete"
