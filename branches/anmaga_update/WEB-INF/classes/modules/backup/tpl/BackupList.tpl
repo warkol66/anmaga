@@ -1,12 +1,10 @@
 <script type="text/javascript" language="javascript">
 // <![CDATA[
 	function showBackupLoader() {
-		
 		$('backupLoader').show();
 	}
 	
 	function hideBackupLoader() {
-		
 		$('backupLoader').hide();
 		$('backupLoaderForm').reset();
 	}
@@ -36,13 +34,13 @@
 	<fieldset class='nestedFieldset' title='Administrador de Respaldos'>
 	<legend>Administrar Respaldos</legend>
 	<p>Generar respaldo almacenado en el servidor &nbsp;&nbsp;
-		Completo <a href='Main.php?do=backupCreate&amp;mode=complete' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='linkImageStoreInServer' /></a>&nbsp;&nbsp;
-	  Sólo datos <a href='Main.php?do=backupCreate&amp;mode=data' title='Generar respaldo de datos en servidor'><img src="images/clear.png"  class='linkImageStoreInServer' /></a>	</p>
+		Completo <a href='Main.php?do=backupCreate&amp;mode=complete' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='iconStoreInServer' /></a>&nbsp;&nbsp;
+	  Sólo datos <a href='Main.php?do=backupCreate&amp;mode=data' title='Generar respaldo de datos en servidor'><img src="images/clear.png"  class='iconStoreInServer' /></a>	</p>
 
 	<p>Generar respaldo para descargar&nbsp;&nbsp;		
-	Completo <a href='Main.php?do=backupCreateToFile&amp;mode=complete' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='linkImageStoreLocal' /></a>&nbsp;&nbsp;	  
-	Sólo datos <a href='Main.php?do=backupCreateToFile&amp;mode=data' title='Generar respaldo de datos para descargar'><img src="images/clear.png"  class='linkImageStoreLocal' /></a>	</p>
-	<p>Restaurar respaldo desde una copia local <a href='javascript:showBackupLoader()' title='Seleccionar archivo local para restaurar'><img src="images/clear.png"  class='linkImageRestore' /></a></p>
+	Completo <a href='Main.php?do=backupCreateToFile&amp;mode=complete' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='iconStoreLocal' /></a>&nbsp;&nbsp;	  
+	Sólo datos <a href='Main.php?do=backupCreateToFile&amp;mode=data' title='Generar respaldo de datos para descargar'><img src="images/clear.png"  class='iconStoreLocal' /></a>	</p>
+	<p>Restaurar respaldo desde una copia local <a href='javascript:showBackupLoader()' title='Seleccionar archivo local para restaurar'><img src="images/clear.png"  class='iconRestore' /></a></p>
 		<div id="backupLoader" style="display: none;">
 		<br />
 			<fieldset title='Formulario de carga de archivo de respaldo local'>
@@ -61,7 +59,7 @@
 		</div>
 	<table id="tabla-backups" border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 		<thead>
-			<tr>
+			<tr class="tableTdHeader">
 				<th width="1%">&nbsp;</th>
 				<th width="60%">Nombre de Archivo</th>
 				<th width="20%">Fecha y hora</th>
@@ -77,20 +75,20 @@
 		|-/if-|
 		|-foreach from=$filenames item=filename name=for_filenames-|
 			<tr>
-				<td><a href="Main.php?do=backupDownload&filename=|-$filename.name-|"><img src="images/clear.png"  class='linkImageDownload' /></a></td>
+				<td><a href="Main.php?do=backupDownload&filename=|-$filename.name-|"><img src="images/clear.png"  class='iconDownload' /></a></td>
 				<td>|-$filename.name-|</td>
 				<td align="right">|-$filename.time|date_format:"%Y-%m-%d %H:%M:%S"|change_timezone|date_format:"%d-%m-%Y %H:%M:%S"-|</td>
 				<td align="right">|-$filename.size|number_format:3:",":"."-| kb</td>
 				<td nowrap>
 					<form action="Main.php" method="post">
 						<input type="hidden" name="filename" value="|-$filename.name-|"  />
-						<input type="hidden" name="do" value="backupRestore" />
-						<input type="submit" value="Restaurar Backup" class="buttonImageRestoreFromServer" title='Restaurar este respaldo' onclick="return confirm('Esta opción reemplazará la información en el sistema por la información en este respaldo. ¿Está seguro que desea continuar?');" />
+						<input type="hidden" name="do" value="backupDoRestore" />
+						<input type="submit" value="Restaurar Backup" class="iconRestoreFromServer" title='Restaurar este respaldo' onclick="return confirm('Esta opción reemplazará la información en el sistema por la información en este respaldo. ¿Está seguro que desea continuar?');" />
 					</form>
 					<form action="Main.php" method="post">
 						<input type="hidden" name="filename" value="|-$filename.name-|"  />
-						<input type="hidden" name="do" value="backupDelete" />
-						<input type="submit" value="Eliminar Backup" class="buttonImageDelete" title='Eliminar este respaldo' onclick="return confirm('Esta opción elimina permanentemente este respaldo. ¿Está seguro que desea eliminarlo?');" />
+						<input type="hidden" name="do" value="backupDoDelete" />
+						<input type="submit" value="Eliminar Backup" class="iconDelete" title='Eliminar este respaldo' onclick="return confirm('Esta opción elimina permanentemente este respaldo. ¿Está seguro que desea eliminarlo?');" />
 					</form>				
 				</td>
 			</tr>

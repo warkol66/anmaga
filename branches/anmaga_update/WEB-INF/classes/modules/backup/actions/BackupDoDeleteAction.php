@@ -1,13 +1,13 @@
-<?php
+﻿<?php
 /**
- * BackupRestoreAction
+ * BackupDeleteAction
  *
  * @package backup
  */
 
-class BackupRestoreAction extends BaseAction {
+class BackupDoDeleteAction extends BaseAction {
 
-	function BackupRestoreAction() {
+	function BackupDoDeleteAction() {
 		;
 	}
 
@@ -29,12 +29,12 @@ class BackupRestoreAction extends BaseAction {
 
 		$backupPeer = new BackupPeer();
 
-		if ($backupPeer->restoreBackup('WEB-INF/../backups/' . $_POST['filename'])) {
-			Common::doLog('success','WEB-INF/../backups/' . $_POST['filename']);
+		if ($backupPeer->deleteBackup($_POST['filename'])) {
+			Common::doLog('success');
 			return $mapping->findForwardConfig('success');
 		}
 		else {
-			Common::doLog('failure','WEB-INF/../backups/' . $_POST['filename']);
+			Common::doLog('failure');
 			return $mapping->findForwardConfig('failure');
 		}
 	}

@@ -1,13 +1,13 @@
 <?php
 /**
- * BackupRestoreAction
+ * BackupDownloadAction
  *
  * @package backup
  */
 
-class BackupRestoreAction extends BaseAction {
+class BackupSendByEmailAction extends BaseAction {
 
-	function BackupRestoreAction() {
+	function BackupSendByEmailAction() {
 		;
 	}
 
@@ -27,16 +27,18 @@ class BackupRestoreAction extends BaseAction {
 		$module = "Backup";
 		$smarty->assign("module",$module);
 
+		if (empty($_POST['filename']) || empty($_POST['email']))
+			return $mapping->findForwardConfig('failure');
+
+		$filename = $_POST['filename'];
+		$email = $_POST['email'];
 		$backupPeer = new BackupPeer();
 
-		if ($backupPeer->restoreBackup('WEB-INF/../backups/' . $_POST['filename'])) {
-			Common::doLog('success','WEB-INF/../backups/' . $_POST['filename']);
+		if($backupPeer->sendBackupToEmail($filename,$email))
 			return $mapping->findForwardConfig('success');
-		}
-		else {
-			Common::doLog('failure','WEB-INF/../backups/' . $_POST['filename']);
+		else
 			return $mapping->findForwardConfig('failure');
-		}
+
 	}
 
 }
