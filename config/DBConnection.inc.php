@@ -1,27 +1,34 @@
 <?php
 /*
- * Definición de la Conexión a la Base de Datos
+ * DefiniciÃ³n de la ConexiÃ³n a la Base de Datos
  *
  * @package Config
  */
 
 include_once("WEB-INF/classes/includes/db_mysql.inc.php");
 
+
 class DBConnection extends DB_Sql
 {
-  function DBConnection()
-  {
-  	$database = "anmaga";
-  	$host = "localhost";
-  	$user = "root";
-  	$password = "vertrigo";
-  	$port = "";
+  function DBConnection() {
+	global $moduleRootDir;
+	
+	$configDbFromPropel = include("$moduleRootDir/config/anmaga-conf.php");
+	
+	$configDbData = $configDbFromPropel["datasources"]["anmaga"]["connection"];
+	$dsnParts = explode("=",$configDbData["dsn"]);
+	$database = $dsnParts[2];
+	$dsnParts2 = explode(";",$dsnParts[1]);
+	$host = $dsnParts2[0];
+	$user = $configDbData["user"];
+	$password = $configDbData["password"];
 
-		$this->Database = $database;
+  $port = "";
+
+	$this->Database = $database;
     $this->Host = $host;
     $this->User = $user;
     $this->Password = $password;
     $this->Port = $port;
   }
 }
-?>
