@@ -1,4 +1,4 @@
-<script type="text/javascript" src="Main.php?do=js&name=js&module=modulesInstall&code=|-$currentLanguageCode-|"></script>
+<script type="text/javascript" src="Main.php?do=js&name=js&module=modules&code=|-$currentLanguageCode-|"></script>
 
 <h2>Configuración</h2>
 <h1>Instalación de Módulos del Sistema</h1>
