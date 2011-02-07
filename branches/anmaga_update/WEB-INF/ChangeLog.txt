@@ -1,4 +1,12 @@
 ﻿==============================
+Revisión 670 - Fecha 20110207
+------------------------------
+# Actualizar la estructura, se trajo el modulo security con su scehma pero no se agrego este campo en su momento
+ALTER TABLE `security_actionLabel` ADD `description` VARCHAR(255) COMMENT 'Descripcion';
+
+UPDATE  `security_actionLabel` SET description = label WHERE description IS NULL;
+
+==============================
 Revisión 668 - Fecha 20110204
 ------------------------------
 #Borramos tablas que ya no se usan más y que ni siquiera están en los esquemas.
