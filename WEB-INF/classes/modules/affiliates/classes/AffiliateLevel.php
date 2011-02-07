@@ -16,5 +16,29 @@
  * @package    anmaga
  */
 class AffiliateLevel extends BaseAffiliateLevel {
-
+	public function preInsert(PropelPDO $con = null)
+    {
+    	$bitLevel = AffiliateLevelPeer::getUnusedBitLevel();
+		if ($bitLevel !== false) {
+			$this->setBitLevel($bitLevel);
+			return true;
+		}
+        return false;
+    }
+	
+	public function save(PropelPDO $con = null) {
+		try {
+			if ($this->validate()) { 
+				parent::save($con);
+				return true;
+			} else {
+				return false;
+			}
+		}
+		catch (PropelException $exp) {
+			if (ConfigModule::get("global","showPropelExceptions"))
+				print_r($exp->getMessage());
+			return false;
+		}
+	}
 } // AffiliateLevel

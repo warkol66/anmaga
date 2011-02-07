@@ -41,6 +41,7 @@ class AffiliateLevelTableMap extends TableMap {
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
 		$this->addColumn('BITLEVEL', 'Bitlevel', 'INTEGER', false, null, null);
 		// validators
+		$this->addValidator('NAME', 'required', 'propel.validator.RequiredValidator', '', 'El nombre es obligatorio.');
 	} // initialize()
 
 	/**

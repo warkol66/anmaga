@@ -1,9 +1,6 @@
 <h2>Configuración del Sistema</h2>
 	<h1>Administración de Afiliados</h1>
 	<p>A continuación podrá editar la lista de Afiliados del sistema.</p>
-	|-if $accion eq "edicion"-|
-		<p>Realice los cambios en el grupo de usuarios y haga click en "Aceptar" para guardar las modificaciones. </p>
-	|-/if-|
 |-if $message eq "deleted"-|
 	<div align='center' class='successMessage'>Afiliado eliminado</div>
 |-elseif $message eq "errorUpdate"-|

@@ -17,52 +17,42 @@
  */
 class AffiliateLevelPeer extends BaseAffiliateLevelPeer {
 
-  /**
-  * Obtiene todos los niveles de usuarios.
+	/**
+	* Obtiene todos los niveles de usuarios.
 	*
 	*	@return array Informacion sobre todos los niveles de usuarios
-  */
+	*/
 	function getAll() {
-		$cond = new Criteria();
-		$todosObj = AffiliateLevelPeer::doSelect($cond);
-		return $todosObj;
-  }
+		return AffiliateLevelQuery::create()->find();
+	}
   
-  /**
-  * Obtiene todos los niveles de usuarios con bitlevel mayor al pasado como parametro.
+	/**
+	* Obtiene todos los niveles de usuarios con bitlevel mayor al pasado como parametro.
 	*
 	*	@return array Informacion sobre los niveles de usuarios
-  */
-	function getAllWithBitLevelGreaterThan($bitLevel) {
-		$cond = new Criteria();
-		$cond->add(AffiliateLevelPeer::BITLEVEL, $bitLevel,Criteria::GREATER_THAN);
-		$todosObj = AffiliateLevelPeer::doSelect($cond);
-		return $todosObj;
-  }
-  
-  /**
-  * Crea un nivel de usuarios nuevo.
-  *
-  * @param string $name Nombre del nivel de usuarios
-  * @return boolean true si se creo el nivel de usuarios correctamente, false sino
 	*/
-  function create($name) {
+	function getAllWithBitLevelGreaterThan($bitLevel) {
+		return AffiliateLevelQuery::create()->filterByBitLevel($bitLevel, Criteria::GREATER_THAN)->find();
+	}
+  
+	/**
+	* Crea un nivel de usuarios nuevo.
+	*
+	* @param string $name Nombre del nivel de usuarios
+	* @return boolean true si se creo el nivel de usuarios correctamente, false sino
+	*/
+	function create($name) {
 		$level = new AffiliateLevel();
 		$level->setName($name);
-		$bitLevel = AffiliateLevelPeer::getUnusedBitLevel();
-		if ($bitLevel !== false)
-			$level->setBitLevel($bitLevel);
 		$level->save();
 		return true;
-  }
+	}
   
-  function getUnusedBitLevel() {
-		$cond = new Criteria();
-		$cond->addAscendingOrderByColumn(AffiliateLevelPeer::BITLEVEL);
-		$levels = AffiliateLevelPeer::doSelect($cond);
+	function getUnusedBitLevel() {
+		$levels = AffiliateLevelQuery::create()->orderByBitLevel()->find();
 		if (empty($levels))
 			return 1;
-		$maxLevel = $levels[count($levels)-1]->getBitLevel();
+		$maxLevel = $levels->getLast()->getBitLevel();
 		if ( $maxLevel > 1073741823) {
 			//Tengo que ver si se borro alguno y volver a utilizarlo
 			for ($i=0;$i<count($levels);$i++) {
@@ -72,43 +62,39 @@ class AffiliateLevelPeer extends BaseAffiliateLevelPeer {
 			return false;
 		}
 		return $maxLevel*2;
-  }
+	}
 
 	/**
 	* Elimina un nivel de usuarios a partir del id.
 	*
-  * @param int $id Id del nivel de usuarios
-	*	@return boolean true si se elimino correctamente el nivel de usuarios, false sino
+	* @param int $id Id del nivel de usuarios
+	* @return cantidad de elementos eliminados (0 o 1).
 	*/
-  function delete($id) {
-		$level = AffiliateLevelPeer::retrieveByPk($id);
-		$level->delete();
-		return true;
-  }
+	function delete($id) {
+		return AffiliateLevelQuery::create()->filterByPrimaryKey($id)->delete();
+	}
 
-  /**
-  * Obtiene la informacion de un nivel de usuarios.
-  *
-  * @param int $id Id del nivel de usuarios
-  * @return array Informacion del nivel de usuarios
-  */
-  function get($id) {
-		$level = AffiliateLevelPeer::retrieveByPk($id);
-		return $level;
-  }
-
-  /**
-  * Actualiza la informacion de un nivel de usuarios.
-  *
-  * @param int $id Id del nivel de usuarios
-  * @param string $name Nombre del nivel de usuarios
-  * @return boolean true si se actualizo la informacion correctamente, false sino
+	/**
+	* Obtiene la informacion de un nivel de usuarios.
+	*
+	* @param int $id Id del nivel de usuarios
+	* @return array Informacion del nivel de usuarios
 	*/
-  function update($id,$name) {
+	function get($id) {
+		return AffiliateLevelQuery::create()->findPk($id);
+	}
+
+	/**
+	* Actualiza la informacion de un nivel de usuarios.
+	*
+	* @param int $id Id del nivel de usuarios
+	* @param string $name Nombre del nivel de usuarios
+	* @return boolean true si se actualizo la informacion correctamente, false sino
+	*/
+	function update($id, $params) {
 		$level = AffiliateLevelPeer::retrieveByPK($id);
-		$level->setName($name);
-		$level->save();
-		return true;
-  }
+		Common::setObjectFromParams($level, $params);
+		return $level->save();
+	}
 
 } // AffiliateLevelPeer
