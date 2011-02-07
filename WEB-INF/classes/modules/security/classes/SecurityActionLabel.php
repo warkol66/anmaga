@@ -15,7 +15,7 @@ class SecurityActionLabel extends BaseSecurityActionLabel {
 
 	function getSQLInsert() {
 
-		$sql = "INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('" . $this->getAction() . "', '" . $this->getLabel() . "', '" . $this->getLanguage() . "');";
+		$sql = "INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('" . $this->getAction() . "', '" . $this->getLabel() . "', '" . $this->getDescription() . "', '" . $this->getLanguage() . "');";
 
 		return $sql;
 	}	
