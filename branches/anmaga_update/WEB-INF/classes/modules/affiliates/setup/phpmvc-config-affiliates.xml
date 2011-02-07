@@ -196,14 +196,14 @@
 					 validate = "true">
 			<forward name="success" path="AffiliatesUsersLevelsList.tpl"/>
 		</action>
-
+		
 		<action    path = "affiliatesUsersLevelsDoEdit"
 							 type = "AffiliatesUsersLevelsDoEditAction"
 							 name = "affiliatesUsersLevelsDoEdit"
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="/Main.php?do=affiliatesUsersLevelsList&amp;message=saved" redirect="true"/>
-			<forward name="blankName" path="/Main.php?do=affiliatesUsersLevelsList&amp;message=blankName" redirect="true"/>
+			<forward name="failure" path="AffiliatesUsersLevelsEdit.tpl" />
 		</action>
 
 		<action    path = "affiliatesUsersLevelsDoDelete"

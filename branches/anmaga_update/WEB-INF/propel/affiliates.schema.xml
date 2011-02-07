@@ -78,6 +78,10 @@
 		<column name="name" required="true"  type="VARCHAR" size="255"  description="Level Name"/>
 		<column name="bitLevel" type="INTEGER"  description="Bit del nivel"/>
 
+		<validator column="name">
+		  <rule name="required" message="El nombre es obligatorio." />
+		</validator>
+		
 		<unique>
 			<unique-column name="name" />
 		</unique>

@@ -2,12 +2,12 @@
 
 require_once("BaseAction.php");
 
-class AffiliatesUsersLevelsDoDeleteAction extends BaseAction {
+class AffiliatesUsersLevelsEditAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function AffiliatesUsersLevelsDoDeleteAction() {
+	function AffiliatesUsersLevelsEditAction() {
 		;
 	}
 
@@ -47,13 +47,15 @@ class AffiliatesUsersLevelsDoDeleteAction extends BaseAction {
 	    $smarty->assign("module",$module);
 	    $smarty->assign("section",$section);
 
-    	if ( AffiliateLevelPeer::delete($_POST["id"]) )
-			return $mapping->findForwardConfig('success');
-		else
-			return $mapping->findForwardConfig('failure');
+    	$smarty->assign("message",$_GET["message"]);
+
+		$level = AffiliateLevelPeer::get($_GET['id']);
+		if (empty($level))
+			$level = new AffiliateLevel;
+		
+		$smarty->assign("currentLevel",$level);
 
 		return $mapping->findForwardConfig('success');
 	}
-
 }
 ?>
