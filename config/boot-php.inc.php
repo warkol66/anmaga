@@ -1,15 +1,9 @@
 <?php
 /*
-* Filename        : Boot.php
-* Build Date      : 3-Oct-2006
+* Boot-php.inc
+* @package phpMVCconfig
 * 
-*
-* $Header$
-* $Revision$
-* $Date$
-*
 */
-
 
 // Variable definitions
 $mPath					= NULL;	// Application defined class paths
@@ -61,6 +55,7 @@ $gPath = ClassPath::getClassPath($appServerRootDir, $globalPaths, $osType);
 // Setup the module paths
 include $moduleRootDir.$modulePath;
 $modulePaths = ModulePaths::getModulePaths();
+
 $mPath = ClassPath::getClassPath($moduleRootDir, $modulePaths, $osType);
 $cPath = ClassPath::concatPaths($gPath, $mPath, $osType);
 
@@ -84,7 +79,6 @@ if($initXMLConfig == True OR $appXmlCfgs['config']['fc'] == True ) {
 	echo '<br><b>Loading XML Parser ...</b>';
 	include_once $appServerRootDir.'/WEB-INF/'.$globalPrependXML;
 }
-
 // Timer - Base Classes Load Time
 if($timerRun == True) printTime($start, 'Base Classes Load Time');
 
@@ -130,7 +124,6 @@ if($oApplicationConfig == NULL) {
 $request = new HttpRequestBase;
 $request->setAttribute(Action::getKey('APPLICATION_KEY'), $oApplicationConfig);
 $request->setRequestURI($_SERVER['PHP_SELF']);
-
 // Set the application context path:
 // Note: $_SERVER was introduced in 4.1.0. In earlier versions, use $HTTP_SERVER_VARS.
 $contextPath = substr($_SERVER["SCRIPT_NAME"], 0, strrpos($_SERVER["SCRIPT_NAME"], '/'));
@@ -139,7 +132,7 @@ $request->setContextPath($contextPath);
 // Note: $_REQUEST was introduced in 4.1.0. There is no equivalent array in earlier versions.
 if($_REQUEST != '') {
 	// Retrieve the 'action path'. Eg: index.php?do=[logonForm]
-	$doPath = BOOTUtils::getActionPath($_REQUEST, $actionID);
+	$doPath = BOOTUtils::getActionPath($_REQUEST, $actionID, 2, 64);
 } else {
 	//	kill !!!
 }
@@ -158,7 +151,6 @@ $request->setAttribute('ACTION_DO_PATH', $doPath);
 // Setup HTTP Response and add request attributes
 $response = new HttpResponseBase;
 
-
 // Start processing the php.MVC Web application
 // Note: Usage of depreciated $HTTP_POST_VARS type variables
 //       will be eventually replaced with the new PHP Superglobals.
@@ -172,7 +164,7 @@ if((int)phpversion() > 4) {
 	// PHP 5
 	if( isset($_GET) ) {
 		$actionServer->doGet($request, $response, $_GET);
-	} elseif( isset($_POST) ) {
+	} elseif( isset($_POST) ) {		
 		$actionServer->doPost($request, $response, $_POST, $_FILES);
 	}
 } else {
@@ -225,4 +217,3 @@ function CheckConfigDataFile($configPath, $phpmvcConfigDataFile, $phpmvcConfigXM
 
 	return $initXMLConfig;
 }
-?>
