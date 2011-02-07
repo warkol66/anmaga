@@ -75,6 +75,7 @@ class ModulesInstallDoSetupActionsLabelAction extends BaseAction {
 				$securityActionLabel = new SecurityActionLabel();
 				$securityActionLabel->setAction($action);
 				$securityActionLabel->setLabel($label);
+				$securityActionLabel->setDescription($label);
 				$securityActionLabel->setLanguage($languageCode);
 				$sql = $securityActionLabel->getSQLInsert();
 				fprintf($fds[$languageCode],"%s\n",$sql);
