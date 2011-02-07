@@ -470,4 +470,77 @@ class BackupPeer {
 		return array("header"=>$header, "footer"=>$footer);
 	}
 
+	/**
+	 * Envio de un BackupExistente Por Email
+	 * @param string nombre del archivo a enviar
+	 * @param string email del destinatario
+	 */
+	function sendBackupToEmail($filename,$email) {
+		
+		if (file_exists('WEB-INF/../backups/' . $filename) == false)
+			return false;
+
+		require_once('EmailManagement.php');
+
+		global $system;
+
+		$subject = 'Envio de Respaldo ' . $filename;
+		$destination = $email;
+		$mailFrom = $system["config"]["system"]["parameters"]["fromEmail"];
+		$text = 'Adjunto a este mensaje se encuentra el respaldo ' . $filename . ' enviado.';
+		$manager = new EmailManagement();
+
+		//creamos el mensaje multipart
+		$message = $manager->createMultipartMessage($subject,$text);
+		
+		//creamos el attach utilizando el wrapper de archivo de Swift.
+		$attachment = Swift_Attachment::fromPath('WEB-INF/../backups/' . $filename, 'application/zip');  
+		$message->attach($attachment);
+		//realizamos el envio
+		$result = $manager->sendMessage($destination,$mailFrom,$message);
+		
+		return $result;		
+		
+	}
+
+	/**
+	 * Envio del contenido de un backup por Email
+	 * @param string buffer con el contenido del backup (el mismo estara comprimido en zip)
+	 * @param string email del destinatario
+	 */
+	function sendBackupContentToEmail($content,$email) {
+
+		$currentDatetime = BackupPeer::getCurrentDatetime();
+		$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . '.zip';
+		$filecontents = BackupPeer::buildDataBackup($filename,$path);
+		$zipContents = BackupPeer::getZipFromDataFile($filecontents);
+
+		require_once('EmailManagement.php');
+
+		global $system;
+
+		$subject = 'Envio de Backup Generado Por Sistema';
+		$destination = $email;
+		$mailFrom = $system["config"]["system"]["parameters"]["fromEmail"];
+		$text = 'Adjunto a este mensaje se encuentra el backup enviado.';
+
+		$manager = new EmailManagement();
+
+		//creamos el mensaje multipart
+		$message = $manager->createMultipartMessage($subject,$text);
+		
+		$attachment = Swift_Attachment::newInstance()
+		  ->setFilename($filename)
+		  ->setContentType('application/zip')
+		  ->setBody($zipContents);
+
+		$message->attach($attachment);
+
+		//realizamos el envio
+		$result = $manager->sendMessage($destination,$mailFrom,$message);
+		
+		return $result;
+
+	}
+
 }
