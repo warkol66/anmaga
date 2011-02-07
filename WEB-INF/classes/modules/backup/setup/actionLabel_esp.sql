@@ -1,8 +1,11 @@
 DELETE FROM `security_actionLabel` WHERE `action` LIKE 'Backup%' AND `language` = 'esp';
-INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('BackupRestore', 'Restaurar respaldo', 'esp');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('BackupCreateToFile', 'Crear respaldo en archvi para descargar', 'esp');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('BackupCreate', 'Crear respaldo en servidor', 'esp');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('BackupDelete', 'Eliminar respaldo', 'esp');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('BackupList', 'Lista de respaldo', 'esp');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('BackupRestoreFromFile', 'Restaurar respaldo desde archivo', 'esp');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('BackupDownload', 'Descargar archivo de respaldo', 'esp');
+OPTIMIZE TABLE `security_actionLabel`;
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupDelete', 'Eliminar respaldo', 'Eliminar respaldo', 'esp');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupRestoreFromFile', 'Restaurar respaldo desde archivo', 'Restaurar respaldo desde archivo', 'esp');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupRestore', 'Restaurar respaldo', 'Restaurar respaldo', 'esp');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupCreateToFile', 'Crear respaldo en archvi para descargar', 'Crear respaldo en archvi para descargar', 'esp');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupDownload', 'Descargar archivo de respaldo', 'Descargar archivo de respaldo', 'esp');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupSendByEmail', 'Enviar respaldo por mail', 'Enviar respaldo por mail', 'esp');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupCreate', 'Crear respaldo en servidor', 'Crear respaldo en servidor', 'esp');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupSendByEmailCron', 'Crear y enviar respaldo por mail mediante cron', 'Crear y enviar respaldo por mail mediante cron', 'esp');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupList', 'Listado de respaldos disponibles', 'Listado de respaldos disponibles', 'esp');

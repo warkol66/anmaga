@@ -80,6 +80,14 @@
 				<td align="right">|-$filename.time|date_format:"%Y-%m-%d %H:%M:%S"|change_timezone|date_format:"%d-%m-%Y %H:%M:%S"-|</td>
 				<td align="right">|-$filename.size|number_format:3:",":"."-| kb</td>
 				<td nowrap>
+					<input type="button" value="Enviar por mail" class="iconEmail" onClick='$("emailSend|-$counter-|").show()'/>
+					<form action="Main.php" style='display: none;' method="post" id='emailSend|-$counter-|'>
+						<input type="hidden" name="filename" value="|-$filename.name-|"  />
+						<input type="hidden" name="do" value="backupSendByEmail" />
+						<input type="text" name="email" value="" />
+						<input type="submit" value="Enviar" />
+						<input type="button" value="Cancelar" onclick='$("emailSend|-$counter-|").hide();' />						
+					</form>
 					<form action="Main.php" method="post">
 						<input type="hidden" name="filename" value="|-$filename.name-|"  />
 						<input type="hidden" name="do" value="backupDoRestore" />
