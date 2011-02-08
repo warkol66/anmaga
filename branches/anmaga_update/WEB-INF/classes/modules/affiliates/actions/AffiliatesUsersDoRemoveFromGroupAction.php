@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("AffiliateUserPeer.php");
-
 class AffiliatesUsersDoRemoveFromGroupAction extends BaseAction {
 
 
@@ -44,19 +41,14 @@ class AffiliatesUsersDoRemoveFromGroupAction extends BaseAction {
 
 		$module = "Affiliates";
 
-    $userPeer = new AffiliateUserPeer();
+    	$userPeer = new AffiliateUserPeer();
 
-    if ( !empty($_GET["group"]) && !empty($_GET["user"]) ) {
-			if ( $userPeer->removeUserFromGroup($_GET["user"],$_GET["group"]) ) {
-				header("Location: Main.php?do=usersByAffiliateList&user=".$_GET["user"]);
-				exit;
-		 }
+    	if ( !empty($_POST["group"]) && !empty($_POST["user"]) ) {
+			if ( $userPeer->removeUserFromGroup($_POST["user"],$_POST["group"]) ) {
+				return $this->addParamsToForwards(array('id' => $_POST["user"]), $mapping, 'success');
+			}
 		}
-
-		header("Location: Main.php?do=usersByAffiliateList&user=".$_GET["user"]."&message=notRemovedFromGroup");
-		exit;
-
+		return $this->addParamsToForwards(array('id' => $_POST["user"]), $mapping, 'failure');
 	}
-
 }
 ?>

@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("AffiliateGroupPeer.php");
-
 class AffiliatesUsersGroupsDoRemCategoryAction extends BaseAction {
 
 
@@ -44,19 +41,14 @@ class AffiliatesUsersGroupsDoRemCategoryAction extends BaseAction {
 
 		$module = "Affiliates";
 
-    $groupPeer = new AffiliateGroupPeer();
+    	$groupPeer = new AffiliateGroupPeer();
 
-    if ( !empty($_GET["group"]) && !empty($_GET["category"]) ) {
-			if ( $groupPeer->removeCategoryFromGroup($_GET["category"],$_GET["group"]) ) {
-				header("Location: Main.php?do=usersByAffiliateGroupsList&group=".$_GET["group"]);
-				exit;
-		 }
+    	if ( !empty($_POST["group"]) && !empty($_POST["category"]) ) {
+			if ( $groupPeer->removeCategoryFromGroup($_POST["category"],$_POST["group"]) ) {
+				return $this->addParamsToForwards(array('id' => $_POST["group"]), $mapping, 'success');
+			}
 		}
-
-		header("Location: Main.php?do=usersByAffiliateGroupsList&group=".$_GET["group"]."&message=notRemovedFromGroup");
-		exit;
-
+		return $this->addParamsToForwards(array('id' => $_POST["group"]), $mapping, 'failure');
 	}
-
 }
 ?>

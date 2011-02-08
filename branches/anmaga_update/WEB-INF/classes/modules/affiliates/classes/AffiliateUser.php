@@ -18,7 +18,15 @@
 class AffiliateUser extends BaseAffiliateUser {
 
 	function getGroups() {
-		return AffiliateUserGroupQuery::create()->filterByAffiliateUser()->find($this);
+		return AffiliateGroupQuery::create()->filterByAffiliateUser($this)->find();
+	}
+	
+	function getNotAssignedGroups() {
+		$obj = AffiliateGroupQuery::create()->join('AffiliateUserGroup', Criteria::LEFT_JOIN)
+								  	->where('AffiliateUserGroup.Userid <> ?', $this->getId())
+								  	->orWhere('AffiliateUserGroup.Userid IS NULL')
+								  	->find();
+		return $obj;
 	}
 	
    /**

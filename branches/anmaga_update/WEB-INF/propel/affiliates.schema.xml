@@ -82,6 +82,10 @@
 		  <rule name="required" message="El nombre es obligatorio." />
 		</validator>
 		
+		<validator column="name">
+		  <rule name="unique" message="El nombre debe ser unico." />
+		</validator>
+		
 		<unique>
 			<unique-column name="name" />
 		</unique>
@@ -105,9 +109,19 @@
   <column name="created" required="true"  type="TIMESTAMP"  description="Creation date for"/>
   <column name="updated" required="true"  type="TIMESTAMP"  description="Last update date"/>
   <column name="bitLevel"   type="INTEGER"  description="Nivel"/>
+	
 	<unique>
 		<unique-column name="name" />
 	</unique>
+	
+	<validator column="name">
+		<rule name="required" message="El nombre es obligatorio." />
+	</validator>
+	
+	<validator column="name">
+		<rule name="unique" message="El nombre debe ser unico." />
+	</validator>
+	
  </table>
 
  <table name="affiliates_groupCategory" phpName="AffiliateGroupCategory" description="Groups_Categories" isCrossRef="true">

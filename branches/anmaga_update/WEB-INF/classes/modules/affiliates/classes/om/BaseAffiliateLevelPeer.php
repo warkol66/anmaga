@@ -683,6 +683,9 @@ abstract class BaseAffiliateLevelPeer {
 		if ($obj->isNew() || $obj->isColumnModified(AffiliateLevelPeer::NAME))
 			$columns[AffiliateLevelPeer::NAME] = $obj->getName();
 
+		if ($obj->isNew() || $obj->isColumnModified(AffiliateLevelPeer::NAME))
+			$columns[AffiliateLevelPeer::NAME] = $obj->getName();
+
 		}
 
 		return BasePeer::doValidate(AffiliateLevelPeer::DATABASE_NAME, AffiliateLevelPeer::TABLE_NAME, $columns);

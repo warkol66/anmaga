@@ -150,7 +150,8 @@
 							 name = "affiliatesUsersDoAddToGroup"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=affiliatesUsersList" redirect="true" />
+			<forward name="success" path="/Main.php?do=affiliatesUsersEdit" redirect="true" />
+			<forward name="failure" path="/Main.php?do=affiliatesUsersEdit&amp;message=notAddedToGroup" redirect="true" />
 		</action>
 
 		<action    path = "affiliatesUsersDoActivate"
@@ -167,7 +168,8 @@
 							 name = "affiliatesUsersDoRemoveFromGroup"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=affiliatesUsersList" redirect="true" />
+			<forward name="success" path="/Main.php?do=affiliatesUsersEdit" redirect="true" />
+			<forward name="failure" path="/Main.php?do=affiliatesUsersEdit&amp;message=notRemovedFromGroup" redirect="true" />
 		</action>
 
 		<action    path = "affiliatesUsersPasswordRecovery"
@@ -233,7 +235,7 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="/Main.php?do=affiliatesUsersGroupsList&amp;message=saved" redirect="true"/>
-			<forward name="blankName" path="/Main.php?do=affiliatesUsersGroupsList&amp;message=blankName" redirect="true"/>
+			<forward name="failure" path="AffiliatesUsersGroupsEdit.tpl" />
 		</action>
 
 		<action    path = "affiliatesUsersGroupsDoDelete"
@@ -250,7 +252,8 @@
 							 name = "affiliatesUsersGroupsDoAddCategory"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersGroupsList" redirect="true" />
+			<forward name="success" path="/Main.php?do=affiliatesUsersGroupsEdit" redirect="true" />
+			<forward name="failure" path="/Main.php?do=affiliatesUsersGroupsEdit&amp;message=notAddedToGroup" redirect="true" />
 		</action>
 
 		<action    path = "affiliatesUsersGroupsDoRemCategory"
@@ -258,7 +261,8 @@
 							 name = "affiliatesUsersGroupsDoRemCategory"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersGroupsList" redirect="true" />
+			<forward name="success" path="/Main.php?do=affiliatesUsersGroupsEdit" redirect="true" />
+			<forward name="failure" path="/Main.php?do=affiliatesUsersGroupsEdit&amp;message=notRemovedFromGroup" redirect="true" />
 		</action>
 
 		<action    path = "affiliatesUsersValidationUsernameX"

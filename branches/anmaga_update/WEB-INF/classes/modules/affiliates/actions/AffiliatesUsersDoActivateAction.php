@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("AffiliateUserPeer.php");
-
 class AffiliatesUsersDoActivateAction extends BaseAction {
 
 
@@ -44,9 +41,9 @@ class AffiliatesUsersDoActivateAction extends BaseAction {
 
 		$module = "Affiliates";
 
-    $userPeer = new AffiliateUserPeer();
+    	$userPeer = new AffiliateUserPeer();
 
-    if ( $userPeer->activate($_GET["user"]) )
+    	if ( $userPeer->activate($_GET["user"]) )
 			return $mapping->findForwardConfig('success');
 		else
 			return $mapping->findForwardConfig('failure');		
