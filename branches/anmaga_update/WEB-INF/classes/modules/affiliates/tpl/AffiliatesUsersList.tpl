@@ -27,7 +27,7 @@
 					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $filters.searchAffiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
 				|-/foreach-|
 			</select> 
-				|-if $filters.searchAffiliateId gt 0-|<input name="rmoveFilters" type="button" value="Quitar filtros" onclick="location.href='Main?do=affiliatesUsersList'" class='boton' />|-/if-|</p>
+				|-if $filters.searchAffiliateId gt 0-|<input name="rmoveFilters" type="button" value="Quitar filtros" onclick="location.href='Main.php?do=affiliatesUsersList'" class='boton' />|-/if-|</p>
 			<input type="hidden" name="do" value="affiliatesUsersList" />
 		</form>
 </td>

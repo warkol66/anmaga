@@ -25,19 +25,21 @@ class AffiliatesBranchsListAction extends BaseAction {
 		$smarty->assign("section",$section);
 
 		$branchPeer = new AffiliateBranchPeer();
+		$filters = $_GET['filters'];
 
+		$this->applyFilters($branchPeer, $filters, $smarty);
 		$url = "Main.php?do=affiliatesBranchsList";
+		foreach ($filters as $key => $value)
+			$url .= "&filters[$key]=$value";
+		$smarty->assign("url",$url);
 
 		if (!empty($_SESSION["loginUser"])) {
-			if (!empty($_GET["affiliateId"])) {
-				$branchPeer->setSearchAffiliateId($_GET["affiliateId"]);
-				$url .= "&affiliateId=".$_GET['affiliateId'];
-			}
 			$affiliates = AffiliatePeer::getAll();
 			$smarty->assign("affiliates",$affiliates);
-		}
-		else {
+		} else if (!empty($_SESSION["loginAffiliateUser"])) {
 			$branchPeer->setSearchAffiliateId($_SESSION["loginAffiliateUser"]->getAffiliateId());
+		} else {
+			return $mapping->findForwardConfig('failure');
 		}
 
 		$pager = $branchPeer->getSearchPaginated($_GET["page"]);
@@ -51,5 +53,4 @@ class AffiliatesBranchsListAction extends BaseAction {
 
 		return $mapping->findForwardConfig('success');
 	}
-
 }
