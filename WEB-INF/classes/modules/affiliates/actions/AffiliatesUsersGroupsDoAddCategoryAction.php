@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("AffiliateGroupPeer.php");
-
 class AffiliatesUsersGroupsDoAddCategoryAction extends BaseAction {
 
 
@@ -44,19 +41,15 @@ class AffiliatesUsersGroupsDoAddCategoryAction extends BaseAction {
 
 		$module = "Affiliates";
 
-    $groupPeer = new AffiliateGroupPeer();
+    	$groupPeer = new AffiliateGroupPeer();
 
-    if ( !empty($_POST["group"]) && !empty($_POST["category"]) ) {
+    	if ( !empty($_POST["group"]) && !empty($_POST["category"]) ) {
 			if ( $groupPeer->addCategoryToGroup($_POST["category"],$_POST["group"]) ) {
-				header("Location: Main.php?do=usersByAffiliateGroupsList&group=".$_POST["group"]);
-				exit;
-		 }
+				return $this->addParamsToForwards(array('id' => $_POST["group"]), $mapping, 'success');
+			}
 		}
-
-		header("Location: Main.php?do=usersByAffiliateGroupsList&group=".$_POST["group"]."&message=notAddedToGroup");
-		exit;
-
+		
+		return $this->addParamsToForwards(array('id' => $_POST["group"]), $mapping, 'failure');
 	}
-
 }
 ?>

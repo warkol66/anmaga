@@ -1,11 +1,11 @@
 <?php
 
-class AffiliatesUsersGroupsDoDeleteAction extends BaseAction {
+class AffiliatesUsersGroupsEditAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function AffiliatesUsersGroupsDoDeleteAction() {
+	function AffiliatesUsersGroupsEditAction() {
 		;
 	}
 
@@ -41,12 +41,22 @@ class AffiliatesUsersGroupsDoDeleteAction extends BaseAction {
 
 		$module = "Affiliates";
 		$section = "Groups";
+		
+	    $smarty->assign("module",$module);
+	    $smarty->assign("section",$section);
 
-    	if ( AffiliateGroupPeer::delete($_POST['id']) )
-			return $mapping->findForwardConfig('success');
-		else
-			return $mapping->findForwardConfig('failure');
+    	$smarty->assign("message",$_GET["message"]);
 
+		$group = AffiliateGroupPeer::get($_GET["id"]);
+		if (empty($group))
+			$group = new AffiliateGroup;
+			
+		$smarty->assign("currentGroup",$group);
+		$groupCategories = $group->getCategories();
+		$smarty->assign("currentGroupCategories",$groupCategories);
+       	$notAssignedCategories = $group->getNotAssignedCategories();
+	    $smarty->assign("categories",$notAssignedCategories);
+		
 		return $mapping->findForwardConfig('success');
 	}
 }

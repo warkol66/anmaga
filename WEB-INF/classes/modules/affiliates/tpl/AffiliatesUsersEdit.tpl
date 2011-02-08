@@ -36,73 +36,65 @@
 		</ul>
 	</div>
 |-/if-|
-<form method="post" action="Main.php?do=affiliatesUsersDoEdit">
-	<input type="hidden" name="id" value="|-$currentAffiliateUser->getId()-|" />
-	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tableTdBorders">
-		<tr>
-			<td nowrap="nowrap" class="tdTitle">Identificación de Usuario</td>
-			<td><input name="affiliateUser[username]" type="text"  class="textodato" value="|-$currentAffiliateUser->getUsername()-|" size="40" /></td>
-		</tr>
-		<tr>
-			<td class="tdTitle">Nombre</td>
-			<td><input name="affiliateUser[name]" type="text"  class="textodato" value="|-$currentAffiliateUser->getName()-|" size="70" /></td>
-		</tr>
-		<tr>
-			<td class="tdTitle">Apellido</td>
-			<td><input name="affiliateUser[surname]" type="text"  class="textodato" value="|-$currentAffiliateUser->getSurname()-|" size="70" /></td>
-		</tr>
-		<tr>
-			<td class="tdTitle">E-mail</td>
-			<td><input name="affiliateUser[mailAddress]" type="text"  class="textodato" value="|-$currentAffiliateUser->getMailAddress()-|" size="70" /></td>
-		</tr>
-		<tr>
-			<td class="tdTitle">Contraseña</td>
-			<td><input name="affiliateUser[password]" type="password" class="textodato" value="" size="20" /></td>
-		</tr>
-		<tr>
-			<td class="tdTitle">Repetir Contraseña</td>
-			<td><input name="affiliateUser[password2]" type="password" class="textodato" value="" size="20" /></td>
-		</tr>
-		<tr>
-			<td class="tdTitle">Nivel de Usuario</td>
-			<td>
-        <select name="affiliateUser[levelId]">
-        	<option value="">Seleccionar nivel</option>
-			|-foreach from=$levels item=level name=for_levels-|
-        		<option value="|-$level->getId()-|"|-if $level->getId() eq $currentAffiliateUser->getLevelId()-| selected="selected"|-/if-|>|-$level->getName()-|</option>
-			|-/foreach-|
-       	</select>
-			</td>
-		</tr>
+<form method="post" action="Main.php">
+	<fieldset title="Formulario de edición de usuario">
+	<legend>Usuario por Afiliado</legend>
+		<p>
+			<label for="affiliateUser[username]">Identificación de Usuario</label>
+			<input name="affiliateUser[username]" type="text"  class="textodato" value="|-$currentAffiliateUser->getUsername()-|" size="40" />
+		</p>
+		<p>
+			<label for="affiliateUser[name]">Nombre</label>
+			<input name="affiliateUser[name]" type="text"  class="textodato" value="|-$currentAffiliateUser->getName()-|" size="60" />
+		</p>
+		<p>
+			<label for="affiliateUser[surname]">Apellido</label>
+			<input name="affiliateUser[surname]" type="text"  class="textodato" value="|-$currentAffiliateUser->getSurname()-|" size="60" />
+		</p>
+		<p>
+			<label for="affiliateUser[mailAddress]">E-mail</label>
+			<input name="affiliateUser[mailAddress]" type="text"  class="textodato" value="|-$currentAffiliateUser->getMailAddress()-|" size="60" />
+		</p>
+		<p>
+			<label for="affiliateUser[password]">Contraseña</label>
+			<input name="affiliateUser[password]" type="password" class="textodato" value="" size="20" />
+		</p>
+		<p>
+			<label for="affiliateUser[password2]">Repetir Contraseña</label>
+			<input name="affiliateUser[password2]" type="password" class="textodato" value="" size="20" />
+		</p>
+		<p>
+			<label for="affiliateUser[levelId]">Nivel de Usuario</label>
+	        <select name="affiliateUser[levelId]">
+	        	<option value="">Seleccionar nivel</option>
+				|-foreach from=$levels item=level name=for_levels-|
+	        		<option value="|-$level->getId()-|"|-if $level->getId() eq $currentAffiliateUser->getLevelId()-| selected="selected"|-/if-|>|-$level->getName()-|</option>
+				|-/foreach-|
+	       	</select>
+		</p>
 		|-if $affiliates|@count > 0-|
-		<tr>
-			<td class="tdTitle">Afiliado</td>
-			<td>
-				<select name="affiliateUser[affiliateId]">
-					|-foreach from=$affiliates item=affiliate name=for_affiliates-|
+		<p>
+			<label for="affiliateUser[affiliateId]">Afiliado</label>
+			<select name="affiliateUser[affiliateId]">
+				|-foreach from=$affiliates item=affiliate name=for_affiliates-|
 					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $currentAffiliateUser->getAffiliateId()-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option>
-					|-/foreach-|
-				</select>
-			</td>
-		</tr>
+				|-/foreach-|
+			</select>
+		</p>
 		|-/if-|
-		<tr>
-			<td class="cellboton" colspan="2"> 
-			    |-if $accion eq "edicion"-|
-				<input type="hidden" name="accion" value="edicion" />
-				|-/if-|
-				<input type="submit" name="guardar" value="Guardar" class="button" />
-				&nbsp;&nbsp;
-				<input type="button" onClick="javascript:history.go(-1)" value="Regresar" class="button"  />
-			</td>
-		</tr>
-	</table>
+		<p>
+			<input type="hidden" name="id" value="|-$currentAffiliateUser->getId()-|" />
+			<input type="hidden" name="do" value="affiliatesUsersDoEdit" />
+			<input name="save" type="submit" class="botonchico" value="##97,Guardar##"> 
+			<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##' class='botonchico' />
+		</p>
+	</fieldset>
 </form>
+
 |-if $currentAffiliateUser->getId() ne ''-|
+<fieldset title="Formulario de edición de grupos del usuario">
+	<legend>El usuario |-$currentAffiliateUser->getUsername()-| es miembro de los grupos:</legend>
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tableTdBorders">
-		<caption>
-		El usuario |-$currentAffiliateUser->getUsername()-| es miembro de los grupos:
-		</caption>
 		|-if $currentUserGroups|@count eq 0-|
 			<tr>
 				<th colspan="2">El usuario todavía no es miembro de ningún grupo.</th>
@@ -112,28 +104,34 @@
 				<th width="95%">Grupo</th>
 				<th width="5%">&nbsp;</th>
 			</tr>
-			|-foreach from=$currentUserGroups item=userGroup name=for_user_group-|
-			|-assign var="group" value=$userGroup->getAffiliateUserGroup()-|
+			|-foreach from=$currentUserGroups item=group name=for_user_group-|
 			<tr>
-				<td><div class="titulo2">|-$group->getName()-|</div></td>
-				<td class="cellopciones" nowrap><a href="Main.php?do=affiliatesUsersDoRemoveFromGroup&user=|-$currentAffiliateUser->getId()-|&group=|-$group->getId()-|" class="delete"><img src="images/clear.png" class="iconDelete"></a> </td>
+				<td width="95%"><div class="titulo2">|-$group->getName()-|</div></td>
+				<td width="5%" nowrap>
+					<form action="Main.php" method="post" style="display:inline;"> 
+						<input type="hidden" name="do" value="affiliatesUsersDoRemoveFromGroup" /> 
+						<input type="hidden" name="group" value="|-$group->getId()-|" /> 
+						<input type="hidden" name="user" value="|-$currentAffiliateUser->getId()-|" /> 
+						<input type="submit" name="submit_go_delete_affiliate_group" value="##192,Eliminar acceso##" title="Eliminar" class="iconDelete" onclick="return confirm('##257,Esta opción remueve el acceso del grupo a la categoría. ¿Está seguro que desea eliminarlo?##');"  /> 
+					</form>
+				</td>
 			</tr>
 			|-/foreach-|
 		|-/if-|
-		<tr>
-			<td class="cellboton" colspan="4">Agregar al Usuario en el Grupo:
-				<form action="Main.php" method="post">
-					<input type="hidden" name="do" value="affiliatesUsersDoAddToGroup" />
-					<select name="group">
-						<option value="" selected="selected">Seleccionar grupo</option>
-						|-foreach from=$groups item=group name=for_groups-|
-							<option value="|-$group->getId()-|">|-$group->getName()-|</option>
-						|-/foreach-|
-					</select>
-					<input type="hidden" name="user" value="|-$currentAffiliateUser->getId()-|" />
-					<input type="submit" value="Agregar" class="button" />
-				</form>
-			</td>
-		</tr>
 	</table>
+	<p>
+		<form action="Main.php" method="post">
+			<label for="category">Agregar al Usuario en el Grupo:</label>
+			<select name="group">
+				<option value="" selected="selected">Seleccionar grupo</option>
+				|-foreach from=$groups item=group name=for_groups-|
+					<option value="|-$group->getId()-|">|-$group->getName()-|</option>
+				|-/foreach-|
+			</select>
+			<input type="hidden" name="do" value="affiliatesUsersDoAddToGroup" />
+			<input type="hidden" name="user" value="|-$currentAffiliateUser->getId()-|" />
+			<input type="submit" value="Agregar" class="button" />
+		</form>
+	</p>
+</fieldset>
 |-/if-|

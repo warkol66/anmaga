@@ -73,7 +73,7 @@ class AffiliatesUsersEditAction extends BaseAction {
 	    $levels = AffiliateLevelPeer::getAll();
 	    $smarty->assign("levels",$levels);
 	    
-	    $groups = AffiliateGroupPeer::getAll();
+	    $groups = $user->getNotAssignedGroups();
 	    $smarty->assign("groups",$groups);
 
 		$smarty->assign("message",$_GET["message"]);

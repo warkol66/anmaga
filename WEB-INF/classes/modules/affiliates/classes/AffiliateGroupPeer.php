@@ -17,16 +17,14 @@
  */
 class AffiliateGroupPeer extends BaseAffiliateGroupPeer {
 
-  /**
-  * Obtiene todos los grupos de usuarios.
+	/**
+	* Obtiene todos los grupos de usuarios.
 	*
 	*	@return array Informacion sobre todos los grupos de usuarios
-  */
+	*/
 	function getAll() {
-		$cond = new Criteria();
-		$todosObj = AffiliateGroupPeer::doSelect($cond);
-		return $todosObj;
-  }
+		return AffiliateGroupQuery::create()->find();
+	}
   
   /**
   * Crea un grupo de usuarios nuevo.
@@ -34,25 +32,20 @@ class AffiliateGroupPeer extends BaseAffiliateGroupPeer {
   * @param string $name Nombre del grupo de usuarios
   * @return boolean true si se creo el grupo de usuarios correctamente, false sino
 	*/
-  function create($name) {
+  function create($params) {
 		$group = new AffiliateGroup();
-		$group->setName($name);
-		$group->setCreated(time());
-		$group->setUpdated(time());
-		$group->save();
-		return true;
+		Common::setObjectFromParams($group, $params);
+		return $group->save();
   }
   
 	/**
 	* Elimina un grupo de usuarios a partir del id.
 	*
-  * @param int $id Id del grupo de usuarios
-	*	@return boolean true si se elimino correctamente el grupo de usuarios, false sino
+  	* @param int $id Id del grupo de usuarios
+	*	@return cantidad de registros eliminados
 	*/
   function delete($id) {
-		$group = AffiliateGroupPeer::retrieveByPk($id);
-		$group->delete();
-		return true;
+  	return AffiliateGroupQuery::create()->filterByPrimaryKey($id)->delete();
   }
   
   /**
@@ -62,10 +55,7 @@ class AffiliateGroupPeer extends BaseAffiliateGroupPeer {
   * @return array Informacion del grupo de usuarios
   */
   function get($id) {
-		$cond = new Criteria();
-		$cond->add(AffiliateGroupPeer::ID, $id);
-		$todosObj = AffiliateGroupPeer::doSelect($cond);
-		return $todosObj[0];
+  	return AffiliateGroupQuery::create()->findPK($id);
   }
 
   /**
@@ -76,11 +66,9 @@ class AffiliateGroupPeer extends BaseAffiliateGroupPeer {
   * @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
   function update($id,$name) {
-		$group = AffiliateGroupPeer::retrieveByPK($id);
-		$group->setName($name);
-		$group->setUpdated(time());
-		$group->save();
-		return true;
+		$group = AffiliateGroupPeer::get($id);
+		Common::setObjectFromParams($group, $params);
+		return $group->save();
   }
   
   /**
@@ -90,10 +78,8 @@ class AffiliateGroupPeer extends BaseAffiliateGroupPeer {
   * @return array Categorias
   */
   function getCategoriesByGroup($id) {
-		$cond = new Criteria();
-		$cond->add(AffiliateGroupCategoryPeer::GROUPID, $id);
-		$todosObj = AffiliateGroupCategoryPeer::doSelectJoinCategory($cond);
-		return $todosObj;
+  		$group = AffiliateGroupPeer::get($id);
+  		return CategoryQuery::create()->filterByAffiliateGroup($group)->find();
   }
   
   /**
@@ -121,21 +107,12 @@ class AffiliateGroupPeer extends BaseAffiliateGroupPeer {
   *
   * @param int $category Id de la categoria
   * @param int $group Id del grupo de usuarios
-  * @return boolean true si se elimino correctamente, false sino
+  * @return cantidad de registros eliminados.
   */
 	function removeCategoryFromGroup($category,$group) {
-		try {
-			$cond = new Criteria();
-			$cond->add(AffiliateGroupCategoryPeer::CATEGORYID, $category);
-			$cond->add(AffiliateGroupCategoryPeer::GROUPID, $group);
-			$todosObj = AffiliateGroupCategoryPeer::doSelect($cond);
-			$obj = $todosObj[0];
-			$obj->delete();
-			return true;
-		}
-		catch (PropelException $e) {
-			return false;
-		}
+		return AffiliateGroupCategoryQuery::create()->filterByCategoryId($category)
+													->filterByGroupId($group)
+													->delete();
 	}
 
 } // AffiliateGroupPeer

@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("AffiliateGroupPeer.php");
-
 class AffiliatesUsersGroupsDoEditAction extends BaseAction {
 
 
@@ -44,33 +41,22 @@ class AffiliatesUsersGroupsDoEditAction extends BaseAction {
 
 		$module = "Affiliates";
 
-    $groupPeer = new AffiliateGroupPeer();
+    	$groupPeer = new AffiliateGroupPeer();
+		$params = $_POST["params"];
 
 		if ( !empty($_POST["id"]) ) {
 			//estoy editando un grupo de usuarios existente
-
-			if ( $groupPeer->update($_POST["id"],$_POST["name"]) )
-  	   	return $mapping->findForwardConfig('success');
-			else {
-				header("Location: Main.php?do=usersByAffiliateGroupsList&group=".$_POST["id"]."&message=errorUpdate");
-				exit;
-			}
+			$group = $groupPeer->get($_POST["id"]);
+		} else {
+			//estoy creando un nuevo grupo de usuarios
+			$group = new AffiliateGroup;
 		}
-		else {
-		  //estoy creando un nuevo grupo de usuarios
-
-			if ( !empty($_POST["name"]) ) {
-
-				$groupPeer->create($_POST["name"]);
-				return $mapping->findForwardConfig('success');
-			}
-			else {
-				return $mapping->findForwardConfig('blankName');
-			}
+		Common::setObjectFromParams($group, $params);
+		if (!$group->save()) {
+			$smarty->assign('currentGroup', $group);
+			return $mapping->findForwardConfig('failure');
 		}
-
 		return $mapping->findForwardConfig('success');
 	}
-
 }
 ?>

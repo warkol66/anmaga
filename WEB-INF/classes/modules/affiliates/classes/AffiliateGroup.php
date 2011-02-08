@@ -20,13 +20,11 @@ class AffiliateGroup extends BaseAffiliateGroup {
   /**
   * Obtiene las categorias que puede acceder un grupos de usuarios.
   *
+  * Existe para compatibilidad hacia atras.
   * @return array GroupCategories
   */
   function getCategories() {
-		$cond = new Criteria();
-		$cond->add(AffiliateGroupCategoryPeer::GROUPID, $this->getId());
-		$todosObj = AffiliateGroupCategoryPeer::doSelectJoinCategory($cond);
-		return $todosObj;
+		return $this->getCategorys();
   }
   
   /**
@@ -35,22 +33,27 @@ class AffiliateGroup extends BaseAffiliateGroup {
   * @return array Categories
   */
   function getNotAssignedCategories() {
-    $categories = CategoryPeer::getAll();
-    $groupCategories = $this->getCategories();
-    $notAssignedCategories = array();
-    foreach ($categories as $category) {
-    	$assigned = false;
-    	$i = 0;
-			while ($i < count($groupCategories) and !$assigned ) {
-				$cat = $groupCategories[$i]->getCategory();
-				if ($cat->getId() == $category->getId())
-					$assigned = true;
-				$i++;
-			}
-			if (!$assigned)
-				$notAssignedCategories[] = $category;
-    }
-		return $notAssignedCategories;
+  	$obj = CategoryQuery::create()->join('AffiliateGroupCategory', Criteria::LEFT_JOIN)
+								  ->where('AffiliateGroupCategory.Groupid <> ?', $this->getId())
+								  ->orWhere('AffiliateGroupCategory.Groupid IS NULL')
+								  ->find();
+	return $obj;
   }
+  
+  	public function save(PropelPDO $con = null) {
+		try {
+			if ($this->validate()) { 
+				parent::save($con);
+				return true;
+			} else {
+				return false;
+			}
+		}
+		catch (PropelException $exp) {
+			if (ConfigModule::get("global","showPropelExceptions"))
+				print_r($exp->getMessage());
+			return false;
+		}
+	}
 
 } // AffiliateGroup

@@ -21,25 +21,17 @@
 |-/if-|
 
 <form method="post" action="Main.php">
-	<input type="hidden" name="id" value="|-$currentLevel->getId()-|" />
-	<table class="tablaborde" cellpadding="5" cellspacing="1">
-		<tr>
-			<th colspan="2">##187,Editar nombre del Nivel ##</th>
-		</tr>
-		<tr>
-			<td nowrap="nowrap" class="titulodato1">##196,Nombre del Nivel##</td>
-			<td class="celldato">
-				<input name="levelParams[name]" type="text"  class="textodato" value="|-$currentLevel->getName()-|" size="70" />
-			</td>
-		</tr>
-		<tr>
-			<td class="cellboton" colspan="2">
-			    <input type="hidden" name="do" value="affiliatesUsersLevelsDoEdit" />
-			    <input type="hidden" name="id" value="|-$currentLevel->getId()-|" />
-				<input type="submit" name="guardar" value="##97,Guardar##"  class="boton" />
-				&nbsp;&nbsp;
-				<input type="button" onClick="javascript:history.go(-1)" value="##104,Regresar##" class="boton"  />
-			</td>
-		</tr>
-	</table>
+	<fieldset title="Formulario de edición de nombre del Afiliado">
+    <legend>Afiliado</legend>
+    	<p>
+    		<label for="params[name]">##196,Nombre del Nivel##</label>
+			<input name="params[name]" type="text" value="|-$currentLevel->getName()-|" size="60">
+		</p>
+		<p>
+			<input type="hidden" name="id" value="|-$currentLevel->getId()-|" />
+			<input type="hidden" name="do" value="affiliatesUsersLevelsDoEdit" />
+			<input name="save" type="submit" class="botonchico" value="##97,Guardar##"> 
+			<input type="button" onClick="javascript:history.go(-1)" value="##104,Regresar##" class="botonchico"  />
+		</p>
+	</fieldset>
 </form>

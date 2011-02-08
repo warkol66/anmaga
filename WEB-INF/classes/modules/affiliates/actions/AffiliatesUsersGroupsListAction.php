@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("AffiliateGroupPeer.php");
-
 class AffiliatesUsersGroupsListAction extends BaseAction {
 
 
@@ -45,32 +42,15 @@ class AffiliatesUsersGroupsListAction extends BaseAction {
 		$module = "Affiliates";
 		$section = "Groups";
 		
-    $smarty->assign("module",$module);
-    $smarty->assign("section",$section);
+    	$smarty->assign("module",$module);
+    	$smarty->assign("section",$section);
 
 		$groups = AffiliateGroupPeer::getAll();
 		$smarty->assign("groups",$groups);
 
-    $smarty->assign("message",$_GET["message"]);
-
-    if ( !empty($_GET["group"]) ) {
-			//voy a editar un grupo
-
-			try {
-				$group = AffiliateGroupPeer::get($_GET["group"]);
-				$smarty->assign("currentGroup",$group);
-				$groupCategories = $group->getCategories();
-				$smarty->assign("currentGroupCategories",$groupCategories);
-        $notAssignedCategories = $group->getNotAssignedCategories();
-		    $smarty->assign("categories",$notAssignedCategories);
-	    	$smarty->assign("accion","edicion");
-	  	}
-			catch (PropelException $e) {
-			}
-		}
+    	$smarty->assign("message",$_GET["message"]);
 
 		return $mapping->findForwardConfig('success');
 	}
-
 }
 ?>

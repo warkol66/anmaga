@@ -742,6 +742,12 @@ abstract class BaseAffiliateGroupPeer {
 			}
 		} else {
 
+		if ($obj->isNew() || $obj->isColumnModified(AffiliateGroupPeer::NAME))
+			$columns[AffiliateGroupPeer::NAME] = $obj->getName();
+
+		if ($obj->isNew() || $obj->isColumnModified(AffiliateGroupPeer::NAME))
+			$columns[AffiliateGroupPeer::NAME] = $obj->getName();
+
 		}
 
 		return BasePeer::doValidate(AffiliateGroupPeer::DATABASE_NAME, AffiliateGroupPeer::TABLE_NAME, $columns);
