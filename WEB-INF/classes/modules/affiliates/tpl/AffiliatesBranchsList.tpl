@@ -14,15 +14,16 @@
 				<th colspan="8">
 	<div id="divSearch">
 		<form action="Main.php" method="get"> 
-				<label for="affiliateId">Afiliado:</label> 
-				<select name="affiliateId"  onchange="this.form.submit();"> 
+				<label for="filters[searchAffiliateId]">Afiliado:</label> 
+				<select name="filters[searchAffiliateId]"  onchange="this.form.submit();"> 
 					<option value="">Todos</option> 
 					|-foreach from=$affiliates item=affiliate-|
-					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $smarty.get.affiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option> 
+					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $filters.searchAffiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option> 
 					|-/foreach-|
 				</select>
 				<input type="hidden" name="do" value="affiliatesBranchsList" /> 
 				<input type="submit" value="Buscar" class="button" /> 
+				|-if $filters.searchAffiliateId gt 0-|<input name="rmoveFilters" type="button" value="Quitar filtros" onclick="location.href='Main.php?do=affiliatesBranchsList';" class='boton' />|-/if-|</p>
 		</form> 
 	</div>
 </th>

@@ -21,45 +21,30 @@ class AffiliatesBranchsDoEditAction extends BaseAction {
 
 		$module = "Affiliates";
 		$section = "Branchs";
+		
+		$params = $_POST["params"];
 
 		if (!empty($_SESSION["loginUser"])) {
 			$affiliates = AffiliatePeer::getAll();
 			$smarty->assign("affiliates",$affiliates);
 			$smarty->assign("all",1);
-			$affiliateId = $_POST["affiliateId"];
+			$affiliateId = $params["affiliateId"];
 		}
 		else {
 			$affiliateId = $_SESSION["loginAffiliateUser"]->getAffiliateId();
 			$smarty->assign("all",0);
 		}
 
-		if ( $_POST["action"] == "edit" ) {
-			if ( AffiliateBranchPeer::update($_POST["id"],$affiliateId,$_POST["number"],$_POST["name"],$_POST["phone"],$_POST["contact"],$_POST["contactEmail"],$_POST["memo"],$_POST["code"]) )
-				return $mapping->findForwardConfig('success');
-			else
-				return $mapping->findForwardConfig('success');
+		if ( !empty($_POST["id"]) ) {
+			$branch = AffiliateBranchPeer::get($_POST["id"]);
+		} else {
+			$branch = new AffiliateBranch;
 		}
-		else {
-			//estoy creando un nuevo branch
-
-			if ( !AffiliateBranchPeer::create($affiliateId,$_POST["number"],$_POST["name"],$_POST["phone"],$_POST["contact"],$_POST["contactEmail"],$_POST["memo"],$_POST["code"]) ) {
-				$smarty->assign("id",$_POST["id"]);
-				$smarty->assign("affiliateId",$_POST["affiliateId"]);
-				$smarty->assign("number",$_POST["number"]);
-				$smarty->assign("name",$_POST["name"]);
-				$smarty->assign("phone",$_POST["phone"]);
-				$smarty->assign("contact",$_POST["contact"]);
-				$smarty->assign("contactEmail",$_POST["contactEmail"]);
-				$smarty->assign("memo",$_POST["memo"]);
-				$smarty->assign("code",$_POST["code"]);
-				$smarty->assign("action","create");
-				$smarty->assign("message","error");
-				return $mapping->findForwardConfig('failure');
-			}
-
-			return $mapping->findForwardConfig('success');
+		Common::setObjectFromParams($branch, $params);
+		if (!$branch->save()) {
+			$smarty->assign("branch", $branch);
+			return $mapping->findForwardConfig('failure');
 		}
-
+		return $mapping->findForwardConfig('success');
 	}
-
 }
