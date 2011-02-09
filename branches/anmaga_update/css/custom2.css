@@ -547,7 +547,7 @@ NEW CUSTOM!!!!
 .iconEdit, .iconEmail, .iconFollow, .iconGoTo, .iconGraph, .iconHelp, .iconHistory, .iconIndicator,
 .iconInfo, .iconManufacture, .iconOrder, .iconPassword, .iconPlus, .iconRestore, .iconRestoreFromServer,
 .iconSendMultiple, .iconStoreInServer, .iconStoreLocal, .iconThumbnail, .iconUpload,
-.iconView, .iconViewGantt, .iconWeight {
+.iconView, .iconViewGantt, .iconWeight, .iconAddToCart, .iconRemoveFromCart{
 	font-size: 0px !Important;
 	width: 20px;
 	height: 20px;
@@ -556,12 +556,16 @@ NEW CUSTOM!!!!
 	outline: 0 none;
 	cursor: pointer;
 	vertical-align:top;
+	-khtml-border-radius: 2px;
+	-opera-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
 }
 input.iconActivate, input.iconAdd, input.iconBack, input.iconBudget, input.iconDelete, input.iconDetail, input.iconDownload,
 input.iconEdit, input.iconEmail, input.iconFollow, input.iconGoTo, input.iconGraph, input.iconHelp, input.iconHistory, input.iconIndicator,
 input.iconInfo, input.iconManufacture, input.iconOrder, input.iconPassword, input.iconPlus, input.iconRestore, input.iconRestoreFromServer,
 input.iconSendMultiple, input.iconStoreInServer, input.iconStoreLocal, input.iconThumbnail, input.iconUpload,
-input.iconView, input.iconViewGantt, input.iconWeight {
+input.iconView, input.iconViewGantt, input.iconWeight, input.iconAddToCart, input.iconRemoveFromCart {
 	width: 22px;
 	height: 22px;
 }
@@ -569,7 +573,7 @@ input.iconView, input.iconViewGantt, input.iconWeight {
 .iconEdit, .iconEmail, .iconFollow, .iconGoTo, .iconGraph, .iconHelp, .iconHistory, .iconIndicator,
 .iconInfo, .iconManufacture, .iconOrder, .iconPassword, .iconPlus, .iconRestore, .iconRestoreFromServer,
 .iconSendMultiple, .iconStoreInServer, .iconStoreLocal, .iconThumbnail, .iconUpload,
-.iconView, .iconViewGantt, .iconWeight {
+.iconView, .iconViewGantt, .iconWeight, .iconAddToCart, .iconRemoveFromCart{
 	background: url(../images/icons_all.png) no-repeat #e3e3e3;
 	border: solid 1px #ababab;
 }
@@ -664,7 +668,7 @@ input.iconView, input.iconViewGantt, input.iconWeight {
 .iconGraph {
 	background-position: -0px -60px;
 }
-.buttonFollow {
+.iconFollow {
 	background-position: -20px -60px;
 }
 .iconPlus {
@@ -679,11 +683,17 @@ input.iconView, input.iconViewGantt, input.iconWeight {
 .iconPassword {
 	background-position: -80px -60px;
 }
+.iconAddToCart {
+	background-position: -140px -60px;
+}
+.iconRemoveFromCart {
+	background-position: -160px -60px;
+}
 .iconActivate:hover, .iconAdd:hover, .iconBack:hover, .iconBudget:hover, .iconDelete:hover, .iconDetail:hover, .iconDownload:hover,
 .iconEdit:hover, .iconEmail:hover, .iconFollow:hover, .iconGoTo:hover, .iconGraph:hover, .iconHelp:hover, .iconHistory:hover, .iconIndicator:hover,
 .iconInfo:hover, .iconManufacture:hover, .iconOrder:hover, .iconPassword:hover, .iconPlus:hover, .iconRestore:hover, .iconRestoreFromServer:hover,
 .iconSendMultiple:hover, .iconStoreInServer:hover, .iconStoreLocal:hover, .iconThumbnail:hover, .iconUpload:hover,
-.iconView:hover, .iconViewGantt:hover, .iconWeight:hover {
+.iconView:hover, .iconViewGantt:hover, .iconWeight:hover, .iconAddToCart:hover, .iconRemoveFromCart:hover{
 	background-color: #f1f1f1;
 	border: solid 1px #d3d2d2;
 }
