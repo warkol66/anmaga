@@ -211,8 +211,10 @@ class BackupPeer {
 	 *
 	 * @return true si fue exitoso, false sino
 	 */
-	function restoreBackup($zipFilename) {
-
+	function restoreBackup($zipFilename, $originalFileName = null) {
+		if ($originalFileName === null)
+			$originalFileName = $zipFilename;
+			
 		set_time_limit(ConfigModule::get("global","backupTimeLimit"));
 
 		require_once("zip.class.php");
@@ -246,7 +248,7 @@ class BackupPeer {
 			BackupPeer::restoreSQL($sql);
 
 		//obtencion de filename sin ruta
-		$parts = explode('/',$zipFilename);
+		$parts = explode('/', $originalFileName);
 		$filename = $parts[count($parts)-1];
 
 		$text = 'Se ha restaurado el backup en el servidor de nombre de archivo: ' . $filename;

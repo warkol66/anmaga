@@ -30,7 +30,8 @@ class BackupRestoreFromFileAction extends BaseAction {
 		$backupPeer = new BackupPeer();
 
 		$filename = $_FILES["backup"]['tmp_name'];
-		if ($backupPeer->restoreBackup($filename)) {
+		$originalFileName = $_FILES["backup"]['name'];
+		if ($backupPeer->restoreBackup($filename, $originalFileName)) {
 			Common::doLog('success',$filename);
 			return $mapping->findForwardConfig('success');
 		}
