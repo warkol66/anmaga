@@ -34,12 +34,12 @@
 					<input type="text" name="quantity" value="|-$item->getQuantity()-|" size="3" />
 					<input type="hidden" name="productId" value="|-$product->getId()-|" />
 					<input type="hidden" name="do" value="ordersChangeItemCartX" />
-					<input type="button" value="Cambiar" class="buttonImageActivate" title="Actualizar carrito" alt="Actualizar carrito" onclick="javascript:ordersChangeItemCartX(this.form)" />
+					<input type="button" value="Cambiar" class="iconUpdateCart" title="Actualizar carrito" alt="Actualizar carrito" onclick="javascript:ordersChangeItemCartX(this.form)" />
 				</form>
 				<form>
 					<input type="hidden" name="productId" value="|-$product->getId()-|" />
 					<input type="hidden" name="do" value="ordersRemoveItemCartX" />
-					<input type="button" value="Eliminar" class="buttonImageDelete" title="Eliminar del carrito" alt="Eliminar del carrito" onclick="javascript:ordersRemoveItemCartX(this.form)" />
+					<input type="button" value="Eliminar" class="iconRemoveFromCart" title="Eliminar del carrito" alt="Eliminar del carrito" onclick="javascript:ordersRemoveItemCartX(this.form)" />
 				</form>
 			</td>
 		</tr>

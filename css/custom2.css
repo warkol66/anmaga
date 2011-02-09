@@ -547,7 +547,7 @@ NEW CUSTOM!!!!
 .iconEdit, .iconEmail, .iconFollow, .iconGoTo, .iconGraph, .iconHelp, .iconHistory, .iconIndicator,
 .iconInfo, .iconManufacture, .iconOrder, .iconPassword, .iconPlus, .iconRestore, .iconRestoreFromServer,
 .iconSendMultiple, .iconStoreInServer, .iconStoreLocal, .iconThumbnail, .iconUpload,
-.iconView, .iconViewGantt, .iconWeight, .iconAddToCart, .iconRemoveFromCart{
+.iconView, .iconViewGantt, .iconWeight, .iconAddToCart, .iconRemoveFromCart, .iconUpdateCart{
 	font-size: 0px !Important;
 	width: 20px;
 	height: 20px;
@@ -565,7 +565,7 @@ input.iconActivate, input.iconAdd, input.iconBack, input.iconBudget, input.iconD
 input.iconEdit, input.iconEmail, input.iconFollow, input.iconGoTo, input.iconGraph, input.iconHelp, input.iconHistory, input.iconIndicator,
 input.iconInfo, input.iconManufacture, input.iconOrder, input.iconPassword, input.iconPlus, input.iconRestore, input.iconRestoreFromServer,
 input.iconSendMultiple, input.iconStoreInServer, input.iconStoreLocal, input.iconThumbnail, input.iconUpload,
-input.iconView, input.iconViewGantt, input.iconWeight, input.iconAddToCart, input.iconRemoveFromCart {
+input.iconView, input.iconViewGantt, input.iconWeight, input.iconAddToCart, input.iconRemoveFromCart, input.iconUpdateCart {
 	width: 22px;
 	height: 22px;
 }
@@ -573,7 +573,7 @@ input.iconView, input.iconViewGantt, input.iconWeight, input.iconAddToCart, inpu
 .iconEdit, .iconEmail, .iconFollow, .iconGoTo, .iconGraph, .iconHelp, .iconHistory, .iconIndicator,
 .iconInfo, .iconManufacture, .iconOrder, .iconPassword, .iconPlus, .iconRestore, .iconRestoreFromServer,
 .iconSendMultiple, .iconStoreInServer, .iconStoreLocal, .iconThumbnail, .iconUpload,
-.iconView, .iconViewGantt, .iconWeight, .iconAddToCart, .iconRemoveFromCart{
+.iconView, .iconViewGantt, .iconWeight, .iconAddToCart, .iconRemoveFromCart, .iconUpdateCart{
 	background: url(../images/icons_all.png) no-repeat #e3e3e3;
 	border: solid 1px #ababab;
 }
@@ -688,6 +688,9 @@ input.iconView, input.iconViewGantt, input.iconWeight, input.iconAddToCart, inpu
 }
 .iconRemoveFromCart {
 	background-position: -160px -60px;
+}
+.iconUpdateCart{
+	background-position: -180px -60px;
 }
 .iconActivate:hover, .iconAdd:hover, .iconBack:hover, .iconBudget:hover, .iconDelete:hover, .iconDetail:hover, .iconDownload:hover,
 .iconEdit:hover, .iconEmail:hover, .iconFollow:hover, .iconGoTo:hover, .iconGraph:hover, .iconHelp:hover, .iconHistory:hover, .iconIndicator:hover,
