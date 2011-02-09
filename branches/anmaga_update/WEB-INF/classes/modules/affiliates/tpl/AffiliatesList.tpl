@@ -1,3 +1,13 @@
+<script type="text/javascript" src="scripts/lightbox.js"></script> 			
+<div id="lightbox1" class="leightbox">
+	<p align="right">				
+		<a href="#" class="lbAction blackNoDecoration" rel="deactivate">Cerrar<input type="button" class="iconDelete" /></a> 
+	</p> 
+	<div id="affiliatesViewWorking"></div>
+	<div class="innerLighbox">
+		<div id="affiliatesViewDiv"></div>
+	</div>
+</div> 
 <h2>Configuración del Sistema</h2>
 	<h1>Administración de Afiliados</h1>
 	<p>A continuación podrá editar la lista de Afiliados del sistema.</p>
@@ -36,11 +46,12 @@
 		<td width="5%">|-$affiliate->getId()-|</td>
 		<td width="85%">|-$affiliate->getName()-| |-if $affiliate->getOwnerId() neq "" -||-assign var=owner value=$affiliate->getOwner()-| [ Usuario Dueño: |-$owner->getUsername()-| ] |-/if-|</td>
 		<td width="10%" nowrap>
-			<form action="Main.php" method="get" style="display:inline;"> 
-			  <input type="hidden" name="do" value="affiliatesView" /> 
-			  <input type="hidden" name="id" value="|-$affiliate->getId()-|" /> 
-			  <input type="submit" name="submit_go_view_affiliate" value="Ver" class="iconView" /> 
-			</form>
+					<form action="Main.php" method="get" style="display:inline;">
+						
+						<input type="hidden" name="do" value="affiliatesViewX" />
+						<input type="hidden" name="id" value="|-$affiliate->getId()-|" />
+						<a href="#lightbox1" rel="lightbox1" class="lbOn"><input type="button" class="iconView" onClick='{new Ajax.Updater("affiliatesViewDiv", "Main.php?do=affiliatesViewX&id=|-$affiliate->getId()-|", { method: "post", parameters: { id: "|-$affiliate->getId()-|"}, evalScripts: true})};$("affiliatesViewWorking").innerHTML = "<span class=\"inProgress\">buscando información...</span>";' value="Ver detalle" name="submit_go_show_project" /></a>
+					</form>
 			<form action="Main.php" method="get" style="display:inline;"> 
 			  <input type="hidden" name="do" value="affiliatesEdit" /> 
 			  <input type="hidden" name="id" value="|-$affiliate->getId()-|" /> 
