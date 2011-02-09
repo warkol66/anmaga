@@ -17,6 +17,38 @@ class OrderPeer extends BaseOrderPeer {
 	const STATE_TO_BE_VERIFIED = 6;
 	const STATE_EXPORTED = 7;
 
+	//nombre de los posibles estados
+	protected static $orderStatus = array(
+						OrderPeer::STATE_NEW    => 'Emitida',
+						OrderPeer::STATE_ACCEPTED       => 'Aceptada',
+						OrderPeer::STATE_PENDING_APPROVAL      => 'Pendiente Aprobación',
+						OrderPeer::STATE_IN_PROCESS    => 'En Proceso',
+						OrderPeer::STATE_COMPLETED        => 'Completa',
+						OrderPeer::STATE_CANCELLED       => 'Cancelada',
+						OrderPeer::STATE_TO_BE_VERIFIED     => 'A Verificar',
+						OrderPeer::STATE_EXPORTED => 'Exportada'
+					);
+
+	/**
+	 * Devuelve los tipos de estado de la orden
+	 */
+	public static function getOrderStatus()	{
+		$orderStatus = OrderPeer::$orderStatus;
+		return $orderStatus;
+	}
+	/**
+	 * Devuelve los nombres de los tipo de estado traducidas
+	 */
+	public function getOrderStatusTranslated() {
+		$orderStatus = OrderPeer::getOrderStatus();
+
+		foreach(array_keys($orderStatus) as $key)
+			$orderStatusTranslated[$key] = Common::getTranslation($orderStatus[$key],'orders');
+
+		return $orderStatusTranslated;
+	}
+
+
 	private $searchAffiliateId;
 	private $searchDateFrom;
 	private $searchDateTo;

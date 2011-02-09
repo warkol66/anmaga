@@ -7,42 +7,42 @@
 	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-orderTemplates">
 		<thead>
 			<tr>
-												<th class="thFillTitle">Id</th>
-												<th class="thFillTitle">Nombre</th>
-												<th class="thFillTitle">Creada</th>
-												<th class="thFillTitle">Usuario</th>
-												|-if $all eq "1"-|<th class="thFillTitle">Afiliado</th>
-												|-/if-|
-												<th class="thFillTitle">Sucursal</th>
-												<th class="thFillTitle">Total</th>
-												<th class="thFillTitle">&nbsp;</th>
+				<th>Id</th>
+				<th>Nombre</th>
+				<th>Creada</th>
+				<th>Usuario</th>
+				|-if $all eq "1"-|<th>Afiliado</th>
+				|-/if-|
+				<th>Sucursal</th>
+				<th>Total</th>
+				<th>&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
 		|-foreach from=$orderTemplates item=orderTemplate name=for_orderTemplates-|
 			<tr>
-												<td class="tdSize1">|-$orderTemplate->getid()-|</td>
-												<td class="tdSize1">|-$orderTemplate->getname()-|</td>
-												<td class="tdSize1">|-$orderTemplate->getcreated()-|</td>
-												<td class="tdSize1">|-assign var=user value=$orderTemplate->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
-												|-if $all eq "1"-|<td class="tdSize1">|-assign var=affiliate value=$orderTemplate->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
-												<td class="tdSize1">|-assign var=branch value=$orderTemplate->getAffiliateBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
-												<td class="tdSize1">|-$orderTemplate->gettotal()-|</td>
-												<td>
+				<td class="tdSize1">|-$orderTemplate->getid()-|</td>
+				<td class="tdSize1">|-$orderTemplate->getname()-|</td>
+				<td class="tdSize1">|-$orderTemplate->getcreated()-|</td>
+				<td class="tdSize1">|-assign var=user value=$orderTemplate->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
+				|-if $all eq "1"-|<td class="tdSize1">|-assign var=affiliate value=$orderTemplate->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
+				<td class="tdSize1">|-assign var=branch value=$orderTemplate->getAffiliateBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
+				<td class="tdSize1">|-$orderTemplate->gettotal()-|</td>
+				<td>
 					<form action="Main.php" method="get">
 						<input type="hidden" name="do" value="ordersTemplatesView" />
 						<input type="hidden" name="id" value="|-$orderTemplate->getid()-|" />
-						<input type="submit" name="submit_go_view_orderTemplate" value="Ver" class="buttonImageView" />
+						<input type="submit" name="submit_go_view_orderTemplate" value="Ver" class="iconView" />
 					</form>
 					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="ordersTemplatesDoDelete" />
 						<input type="hidden" name="id" value="|-$orderTemplate->getid()-|" />
-						<input type="submit" name="submit_go_delete_orderTemplate" value="Borrar" onclick="return confirm('Seguro que desea eliminar la orden?')" class="buttonImageDelete" />
+						<input type="submit" name="submit_go_delete_orderTemplate" value="Borrar" onclick="return confirm('Seguro que desea eliminar la orden?')" class="iconDelete" />
 					</form>
 					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="ordersTemplatesDoAddToCart" />
 						<input type="hidden" name="id" value="|-$orderTemplate->getid()-|" />
-						<input type="submit" name="submit_go_add_orderTemplate" value="Add To Cart" class="boton" />
+						<input type="submit" name="submit_go_add_orderTemplate" value="Add To Cart" class="iconAddToCart" />
 					</form>
 				</td>
 			</tr>

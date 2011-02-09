@@ -89,37 +89,6 @@ form input{
 }
 
 /* -------------------------------------------------------------------*/ 
-/* CONTENIDO   */
-/* -------------------------------------------------------------------*/ 
-#rightcolumn h1{
-	color:#0066CC;
-	border-bottom: solid 1px #0066cc;
-}
-#rightcolumn h2{
-	color:#999;
-}
-#rightcolumn h2 a:link, #rightcolumn h2 a:visited{
-	color: #003399;
-}
-#rightcolumn h2 a:hover, #rightcolumn h2 a:active{
-	color: #0000FF;
-}
-#rightcolumn h3, #rightcolumn h4 {
-	color: #0066CC;
-}
-
-
-#rightcolumn p{
-	color:#000;
-/*	border-right: solid 1px #CCC;*/  /*New*/
-}
-.paragraphEdit{
-	background-image:url(../images/icon_write.gif);
-	background-repeat:no-repeat;
-	background-position:left top;
-}
-
-/* -------------------------------------------------------------------*/ 
 /*  TABLES
 /* -------------------------------------------------------------------*/ 
 .table1{
