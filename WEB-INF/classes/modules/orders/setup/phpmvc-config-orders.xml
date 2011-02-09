@@ -49,8 +49,6 @@
 					 validate = "true">
 			<forward name="success" path="OrdersItemsDoDeleteX.tpl" />
 			<forward name="failure" path="OrdersItemsDoDeleteXFailure.tpl" />
-
-			
 		</action>
 
 		<action    path = "ordersItemsDoEditX"
@@ -60,16 +58,6 @@
 					 validate = "true">
 			<forward name="success" path="OrdersItemsDoEditX.tpl" />
 			<forward name="failure" path="OrdersItemsDoEditX.tpl" />
-
-
-		</action>
-
-		<action    path = "ordersList"
-							 type = "OrdersListAction"
-							 name = "ordersList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersList.tpl" />
 		</action>
 
 		<action    path = "ordersCartDoDelete"
@@ -78,30 +66,6 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="Main.php?do=ordersViewCart&amp;message=deleted_ok" redirect="true" />
-		</action>
-
-		<action    path = "ordersAddItemToCartX"
-							 type = "OrdersAddItemToCartXAction"
-							 name = "ordersAddItemToCartX"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersAddItemToCartX.tpl" />
-		</action>
-
-		<action    path = "ordersChangeItemCartX"
-							 type = "OrdersChangeItemCartXAction"
-							 name = "ordersChangeItemCartX"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersChangeItemCartX.tpl" />
-		</action>
-
-		<action    path = "ordersRemoveItemCartX"
-							 type = "OrdersRemoveItemCartXAction"
-							 name = "ordersRemoveItemCartX"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersRemoveItemCartX.tpl" />
 		</action>
 
 		<action    path = "ordersStateDoChangeX"
@@ -115,14 +79,6 @@
 			<forward name="noPermission" path="NoPermission.tpl" />	
 		</action>
 
-		<action    path = "ordersViewCart"
-							 type = "OrdersViewCartAction"
-							 name = "ordersViewCart"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersViewCart.tpl" />
-		</action>
-
 		<action    path = "ordersConfirm"
 							 type = "OrdersConfirmAction"
 							 name = "ordersConfirm"
@@ -132,30 +88,6 @@
 			<forward name="failure" path="Main.php?do=ordersViewCart&amp;message=error" redirect="true" />
 		</action>
 		
-		<action    path = "ordersExport"
-							 type = "OrdersExportAction"
-							 name = "ordersExport"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersExport.tpl" />
-		</action>
-		
-		<action    path = "ordersExportSaf"
-							 type = "OrdersExportSafAction"
-							 name = "ordersExportSaf"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersExportSaf.tpl" />
-		</action>
-
-		<action    path = "ordersDoDelete"
-						 type = "OrdersDoDeleteAction"
-						 name = "ordersDoDelete"
-						scope = "request"
-				 validate = "true">
-		<forward name="success" path="Main.php?do=ordersList&amp;message=orders_deleted_ok" redirect="true" />
-		</action>
-
 		<action    path = "ordersDoGenerate"
 							 type = "OrdersDoGenerateAction"
 							 name = "ordersDoGenerate"
@@ -182,14 +114,6 @@
 			<forward name="failure" path="Main.php?do=ordersViewCart&amp;message=error" redirect="true" />
 		</action>
 
-		<action    path = "ordersImport"
-							 type = "OrdersImportAction"
-							 name = "ordersImport"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="OrdersImport.tpl" />
-		</action>
-
 		<action    path = "ordersDoImport"
 							 type = "OrdersDoImportAction"
 							 name = "ordersDoImport"
@@ -200,22 +124,7 @@
 	</action-mappings>
 
 <!-- Section OrderTemplates -->
-	<action-mappings  module="Orders" section="OrderTemplates">
-		<action    path = "ordersTemplatesView"
-							 type = "OrdersTemplatesViewAction"
-							 name = "ordersTemplatesView"
-							scope = "request"
-					 validate = "true">
-		<forward name="success" path="OrdersTemplatesView.tpl" />
-		</action>
-
-		<action    path = "ordersTemplatesList"
-							 type = "OrdersTemplatesListAction"
-							 name = "ordersTemplatesList"
-							scope = "request"
-					 validate = "true">
-		<forward name="success" path="OrdersTemplatesList.tpl" />
-		</action>
+	<action-mappings>
 
 		<action    path = "ordersTemplatesDoAddToCart"
 							 type = "OrdersTemplatesDoAddToCartAction"
@@ -225,13 +134,6 @@
 		<forward name="success" path="Main.php?do=ordersViewCart" redirect="true" />
 		</action>
 
-		<action    path = "ordersTemplatesDoDelete"
-							 type = "OrdersTemplatesDoDeleteAction"
-							 name = "ordersTemplatesDoDelete"
-							scope = "request"
-					 validate = "true">
-		<forward name="success" path="Main.php?do=ordersTemplatesList&amp;message=deleted_ok" redirect="true" />
-		</action>
 	</action-mappings>
 <!-- End Section OrderTemplates -->
 

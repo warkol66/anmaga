@@ -13,7 +13,7 @@
 				<th width="10%" nowrap>Código</th>
 				<th width="45%">Nombre</th>
 				<th width="10%">Precio Unitario</th> 
-				<th width="15%">Unidad de Venta</th>
+				<th width="10%">Unidad de Venta</th>
 				<th width="15%">Precio por Empaque </th>
 				<th width="5%">Cantidad</th>
 			</tr>
@@ -23,9 +23,9 @@
 		<tr id="product_|-$product->getCode()-|">
 			<td align="center">|-$product->getCode()-|</td>
 			<td>|-$product->getname()-|</td>
-			<td nowrap>|-$product->getprice()|system_numeric_format-|</td>
+			<td nowrap align="right">|-$product->getprice()|system_numeric_format-|</td>
 			<td align="center" nowrap>|-$product->getSalesUnit()-|</td>
-			<td nowrap>
+			<td nowrap align="right">
 				|-math equation="x * y" x=$product->getprice() y=$product->getSalesUnit() assign=totalItem-||-$totalItem|system_numeric_format-|
 				|-math equation="x + (y*z)" x=$total y=$totalItem z=$item->getQuantity() assign=total-|
 			</td>

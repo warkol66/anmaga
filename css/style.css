@@ -631,58 +631,7 @@ caption {
 	padding: 5px;
 }
 
-fieldset {
-	padding: 8px;
-	margin-bottom: 14px;
-	position: relative;
-}
-fieldset legend {
-	font-weight: bold;
-	font-size: 1.4em;
-	margin-bottom: 0.5em;
-	position: relative;  
-	top: -1.5em;
-	margin-left: -.5em;
-	padding: .2em;
-}
-fieldset label {
-	width: 140px;
-	float: left;
-	font-weight: bold;
-	vertical-align: text-top;
-	text-align: right;
-	height: auto;
-	padding-top: 0;
-	margin-bottom: 0;
-	padding-right: 5px;
-	padding-bottom: 5px;
-	display: block;
-}
-fieldset p {
-	display: block;
-	height: auto;
-	clear: both;
-}
-fieldset fieldset legend {  
-	background-color: transparent;
-}
-fieldset fieldset label {
-	width: 30px;
-	font-weight: bold;
-	display: inline;
-}
-fieldset fieldset {
-	padding: 5px;
-	width: 40%;
-	margin-left: 120px;
-}
-fieldset fieldset label {
-	font-weight: bold;
-	display: inline;
-}
-fieldset li {
-	margin-left: 35px;
-}
+
 .checks label {
 	float: none;
 	width: auto;
@@ -703,21 +652,6 @@ fieldset li {
 }
 
 
-fieldset {  
-	position: relative;
-}
-
-legend {  
-	margin-bottom: 0.5em;
-	position: relative;  
-	top: -1.5em;
-	margin-left: -.5em;
-	padding: .2em;
-}
-
-fieldset fieldset legend {  
-	background-color: transparent;
-}
 
 
 .inProgress {
@@ -769,6 +703,80 @@ option{
 
 
 
+/* -------------------------------------------------------------------*/ 
+/* CONTENIDO   */
+/* -------------------------------------------------------------------*/ 
+#rightColumn h1{
+	font-size: 1.7em;
+	font-weight:bold;
+	padding-bottom: 5px;
+	margin-bottom:15px;
+/*	color: 
+	border-bottom:    */	
+}
+#rightColumn h2{
+	font-size:1.2em;
+	font-weight:normal;
+	margin-bottom: 5px;
+/*	color: */	
+}
+#rightColumn h3 {
+	font-size: 1.5em;
+	font-weight:bold;
+	padding-top: 20px;
+	padding-bottom: 5px;
+	margin-bottom:10px;
+/*	color:     */	
+}
+#rightColumn h4 {
+	font-size: 1.4em;
+	font-weight:bold;
+	padding-top: 15px;
+	padding-bottom: 5px;
+	margin-bottom:10px;
+/*	color:     */	
+}
+#rightColumn h2 a:link, #rightColumn h2 a:visited{
+	font-size: inherit;
+	font-weight:normal;
+	text-decoration:none;
+/*	color: */	
+}
+#rightColumn h2 a:hover, #rightColumn h2 a:active{
+	font-size: inherit;
+	font-weight:normal;
+	text-decoration:underline;	
+/*	color: */	
+}
+#rightColumn #clusterConditions h3 {
+	padding-top: 10px;
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+/*	color:     */	
+}
+#rightColumn #clusterConditions h4 {
+	margin-top: 15px;
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+/*	color:     */	
+}
+#rightColumn p{
+	width: 570px;
+	font-size: 1.2em; /*NEW, px to em*/
+	margin-bottom: 5px;
+	padding-right: 10px;
+/*	color:*/
+/*	border-right: */
+}
+#rightColumn fieldset p{
+	width: 570px;
+}
+.paragraphEdit {
+	padding-left: 25px;
+/*	background-image:url(../images/icon_write.gif);
+	background-repeat:no-repeat;
+	background-position:left top;*/	
+}
 
 
 

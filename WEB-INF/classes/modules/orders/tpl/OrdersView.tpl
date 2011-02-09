@@ -27,11 +27,11 @@
 		</caption> 
 		<thead> 
 			<tr> 
-				<th width="15%" class="thFillTitle">Fecha</th> 
-				<th width="20%" class="thFillTitle">Afiliado</th> 
-				<th width="15%" class="thFillTitle">Usuario</th> 
-				<th width="10%" class="thFillTitle">Estado</th> 
-				<th width="40%" class="thFillTitle">Observación</th> 
+				<th width="15%">Fecha</th> 
+				<th width="20%">Afiliado</th> 
+				<th width="15%">Usuario</th> 
+				<th width="10%">Estado</th> 
+				<th width="40%">Observación</th> 
 			</tr> 
 		</thead> 
 		<tbody id="stateChanges">|-if $order->getOrderStateChanges()|@count neq 0-|
@@ -84,11 +84,11 @@
 		</caption> 
 		<thead> 
 			<tr> 
-				<th width="10%" class="thFillTitle">C&oacute;digo</th> 
-				<th width="50%" class="thFillTitle">Producto</th> 
-				<th width="15%" class="thFillTitle">Precio</th> 
-				<th width="10%" class="thFillTitle">Cantidad</th> 
-				<th width="15%" class="thFillTitle">Total</th> 
+				<th width="10%">Código</th> 
+				<th width="50%">Producto</th> 
+				<th width="15%">Precio</th> 
+				<th width="10%">Cantidad</th> 
+				<th width="15%">Total</th> 
 			</tr> 
 		</thead> 
 		<tbody>  |-foreach from=$order->getOrderItems() item=item name=for_products-|

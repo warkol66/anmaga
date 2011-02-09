@@ -1,8 +1,8 @@
-﻿<h2>Pedidos</h2> 
-	<h1>Lista de Pedidos</h1> 
-	<p>Seleccione alguna opción para filtrar el listado de pedidos. Puede Ediar o Ver los pedidos.<br>
-	Para exportar ordenes, seleccione los pedidos a exportar y haga click en "Exportar órdenes seleccionadas".<br>
-	Para eliminar pedidos, seleccione los pedidos a eliminar y haga click en "Eliminar órdenes seleccionadas".</p> 
+﻿<h2>Pedidos</h2>
+<h1>Lista de Pedidos</h1> 
+<p>Seleccione alguna opción para filtrar el listado de pedidos. Puede Ediar o Ver los pedidos.<br />
+Para exportar ordenes, seleccione los pedidos a exportar y haga click en "Exportar órdenes seleccionadas".<br />
+Para eliminar pedidos, seleccione los pedidos a eliminar y haga click en "Eliminar órdenes seleccionadas".</p> 
 <div id="div_orders">
 |-if $message eq "ok"-|
 	<div class="successMessage">Orden guardada correctamente</div>
@@ -13,7 +13,7 @@
 |-/if-|
 	<div class="filter">
 		<form action="Main.php" method="get">
-<table  border="0" cellspacing="0" cellpadding="5">
+<table border="0" cellspacing="0" cellpadding="5">
 	<tr>
 		<td nowrap><label>Desde:</label>&nbsp;<span class="size4">(dd-mm-aaaa)</span>
 								<input name="dateFrom" type="text" value="|-$selectedDateFrom-|" size="10">&nbsp;&nbsp;
@@ -28,21 +28,21 @@
 					<select name="state">
 						<option value="" selected="selected">Todos</option>
 						<option value="0"|-if $selectedState neq '' && $selectedState eq 0-| "selected"|-/if-|>Emitida</option>
-						<option value="1"|-if $selectedState eq 1-| "selected"|-/if-|>Aceptada</option>
-						<option value="2"|-if $selectedState eq 2-| "selected"|-/if-|>Pendiente Aprobación</option>
-						<option value="3"|-if $selectedState eq 3-| "selected"|-/if-|>En Proceso</option>
-						<option value="4"|-if $selectedState eq 4-| "selected"|-/if-|>Completa</option>
-						<option value="5"|-if $selectedState eq 5-| "selected"|-/if-|>Cancelada</option>
-						<option value="6"|-if $selectedState eq 6-| "selected"|-/if-|>A Verificar</option>
-						<option value="7"|-if $selectedState eq 7-| "selected"|-/if-|>Exportada</option>
+						<option value="1"|-$selectedState|selected:1-|>Aceptada</option>
+						<option value="2"|-$selectedState|selected:2-|>Pendiente Aprobación</option>
+						<option value="3"|-$selectedState|selected:3-|>En Proceso</option>
+						<option value="4"|-$selectedState|selected:4-|>Completa</option>
+						<option value="5"|-$selectedState|selected:5-|>Cancelada</option>
+						<option value="6"|-$selectedState|selected:6-|>A Verificar</option>
+						<option value="7"|-$selectedState|selected:7-|>Exportada</option>
 					</select>
-					|-if $all eq "1"-|&nbsp;&nbsp;&nbsp;<label for="affiliateId">Mayorista</label>
+					&nbsp;&nbsp;&nbsp;<label for="affiliateId">Mayorista</label>
 					<select name="affiliateId">
 						<option value="" selected="selected">Todos</option>
 						|-foreach from=$affiliates item=affiliate-|
 						<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $selectedAffiliateId-| "selected"|-/if-|>|-$affiliate->getName()-|</option>
 						|-/foreach-|
-					</select>|-/if-|</td>
+					</select></td>
 				</tr>
 				<tr>
 					<td><input type="hidden" name="do" id="doList" value="ordersList" />
@@ -54,11 +54,10 @@
 		</form>
 	</div>
 <form action="Main.php" method="get">
-	<table width="100%" cellpadding="3" cellspacing="0" class="tableTdBorders" id="tabla-orders">
+	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-orders">
 		<thead>
 			<tr>
-				<th width="5%">id</th>
-				|-if $all eq "1"-|<th width="10%">Mayorista</th>|-/if-|
+				<th width="10%">Mayorista</th>
 				<th width="10%">Fecha</th>
 				<th width="10%">Número</th>
 				<th width="10%">Usuario</th>
@@ -71,10 +70,9 @@
 		<tbody>
 		|-foreach from=$orders item=order name=for_orders-|
 			<tr>
-				<td class="tdSize1 right">|-$order->getid()-|</td>
-				|-if $all eq "1"-|<td>|-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
+				<td>|-assign var=affiliate value=$order->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>
 				<td nowrap>|-$order->getcreated()|date_format:"%d-%m-%Y"-|</td>
-				<td nowrap>|-if $order->getNumber() eq 0-||-$order->getId()-||-else-||-$order->getNumber()-||-/if-|</td>
+				<td nowrap align="right">|-if $order->getNumber() eq 0-||-$order->getId()-||-else-||-$order->getNumber()-||-/if-|</td>
 				<td>|-assign var=user value=$order->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
 				<td>|-assign var=branch value=$order->getAffiliateBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
 				<td align="right">|-$order->gettotal()|system_numeric_format-|</td>
@@ -83,17 +81,17 @@
 					<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersView&id=|-$order->getid()-|&page=|-$page-|'" value="Ver" class="iconView" />
 					<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersEdit&id=|-$order->getid()-|&page=|-$page-|'" value="Editar" class="iconEdit" />
 					|-if $all eq "0"-|
-					<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersDoAddToCart&id=|-$order->getid()-|'" value="Add To Cart" class="smallButton" />
+					<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersDoAddToCart&id=|-$order->getid()-|'" value="Add To Cart" class="iconAddToCart" />
 					|-/if-|
 				<input type="checkbox" name="orders[]" value="|-$order->getid()-|" />									</td>
 			</tr>
 		|-/foreach-|
 			<tr>
-				<td colspan="9" class="tdSize1 right"><label for="selectAllBoxes">Seleccionar todo</label> 
+				<td colspan="8" class="tdSize1 right"><label for="selectAllBoxes">Seleccionar todo</label> 
 		<input name="allbox" onclick="javascript:CheckAllBoxes(this.form)" type="checkbox"></td>
 			</tr>
 			<tr> 
-				<td colspan="9" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
+				<td colspan="8" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
 			</tr>
 		</tbody>
 	</table>

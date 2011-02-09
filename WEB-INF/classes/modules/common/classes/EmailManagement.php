@@ -73,6 +73,21 @@ class EmailManagement
 	}
 
 	/**
+	 * Crea un nuevo mensaje en HTML
+	 * @param string subject of the email
+	 * @param string HTML Content
+	 */
+	public function createTextMessage($subject,$mailBody) {
+
+		$message = Swift_Message::newInstance();
+		$message->setSubject($subject);
+		$message->setBody($mailBody, 'text/plain');
+
+		return $message;
+
+	}
+
+	/**
 	 * Creates a Text only version of an HTML content
 	 * @param string HTML mail body
 	 */

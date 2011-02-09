@@ -357,7 +357,40 @@ legend {
 
 
 
+/* -------------------------------------------------------------------*/ 
+/* CONTENIDO   */
+/* -------------------------------------------------------------------*/ 
+#rightColumn h1{
+	color:#0054A4;
+	border-bottom: solid 1px #0054A4;
+}
+#rightColumn h2{
+	color:#999;
+}
+#rightColumn h3, h4 {
+	color:#0054A4;
+}
+#rightColumn #clusterConditions h4 {
+	width: 65%;
+	border-top: 1px double #0054A4;
+}
 
+#rightColumn h2 a:link, #rightColumn h2 a:visited{
+	color: #003399;
+}
+#rightColumn h2 a:hover, #rightColumn h2 a:active{
+	color: #0000FF;
+}
+#rightColumn p{
+	color:#000;
+/*	border-right: solid 1px #CCC;*/  /*New*/
+}
+.paragraphEdit{
+	background-image:url(../images/icon_write.gif);
+	min-height: 30px; /*Ajusto altura mínima acorde al ícono*/
+	background-repeat:no-repeat;
+	background-position:left top;
+}
 
 
 

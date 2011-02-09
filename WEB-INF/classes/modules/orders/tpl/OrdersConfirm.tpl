@@ -6,25 +6,25 @@
 	<table width="100%" border="0" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products">
 		<thead>
 			<tr>
-				<th class="thFillTitle">Código</th>
-				<th class="thFillTitle">Nombre</th>
-				<th class="thFillTitle">Precio Unitario</th> 
-				<th class="thFillTitle">Unidad de Venta</th>
-				<th class="thFillTitle">Precio</th>
-				<th class="thFillTitle">Cantidad</th>
-				<th class="thFillTitle">Total</th>
+				<th>Código</th>
+				<th>Nombre</th>
+				<th>Precio Unitario</th> 
+				<th>Unidad de Venta</th>
+				<th>Precio</th>
+				<th>Cantidad</th>
+				<th>Total</th>
 			</tr>
 		</thead>
 		|-assign var=total value=0-|
 		<tbody>  |-foreach from=$orderItems item=item name=for_products-| |-assign var=product value=$item->getProduct()-|
 		<tr>
-			<td align="right" class="tdSize1">|-$product->getcode()-|</td>
-			<td class="tdSize1">|-$product->getname()-|</td>
-			<td nowrap class="tdSize1 right">|-$product->getprice()|number_format:2:",":"."-|</td>
-			<td nowrap class="tdSize1 right">|-$product->getSalesUnit()-|</td>
-			<td nowrap class="tdSize1 right">|-math equation="x * y" x=$product->getprice() y=$product->getSalesUnit() assign=totalItem-||-$totalItem|number_format:2:",":"."-|</td>
-			<td align="right" class="tdSize1">|-$item->getQuantity()-|</td>
-			<td align="right" class="tdSize1">
+			<td align="right">|-$product->getcode()-|</td>
+			<td>|-$product->getname()-|</td>
+			<td nowrap align="right">|-$product->getprice()|number_format:2:",":"."-|</td>
+			<td nowrap align="right">|-$product->getSalesUnit()-|</td>
+			<td nowrap align="right">|-math equation="x * y" x=$product->getprice() y=$product->getSalesUnit() assign=totalItem-||-$totalItem|number_format:2:",":"."-|</td>
+			<td align="right">|-$item->getQuantity()-|</td>
+			<td align="right">
 				|-math equation="x * y" x=$totalItem y=$item->getQuantity() assign=subTotal-||-$subTotal|number_format:2:",":"."-|
 				|-math equation="x + (y*z)" x=$total y=$totalItem z=$item->getQuantity() assign=total-|
 			</td>

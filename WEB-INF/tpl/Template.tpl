@@ -1,13 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<title>|-$parameters.siteName-|</title>
+<title>|-if isset($module)-||-$module|multilang_get_translation:"common"-| - |-/if-||-$parameters.siteName-|</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
-<link rel="stylesheet" href="css/main.css" type="text/css" media="screen">
-<!--[if !IE]> <link href="css/style_ns6+.css" rel="stylesheet" type="text/css" media="screen"> <![endif]-->
-<link rel="stylesheet" href="css/mainHandheld.css" type="text/css" media="handheld">
-<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="stylesheet" href="css/main.css" type="text/css" />
+<!--[if !IE]>--> <link href="css/style_ns6+.css" rel="stylesheet" type="text/css"> <!--<![endif]-->
+<!--[if lte IE 6]> <link href="css/styles-ie6.css" rel="stylesheet" type="text/css"> <![endif]-->
+<!--[if IE 7]> <link href="css/styles-ie7.css" rel="stylesheet" type="text/css"> <![endif]-->
+<!--[if IE 8]> <link href="css/styles-ie8.css" rel="stylesheet" type="text/css"> <![endif]-->
+<link rel="stylesheet" href="css/ECOTree.css" type="text/css" />
 |-include file='TemplateJsIncludes.tpl'-|
 </head>
 <body leftmargin='2' topmargin='2'> 
@@ -22,7 +23,7 @@
 		<td width="150">|-include file="MenuLeft.tpl"-|</td> 
 		<td width="10">&nbsp;</td> 
 		<td width="795"> <!-- Begin Right Column --> 
-			<div id="rightcolumn"> 
+			<div id="rightColumn"> 
 				<!--centerHTML start--> 
 				|-$centerHTML-|
 				<!--centerHTML end --> 
