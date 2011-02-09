@@ -1,112 +1,6 @@
 <!-- Module Affiliates -->
 	<action-mappings module="Affiliates">
 
-		<action    path = "affiliatesList"
-							 type = "AffiliatesListAction"
-							 name = "affiliatesList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="AffiliatesList.tpl"/>
-		</action>
-
-		<action    path = "affiliatesEdit"
-							 type = "AffiliatesEditAction"
-							 name = "affiliatesEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="AffiliatesEdit.tpl"/>
-		</action>
-
-		<action    path = "affiliatesViewAffiliate"
-							 type = "AffiliatesViewAffiliateAction"
-							 name = "affiliatesViewAffiliate"
-							scope = "request"
-					 validate = "true">
-				<forward name="success" path="AffiliatesView.tpl"/>
-		</action>
-
-		<action    path = "affiliatesDoEdit"
-							 type = "AffiliatesDoEditAction"
-							 name = "affiliatesDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesList&amp;message=edited" redirect="true" />
-			<forward name="failure" path="AffiliatesEdit.tpl"/>
-		</action>
-
-		<action    path = "affiliatesDoDelete"
-							 type = "AffiliatesDoDeleteAction"
-							 name = "affiliatesDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesList&amp;message=deleted" redirect="true" />
-			<forward name="failure" path="/Main.php?do=affiliatesList&amp;message=notdeleted" redirect="true" />
-		</action>
-
-<!-- Section Branches -->
-
-		<action    path = "affiliatesBranchsEdit"
-							 type = "AffiliatesBranchsEditAction"
-							 name = "affiliatesBranchsEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="AffiliatesBranchsEdit.tpl" />
-		</action>
-
-		<action    path = "affiliatesBranchsDoEdit"
-							 type = "AffiliatesBranchsDoEditAction"
-							 name = "affiliatesBranchsDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=affiliatesBranchsList&amp;message=ok" redirect="true" />
-			<forward name="failure" path="AffiliatesBranchsEdit.tpl" />
-		</action>
-
-		<action    path = "affiliatesBranchsList"
-							 type = "AffiliatesBranchsListAction"
-							 name = "affiliatesBranchsList"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="AffiliatesBranchsList.tpl" />
-		</action>
-
-		<action    path = "affiliatesBranchsDoDelete"
-							 type = "AffiliatesBranchsDoDeleteAction"
-							 name = "affiliatesBranchsDoDelete"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="Main.php?do=affiliatesBranchsList&amp;message=deleted_ok" redirect="true" />
-		</action>
-
-<!-- End Section Branches -->
-
-<!-- Section Users -->
-
-		<action      path = "affiliatesUsersList"
-								 type = "AffiliatesUsersListAction"
-								 name = "affiliatesUsersList"
-								scope = "request"
-						 validate = "true">
-				<forward name="success" path="AffiliatesUsersList.tpl"/>
-		</action>
-
-		<action      path = "affiliatesUsersDoEdit"
-								 type = "AffiliatesUsersDoEditAction"
-								 name = "affiliatesUsersDoEdit"
-								scope = "request"
-						 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersList&amp;message=saved" redirect="true" />
-			<forward name="failure" path="AffiliatesUsersEdit.tpl" />
-		</action>
-
-		<action      path = "affiliatesUsersDoDelete"
-								 type = "AffiliatesUsersDoDeleteAction"
-								 name = "affiliatesUsersDoDelete"
-								scope = "request"
-						 validate = "true">
-			<forward name="success" path="/Main.php?do=affiliatesUsersList&amp;message=deleted" redirect="true" />
-		</action>
-
 		<action      path = "affiliatesUsersLogin"
 								 type = "AffiliatesUsersLoginAction"
 								 name = "affiliatesUsersLogin"
@@ -126,14 +20,6 @@
 				<forward name="success" path="AffiliatesUsersWelcome.tpl"/>
 				<forward name="failure-unified" path="UsersLogin.tpl"/>
 				<forward name="failure" path="AffiliatesUsersLogin.tpl"/>
-		</action>
-
-		<action      path = "affiliatesUsersWelcome"
-								 type = "AffiliatesUsersWelcomeAction"
-								 name = "affiliatesUsersWelcome"
-								scope = "request"
-						 validate = "true">
-				<forward name="success" path="AffiliatesUsersWelcome.tpl"/>
 		</action>
 
 		<action      path = "affiliatesUsersDoLogout"
