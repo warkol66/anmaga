@@ -50,14 +50,14 @@ class OrdersRemoveItemCartXAction extends BaseAction {
 		$items = $_SESSION["orderItems"];
 		
 
-		$smarty->assign("productId",$_POST["productId"]);
+		$smarty->assign("productCode",$_POST["productCode"]);
 
 		$found = false;
 		$i = 0;
 		//Busco el producto
 		while ($i<count($items) && !$found) {
 			$item = $items[$i];
-			if ($item->getProductId() == $_POST["productId"]) {
+			if ($item->getProductCode() == $_POST["productCode"]) {
 				unset($_SESSION["orderItems"][$i]);
 				$found = true;
 			}

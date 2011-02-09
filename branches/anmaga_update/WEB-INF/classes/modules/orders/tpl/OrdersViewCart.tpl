@@ -20,8 +20,8 @@
 		</thead>
 		|-assign var=total value=0-|
 		<tbody>  |-foreach from=$orderItems item=item name=for_products-| |-assign var=product value=$item->getProduct()-|
-		<tr id="product_|-$product->getId()-|">
-			<td align="center">|-$product->getcode()-|</td>
+		<tr id="product_|-$product->getCode()-|">
+			<td align="center">|-$product->getCode()-|</td>
 			<td>|-$product->getname()-|</td>
 			<td nowrap>|-$product->getprice()|system_numeric_format-|</td>
 			<td align="center" nowrap>|-$product->getSalesUnit()-|</td>
@@ -32,12 +32,12 @@
 			<td nowrap>
 				<form>
 					<input type="text" name="quantity" value="|-$item->getQuantity()-|" size="3" />
-					<input type="hidden" name="productId" value="|-$product->getId()-|" />
+					<input type="hidden" name="productCode" value="|-$product->getCode()-|" />
 					<input type="hidden" name="do" value="ordersChangeItemCartX" />
 					<input type="button" value="Cambiar" class="iconUpdateCart" title="Actualizar carrito" alt="Actualizar carrito" onclick="javascript:ordersChangeItemCartX(this.form)" />
 				</form>
 				<form>
-					<input type="hidden" name="productId" value="|-$product->getId()-|" />
+					<input type="hidden" name="productCode" value="|-$product->getCode()-|" />
 					<input type="hidden" name="do" value="ordersRemoveItemCartX" />
 					<input type="button" value="Eliminar" class="iconRemoveFromCart" title="Eliminar del carrito" alt="Eliminar del carrito" onclick="javascript:ordersRemoveItemCartX(this.form)" />
 				</form>
