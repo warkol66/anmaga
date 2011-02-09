@@ -1,20 +1,33 @@
 @import url("cabezal.css"); /* Importar el estilo para definir el Cabezal de la página */
 @import url("custom.css");  /* Importar los estilos que cambien de color  */
 /* traido del Template */
+* {
+	padding: 0; margin: 0; 
+}
 body {
-	font-family: Arial, Helvetica, sans-serif;
 	margin-top: 0px;
 	margin-left: 0px;
 	margin-right: 0px;
+	vertical-align:top;
 }
-body,td,input,textarea,.TXTnormal,caption {
-	font-family: Arial, Helvetica, sans-serif;
+body,td,input,textarea,select {
 }
 th {
-	font-size: .90em;
+	font-weight: bold;
+	text-align: left;
+	padding: 5px 5px 5px 10px;	
 }
 form {
-	display: inline;
+	display:inline;
+}
+a:active, a:focus, input:active, input:focus {
+	outline: 0 none;
+}
+a img{
+	border: none;
+}
+.noPaddingCell {
+	padding: 0px;
 }
 .style1 {
 }
@@ -815,11 +828,4 @@ a.lbOn {
 #overlay[id]{ 
 /* IE6 and below Can't See This */
 	position:fixed;    
-}
-input[type="button"], input[type="submit"]{
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 0.90em;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin: 5px;
 }
