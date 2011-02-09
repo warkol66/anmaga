@@ -63,7 +63,7 @@
 		</validator>
 		
 		<validator column="username">
-		  <rule name="unique" message="El nombre de usuario debe ser unico." />
+		  <rule name="unique" message="El nombre de usuario ya existe, elija otro nombre." />
 		</validator>
 
 		<vendor type="mysql">
@@ -119,7 +119,7 @@
 	</validator>
 	
 	<validator column="name">
-		<rule name="unique" message="El nombre debe ser unico." />
+		<rule name="unique" message="El nombre de grupo ya existe, elija otro nombre." />
 	</validator>
 	
  </table>
