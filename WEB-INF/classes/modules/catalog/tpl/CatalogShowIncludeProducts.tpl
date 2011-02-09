@@ -30,7 +30,7 @@
 			<td nowrap>|-if $product->getPrice() neq 0-|
 				<form>
 					<input type="text" name="quantity" value="0" size="3" />
-					<input type="hidden" name="productId" value="|-$product->getId()-|" />
+					<input type="hidden" name="productCode" value="|-$product->getCode()-|" />
 					<input type="hidden" name="do" value="ordersAddItemToCartX" />
 					<input type="button" value="Agregar" class="iconAddToCart" onclick="javascript:ordersAddItemToCartX(this.form)" />
 				</form>|-/if-|

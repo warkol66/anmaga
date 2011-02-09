@@ -54,7 +54,7 @@ class OrdersChangeItemCartXAction extends BaseAction {
 		//Busco el producto
 		while ($i<count($items) && !$found) {
 			$item = $items[$i];
-			if ($item->getProductId() == $_POST["productId"]) {
+			if ($item->getProductCode() == $_POST["productCode"]) {
 				$item->setQuantity($_POST["quantity"]);
     			$_SESSION["orderItems"][$i] = $item;
 				$found = true;
