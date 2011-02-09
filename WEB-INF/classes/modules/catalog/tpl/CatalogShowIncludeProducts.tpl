@@ -27,7 +27,7 @@
 			<td nowrap align="right">|-if $product->getPrice() neq 0-||-$product->getPrice()|number_format:2:",":"."-||-/if-|</td>
 			<td nowrap align="right">|-$product->getSalesUnit()-|</td>
 			<td nowrap align="right">|-if $product->getPrice() neq 0-||-math equation="x * y" x=$product->getPrice() y=$product->getSalesUnit() assign=totalItem-||-$totalItem|number_format:2:",":"."-||-/if-|</td>
-			<td>|-if $product->getPrice() neq 0-|
+			<td nowrap>|-if $product->getPrice() neq 0-|
 				<form>
 					<input type="text" name="quantity" value="0" size="3" />
 					<input type="hidden" name="productId" value="|-$product->getId()-|" />

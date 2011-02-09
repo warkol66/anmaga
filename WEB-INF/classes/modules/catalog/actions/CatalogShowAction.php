@@ -54,7 +54,9 @@ class CatalogShowAction extends BaseAction {
       $category = CategoryPeer::get($_GET["categoryId"]);
       $smarty->assign("category",$category);
       $productPeer->setSearchCategoryId($_GET["categoryId"]);
-    } else {
+      $smarty->assign("filters",$filters = array(categoryId => $_GET["categoryId"]));
+    } 
+    else {
       // vamos a buscar las que no tienen categorias.
       $productPeer->setSearchCategoryId(null);
     }
