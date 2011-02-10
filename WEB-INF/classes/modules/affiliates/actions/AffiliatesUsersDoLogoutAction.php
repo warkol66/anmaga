@@ -1,33 +1,16 @@
 <?php
-
-require_once("BaseAction.php");
+/** 
+ * AffiliatesUsersDoLogoutAction
+ *
+ * @package affiliates 
+ */
 
 class AffiliatesUsersDoLogoutAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function AffiliatesUsersDoLogoutAction() {
 		;
 	}
 
-
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
@@ -43,15 +26,17 @@ class AffiliatesUsersDoLogoutAction extends BaseAction {
 
 		$module = "Affiliates";
 
-		unset($_SESSION["loginAffiliateUser"]);
+		if (isset($_SESSION["loginAffiliateUser"])) {
+			$user = $_SESSION["loginAffiliateUser"];	
+			$username = $user->getUsername();
+		}		
 
-		global $system;
-		$unifiedLogin = $system["config"]["system"]["parameters"]["affiliateUserLoginUnified"]["value"];
+		if($_SESSION["lastLogin"])
+		unset($_SESSION["lastLogin"]);
 		
-		if ($unifiedLogin == "YES") {
-			$smarty->assign("unifiedLogin",true);
-			return $mapping->findForwardConfig('success-unified');
-		}
+		Common::doLog('success','username: ' . $username);
+		if($_SESSION["loginAffiliateUser"])
+			unset($_SESSION["loginAffiliateUser"]);
 
 		return $mapping->findForwardConfig('success');
 

@@ -1,9 +1,11 @@
 <?php
-
-require_once("BaseAction.php");
+/**
+ * UsersLoginAction
+ *
+ * @package users
+ */
 
 class AffiliatesUsersLoginAction extends BaseAction {
-
 
 	function AffiliatesUsersLoginAction() {
 		;
@@ -11,10 +13,10 @@ class AffiliatesUsersLoginAction extends BaseAction {
 
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
-    	/**
-     	* Use a different template
-     	*/
+		BaseAction::execute($mapping, $form, $request, $response);
+
+		//////////
+		// Use a different template
 		$this->template->template = "TemplateLogin.tpl";
 		//////////
 		// Access the Smarty PlugIn instance
@@ -27,14 +29,24 @@ class AffiliatesUsersLoginAction extends BaseAction {
 
 		$module = "Affiliates";
 
-		$message=$_GET["message"];
-		$smarty->assign("message",$message);
-
-		global $system;
-		$unifiedLogin = $system["config"]["system"]["parameters"]["affiliateUserLoginUnified"]["value"];
-		
-		if ($unifiedLogin == "YES") {
+		if (Common::hasUnifiedLogin()) {
 			$smarty->assign("unifiedLogin",true);
+			Common::setValueUnifiedLoginCookie($_POST['select']);
+		}
+
+		$smarty->assign("message",$_GET["message"]);
+
+		if (!empty($_SESSION["loginUser"]) || !empty($_SESSION["loginAffiliateUser"]) )
+			return $mapping->findForwardConfig('welcome');
+
+		if (Common::hasUnifiedLogin()) {
+			$smarty->assign("unifiedLogin",true);
+
+			$value = Common::getValueUnifiedLoginCookie();
+
+			if (!empty($value) || $value == "0") {
+				$smarty->assign('cookieSelection',$value);
+			}
 			return $mapping->findForwardConfig('success-unified');
 		}
 

@@ -14,7 +14,12 @@ class ConfigModule {
 			"backupTimeLimit" => 720
 		),
 		"affiliates" => array(
-			"unifiedLogin" => false
+			"unifiedLogin" => false,
+			"useTimezones" => false,
+			"forceFirstPasswordChange" => true,
+			"askForNewPasswordOnRecovery" => false,
+			"useFilterByUserGroup" => true,
+			"passwordRecoveryExpirationTimeInHours" => 24
 		),
 		"users" => array(
 			"useTimezones" => false,

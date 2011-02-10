@@ -289,7 +289,7 @@ class UserPeer extends BaseUserPeer {
 	function updatePass($id,$pass,$mailAddress,$timezone) {
 		try {
 			$user = UserPeer::retrieveByPK($id);
-			$user->setUpdated(time());
+			$user->setUpdatedAt(time());
 			$user->setPasswordUpdated(time());
 			$user->setPassword(md5($pass."ASD"));
 			$user->setTimezone($timezone);

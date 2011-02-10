@@ -207,7 +207,7 @@ class User extends BaseUser {
   */
 	function resetPassword($length = 8){
 	  $password = Common::generateRandomPassword();
-		$this->setPasswordString($password."ASD");
+		$this->setPasswordString($password);
 		$this->setPasswordUpdatedTime(time());
 		try {
 			$this->save();

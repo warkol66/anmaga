@@ -18,10 +18,19 @@
 				<value>NO</value>
 				<element_type>YES/NO</element_type>
 			</underMaintenance>
+			<maintenanceMessage>El sistema permanecerá en mantenimiento por 2 horas, por favor regrese mas tarde.</maintenanceMessage>
 			<affiliateUserLoginUnified>
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
 			</affiliateUserLoginUnified>
+			<hasUnifiedUsernames>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</hasUnifiedUsernames>
+			<doLog>
+				<value>NO</value>
+				<element_type>YES/NO</element_type>
+			</doLog>
 			<applicationTimeZoneGMT>
 				<element_type>TIMEZONE</element_type>
 			</applicationTimeZoneGMT>
@@ -143,11 +152,36 @@
 		<rowsPerPage>20</rowsPerPage>
 		<language>esp</language>
 	</system>
+	<registration>
+		<mode>
+			<value>Email Verification</value>
+			<element_type>Options</element_type>
+			<element_options>
+				<option_1>Email Verification</option_1>
+				<option_2>Moderated</option_2>
+				<option_3>Moderated with Email Verification</option_3>
+				<option_4>Open</option_4>
+			</element_options>
+		</mode>
+		<useCaptcha>
+			<value>NO</value>
+			<element_type>YES/NO</element_type>
+		</useCaptcha>
+		<newsletterSubscription>
+			<value>YES</value>
+			<element_type>YES/NO</element_type>
+		</newsletterSubscription>
+	</registration>
 	<mluse>
 		<language>esp</language>
 	</mluse>
 	<users>
 		<licenses>5</licenses>
+		<documentTypes>
+			<dni>1</dni>
+			<cuil>2</cuil>
+			<otro>3</otro>
+		</documentTypes>
 	</users>
 	<email>
 		<mode>
