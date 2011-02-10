@@ -2,7 +2,10 @@
 	<h1>Administración de Usuarios por Afiliados</h1>
 	<p>A continuación podrá |-if $currentAffiliateUser->getId() eq ''-|crear|-else-|editar|-/if-| el Usuario por Afiliado del sistema.</p>
 	|-if $currentAffiliateUser->getId() eq ''-|
-			Ingrese la Identificación del usuario y la contraseña para el nuevo usuario,  luego haga click en Guardar para generar el nuevo usuario.
+		|-if $ownerCreation ne ''-|
+			Para terminar de crear el afiliado debe crear una cuenta de usuario asociada. <br />
+		|-/if-|
+		Ingrese la Identificación del usuario y la contraseña para el nuevo usuario,  luego haga click en Guardar para generar el nuevo usuario.
 	|-else-|
 			Realice los cambios en el usuario y haga click en Aceptar para guardar las modificaciones.
 	|-/if-| 
@@ -72,7 +75,7 @@
 				|-/foreach-|
 	       	</select>
 		</p>
-		|-if $affiliates|@count > 0-|
+		|-if $affiliates|@count > 0 && $ownerCreation eq ''-|
 		<p>
 			<label for="affiliateUser[affiliateId]">Afiliado</label>
 			<select name="affiliateUser[affiliateId]">
@@ -83,6 +86,7 @@
 		</p>
 		|-/if-|
 		<p>
+			<input type="hidden" name="ownerCreation" value="|-$ownerCreation-|" />
 			<input type="hidden" name="id" value="|-$currentAffiliateUser->getId()-|" />
 			<input type="hidden" name="do" value="affiliatesUsersDoEdit" />
 			<input name="save" type="submit" class="botonchico" value="##97,Guardar##"> 

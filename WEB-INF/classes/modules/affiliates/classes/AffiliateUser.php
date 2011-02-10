@@ -25,8 +25,11 @@ class AffiliateUser extends BaseAffiliateUser {
 	}
 	
 	function getNotAssignedGroups() {
+		$id = $this->getId();
+		if (empty($id)) 
+			return new PropelObjectCollection;
 		$obj = AffiliateGroupQuery::create()->join('AffiliateUserGroup', Criteria::LEFT_JOIN)
-								  	->where('AffiliateUserGroup.Userid <> ?', $this->getId())
+								  	->where('AffiliateUserGroup.Userid <> ?', $id)
 								  	->orWhere('AffiliateUserGroup.Userid IS NULL')
 								  	->find();
 		return $obj;
