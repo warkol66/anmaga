@@ -18,6 +18,7 @@ class AffiliatesUsersDoEditAction extends BaseAction {
 		$smarty->assign('timezones',$timezonePeer->getAll());	
 		$levels = AffiliateLevelPeer::getAll();
 		$smarty->assign("levels",$levels);	
+		$smarty->assign('ownerCreation', $_POST["ownerCreation"]);
 
 		if (!empty($_SESSION["loginUser"])) {
 			$affiliates = AffiliatePeer::getAll();
@@ -77,7 +78,6 @@ class AffiliatesUsersDoEditAction extends BaseAction {
 		$usersPeer= new AffiliateUserPeer();
 		
 		$affiliateUserParams = $_POST["affiliateUser"];
-		
 
 		if ( !empty($_SESSION["loginUser"]) )
 			$affiliateId = $_POST["affiliateUser"]["affiliateId"];
@@ -87,18 +87,6 @@ class AffiliatesUsersDoEditAction extends BaseAction {
 		
 		$filters = array('searchAffiliateId' => $affiliateId);
 		
-		if ( empty($affiliateId) ) {
-			$this->assignObjects($smarty);
-			$smarty->assign("message","emptyAffiliate");			
-			return $mapping->findForwardConfig('failure');
-		}	
-
-		if ( empty($affiliateUserParams["username"]) ) {
-			$this->assignObjects($smarty);
-			$smarty->assign("message","emptyUsername");			
-			return $mapping->findForwardConfig('failure');
-		}	
-
 		if ( ( empty($_POST["id"]) && empty($affiliateUserParams["password"]) ) || ($affiliateUserParams["password"] != $affiliateUserParams["password2"]) ) {
 			$this->assignObjects($smarty);
 			$smarty->assign("message","wrongPassword");
@@ -111,11 +99,37 @@ class AffiliatesUsersDoEditAction extends BaseAction {
 			$affiliateUser = AffiliateUserPeer::get($_POST["id"]);
 		
 		Common::setObjectFromParams($affiliateUser, $affiliateUserParams);
+		
+		$affiliate = $_SESSION['newAffiliate'];
+		if (!empty($affiliate) && !empty($_POST["ownerCreation"])) {
+			$affiliateUser->validate();
+			$failures = $affiliateUser->getValidationFailures();
+			//Nos aseguramos que la unica falla que tenga sea por el affiliateId.
+			if (count($failures) > 1 || (!empty($failures[0]) && $failures[0]->getColumn() != AffiliateUserPeer::AFFILIATEID)) {
+				$this->assignObjects($smarty);
+				$smarty->assign("message","errorUpdate");
+				return $mapping->findForwardConfig('failure');
+			}
+			$affiliate->save(); //necesitamos que tenga id
+			$affiliateUser->setAffiliateRelatedByAffiliateid($affiliate);
+		}
+		
 		if (!$affiliateUser->save()) {
 			$this->assignObjects($smarty);
 			$smarty->assign("message","errorUpdate");
 			return $mapping->findForwardConfig('failure');
 		}
+		
+		if (!empty($affiliate) && !empty($_POST["ownerCreation"])) {
+			$affiliate->setOwnerId($affiliateUser->getId());
+			if (!$affiliate->save()) {
+				$this->assignObjects($smarty);
+				$smarty->assign("message","errorUpdate");
+				return $mapping->findForwardConfig('failure');
+			}
+			return $this->addFiltersToForwards($filters, $mapping, 'success-owner');
+		}
+		
 		return $this->addFiltersToForwards($filters, $mapping, 'success');
 	}
 }

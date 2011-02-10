@@ -38,16 +38,15 @@ class AffiliatesDoEditAction extends BaseAction {
 			$affiliate = new Affiliate();
 			$affiliate = Common::setObjectFromParams($affiliate,$_POST["params"]);
 
-			if(!$affiliate->save()) {
+			if(!$affiliate->validate()) {
 				$smarty->assign("affiliate",$affiliate);
 				$smarty->assign("message","error");
 				return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'failure');
 			}
 			else{
-				$params["id"] = $affiliate->getId();
-				$logSufix = ', ' . Common::getTranslation("action: create","common");
-				Common::doLog('success-add',$_POST["userParams"]["name"]. $logSufix);
-				return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'success');
+				$_SESSION['newAffiliate'] = $affiliate;
+				$params['ownerCreation'] = 1;
+				return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'success-create');
 			}
 		}
 	}
