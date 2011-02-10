@@ -109,6 +109,7 @@ class AffiliateUser extends BaseAffiliateUser {
 	public function setPassword($password) {
 		if(!empty($password)){
 			parent::setPassword(md5($password."ASD"));
+			$this->setPasswordUpdatedTime(time());
 		}
 		return $this;
 	}
