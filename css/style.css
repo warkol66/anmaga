@@ -1,6 +1,3 @@
-@import url("cabezal.css"); /* Importar el estilo para definir el Cabezal de la página */
-@import url("custom.css");  /* Importar los estilos que cambien de color  */
-/* traido del Template */
 * {
 	padding: 0; margin: 0; 
 }
@@ -707,9 +704,8 @@ option{
 /* CONTENIDO   */
 /* -------------------------------------------------------------------*/ 
 #rightColumn h1{
-	font-size: 1.7em;
+	font-size:1.7em;
 	font-weight:bold;
-	padding-bottom: 5px;
 	margin-bottom:15px;
 /*	color: 
 	border-bottom:    */	

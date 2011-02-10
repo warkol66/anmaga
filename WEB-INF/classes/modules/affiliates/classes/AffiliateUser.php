@@ -99,7 +99,21 @@ class AffiliateUser extends BaseAffiliateUser {
 		else
 			return false;
   }
-	
+
+  /**
+  * Devuelve el nombre dle afiliado
+  *
+  * @return string con nombre del afiliado 
+  */
+	function getAffiliateName() {
+		$affiliateId = $this->getAffiliateId();
+		$affiliate = AffiliateQuery::create()->findPk($affiliateId);
+		if ($affiliate)
+			return $affiliate->getName();
+		else
+			return;
+  }
+
 	/**
 	 * Redefinimos para que se pase a minusculas el username.
 	 */
