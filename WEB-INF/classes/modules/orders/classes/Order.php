@@ -26,144 +26,144 @@ class Order extends BaseOrder {
 	}
 
 
-				/**
-				 * Agrega un Item a la Orden de Pedido
-				 *
-				 *
-				 *
-				 */
-				function addItem ($productCode, $price, $quantity) {
+	/**
+	 * Agrega un Item a la Orden de Pedido
+	 *
+	 *
+	 *
+	 */
+	function addItem ($productCode, $price, $quantity) {
 
-								//regla de negocio
-								// la cantidad de items debe ser mayor o igual a uno
-							 if ($quantity <= 0) {
-												return false;
-							 }
+		//regla de negocio
+		// la cantidad de items debe ser mayor que cero
+	 if ($quantity <= 0)
+			return false;
 
-								try {
-												$item = OrderItemPeer::create($this->getId(),$productCode,$price,$quantity);
-								}
-								catch(PropelException $exp) {
-												return false;
-								}
+		try {
+			$item = OrderItemPeer::create($this->getId(),$productCode,$price,$quantity);
+		}
+		catch(PropelException $exp) {
+			return false;
+		}
 
-								//se agrego satisfactoriamente
+		//se agrego satisfactoriamente
+		$total = $this->getTotal();
+		$this->setTotal($total + ($price * $quantity));
 
+		try {
+			$this->save();
+		}
+		catch (PropelException $exp){
+			return false;
+		}
 
-								$total = $this->getTotal();
-								$this->setTotal($total + ($price * $quantity));
+		return $item;
+	}
 
-								try {
-												$this->save();
-								}
-								catch (PropelException $exp){
-												return false;
-								}
+	/**
+	 * Eelimina un Item a la Orden de Pedido
+	 *
+	 */
+	function deleteItem($itemId) {
 
-								return $item;
+		$item = OrderItemPeer::get($itemId);
+		$oldQuantity = $item->getQuantity();
+		$oldPrice = $item->getPrice();
 
-				}
+		if (!OrderItemPeer::delete($itemId))
+			return false;
 
-				function deleteItem($itemId) {
+		$total = $this->getTotal();
+		$this->setTotal($total - ($oldQuantity * $oldPrice));
 
-								$item = OrderItemPeer::get($itemId);
-								$oldQuantity = $item->getQuantity();
-								$oldPrice = $item->getPrice();
+		$this->save();
 
-								if (!OrderItemPeer::delete($itemId))
-												return false;
-								$total = $this->getTotal();
-								$this->setTotal($total - ($oldQuantity * $oldPrice));
+		return true;
+	}
 
-								$this->save();
+	/**
+	 * Actualiza la cantidad de un Item de la Orden de Pedido
+	 *
+	 */
+	function updateQuantityItem($itemId,$quantity) {
 
-								return true;
-				}
+		$item = OrderItemPeer::get($itemId);
+		$oldQuantity = $item->getQuantity();
+		$price = $item->getPrice();
 
-				function updateQuantityItem($itemId,$quantity) {
+		$item->setQuantity($quantity);
+		try {
+			$item->save();
+		} catch (PropelException $exp) {
+			return false;
+		}
 
-								$item = OrderItemPeer::get($itemId);
-								$oldQuantity = $item->getQuantity();
-								$price = $item->getPrice();
+		$total = $this->getTotal() - ($oldQuantity * $price) + ($quantity * $price);
+		$this->setTotal($total);
 
-								$item->setQuantity($quantity);
-								try {
-												$item->save();
-								} catch (PropelException $exp) {
-												return false;
-								}
+		try {
+			$this->save();
+		} catch (PropelException $exp) {
+			return false;
+		}
 
-								$total = $this->getTotal() - ($oldQuantity * $price) + ($quantity * $price);
-								$this->setTotal($total);
+		return true;
 
-								try {
-												$this->save();
-								} catch (PropelException $exp) {
-												return false;
-								}
+	}
 
-								return true;
+	/**
+	 * Devuelve la fecha en la que fue Creada la Order
+	 *
+	 */
+	function getDateCreated() {
 
-				}
+		$date = getdate(strtotime($this->getCreated()));
+		return  $date['year'] . "-" . $date['mon'] . "-" . $date['mday'];
 
-				function getTotalFormat() {
+	}
+	/*
+	 * Permite modificar la fecha en la que fue modificada la orden
+	 *
+	 */
+	function setDateCreated($date) {
 
-					return number_format($this->getTotal(),2,",",".");
-				}
-				/**
-				 * Devuelve la fecha en la que fue Creada la Order
-				 *
-				 */
-				function getDateCreated() {
+		//$date = new DateTime($date);
+		//$dateTimeString = $date->format('Y-m-d H:i:s');
+		$this->setCreated($date);
 
-								$date = getdate(strtotime($this->getCreated()));
-								return  $date['year'] . "-" . $date['mon'] . "-" . $date['mday'];
+		try {
+			$this->save();
+		}
+		catch (PropelException $exp) {
+			return false;
+		}
 
-				}
-				/*
-				 * Permite modificar la fecha en la que fue modificada la orden
-				 *
-				 */
-				function setDateCreated($date) {
+		return true;
+	}
 
-								//$date = new DateTime($date);
-								//$dateTimeString = $date->format('Y-m-d H:i:s');
-								$this->setCreated($date);
+	/*
+	 * Obtiene los items ordenados por el codigo de ordenamiento de los productos.
+	 *
+	 */
+	function getOrderItemsOrderByProductOrderCode() {
+		$criteria =  new Criteria();
+		$criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
+		$criteria->addAscendingOrderByColumn(ProductPeer::ORDERCODE);
+		return $this->getOrderItems($criteria);
+	}
 
-								try {
-												$this->save();
-								}
-								catch (PropelException $exp) {
-												return false;
-								}
+	/*
+	 * Obtiene el último comentario de una orden
+	 *
+	 */
+	function getLastComment() {
+		$criteria =  new Criteria();
+		$criteria->add(OrderStateChangePeer::ORDERID,$this->getId(),Criteria::EQUAL);
+		$criteria->add(OrderStateChangePeer::STATE,OrderPeer::STATE_EXPORTED,Criteria::NOT_EQUAL);
+		$criteria->addDescendingOrderByColumn(OrderStateChangePeer::CREATED);
+		$commentObj = OrderStateChangePeer::doSelectOne($criteria);
+		return $commentObj;
 
-								return true;
-
-				}
-
-				/*
-				 * Obtiene los items ordenados por el codigo de ordenamiento de los productos.
-				 *
-				 */
-				function getOrderItemsOrderByProductOrderCode() {
-								$criteria =  new Criteria();
-								$criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
-								$criteria->addAscendingOrderByColumn(ProductPeer::ORDERCODE);
-								return $this->getOrderItems($criteria);
-				}
-
-				/*
-				 * Obtiene el �ltimo comentario de una orden
-				 *
-				 */
-				function getLastComment() {
-						$criteria =  new Criteria();
-						$criteria->add(OrderStateChangePeer::ORDERID,$this->getId(),Criteria::EQUAL);
-						$criteria->add(OrderStateChangePeer::STATE,OrderPeer::STATE_EXPORTED,Criteria::NOT_EQUAL);
-						$criteria->addDescendingOrderByColumn(OrderStateChangePeer::CREATED);
-						$commentObj = OrderStateChangePeer::doSelectOne($criteria);
-						return $commentObj;
-
-				}
+	}
 
 }

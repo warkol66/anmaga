@@ -14,7 +14,6 @@
 class OrderItem extends BaseOrderItem {
 
 	function getOrderTemplateItem() {
-		require_once("OrderTemplateItem.php");
 		$orderTemplateItem = new OrderTemplateItem();
     $orderTemplateItem->setProductId($this->getProductId());
     $orderTemplateItem->setPrice($this->getPrice());

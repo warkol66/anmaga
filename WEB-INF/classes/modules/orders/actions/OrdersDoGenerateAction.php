@@ -8,7 +8,7 @@ class OrdersDoGenerateAction extends BaseAction {
 
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		$this->template->template = "TemplateMail.tpl";
 
@@ -98,10 +98,10 @@ class OrdersDoGenerateAction extends BaseAction {
 			$mailFrom = $system["config"]["system"]["parameters"]["fromEmail"];
 			require_once('EmailManagement.php');
 			$manager = new EmailManagement();
-	
+
 			//creamos el mensaje multipart
 			$message = $manager->createTextMessage("Creación de nueva orden: ".$orderNumber,$html_result);
-			
+
 			//realizamos el envio
 			$result = $manager->sendMessage($recipients,$mailFrom,$message);
 		}

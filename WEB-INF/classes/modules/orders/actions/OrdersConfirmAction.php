@@ -40,7 +40,6 @@ class OrdersConfirmAction extends BaseAction {
 		$orderItems = $_SESSION["orderItems"];
 		$smarty->assign("orderItems",$orderItems);
 
-
 		return $mapping->findForwardConfig('success');
 	}
 

@@ -42,9 +42,8 @@
 		</tr>
 		|-/foreach-|
 		<tr>
-			<th coldiv="3">&nbsp;</th>
-			<th>Total</th>
-			<th>|-$orderTemplate->getTotal()|system_numeric_format-|</th>
+			<th colspan="4" class="right">Total</th>
+			<th class="right">|-$orderTemplate->getTotal()|system_numeric_format-|</th>
 		</tr>
 		|-else-|
 		<tr>
