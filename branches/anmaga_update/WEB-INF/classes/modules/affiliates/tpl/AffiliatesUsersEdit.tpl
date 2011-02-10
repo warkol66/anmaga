@@ -1,6 +1,6 @@
 <h2>Configuración del Sistema</h2>
 	<h1>Administración de Usuarios por Afiliados</h1>
-	<p>A continuación podrá |-if $currentAffiliateUser->getId() eq ''-|crear|-else-|editar|-/if-| el Usuario por Afiliado del sistema.</p>
+	<p>A continuación podrá |-if $currentAffiliateUser->getId() eq ''-|crear|-else-|editar|-/if-| el Usuario por Afiliado|-if $currentAffiliateUser->getAffiliateName() ne ''-| de |-$currentAffiliateUser->getAffiliateName()-||-/if-|.</p>
 	|-if $currentAffiliateUser->getId() eq ''-|
 		|-if $ownerCreation ne ''-|
 			Para terminar de crear el afiliado debe crear una cuenta de usuario asociada. <br />
@@ -13,22 +13,17 @@
 	<br />
 	
 |-if $message eq "wrongPassword"-|
-	<div align='center' class='errorMessage'>Las contraseñas deben coincidir</div>
-|-/if-|
-|-if $message eq "emptyAffiliate"-|
-	<div align='center' class='errorMessage'>Debe selecccionar un afiliado</div>
-|-/if-|
-|-if $message eq "errorUpdate"-|
-	<div align='center' class='errorMessage'>Ha ocurrido un error al intentar guardar la información del usuario</div>
-|-/if-|
-|-if $message eq "saved"-|
-	<div align='center' class='errorMessage'>Usuario guardado</div>
-|-/if-|
-|-if $message eq "notAddedToGroup"-|
-	<div align='center' class='errorMessage'>Ha ocurrido un error al intentar agregar el usuario al grupo</div>
-|-/if-|
-|-if $message eq "notRemovedFromGroup"-|
-	<div align='center' class='errorMessage'>Ha ocurrido un error al intentar eliminar el usuario al grupo</div>
+	<div class='errorMessage'>Las contraseñas deben coincidir</div>
+|-elseif $message eq "emptyAffiliate"-|
+	<div class='errorMessage'>Debe selecccionar un afiliado</div>
+|-elseif $message eq "errorUpdate"-|
+	<div class='errorMessage'>Ha ocurrido un error al intentar guardar la información del usuario</div>
+|-elseif $message eq "saved"-|
+	<div class='errorMessage'>Usuario guardado</div>
+|-elseif $message eq "notAddedToGroup"-|
+	<div class='errorMessage'>Ha ocurrido un error al intentar agregar el usuario al grupo</div>
+|-elseif $message eq "notRemovedFromGroup"-|
+	<div class='errorMessage'>Ha ocurrido un error al intentar eliminar el usuario al grupo</div>
 |-/if-|
 |-if $currentAffiliateUser->getValidationFailures()|@count > 0-|
 	<div class="errorMessage">
@@ -41,7 +36,7 @@
 |-/if-|
 <form method="post" action="Main.php">
 	<fieldset title="Formulario de edición de usuario">
-	<legend>Usuario por Afiliado</legend>
+	<legend>Usuario por Afiliado |-if $currentAffiliateUser->getAffiliateName() ne ''-|- |-$currentAffiliateUser->getAffiliateName()-||-/if-|</legend>
 		<p>
 			<label for="affiliateUser[username]">Identificación de Usuario</label>
 			<input name="affiliateUser[username]" type="text"  class="textodato" value="|-$currentAffiliateUser->getUsername()-|" size="40" />
@@ -66,15 +61,15 @@
 			<label for="affiliateUser[password2]">Repetir Contraseña</label>
 			<input name="affiliateUser[password2]" type="password" class="textodato" value="" size="20" />
 		</p>
-		<p>
+|-if $levels|@count gt 0-|		<p>
 			<label for="affiliateUser[levelId]">Nivel de Usuario</label>
 	        <select name="affiliateUser[levelId]">
 	        	<option value="">Seleccionar nivel</option>
 				|-foreach from=$levels item=level name=for_levels-|
-	        		<option value="|-$level->getId()-|"|-if $level->getId() eq $currentAffiliateUser->getLevelId()-| selected="selected"|-/if-|>|-$level->getName()-|</option>
+	        		<option value="|-$level->getId()-|" |-$level->getId()|selected:$currentAffiliateUser->getLevelId()-|>|-$level->getName()-|</option>
 				|-/foreach-|
 	       	</select>
-		</p>
+		</p>|-/if-|
 		|-if $affiliates|@count > 0 && $ownerCreation eq ''-|
 		<p>
 			<label for="affiliateUser[affiliateId]">Afiliado</label>
@@ -89,13 +84,13 @@
 			<input type="hidden" name="ownerCreation" value="|-$ownerCreation-|" />
 			<input type="hidden" name="id" value="|-$currentAffiliateUser->getId()-|" />
 			<input type="hidden" name="do" value="affiliatesUsersDoEdit" />
-			<input name="save" type="submit" class="botonchico" value="##97,Guardar##"> 
-			<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##' class='botonchico' />
+			<input name="save" type="submit" value="##97,Guardar##"> 
+			<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##' />
 		</p>
 	</fieldset>
 </form>
 
-|-if $currentAffiliateUser->getId() ne ''-|
+|-if $currentAffiliateUser->getId() ne '' && $groups|@count gt 0-|
 <fieldset title="Formulario de edición de grupos del usuario">
 	<legend>El usuario |-$currentAffiliateUser->getUsername()-| es miembro de los grupos:</legend>
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tableTdBorders">
