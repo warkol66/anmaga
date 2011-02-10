@@ -35,15 +35,14 @@ class UsersDoPasswordRecoveryAction extends BaseAction {
         $smarty->assign("password",$userAndPassword[1]);
         $body = $smarty->fetch("UsersPasswordRecoveryMail.tpl");
 
-				$userInfo = $userAndPassword[0]->getUserInfo();
 				require_once("libmail.inc.php");
 
 				global $system;
 
 				$m = new Mail();
 				$m->From($system["config"]["system"]["parameters"]["fromEmail"]);
-				$m->To($userInfo->getMailAddress());
-				$m->Subject("Nueva Contraseña");
+				$m->To($user->getMailAddress());
+				$m->Subject("Nueva Contraseï¿½a");
 				$m->Body($body);
 				$m->Send();
 				

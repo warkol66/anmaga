@@ -128,8 +128,13 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 
 		if ( !empty($user) ) {
 			if ( $user->getPassword() == md5($password."ASD") ) {
+				$_SESSION['lastLogin'] = $user->getLastLogin();	
 				$user->setLastLogin(time());
 				$user->save();
+				if (is_null($user->getPasswordUpdated()) && ConfigModule::get("affiliates","forceFirstPasswordChange"))
+					$_SESSION['firstLogin'] = "firstLogin";
+				else
+					unset($_SESSION['firstLogin']);
 				return $user;
 			}
 		}
@@ -306,29 +311,17 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
   */
   function getNewPassword($length = 8)
   {
-  	// start with a blank password
-	  $password = "";
-
-  	// define possible characters
-	  $possible = "0123456789bcdfghjkmnpqrstvwxyz";
-
-	  // set up a counter
-  	$i = 0;
-
-	  // add random characters to $password until $length is reached
-  	while ($i < $length) {
-
-	    // pick a random character from the possible ones
-  	  $char = substr($possible, mt_rand(0, strlen($possible)-1), 1);
-
-	    // we don't want this character if it's already in the password
-  	  if (!strstr($password, $char)) {
-	      $password .= $char;
-  	    $i++;
-	    }
-	  }
-  	// done!
-	  return $password;
+		$password = "";
+		$possible = "23456789bcdfghjkmnpqrstvwxyz@%";
+		$i = 0;
+		while ($i < $length) {
+			$char = substr($possible, mt_rand(0, strlen($possible)-1), 1);
+			if (!strstr($password, $char)) {
+				$password .= $char;
+				$i++;
+			}
+		}
+		return $password;
 	}
   
   	/**
@@ -412,6 +405,71 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 	function getByUsername($username) {
 		$user = AffiliateUserQuery::create()->setIgnoreCase(1)->findOneByUsername($username);
 		return $user;
+	}
+	
+	/**
+	 * Authentica un usuario por nombre de usuario y mail.
+	 *
+	 * @param string $username Nombre de usuario.
+	 * @param string $mailAddress Email.
+	 * @return User si fue exitosa la autenticacion, false si no.
+	 */
+
+	function authenticateByUserAndMail($username, $mailAddress) {
+		$criteria = new AffiliateUserQuery();
+		$criteria->filterByUserName($username);
+		$criteria->filterByMailAddress($mailAddress);
+		$user = $criteria->findOne();
+		if (!empty($user))
+			return $user;
+		return false;
+	}
+	
+	/**
+	 * Devuelve el usuario con recuperacion de contraseña pendiente que corresponda a partir
+	 * del hash pasado por parametro, si existe.
+	 *
+	 * @param string $recoveryHash hash mediante el cual se realiza la busqueda.
+	 * @return user usuario correspondiente si existe, false si no.
+	 *
+	 */
+	 function getByRecoveryHash($recoveryHash) {
+		if (!empty($recoveryHash)){
+			$user = AffiliateUserQuery::create()->findOneByRecoveryHash($recoveryHash);
+			if (!empty($user)) {
+				return $user;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	 }
+	 
+	/**
+	* Actualiza la informacion de un usuario.
+	*
+	* @param int $id Id del usuario
+	* @param string $pass Contraseña del usuario
+	* @param int $timezone Zona horaria del usuario
+	* @return boolean true si se actualizo la informacion correctamente, false sino
+	*/
+	function updatePass($id,$pass,$mailAddress,$timezone) {
+		try {
+			$user = AffiliateUserPeer::retrieveByPK($id);
+			$user->setUpdatedAt(time());
+			$user->setPasswordUpdated(time());
+			$user->setPassword($pass);
+			$user->setTimezone($timezone);
+			$user->setMailAddress($mailAddress);
+			$user->save();
+			return true;
+		}
+		catch (PropelException $exp) {
+			if (ConfigModule::get("global","showPropelExceptions"))
+				print_r($exp->getMessage());
+			return false;
+		}
 	}
 
 } // AffiliateUserPeer

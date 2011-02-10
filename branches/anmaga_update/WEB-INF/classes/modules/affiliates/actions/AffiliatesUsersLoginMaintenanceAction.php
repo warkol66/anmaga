@@ -1,24 +1,23 @@
 <?php
 /** 
- * AffiliatesUsersPasswordRecoveryAction
+ * AffiliatesUsersLoginMaintenanceAction
  *
- * @package affiliates 
+ * @package users 
  */
 
-class AffiliatesUsersPasswordRecoveryAction extends BaseAction {
+class AffiliatesUsersLoginMaintenanceAction extends BaseAction {
 
-	function AffiliatesUsersPasswordRecoveryAction() {
+	function AffiliatesUsersLoginMaintenanceAction() {
 		;
 	}
 
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
-
-  	//////////
-   	// Use a different template
+  	/**
+   	* Use a different template
+   	*/
 		$this->template->template = "TemplateLogin.tpl";
-
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
@@ -29,6 +28,8 @@ class AffiliatesUsersPasswordRecoveryAction extends BaseAction {
 		}
 
 		$module = "Affiliates";
+		
+		$smarty->assign("onlyAdmin",true);
 
 		return $mapping->findForwardConfig('success');
 	}
