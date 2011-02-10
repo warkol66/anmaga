@@ -1,37 +1,14 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("OrderTemplatePeer.php");
-
 class OrdersTemplatesListAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function OrdersTemplatesListAction() {
 		;
 	}
 
-
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -49,20 +26,20 @@ class OrdersTemplatesListAction extends BaseAction {
 
 
 		if (!empty($_SESSION["loginUser"])) {
-	    $pager = OrderTemplatePeer::getAllPaginated($_GET["page"]);
-	    $smarty->assign("all",1);
-	 	}
-		else {
-    	$pager = OrderTemplatePeer::getAllByAffiliateIdPaginated($_SESSION["loginAffiliateUser"]->getAffiliateId(),$_GET["page"]);
-    	$smarty->assign("all",0);
+			$pager = OrderTemplatePeer::getAllPaginated($_GET["page"]);
+			$smarty->assign("all",1);
 		}
-		
+		else {
+			$pager = OrderTemplatePeer::getAllByAffiliateIdPaginated($_SESSION["loginAffiliateUser"]->getAffiliateId(),$_GET["page"]);
+			$smarty->assign("all",0);
+		}
+
 		$smarty->assign("orderTemplates",$pager->getResult());
 		$smarty->assign("pager",$pager);
 		$url = "Main.php?do=ordersTemplatesList";
 		$smarty->assign("url",$url);
 
-    $smarty->assign("message",$_GET["message"]);
+		$smarty->assign("message",$_GET["message"]);
 
 		return $mapping->findForwardConfig('success');
 	}

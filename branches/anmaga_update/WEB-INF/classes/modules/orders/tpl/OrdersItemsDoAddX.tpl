@@ -8,7 +8,7 @@
 	</script>
 	<td class="tdSize1 bottom right">|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-|<span id="totalItem|-$item->getId()-|">|-$totalItem|system_numeric_format-|</span></td> 
 	<td class="tdSize1 bottom right">
-		<input id="editButton|-$item->getCode()-|"type="button" onclick="editor|-$item->getCode()-|.enterEditMode();" value="Editar" class="buttonImageEdit" />
+		<input id="editButton|-$item->getCode()-|" type="button" onclick="editor|-$item->getCode()-|.enterEditMode();" value="Editar" class="iconEdit" />
 		<form method="post" action="Main.php" id="formRemove|-$item->getCode()-|">
 			<input type="hidden" name="itemId" value="|-$item->geCode()-|" />
 			<input type="hidden" name="orderId" value="|-$order->getId()-|" />
@@ -16,13 +16,12 @@
 			<input type="button" value="Remove" onclick="ordersItemsDoDeleteX('|-$item->getCode()-|')"  class="iconDelete"/>
 		</form>
 		<span  id="messageRemove|-$item->getId()-|"></span>
-
 	</td>
 </tr> 
 
 <script type="text/javascript">
     //<![CDATA[
     $('messageAdd').innerHTML = "";
-	$('product_total_value').innerHTML = '|- $order->getTotalFormat()-|';
+	$('product_total_value').innerHTML = '|-$order->getTotal()|system_numeric_format-|';
     //]]>
 </script>

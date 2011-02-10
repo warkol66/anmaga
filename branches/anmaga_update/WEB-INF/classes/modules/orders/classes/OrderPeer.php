@@ -313,12 +313,7 @@ class OrderPeer extends BaseOrderPeer {
 	}
 
 	function createFromArray($orders,$user) {
-		
-		require_once("OrderItemPeer.php");
-		require_once("BranchPeer.php");
-		require_once("OrderStateChangePeer.php");
-		require_once("AffiliateProductCodePeer.php");
-		
+	
 		$results = array();
 		$results["ordersCreated"] = 0;
 		$results["ordersNotCreated"] = 0;
@@ -341,7 +336,7 @@ class OrderPeer extends BaseOrderPeer {
 				$total = $totalInFile;
 			else
 				$total = $totalCalculated;
-			$branch = BranchPeer::getByNumber($order["branchNumber"],$user->getAffiliateId());
+			$branch = AffiliateBranchPeer::getByNumber($order["branchNumber"],$user->getAffiliateId());
 			if ($branch)
 				$branchId = $branch->getId();
 			else

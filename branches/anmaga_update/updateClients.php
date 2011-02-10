@@ -49,9 +49,9 @@ if (is_file("updates/Clientes.txt")) {
 	
 		$affiliateId = $affiliateInfo->getAffiliateId();
 			
-		$branch = BranchPeer::getByCode($row[0]);
+		$branch = AffiliateBranchPeer::getByCode($row[0]);
 		if (empty($branch))
-			$branch = New Branch();
+			$branch = New AffiliateBranch();
 		
 		$branch->setCode($row[0]);
 		$branch->setName(iconv("Windows-1252","UTF-8",$row[1]));

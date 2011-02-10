@@ -1,36 +1,11 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("OrderItem.php");
-require_once("ProductPeer.php");
-require_once("OrderPeer.php");
-
 class OrdersDoAddToCartAction extends BaseAction {
-
-
-	// ----- Constructor ---------------------------------------------------- //
 
 	function OrdersDoAddToCartAction() {
 		;
 	}
 
-
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
@@ -51,10 +26,9 @@ class OrdersDoAddToCartAction extends BaseAction {
 
 		
     $order = OrderPeer::get($_REQUEST["id"]);
-    if ( !empty($order) ) {
+    if (!empty($order)) {
 
 			$items = $_SESSION["orderItems"];
-
 
 			foreach ($order->getOrderItems() as $currentItem) {
 			
