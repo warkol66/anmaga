@@ -128,55 +128,40 @@ class BackupPeer {
 	}
 
 	/**
-	 * Crea un backup de datos en el servidor
-	 *
-	 * @todo Ver de donde obtener nombre de sistema
-	 * @todo Ver como separar los casos con prefijo solamente
-	 * @return true si fue exitoso, false sino
+	 * Crea un backup
+	 *	
+	 * @return $zipContents si fue exitoso, false sino
 	 */
-	function createDataBackup($path = 'WEB-INF/../backups/') {
-
-		$currentDatetime = BackupPeer::getCurrentDatetime();
-		$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . '.zip';
-		$filecontents = BackupPeer::buildDataBackup($filename,$path);
-		BackupPeer::writeToBackupLog('Se ha creado un backup de datos en el servidor');
-		$zipContents = BackupPeer::getZipFromDataFile($filecontents);
-
-		if ($fp = fopen($path . $filename, 'a')) {
-				fwrite($fp, $zipContents);
-				fclose($fp);
-		}
-		else
-			return false;
-
-		return true;;
-
-	}
-
-	/**
-	 * Crea un backup en el servidor
-	 *
-	 * @todo Ver de donde obtener nombre de sistema
-	 * @todo Ver como separar los casos con prefijo solamente
-	 * @return true si fue exitoso, false sino
-	 */
-	function createCompleteBackup($path = 'WEB-INF/../backups/') {
-
+	function createBackup($options, $path = 'WEB-INF/../backups/') {
+		
+		if (!isset($options['dataOnly']))
+			$options['dataOnly'] = false;
+			
+		if (!isset($options['toFile']))
+			$options['toFile'] = false;
+		
 		set_time_limit(ConfigModule::get("global","backupTimeLimit"));
-		$currentDatetime = BackupPeer::getCurrentDatetime();
-		$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . '.zip';
+		$filename = BackupPeer::getFileName();
 		$filecontents = BackupPeer::buildDataBackup($filename,$path);
-		BackupPeer::writeToBackupLog('Se ha creado un backup completo en el servidor');
-		$zipContents = BackupPeer::getCompleteBackupZipFromDataFile($filecontents);
-		if ($fp = fopen($path . $filename, 'a')) {
-			fwrite($fp, $zipContents);
-			fclose($fp);
+		
+		$message = 'Se ha creado un backup';
+		$message .= $options['dataOnly'] ? ' de datos' : ' completo';
+		$message .= $options['toFile'] ? ' para descarga' : ' en el servidor';
+		BackupPeer::writeToBackupLog($message);
+		$zipContents = BackupPeer::getZipFromDataFile($filecontents, $options['dataOnly']);
+		
+		if (!$options['toFile']) {
+			if (file_put_contents($path . $filename, $zipContents))
+				return $zipContents;
+			else
+				return false;
 		}
-		else
-			return false;
-
-		return true;
-
+		return $zipContents;
+	}
+	
+	public function getFileName() {
+		$currentDatetime = BackupPeer::getCurrentDatetime();
+		return Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . '.zip';
 	}
 
 	/**
@@ -192,7 +177,7 @@ class BackupPeer {
 
 		//guardamos una copia actual del contenido de la base de datos en el servidor en /backups/restore
 		$this->setTableHeader('actionLogs_');
-		$this->createDataBackup('WEB-INF/../backups/restore/');
+		$this->createBackup(array('dataOnly' => true), 'WEB-INF/../backups/restore/');
 		$this->writeToBackupLog('Se ha guardado una copia de resguardo en la base actual en /backups/restore/: ');
 
 		foreach ($queries as $query) {
@@ -223,7 +208,7 @@ class BackupPeer {
 		$zipfile->read_zip($zipFilename);
 
 		$sql = '';
-
+		
 		foreach($zipfile->files as $filea) {
 			// condicion de busqueda del archivo SQL
 			if ($filea["name"] == "dump.sql" && $filea["dir"] == './db' )
@@ -275,44 +260,37 @@ class BackupPeer {
 	}
 
 	/**
-	 * Devuelve el contenido de un backup de datos de archivo
-	 *
-	 * @return string contenido del backup en SQL
-	 */
-	function createDataBackupFile() {
-
-		$currentDatetime = BackupPeer::getCurrentDatetime();
-		$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . 'zip';
-		$filecontents = BackupPeer::buildDataBackup($filename);
-		BackupPeer::writeToBackupLog('Se ha creado un backup para descarga');
-		return BackupPeer::getZipFromDataFile($filecontents);
-	}
-
-	/**
-	 * Devuelve el contenido de un backup de datos de archivo
-	 *
-	 * @return string contenido del backup en SQL
-	 */
-	function createCompleteBackupFile() {
-
-		$currentDatetime = BackupPeer::getCurrentDatetime();
-		$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . '.zip';
-		$filecontents = BackupPeer::buildDataBackup($filename);
-		BackupPeer::writeToBackupLog('Se ha creado un backup para descarga');
-		return BackupPeer::getCompleteBackupZipFromDataFile($filecontents);
-	}
-
-	/**
 	 * Genera un zip de un archivo de datos
 	 * @param $datafile contenido del data file
+	 * @param $dataOnly el backup es completo o solo de la base de datos?
 	 */
-	function getZipFromDataFile($datafile) {
+	function getZipFromDataFile($datafile, $dataOnly = false) {
 		require_once("zip.class.php");
 		$zipfile = new zipfile;
 		$zipfile->create_dir(".");
 		$zipfile->create_dir("./db/");
 		$zipfile->create_file($datafile, "./db/dump.sql");
 
+		if (!$dataOnly) {
+			$zipfile->create_dir("./files/");
+			$listing = array();
+			$dirHandler = @opendir('WEB-INF/../');
+			BackupPeer::directoryList(&$listing,$dirHandler,'WEB-INF/../');
+	
+			foreach ($listing as $route) {
+				$clearRoute = explode('WEB-INF/../',$route);
+	
+				if (!BackupPeer::routeHasToBeIgnored($clearRoute[1])) {
+					if (is_dir($route))
+						$zipfile->create_dir("./files/" . $clearRoute[1]);
+					if (is_file($route)) {
+						$contents = file_get_contents($route);
+						$zipfile->create_file($contents,'./files/' . $clearRoute[1]);
+					}
+				}
+			}
+		}
+		
 		return $zipfile->zipped_file();
 	}
 
@@ -327,32 +305,6 @@ class BackupPeer {
 				return true;
 		}
 		return false;
-	}
-
-	function getCompleteBackupZipFromDataFile($datafile) {
-		require_once("zip.class.php");
-		$zipfile = new zipfile;
-		$zipfile->create_dir(".");
-		$zipfile->create_dir("./db/");
-		$zipfile->create_file($datafile, "./db/dump.sql");
-		$zipfile->create_dir("./files/");
-		$listing = array();
-		$dirHandler = @opendir('WEB-INF/../');
-		BackupPeer::directoryList(&$listing,$dirHandler,'WEB-INF/../');
-
-		foreach ($listing as $route) {
-			$clearRoute = explode('WEB-INF/../',$route);
-
-			if (!BackupPeer::routeHasToBeIgnored($clearRoute[1])) {
-				if (is_dir($route))
-					$zipfile->create_dir("./files/" . $clearRoute[1]);
-				if (is_file($route)) {
-					$contents = file_get_contents($route);
-					$zipfile->create_file($contents,'./files/' . $clearRoute[1]);
-				}
-			}
-		}
-		return $zipfile->zipped_file();
 	}
 
 	function directoryList($listing,$dirHandler,$path) {
@@ -403,7 +355,6 @@ class BackupPeer {
 	}
 
 	function writeToBackupLog($message) {
-
 		$fd = fopen('WEB-INF/logs/backupActivity.log','a+');
 		require_once('TimezonePeer.php');
 
@@ -477,12 +428,23 @@ class BackupPeer {
 	 * @param string nombre del archivo a enviar
 	 * @param string email del destinatario
 	 */
-	function sendBackupToEmail($filename,$email) {
-		
-		if (file_exists('WEB-INF/../backups/' . $filename) == false)
-			return false;
-
+	function sendBackupToEmail($email, $filename = null) {
 		require_once('EmailManagement.php');
+		
+		if ($filename === null) {
+			$filename = BackupPeer::getFileName();
+			$filecontents = BackupPeer::buildDataBackup($filename);
+			$zipContents = BackupPeer::getZipFromDataFile($filecontents, $options['dataOnly']);
+			$attachment = Swift_Attachment::newInstance()
+			  ->setFilename($filename)
+			  ->setContentType('application/zip')
+			  ->setBody($zipContents);
+		} else {
+			if (file_exists('WEB-INF/../backups/' . $filename) == false)
+				return false;
+			//creamos el attach utilizando el wrapper de archivo de Swift.
+			$attachment = Swift_Attachment::fromPath('WEB-INF/../backups/' . $filename, 'application/zip'); 
+		}
 
 		global $system;
 
@@ -494,55 +456,10 @@ class BackupPeer {
 
 		//creamos el mensaje multipart
 		$message = $manager->createMultipartMessage($subject,$text);
-		
-		//creamos el attach utilizando el wrapper de archivo de Swift.
-		$attachment = Swift_Attachment::fromPath('WEB-INF/../backups/' . $filename, 'application/zip');  
+ 		
 		$message->attach($attachment);
 		//realizamos el envio
 		$result = $manager->sendMessage($destination,$mailFrom,$message);
-		
 		return $result;		
-		
 	}
-
-	/**
-	 * Envio del contenido de un backup por Email
-	 * @param string buffer con el contenido del backup (el mismo estara comprimido en zip)
-	 * @param string email del destinatario
-	 */
-	function sendBackupContentToEmail($content,$email) {
-
-		$currentDatetime = BackupPeer::getCurrentDatetime();
-		$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . '.zip';
-		$filecontents = BackupPeer::buildDataBackup($filename,$path);
-		$zipContents = BackupPeer::getZipFromDataFile($filecontents);
-
-		require_once('EmailManagement.php');
-
-		global $system;
-
-		$subject = 'Envio de Backup Generado Por Sistema';
-		$destination = $email;
-		$mailFrom = $system["config"]["system"]["parameters"]["fromEmail"];
-		$text = 'Adjunto a este mensaje se encuentra el backup enviado.';
-
-		$manager = new EmailManagement();
-
-		//creamos el mensaje multipart
-		$message = $manager->createMultipartMessage($subject,$text);
-		
-		$attachment = Swift_Attachment::newInstance()
-		  ->setFilename($filename)
-		  ->setContentType('application/zip')
-		  ->setBody($zipContents);
-
-		$message->attach($attachment);
-
-		//realizamos el envio
-		$result = $manager->sendMessage($destination,$mailFrom,$message);
-		
-		return $result;
-
-	}
-
 }

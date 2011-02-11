@@ -17,29 +17,33 @@
 	|-if $message eq "created"-|
 		<div class="successMessage">Backup creado correctamente.</div>
 	|-elseif $message eq "create_error"-|
-		<div class="successMessage">Se ha producido un error al crear el backup.</div>
+		<div class="errorMessage">Se ha producido un error al crear el backup.</div>
 	|-elseif $message eq "restored"-|
 		<div class="successMessage">Se ha restaurado el backup seleccionado.</div>
 	|-elseif $message eq "restore_error"-|
-		<div class="successMessage">Se ha producido un error al restaurar el backup.</div>
+		<div class="errorMessage">Se ha producido un error al restaurar el backup.</div>
 	|-elseif $message eq "deleted"-|
 		<div class="successMessage">Se ha eliminado el backup seleccionado.</div>
 	|-elseif $message eq "delete_error"-|
-		<div class="successMessage">Se ha producido un error al eliminar el backup.</div>
+		<div class="errorMessage">Se ha producido un error al eliminar el backup.</div>
 	|-elseif $message eq "not_exists"-|
-		<div class="successMessage">El archivo de backup pedido no existe.</div>
+		<div class="errorMessage">El archivo de backup pedido no existe.</div>
+	|-elseif $message eq "email_sent"-|
+		<div class="successMessage">El backup fue enviado.</div>
+	|-elseif $message eq "email_error"-|
+		<div class="errorMessage">Se ha producido un error al enviar el backup.</div>
 	|-/if-|
 	<p>Esta herramienta le permite generar y restaurar respaldos de la información contenida en el sistema. Puede guardar los respaldos en el servidor o en su equipo.</p>
 	<p>Recuerde que al resutaurar un respaldo toda la información existente se reemplazará por la información que está en el respaldo</p>
 	<fieldset class='nestedFieldset' title='Administrador de Respaldos'>
 	<legend>Administrar Respaldos</legend>
 	<p>Generar respaldo almacenado en el servidor &nbsp;&nbsp;
-		Completo <a href='Main.php?do=backupCreate&amp;mode=complete' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='iconStoreInServer' /></a>&nbsp;&nbsp;
-	  Sólo datos <a href='Main.php?do=backupCreate&amp;mode=data' title='Generar respaldo de datos en servidor'><img src="images/clear.png"  class='iconStoreInServer' /></a>	</p>
+		Completo <a href='Main.php?do=backupCreate' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='iconStoreInServer' /></a>&nbsp;&nbsp;
+	  Sólo datos <a href='Main.php?do=backupCreate&amp;options[dataOnly]=1' title='Generar respaldo de datos en servidor'><img src="images/clear.png"  class='iconStoreInServer' /></a>	</p>
 
 	<p>Generar respaldo para descargar&nbsp;&nbsp;		
-	Completo <a href='Main.php?do=backupCreateToFile&amp;mode=complete' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='iconStoreLocal' /></a>&nbsp;&nbsp;	  
-	Sólo datos <a href='Main.php?do=backupCreateToFile&amp;mode=data' title='Generar respaldo de datos para descargar'><img src="images/clear.png"  class='iconStoreLocal' /></a>	</p>
+	Completo <a href='Main.php?do=backupCreate&amp;options[toFile]=1' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='iconStoreLocal' /></a>&nbsp;&nbsp;	  
+	Sólo datos <a href='Main.php?do=backupCreate&amp;options[toFile]=1&amp;options[dataOnly]=1' title='Generar respaldo de datos para descargar'><img src="images/clear.png"  class='iconStoreLocal' /></a>	</p>
 	<p>Restaurar respaldo desde una copia local <a href='javascript:showBackupLoader()' title='Seleccionar archivo local para restaurar'><img src="images/clear.png"  class='iconRestore' /></a></p>
 		<div id="backupLoader" style="display: none;">
 		<br />
@@ -49,7 +53,7 @@
 				<p>A continuacion indique el archivo local a restaurar en el sistema:</p>
 				<p><label>Archivo: </label>
 					<input type="file" name="backup" value="" size="60" /></p>		
-				<input type="hidden" name="do" value="backupRestoreFromFile" />
+				<input type="hidden" name="do" value="backupRestore" />
 				<p>
 					<input type="submit" value="Restaurar Backup Local" accept="txt/sql" onclick="return confirm('Esta opción reemplazará la información en el sistema por la información en este respaldo. ¿Está seguro que desea continuar?');"/>
 					<input type="button" value="Cancelar" onClick="hideBackupLoader()"/>
@@ -73,7 +77,7 @@
 				<th colspan="5" class="thFillTitle">No hay respaldos disponibles</th>
 			</tr>
 		|-/if-|
-		|-foreach from=$filenames item=filename name=for_filenames-|
+		|-foreach from=$filenames item=filename key=counter name=for_filenames-|
 			<tr>
 				<td><a href="Main.php?do=backupDownload&filename=|-$filename.name-|"><img src="images/clear.png"  class='iconDownload' /></a></td>
 				<td>|-$filename.name-|</td>
@@ -90,7 +94,7 @@
 					</form>
 					<form action="Main.php" method="post">
 						<input type="hidden" name="filename" value="|-$filename.name-|"  />
-						<input type="hidden" name="do" value="backupDoRestore" />
+						<input type="hidden" name="do" value="backupRestore" />
 						<input type="submit" value="Restaurar Backup" class="iconRestoreFromServer" title='Restaurar este respaldo' onclick="return confirm('Esta opción reemplazará la información en el sistema por la información en este respaldo. ¿Está seguro que desea continuar?');" />
 					</form>
 					<form action="Main.php" method="post">
