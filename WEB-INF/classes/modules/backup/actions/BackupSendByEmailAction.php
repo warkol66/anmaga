@@ -26,18 +26,22 @@ class BackupSendByEmailAction extends BaseAction {
 
 		$module = "Backup";
 		$smarty->assign("module",$module);
+		
+		$systemConfig = Common::getConfiguration('system');
 
-		if (empty($_POST['filename']) || empty($_POST['email']))
-			return $mapping->findForwardConfig('failure');
-
-		$filename = $_POST['filename'];
-		$email = $_POST['email'];
+		$filename = !empty($_POST['filename']) ? $_POST['filename'] : null;
+		$email = empty($_POST['email']) ? $systemConfig["parameters"]["debugMail"] : $_POST['email'];
 		$backupPeer = new BackupPeer();
 
-		if($backupPeer->sendBackupToEmail($filename,$email))
+		if($backupPeer->sendBackupToEmail($email, $filename)) {
+			Common::doLog('success','system');
+			if (empty($filename)) die; //Estamos ejecutando por cron.
 			return $mapping->findForwardConfig('success');
-		else
+		} else {
+			Common::doLog('failure','system');
+			if (empty($filename)) die; //Estamos ejecutando por cron.
 			return $mapping->findForwardConfig('failure');
+		}
 
 	}
 

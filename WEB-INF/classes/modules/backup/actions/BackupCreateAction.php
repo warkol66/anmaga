@@ -5,6 +5,7 @@
  * @package backup
  */
 
+
 class BackupCreateAction extends BaseAction {
 
 	function BackupCreateAction() {
@@ -27,37 +28,27 @@ class BackupCreateAction extends BaseAction {
 		$module = "Backup";
 		$smarty->assign("module",$module);
 
-		if (empty($_GET['mode'])) {
-			return $mapping->findForwardConfig('failure');
-			Common::doLog('failure');
-		}
-
 		$backupPeer = new BackupPeer();
+		
+		$options = $_GET['options'];
 
-		if ($_GET['mode'] == 'data') {
-
-			if ($backupPeer->createDataBackup()) {
-				Common::doLog('success');
-				return $mapping->findForwardConfig('success');
-			}
-			else {
-				return $mapping->findForwardConfig('failure');
-				Common::doLog('failure');
-			}
+		$content = $backupPeer->createBackup($options);
+		if (!$content) {
+			Common::doLog('failure');
+			return $mapping->findForwardConfig('failure');
 		}
+		
+		Common::doLog('success');
+		
+		if ($options['toFile']) {
+			$filename = $backupPeer->getFileName();
 
-		if ($_GET['mode'] == 'complete') {
-
-			if ($backupPeer->createCompleteBackup()) {
-				Common::doLog('success');
-				return $mapping->findForwardConfig('success');
-			}
-			else {
-				return $mapping->findForwardConfig('failure');
-				Common::doLog('failure');
-			}
+			header("Content-type: application/zip");
+			header('Content-Disposition: attachment; filename="'.$filename.'"');
+			echo $content;
+	
+			die;
 		}
-
+		return $mapping->findForwardConfig('success');
 	}
-
 }
