@@ -151,6 +151,7 @@
 		</noCheckLoginActions>
 		<rowsPerPage>20</rowsPerPage>
 		<language>esp</language>
+		<receiveMailBackup></receiveMailBackup>
 	</system>
 	<registration>
 		<mode>
