@@ -30,9 +30,9 @@ class BackupSendByEmailAction extends BaseAction {
 		$systemConfig = Common::getConfiguration('system');
 
 		$filename = !empty($_POST['filename']) ? $_POST['filename'] : null;
-		$email = empty($_POST['email']) ? $systemConfig["parameters"]["debugMail"] : $_POST['email'];
+		$email = empty($_POST['email']) ? null : $_POST['email'];
 		$backupPeer = new BackupPeer();
-
+		
 		if($backupPeer->sendBackupToEmail($email, $filename)) {
 			Common::doLog('success','system');
 			if (empty($filename)) die; //Estamos ejecutando por cron.

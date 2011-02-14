@@ -428,29 +428,30 @@ class BackupPeer {
 	 * @param string nombre del archivo a enviar
 	 * @param string email del destinatario
 	 */
-	function sendBackupToEmail($email, $filename = null) {
+	function sendBackupToEmail($email = null, $filename = null) {
 		require_once('EmailManagement.php');
+		
+		$systemConfig = Common::getConfiguration('system');
+		
+		if ($email === null) {
+			$recipients = $systemConfig['receiveMailBackup'];
+			$email = explode(',', $recipients);
+		}
 		
 		if ($filename === null) {
 			$filename = BackupPeer::getFileName();
-			$filecontents = BackupPeer::buildDataBackup($filename);
-			$zipContents = BackupPeer::getZipFromDataFile($filecontents, $options['dataOnly']);
-			$attachment = Swift_Attachment::newInstance()
-			  ->setFilename($filename)
-			  ->setContentType('application/zip')
-			  ->setBody($zipContents);
-		} else {
-			if (file_exists('WEB-INF/../backups/' . $filename) == false)
-				return false;
-			//creamos el attach utilizando el wrapper de archivo de Swift.
-			$attachment = Swift_Attachment::fromPath('WEB-INF/../backups/' . $filename, 'application/zip'); 
+			BackupPeer::createBackup(array('toFile'=>false, 'dataOnly'=>false));
 		}
+		if (file_exists('WEB-INF/../backups/' . $filename) == false)
+			return false;
+		//creamos el attach utilizando el wrapper de archivo de Swift.
+		$attachment = Swift_Attachment::fromPath('WEB-INF/../backups/' . $filename, 'application/zip'); 
 
 		global $system;
 
 		$subject = 'Envio de Respaldo ' . $filename;
 		$destination = $email;
-		$mailFrom = $system["config"]["system"]["parameters"]["fromEmail"];
+		$mailFrom = $systemConfig["parameters"]["fromEmail"];
 		$text = 'Adjunto a este mensaje se encuentra el respaldo ' . $filename . ' enviado.';
 		$manager = new EmailManagement();
 
