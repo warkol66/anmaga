@@ -94,7 +94,7 @@ class BackupPeer {
 		$connection = @mysql_connect($db->Host,$db->User,$db->Password);
 
 		require_once('mysql_dump.inc.php');
-		$dumper = new MySQLDump($db->Database,$path . $filename,false,false);
+		$dumper = new MySQLDump($db->Database,$filename ? $path . $filename : false,false,false);
 
 		//verificamos si tiene table prefix
 		if (($tablePrefix = BackupPeer::configHasPrefix()) != false)
@@ -103,7 +103,6 @@ class BackupPeer {
 		$headerAndFooter = $this->getDumpHeaderAndFooter();
 		$header = $headerAndFooter["header"];
 		$footer = $headerAndFooter["footer"];
-
 		$filecontent = $dumper->doDumpToString();
 		$filecontents = $header.$filecontent.$footer;
 
@@ -142,7 +141,7 @@ class BackupPeer {
 		
 		set_time_limit(ConfigModule::get("global","backupTimeLimit"));
 		$filename = BackupPeer::getFileName();
-		$filecontents = BackupPeer::buildDataBackup($filename,$path);
+		$filecontents = BackupPeer::buildDataBackup($options['toFile'] ? false : $filename,$path);
 		
 		$message = 'Se ha creado un backup';
 		$message .= $options['dataOnly'] ? ' de datos' : ' completo';
@@ -457,8 +456,9 @@ class BackupPeer {
 
 		//creamos el mensaje multipart
 		$message = $manager->createMultipartMessage($subject,$text);
- 		
+
 		$message->attach($attachment);
+
 		//realizamos el envio
 		$result = $manager->sendMessage($destination,$mailFrom,$message);
 		return $result;		

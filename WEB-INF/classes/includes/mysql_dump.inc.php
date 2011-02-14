@@ -11,7 +11,7 @@
 
 *
 * @name    MySQLDump
-* @author  Daniele Viganò - CreativeFactory.it <daniele.vigano@creativefactory.it> - based on a version by Andrea Ingaglio <andrea@coders4fun.com>
+* @author  Daniele Viganï¿½ - CreativeFactory.it <daniele.vigano@creativefactory.it> - based on a version by Andrea Ingaglio <andrea@coders4fun.com>
 * @version 2.0 - 02/10/2007
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -137,31 +137,18 @@ class MySQLDump {
 		if ( !$this->setDatabase($this->database) )
 			return false;
 		// Structure Header
-		//$structure = "-- \n";
-		//$structure .= "-- Table structure for table `{$table}` \n";
-		//$structure .= "-- \n\n";
+		$structure = "-- --------------------------------------------------------\n\n";
+		$structure .= "-- \n";
+		$structure .= "-- Table structure for table `{$table}` \n";
+		$structure .= "-- \n\n";
 		// Dump Structure
 		$structure .= 'DROP TABLE IF EXISTS `'.$table.'`;'."\n";
-		$structure .= "CREATE TABLE `".$table."` (\n";
-		$records = @mysql_query('SHOW FIELDS FROM `'.$table.'`');
-		if ( @mysql_num_rows($records) == 0 )
-			return false;
-		while ( $record = mysql_fetch_assoc($records) ) {
-			$structure .= '`'.$record['Field'].'` '.$record['Type'];
-			if ( !empty($record['Default']) )
-				$structure .= ' DEFAULT \''.$record['Default'].'\'';
-			if ( @strcmp($record['Null'],'YES') != 0 )
-				$structure .= ' NOT NULL';
-			if ( !empty($record['Extra']) )
-				$structure .= ' '.$record['Extra'];
-			$structure .= ",\n";
-		}
-		$structure = @preg_replace("/,\n$/", null, $structure);
+		$records = @mysql_query('SHOW CREATE TABLE `'.$table.'`');
+		$records = @mysql_fetch_assoc($records);
+		$structure .= $records['Create Table'];
 
-		// Save all Column Indexes
-		$structure .= $this->getSqlKeysTable($table);
-
-		$structure .= "\n);\n";//\n\n----------------------------------------------------------\n\n";
+		$structure .= ";\n\n";
+		
 		$this->saveToFile($this->file,$structure);
 	}
 
@@ -174,9 +161,11 @@ class MySQLDump {
 		if ( !$this->setDatabase($this->database) )
 			return false;
 		// Header
-		//$data = "-- \n";
-		//$data .= "-- Dumping data for table `$table` \n";
-		//$data .= "-- \n\n";
+		$data = "-- \n";
+		$data .= "-- Dumping data for table `$table` \n";
+		$data .= "-- \n\n";
+		$this->saveToFile($this->file,$data);
+		$data = "";
 
 		$records = mysql_query('SHOW FIELDS FROM `'.$table.'`');
 		$num_fields = @mysql_num_rows($records);
@@ -205,8 +194,8 @@ class MySQLDump {
 		$num_rows = @mysql_num_rows($records);
 		$num_fields = @mysql_num_fields($records);
 		// Dump data
+		$data = $insertStatement;
 		for ($i = 0; $i < $num_rows; $i++) {
-			$data .= $insertStatement;
 			$record = @mysql_fetch_assoc($records);
 			$data .= ' (';
 			for ($j = 0; $j < $num_fields; $j++) {
@@ -220,14 +209,18 @@ class MySQLDump {
 						$data .= '\''.@str_replace('\"','"',@mysql_escape_string($record[$field_name])).'\'';
 				$data .= ',';
 			}
-			$data = @substr($data,0,-1).");\n";
+			$data = @substr($data,0,-1)."),\n";
 			//if data in greather than 1MB save
 			if (strlen($data) > 1048576) {
+				$data = @substr($data,0,-2).";\n\n";
 				$this->saveToFile($this->file,$data);
-				$data = '';
+				$data = $insertStatement;
 			}
 		}
-//		$data .= "\n----------------------------------------------------------\n\n";
+		if ($num_rows > 0)
+			$data = @substr($data,0,-2).";\n\n";
+		else 
+			$data = "\n";
 		$this->saveToFile($this->file,$data);
 	}
 	
@@ -275,14 +268,28 @@ class MySQLDump {
 			$this->getTableData($record[0],$hexValue);
 		}
   }
+	
+	function getDatabaseCompleteDump($hexValue = true) {
+		$sqlQuery = $this->getTablesQuery();
+		$records = @mysql_query($sqlQuery);
+		if ( @mysql_num_rows($records) == 0 )
+			return false;
+		while ( $record = @mysql_fetch_row($records) ) {
+			$this->getTableStructure($record[0]);
+			$this->getTableData($record[0],$hexValue);
+		}
+	}
 
 	/**
 	* Writes to file the selected database dump
 	*/
 	function doDump() {
 		$this->saveToFile($this->file,"SET FOREIGN_KEY_CHECKS = 0;\n\n");
-		$this->getDatabaseStructure();
-		$this->getDatabaseData($this->hexValue);
+		$this->saveToFile($this->file,"SET SQL_MODE=\"NO_AUTO_VALUE_ON_ZERO\";\n\n");
+		$databaseHeader = '--\n';
+		$databaseHeader .= '-- Database: `'.$this->database.'`\n';
+		$databaseHeader .= '--\n\n';
+		$this->getDatabaseCompleteDump($this->hexValue);
 		$this->saveToFile($this->file,"SET FOREIGN_KEY_CHECKS = 1;\n\n");
 		$this->closeFile($this->file);
 		return true;
@@ -434,8 +441,11 @@ class MySQLDump {
 		//usamos un archivo temporal para generar la salida con la libreria
 		$this->file = tmpfile();
 		$this->saveToFile($this->file,"SET FOREIGN_KEY_CHECKS = 0;\n\n");
-		$this->getDatabaseStructure();
-		$this->getDatabaseData($this->hexValue);
+		$this->saveToFile($this->file,"SET SQL_MODE=\"NO_AUTO_VALUE_ON_ZERO\";\n\n");
+		$databaseHeader = '--\n';
+		$databaseHeader .= '-- Database: `'.$this->database.'`\n';
+		$databaseHeader .= '--\n\n';
+		$this->getDatabaseCompleteDump($this->hexValue);
 		$this->saveToFile($this->file,"SET FOREIGN_KEY_CHECKS = 1;\n\n");
 		
 		//vamos al inicio del archivo

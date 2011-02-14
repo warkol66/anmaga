@@ -31,7 +31,6 @@ class BackupCreateAction extends BaseAction {
 		$backupPeer = new BackupPeer();
 		
 		$options = $_GET['options'];
-
 		$content = $backupPeer->createBackup($options);
 		if (!$content) {
 			Common::doLog('failure');
