@@ -39,27 +39,25 @@
 	<legend>Usuario por Afiliado |-if $currentAffiliateUser->getAffiliateName() ne ''-|- |-$currentAffiliateUser->getAffiliateName()-||-/if-|</legend>
 		<p>
 			<label for="affiliateUser[username]">Identificación de Usuario</label>
-			<input name="affiliateUser[username]" type="text"  class="textodato" value="|-$currentAffiliateUser->getUsername()-|" size="40" />
+			<input name="affiliateUser[username]" type="text"  value="|-$currentAffiliateUser->getUsername()-|" size="40" />
 		</p>
 		<p>
 			<label for="affiliateUser[name]">Nombre</label>
-			<input name="affiliateUser[name]" type="text"  class="textodato" value="|-$currentAffiliateUser->getName()-|" size="60" />
+			<input name="affiliateUser[name]" type="text"  value="|-$currentAffiliateUser->getName()-|" size="60" />
 		</p>
 		<p>
 			<label for="affiliateUser[surname]">Apellido</label>
-			<input name="affiliateUser[surname]" type="text"  class="textodato" value="|-$currentAffiliateUser->getSurname()-|" size="60" />
+			<input name="affiliateUser[surname]" type="text"  value="|-$currentAffiliateUser->getSurname()-|" size="60" />
 		</p>
 		<p>
 			<label for="affiliateUser[mailAddress]">E-mail</label>
-			<input name="affiliateUser[mailAddress]" type="text"  class="textodato" value="|-$currentAffiliateUser->getMailAddress()-|" size="60" />
+			<input name="affiliateUser[mailAddress]" id="affiliateUser[mailAddress]" type="text"  value="|-$currentAffiliateUser->getMailAddress()-|" size="60"  class="mailValidation" onchange="javascript:validationValidateFieldClienSide('affiliateUser[mailAddress]');" /> |-validation_msg_box idField=affiliateUser[mailAddress]-|
 		</p>
-		<p>
-			<label for="affiliateUser[password]">Contraseña</label>
-			<input name="affiliateUser[password]" type="password" class="textodato" value="" size="20" />
+		<p><label for="pass">##users,165,Contraseña##</label>
+			<input id='pass' name='pass' type='password' value='' size="20" class="" onchange="javascript:setElementClass('pass','emptyValidation');setElementClass('pass2','passwordMatch');validationValidateFieldClienSide('pass');" /> |-validation_msg_box idField=pass-|
 		</p>
-		<p>
-			<label for="affiliateUser[password2]">Repetir Contraseña</label>
-			<input name="affiliateUser[password2]" type="password" class="textodato" value="" size="20" />
+		<p><label for="pass2">##users,166,Repetir Contraseña##</label>
+			<input id='pass2' name='pass2' type='password' value='' size="20" class="" onchange="javascript:validationValidateFieldClienSide('pass2');" /> |-validation_msg_box idField=pass2-|
 		</p>
 |-if $levels|@count gt 0-|		<p>
 			<label for="affiliateUser[levelId]">Nivel de Usuario</label>
