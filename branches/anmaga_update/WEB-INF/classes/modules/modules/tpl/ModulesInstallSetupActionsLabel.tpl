@@ -18,11 +18,17 @@
 			|-foreach from=$languages item=language-|
 				|-assign var=languageCode value=$language->getCode()-|
 				<p>
-					<label for="labels[|-$action-|][|-$languageCode-|]">|-$language->getName()-|</label>
-					<input name="labels[|-$action-|][|-$languageCode-|]" type="text" value="|-if isset($actualLabels)-||-$actualLabels.$action.$languageCode-||-/if-|" size="65">
+					<legend>|-$language->getName()-|</legend>
+				</p>
+				<p>
+					<label for="labels[|-$action-|][|-$languageCode-|][label]">Etiqueta</label>
+					<input name="labels[|-$action-|][|-$languageCode-|][label]" type="text" value="|-if isset($actualLabels)-||-$actualLabels.$action.$languageCode.label-||-/if-|" size="60">
+				</p>
+				<p>
+					<label for="labels[|-$action-|][|-$languageCode-|][description]">Descripción</label>
+					<input name="labels[|-$action-|][|-$languageCode-|][description]" type="text" value="|-if isset($actualLabels)-||-$actualLabels.$action.$languageCode.description-||-/if-|" size="60">
 				</p>
 			|-/foreach-|
-
 	</fieldset>
 	|-/foreach-|
 	
