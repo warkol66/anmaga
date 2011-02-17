@@ -34,12 +34,13 @@
 		</ul>
 	</div>
 |-/if-|
+|-include file='ValidationJavascriptInclude.tpl'-|
 <form method="post" action="Main.php">
 	<fieldset title="Formulario de edición de usuario">
 	<legend>Usuario por Afiliado |-if $currentAffiliateUser->getAffiliateName() ne ''-|- |-$currentAffiliateUser->getAffiliateName()-||-/if-|</legend>
 		<p>
 			<label for="affiliateUser[username]">Identificación de Usuario</label>
-			<input name="affiliateUser[username]" type="text"  value="|-$currentAffiliateUser->getUsername()-|" size="40" />
+			<input name="affiliateUser[username]" id="affiliateUser[username]" type="text"  value="|-$currentAffiliateUser->getUsername()-|" size="40" |-ajax_onchange_validation_attribute actionName=affiliatesUsersValidationUsernameX-| />|-validation_msg_box idField=affiliateUser[username]-|
 		</p>
 		<p>
 			<label for="affiliateUser[name]">Nombre</label>
@@ -82,7 +83,7 @@
 			<input type="hidden" name="ownerCreation" value="|-$ownerCreation-|" />
 			<input type="hidden" name="id" value="|-$currentAffiliateUser->getId()-|" />
 			<input type="hidden" name="do" value="affiliatesUsersDoEdit" />
-			<input name="save" type="submit" value="##97,Guardar##"> 
+			|-javascript_form_validation_button value='##97,Guardar##' title='##97,Guardar##'-|
 			<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##' />
 		</p>
 	</fieldset>
