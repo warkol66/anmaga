@@ -133,8 +133,8 @@ class BackupPeer {
 	 */
 	function createBackup($options, $path = 'WEB-INF/../backups/') {
 		
-		if (!isset($options['dataOnly']))
-			$options['dataOnly'] = false;
+		if (!isset($options['complete']))
+			$options['complete'] = false;
 			
 		if (!isset($options['toFile']))
 			$options['toFile'] = false;
@@ -144,10 +144,10 @@ class BackupPeer {
 		$filecontents = BackupPeer::buildDataBackup($options['toFile'] ? false : $filename,$path);
 		
 		$message = 'Se ha creado un backup';
-		$message .= $options['dataOnly'] ? ' de datos' : ' completo';
+		$message .= $options['complete'] ? ' de datos' : ' completo';
 		$message .= $options['toFile'] ? ' para descarga' : ' en el servidor';
 		BackupPeer::writeToBackupLog($message);
-		$zipContents = BackupPeer::getZipFromDataFile($filecontents, $options['dataOnly']);
+		$zipContents = BackupPeer::getZipFromDataFile($filecontents, $options['complete']);
 		
 		if (!$options['toFile']) {
 			if (file_put_contents($path . $filename, $zipContents))
@@ -176,7 +176,7 @@ class BackupPeer {
 
 		//guardamos una copia actual del contenido de la base de datos en el servidor en /backups/restore
 		$this->setTableHeader('actionLogs_');
-		$this->createBackup(array('dataOnly' => true), 'WEB-INF/../backups/restore/');
+		$this->createBackup(array('complete' => true), 'WEB-INF/../backups/restore/');
 		$this->writeToBackupLog('Se ha guardado una copia de resguardo en la base actual en /backups/restore/: ');
 
 		foreach ($queries as $query) {
@@ -261,16 +261,16 @@ class BackupPeer {
 	/**
 	 * Genera un zip de un archivo de datos
 	 * @param $datafile contenido del data file
-	 * @param $dataOnly el backup es completo o solo de la base de datos?
+	 * @param $complete el backup es completo o solo de la base de datos?
 	 */
-	function getZipFromDataFile($datafile, $dataOnly = false) {
+	function getZipFromDataFile($datafile, $complete = false) {
 		require_once("zip.class.php");
 		$zipfile = new zipfile;
 		$zipfile->create_dir(".");
 		$zipfile->create_dir("./db/");
 		$zipfile->create_file($datafile, "./db/dump.sql");
 
-		if (!$dataOnly) {
+		if ($complete) {
 			$zipfile->create_dir("./files/");
 			$listing = array();
 			$dirHandler = @opendir('WEB-INF/../');
@@ -427,10 +427,13 @@ class BackupPeer {
 	 * @param string nombre del archivo a enviar
 	 * @param string email del destinatario
 	 */
-	function sendBackupToEmail($email = null, $filename = null) {
+	function sendBackupToEmail($email = null, $filename = null, $complete = null) {
 		require_once('EmailManagement.php');
 		
 		$systemConfig = Common::getConfiguration('system');
+		
+		if ($complete === null)
+			$complete = false;
 		
 		if ($email === null) {
 			$recipients = $systemConfig['receiveMailBackup'];
@@ -439,7 +442,7 @@ class BackupPeer {
 		
 		if ($filename === null) {
 			$filename = BackupPeer::getFileName();
-			BackupPeer::createBackup(array('toFile'=>false, 'dataOnly'=>false));
+			BackupPeer::createBackup(array('toFile'=>false, 'complete'=>$complete));
 		}
 		if (file_exists('WEB-INF/../backups/' . $filename) == false)
 			return false;

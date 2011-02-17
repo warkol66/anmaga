@@ -38,12 +38,12 @@
 	<fieldset class='nestedFieldset' title='Administrador de Respaldos'>
 	<legend>Administrar Respaldos</legend>
 	<p>Generar respaldo almacenado en el servidor &nbsp;&nbsp;
-		Completo <a href='Main.php?do=backupCreate' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='iconStoreInServer' /></a>&nbsp;&nbsp;
-	  Sólo datos <a href='Main.php?do=backupCreate&amp;options[dataOnly]=1' title='Generar respaldo de datos en servidor'><img src="images/clear.png"  class='iconStoreInServer' /></a>	</p>
+		Completo <a href='Main.php?do=backupCreate&amp;options[complete]=1' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='iconStoreInServer' /></a>&nbsp;&nbsp;
+	  Sólo datos <a href='Main.php?do=backupCreate' title='Generar respaldo de datos en servidor'><img src="images/clear.png"  class='iconStoreInServer' /></a>	</p>
 
 	<p>Generar respaldo para descargar&nbsp;&nbsp;		
-	Completo <a href='Main.php?do=backupCreate&amp;options[toFile]=1' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='iconStoreLocal' /></a>&nbsp;&nbsp;	  
-	Sólo datos <a href='Main.php?do=backupCreate&amp;options[toFile]=1&amp;options[dataOnly]=1' title='Generar respaldo de datos para descargar'><img src="images/clear.png"  class='iconStoreLocal' /></a>	</p>
+	Completo <a href='Main.php?do=backupCreate&amp;options[toFile]=1&amp;options[complete]=1' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='iconStoreLocal' /></a>&nbsp;&nbsp;	  
+	Sólo datos <a href='Main.php?do=backupCreate&amp;options[toFile]=1' title='Generar respaldo de datos para descargar'><img src="images/clear.png"  class='iconStoreLocal' /></a>	</p>
 	<p>Restaurar respaldo desde una copia local <a href='javascript:showBackupLoader()' title='Seleccionar archivo local para restaurar'><img src="images/clear.png"  class='iconRestore' /></a></p>
 		<div id="backupLoader" style="display: none;">
 		<br />
