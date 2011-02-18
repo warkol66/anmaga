@@ -20,7 +20,7 @@ function categoriesDoEditX() {
 
 	var myAjax = new Ajax.Updater(
 				{success: 'categoriesListPlaceHolder'},
-				'/Main.php?do=categoriesDoEditX',
+				'Main.php?do=categoriesDoEditX',
 				{
 					method: 'post',
 					parameters: pars,
