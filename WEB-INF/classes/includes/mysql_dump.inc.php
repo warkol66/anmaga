@@ -197,24 +197,26 @@ class MySQLDump {
 		$data = $insertStatement;
 		for ($i = 0; $i < $num_rows; $i++) {
 			$record = @mysql_fetch_assoc($records);
-			$data .= ' (';
+			$registerData = ' (';
 			for ($j = 0; $j < $num_fields; $j++) {
 				$field_name = @mysql_field_name($records, $j);
 				if ( $hexField[$j] && (@strlen($record[$field_name]) > 0) )
-					$data .= "0x".$record[$field_name];
+					$registerData .= "0x".$record[$field_name];
 				else
 					if ($record[$field_name] === NULL)
-						$data .= " NULL";
+						$registerData .= " NULL";
 					else
-						$data .= '\''.@str_replace('\"','"',@mysql_escape_string($record[$field_name])).'\'';
-				$data .= ',';
+						$registerData .= '\''.@str_replace('\"','"',@mysql_escape_string($record[$field_name])).'\'';
+				$registerData .= ',';
 			}
-			$data = @substr($data,0,-1)."),\n";
+			$registerData = @substr($registerData,0,-1)."),\n";
 			//if data in greather than 1MB save
-			if (strlen($data) > 1048576) {
+			if (strlen($data) + strlen($registerData) >= 524288) {
 				$data = @substr($data,0,-2).";\n\n";
 				$this->saveToFile($this->file,$data);
-				$data = $insertStatement;
+				$data = $insertStatement . $registerData;
+			} else {
+				$data .= $registerData;
 			}
 		}
 		if ($num_rows > 0)
