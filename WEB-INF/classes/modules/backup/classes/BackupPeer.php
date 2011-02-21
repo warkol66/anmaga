@@ -167,7 +167,7 @@ class BackupPeer {
 	 * Restauracion de Backup de sql
 	 * @param $sqlQuery string query a ejecutar
 	 */
-	function restoreSQL($sqlQuery) {
+	function restoreSQL($sqlQuery, $complete = false) {
 
 		require_once('config/DBConnection.inc.php');
 		$db = new DBConnection();
@@ -176,7 +176,9 @@ class BackupPeer {
 
 		//guardamos una copia actual del contenido de la base de datos en el servidor en /backups/restore
 		$this->setTableHeader('actionLogs_');
-		$this->createBackup(array('complete' => true), 'WEB-INF/../backups/restore/');
+		if (!is_dir('WEB-INF/../backups/restore/') && !mkdir('WEB-INF/../backups/restore/'))
+			return false;
+		$this->createBackup(array('complete' => $complete), 'WEB-INF/../backups/restore/');
 		$this->writeToBackupLog('Se ha guardado una copia de resguardo en la base actual en /backups/restore/: ');
 
 		foreach ($queries as $query) {
@@ -186,7 +188,7 @@ class BackupPeer {
 		}
 
 		mysql_close($connection);
-
+		return true;
 	}
 
 
@@ -208,13 +210,16 @@ class BackupPeer {
 
 		$sql = '';
 		
+		$complete = false;
+		
 		foreach($zipfile->files as $filea) {
 			// condicion de busqueda del archivo SQL
-			if ($filea["name"] == "dump.sql" && $filea["dir"] == './db' )
+			if ($filea["name"] == "dump.sql" && ($filea["dir"] == './db' || empty($filea["dir"])))
 				$sql = $filea["data"];
 
 			//condicion para detectar archivos a reemplazar
 			if (strpos($filea["dir"],'./files') !== false) {
+				$complete = true;
 
 				if ($filea['dir'] === './files')
 					$path = '';
@@ -229,7 +234,10 @@ class BackupPeer {
 
 		//hay procesamiento de SQL
 		if (!empty($sql))
-			BackupPeer::restoreSQL($sql);
+			$ret = BackupPeer::restoreSQL($sql, $complete);
+			
+		if (!$ret)
+			return false;
 
 		//obtencion de filename sin ruta
 		$parts = explode('/', $originalFileName);
