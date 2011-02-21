@@ -172,14 +172,14 @@ class BackupPeer {
 		require_once('config/DBConnection.inc.php');
 		$db = new DBConnection();
 		$connection = @mysql_connect($db->Host,$db->User,$db->Password);
-		$queries = explode(";\n",$sqlQuery);
 
-		//guardamos una copia actual del contenido de la base de datos en el servidor en /backups/restore
-		$this->setTableHeader('actionLogs_');
-		if (!is_dir('WEB-INF/../backups/restore/') && !mkdir('WEB-INF/../backups/restore/'))
-			return false;
-		$this->createBackup(array('complete' => $complete), 'WEB-INF/../backups/restore/');
-		$this->writeToBackupLog('Se ha guardado una copia de resguardo en la base actual en /backups/restore/: ');
+		//nos guardamos un dump de la tabla de logs para hacerla trascender al respaldo que se está cargando
+		//esta tabla no se debe alterar al cargar un respaldo.
+		$this->setTableHeader('actionLogs_log');
+		$logsDump = $this->buildDataBackup();
+		$sqlQuery .= $logsDump; //ponemos la tabla de logs actual para que se cargue al final de todo.
+		
+		$queries = explode(";\n",$sqlQuery);
 
 		foreach ($queries as $query) {
 			$query = trim($query);
@@ -362,7 +362,11 @@ class BackupPeer {
 	}
 
 	function writeToBackupLog($message) {
-		$fd = fopen('WEB-INF/logs/backupActivity.log','a+');
+		//El archivo de log lo ponemos bajo el directorio de backups para que sea omitido
+		//por backups completos. Los logs deben ser resistentes a la restauracion de respaldos.
+		if (!is_dir('WEB-INF/../backups/logs') && !mkdir('WEB-INF/../backups/logs'))
+			return false;
+		$fd = fopen('WEB-INF/../backups/logs/backupActivity.log','a+');
 		require_once('TimezonePeer.php');
 
 		$currentDatetime = BackupPeer::getCurrentDatetime();
@@ -371,7 +375,6 @@ class BackupPeer {
 		fclose($fd);
 
 		return true;
-
 	}
 
 	/*
