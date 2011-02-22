@@ -2,7 +2,7 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'measureUnit' table.
+ * Base static class for performing query and update operations on the 'catalog_measureUnit' table.
  *
  * Unidad de Medida
  *
@@ -14,7 +14,7 @@ abstract class BaseMeasureUnitPeer {
 	const DATABASE_NAME = 'anmaga';
 
 	/** the table name for this class */
-	const TABLE_NAME = 'measureUnit';
+	const TABLE_NAME = 'catalog_measureUnit';
 
 	/** the related Propel class for this table */
 	const OM_CLASS = 'MeasureUnit';
@@ -32,10 +32,10 @@ abstract class BaseMeasureUnitPeer {
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** the column name for the ID field */
-	const ID = 'measureUnit.ID';
+	const ID = 'catalog_measureUnit.ID';
 
 	/** the column name for the NAME field */
-	const NAME = 'measureUnit.NAME';
+	const NAME = 'catalog_measureUnit.NAME';
 
 	/**
 	 * An identiy map to hold any loaded instances of MeasureUnit objects.
@@ -338,7 +338,7 @@ abstract class BaseMeasureUnitPeer {
 	}
 	
 	/**
-	 * Method to invalidate the instance pool of all tables related to measureUnit
+	 * Method to invalidate the instance pool of all tables related to catalog_measureUnit
 	 * by a foreign key with ON DELETE CASCADE
 	 */
 	public static function clearRelatedInstancePool()
@@ -557,7 +557,7 @@ abstract class BaseMeasureUnitPeer {
 	}
 
 	/**
-	 * Method to DELETE all rows from the measureUnit table.
+	 * Method to DELETE all rows from the catalog_measureUnit table.
 	 *
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 */

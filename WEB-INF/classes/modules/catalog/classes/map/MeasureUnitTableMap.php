@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'measureUnit' table.
+ * This class defines the structure of the 'catalog_measureUnit' table.
  *
  *
  *
@@ -31,7 +31,7 @@ class MeasureUnitTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('measureUnit');
+		$this->setName('catalog_measureUnit');
 		$this->setPhpName('MeasureUnit');
 		$this->setClassname('MeasureUnit');
 		$this->setPackage('catalog.classes');

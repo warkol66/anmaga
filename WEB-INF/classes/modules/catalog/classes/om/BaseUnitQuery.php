@@ -2,7 +2,7 @@
 
 
 /**
- * Base class that represents a query for the 'unit' table.
+ * Base class that represents a query for the 'catalog_unit' table.
  *
  * Unidades
  *

@@ -2,7 +2,7 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'unit' table.
+ * Base static class for performing query and update operations on the 'catalog_unit' table.
  *
  * Unidades
  *
@@ -14,7 +14,7 @@ abstract class BaseUnitPeer {
 	const DATABASE_NAME = 'anmaga';
 
 	/** the table name for this class */
-	const TABLE_NAME = 'unit';
+	const TABLE_NAME = 'catalog_unit';
 
 	/** the related Propel class for this table */
 	const OM_CLASS = 'Unit';
@@ -32,13 +32,13 @@ abstract class BaseUnitPeer {
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** the column name for the ID field */
-	const ID = 'unit.ID';
+	const ID = 'catalog_unit.ID';
 
 	/** the column name for the NAME field */
-	const NAME = 'unit.NAME';
+	const NAME = 'catalog_unit.NAME';
 
 	/** the column name for the UNITQUANTITY field */
-	const UNITQUANTITY = 'unit.UNITQUANTITY';
+	const UNITQUANTITY = 'catalog_unit.UNITQUANTITY';
 
 	/**
 	 * An identiy map to hold any loaded instances of Unit objects.
@@ -343,7 +343,7 @@ abstract class BaseUnitPeer {
 	}
 	
 	/**
-	 * Method to invalidate the instance pool of all tables related to unit
+	 * Method to invalidate the instance pool of all tables related to catalog_unit
 	 * by a foreign key with ON DELETE CASCADE
 	 */
 	public static function clearRelatedInstancePool()
@@ -562,7 +562,7 @@ abstract class BaseUnitPeer {
 	}
 
 	/**
-	 * Method to DELETE all rows from the unit table.
+	 * Method to DELETE all rows from the catalog_unit table.
 	 *
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 */

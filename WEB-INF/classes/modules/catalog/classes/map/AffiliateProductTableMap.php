@@ -37,7 +37,7 @@ class AffiliateProductTableMap extends TableMap {
 		$this->setPackage('catalog.classes');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('PRODUCTID', 'Productid', 'INTEGER' , 'product', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('PRODUCTID', 'Productid', 'INTEGER' , 'catalog_product', 'ID', true, null, null);
 		$this->addForeignPrimaryKey('AFFILIATEID', 'Affiliateid', 'INTEGER' , 'affiliates_affiliate', 'ID', true, null, null);
 		$this->addColumn('PRICE', 'Price', 'FLOAT', false, null, null);
 		// validators

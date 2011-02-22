@@ -1,4 +1,12 @@
 ﻿==============================
+Revisión 707 - Fecha 20110222
+------------------------------
+
+RENAME TABLE `product`  TO `catalog_product`;
+RENAME TABLE `unit`  TO `catalog_unit`;
+RENAME TABLE `measureUnit`  TO `catalog_measureUnit`;
+
+==============================
 Revisión 705 - Fecha 20110222
 ------------------------------
 #-----------------------------------------------------------------------------

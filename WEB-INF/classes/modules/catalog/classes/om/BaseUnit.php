@@ -2,7 +2,7 @@
 
 
 /**
- * Base class that represents a row from the 'unit' table.
+ * Base class that represents a row from the 'catalog_unit' table.
  *
  * Unidades
  *

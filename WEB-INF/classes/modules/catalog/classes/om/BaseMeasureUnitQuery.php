@@ -2,7 +2,7 @@
 
 
 /**
- * Base class that represents a query for the 'measureUnit' table.
+ * Base class that represents a query for the 'catalog_measureUnit' table.
  *
  * Unidad de Medida
  *

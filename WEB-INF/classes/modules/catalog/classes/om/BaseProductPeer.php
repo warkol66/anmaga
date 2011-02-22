@@ -2,7 +2,7 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'product' table.
+ * Base static class for performing query and update operations on the 'catalog_product' table.
  *
  * Producto
  *
@@ -14,7 +14,7 @@ abstract class BaseProductPeer {
 	const DATABASE_NAME = 'anmaga';
 
 	/** the table name for this class */
-	const TABLE_NAME = 'product';
+	const TABLE_NAME = 'catalog_product';
 
 	/** the related Propel class for this table */
 	const OM_CLASS = 'Product';
@@ -32,34 +32,34 @@ abstract class BaseProductPeer {
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** the column name for the ID field */
-	const ID = 'product.ID';
+	const ID = 'catalog_product.ID';
 
 	/** the column name for the CODE field */
-	const CODE = 'product.CODE';
+	const CODE = 'catalog_product.CODE';
 
 	/** the column name for the NAME field */
-	const NAME = 'product.NAME';
+	const NAME = 'catalog_product.NAME';
 
 	/** the column name for the DESCRIPTION field */
-	const DESCRIPTION = 'product.DESCRIPTION';
+	const DESCRIPTION = 'catalog_product.DESCRIPTION';
 
 	/** the column name for the PRICE field */
-	const PRICE = 'product.PRICE';
+	const PRICE = 'catalog_product.PRICE';
 
 	/** the column name for the UNITID field */
-	const UNITID = 'product.UNITID';
+	const UNITID = 'catalog_product.UNITID';
 
 	/** the column name for the MEASUREUNITID field */
-	const MEASUREUNITID = 'product.MEASUREUNITID';
+	const MEASUREUNITID = 'catalog_product.MEASUREUNITID';
 
 	/** the column name for the ACTIVE field */
-	const ACTIVE = 'product.ACTIVE';
+	const ACTIVE = 'catalog_product.ACTIVE';
 
 	/** the column name for the ORDERCODE field */
-	const ORDERCODE = 'product.ORDERCODE';
+	const ORDERCODE = 'catalog_product.ORDERCODE';
 
 	/** the column name for the SALESUNIT field */
-	const SALESUNIT = 'product.SALESUNIT';
+	const SALESUNIT = 'catalog_product.SALESUNIT';
 
 	/**
 	 * An identiy map to hold any loaded instances of Product objects.
@@ -378,7 +378,7 @@ abstract class BaseProductPeer {
 	}
 	
 	/**
-	 * Method to invalidate the instance pool of all tables related to product
+	 * Method to invalidate the instance pool of all tables related to catalog_product
 	 * by a foreign key with ON DELETE CASCADE
 	 */
 	public static function clearRelatedInstancePool()
@@ -1221,7 +1221,7 @@ abstract class BaseProductPeer {
 	}
 
 	/**
-	 * Method to DELETE all rows from the product table.
+	 * Method to DELETE all rows from the catalog_product table.
 	 *
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 */
