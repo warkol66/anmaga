@@ -1,11 +1,8 @@
 DELETE FROM `security_actionLabel` WHERE `action` LIKE 'Backup%' AND `language` = 'eng';
 OPTIMIZE TABLE `security_actionLabel`;
-INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupDelete', 'Delete Backup', 'Delete Backup', 'eng');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupRestoreFromFile', 'Restore backup from file', 'Restore backup from file', 'eng');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupRestore', 'Restore backup', 'Restore backup', 'eng');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupCreateToFile', 'Create backup to download', 'Create backup to download', 'eng');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupDownload', 'Download backup', 'Download backup', 'eng');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupSendByEmail', 'Send backup by mail', 'Send backup by mail', 'eng');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupCreate', 'Create backup on server', 'Create backup on server', 'eng');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupSendByEmailCron', 'Create and send backup by mail with cron', 'Create and send backup by mail with cron', 'eng');
-INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupList', 'Backups list', 'Backups list', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupDelete', 'Delete Backup', 'Delete Backup file from server', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupRestore', 'Restore backup', 'Restore system info from a backup file', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupDownload', 'Download backup', 'Download backup to a local file', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupSendByEmail', 'Send backup by mail', 'Send backup file attached to a mail', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupCreate', 'Create backup on server', 'Create backup file on server', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `description` ,`language` ) VALUES ('BackupList', 'Backups list', 'Display backups files list available on server', 'eng');

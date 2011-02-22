@@ -38,13 +38,13 @@
 	<fieldset class='nestedFieldset' title='Administrador de Respaldos'>
 	<legend>Administrar Respaldos</legend>
 	<p>Generar respaldo almacenado en el servidor &nbsp;&nbsp;
-		Completo <a href='Main.php?do=backupCreate&amp;options[complete]=1' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='iconStoreInServer' /></a>&nbsp;&nbsp;
+		Completo <a href='Main.php?do=backupCreate&amp;options[complete]=1' title='Generar respaldo completo en servidor, incluyendo datos y archivos del sistema.'><img src="images/clear.png"  class='iconStoreInServer' /></a>&nbsp;&nbsp;
 	  Sólo datos <a href='Main.php?do=backupCreate' title='Generar respaldo de datos en servidor'><img src="images/clear.png"  class='iconStoreInServer' /></a>	</p>
 
 	<p>Generar respaldo para descargar&nbsp;&nbsp;		
-	Completo <a href='Main.php?do=backupCreate&amp;options[toFile]=1&amp;options[complete]=1' title='Generar respaldo completo en servidor'><img src="images/clear.png"  class='iconStoreLocal' /></a>&nbsp;&nbsp;	  
+	Completo <a href='Main.php?do=backupCreate&amp;options[toFile]=1&amp;options[complete]=1' title='Generar respaldo completo en servidor, incluye datos y archivos del sistema.'><img src="images/clear.png"  class='iconStoreLocal' /></a>&nbsp;&nbsp;	  
 	Sólo datos <a href='Main.php?do=backupCreate&amp;options[toFile]=1' title='Generar respaldo de datos para descargar'><img src="images/clear.png"  class='iconStoreLocal' /></a>	</p>
-	<p>Restaurar respaldo desde una copia local <a href='javascript:showBackupLoader()' title='Seleccionar archivo local para restaurar'><img src="images/clear.png"  class='iconRestore' /></a></p>
+	<p>Restaurar respaldo desde una copia local &nbsp;&nbsp;<a href='javascript:showBackupLoader()' title='Seleccionar archivo local para restaurar'><img src="images/clear.png"  class='iconRestore' /></a></p>
 		<div id="backupLoader" style="display: none;">
 		<br />
 			<fieldset title='Formulario de carga de archivo de respaldo local'>
@@ -84,20 +84,20 @@
 				<td align="right">|-$filename.time|date_format:"%Y-%m-%d %H:%M:%S"|change_timezone|date_format:"%d-%m-%Y %H:%M:%S"-|</td>
 				<td align="right">|-$filename.size|number_format:3:",":"."-| kb</td>
 				<td nowrap>
-					<input type="button" value="Enviar por mail" class="iconEmail" onClick='$("emailSend|-$counter-|").show()'/>
+					<input type="button" value="Enviar por mail" title="Enviar por mail" class="iconEmail" onClick='$("emailSend|-$counter-|").show(); $("backupAdmin|-$counter-|").hide(); $("backupDelete|-$counter-|").hide(); $("mail|-$counter-|").hide();' id="mail|-$counter-|" />
 					<form action="Main.php" style='display: none;' method="post" id='emailSend|-$counter-|'>
 						<input type="hidden" name="filename" value="|-$filename.name-|"  />
 						<input type="hidden" name="do" value="backupSendByEmail" />
-						<input type="text" name="email" value="" />
-						<input type="submit" value="Enviar" />
-						<input type="button" value="Cancelar" onclick='$("emailSend|-$counter-|").hide();' />						
+						<strong>Dirección:</strong> <input type="text" name="email" value="" title="Ingrese la dirección del destinatario" />
+						<input type="submit" value="Enviar" title="Enviar" />
+						<input type="button" value="Cancelar" onclick='$("emailSend|-$counter-|").hide(); $("backupAdmin|-$counter-|").show(); $("backupDelete|-$counter-|").show();$("mail|-$counter-|").show();' />						
 					</form>
-					<form action="Main.php" method="post">
+					<form action="Main.php" method="post" id="backupAdmin|-$counter-|">
 						<input type="hidden" name="filename" value="|-$filename.name-|"  />
 						<input type="hidden" name="do" value="backupRestore" />
 						<input type="submit" value="Restaurar Backup" class="iconRestoreFromServer" title='Restaurar este respaldo' onclick="return confirm('Esta opción reemplazará la información en el sistema por la información en este respaldo. ¿Está seguro que desea continuar?');" />
 					</form>
-					<form action="Main.php" method="post">
+					<form action="Main.php" method="post" id="backupDelete|-$counter-|">
 						<input type="hidden" name="filename" value="|-$filename.name-|"  />
 						<input type="hidden" name="do" value="backupDoDelete" />
 						<input type="submit" value="Eliminar Backup" class="iconDelete" title='Eliminar este respaldo' onclick="return confirm('Esta opción elimina permanentemente este respaldo. ¿Está seguro que desea eliminarlo?');" />
