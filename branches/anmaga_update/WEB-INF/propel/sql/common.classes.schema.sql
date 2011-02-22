@@ -216,5 +216,34 @@ CREATE TABLE `common_scheduleSubscriptionUser`
 		ON DELETE CASCADE
 ) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Relacion ScheduleSubscription - User';
 
+#-----------------------------------------------------------------------------
+#-- common_internalMail
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `common_internalMail`;
+
+
+CREATE TABLE `common_internalMail`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`subject` VARCHAR(255)   COMMENT 'Asunto',
+	`body` TEXT   COMMENT 'Cuerpo del mensaje',
+	`recipientId` INTEGER   COMMENT 'Receptor del mensaje',
+	`recipientType` VARCHAR(50)   COMMENT 'Tipo de receptor del mensaje',
+	`readOn` DATETIME   COMMENT 'Momento en que el mensaje fue leido',
+	`fromId` INTEGER   COMMENT 'Remitente',
+	`fromType` VARCHAR(50)   COMMENT 'Tipo de remitente',
+	`to` LONGBLOB   COMMENT 'Destinatarios',
+	`replyId` INTEGER   COMMENT 'Id del mensaje al que responde',
+	`created_at` DATETIME,
+	`updated_at` DATETIME,
+	`deleted_at` DATETIME,
+	PRIMARY KEY (`id`),
+	INDEX `common_internalMail_FI_1` (`replyId`),
+	CONSTRAINT `common_internalMail_FK_1`
+		FOREIGN KEY (`replyId`)
+		REFERENCES `common_internalMail` (`id`)
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Mensajes internos';
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
