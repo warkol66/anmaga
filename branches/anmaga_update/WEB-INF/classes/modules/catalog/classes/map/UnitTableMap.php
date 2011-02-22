@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'unit' table.
+ * This class defines the structure of the 'catalog_unit' table.
  *
  *
  *
@@ -31,7 +31,7 @@ class UnitTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('unit');
+		$this->setName('catalog_unit');
 		$this->setPhpName('Unit');
 		$this->setClassname('Unit');
 		$this->setPackage('catalog.classes');

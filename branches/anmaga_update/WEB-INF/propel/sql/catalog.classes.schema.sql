@@ -19,12 +19,12 @@ CREATE TABLE `catalog_affiliateProduct`
 	UNIQUE KEY `catalog_affiliateProduct_U_1` (`productId`, `affiliateId`),
 	CONSTRAINT `catalog_affiliateProduct_FK_1`
 		FOREIGN KEY (`productId`)
-		REFERENCES `product` (`id`),
+		REFERENCES `catalog_product` (`id`),
 	INDEX `catalog_affiliateProduct_FI_2` (`affiliateId`),
 	CONSTRAINT `catalog_affiliateProduct_FK_2`
 		FOREIGN KEY (`affiliateId`)
 		REFERENCES `affiliates_affiliate` (`id`)
-) ENGINE=MyISAM COMMENT='Precios de Productos por Afiliado';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Precios de Productos por Afiliado';
 
 #-----------------------------------------------------------------------------
 #-- catalog_affiliateProductCode
@@ -44,16 +44,16 @@ CREATE TABLE `catalog_affiliateProductCode`
 	CONSTRAINT `catalog_affiliateProductCode_FK_1`
 		FOREIGN KEY (`affiliateId`)
 		REFERENCES `affiliates_affiliate` (`id`)
-) ENGINE=MyISAM COMMENT='Codigos de Productos por Afiliado';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Codigos de Productos por Afiliado';
 
 #-----------------------------------------------------------------------------
-#-- product
+#-- catalog_product
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `product`;
+DROP TABLE IF EXISTS `catalog_product`;
 
 
-CREATE TABLE `product`
+CREATE TABLE `catalog_product`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id del producto',
 	`code` VARCHAR(255)   COMMENT 'Codigo del producto',
@@ -66,45 +66,45 @@ CREATE TABLE `product`
 	`orderCode` VARCHAR(255)   COMMENT 'Codigo de ordenamiento del producto',
 	`salesUnit` INTEGER default 1  COMMENT 'Multiplo de la unidad de medida en que se puede ordenar el producto',
 	PRIMARY KEY (`id`),
-	UNIQUE KEY `product_U_1` (`code`),
-	INDEX `product_FI_1` (`unitId`),
-	CONSTRAINT `product_FK_1`
+	UNIQUE KEY `catalog_product_U_1` (`code`),
+	INDEX `catalog_product_FI_1` (`unitId`),
+	CONSTRAINT `catalog_product_FK_1`
 		FOREIGN KEY (`unitId`)
-		REFERENCES `unit` (`id`),
-	INDEX `product_FI_2` (`measureUnitId`),
-	CONSTRAINT `product_FK_2`
+		REFERENCES `catalog_unit` (`id`),
+	INDEX `catalog_product_FI_2` (`measureUnitId`),
+	CONSTRAINT `catalog_product_FK_2`
 		FOREIGN KEY (`measureUnitId`)
-		REFERENCES `measureUnit` (`id`)
-) ENGINE=MyISAM COMMENT='Producto';
+		REFERENCES `catalog_measureUnit` (`id`)
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Producto';
 
 #-----------------------------------------------------------------------------
-#-- unit
+#-- catalog_unit
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `unit`;
+DROP TABLE IF EXISTS `catalog_unit`;
 
 
-CREATE TABLE `unit`
+CREATE TABLE `catalog_unit`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de la unidad',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Unidad',
 	`unitQuantity` INTEGER  NOT NULL COMMENT 'Cantidad de unidades que posee la unidad',
 	PRIMARY KEY (`id`)
-) ENGINE=MyISAM COMMENT='Unidades';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Unidades';
 
 #-----------------------------------------------------------------------------
-#-- measureUnit
+#-- catalog_measureUnit
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `measureUnit`;
+DROP TABLE IF EXISTS `catalog_measureUnit`;
 
 
-CREATE TABLE `measureUnit`
+CREATE TABLE `catalog_measureUnit`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT COMMENT 'Id de la unidad de medida',
 	`name` VARCHAR(255)  NOT NULL COMMENT 'Unidad de Medida',
 	PRIMARY KEY (`id`)
-) ENGINE=MyISAM COMMENT='Unidad de Medida';
+) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Unidad de Medida';
 
 #-----------------------------------------------------------------------------
 #-- catalog_productCategory
@@ -125,7 +125,7 @@ CREATE TABLE `catalog_productCategory`
 		ON DELETE CASCADE,
 	CONSTRAINT `catalog_productCategory_FK_2`
 		FOREIGN KEY (`productCode`)
-		REFERENCES `product` (`code`)
+		REFERENCES `catalog_product` (`code`)
 		ON DELETE CASCADE
 ) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Relacion Categorias y Productos';
 

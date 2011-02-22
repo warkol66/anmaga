@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'product' table.
+ * This class defines the structure of the 'catalog_product' table.
  *
  *
  *
@@ -31,7 +31,7 @@ class ProductTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('product');
+		$this->setName('catalog_product');
 		$this->setPhpName('Product');
 		$this->setClassname('Product');
 		$this->setPackage('catalog.classes');
@@ -42,8 +42,8 @@ class ProductTableMap extends TableMap {
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
 		$this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
 		$this->addColumn('PRICE', 'Price', 'FLOAT', false, null, null);
-		$this->addForeignKey('UNITID', 'Unitid', 'INTEGER', 'unit', 'ID', false, null, null);
-		$this->addForeignKey('MEASUREUNITID', 'Measureunitid', 'INTEGER', 'measureUnit', 'ID', false, null, null);
+		$this->addForeignKey('UNITID', 'Unitid', 'INTEGER', 'catalog_unit', 'ID', false, null, null);
+		$this->addForeignKey('MEASUREUNITID', 'Measureunitid', 'INTEGER', 'catalog_measureUnit', 'ID', false, null, null);
 		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null, true);
 		$this->addColumn('ORDERCODE', 'Ordercode', 'VARCHAR', false, 255, null);
 		$this->addColumn('SALESUNIT', 'Salesunit', 'INTEGER', false, null, 1);

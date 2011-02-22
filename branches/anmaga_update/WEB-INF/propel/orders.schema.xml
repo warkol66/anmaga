@@ -42,7 +42,7 @@
 			<reference local="orderId" foreign="id" />
 		</foreign-key>
 	
-		<foreign-key foreignTable="product" >
+		<foreign-key foreignTable="catalog_product" >
 			<reference local="productCode" foreign="code" />
 		</foreign-key>
 	
@@ -123,7 +123,7 @@
 			<reference local="orderTemplateId" foreign="id" />
 		</foreign-key>
 	
-		<foreign-key foreignTable="product" >
+		<foreign-key foreignTable="catalog_product" >
 			<reference local="productCode" foreign="code" />
 		</foreign-key>
 	

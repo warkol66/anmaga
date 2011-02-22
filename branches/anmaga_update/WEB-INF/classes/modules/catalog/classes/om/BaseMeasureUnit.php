@@ -2,7 +2,7 @@
 
 
 /**
- * Base class that represents a row from the 'measureUnit' table.
+ * Base class that represents a row from the 'catalog_measureUnit' table.
  *
  * Unidad de Medida
  *

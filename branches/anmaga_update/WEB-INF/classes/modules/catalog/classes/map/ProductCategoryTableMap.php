@@ -37,7 +37,7 @@ class ProductCategoryTableMap extends TableMap {
 		$this->setPackage('catalog.classes');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('PRODUCTCODE', 'Productcode', 'VARCHAR' , 'product', 'CODE', true, 255, null);
+		$this->addForeignPrimaryKey('PRODUCTCODE', 'Productcode', 'VARCHAR' , 'catalog_product', 'CODE', true, 255, null);
 		$this->addForeignPrimaryKey('CATEGORYID', 'Categoryid', 'INTEGER' , 'categories_category', 'ID', true, 5, null);
 		// validators
 	} // initialize()

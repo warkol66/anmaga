@@ -2,7 +2,7 @@
 
 
 /**
- * Base class that represents a row from the 'product' table.
+ * Base class that represents a row from the 'catalog_product' table.
  *
  * Producto
  *

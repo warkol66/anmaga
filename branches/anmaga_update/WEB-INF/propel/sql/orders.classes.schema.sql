@@ -58,7 +58,7 @@ CREATE TABLE `orders_orderItem`
 	INDEX `orders_orderItem_FI_2` (`productCode`),
 	CONSTRAINT `orders_orderItem_FK_2`
 		FOREIGN KEY (`productCode`)
-		REFERENCES `product` (`code`)
+		REFERENCES `catalog_product` (`code`)
 ) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Item del Pedido de Productos';
 
 #-----------------------------------------------------------------------------
@@ -147,7 +147,7 @@ CREATE TABLE `orders_orderTemplateItem`
 	INDEX `orders_orderTemplateItem_FI_2` (`productCode`),
 	CONSTRAINT `orders_orderTemplateItem_FK_2`
 		FOREIGN KEY (`productCode`)
-		REFERENCES `product` (`code`)
+		REFERENCES `catalog_product` (`code`)
 ) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Item de la Plantilla de Pedido de Productos';
 
 # This restores the fkey checks, after having unset them earlier

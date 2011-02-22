@@ -2,7 +2,7 @@
 
 
 /**
- * Base class that represents a query for the 'product' table.
+ * Base class that represents a query for the 'catalog_product' table.
  *
  * Producto
  *
