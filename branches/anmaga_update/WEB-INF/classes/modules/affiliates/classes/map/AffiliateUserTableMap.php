@@ -56,7 +56,7 @@ class AffiliateUserTableMap extends TableMap {
 		$this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
 		// validators
 		$this->addValidator('AFFILIATEID', 'required', 'propel.validator.RequiredValidator', '', 'El usuario debe asociarse a un afiliado.');
-		$this->addValidator('USERNAME', 'unique', 'propel.validator.UniqueValidator', '', 'El nombre de usuario debe ser unico.');
+		$this->addValidator('USERNAME', 'unique', 'propel.validator.UniqueValidator', '', 'El nombre de usuario ya existe, elija otro nombre.');
 	} // initialize()
 
 	/**

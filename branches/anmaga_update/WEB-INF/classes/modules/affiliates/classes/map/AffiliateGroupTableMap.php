@@ -44,7 +44,7 @@ class AffiliateGroupTableMap extends TableMap {
 		$this->addColumn('BITLEVEL', 'Bitlevel', 'INTEGER', false, null, null);
 		// validators
 		$this->addValidator('NAME', 'required', 'propel.validator.RequiredValidator', '', 'El nombre es obligatorio.');
-		$this->addValidator('NAME', 'unique', 'propel.validator.UniqueValidator', '', 'El nombre debe ser unico.');
+		$this->addValidator('NAME', 'unique', 'propel.validator.UniqueValidator', '', 'El nombre de grupo ya existe, elija otro nombre.');
 	} // initialize()
 
 	/**
