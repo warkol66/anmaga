@@ -177,5 +177,30 @@
 			<parameter name="Collate" value="utf8_general_ci"/>
 		</vendor>
 	</table>
+	
+	<table name="common_internalMail" phpName='InternalMail' description="Mensajes internos">
+		<column name="id" required="true" primaryKey="true" type="INTEGER" autoIncrement="true" />
+		<column name="subject" type="VARCHAR" size="255" description="Asunto" />
+		<column name="body" type="LONGVARCHAR" description="Cuerpo del mensaje" />
+		<column name="recipientId" type="INTEGER" description="Receptor del mensaje" />
+		<column name="recipientType" type="VARCHAR" size="50" description="Tipo de receptor del mensaje" />
+		<column name="readOn" type="TIMESTAMP" description="Momento en que el mensaje fue leido" />
+		<column name="fromId" type="INTEGER" description="Remitente" />
+		<column name="fromType" type="VARCHAR" size="50" description="Tipo de remitente" />
+		<column name="to" type="BLOB" description="Destinatarios" />
+		<column name="replyId" type="INTEGER" description="Id del mensaje al que responde" />
+		
+  		<behavior name="timestampable" />
+  		<behavior name="soft_delete" />
+  		
+  		<foreign-key foreignTable="common_internalMail">
+	    	<reference local="replyId" foreign="id" />
+	 	</foreign-key>
+		
+		<vendor type="mysql">
+			<parameter name="Charset" value="utf8" />
+			<parameter name="Collate" value="utf8_general_ci" />
+		</vendor>
+	</table>
 
   </database>
