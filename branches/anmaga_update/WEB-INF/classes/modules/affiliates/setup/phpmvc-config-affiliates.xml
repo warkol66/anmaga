@@ -10,6 +10,14 @@
 				<forward name="success-create" path="/Main.php?do=affiliatesUsersEdit" redirect="true" />
 				<forward name="failure" path="/Main.php?do=affiliatesEdit" redirect="true" />
 		</action>
+		
+		<action    path = "affiliatesUsersAutocompleteListX"
+							 type = "AffiliatesUsersAutocompleteListXAction"
+							 name = "affiliatesUsersAutocompleteListX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="AffiliatesUsersAutocompleteListXSuccess.tpl" />
+		</action>
 
 		<action      path = "affiliatesUsersLogin"
 								 type = "AffiliatesUsersLoginAction"
