@@ -42,7 +42,7 @@ function changeRecipientType(entityName) {
 }
 </script>
 <h2>Tablero de Gestión</h2>
-<h1>|-if $action eq 'edit'-|Editar|-else-|Crear|-/if-| Suscripción a Agenda</h1>
+<h1>|-if $action eq 'edit'-|Editar|-else-|Crear|-/if-| Mensaje</h1>
 <div id="div_internalMail">
 	<p>Ingrese los datos del mensaje</p>
 		<p><a href="#" onClick="location.href='Main.php?do=commonInternalMailsList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page) -|&page=|-$page-||-/if-|'">Volver atras</a>
