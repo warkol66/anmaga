@@ -76,7 +76,16 @@ function changeRecipientType(entityName) {
 			</span>
 			
 			<p>
+				|-assign var=recipients value=$internalMail->getTo()-|
 				<ul id="recipientsSelected">
+					|-foreach from=$internalMail->getRecipients() key=idx item=user-|
+						<li>
+							<input type="hidden" name="internalMail[to][|-$idx-|][id]" value="|-$user->getId()-|" />
+							<input type="hidden" name="internalMail[to][|-$idx-|][type]" value="|-$recipients[$idx].type-|" />
+							|-if ($user->getName() ne '') or ($user->getSurname() ne '')-||-$user->getSurname()-|, |-$user->getName()-| - |-/if-|(|-$user->getUserName()-|)
+							<input type="button" class="iconDelete" onClick="this.parentNode.remove()" />
+						</li>
+					|-/foreach-|
 				</ul>
 			</p>
 			
@@ -93,6 +102,7 @@ function changeRecipientType(entityName) {
 			<p>
 				<input type="hidden" name="do" id="do" value="commonInternalMailsDoEdit" />
 				<input type="hidden" name="id" id="id" value="|-$internalMail->getId()-|" />
+				<input type="hidden" name="internalMail[replyId]" id="internalMail[replyId]" value="|-$internalMail->getReplyId()-|" />
 				<input type="hidden" name="page" id="page" value="|-$page-|" />
 				<input type="submit" id="button_edit_internalMail" name="button_edit_internalMail" title="Enviar" value="Enviar" />
 				<input type="button" id="cancel" name="cancel" title="Volver al listado" value="Volver al listado" onClick="location.href='Main.php?do=commonInternalMailsList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page) -|&page=|-$page-||-/if-|'"/>

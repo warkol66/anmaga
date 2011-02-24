@@ -14,6 +14,12 @@
  * @package    propel.generator.common.classes
  */
 class InternalMail extends BaseInternalMail {
+	
+	private $queryObjs = array(
+		'user' => 'UserQuery',
+		'affiliate' => 'AffiliateUserQuery'
+	);
+	
 	public function save(PropelPDO $con = null) {
 		try {
 			if ($this->validate()) { 
@@ -35,9 +41,10 @@ class InternalMail extends BaseInternalMail {
 	 *
 	 * @return     resource
 	 */
-	public function getTo()
-	{
-		$array = parent::getTo();
+	public function getTo() {
+		$resource = parent::getTo();
+		$array = stream_get_contents($resource);
+		rewind($resource);
 		return unserialize($array);
 	}
 	
@@ -56,12 +63,7 @@ class InternalMail extends BaseInternalMail {
 	 * Obtiene el usuario remitente.
 	 */
 	public function getFrom() {
-		$queryObjs = array(
-			'user' => 'UserQuery',
-			'affiliate' => 'AffiliateUserQuery'
-		);
-		
-		$criteria = new $queryObjs[$this->getFromType()];
+		$criteria = new $this->queryObjs[$this->getFromType()];
 		return $criteria->findPk($this->getFromId());
 	}
 	
@@ -69,4 +71,31 @@ class InternalMail extends BaseInternalMail {
 		$readOn = $this->getReadOn();
 		return !empty($readOn);
 	}
+	
+	/**
+	 * Obtiene los usuarios destinatarios.
+	 */
+	public function getRecipients() {
+		$recipients = $this->getTo();
+		$recipientsObjs = array();
+		
+		//Es importante usar $i como indice para mantener la consistencia.
+		//no funciona bien con $recipientsObjs[], porque $recipients empieza en 1.
+		foreach($recipients as $i => $recipient) {
+			$criteria = new $this->queryObjs[$recipient['type']];
+			$user = $criteria->findPk($recipient['id']);
+			if (!empty($user))
+				$recipientsObjs[$i] = $user;
+		}
+		return $recipientsObjs;
+	}
+	
+	public function markAsRead() {
+		$this->setReadOn(date('Y-m-d H:i:s'));
+	}
+	
+	public function markAsUnread() {
+		$this->setReadOn(null);
+	}
+	
 } // InternalMail

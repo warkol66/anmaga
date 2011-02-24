@@ -1,8 +1,8 @@
 <?php
 
-class CommonInternalMailsEditAction extends BaseAction {
+class CommonInternalMailsViewAction extends BaseAction {
 
-	function CommonInternalMailsEditAction() {
+	function CommonInternalMailsViewAction() {
 		;
 	}
 
@@ -19,19 +19,17 @@ class CommonInternalMailsEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 		
-		if (!empty($_GET["replyId"])) {
-			//Generamos una respuesta base.
-			$internalMail = InternalMailPeer::generateReply($_GET["replyId"]);
-		} else {
-			//No existe la edición de mensajes, solo creación.
-			$internalMail = new InternalMail;
-		}
-		
-		$smarty->assign("internalMail", $internalMail);
-
 		$smarty->assign("filters", $_GET["filters"]);
 		$smarty->assign("page", $_GET["page"]);
 		$smarty->assign("message", $_GET["message"]);
+		
+		$internalMail = InternalMailPeer::get($_GET['id']);
+		if (empty($internalMail))
+			return $mapping->findForwardConfig('failure');
+			
+		$internalMail->markAsRead();
+			
+		$smarty->assign("internalMail", $internalMail);
 
 		return $mapping->findForwardConfig('success');
 	}

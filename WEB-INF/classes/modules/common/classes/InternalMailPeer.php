@@ -80,4 +80,35 @@ class InternalMailPeer extends BaseInternalMailPeer {
 	public static function markAsUnread($ids) {
 		return InternalMailQuery::create()->filterByPrimaryKeys($ids)->update(array('Readon'=>null));
 	}
+	
+	/**
+	 * Genera un mensaje como respuesta a otro.
+	 * Setea los campos Subject, To, Replyid.
+	 */
+	public static function generateReply($replyId) {
+		$message = InternalMailQuery::create()->findPk($replyId);
+		$reply = new InternalMail;
+		$reply->setSubject('Re: '.$message->getSubject());
+		$recipients = $message->getTo();
+		
+		//No queremos que el usuario se responda a sí mismo.
+		if (Common::isAffiliatedUser()) {
+			$currentUser = Common::getAffiliatedLogged();
+			$type = 'affiliate';
+		} else if (Common::isSystemUser()){
+			$currentUser = Common::getAdminLogged();
+			$type = 'user';
+		} 
+		foreach ($recipients as $idx => $recipient) {
+			if ($recipient['type'] == $type && $recipient['id'] == $currentUser->getId())
+				unset($recipients[$idx]);
+		}
+		
+		//El remitente original pasa a ser un destinatario.
+		$recipients[] = array('type'=> $message->getFromType(), 'id'=>$message->getFromId());
+		
+		$reply->setTo($recipients);
+		$reply->setReplyId($replyId);
+		return $reply;
+	}
 } // InternalMailPeer
