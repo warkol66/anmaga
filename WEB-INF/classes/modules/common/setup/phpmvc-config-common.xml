@@ -223,6 +223,26 @@
 					 validate = "true">
 			<forward name="success" path="CommonMenuItemsDoEditOrderXSuccess.tpl" />
 		</action>
+		
+<!-- Section InternalMails -->
+
+		<action    path = "commonInternalMailsDoDeleteX"
+							 type = "CommonInternalMailsDoDeleteXAction"
+							 name = "commonInternalMailsDoDeleteX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="CommonInternalMailsListTableBodyInclude.tpl" />
+		</action>
+		
+		<action    path = "commonInternalMailsDoMarkAsReadX"
+							 type = "CommonInternalMailsDoMarkAsReadXAction"
+							 name = "commonInternalMailsDoMarkAsReadX"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="CommonInternalMailsListTableBodyInclude.tpl" />
+		</action>
+		
+<!-- End Section InternalMails -->
 
 <!-- Section ActionLogs -->
 

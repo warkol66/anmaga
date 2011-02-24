@@ -64,4 +64,9 @@ class InternalMail extends BaseInternalMail {
 		$criteria = new $queryObjs[$this->getFromType()];
 		return $criteria->findPk($this->getFromId());
 	}
+	
+	public function hasBeenRead() {
+		$readOn = $this->getReadOn();
+		return !empty($readOn);
+	}
 } // InternalMail

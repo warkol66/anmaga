@@ -42,13 +42,8 @@ class CommonInternalMailsDoEditAction extends BaseAction {
 										//se deben enviar el resto de los mensajes.
 			}
 		} else {
-			//En el caso de edición no se generan copias. De hecho es una copia existente.
-			$internalMail = InternalMailPeer::get($_POST["id"]);
-			Common::setObjectFromParams($internalMail, $params);
-			if (!$internalMail->save()) {
-				$smarty->assign("internalMail", $internalMail);
-				return $mapping->findForwardConfig('failure');
-			}
+			//No hay edición de mensajes.
+			return $mapping->findForwardConfig('failure');
 		}
 		
 		return $mapping->findForwardConfig('success');

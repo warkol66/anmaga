@@ -19,9 +19,8 @@ class CommonInternalMailsEditAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 		
-		$internalMail = InternalMailPeer::get($_GET["id"]);
-		if (empty($internalMail))
-			$internalMail = new InternalMail;
+		//No existe la edición de mensajes, solo creación.
+		$internalMail = new InternalMail;
 		
 		$smarty->assign("internalMail", $internalMail);
 
