@@ -98,4 +98,8 @@
 		);
 		return true;
 	}
+	
+	function view(id) {
+		location.href='Main.php?do=commonInternalMailsView&id='+id;
+	}
 </script>
