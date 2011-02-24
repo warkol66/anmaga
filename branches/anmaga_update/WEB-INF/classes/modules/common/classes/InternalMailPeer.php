@@ -68,4 +68,16 @@ class InternalMailPeer extends BaseInternalMailPeer {
 		$pager = new PropelPager($criteria,"InternalMailPeer", "doSelect",$page,$perPage);
 		return $pager;
 	}
+	
+	public static function delete($ids) {
+		return InternalMailQuery::create()->filterByPrimaryKeys($ids)->delete();
+	}
+	
+	public static function markAsRead($ids) {
+		return InternalMailQuery::create()->filterByPrimaryKeys($ids)->update(array('Readon'=>date('Y-m-d H:i:s')));
+	}
+	
+	public static function markAsUnread($ids) {
+		return InternalMailQuery::create()->filterByPrimaryKeys($ids)->update(array('Readon'=>null));
+	}
 } // InternalMailPeer
