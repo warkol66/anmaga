@@ -1,4 +1,4 @@
-<h2>Tablero de Gestión</h2>
+<h2>Servicios</h2>
 <h1>Administración de Mensajes.</h1>
 <p>A continuación se muestra la lista de mensajes.</p>
 <div id="div_internalMails"> 
@@ -29,25 +29,26 @@
 			</tr>
 			|-/if-|
 			<tr>
-				<th colspan="3" class="thFillTitle">
+				<th colspan="4">
 					<div class="rightLink">
-						<a href="Main.php?do=commonInternalMailsEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addNew">Nuevo mensaje</a>
+						<a href="Main.php?do=commonInternalMailsEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Nuevo mensaje</a>
 					</div>
-					<div class="rightLink">
-						<a href="#" class="addNew" onClick="javascript:deleteMessages();return false;">Eliminar</a>
+					<div class="rightLink">&nbsp;&nbsp;
+						<a href="#" class="deleteLink" onClick="javascript:deleteMessages();return false;">Eliminar</a>&nbsp;&nbsp;
 					</div>
-					<div class="rightLink">
-						<a href="#" class="addNew" onClick="javascript:markAsRead();return false;">Marcar como leido</a>
+					<div class="rightLink">&nbsp;&nbsp;
+						<a href="#" class="readLink" onClick="javascript:markAsRead();return false;">Marcar como leido</a>&nbsp;&nbsp;
 					</div>
-					<div class="rightLink">
-						<a href="#" class="addNew" onClick="javascript:markAsUnread();return false;">Marcar como no leido</a>
+					<div class="rightLink">&nbsp;&nbsp;
+						<a href="#" class="unreadLink" onClick="javascript:markAsUnread();return false;">Marcar como no leido</a>&nbsp;&nbsp;
 					</div>
 				</th>
 			</tr>
-			<tr class="thFillTitle"> 
-				<th width="2.5%">&nbsp;</th> 
-				<th width="30%">Remitente</th> 
-				<th width="67.5%">Asunto</th> 
+			<tr> 
+				<th width="5%">&nbsp;</th> 
+				<th width="20%">Remitente</th> 
+				<th width="10%">Fecha</th> 
+				<th width="65%">Asunto</th> 
 			</tr> 
 		</thead> 
 		<tbody id="internalMailsList">
