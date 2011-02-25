@@ -32,15 +32,9 @@ class CommonInternalMailsDoEditAction extends BaseAction {
 		$smarty->assign("message", $_POST["message"]);
 		
 		if (empty($_POST["id"])) {
-			//Generamos un objeto para cada destinatario.
-			foreach ($params['to'] as $recipient) {
-				$internalMail = new InternalMail;
-				$params['recipientType'] = $recipient['type'];
-				$params['recipientId'] = $recipient['id'];
-				Common::setObjectFromParams($internalMail, $params);
-				$internalMail->save();  //Si falla en este caso no hacemos nada
-										//se deben enviar el resto de los mensajes.
-			}
+			$internalMail = new InternalMail;
+			Common::setObjectFromParams($internalMail, $params);
+			$internalMail->send();
 		} else {
 			//No hay edición de mensajes.
 			return $mapping->findForwardConfig('failure');

@@ -24,12 +24,6 @@ function recipientsAffiliatesAfterUpdateElement(text, li) {
 	}
 }
 
-function recipientsOnChange() {
-	var submit = $('button_edit_internalMail'); 
-	if (Object.isElement(submit)) 
-		submit.disable();
-}
-
 function changeRecipientType(entityName) {
 	if (entityName == "affiliate") {
 		$('recipientsAffiliates').show();
@@ -64,11 +58,11 @@ function changeRecipientType(entityName) {
 			</p>
 	
 			<div id="recipientsUsers" style="position: relative;">
-				|-include file="CommonAutocompleterInstanceInclude.tpl" id="autocomplete_users" label="Para" defaultValue="" defaultHiddenValue="" url="Main.php?do=usersAutocompleteListX" afterUpdateElement="recipientsUsersAfterUpdateElement" onChange="recipientsOnChange()" onComplete="recipientsOnChange()"-|
+				|-include file="CommonAutocompleterInstanceInclude.tpl" id="autocomplete_users" label="Para" defaultValue="" defaultHiddenValue="" url="Main.php?do=usersAutocompleteListX" afterUpdateElement="recipientsUsersAfterUpdateElement"-|
 			</div>	
 			
 			<div id="recipientsAffiliates" style="position: relative; display: none">
-				|-include file="CommonAutocompleterInstanceInclude.tpl" id="autocomplete_affiliates" label="Para" defaultValue="" defaultHiddenValue="" url="Main.php?do=affiliatesUsersAutocompleteListX" afterUpdateElement="recipientsAffiliatesAfterUpdateElement" onChange="recipientsOnChange()" onComplete="recipientsOnChange()"-|
+				|-include file="CommonAutocompleterInstanceInclude.tpl" id="autocomplete_affiliates" label="Para" defaultValue="" defaultHiddenValue="" url="Main.php?do=affiliatesUsersAutocompleteListX" afterUpdateElement="recipientsAffiliatesAfterUpdateElement"-|
 			</div>
 			
 			<span id="indicator2" style="display: none">
