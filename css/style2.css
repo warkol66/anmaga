@@ -582,36 +582,3 @@ fieldset p.textAfterLabel label{
 
 
 
-
-
-/* BOTON AGREGAR NUEVA ...  */
-a.addLink {
-	line-height: 1.4em;
-	vertical-align: middle;
-	display: inline-block;
-}
-
-a.addLink:link, a.addLink:visited {
-	font-weight: bold;
-	padding: 0 5px 0 20px;
-	margin: 3px;
-	text-decoration: none;
-/*	background-image:
-	background-position:
-	background-repeat:*/
-}
-
-a.addLink:hover, a.addLink:active {
-	text-decoration: none;
-/*	color: */}
-/* /BOTON AGREGAR NUEVA ...  */
-
-a.searchLink:link, a.searchLink:active {
-	font-weight: bold;
-	padding: 0 5px 0 20px;
-	margin: 3px;
-	text-decoration: none;
-}
-a.searchLink:hover, a.searchLink:active {
-	text-decoration: none;
-/*	color: */}

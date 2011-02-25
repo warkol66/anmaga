@@ -31,16 +31,16 @@
 			<tr>
 				<th colspan="4">
 					<div class="rightLink">
-						<a href="Main.php?do=commonInternalMailsEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Nuevo mensaje</a>
+						<a href="Main.php?do=commonInternalMailsEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="linkMailNew">Nuevo mensaje</a>
 					</div>
 					<div class="rightLink">&nbsp;&nbsp;
-						<a href="#" class="deleteLink" onClick="javascript:deleteMessages();return false;">Eliminar</a>&nbsp;&nbsp;
+						<a href="#" class="linkMailDelete" onClick="javascript:deleteMessages();return false;">Eliminar</a>&nbsp;&nbsp;
 					</div>
 					<div class="rightLink">&nbsp;&nbsp;
-						<a href="#" class="readLink" onClick="javascript:markAsRead();return false;">Marcar como leido</a>&nbsp;&nbsp;
+						<a href="#" class="linkMailMarkRead" onClick="javascript:markAsRead();return false;">Marcar como leido</a>&nbsp;&nbsp;
 					</div>
 					<div class="rightLink">&nbsp;&nbsp;
-						<a href="#" class="unreadLink" onClick="javascript:markAsUnread();return false;">Marcar como no leido</a>&nbsp;&nbsp;
+						<a href="#" class="linkMailMarkUnread" onClick="javascript:markAsUnread();return false;">Marcar como no leido</a>&nbsp;&nbsp;
 					</div>
 				</th>
 			</tr>
