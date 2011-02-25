@@ -4,7 +4,7 @@
 	</tr>
 |-else-|
 	|-foreach from=$internalMails item=internalMail name=for_internalMails-|
-	<tr |-if $internalMail->hasBeenRead()-|class="read"|-/if-|> 
+	<tr |-if $internalMail->hasBeenRead()-|class="read"|-else-|class="unread"|-/if-| > 
 		|-assign var=fromObj value=$internalMail->getFrom()-|
 		<td nowrap><input class="selector" type="checkbox" name="selectedIds[]" value="|-$internalMail->getId()-|" /></td>
 		<td onClick="view(|-$internalMail->getId()-|);return false;">|-$fromObj->getName()-|</td> 
