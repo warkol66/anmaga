@@ -98,4 +98,34 @@ class InternalMail extends BaseInternalMail {
 		$this->setReadOn(null);
 	}
 	
+	/**
+	 * Genera un objeto por cada destinatario en la columna To.
+	 * A cada uno le settea los valores de RecipientType y RecipientId correspondientes
+	 * y luego los guarda.
+	 * El resto de los campos son replicados del objeto $this (a excepcion del Id).
+	 * 
+	 * Además se guarda el $this para que represente el mensaje enviado en la bandeja
+	 * de salida del remitente.
+	 */
+	public function send() {
+		//Creamos una copia para cada destinatario.
+		foreach ($this->getTo() as $recipient) {
+			try {
+				$internalMail = $this->copy();
+				$internalMail->setRecipientType($recipient['type']);
+				$internalMail->setRecipientId($recipient['id']);
+				$internalMail->save();  
+			} catch (PropelException $exp) {
+				//Si falla en este caso continuamos
+				//se deben enviar el resto de los mensajes.
+				if (ConfigModule::get("global","showPropelExceptions")) 
+					print_r($exp->getMessage());
+			}
+		}
+		//El objeto actual se guarda sin Recipient para que lo pueda ver el remitente
+		//en su bandeja de salida.
+		$this->markAsRead();
+		$this->save(); 
+	}
+	
 } // InternalMail

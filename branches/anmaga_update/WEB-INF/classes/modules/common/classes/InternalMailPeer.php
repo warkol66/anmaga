@@ -14,6 +14,32 @@
  * @package    propel.generator.common.classes
  */
 class InternalMailPeer extends BaseInternalMailPeer {
+	
+	private $searchString;
+	private $searchSentOnly;
+	private $searchUnreadOnly;
+
+	//mapea las condiciones del filtro
+	var $filterConditions = array(
+		"searchString"=>"setSearchString",
+		"searchSentOnly"=>"setSearchSentOnly",
+		"searchUnreadOnly"=>"setSearchUnreadOnly"
+	);
+	
+	function setSearchString($searchString) {
+		$this->searchString = $searchString;
+	}
+
+	function setSearchSentOnly($searchSentOnly) {
+		if (!empty($searchSentOnly))
+			$this->searchSentOnly = true;
+	}
+	
+	function setSearchUnreadOnly($searchUnreadOnly) {
+		if (!empty($searchUnreadOnly))
+			$this->searchUnreadOnly = true;
+	}
+	
 	public static function get($id) {
 		return InternalMailQuery::create()->findPk($id);
 	}
@@ -41,14 +67,26 @@ class InternalMailPeer extends BaseInternalMailPeer {
 		//Si hay algun usuario logueado, filtramos para obtener solo sus mensajes.
 		if (Common::isAffiliatedUser()) {
 			$currentUser = Common::getAffiliatedLogged();
-			$criteria->filterByRecipientType('affiliate');
-			$criteria->filterByRecipientId($currentUser->getId());
+			if (!$this->searchSentOnly)
+				$criteria->filterByRecipienAffiliateUser($currentUser);
+			else
+				$criteria->sentByAffiliateUser($currentUser);
 		} else if (Common::isSystemUser()) {
 			$currentUser = Common::getAdminLogged();
-			$criteria->filterByRecipientType('user');
-			$criteria->filterByRecipientId($currentUser->getId());
+			if (!$this->searchSentOnly)
+				$criteria->filterByRecipientUser($currentUser);
+			else
+				$criteria->sentByUser($currentUser);
 		}
-				
+		
+		if ($this->searchUnreadOnly) {
+			$criteria->unread();
+		}
+		
+		if ($this->searchString) {
+			$criteria->searchByString($this->searchString);
+		}
+		
 		return $criteria;
 	}
 	
