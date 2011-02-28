@@ -7,9 +7,9 @@
 	<tr |-if $internalMail->hasBeenRead()-|class="read"|-else-|class="unread"|-/if-| > 
 		|-assign var=fromObj value=$internalMail->getFrom()-|
 		<td nowrap><input class="selector" type="checkbox" name="selectedIds[]" value="|-$internalMail->getId()-|" /></td>
-		<td onClick="view(|-$internalMail->getId()-|);return false;">|-$fromObj->getName()-|</td> 
-		<td nowrap="nowrap" onClick="view(|-$internalMail->getId()-|);return false;">|-$internalMail->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y %H:%M:%S"-|</td> 
-		<td onClick="view(|-$internalMail->getId()-|);return false;">|-$internalMail->getSubject()-|</td>
+		<td onClick="view(|-$internalMail->getId()-|);return false;"><a rel="lightbox1" class="lbOn">|-$fromObj->getName()-|</a></td> 
+		<td onClick="view(|-$internalMail->getId()-|);return false;"><a rel="lightbox1" class="lbOn" nowrap="nowrap" >|-$internalMail->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y %H:%M:%S"-|</a></td> 
+		<td onClick="view(|-$internalMail->getId()-|);return false;"><a rel="lightbox1" class="lbOn">|-$internalMail->getSubject()-|</a></td>
 	</tr> 
 	|-/foreach-|
 	|-if isset($pager) && ($pager->getTotalPages() gt 1)-|
