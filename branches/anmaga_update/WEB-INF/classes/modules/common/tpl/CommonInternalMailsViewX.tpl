@@ -1,33 +1,32 @@
-<h2>Tablero de Gestión</h2>
+<h2>Mensajería Interna</h2>
+<h1>Asunto: |-$internalMail->getSubject()-|</h1>
 <div id="div_internalMail">
 	<fieldset>
-		<legend>Formulario de Administración de Mensajes</legend>
-	
+		<legend>Datos del mensaje</legend>
+		<p class="textAfterLabel">
+			<label>Fecha: </label>
+			|-$internalMail->getCreatedAt()|change_timezone|date_format:"%d-%m-%Y %H:%M:%S"-|
+		</p>
 		<p class="textAfterLabel">
 			<label>De: </label>
 			|-assign var=userFrom value=$internalMail->getFrom()-|
 			|-$userFrom->getName()-|
 		</p>
-		
 		<p class="textAfterLabel">
 			<label>Para: </label>
 			|-foreach from=$internalMail->getRecipients() item=recipient-|
 				<span>|-$recipient->getName()-|</span><br />
 			|-/foreach-|
-		</p>
-		
-		<p class="textAfterLabel">
-			<label>Asunto: </label>
-			|-$internalMail->getSubject()-|
-		</p>
-			
+		</p>		
+	</fieldset>
 		<p class="textAfterLabel">
 			<label>Mensaje: </label>
-			|-$internalMail->getBody()-|
 		</p>
-		
-	</fieldset>
-	
+			|-$internalMail->getBody()-|
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+	<hr />	
+			<p>&nbsp;</p>
 	<form method="GET" action="Main.php">
 			<p>
 				<input type="hidden" name="do" id="do" value="commonInternalMailsEdit" />

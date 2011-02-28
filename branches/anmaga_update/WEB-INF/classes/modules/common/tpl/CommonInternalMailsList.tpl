@@ -1,5 +1,5 @@
-<h2>Servicios</h2>
-<h1>Administración de Mensajes.</h1>
+<h2>Mensajería Interna</h2>
+<h1>Administración de Mensajes</h1>
 <p>A continuación se muestra la lista de mensajes.</p>
 <div id="div_internalMails"> 
 	|-if $message eq "ok"-|
@@ -70,11 +70,11 @@
 
 <div id="lightbox1" class="leightbox"> 
 	<p align="right">				
-		<a href="#" class="lbAction blackNoDecoration" rel="deactivate">Cerrar formulario <input type="button" class="buttonImageDelete" /></a> 
+		<a href="#" class="lbAction blackNoDecoration" rel="deactivate">Cerrar&nbsp;&nbsp;<input type="button" class="iconDelete" /></a> 
 	</p> 
 	<div id="lightboxContent">
 	</div
-</div> 
+></div> 
 
 <script type="text/javascript" language="javascript" charset="utf-8">
 	var selected=-1;
