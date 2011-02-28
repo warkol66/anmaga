@@ -92,10 +92,22 @@ class InternalMail extends BaseInternalMail {
 	
 	public function markAsRead() {
 		$this->setReadOn(date('Y-m-d H:i:s'));
+		try {
+			$this->save();
+		} catch (PropelException $exp) {
+			if (ConfigModule::get("global","showPropelExceptions")) 
+				print_r($exp->getMessage());
+		}
 	}
 	
 	public function markAsUnread() {
 		$this->setReadOn(null);
+		try {
+			$this->save();
+		} catch (PropelException $exp) {
+			if (ConfigModule::get("global","showPropelExceptions")) 
+				print_r($exp->getMessage());
+		}
 	}
 	
 	/**
