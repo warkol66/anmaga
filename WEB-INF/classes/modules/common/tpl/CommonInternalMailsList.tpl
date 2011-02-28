@@ -67,7 +67,18 @@
 		</tbody> 
 	</table> 
 </div>
+
+<div id="lightbox1" class="leightbox"> 
+	<p align="right">				
+		<a href="#" class="lbAction blackNoDecoration" rel="deactivate">Cerrar formulario <input type="button" class="buttonImageDelete" /></a> 
+	</p> 
+	<div id="lightboxContent">
+	</div
+</div> 
+
 <script type="text/javascript" language="javascript" charset="utf-8">
+	var selected=-1;
+	
 	function deleteMessages() {
 		var fields = Form.serializeElements($$('.selector')) + Form.serializeElements($$('#page'));
 		var myAjax = new Ajax.Updater(
@@ -111,6 +122,19 @@
 	}
 	
 	function view(id) {
-		location.href='Main.php?do=commonInternalMailsView&id='+id;
+		if (selected != id) { 
+			var myAjax = new Ajax.Updater(
+				{success: 'lightboxContent'},
+				'Main.php?do=commonInternalMailsViewX&id='+id,
+				{
+					method: 'post',
+					evalScripts: true
+				}
+			);
+			selected = id;
+		}
+		return true;
 	}
 </script>
+
+<script type="text/javascript" src="scripts/lightbox.js"></script>
