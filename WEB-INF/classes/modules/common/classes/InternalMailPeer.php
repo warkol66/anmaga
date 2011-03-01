@@ -108,7 +108,10 @@ class InternalMailPeer extends BaseInternalMailPeer {
 	}
 	
 	public static function delete($ids) {
-		return InternalMailQuery::create()->filterByPrimaryKeys($ids)->delete();
+		if (!empty($ids))
+			return InternalMailQuery::create()->filterByPrimaryKeys($ids)->delete();
+		else
+			return 0;
 	}
 	
 	public static function markAsRead($ids) {
