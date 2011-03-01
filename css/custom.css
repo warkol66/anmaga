@@ -403,8 +403,22 @@ NEW CUSTOM!!!!
 */
 
 
-
-
+input[type="submit"],input[type="button"],input[type="reset"] {
+	background-color: #f0f0f0;
+	border: outset 1px #ababab;
+	outline: 0 none;
+	cursor: pointer;
+	-khtml-border-radius: 2px;
+	-opera-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+input[type="submit"]:hover,input[type="button"]:hover,input[type="reset"]:hover {
+	background-color: #c0c0c0;
+	border: outset 1px  #909090;
+}
 
 /* Image Buttons and Links */
 .iconActivate, .iconAdd, .iconBack, .iconBudget, .iconDelete, .iconDetail, .iconDownload,
@@ -414,7 +428,7 @@ NEW CUSTOM!!!!
 .iconView, .iconViewGantt, .iconWeight, .iconAddToCart, .iconRemoveFromCart, .iconUpdateCart, .iconSetPrivileges, .iconOwner,
 .iconRead, .iconUnread {
 	background: url(../images/icons_all.png) no-repeat #f0f0f0;
-	border: solid 1px #ababab;
+	border: solid 1px #ababab !Important;;
 	font-size: 0px !Important;
 	width: 20px;
 	height: 20px;
@@ -438,7 +452,7 @@ input.iconSetPrivileges, input.iconOwner, input.iconRead, input.iconUnread {
 }
 .disabled {
 	background: url(../images/icons_all_dis.png) no-repeat #f0f0f0;
-	border: solid 1px #ababab;
+	border: solid 1px #ababab !Important;;
 	-khtml-border-radius: 2px;
 	-opera-border-radius: 2px;
 	-moz-border-radius: 2px;
@@ -574,14 +588,10 @@ input.iconSetPrivileges, input.iconOwner, input.iconRead, input.iconUnread {
 .iconView:hover, .iconViewGantt:hover, .iconWeight:hover, .iconAddToCart:hover, .iconRemoveFromCart:hover, .iconSetPrivileges:hover,
 .iconOwner:hover, .iconRead:hover, .iconUnread:hover{
 	background-color: #c0c0c0;
-	border: solid 1px #909090;
-	-khtml-border-radius: 2px;
-	-opera-border-radius: 2px;
-	-moz-border-radius: 2px;
-	-webkit-border-radius: 2px;
+	border: solid 1px #909090 !Important;;
 }
 .disabled, .disabled:hover{
-	background-color: #f0f0f0;
+	background-color: #f0f0f0 !Important;
 }
 
 /* LINK AGREGAR NUEVA ...  */
@@ -655,3 +665,4 @@ a.linkMailDelete {
 	color: Green;
 	font-weight: bold;
 }
+
