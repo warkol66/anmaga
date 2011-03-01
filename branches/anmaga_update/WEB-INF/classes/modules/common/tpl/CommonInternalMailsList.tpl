@@ -16,15 +16,15 @@
 							<input type="hidden" name="do" value="commonInternalMailsList" />
 							<p>
 								<label for="filters[searchSentOnly]" >Enviados</label>
-								<input type="checkbox" name="filters[searchSentOnly]" value="true" |-if isset($filters.searchSentOnly)-|checked |-/if-|/>
+								<input class="filter" type="checkbox" name="filters[searchSentOnly]" value="true" |-if isset($filters.searchSentOnly)-|checked |-/if-|/>
 							</p>
 							<p>
 								<label for="filters[searchUnreadOnly]" >No leidos</label>
-								<input type="checkbox" name="filters[searchUnreadOnly]" value="true" |-if isset($filters.searchUnreadOnly)-|checked |-/if-|/>
+								<input class="filter" type="checkbox" name="filters[searchUnreadOnly]" value="true" |-if isset($filters.searchUnreadOnly)-|checked |-/if-|/>
 							</p>
 							<p>
 								<label for="filters[searchString]" >Texto a buscar: </label>
-								<input name="filters[searchString]" type="text" value="|-if isset($filters.searchString)-||-$filters.searchString-||-/if-|" size="30" title="Ingrese el texto a buscar" />
+								<input class="filter" name="filters[searchString]" type="text" value="|-if isset($filters.searchString)-||-$filters.searchString-||-/if-|" size="30" title="Ingrese el texto a buscar" />
 							</p>
 							<p>
 								<input type='submit' value='Buscar' class='tdSearchButton' />
@@ -79,42 +79,45 @@
 	var selected=-1;
 	
 	function deleteMessages() {
-		var fields = Form.serializeElements($$('.selector')) + Form.serializeElements($$('#page'));
+		var fields = Form.serializeElements($$('.selector')) + '&' + Form.serializeElements($$('.filter')) + '&' + Form.serializeElements($$('#page'));
 		var myAjax = new Ajax.Updater(
 			{success: 'internalMailsList'},
 			'Main.php?do=commonInternalMailsDoDeleteX',
 			{
 				method: 'post',
 				postBody: fields,
-				evalScripts: true
+				evalScripts: true,
+				onComplete: updateLightBox //inicializamos el lighbox nuevamente
 			}
 		);
 		return true;
 	}
 	
 	function markAsRead() {
-		var fields = Form.serializeElements($$('.selector')) + Form.serializeElements($$('#page'));
+		var fields = Form.serializeElements($$('.selector')) + '&' + Form.serializeElements($$('.filter')) + '&' + Form.serializeElements($$('#page'));
 		var myAjax = new Ajax.Updater(
 			{success: 'internalMailsList'},
 			'Main.php?do=commonInternalMailsDoMarkAsReadX',
 			{
 				method: 'post',
 				postBody: fields,
-				evalScripts: true
+				evalScripts: true,
+				onComplete: updateLightBox //inicializamos el lighbox nuevamente
 			}
 		);
 		return true;
 	}
 	
 	function markAsUnread() {
-		var fields = Form.serializeElements($$('.selector')) + Form.serializeElements($$('#page')) + '&reverse=true';
+		var fields = Form.serializeElements($$('.selector')) + '&' + Form.serializeElements($$('.filter')) + '&' + Form.serializeElements($$('#page')) + '&reverse=true';
 		var myAjax = new Ajax.Updater(
 			{success: 'internalMailsList'},
 			'Main.php?do=commonInternalMailsDoMarkAsReadX',
 			{
 				method: 'post',
 				postBody: fields,
-				evalScripts: true
+				evalScripts: true,
+				onComplete: updateLightBox //inicializamos el lighbox nuevamente
 			}
 		);
 		return true;
@@ -127,13 +130,22 @@
 				'Main.php?do=commonInternalMailsViewX&id='+id,
 				{
 					method: 'post',
-					evalScripts: true
+					evalScripts: true,
+					onComplete: updateLightBox //inicializamos el lighbox nuevamente
 				}
 			);
 			selected = id;
 		}
 		return true;
 	}
+	
+	function updateLightBox() {
+		lbox = document.getElementsByClassName('lbOn');
+		for(i = 0; i < lbox.length; i++) {
+			valid = new lightbox(lbox[i]);
+		}
+	}
+	
 </script>
 
 <script type="text/javascript" src="scripts/lightbox.js"></script>
