@@ -29,6 +29,7 @@ class CommonSendAlertsAction extends BaseAction {
 			$entitiesFiltered = $alertSubscription->getEntitiesFiltered();
 			if (!empty($entitiesFiltered) && count($entitiesFiltered) > 0) {
 				$recipients = $alertSubscription->getRecipients();
+				print_r($recipients);die;
 				$subject = Common::getTranslation('Alert','users');
 				$smarty->assign('alertSubscription', $alertSubscription);
 				$body = $smarty->fetch('CommonAlertMail.tpl');

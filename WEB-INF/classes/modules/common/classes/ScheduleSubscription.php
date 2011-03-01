@@ -47,15 +47,19 @@ class ScheduleSubscription extends BaseScheduleSubscription {
 			$recipients[] = $user->getMailAddress();
 		}
 		$extraRecipients = $this->getExtraRecipients();
-		$extraRecipients = explode(',', $extraRecipients);
-		$recipients = array_merge($recipients, $extraRecipients);
+		if (!empty($extraRecipients)) {
+			$extraRecipients = explode(',', $extraRecipients);
+			$recipients = array_merge($recipients, $extraRecipients);
+		}
 		return $recipients;
 	}
 	
 	public function getEntitiesFiltered() {
 		$entityName = $this->getModuleEntity()->getPhpName();
 		$dateFieldName = $this->getModuleEntityFieldRelatedByEntityDateFieldUniqueName()->getName();
-		$booleanFieldName = $this->getModuleEntityFieldRelatedByEntityBooleanFieldUniqueName()->getName();
+		$booleanEntityField = $this->getModuleEntityFieldRelatedByEntityBooleanFieldUniqueName();
+		if (!empty($booleanEntityField))
+			$booleanFieldName = $booleanEntityField->getName();
 		$max = new DateTime('today');
 		$min = new DateTime('today');
 		$schedulePeriodCount = $this->getAnticipationdays();
