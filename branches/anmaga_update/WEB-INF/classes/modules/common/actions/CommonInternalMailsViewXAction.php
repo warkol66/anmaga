@@ -30,6 +30,7 @@ class CommonInternalMailsViewXAction extends BaseAction {
 			return $mapping->findForwardConfig('failure');
 			
 		$internalMail->markAsRead();
+		$internalMail->save();
 			
 		$smarty->assign("internalMail", $internalMail);
 

@@ -209,6 +209,13 @@ class AlertSubscriptionPeer extends BaseAlertSubscriptionPeer {
 				$subject .= $entityDescription;
 			}
 			$mailFrom = $system["parameters"]["fromEmail"];
+			
+			if (class_exists('InternalMailPeer')) {
+				$recipientsUsers = $object->getUsers();
+				$fromUser = UserPeer::get(-1);  //Usuario "system"
+				InternalMailPeer::sendToUsers($subject, $body, $recipientsUsers, $fromUser);
+			}
+			
 			$manager = new EmailManagement();
 			$manager->setTestMode();
 			$message = $manager->createHTMLMessage($subject,$body);
