@@ -104,6 +104,7 @@ class ActionLogPeer extends BaseActionLogPeer {
 			if (!empty($this->dateTo))				
 				$criteria->add(ActionLogPeer::DATETIME,$this->dateTo, Criteria::LESS_EQUAL);
 		}
+
 		return $criteria;
 
 	}

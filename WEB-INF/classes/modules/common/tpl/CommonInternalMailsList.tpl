@@ -10,7 +10,7 @@
 	<table id="tabla-internalMails" class='tableTdBorders' cellpadding='5' cellspacing='0' width='100%'> 
 		<thead> 
 			<tr>
-				<td colspan="5" class="tdSearch"><a href="javascript:void(null);" onClick='switch_vis("divSearch");' class="tdTitSearch">Filtros de busqueda</a>
+				<td colspan="5" class="tdSearch"><div class="rightLink"><a href="javascript:void(null);" onClick='switch_vis("divSearch");' class="tdTitSearch">Filtros de busqueda</a></div>
 					<div id="divSearch" style="display:|-if $filters|@count gt 0-|block|-else-|none|-/if-|;">
 						<form action='Main.php' method='get' style="display:inline;">
 							<input type="hidden" name="do" value="commonInternalMailsList" />
@@ -27,7 +27,7 @@
 								<input class="filter" name="filters[searchString]" type="text" value="|-if isset($filters.searchString)-||-$filters.searchString-||-/if-|" size="30" title="Ingrese el texto a buscar" />
 							</p>
 							<p>
-								<input type='submit' value='Buscar' class='tdSearchButton' />
+								<input type='submit' value='Buscar' />
 							</p>
 						</form>
 						|-if $filters|@count gt 0-|
@@ -68,9 +68,9 @@
 </div>
 
 <div id="lightbox1" class="leightbox"> 
-	<p align="right">				
+	<div align="right">				
 		<a href="#" class="lbAction blackNoDecoration" rel="deactivate">Cerrar&nbsp;&nbsp;<input type="button" class="iconDelete" /></a> 
-	</p> 
+	</div> 
 	<div id="lightboxContent">
 	</div
 ></div> 
@@ -125,6 +125,7 @@
 	
 	function view(id) {
 		if (selected != id) { 
+		document.getElementById('lightboxContent').innerHTML = "<p>Cargando mensaje&nbsp;&nbsp;&nbsp;<img src='images/spinner.gif' /></p>";
 			var myAjax = new Ajax.Updater(
 				{success: 'lightboxContent'},
 				'Main.php?do=commonInternalMailsViewX&id='+id,

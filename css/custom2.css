@@ -233,9 +233,9 @@ a.pageLink:hover, a.pageLink:active {
 
 /* SEARCH   -------------------------------------------*/
 .tdTitSearch{
-background-color: #f4f6f3;
+	background-color: #f4f6f3;
 	background-image:url(../images/icon_search.gif);
-	background-position:8px 2px;
+	background-position:9px 0px;
 	background-repeat:no-repeat;
 	color: #0066CC;
 }

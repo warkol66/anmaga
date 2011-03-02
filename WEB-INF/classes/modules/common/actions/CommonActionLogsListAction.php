@@ -43,13 +43,11 @@ class CommonActionLogsListAction extends BaseAction {
 
 		$smarty->assign("message",$_GET["message"]);
 
-		@include_once('AffiliatePeer.php');
 		if (class_exists('AffiliatePeer')){
 			$affiliatePeer = new AffiliatePeer();
 			$affiliates = $affiliatePeer->getAll();
 			$smarty->assign("affiliates",$affiliates);
 
-			@include_once('AffiliateUserPeer.php');
 			if (class_exists('AffiliateUserPeer')){
 				$affiliateUserPeer = new AffiliateUserPeer();
 				$affiliateUser = $affiliateUserPeer->getAll();
@@ -58,30 +56,30 @@ class CommonActionLogsListAction extends BaseAction {
 		}
 
 		$logs = new ActionLogPeer();
-		$ActionLogPeer = new ActionLogPeer();
+		$actionLogPeer = new ActionLogPeer();
 		$url= 'Main.php?do=commonActionLogsList';
 		
  		if (!empty($_GET['filters'])) {
 
-			$ActionLogPeer->setOrderByDatetime();
-			if (!empty($_GET['filters']['dateFrom']))
-				$ActionLogPeer->setDateFrom(Common::convertToMysqlDateFormat($_GET['filters']['dateFrom']) . ' 00:00:00');
-			if (!empty($_GET['filters']['dateTo']))
-				$ActionLogPeer->setDateTo(Common::convertToMysqlDateFormat($_GET['filters']['dateTo']) . ' 23:59:59');
-			if (!empty($_GET['filters']['module']))
-				$ActionLogPeer->setModule($_GET['filters']['module']);
-			if (!empty($_GET['filters']['userId']))
-				$ActionLogPeer->setUserId($_GET['filters']['userId']);
-			if (!empty($_GET['filters']['afiliate']))
-				$ActionLogPeer->setAffiliateId($_GET['filters']['affiliateId']);
+			$actionLogPeer->setOrderByDatetime();
+			if ($_GET['filters']['dateFrom'])
+				$actionLogPeer->setDateFrom(Common::convertToMysqlDateFormat($_GET['filters']['dateFrom']) . ' 00:00:00');
+			if ($_GET['filters']['dateTo'])
+				$actionLogPeer->setDateTo(Common::convertToMysqlDateFormat($_GET['filters']['dateTo']) . ' 23:59:59');
+			if ($_GET['filters']['module'])
+				$actionLogPeer->setModule($_GET['filters']['module']);
+			if ($_GET['filters']['userId'])
+				$actionLogPeer->setUserId($_GET['filters']['userId']);
+			if ($_GET['filters']['affiliateId'])
+				$actionLogPeer->setAffiliateId($_GET['filters']['affiliateId']);
 
-			$pager = $ActionLogPeer->getAllPaginatedFiltered($_GET["page"]);
+			$pager = $actionLogPeer->getAllPaginatedFiltered($_GET["page"]);
 
 			foreach ($_GET['filters'] as $key => $value)
 				$url .= "&filters[$key]=$value";
 		}
 		else if (!empty($_GET['listLogs']))
-			$pager = $ActionLogPeer->getAllPaginated($_GET["page"]);
+			$pager = $actionLogPeer->getAllPaginated($_GET["page"]);
 
 		if (empty($_GET['filters']['dateFrom']) && empty($_GET['filters']['dateTo'])) {
 			$_GET['filters']["dateFrom"] = date('d-m-Y',mktime(0,0,0,date("m")-1,date("d"),date("Y")));
