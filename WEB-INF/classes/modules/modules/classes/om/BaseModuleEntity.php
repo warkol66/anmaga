@@ -79,6 +79,12 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	protected $scopefielduniquename;
 
 	/**
+	 * The value for the behaviors field.
+	 * @var        resource
+	 */
+	protected $behaviors;
+
+	/**
 	 * @var        Module
 	 */
 	protected $aModule;
@@ -210,6 +216,16 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	public function getScopefielduniquename()
 	{
 		return $this->scopefielduniquename;
+	}
+
+	/**
+	 * Get the [behaviors] column value.
+	 * Indica los behaviors que tiene la entidad
+	 * @return     resource
+	 */
+	public function getBehaviors()
+	{
+		return $this->behaviors;
 	}
 
 	/**
@@ -401,6 +417,29 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	} // setScopefielduniquename()
 
 	/**
+	 * Set the value of [behaviors] column.
+	 * Indica los behaviors que tiene la entidad
+	 * @param      resource $v new value
+	 * @return     ModuleEntity The current object (for fluent API support)
+	 */
+	public function setBehaviors($v)
+	{
+		// Because BLOB columns are streams in PDO we have to assume that they are
+		// always modified when a new value is passed in.  For example, the contents
+		// of the stream itself may have changed externally.
+		if (!is_resource($v) && $v !== null) {
+			$this->behaviors = fopen('php://memory', 'r+');
+			fwrite($this->behaviors, $v);
+			rewind($this->behaviors);
+		} else { // it's already a stream
+			$this->behaviors = $v;
+		}
+		$this->modifiedColumns[] = ModuleEntityPeer::BEHAVIORS;
+
+		return $this;
+	} // setBehaviors()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -441,6 +480,13 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 			$this->savelog = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
 			$this->nestedset = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
 			$this->scopefielduniquename = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			if ($row[$startcol + 9] !== null) {
+				$this->behaviors = fopen('php://memory', 'r+');
+				fwrite($this->behaviors, $row[$startcol + 9]);
+				rewind($this->behaviors);
+			} else {
+				$this->behaviors = null;
+			}
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -449,7 +495,7 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 9; // 9 = ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 10; // 10 = ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ModuleEntity object", $e);
@@ -668,6 +714,11 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 					$affectedRows += ModuleEntityPeer::doUpdate($this, $con);
 				}
 
+				// Rewind the behaviors LOB column, since PDO does not rewind after inserting value.
+				if ($this->behaviors !== null && is_resource($this->behaviors)) {
+					rewind($this->behaviors);
+				}
+
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
@@ -884,6 +935,9 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 			case 8:
 				return $this->getScopefielduniquename();
 				break;
+			case 9:
+				return $this->getBehaviors();
+				break;
 			default:
 				return null;
 				break;
@@ -917,6 +971,7 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 			$keys[6] => $this->getSavelog(),
 			$keys[7] => $this->getNestedset(),
 			$keys[8] => $this->getScopefielduniquename(),
+			$keys[9] => $this->getBehaviors(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aModule) {
@@ -983,6 +1038,9 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 			case 8:
 				$this->setScopefielduniquename($value);
 				break;
+			case 9:
+				$this->setBehaviors($value);
+				break;
 		} // switch()
 	}
 
@@ -1016,6 +1074,7 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 		if (array_key_exists($keys[6], $arr)) $this->setSavelog($arr[$keys[6]]);
 		if (array_key_exists($keys[7], $arr)) $this->setNestedset($arr[$keys[7]]);
 		if (array_key_exists($keys[8], $arr)) $this->setScopefielduniquename($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setBehaviors($arr[$keys[9]]);
 	}
 
 	/**
@@ -1036,6 +1095,7 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ModuleEntityPeer::SAVELOG)) $criteria->add(ModuleEntityPeer::SAVELOG, $this->savelog);
 		if ($this->isColumnModified(ModuleEntityPeer::NESTEDSET)) $criteria->add(ModuleEntityPeer::NESTEDSET, $this->nestedset);
 		if ($this->isColumnModified(ModuleEntityPeer::SCOPEFIELDUNIQUENAME)) $criteria->add(ModuleEntityPeer::SCOPEFIELDUNIQUENAME, $this->scopefielduniquename);
+		if ($this->isColumnModified(ModuleEntityPeer::BEHAVIORS)) $criteria->add(ModuleEntityPeer::BEHAVIORS, $this->behaviors);
 
 		return $criteria;
 	}
@@ -1106,6 +1166,7 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 		$copyObj->setSavelog($this->savelog);
 		$copyObj->setNestedset($this->nestedset);
 		$copyObj->setScopefielduniquename($this->scopefielduniquename);
+		$copyObj->setBehaviors($this->behaviors);
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1928,6 +1989,7 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 		$this->savelog = null;
 		$this->nestedset = null;
 		$this->scopefielduniquename = null;
+		$this->behaviors = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();

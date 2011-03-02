@@ -20,6 +20,8 @@ class ModulesEntitiesDoEditAction extends BaseAction {
 		}
 
 		$module = "Modules";
+    $entityParams = $_POST["entityParams"];
+    $entityParams['behaviors'] = serialize($entityParams['behaviors']);
 
 		if ($_POST["page"] > 0)
 			$params["page"] = $_POST["page"];
@@ -29,28 +31,28 @@ class ModulesEntitiesDoEditAction extends BaseAction {
 
 		if (!is_null($_POST["id"])) { // Existing entity
 
-			ModuleEntityPeer::update($_POST["id"],$_POST["entityParams"]);
+			ModuleEntityPeer::update($_POST["id"],$entityParams);
 			return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'success');
 
 		}
 		else { // New entity
 
-			if ( !ModuleEntityPeer::create($_POST["entityParams"]) ) {
+			if ( !ModuleEntityPeer::create($entityParams) ) {
 				$entity = new ModuleEntity();
 
-				$entity = common::setObjectFromParams($entity,$_POST["entityParams"]);
+				$entity = common::setObjectFromParams($entity,$entityParams);
 
 				$smarty->assign("entity",$entity);
 				$smarty->assign("action","create");
 				$smarty->assign("message","error");
 
 				$logSufix = ', ' . Common::getTranslation('action: create','common');
-				Common::doLog('failure', $_POST["entityParams"]["name"] . $logSufix);
+				Common::doLog('failure', $entityParams["name"] . $logSufix);
 				return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'failure');
 			}
 
 			$logSufix = ', ' . Common::getTranslation('action: create','common');
-			Common::doLog('success', $_POST["entityParams"]["name"] . $logSufix);
+			Common::doLog('success', $entityParams["name"] . $logSufix);
 			return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'success');
 		}
 

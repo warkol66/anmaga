@@ -46,6 +46,7 @@ class ModuleEntityTableMap extends TableMap {
 		$this->addColumn('SAVELOG', 'Savelog', 'BOOLEAN', false, null, null);
 		$this->addColumn('NESTEDSET', 'Nestedset', 'BOOLEAN', false, null, null);
 		$this->addForeignKey('SCOPEFIELDUNIQUENAME', 'Scopefielduniquename', 'VARCHAR', 'modules_entityField', 'UNIQUENAME', false, 100, null);
+		$this->addColumn('BEHAVIORS', 'Behaviors', 'BLOB', false, null, null);
 		// validators
 	} // initialize()
 

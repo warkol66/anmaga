@@ -55,6 +55,12 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 	protected $isrequired;
 
 	/**
+	 * The value for the defaultvalue field.
+	 * @var        string
+	 */
+	protected $defaultvalue;
+
+	/**
 	 * The value for the isprimarykey field.
 	 * @var        boolean
 	 */
@@ -137,6 +143,18 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 	 * @var        string
 	 */
 	protected $foreignkeyremote;
+
+	/**
+	 * The value for the ondelete field.
+	 * @var        string
+	 */
+	protected $ondelete;
+
+	/**
+	 * The value for the automatic field.
+	 * @var        boolean
+	 */
+	protected $automatic;
 
 	/**
 	 * @var        ModuleEntity
@@ -260,6 +278,16 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 	public function getIsrequired()
 	{
 		return $this->isrequired;
+	}
+
+	/**
+	 * Get the [defaultvalue] column value.
+	 * Valor por defecto
+	 * @return     string
+	 */
+	public function getDefaultvalue()
+	{
+		return $this->defaultvalue;
 	}
 
 	/**
@@ -403,6 +431,26 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Get the [ondelete] column value.
+	 * Comportamiento onDelete
+	 * @return     string
+	 */
+	public function getOndelete()
+	{
+		return $this->ondelete;
+	}
+
+	/**
+	 * Get the [automatic] column value.
+	 * Indica si es una columna autogenerada por un behavior
+	 * @return     boolean
+	 */
+	public function getAutomatic()
+	{
+		return $this->automatic;
+	}
+
+	/**
 	 * Set the value of [uniquename] column.
 	 * Nombre unico del campo
 	 * @param      string $v new value
@@ -505,6 +553,26 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 
 		return $this;
 	} // setIsrequired()
+
+	/**
+	 * Set the value of [defaultvalue] column.
+	 * Valor por defecto
+	 * @param      string $v new value
+	 * @return     ModuleEntityField The current object (for fluent API support)
+	 */
+	public function setDefaultvalue($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->defaultvalue !== $v) {
+			$this->defaultvalue = $v;
+			$this->modifiedColumns[] = ModuleEntityFieldPeer::DEFAULTVALUE;
+		}
+
+		return $this;
+	} // setDefaultvalue()
 
 	/**
 	 * Set the value of [isprimarykey] column.
@@ -795,6 +863,46 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 	} // setForeignkeyremote()
 
 	/**
+	 * Set the value of [ondelete] column.
+	 * Comportamiento onDelete
+	 * @param      string $v new value
+	 * @return     ModuleEntityField The current object (for fluent API support)
+	 */
+	public function setOndelete($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->ondelete !== $v) {
+			$this->ondelete = $v;
+			$this->modifiedColumns[] = ModuleEntityFieldPeer::ONDELETE;
+		}
+
+		return $this;
+	} // setOndelete()
+
+	/**
+	 * Set the value of [automatic] column.
+	 * Indica si es una columna autogenerada por un behavior
+	 * @param      boolean $v new value
+	 * @return     ModuleEntityField The current object (for fluent API support)
+	 */
+	public function setAutomatic($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->automatic !== $v) {
+			$this->automatic = $v;
+			$this->modifiedColumns[] = ModuleEntityFieldPeer::AUTOMATIC;
+		}
+
+		return $this;
+	} // setAutomatic()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -831,20 +939,23 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 			$this->name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->description = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
 			$this->isrequired = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
-			$this->isprimarykey = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
-			$this->isautoincrement = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-			$this->order = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-			$this->type = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-			$this->unique = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
-			$this->size = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-			$this->aggregateexpression = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-			$this->label = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-			$this->formfieldtype = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
-			$this->formfieldsize = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-			$this->formfieldlines = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
-			$this->formfieldusecalendar = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-			$this->foreignkeytable = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-			$this->foreignkeyremote = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+			$this->defaultvalue = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->isprimarykey = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
+			$this->isautoincrement = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+			$this->order = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+			$this->type = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+			$this->unique = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
+			$this->size = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
+			$this->aggregateexpression = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+			$this->label = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+			$this->formfieldtype = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
+			$this->formfieldsize = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+			$this->formfieldlines = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+			$this->formfieldusecalendar = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+			$this->foreignkeytable = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+			$this->foreignkeyremote = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+			$this->ondelete = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+			$this->automatic = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -853,7 +964,7 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 19; // 19 = ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 22; // 22 = ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ModuleEntityField object", $e);
@@ -1384,46 +1495,55 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 				return $this->getIsrequired();
 				break;
 			case 5:
-				return $this->getIsprimarykey();
+				return $this->getDefaultvalue();
 				break;
 			case 6:
-				return $this->getIsautoincrement();
+				return $this->getIsprimarykey();
 				break;
 			case 7:
-				return $this->getOrder();
+				return $this->getIsautoincrement();
 				break;
 			case 8:
-				return $this->getType();
+				return $this->getOrder();
 				break;
 			case 9:
-				return $this->getUnique();
+				return $this->getType();
 				break;
 			case 10:
-				return $this->getSize();
+				return $this->getUnique();
 				break;
 			case 11:
-				return $this->getAggregateexpression();
+				return $this->getSize();
 				break;
 			case 12:
-				return $this->getLabel();
+				return $this->getAggregateexpression();
 				break;
 			case 13:
-				return $this->getFormfieldtype();
+				return $this->getLabel();
 				break;
 			case 14:
-				return $this->getFormfieldsize();
+				return $this->getFormfieldtype();
 				break;
 			case 15:
-				return $this->getFormfieldlines();
+				return $this->getFormfieldsize();
 				break;
 			case 16:
-				return $this->getFormfieldusecalendar();
+				return $this->getFormfieldlines();
 				break;
 			case 17:
-				return $this->getForeignkeytable();
+				return $this->getFormfieldusecalendar();
 				break;
 			case 18:
+				return $this->getForeignkeytable();
+				break;
+			case 19:
 				return $this->getForeignkeyremote();
+				break;
+			case 20:
+				return $this->getOndelete();
+				break;
+			case 21:
+				return $this->getAutomatic();
 				break;
 			default:
 				return null;
@@ -1454,20 +1574,23 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 			$keys[2] => $this->getName(),
 			$keys[3] => $this->getDescription(),
 			$keys[4] => $this->getIsrequired(),
-			$keys[5] => $this->getIsprimarykey(),
-			$keys[6] => $this->getIsautoincrement(),
-			$keys[7] => $this->getOrder(),
-			$keys[8] => $this->getType(),
-			$keys[9] => $this->getUnique(),
-			$keys[10] => $this->getSize(),
-			$keys[11] => $this->getAggregateexpression(),
-			$keys[12] => $this->getLabel(),
-			$keys[13] => $this->getFormfieldtype(),
-			$keys[14] => $this->getFormfieldsize(),
-			$keys[15] => $this->getFormfieldlines(),
-			$keys[16] => $this->getFormfieldusecalendar(),
-			$keys[17] => $this->getForeignkeytable(),
-			$keys[18] => $this->getForeignkeyremote(),
+			$keys[5] => $this->getDefaultvalue(),
+			$keys[6] => $this->getIsprimarykey(),
+			$keys[7] => $this->getIsautoincrement(),
+			$keys[8] => $this->getOrder(),
+			$keys[9] => $this->getType(),
+			$keys[10] => $this->getUnique(),
+			$keys[11] => $this->getSize(),
+			$keys[12] => $this->getAggregateexpression(),
+			$keys[13] => $this->getLabel(),
+			$keys[14] => $this->getFormfieldtype(),
+			$keys[15] => $this->getFormfieldsize(),
+			$keys[16] => $this->getFormfieldlines(),
+			$keys[17] => $this->getFormfieldusecalendar(),
+			$keys[18] => $this->getForeignkeytable(),
+			$keys[19] => $this->getForeignkeyremote(),
+			$keys[20] => $this->getOndelete(),
+			$keys[21] => $this->getAutomatic(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aModuleEntityRelatedByEntityname) {
@@ -1526,46 +1649,55 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 				$this->setIsrequired($value);
 				break;
 			case 5:
-				$this->setIsprimarykey($value);
+				$this->setDefaultvalue($value);
 				break;
 			case 6:
-				$this->setIsautoincrement($value);
+				$this->setIsprimarykey($value);
 				break;
 			case 7:
-				$this->setOrder($value);
+				$this->setIsautoincrement($value);
 				break;
 			case 8:
-				$this->setType($value);
+				$this->setOrder($value);
 				break;
 			case 9:
-				$this->setUnique($value);
+				$this->setType($value);
 				break;
 			case 10:
-				$this->setSize($value);
+				$this->setUnique($value);
 				break;
 			case 11:
-				$this->setAggregateexpression($value);
+				$this->setSize($value);
 				break;
 			case 12:
-				$this->setLabel($value);
+				$this->setAggregateexpression($value);
 				break;
 			case 13:
-				$this->setFormfieldtype($value);
+				$this->setLabel($value);
 				break;
 			case 14:
-				$this->setFormfieldsize($value);
+				$this->setFormfieldtype($value);
 				break;
 			case 15:
-				$this->setFormfieldlines($value);
+				$this->setFormfieldsize($value);
 				break;
 			case 16:
-				$this->setFormfieldusecalendar($value);
+				$this->setFormfieldlines($value);
 				break;
 			case 17:
-				$this->setForeignkeytable($value);
+				$this->setFormfieldusecalendar($value);
 				break;
 			case 18:
+				$this->setForeignkeytable($value);
+				break;
+			case 19:
 				$this->setForeignkeyremote($value);
+				break;
+			case 20:
+				$this->setOndelete($value);
+				break;
+			case 21:
+				$this->setAutomatic($value);
 				break;
 		} // switch()
 	}
@@ -1596,20 +1728,23 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 		if (array_key_exists($keys[2], $arr)) $this->setName($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setIsrequired($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setIsprimarykey($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setIsautoincrement($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setOrder($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setType($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setUnique($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setSize($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setAggregateexpression($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setLabel($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setFormfieldtype($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setFormfieldsize($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setFormfieldlines($arr[$keys[15]]);
-		if (array_key_exists($keys[16], $arr)) $this->setFormfieldusecalendar($arr[$keys[16]]);
-		if (array_key_exists($keys[17], $arr)) $this->setForeignkeytable($arr[$keys[17]]);
-		if (array_key_exists($keys[18], $arr)) $this->setForeignkeyremote($arr[$keys[18]]);
+		if (array_key_exists($keys[5], $arr)) $this->setDefaultvalue($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setIsprimarykey($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setIsautoincrement($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setOrder($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setType($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setUnique($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setSize($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setAggregateexpression($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setLabel($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setFormfieldtype($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setFormfieldsize($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setFormfieldlines($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setFormfieldusecalendar($arr[$keys[17]]);
+		if (array_key_exists($keys[18], $arr)) $this->setForeignkeytable($arr[$keys[18]]);
+		if (array_key_exists($keys[19], $arr)) $this->setForeignkeyremote($arr[$keys[19]]);
+		if (array_key_exists($keys[20], $arr)) $this->setOndelete($arr[$keys[20]]);
+		if (array_key_exists($keys[21], $arr)) $this->setAutomatic($arr[$keys[21]]);
 	}
 
 	/**
@@ -1626,6 +1761,7 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ModuleEntityFieldPeer::NAME)) $criteria->add(ModuleEntityFieldPeer::NAME, $this->name);
 		if ($this->isColumnModified(ModuleEntityFieldPeer::DESCRIPTION)) $criteria->add(ModuleEntityFieldPeer::DESCRIPTION, $this->description);
 		if ($this->isColumnModified(ModuleEntityFieldPeer::ISREQUIRED)) $criteria->add(ModuleEntityFieldPeer::ISREQUIRED, $this->isrequired);
+		if ($this->isColumnModified(ModuleEntityFieldPeer::DEFAULTVALUE)) $criteria->add(ModuleEntityFieldPeer::DEFAULTVALUE, $this->defaultvalue);
 		if ($this->isColumnModified(ModuleEntityFieldPeer::ISPRIMARYKEY)) $criteria->add(ModuleEntityFieldPeer::ISPRIMARYKEY, $this->isprimarykey);
 		if ($this->isColumnModified(ModuleEntityFieldPeer::ISAUTOINCREMENT)) $criteria->add(ModuleEntityFieldPeer::ISAUTOINCREMENT, $this->isautoincrement);
 		if ($this->isColumnModified(ModuleEntityFieldPeer::ORDER)) $criteria->add(ModuleEntityFieldPeer::ORDER, $this->order);
@@ -1640,6 +1776,8 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ModuleEntityFieldPeer::FORMFIELDUSECALENDAR)) $criteria->add(ModuleEntityFieldPeer::FORMFIELDUSECALENDAR, $this->formfieldusecalendar);
 		if ($this->isColumnModified(ModuleEntityFieldPeer::FOREIGNKEYTABLE)) $criteria->add(ModuleEntityFieldPeer::FOREIGNKEYTABLE, $this->foreignkeytable);
 		if ($this->isColumnModified(ModuleEntityFieldPeer::FOREIGNKEYREMOTE)) $criteria->add(ModuleEntityFieldPeer::FOREIGNKEYREMOTE, $this->foreignkeyremote);
+		if ($this->isColumnModified(ModuleEntityFieldPeer::ONDELETE)) $criteria->add(ModuleEntityFieldPeer::ONDELETE, $this->ondelete);
+		if ($this->isColumnModified(ModuleEntityFieldPeer::AUTOMATIC)) $criteria->add(ModuleEntityFieldPeer::AUTOMATIC, $this->automatic);
 
 		return $criteria;
 	}
@@ -1706,6 +1844,7 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 		$copyObj->setName($this->name);
 		$copyObj->setDescription($this->description);
 		$copyObj->setIsrequired($this->isrequired);
+		$copyObj->setDefaultvalue($this->defaultvalue);
 		$copyObj->setIsprimarykey($this->isprimarykey);
 		$copyObj->setIsautoincrement($this->isautoincrement);
 		$copyObj->setOrder($this->order);
@@ -1720,6 +1859,8 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 		$copyObj->setFormfieldusecalendar($this->formfieldusecalendar);
 		$copyObj->setForeignkeytable($this->foreignkeytable);
 		$copyObj->setForeignkeyremote($this->foreignkeyremote);
+		$copyObj->setOndelete($this->ondelete);
+		$copyObj->setAutomatic($this->automatic);
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -3187,6 +3328,7 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 		$this->name = null;
 		$this->description = null;
 		$this->isrequired = null;
+		$this->defaultvalue = null;
 		$this->isprimarykey = null;
 		$this->isautoincrement = null;
 		$this->order = null;
@@ -3201,6 +3343,8 @@ abstract class BaseModuleEntityField extends BaseObject  implements Persistent
 		$this->formfieldusecalendar = null;
 		$this->foreignkeytable = null;
 		$this->foreignkeyremote = null;
+		$this->ondelete = null;
+		$this->automatic = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();

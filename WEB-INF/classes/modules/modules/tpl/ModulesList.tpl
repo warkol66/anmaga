@@ -13,7 +13,8 @@ function checkscript() {
 	<tr class="thFillTitle"> 
 		<th width="5%" scope="col">Activar</th> 
 		<th width="15%" scope="col">Módulo</th> 
-		<th width="70%" scope="col">Descripción</th> 
+		<th width="65%" scope="col">Descripción</th> 
+		<th width="5%" scope="col"></th> 
 	</tr> 
 	|-foreach from=$installedModules item=eachModule name=foreachModule-|
 	<tr> 
@@ -26,6 +27,13 @@ function checkscript() {
 		</form></td> 
 		<td class="tdSize1"> <a href="Main.php?do=modulesEdit&moduleName=|-$eachModule->getName()-|">|-if $eachModule->getLabel() neq ''-||-$eachModule->getLabel()-||-else-||-$eachModule->getName()-||-/if-|</a> </td> 
 		<td class="tdSize1"> |-$eachModule->getDescription()-| </td> 
+		<td class="tdSize1"> 
+		  <form action="Main.php" method="post" style="display:inline;">
+        <input type="hidden" name="do" value="modulesEntitiesSchemaExport" />
+        <input type="hidden" name="moduleName" value="|-$eachModule->getName()-|" />
+        <input type="submit" name="submit_go_export_schema" value="Exportar schema" class="iconDownload"  title="Exportar schema" />
+      </form>
+		</td> 
 	</tr> 
 	|-/foreach-|
 </table> 

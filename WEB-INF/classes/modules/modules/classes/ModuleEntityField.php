@@ -26,6 +26,10 @@ class ModuleEntityField extends BaseModuleEntityField {
 	public function setEntityId($name) {
 		return $this->setEntityName($name);
 	}
+  
+  public function getEntityId() {
+    return $this->getEntityName();
+  }
 
 	/**
 	* Obtiene el nombre del modulo al que pertenece
@@ -63,16 +67,13 @@ class ModuleEntityField extends BaseModuleEntityField {
 		return $types[$this->getType()];
 	}
 
-	public function setObjectFromSchemaInfo($info) {
-		
-		if (isset($info["_a"]))
-			$attributes = $info["_a"];
-		else
-			$attributes = $info;
+	public function setObjectFromSchemaInfo($attributes) {
 		$this->setName($attributes["name"]);
 		$this->setDescription($attributes["description"]);
 		if (!empty($attributes["required"]) && $attributes["required"] == "true")
 			$this->setIsRequired(true);
+    if (!empty($attributes["default"]))
+      $this->setDefaultValue($attributes["default"]);
 		if (!empty($attributes["primaryKey"]) && $attributes["primaryKey"] == "true")
 			$this->setIsPrimaryKey(true);			
 		if (!empty($attributes["autoIncrement"]) && $attributes["autoIncrement"] == "true")
@@ -97,6 +98,9 @@ class ModuleEntityField extends BaseModuleEntityField {
 			$schema .= ' sqlType="'.$mySqlType.'"';		
 		if ($this->getIsRequired())
 			$schema .= ' required="true"';
+    $defaultValue = $this->getDefaultValue();
+    if (!empty($defaultValue))
+      $schema .= ' default="'.$defaultValue.'"';
 		if ($this->getIsPrimaryKey())
 			$schema .= ' primaryKey="true"';		
 		if ($this->getIsAutoIncrement())
@@ -118,13 +122,13 @@ class ModuleEntityField extends BaseModuleEntityField {
 
 	public function getSql() {
 		$sql = "insert into modules_entityField ";
-		$sql .= "(uniqueName, entityName, name, description, isRequired, isPrimaryKey, isAutoIncrement, order, type, unique, size, ";
+		$sql .= "(uniqueName, entityName, name, description, isRequired, defaultValue, isPrimaryKey, isAutoIncrement, order, type, unique, size, ";
 		$sql .= "aggregateExpression, label, formFieldType, formFieldSize, formFieldLines, formFieldUseCalendar, foreignKeyTable, foreignKeyRemote) ";
-		$sql .= "VALUES ('".$this->getUniqueName()."','".$this->getEntityName()."','".$this->getName()."','".$this->getDescription()."','".$this->getIsRequired()."','".$this->getIsPrimaryKey();
+		$sql .= "VALUES ('".$this->getUniqueName()."','".$this->getEntityName()."','".$this->getName()."','".$this->getDescription()."','".$this->getIsRequired()."','".$this->getDefaultValue()."','".$this->getIsPrimaryKey();
 		$sql .= "','".$this->getIsAutoIncrement()."','".$this->getOrder()."','".$this->getType()."','".$this->getUnique()."','".$this->getSize();
 		$sql .= "','".$this->getAggregateExpression()."','".$this->getLabel()."','".$this->getFormFieldType()."','".$this->getFormFieldSize();
 		$sql .= "','".$this->getFormFieldLines()."','".$this->getFormFieldUseCalendar()."','".$this->getForeignKeyTable();
-		$sql .= "','".$this->getForeignKeyRemote()."');\n";
+		$sql .= "','".$this->getForeignKeyRemote()."','".$this->getOnDelete()."');\n";
 		$validations = $this->getModuleEntityFieldValidations();
 		foreach ($validations as $validation) {
 			$sql .= 'insert into modules_entityFieldValidation ';
@@ -154,5 +158,21 @@ class ModuleEntityField extends BaseModuleEntityField {
 			}
 		}			
 	}
+  
+  public function save(PropelPDO $con = null) {
+    try {
+      if ($this->validate()) { 
+        parent::save($con);
+        return true;
+      } else {
+        return false;
+      }
+    }
+    catch (PropelException $exp) {
+      if (ConfigModule::get("global","showPropelExceptions"))
+        print_r($exp->getMessage());
+      return false;
+    }
+  }
 	
 } // ModuleEntityField

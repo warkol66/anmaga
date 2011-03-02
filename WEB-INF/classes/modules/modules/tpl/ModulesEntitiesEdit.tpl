@@ -58,7 +58,48 @@ $this->assign("hiddens",$hiddens);
 	    <option value="|-$eachField->getId()-|"|-if $eachField->getId() eq $entity->getScopeFieldUniqueName()-|selected="selected"|-/if-|>|-$eachField->getName()-|</option> 
 		|-/foreach-|
 	  </select>	      
-				</p></div>|-if $entity->getId() ne ""-|
+				</p>
+				</div>
+				
+				<fieldset title="Otros behaviors">
+				<legend>Otros behaviors</legend>
+          <p>
+            <input type="button" value="Agregar" onClick="javascript: addBehavior();" />
+            |-assign var=behaviors value=$entity->getBehaviorsOnArray()-|
+            |-foreach from=$behaviors item=behavior key=behaviorsCount-|
+              <div id="behavior_|-$behaviorsCount-|">
+                <p>
+                  <span style="display: inline-block;">
+                    <label for="entityParams[behaviors][|-$behaviorsCount-|][name]">Nombre</label>
+                    <input type="text" name="entityParams[behaviors][|-$behaviorsCount-|][name]" value="|-$behavior.name-|" />
+                    <input type="button" value="Agregar Parametro" onClick="javascript: addParam(this.parentNode.parentNode, |-$behaviorsCount-|);"/>
+                  </span>
+                  <input type="button" value="Borrar" onClick="javascript: removeBehavior(this.parentNode.parentNode);"/>
+                </p>
+                |-assign var=parameters value=$behavior.parameters-|
+                |-foreach from=$parameters item=parameter key=parametersCount-|
+                  <div id="behavior_|-$behaviorsCount-|_param_|-$parametersCount-|">
+                    <p>
+                      <span style="display: inline-block;">
+                        <label for="entityParams[behaviors][|-$behaviorsCount-|][parameters][|-$parametersCount-|][name]">Nombre</label>
+                        <input type="text" name="entityParams[behaviors][|-$behaviorsCount-|][parameters][|-$parametersCount-|][name]" value="|-$parameter.name-|" />
+                      </span>
+                      <span style="display: inline-block;">
+                        <label for="entityParams[behaviors][|-$behaviorsCount-|][parameters][|-$parametersCount-|][value]">Valor</label>
+                        <input type="text" name="entityParams[behaviors][|-$behaviorsCount-|][parameters][|-$parametersCount-|][value]" value="|-$parameter.value-|" />
+                      </span>
+                      <input type="button" value="Borrar" onClick="javascript: removeBehavior(this.parentNode.parentNode);"/>
+                    </p>
+                  </div>
+                |-/foreach-|
+              </div>
+            |-/foreach-|
+          </p>
+          <div id="behaviors_placeholder">
+          </div>
+        </fieldset>
+        
+				|-if $entity->getId() ne ""-|
 			<input name="id" type="hidden" value="|-$entity->getId()-|" />
 			|-/if-|
 				|-include file="FiltersRedirectInclude.tpl" filters=$filters-|
@@ -68,3 +109,48 @@ $this->assign("hiddens",$hiddens);
 <input name="return" type="button"  value="Regresar" title="Regresar" onClick="location.href='Main.php?do=modulesEntitiesList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page) -|&page=|-$page-||-/if-|'" /></p>
 </fieldset> 
 </form>
+
+<style>
+fieldset fieldset label {
+  width: auto;
+}
+
+fieldset fieldset {
+  margin: 10px;
+  margin-right: 200px;
+  width: auto;
+}
+</style>
+
+<script type="text/javascript" language="JavaScript">
+  var behaviorsCount = |-$behaviors|@count-|;
+  var paramsCount = [];
+  |-foreach from=$behaviors item=behavior key=behaviorsCount-|
+    paramsCount[|-$behaviorsCount-|] = |-$behavior.parameters|@count-|;
+  |-/foreach-|
+  
+  function addBehavior() {
+    var placeholder = $('behaviors_placeholder');
+    placeholder.insert({
+      bottom: '<div id="behavior_'+behaviorsCount+'"><p><span style="display: inline-block;"><label for="entityParams[behaviors]['+behaviorsCount+'][name]">Nombre</label><input type="text" name="entityParams[behaviors]['+behaviorsCount+'][name]" /><input type="button" value="Agregar Parametro" onClick="javascript: addParam(this.parentNode, '+behaviorsCount+');"/></span><input type="button" value="Borrar" onClick="javascript: removeBehavior(this.parentNode.parentNode);"/></p></div>'
+    });
+    paramsCount[behaviorsCount] = 0;
+    behaviorsCount++;
+  }
+  
+  function addParam(elem, idx) {
+    var placeholder = elem;
+    placeholder.insert({
+      bottom: '<div id="behavior_'+idx+'_param_'+paramsCount[idx]+'"><p><span style="display: inline-block;"><label for="entityParams[behaviors]['+idx+'][parameters]['+paramsCount[idx]+'][name]">Nombre</label><input type="text" name="entityParams[behaviors]['+idx+'][parameters]['+paramsCount[idx]+'][name]" /></span><span style="display: inline-block;"><label for="entityParams[behaviors]['+idx+'][parameters]['+paramsCount[idx]+'][value]">Valor</label><input type="text" name="entityParams[behaviors]['+idx+'][parameters]['+paramsCount[idx]+'][value]"/></span><input type="button" value="Borrar" onClick="javascript: removeBehavior(this.parentNode.parentNode);"/></p></div>'
+    });
+    paramsCount[idx] += 1;
+  }
+  
+  function removeParam(elem) {
+    elem.remove();
+  }
+  
+  function removeBehavior(elem) {
+    elem.remove();
+  }
+</script>

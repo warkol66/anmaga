@@ -15,6 +15,7 @@
  * @method     ModuleEntityQuery orderBySavelog($order = Criteria::ASC) Order by the saveLog column
  * @method     ModuleEntityQuery orderByNestedset($order = Criteria::ASC) Order by the nestedset column
  * @method     ModuleEntityQuery orderByScopefielduniquename($order = Criteria::ASC) Order by the scopeFieldUniqueName column
+ * @method     ModuleEntityQuery orderByBehaviors($order = Criteria::ASC) Order by the behaviors column
  *
  * @method     ModuleEntityQuery groupByModulename() Group by the moduleName column
  * @method     ModuleEntityQuery groupByName() Group by the name column
@@ -25,6 +26,7 @@
  * @method     ModuleEntityQuery groupBySavelog() Group by the saveLog column
  * @method     ModuleEntityQuery groupByNestedset() Group by the nestedset column
  * @method     ModuleEntityQuery groupByScopefielduniquename() Group by the scopeFieldUniqueName column
+ * @method     ModuleEntityQuery groupByBehaviors() Group by the behaviors column
  *
  * @method     ModuleEntityQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ModuleEntityQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -66,6 +68,7 @@
  * @method     ModuleEntity findOneBySavelog(boolean $saveLog) Return the first ModuleEntity filtered by the saveLog column
  * @method     ModuleEntity findOneByNestedset(boolean $nestedset) Return the first ModuleEntity filtered by the nestedset column
  * @method     ModuleEntity findOneByScopefielduniquename(string $scopeFieldUniqueName) Return the first ModuleEntity filtered by the scopeFieldUniqueName column
+ * @method     ModuleEntity findOneByBehaviors(resource $behaviors) Return the first ModuleEntity filtered by the behaviors column
  *
  * @method     array findByModulename(string $moduleName) Return ModuleEntity objects filtered by the moduleName column
  * @method     array findByName(string $name) Return ModuleEntity objects filtered by the name column
@@ -76,6 +79,7 @@
  * @method     array findBySavelog(boolean $saveLog) Return ModuleEntity objects filtered by the saveLog column
  * @method     array findByNestedset(boolean $nestedset) Return ModuleEntity objects filtered by the nestedset column
  * @method     array findByScopefielduniquename(string $scopeFieldUniqueName) Return ModuleEntity objects filtered by the scopeFieldUniqueName column
+ * @method     array findByBehaviors(resource $behaviors) Return ModuleEntity objects filtered by the behaviors column
  *
  * @package    propel.generator.modules.classes.om
  */
@@ -361,6 +365,19 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(ModuleEntityPeer::SCOPEFIELDUNIQUENAME, $scopefielduniquename, $comparison);
+	}
+
+	/**
+	 * Filter the query on the behaviors column
+	 * 
+	 * @param     mixed $behaviors The value to use as filter
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ModuleEntityQuery The current query, for fluid interface
+	 */
+	public function filterByBehaviors($behaviors = null, $comparison = null)
+	{
+		return $this->addUsingAlias(ModuleEntityPeer::BEHAVIORS, $behaviors, $comparison);
 	}
 
 	/**
