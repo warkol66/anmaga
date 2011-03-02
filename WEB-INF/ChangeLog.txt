@@ -1,4 +1,17 @@
 ﻿==============================
+Revisión 730 - Fecha 201100302
+------------------------------
+# !!! Ojo, no necesariamente hace falta, revisar si existen los campos userObjectType y userObjectId
+ALTER TABLE `actionLogs_log` ADD `userObjectType` VARCHAR(50) NOT NULL COMMENT 'Tipo de usuario';
+ALTER TABLE `actionLogs_log` ADD `userObjectId` INTEGER  NOT NULL COMMENT 'Id del usuario';
+
+# !!! Esto es para que el actionlog tenga la info donde tiene qu eestar, porque el doLog no estaba guardando la info de la nueva forma
+UPDATE  `actionLogs_log` SET `userObjectType` = "user" WHERE `affiliateId` = 0;
+UPDATE  `actionLogs_log` SET `userObjectId` = `userId` WHERE `affiliateId` = 0;
+UPDATE  `actionLogs_log` SET `userObjectType` = "affiliate" WHERE `affiliateId` != 0;
+UPDATE  `actionLogs_log` SET `userObjectId` = `userId` WHERE `affiliateId` != 0;
+
+==============================
 Revisión 707 - Fecha 20110222
 ------------------------------
 
