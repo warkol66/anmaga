@@ -274,15 +274,6 @@ a.pageLink:hover, a.pageLink:active {
 
 
 /* SEARCH   -------------------------------------------*/
-.tdTitSearch{
-	width: 22%;	
-	display:inline;
-	clear:right;
-	font-weight:bold;
-	text-align:left;
-	padding-left: 30px;
-	padding-bottom:10px;
-}
 .tdSearch{
 	width: 95%;
 	height: 35px;	
@@ -290,7 +281,19 @@ a.pageLink:hover, a.pageLink:active {
 	padding: 4px;
 	vertical-align:middle;
 }
-
+.tdTitSearch{
+	width: 22%;	
+	display:inline;
+	clear:right;
+	font-weight:bold;
+	text-align:left;
+	padding-left:30px;
+	padding-bottom:8px;
+	margin-bottom:8px;
+}
+a.tdTitSearch {
+	text-decoration: none;
+}
 /* NEW! */
 #divSearch{
 	width: 80%;
@@ -298,10 +301,10 @@ a.pageLink:hover, a.pageLink:active {
 	position:relative;
 	margin: 8px 0 0 30px;   /* ie */
 }
-
 .tdSearch input{
-	font-size:1.1em;
 	margin-top: 0;
+}
+.tdSearch input[type="text"]{
 }
 .tdSearch img{
 	margin:0;

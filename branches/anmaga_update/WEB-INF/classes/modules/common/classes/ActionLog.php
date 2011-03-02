@@ -14,6 +14,19 @@
  */
 class ActionLog extends BaseActionLog {
 
+	private $queryObjs = array(
+		'user' => 'UserQuery',
+		'affiliate' => 'AffiliateUserQuery'
+	);
+
+	/**
+	 * Obtiene el usuario remitente.
+	 */
+	public function getUserObject() {
+		$criteria = new $this->queryObjs[$this->getUserObjectType()];
+		return $criteria->findPk($this->getUserObjectId());
+	}
+
 	/**
 	*
 	* Obtiene la etiqueta de ese modulo
