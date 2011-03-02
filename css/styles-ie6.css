@@ -1,6 +1,4 @@
 /*  Condicionales para IE 6 o menor*/
-
-
 #rightcolumn { 
 	width: 790px;  /*   760px ORIGINAL */
 }
@@ -22,7 +20,7 @@
 
 #leftcolumn li a:hover { 
 	width:150px; /* 150px ORIGINAL */
-	}
+}
 	
 li#titDependencias, 
 li#titConfiguracion, 

@@ -510,12 +510,13 @@ li#titAdministracion {
 
 fieldset {
 	padding: 8px;
+	margin-top: 1em; /* IE 2em */
 	margin-bottom: 2em; /* IE 3.5em */
 	position: relative;
 }
 fieldset legend {
 	font-weight: bold;
-	font-size: 1.4em;
+	font-size: 1.2em;
 	margin-bottom: 0.5em;
 	position: relative;  
 	top: -1.4em;

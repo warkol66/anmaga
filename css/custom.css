@@ -403,20 +403,20 @@ NEW CUSTOM!!!!
 */
 
 
-input[type="submit"],input[type="button"],input[type="reset"] {
+input[type="submit"], input[type="button"], input[type="reset"] {
 	background-color: #f0f0f0;
-	border: outset 1px #ababab;
+	border: 1px outset #F0F0F0;
 	outline: 0 none;
 	cursor: pointer;
 	-khtml-border-radius: 2px;
 	-opera-border-radius: 2px;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
-	padding-left: 10px;
-	padding-right: 10px;
+	margin: 0 5px 0 5px;
+	padding: 2px 12px 2px 12px;
 }
-input[type="submit"]:hover,input[type="button"]:hover,input[type="reset"]:hover {
-	background-color: #c0c0c0;
+input[type="submit"]:hover, input[type="button"]:hover, input[type="reset"]:hover {
+	background-color: #d0d0d0;
 	border: outset 1px  #909090;
 }
 
@@ -449,6 +449,9 @@ input.iconView, input.iconViewGantt, input.iconWeight, input.iconAddToCart, inpu
 input.iconSetPrivileges, input.iconOwner, input.iconRead, input.iconUnread {
 	width: 22px;
 	height: 22px;
+	margin: 0;
+	padding: 0;
+
 }
 .disabled {
 	background: url(../images/icons_all_dis.png) no-repeat #f0f0f0;
@@ -606,8 +609,39 @@ a.addLink:link, a.addLink:visited {
 a.addLink:hover, a.addLink:active {
 	color:#009900;
 }
-/* /LINK AGREGAR NUEVA ...  */
+/* SEARCH   -------------------------------------------*/
+.tdTitSearch{
+	background-color: #f4f6f3;
+	background-image:url(../images/icon_search.gif);
+	background-position:9px 0px;
+	background-repeat:no-repeat;
+	color: #0066CC;
+}
+.tdSearch{
+	background-color: #f4f6f3;
+	color: #000000;
+}
+.tdSearch input, .tdSearch textarea, .tdSearch input select{
+	color: #333;
+	border: solid 1px #a7a6aa;
+	outline: 0 none;
+}
 
+a.tdSearchButton:link, 
+a.tdSearchButton:visited  {
+	border: solid 1px #a7a6aa;
+	color: #333;
+	background-image:url(../images/bot_bkg.gif);
+	background-position:left top;
+	background-repeat: repeat-x;	
+	background-color:#d2d0c3;
+}
+a.tdSearchButton:hover, 
+a.tdSearchButton:active  {
+	color: #FFFFFF;
+	background-color:#999999;
+	background-image: none;
+}
 a.searchLink:link, a.searchLink:visited {
 	color:#0054A4;
 	background-image: url(../images/icon_search.png);

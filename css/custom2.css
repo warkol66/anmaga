@@ -9,9 +9,6 @@ body {
 table{
 	font-size:1.2em;
 }
-form input{
-	font-size:0.8em;
-}
 
 /*  LOGIN  -----------------------------------------------*/
 #login { 
@@ -231,45 +228,6 @@ a.pageLink:hover, a.pageLink:active {
 
 
 
-/* SEARCH   -------------------------------------------*/
-.tdTitSearch{
-	background-color: #f4f6f3;
-	background-image:url(../images/icon_search.gif);
-	background-position:9px 0px;
-	background-repeat:no-repeat;
-	color: #0066CC;
-}
-.tdSearch{
-	background-color: #f4f6f3;
-	color: #000000;
-}
-
-.tdSearch input{
-	color: #333;
-	border: solid 1px #a7a6aa;
-}
-
-.tdSearch img{
-}
-
-
-
-a.tdSearchButton:link, 
-a.tdSearchButton:visited  {
-	border: solid 1px #a7a6aa;
-	color: #333;
-	
-	background-image:url(../images/bot_bkg.gif);
-	background-position:left top;
-	background-repeat: repeat-x;	
-	background-color:#d2d0c3;
-}
-a.tdSearchButton:hover, 
-a.tdSearchButton:active  {
-	color: #FFFFFF;
-	background-color:#999999;
-	background-image: none;
-}
 
 /* -------------------------------------------------------------------*/ 
 

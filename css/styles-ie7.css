@@ -5,3 +5,32 @@
 #rightcolumn { 
 	width: 790px;  /*   760px ORIGINAL */
 }
+#rssSearchBox {
+	margin-top: 2px;
+	line-height: 20px;
+}
+fieldset {
+	margin-top: 1em; /* 1em ORIGINAL */
+	margin-bottom: 3.5em; /* 2em ORIGINAL */
+}
+#contentWrapper { 
+	background-position: 5px; /*Corrección IE ancho del borde */
+}
+.contentLi{
+	background-image:url(../images/bullet-2.gif);
+	background-position:0 8px;
+	background-repeat:no-repeat;
+	list-style-type: disc;
+	list-style: none;
+	padding-left: 20px;
+}
+#rightColumn { 
+	width: 948px;
+}
+div.autocomplete {
+	position: relative !Important;
+	top:0px !Important;
+	left:125px !Important;
+	width:350px  !Important;
+	z-index:9999 !Important;
+}
