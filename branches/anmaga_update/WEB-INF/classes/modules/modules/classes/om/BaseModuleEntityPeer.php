@@ -26,7 +26,7 @@ abstract class BaseModuleEntityPeer {
 	const TM_CLASS = 'ModuleEntityTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 9;
+	const NUM_COLUMNS = 10;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -58,6 +58,9 @@ abstract class BaseModuleEntityPeer {
 	/** the column name for the SCOPEFIELDUNIQUENAME field */
 	const SCOPEFIELDUNIQUENAME = 'modules_entity.SCOPEFIELDUNIQUENAME';
 
+	/** the column name for the BEHAVIORS field */
+	const BEHAVIORS = 'modules_entity.BEHAVIORS';
+
 	/**
 	 * An identiy map to hold any loaded instances of ModuleEntity objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -74,12 +77,12 @@ abstract class BaseModuleEntityPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Modulename', 'Name', 'Phpname', 'Description', 'Softdelete', 'Relation', 'Savelog', 'Nestedset', 'Scopefielduniquename', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('modulename', 'name', 'phpname', 'description', 'softdelete', 'relation', 'savelog', 'nestedset', 'scopefielduniquename', ),
-		BasePeer::TYPE_COLNAME => array (self::MODULENAME, self::NAME, self::PHPNAME, self::DESCRIPTION, self::SOFTDELETE, self::RELATION, self::SAVELOG, self::NESTEDSET, self::SCOPEFIELDUNIQUENAME, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('MODULENAME', 'NAME', 'PHPNAME', 'DESCRIPTION', 'SOFTDELETE', 'RELATION', 'SAVELOG', 'NESTEDSET', 'SCOPEFIELDUNIQUENAME', ),
-		BasePeer::TYPE_FIELDNAME => array ('moduleName', 'name', 'phpName', 'description', 'softDelete', 'relation', 'saveLog', 'nestedset', 'scopeFieldUniqueName', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+		BasePeer::TYPE_PHPNAME => array ('Modulename', 'Name', 'Phpname', 'Description', 'Softdelete', 'Relation', 'Savelog', 'Nestedset', 'Scopefielduniquename', 'Behaviors', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('modulename', 'name', 'phpname', 'description', 'softdelete', 'relation', 'savelog', 'nestedset', 'scopefielduniquename', 'behaviors', ),
+		BasePeer::TYPE_COLNAME => array (self::MODULENAME, self::NAME, self::PHPNAME, self::DESCRIPTION, self::SOFTDELETE, self::RELATION, self::SAVELOG, self::NESTEDSET, self::SCOPEFIELDUNIQUENAME, self::BEHAVIORS, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('MODULENAME', 'NAME', 'PHPNAME', 'DESCRIPTION', 'SOFTDELETE', 'RELATION', 'SAVELOG', 'NESTEDSET', 'SCOPEFIELDUNIQUENAME', 'BEHAVIORS', ),
+		BasePeer::TYPE_FIELDNAME => array ('moduleName', 'name', 'phpName', 'description', 'softDelete', 'relation', 'saveLog', 'nestedset', 'scopeFieldUniqueName', 'behaviors', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	/**
@@ -89,12 +92,12 @@ abstract class BaseModuleEntityPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Modulename' => 0, 'Name' => 1, 'Phpname' => 2, 'Description' => 3, 'Softdelete' => 4, 'Relation' => 5, 'Savelog' => 6, 'Nestedset' => 7, 'Scopefielduniquename' => 8, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('modulename' => 0, 'name' => 1, 'phpname' => 2, 'description' => 3, 'softdelete' => 4, 'relation' => 5, 'savelog' => 6, 'nestedset' => 7, 'scopefielduniquename' => 8, ),
-		BasePeer::TYPE_COLNAME => array (self::MODULENAME => 0, self::NAME => 1, self::PHPNAME => 2, self::DESCRIPTION => 3, self::SOFTDELETE => 4, self::RELATION => 5, self::SAVELOG => 6, self::NESTEDSET => 7, self::SCOPEFIELDUNIQUENAME => 8, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('MODULENAME' => 0, 'NAME' => 1, 'PHPNAME' => 2, 'DESCRIPTION' => 3, 'SOFTDELETE' => 4, 'RELATION' => 5, 'SAVELOG' => 6, 'NESTEDSET' => 7, 'SCOPEFIELDUNIQUENAME' => 8, ),
-		BasePeer::TYPE_FIELDNAME => array ('moduleName' => 0, 'name' => 1, 'phpName' => 2, 'description' => 3, 'softDelete' => 4, 'relation' => 5, 'saveLog' => 6, 'nestedset' => 7, 'scopeFieldUniqueName' => 8, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+		BasePeer::TYPE_PHPNAME => array ('Modulename' => 0, 'Name' => 1, 'Phpname' => 2, 'Description' => 3, 'Softdelete' => 4, 'Relation' => 5, 'Savelog' => 6, 'Nestedset' => 7, 'Scopefielduniquename' => 8, 'Behaviors' => 9, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('modulename' => 0, 'name' => 1, 'phpname' => 2, 'description' => 3, 'softdelete' => 4, 'relation' => 5, 'savelog' => 6, 'nestedset' => 7, 'scopefielduniquename' => 8, 'behaviors' => 9, ),
+		BasePeer::TYPE_COLNAME => array (self::MODULENAME => 0, self::NAME => 1, self::PHPNAME => 2, self::DESCRIPTION => 3, self::SOFTDELETE => 4, self::RELATION => 5, self::SAVELOG => 6, self::NESTEDSET => 7, self::SCOPEFIELDUNIQUENAME => 8, self::BEHAVIORS => 9, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('MODULENAME' => 0, 'NAME' => 1, 'PHPNAME' => 2, 'DESCRIPTION' => 3, 'SOFTDELETE' => 4, 'RELATION' => 5, 'SAVELOG' => 6, 'NESTEDSET' => 7, 'SCOPEFIELDUNIQUENAME' => 8, 'BEHAVIORS' => 9, ),
+		BasePeer::TYPE_FIELDNAME => array ('moduleName' => 0, 'name' => 1, 'phpName' => 2, 'description' => 3, 'softDelete' => 4, 'relation' => 5, 'saveLog' => 6, 'nestedset' => 7, 'scopeFieldUniqueName' => 8, 'behaviors' => 9, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	/**
@@ -175,6 +178,7 @@ abstract class BaseModuleEntityPeer {
 			$criteria->addSelectColumn(ModuleEntityPeer::SAVELOG);
 			$criteria->addSelectColumn(ModuleEntityPeer::NESTEDSET);
 			$criteria->addSelectColumn(ModuleEntityPeer::SCOPEFIELDUNIQUENAME);
+			$criteria->addSelectColumn(ModuleEntityPeer::BEHAVIORS);
 		} else {
 			$criteria->addSelectColumn($alias . '.MODULENAME');
 			$criteria->addSelectColumn($alias . '.NAME');
@@ -185,6 +189,7 @@ abstract class BaseModuleEntityPeer {
 			$criteria->addSelectColumn($alias . '.SAVELOG');
 			$criteria->addSelectColumn($alias . '.NESTEDSET');
 			$criteria->addSelectColumn($alias . '.SCOPEFIELDUNIQUENAME');
+			$criteria->addSelectColumn($alias . '.BEHAVIORS');
 		}
 	}
 

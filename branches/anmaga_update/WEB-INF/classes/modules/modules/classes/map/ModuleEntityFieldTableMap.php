@@ -42,6 +42,7 @@ class ModuleEntityFieldTableMap extends TableMap {
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 50, null);
 		$this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
 		$this->addColumn('ISREQUIRED', 'Isrequired', 'BOOLEAN', false, null, null);
+		$this->addColumn('DEFAULTVALUE', 'Defaultvalue', 'VARCHAR', false, 255, null);
 		$this->addColumn('ISPRIMARYKEY', 'Isprimarykey', 'BOOLEAN', false, null, null);
 		$this->addColumn('ISAUTOINCREMENT', 'Isautoincrement', 'BOOLEAN', false, null, null);
 		$this->addColumn('ORDER', 'Order', 'INTEGER', true, null, null);
@@ -56,6 +57,8 @@ class ModuleEntityFieldTableMap extends TableMap {
 		$this->addColumn('FORMFIELDUSECALENDAR', 'Formfieldusecalendar', 'VARCHAR', false, null, null);
 		$this->addForeignKey('FOREIGNKEYTABLE', 'Foreignkeytable', 'VARCHAR', 'modules_entity', 'NAME', false, 50, null);
 		$this->addForeignKey('FOREIGNKEYREMOTE', 'Foreignkeyremote', 'VARCHAR', 'modules_entityField', 'UNIQUENAME', false, 100, null);
+		$this->addColumn('ONDELETE', 'Ondelete', 'VARCHAR', false, 30, null);
+		$this->addColumn('AUTOMATIC', 'Automatic', 'BOOLEAN', false, null, null);
 		// validators
 	} // initialize()
 

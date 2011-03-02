@@ -77,6 +77,7 @@ CREATE TABLE `modules_entity`
 	`saveLog` BOOL   COMMENT 'Indica si guarda log de cambios',
 	`nestedset` BOOL   COMMENT 'Indica si es una entidad nestedset',
 	`scopeFieldUniqueName` VARCHAR(100)   COMMENT 'Indica el campo que es usado como scope en el nestedset',
+	`behaviors` LONGBLOB   COMMENT 'Indica los behaviors que tiene la entidad',
 	PRIMARY KEY (`name`),
 	INDEX `modules_entity_FI_1` (`moduleName`),
 	CONSTRAINT `modules_entity_FK_1`
@@ -102,6 +103,7 @@ CREATE TABLE `modules_entityField`
 	`name` VARCHAR(50)  NOT NULL COMMENT 'Nombre del campo (max 50 caracteres)',
 	`description` VARCHAR(255)   COMMENT 'Descripcion del campo (comment)',
 	`isRequired` BOOL   COMMENT 'Indica si es obligatorio',
+	`defaultValue` VARCHAR(255)   COMMENT 'Valor por defecto',
 	`isPrimaryKey` BOOL   COMMENT 'Indica si clave primaria',
 	`isAutoIncrement` BOOL   COMMENT 'Indica si el campo es autoincremental',
 	`order` INTEGER  NOT NULL COMMENT 'Orden',
@@ -116,6 +118,8 @@ CREATE TABLE `modules_entityField`
 	`formFieldUseCalendar` BOOL   COMMENT 'Si utiliza o no el calendario en formulario',
 	`foreignKeyTable` VARCHAR(50)   COMMENT 'Entidad con la que enlaza la clave remota',
 	`foreignKeyRemote` VARCHAR(100)   COMMENT 'Nombre del campo en la tabla remota',
+	`onDelete` VARCHAR(30)   COMMENT 'Comportamiento onDelete',
+	`automatic` BOOL   COMMENT 'Indica si es una columna autogenerada por un behavior',
 	PRIMARY KEY (`uniqueName`),
 	INDEX `modules_entityField_FI_1` (`entityName`),
 	CONSTRAINT `modules_entityField_FK_1`

@@ -34,6 +34,7 @@ class ModulesEntitiesFieldsDoEditAction extends BaseAction {
 
 			$entity = ModuleEntityFieldPeer::get($_POST["id"]);
 			$entity = common::setObjectFromParams($entity,$_POST["fieldParams"]);
+      $entity->setAutomatic(null);
 			$entity->save();			
 			$entity->setValidationsFromParams($_POST["entityFieldValidationData"]);
 			return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'success');

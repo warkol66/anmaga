@@ -51,7 +51,11 @@ $this->assign("hiddens",$hiddens);
       <label for="fieldParams[isRequired]">Required</label> 
 				<input name="fieldParams[isRequired]" type="hidden" value="0" />
 				<input name="fieldParams[isRequired]" type="checkbox" title="isRequired" value="1" |-if $field->getIsRequired() eq 1-|checked="checked"|-/if-| />
-	   </p> 	   
+	   </p>
+	   <p> 
+        <label for="fieldParams[defaultValue]">defaultValue</label> 
+        <input name="fieldParams[defaultValue]" type="text" title="defaultValue" value="|-$field->getDefaultValue()-|" />
+     </p> 	   
 		    <p> 
       <label for="fieldParams[isPrimaryKey]">primaryKey</label> 
 				<input name="fieldParams[isPrimaryKey]" type="hidden" value="0" />
@@ -113,33 +117,52 @@ $this->assign("hiddens",$hiddens);
 	  			<input name="fieldParams[formFieldUseCalendar]" type="hidden" value="0" />
 				<input name="fieldParams[formFieldUseCalendar]" type="checkbox" title="formFieldUseCalendar" value="1" |-if $field->getFormFieldUseCalendar() eq 1-|checked="checked"|-/if-| />
 	   </p> 
-|-if $field->getForeignKeyTable() ne ""-|<p>
-      <label for="fieldParams[foreignKeyTable]">foreignKeyTable</label> 
-					<select name="fieldParams[foreignKeyTable]" id="fieldParams[foreignKeyTable]" onChange="javascript:modulesGetAllFieldsByEntityX(this.form)">	
-	<option value="">Seleccione entidad</option>|-foreach from=$entities item=entity name=for_entities-|
-	<option value="|-$entity->getId()-|" |-if $field->getForeignKeyTable() eq $entity->getId()-|selected="selected"|-assign var=fields value=$entity->getAllEntityFields()-||-/if-|>|-$entity->getName()-|</option>
-	|-/foreach-|
-</select>
-	   </p> 
-		 			
-		    <p>  <span id="fieldMsgField">  <label for="fieldParams[foreignKeyRemote]">foreignKeyRemote</label>
-  <select id="fieldParams[foreignKeyRemote]" name="fieldParams[foreignKeyRemote]" title="foreignKeyRemote"> 
-    <option value="0" selected="selected">Seleccione Campo</option> 
-	|-foreach from=$fields item=eachField name=for_fields-|
-    <option value="|-$eachField->getId()-|"|-if $eachField->getId() eq $field->getforeignKeyRemote()-|selected="selected"|-/if-|>|-$eachField->getName()-|</option> 
-	|-/foreach-|
-  </select>
-</span></p>
-|-else-|      <label for="fieldParams[foreignKeyTable]">foreignKeyTable</label> 
-					<select name="fieldParams[foreignKeyTable]" id="fieldParams[foreignKeyTable]" onChange="javascript:modulesGetAllFieldsByEntityX(this.form)">	
-	<option value="">Seleccione entidad</option>|-foreach from=$entities item=entity name=for_entities-|
-	<option value="|-$entity->getId()-|" |-if $field->getForeignKeyTable() eq $entity->getId()-|selected="selected"|-/if-|>|-$entity->getName()-|</option>
-	|-/foreach-|
-</select>
-	   </p> 
-		    <p><span id="fieldMsgField"></span>
-				</p>
+|-if $field->getForeignKeyTable() ne ""-|
+  <p>
+    <label for="fieldParams[foreignKeyTable]">foreignKeyTable</label> 
+	  <select name="fieldParams[foreignKeyTable]" id="fieldParams[foreignKeyTable]" onChange="javascript:modulesGetAllFieldsByEntityX(this.form)">	
+	    <option value="">Seleccione entidad</option>
+	    |-foreach from=$entities item=entity name=for_entities-|
+	      <option value="|-$entity->getId()-|" |-if $field->getForeignKeyTable() eq $entity->getId()-|selected="selected"|-assign var=fields value=$entity->getAllEntityFields()-||-/if-|>|-$entity->getName()-|</option>
+	    |-/foreach-|
+    </select>
+  </p>
+	<div id="fieldMsgField">
+	  <p>
+	    <label for="fieldParams[foreignKeyRemote]">foreignKeyRemote</label>
+      <select id="fieldParams[foreignKeyRemote]" name="fieldParams[foreignKeyRemote]" title="foreignKeyRemote"> 
+        <option value="0" selected="selected">Seleccione Campo</option> 
+	      |-foreach from=$fields item=eachField name=for_fields-|
+          <option value="|-$eachField->getId()-|"|-if $eachField->getId() eq $field->getforeignKeyRemote()-|selected="selected"|-/if-|>|-$eachField->getName()-|</option> 
+	      |-/foreach-|
+      </select>
+    </p>
+    <p> 
+      <label for="fieldParams[onDelete]">onDelete</label> 
+      <select name="fieldParams[onDelete]" title="defaultValue">
+        |-if $field->getOnDelete() eq ''-|<option value="">Seleccione un valor</option>|-/if-|
+        <option value="none" |-if $field->getOnDelete() eq 'none'-|selected|-/if-|>none</option>
+        <option value="cascade" |-if $field->getOnDelete() eq 'cascade'-|selected|-/if-|>cascade</option>
+        <option value="setnull" |-if $field->getOnDelete() eq 'setnull'-|selected|-/if-|>setnull</option>
+        <option value="restrict" |-if $field->getOnDelete() eq 'restrict'-|selected|-/if-|>restrict</option>
+      </select>
+    </p> 
+  </div>
+|-else-|
+  <p>      
+    <label for="fieldParams[foreignKeyTable]">foreignKeyTable</label> 
+  	<select name="fieldParams[foreignKeyTable]" id="fieldParams[foreignKeyTable]" onChange="javascript:modulesGetAllFieldsByEntityX(this.form)">	
+  	  <option value="">Seleccione entidad</option>
+  	  |-foreach from=$entities item=entity name=for_entities-|
+  	    <option value="|-$entity->getId()-|" |-if $field->getForeignKeyTable() eq $entity->getId()-|selected="selected"|-/if-|>|-$entity->getName()-|</option>
+  	  |-/foreach-|
+    </select>
+  </p> 
+  <div id="fieldMsgField"></div>
 |-/if-|
+
+
+
 
 	<div id="validationFields">
 		<div id="validationField" style="display:none;">			

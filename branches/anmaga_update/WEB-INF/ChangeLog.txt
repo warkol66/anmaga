@@ -1,4 +1,12 @@
 ﻿==============================
+Revisión 731 - Fecha 201100302
+------------------------------
+ALTER TABLE `modules_entityField` ADD `defaultValue` VARCHAR(255) COMMENT 'Valor por defecto' AFTER `isRequired`;
+ALTER TABLE `modules_entityField` ADD `onDelete` VARCHAR(30) COMMENT 'Comportamiento onDelete' AFTER `foreignKeyRemote`;
+ALTER TABLE `modules_entity` ADD `behaviors` LONGBLOB COMMENT 'Indica los behaviors que tiene la entidad';
+ALTER TABLE `modules_entityField` ADD `automatic` BOOL   COMMENT 'Indica si es una columna autogenerada por un behavior';
+
+==============================
 Revisión 730 - Fecha 201100302
 ------------------------------
 # !!! Ojo, no necesariamente hace falta, revisar si existen los campos userObjectType y userObjectId

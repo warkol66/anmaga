@@ -11,6 +11,7 @@
  * @method     ModuleEntityFieldQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method     ModuleEntityFieldQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     ModuleEntityFieldQuery orderByIsrequired($order = Criteria::ASC) Order by the isRequired column
+ * @method     ModuleEntityFieldQuery orderByDefaultvalue($order = Criteria::ASC) Order by the defaultValue column
  * @method     ModuleEntityFieldQuery orderByIsprimarykey($order = Criteria::ASC) Order by the isPrimaryKey column
  * @method     ModuleEntityFieldQuery orderByIsautoincrement($order = Criteria::ASC) Order by the isAutoIncrement column
  * @method     ModuleEntityFieldQuery orderByOrder($order = Criteria::ASC) Order by the order column
@@ -25,12 +26,15 @@
  * @method     ModuleEntityFieldQuery orderByFormfieldusecalendar($order = Criteria::ASC) Order by the formFieldUseCalendar column
  * @method     ModuleEntityFieldQuery orderByForeignkeytable($order = Criteria::ASC) Order by the foreignKeyTable column
  * @method     ModuleEntityFieldQuery orderByForeignkeyremote($order = Criteria::ASC) Order by the foreignKeyRemote column
+ * @method     ModuleEntityFieldQuery orderByOndelete($order = Criteria::ASC) Order by the onDelete column
+ * @method     ModuleEntityFieldQuery orderByAutomatic($order = Criteria::ASC) Order by the automatic column
  *
  * @method     ModuleEntityFieldQuery groupByUniquename() Group by the uniqueName column
  * @method     ModuleEntityFieldQuery groupByEntityname() Group by the entityName column
  * @method     ModuleEntityFieldQuery groupByName() Group by the name column
  * @method     ModuleEntityFieldQuery groupByDescription() Group by the description column
  * @method     ModuleEntityFieldQuery groupByIsrequired() Group by the isRequired column
+ * @method     ModuleEntityFieldQuery groupByDefaultvalue() Group by the defaultValue column
  * @method     ModuleEntityFieldQuery groupByIsprimarykey() Group by the isPrimaryKey column
  * @method     ModuleEntityFieldQuery groupByIsautoincrement() Group by the isAutoIncrement column
  * @method     ModuleEntityFieldQuery groupByOrder() Group by the order column
@@ -45,6 +49,8 @@
  * @method     ModuleEntityFieldQuery groupByFormfieldusecalendar() Group by the formFieldUseCalendar column
  * @method     ModuleEntityFieldQuery groupByForeignkeytable() Group by the foreignKeyTable column
  * @method     ModuleEntityFieldQuery groupByForeignkeyremote() Group by the foreignKeyRemote column
+ * @method     ModuleEntityFieldQuery groupByOndelete() Group by the onDelete column
+ * @method     ModuleEntityFieldQuery groupByAutomatic() Group by the automatic column
  *
  * @method     ModuleEntityFieldQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ModuleEntityFieldQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -106,6 +112,7 @@
  * @method     ModuleEntityField findOneByName(string $name) Return the first ModuleEntityField filtered by the name column
  * @method     ModuleEntityField findOneByDescription(string $description) Return the first ModuleEntityField filtered by the description column
  * @method     ModuleEntityField findOneByIsrequired(boolean $isRequired) Return the first ModuleEntityField filtered by the isRequired column
+ * @method     ModuleEntityField findOneByDefaultvalue(string $defaultValue) Return the first ModuleEntityField filtered by the defaultValue column
  * @method     ModuleEntityField findOneByIsprimarykey(boolean $isPrimaryKey) Return the first ModuleEntityField filtered by the isPrimaryKey column
  * @method     ModuleEntityField findOneByIsautoincrement(boolean $isAutoIncrement) Return the first ModuleEntityField filtered by the isAutoIncrement column
  * @method     ModuleEntityField findOneByOrder(int $order) Return the first ModuleEntityField filtered by the order column
@@ -120,12 +127,15 @@
  * @method     ModuleEntityField findOneByFormfieldusecalendar(string $formFieldUseCalendar) Return the first ModuleEntityField filtered by the formFieldUseCalendar column
  * @method     ModuleEntityField findOneByForeignkeytable(string $foreignKeyTable) Return the first ModuleEntityField filtered by the foreignKeyTable column
  * @method     ModuleEntityField findOneByForeignkeyremote(string $foreignKeyRemote) Return the first ModuleEntityField filtered by the foreignKeyRemote column
+ * @method     ModuleEntityField findOneByOndelete(string $onDelete) Return the first ModuleEntityField filtered by the onDelete column
+ * @method     ModuleEntityField findOneByAutomatic(boolean $automatic) Return the first ModuleEntityField filtered by the automatic column
  *
  * @method     array findByUniquename(string $uniqueName) Return ModuleEntityField objects filtered by the uniqueName column
  * @method     array findByEntityname(string $entityName) Return ModuleEntityField objects filtered by the entityName column
  * @method     array findByName(string $name) Return ModuleEntityField objects filtered by the name column
  * @method     array findByDescription(string $description) Return ModuleEntityField objects filtered by the description column
  * @method     array findByIsrequired(boolean $isRequired) Return ModuleEntityField objects filtered by the isRequired column
+ * @method     array findByDefaultvalue(string $defaultValue) Return ModuleEntityField objects filtered by the defaultValue column
  * @method     array findByIsprimarykey(boolean $isPrimaryKey) Return ModuleEntityField objects filtered by the isPrimaryKey column
  * @method     array findByIsautoincrement(boolean $isAutoIncrement) Return ModuleEntityField objects filtered by the isAutoIncrement column
  * @method     array findByOrder(int $order) Return ModuleEntityField objects filtered by the order column
@@ -140,6 +150,8 @@
  * @method     array findByFormfieldusecalendar(string $formFieldUseCalendar) Return ModuleEntityField objects filtered by the formFieldUseCalendar column
  * @method     array findByForeignkeytable(string $foreignKeyTable) Return ModuleEntityField objects filtered by the foreignKeyTable column
  * @method     array findByForeignkeyremote(string $foreignKeyRemote) Return ModuleEntityField objects filtered by the foreignKeyRemote column
+ * @method     array findByOndelete(string $onDelete) Return ModuleEntityField objects filtered by the onDelete column
+ * @method     array findByAutomatic(boolean $automatic) Return ModuleEntityField objects filtered by the automatic column
  *
  * @package    propel.generator.modules.classes.om
  */
@@ -352,6 +364,28 @@ abstract class BaseModuleEntityFieldQuery extends ModelCriteria
 			$isRequired = in_array(strtolower($isrequired), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
 		}
 		return $this->addUsingAlias(ModuleEntityFieldPeer::ISREQUIRED, $isrequired, $comparison);
+	}
+
+	/**
+	 * Filter the query on the defaultValue column
+	 * 
+	 * @param     string $defaultvalue The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
+	 */
+	public function filterByDefaultvalue($defaultvalue = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($defaultvalue)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $defaultvalue)) {
+				$defaultvalue = str_replace('*', '%', $defaultvalue);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(ModuleEntityFieldPeer::DEFAULTVALUE, $defaultvalue, $comparison);
 	}
 
 	/**
@@ -699,6 +733,45 @@ abstract class BaseModuleEntityFieldQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(ModuleEntityFieldPeer::FOREIGNKEYREMOTE, $foreignkeyremote, $comparison);
+	}
+
+	/**
+	 * Filter the query on the onDelete column
+	 * 
+	 * @param     string $ondelete The value to use as filter.
+	 *            Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
+	 */
+	public function filterByOndelete($ondelete = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($ondelete)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $ondelete)) {
+				$ondelete = str_replace('*', '%', $ondelete);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(ModuleEntityFieldPeer::ONDELETE, $ondelete, $comparison);
+	}
+
+	/**
+	 * Filter the query on the automatic column
+	 * 
+	 * @param     boolean|string $automatic The value to use as filter.
+	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ModuleEntityFieldQuery The current query, for fluid interface
+	 */
+	public function filterByAutomatic($automatic = null, $comparison = null)
+	{
+		if (is_string($automatic)) {
+			$automatic = in_array(strtolower($automatic), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
+		}
+		return $this->addUsingAlias(ModuleEntityFieldPeer::AUTOMATIC, $automatic, $comparison);
 	}
 
 	/**

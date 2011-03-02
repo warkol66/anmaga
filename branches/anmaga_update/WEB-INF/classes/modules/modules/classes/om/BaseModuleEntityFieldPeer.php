@@ -26,7 +26,7 @@ abstract class BaseModuleEntityFieldPeer {
 	const TM_CLASS = 'ModuleEntityFieldTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 19;
+	const NUM_COLUMNS = 22;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -45,6 +45,9 @@ abstract class BaseModuleEntityFieldPeer {
 
 	/** the column name for the ISREQUIRED field */
 	const ISREQUIRED = 'modules_entityField.ISREQUIRED';
+
+	/** the column name for the DEFAULTVALUE field */
+	const DEFAULTVALUE = 'modules_entityField.DEFAULTVALUE';
 
 	/** the column name for the ISPRIMARYKEY field */
 	const ISPRIMARYKEY = 'modules_entityField.ISPRIMARYKEY';
@@ -88,6 +91,12 @@ abstract class BaseModuleEntityFieldPeer {
 	/** the column name for the FOREIGNKEYREMOTE field */
 	const FOREIGNKEYREMOTE = 'modules_entityField.FOREIGNKEYREMOTE';
 
+	/** the column name for the ONDELETE field */
+	const ONDELETE = 'modules_entityField.ONDELETE';
+
+	/** the column name for the AUTOMATIC field */
+	const AUTOMATIC = 'modules_entityField.AUTOMATIC';
+
 	/**
 	 * An identiy map to hold any loaded instances of ModuleEntityField objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -104,12 +113,12 @@ abstract class BaseModuleEntityFieldPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Uniquename', 'Entityname', 'Name', 'Description', 'Isrequired', 'Isprimarykey', 'Isautoincrement', 'Order', 'Type', 'Unique', 'Size', 'Aggregateexpression', 'Label', 'Formfieldtype', 'Formfieldsize', 'Formfieldlines', 'Formfieldusecalendar', 'Foreignkeytable', 'Foreignkeyremote', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('uniquename', 'entityname', 'name', 'description', 'isrequired', 'isprimarykey', 'isautoincrement', 'order', 'type', 'unique', 'size', 'aggregateexpression', 'label', 'formfieldtype', 'formfieldsize', 'formfieldlines', 'formfieldusecalendar', 'foreignkeytable', 'foreignkeyremote', ),
-		BasePeer::TYPE_COLNAME => array (self::UNIQUENAME, self::ENTITYNAME, self::NAME, self::DESCRIPTION, self::ISREQUIRED, self::ISPRIMARYKEY, self::ISAUTOINCREMENT, self::ORDER, self::TYPE, self::UNIQUE, self::SIZE, self::AGGREGATEEXPRESSION, self::LABEL, self::FORMFIELDTYPE, self::FORMFIELDSIZE, self::FORMFIELDLINES, self::FORMFIELDUSECALENDAR, self::FOREIGNKEYTABLE, self::FOREIGNKEYREMOTE, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('UNIQUENAME', 'ENTITYNAME', 'NAME', 'DESCRIPTION', 'ISREQUIRED', 'ISPRIMARYKEY', 'ISAUTOINCREMENT', 'ORDER', 'TYPE', 'UNIQUE', 'SIZE', 'AGGREGATEEXPRESSION', 'LABEL', 'FORMFIELDTYPE', 'FORMFIELDSIZE', 'FORMFIELDLINES', 'FORMFIELDUSECALENDAR', 'FOREIGNKEYTABLE', 'FOREIGNKEYREMOTE', ),
-		BasePeer::TYPE_FIELDNAME => array ('uniqueName', 'entityName', 'name', 'description', 'isRequired', 'isPrimaryKey', 'isAutoIncrement', 'order', 'type', 'unique', 'size', 'aggregateExpression', 'label', 'formFieldType', 'formFieldSize', 'formFieldLines', 'formFieldUseCalendar', 'foreignKeyTable', 'foreignKeyRemote', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+		BasePeer::TYPE_PHPNAME => array ('Uniquename', 'Entityname', 'Name', 'Description', 'Isrequired', 'Defaultvalue', 'Isprimarykey', 'Isautoincrement', 'Order', 'Type', 'Unique', 'Size', 'Aggregateexpression', 'Label', 'Formfieldtype', 'Formfieldsize', 'Formfieldlines', 'Formfieldusecalendar', 'Foreignkeytable', 'Foreignkeyremote', 'Ondelete', 'Automatic', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('uniquename', 'entityname', 'name', 'description', 'isrequired', 'defaultvalue', 'isprimarykey', 'isautoincrement', 'order', 'type', 'unique', 'size', 'aggregateexpression', 'label', 'formfieldtype', 'formfieldsize', 'formfieldlines', 'formfieldusecalendar', 'foreignkeytable', 'foreignkeyremote', 'ondelete', 'automatic', ),
+		BasePeer::TYPE_COLNAME => array (self::UNIQUENAME, self::ENTITYNAME, self::NAME, self::DESCRIPTION, self::ISREQUIRED, self::DEFAULTVALUE, self::ISPRIMARYKEY, self::ISAUTOINCREMENT, self::ORDER, self::TYPE, self::UNIQUE, self::SIZE, self::AGGREGATEEXPRESSION, self::LABEL, self::FORMFIELDTYPE, self::FORMFIELDSIZE, self::FORMFIELDLINES, self::FORMFIELDUSECALENDAR, self::FOREIGNKEYTABLE, self::FOREIGNKEYREMOTE, self::ONDELETE, self::AUTOMATIC, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('UNIQUENAME', 'ENTITYNAME', 'NAME', 'DESCRIPTION', 'ISREQUIRED', 'DEFAULTVALUE', 'ISPRIMARYKEY', 'ISAUTOINCREMENT', 'ORDER', 'TYPE', 'UNIQUE', 'SIZE', 'AGGREGATEEXPRESSION', 'LABEL', 'FORMFIELDTYPE', 'FORMFIELDSIZE', 'FORMFIELDLINES', 'FORMFIELDUSECALENDAR', 'FOREIGNKEYTABLE', 'FOREIGNKEYREMOTE', 'ONDELETE', 'AUTOMATIC', ),
+		BasePeer::TYPE_FIELDNAME => array ('uniqueName', 'entityName', 'name', 'description', 'isRequired', 'defaultValue', 'isPrimaryKey', 'isAutoIncrement', 'order', 'type', 'unique', 'size', 'aggregateExpression', 'label', 'formFieldType', 'formFieldSize', 'formFieldLines', 'formFieldUseCalendar', 'foreignKeyTable', 'foreignKeyRemote', 'onDelete', 'automatic', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
 	);
 
 	/**
@@ -119,12 +128,12 @@ abstract class BaseModuleEntityFieldPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Uniquename' => 0, 'Entityname' => 1, 'Name' => 2, 'Description' => 3, 'Isrequired' => 4, 'Isprimarykey' => 5, 'Isautoincrement' => 6, 'Order' => 7, 'Type' => 8, 'Unique' => 9, 'Size' => 10, 'Aggregateexpression' => 11, 'Label' => 12, 'Formfieldtype' => 13, 'Formfieldsize' => 14, 'Formfieldlines' => 15, 'Formfieldusecalendar' => 16, 'Foreignkeytable' => 17, 'Foreignkeyremote' => 18, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('uniquename' => 0, 'entityname' => 1, 'name' => 2, 'description' => 3, 'isrequired' => 4, 'isprimarykey' => 5, 'isautoincrement' => 6, 'order' => 7, 'type' => 8, 'unique' => 9, 'size' => 10, 'aggregateexpression' => 11, 'label' => 12, 'formfieldtype' => 13, 'formfieldsize' => 14, 'formfieldlines' => 15, 'formfieldusecalendar' => 16, 'foreignkeytable' => 17, 'foreignkeyremote' => 18, ),
-		BasePeer::TYPE_COLNAME => array (self::UNIQUENAME => 0, self::ENTITYNAME => 1, self::NAME => 2, self::DESCRIPTION => 3, self::ISREQUIRED => 4, self::ISPRIMARYKEY => 5, self::ISAUTOINCREMENT => 6, self::ORDER => 7, self::TYPE => 8, self::UNIQUE => 9, self::SIZE => 10, self::AGGREGATEEXPRESSION => 11, self::LABEL => 12, self::FORMFIELDTYPE => 13, self::FORMFIELDSIZE => 14, self::FORMFIELDLINES => 15, self::FORMFIELDUSECALENDAR => 16, self::FOREIGNKEYTABLE => 17, self::FOREIGNKEYREMOTE => 18, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('UNIQUENAME' => 0, 'ENTITYNAME' => 1, 'NAME' => 2, 'DESCRIPTION' => 3, 'ISREQUIRED' => 4, 'ISPRIMARYKEY' => 5, 'ISAUTOINCREMENT' => 6, 'ORDER' => 7, 'TYPE' => 8, 'UNIQUE' => 9, 'SIZE' => 10, 'AGGREGATEEXPRESSION' => 11, 'LABEL' => 12, 'FORMFIELDTYPE' => 13, 'FORMFIELDSIZE' => 14, 'FORMFIELDLINES' => 15, 'FORMFIELDUSECALENDAR' => 16, 'FOREIGNKEYTABLE' => 17, 'FOREIGNKEYREMOTE' => 18, ),
-		BasePeer::TYPE_FIELDNAME => array ('uniqueName' => 0, 'entityName' => 1, 'name' => 2, 'description' => 3, 'isRequired' => 4, 'isPrimaryKey' => 5, 'isAutoIncrement' => 6, 'order' => 7, 'type' => 8, 'unique' => 9, 'size' => 10, 'aggregateExpression' => 11, 'label' => 12, 'formFieldType' => 13, 'formFieldSize' => 14, 'formFieldLines' => 15, 'formFieldUseCalendar' => 16, 'foreignKeyTable' => 17, 'foreignKeyRemote' => 18, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+		BasePeer::TYPE_PHPNAME => array ('Uniquename' => 0, 'Entityname' => 1, 'Name' => 2, 'Description' => 3, 'Isrequired' => 4, 'Defaultvalue' => 5, 'Isprimarykey' => 6, 'Isautoincrement' => 7, 'Order' => 8, 'Type' => 9, 'Unique' => 10, 'Size' => 11, 'Aggregateexpression' => 12, 'Label' => 13, 'Formfieldtype' => 14, 'Formfieldsize' => 15, 'Formfieldlines' => 16, 'Formfieldusecalendar' => 17, 'Foreignkeytable' => 18, 'Foreignkeyremote' => 19, 'Ondelete' => 20, 'Automatic' => 21, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('uniquename' => 0, 'entityname' => 1, 'name' => 2, 'description' => 3, 'isrequired' => 4, 'defaultvalue' => 5, 'isprimarykey' => 6, 'isautoincrement' => 7, 'order' => 8, 'type' => 9, 'unique' => 10, 'size' => 11, 'aggregateexpression' => 12, 'label' => 13, 'formfieldtype' => 14, 'formfieldsize' => 15, 'formfieldlines' => 16, 'formfieldusecalendar' => 17, 'foreignkeytable' => 18, 'foreignkeyremote' => 19, 'ondelete' => 20, 'automatic' => 21, ),
+		BasePeer::TYPE_COLNAME => array (self::UNIQUENAME => 0, self::ENTITYNAME => 1, self::NAME => 2, self::DESCRIPTION => 3, self::ISREQUIRED => 4, self::DEFAULTVALUE => 5, self::ISPRIMARYKEY => 6, self::ISAUTOINCREMENT => 7, self::ORDER => 8, self::TYPE => 9, self::UNIQUE => 10, self::SIZE => 11, self::AGGREGATEEXPRESSION => 12, self::LABEL => 13, self::FORMFIELDTYPE => 14, self::FORMFIELDSIZE => 15, self::FORMFIELDLINES => 16, self::FORMFIELDUSECALENDAR => 17, self::FOREIGNKEYTABLE => 18, self::FOREIGNKEYREMOTE => 19, self::ONDELETE => 20, self::AUTOMATIC => 21, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('UNIQUENAME' => 0, 'ENTITYNAME' => 1, 'NAME' => 2, 'DESCRIPTION' => 3, 'ISREQUIRED' => 4, 'DEFAULTVALUE' => 5, 'ISPRIMARYKEY' => 6, 'ISAUTOINCREMENT' => 7, 'ORDER' => 8, 'TYPE' => 9, 'UNIQUE' => 10, 'SIZE' => 11, 'AGGREGATEEXPRESSION' => 12, 'LABEL' => 13, 'FORMFIELDTYPE' => 14, 'FORMFIELDSIZE' => 15, 'FORMFIELDLINES' => 16, 'FORMFIELDUSECALENDAR' => 17, 'FOREIGNKEYTABLE' => 18, 'FOREIGNKEYREMOTE' => 19, 'ONDELETE' => 20, 'AUTOMATIC' => 21, ),
+		BasePeer::TYPE_FIELDNAME => array ('uniqueName' => 0, 'entityName' => 1, 'name' => 2, 'description' => 3, 'isRequired' => 4, 'defaultValue' => 5, 'isPrimaryKey' => 6, 'isAutoIncrement' => 7, 'order' => 8, 'type' => 9, 'unique' => 10, 'size' => 11, 'aggregateExpression' => 12, 'label' => 13, 'formFieldType' => 14, 'formFieldSize' => 15, 'formFieldLines' => 16, 'formFieldUseCalendar' => 17, 'foreignKeyTable' => 18, 'foreignKeyRemote' => 19, 'onDelete' => 20, 'automatic' => 21, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
 	);
 
 	/**
@@ -201,6 +210,7 @@ abstract class BaseModuleEntityFieldPeer {
 			$criteria->addSelectColumn(ModuleEntityFieldPeer::NAME);
 			$criteria->addSelectColumn(ModuleEntityFieldPeer::DESCRIPTION);
 			$criteria->addSelectColumn(ModuleEntityFieldPeer::ISREQUIRED);
+			$criteria->addSelectColumn(ModuleEntityFieldPeer::DEFAULTVALUE);
 			$criteria->addSelectColumn(ModuleEntityFieldPeer::ISPRIMARYKEY);
 			$criteria->addSelectColumn(ModuleEntityFieldPeer::ISAUTOINCREMENT);
 			$criteria->addSelectColumn(ModuleEntityFieldPeer::ORDER);
@@ -215,12 +225,15 @@ abstract class BaseModuleEntityFieldPeer {
 			$criteria->addSelectColumn(ModuleEntityFieldPeer::FORMFIELDUSECALENDAR);
 			$criteria->addSelectColumn(ModuleEntityFieldPeer::FOREIGNKEYTABLE);
 			$criteria->addSelectColumn(ModuleEntityFieldPeer::FOREIGNKEYREMOTE);
+			$criteria->addSelectColumn(ModuleEntityFieldPeer::ONDELETE);
+			$criteria->addSelectColumn(ModuleEntityFieldPeer::AUTOMATIC);
 		} else {
 			$criteria->addSelectColumn($alias . '.UNIQUENAME');
 			$criteria->addSelectColumn($alias . '.ENTITYNAME');
 			$criteria->addSelectColumn($alias . '.NAME');
 			$criteria->addSelectColumn($alias . '.DESCRIPTION');
 			$criteria->addSelectColumn($alias . '.ISREQUIRED');
+			$criteria->addSelectColumn($alias . '.DEFAULTVALUE');
 			$criteria->addSelectColumn($alias . '.ISPRIMARYKEY');
 			$criteria->addSelectColumn($alias . '.ISAUTOINCREMENT');
 			$criteria->addSelectColumn($alias . '.ORDER');
@@ -235,6 +248,8 @@ abstract class BaseModuleEntityFieldPeer {
 			$criteria->addSelectColumn($alias . '.FORMFIELDUSECALENDAR');
 			$criteria->addSelectColumn($alias . '.FOREIGNKEYTABLE');
 			$criteria->addSelectColumn($alias . '.FOREIGNKEYREMOTE');
+			$criteria->addSelectColumn($alias . '.ONDELETE');
+			$criteria->addSelectColumn($alias . '.AUTOMATIC');
 		}
 	}
 
