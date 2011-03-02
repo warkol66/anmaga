@@ -55,7 +55,7 @@
 			</tr>
 			<tr> 
 				<th width="5%">&nbsp;</th> 
-				<th width="5%">&nbsp;</th> 
+				<th width="5%"><input id="allbox" onclick="javascript:checkBoxesByName('selectedIds[]')" type="checkbox"></th> 
 				<th width="20%">Remitente</th> 
 				<th width="10%">Fecha</th> 
 				<th width="60%">Asunto</th> 
@@ -105,6 +105,8 @@
 				onComplete: updateLightBox //inicializamos el lighbox nuevamente
 			}
 		);
+		var allbox = document.getElementById('allbox');
+		allbox.checked = false;
 		return true;
 	}
 	
@@ -120,6 +122,8 @@
 				onComplete: updateLightBox //inicializamos el lighbox nuevamente
 			}
 		);
+		var allbox = document.getElementById('allbox');
+		allbox.checked = false;
 		return true;
 	}
 	

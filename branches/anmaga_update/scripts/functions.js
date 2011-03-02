@@ -15,9 +15,19 @@ function CheckAllBoxes(fmobj) {
     }
   }
 }
+function checkBoxesByName(boxesName) {  
+  var allbox = document.getElementById('allbox');
+  var arr = new Array();
+  arr = document.getElementsByName(boxesName); 
+  for(var i = 0; i < arr.length; i++) {
+    var e = document.getElementsByName(boxesName).item(i);
+    if ( (e.id != 'allbox') && (e.type=='checkbox') && (!e.disabled) ) {
+      e.checked = allbox.checked;
+    }
+  }
+}
 
-function switch_vis(element,display)
-{
+function switch_vis(element,display){
 	var e_ref="";
 	var ant="";
 	e_ref=document.getElementById(element);

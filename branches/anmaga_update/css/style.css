@@ -757,15 +757,15 @@ option{
 /*	color:     */	
 }
 #rightColumn p{
-	width: 570px;
-	font-size: 1.2em; /*NEW, px to em*/
+	width: 700px;
+/*	font-size: 1.2em; *//*NEW, px to em*/
 	margin-bottom: 5px;
 	padding-right: 10px;
 /*	color:*/
 /*	border-right: */
 }
 #rightColumn fieldset p{
-	width: 570px;
+	width: 700px;
 }
 .paragraphEdit {
 	padding-left: 25px;
