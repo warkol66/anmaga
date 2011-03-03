@@ -1,0 +1,14 @@
+DELETE FROM `security_actionLabel` WHERE `action` LIKE 'Surveys%' AND `language` = 'eng';
+INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('SurveysSurveysEdit', 'Survey edit', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('SurveysSurveysDisplayBar', 'Display surveys bar graph', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('SurveysAnswerOptionsDeleteX', 'Delete answer option', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('SurveysSurveysRespondX', 'Survey answer save', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('SurveysSurveysShow', 'Show survey', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('SurveysAnswerOptionsAddX', 'Add answer option', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('SurveysSurveysList', 'Display surveys list', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('SurveysSurveyAnswersList', 'Show survey answers list', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('SurveysSurveysAnswersExport', 'Export survey answers', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('SurveysSurveysDoDelete', 'Delete survey', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('SurveysCaptchaGeneration', 'Captcha generation', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('SurveysSurveyAnswersDoDelete', 'Deletes survey answer', 'eng');
+INSERT INTO `security_actionLabel` ( `action` , `label` , `language` ) VALUES ('SurveysSurveysResults', 'Display survey results', 'eng');
