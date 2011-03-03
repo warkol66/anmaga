@@ -1,0 +1,134 @@
+<!-- Module Surveys -->
+<!-- Section Surveys -->
+  <action-mappings>
+    <action    path = "surveysSurveysEdit"
+               type = "SurveysSurveysEditAction"
+               name = "surveysSurveysEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="SurveysSurveysEdit.tpl" />
+    </action>
+
+    <action    path = "surveysSurveysDoEdit"
+               type = "SurveysSurveysDoEditAction"
+               name = "surveysSurveysDoEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success-yesno" path="/Main.php?do=surveysSurveysList&amp;message=ok" redirect="true" />
+    <forward name="success-multiple" path="/Main.php?do=surveysSurveysEdit&amp;message=created" redirect="true" />
+	<forward name="success-edit" path="/Main.php?do=surveysSurveysList&amp;message=ok" redirect="true" />
+    <forward name="failure" path="SurveysSurveysEdit.tpl" />
+    </action>
+
+    <action    path = "surveysSurveysList"
+               type = "SurveysSurveysListAction"
+               name = "surveysSurveysList"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="SurveysSurveysList.tpl" />
+    </action>
+
+    <action    path = "surveysSurveysDoDelete"
+               type = "SurveysSurveysDoDeleteAction"
+               name = "surveysSurveysDoDelete"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=surveysSurveysList&amp;message=deleted_ok" redirect="true" />
+    </action>
+
+    <action    path = "surveysAnswerOptionsAddX"
+               type = "SurveysAnswerOptionsAddXAction"
+               name = "surveysAnswerOptionsAddX"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="SurveysAnswerOptionsAddX.tpl" />
+    <forward name="failure" path="SurveysAnswerOptionsAddXFailure.tpl" />
+    </action>
+
+    <action    path = "surveysAnswerOptionsDeleteX"
+               type = "SurveysAnswerOptionsDeleteXAction"
+               name = "surveysAnswerOptionsDeleteX"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="SurveysAnswerOptionsDeleteX.tpl" />
+    <forward name="failure" path="SurveysAnswerOptionsDeleteXFailure.tpl" />
+    </action>
+
+    <action    path = "surveysSurveysShow"
+               type = "SurveysSurveysShowAction"
+               name = "surveysSurveysShow"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="SurveysSurveysShow.tpl" />
+    <forward name="failure-visibility" path="SurveysSurveysShowFailureVisibility.tpl" />
+    </action>
+
+    <action    path = "surveysSurveysDisplay"
+               type = "SurveysSurveysDisplayAction"
+               name = "surveysSurveysDisplay"
+              scope = "request"
+           validate = "true">
+    <forward name="include" path="SurveysSurveysDisplayInclude.tpl" />
+    </action>
+
+    <action    path = "surveysSurveysRespondX"
+               type = "SurveysSurveysRespondXAction"
+               name = "surveysSurveysRespondX"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="SurveysSurveysRespondX.tpl" />
+    <forward name="failure" path="SurveysSurveysRespondXFailure.tpl" />
+    </action>
+
+    <action    path = "surveysSurveysResults"
+               type = "SurveysSurveysResultsAction"
+               name = "surveysSurveysResults"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="SurveysSurveysResults.tpl" />
+    </action>
+
+    <action    path = "surveysSurveysDisplayBar"
+               type = "SurveysSurveysDisplayBarAction"
+               name = "surveysSurveysDisplayBar"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="SurveysSurveysDisplayBar.tpl" />
+    </action>
+
+    <action    path = "surveysCaptchaGeneration"
+               type = "SurveysCaptchaGenerationAction"
+               name = "surveysCaptchaGeneration"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="TemplateAjax.tpl"/>
+    </action>
+
+    <action    path = "surveysSurveyAnswersList"
+               type = "SurveysSurveyAnswersListAction"
+               name = "surveysSurveyAnswersList"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="SurveysSurveyAnswersList.tpl" />
+    </action>
+
+    <action    path = "surveysSurveyAnswersDoDelete"
+               type = "SurveysSurveyAnswersDoDeleteAction"
+               name = "surveysSurveyAnswersDoDelete"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="/Main.php?do=surveysSurveyAnswersList&amp;message=deleted_ok" redirect="true" />
+    </action>
+
+    <action    path = "surveysSurveysAnswersExport"
+               type = "SurveysSurveysAnswersExportAction"
+               name = "surveysSurveysAnswersExport"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="SurveysSurveysAnswersExport.tpl" />
+    </action>
+
+  </action-mappings>
+
+<!-- End Section Surveys -->
+<!-- End Module Surveys -->
