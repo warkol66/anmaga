@@ -126,23 +126,27 @@ class InternalMailPeer extends BaseInternalMailPeer {
 	 * Genera un mensaje como respuesta a otro.
 	 * Setea los campos Subject, To, Replyid.
 	 */
-	public static function generateReply($replyId) {
+	public static function generateReply($replyId, $replyToAll = false) {
 		$message = InternalMailQuery::create()->findPk($replyId);
 		$reply = new InternalMail;
 		$reply->setSubject('Re: '.$message->getSubject());
-		$recipients = $message->getTo();
+		$recipients = array();
 		
-		//No queremos que el usuario se responda a sí mismo.
-		if (Common::isAffiliatedUser()) {
-			$currentUser = Common::getAffiliatedLogged();
-			$type = 'affiliate';
-		} else if (Common::isSystemUser()){
-			$currentUser = Common::getAdminLogged();
-			$type = 'user';
-		} 
-		foreach ($recipients as $idx => $recipient) {
-			if ($recipient['type'] == $type && $recipient['id'] == $currentUser->getId())
-				unset($recipients[$idx]);
+		if ($replyToAll) {
+			$recipients = $message->getTo();
+			
+			//No queremos que el usuario se responda a sí mismo.
+			if (Common::isAffiliatedUser()) {
+				$currentUser = Common::getAffiliatedLogged();
+				$type = 'affiliate';
+			} else if (Common::isSystemUser()){
+				$currentUser = Common::getAdminLogged();
+				$type = 'user';
+			} 
+			foreach ($recipients as $idx => $recipient) {
+				if ($recipient['type'] == $type && $recipient['id'] == $currentUser->getId())
+					unset($recipients[$idx]);
+			}
 		}
 		
 		//El remitente original pasa a ser un destinatario.

@@ -21,7 +21,7 @@ class CommonInternalMailsEditAction extends BaseAction {
 		
 		if (!empty($_GET["replyId"])) {
 			//Generamos una respuesta base.
-			$internalMail = InternalMailPeer::generateReply($_GET["replyId"]);
+			$internalMail = InternalMailPeer::generateReply($_GET["replyId"], $_GET["replyToAll"]);
 		} else {
 			//No existe la edición de mensajes, solo creación.
 			$internalMail = new InternalMail;
