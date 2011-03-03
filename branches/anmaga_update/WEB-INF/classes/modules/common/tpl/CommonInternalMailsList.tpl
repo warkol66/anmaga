@@ -78,8 +78,12 @@
 <script type="text/javascript" language="javascript" charset="utf-8">
 	var selected=-1;
 	
-	function deleteMessages() {
-		var fields = Form.serializeElements($$('.selector')) + '&' + Form.serializeElements($$('.filter')) + '&' + Form.serializeElements($$('#page'));
+	function deleteMessages(ids) {
+		if (ids === undefined)
+			ids = Form.serializeElements($$('.selector'));
+		else
+			ids = Object.toQueryString(ids);
+		var fields = ids + '&' + Form.serializeElements($$('.filter')) + '&' + Form.serializeElements($$('#page'));
 		var myAjax = new Ajax.Updater(
 			{success: 'internalMailsList'},
 			'Main.php?do=commonInternalMailsDoDeleteX',
@@ -93,8 +97,12 @@
 		return true;
 	}
 	
-	function markAsRead() {
-		var fields = Form.serializeElements($$('.selector')) + '&' + Form.serializeElements($$('.filter')) + '&' + Form.serializeElements($$('#page'));
+	function markAsRead(ids) {
+		if (ids === undefined)
+			ids = Form.serializeElements($$('.selector'));
+		else
+			ids = Object.toQueryString(ids);
+		var fields = ids + '&' + Form.serializeElements($$('.filter')) + '&' + Form.serializeElements($$('#page'));
 		var myAjax = new Ajax.Updater(
 			{success: 'internalMailsList'},
 			'Main.php?do=commonInternalMailsDoMarkAsReadX',
@@ -110,8 +118,12 @@
 		return true;
 	}
 	
-	function markAsUnread() {
-		var fields = Form.serializeElements($$('.selector')) + '&' + Form.serializeElements($$('.filter')) + '&' + Form.serializeElements($$('#page')) + '&reverse=true';
+	function markAsUnread(ids) {
+		if (ids === undefined)
+			ids = Form.serializeElements($$('.selector'));
+		else
+			ids = Object.toQueryString(ids);
+		var fields = ids + '&' + Form.serializeElements($$('.filter')) + '&' + Form.serializeElements($$('#page')) + '&reverse=true';
 		var myAjax = new Ajax.Updater(
 			{success: 'internalMailsList'},
 			'Main.php?do=commonInternalMailsDoMarkAsReadX',
@@ -128,8 +140,22 @@
 	}
 	
 	function view(id) {
+		//Marcamos como leido el mensaje
+		var fields = 'selectedIds[]=' + id + '&' + Form.serializeElements($$('.filter')) + '&' + Form.serializeElements($$('#page'));
+		var myAjax = new Ajax.Updater(
+			{success: 'internalMailsList'},
+			'Main.php?do=commonInternalMailsDoMarkAsReadX',
+			{
+				method: 'post',
+				postBody: fields,
+				evalScripts: true,
+				onComplete: updateLightBox //inicializamos el lighbox nuevamente
+			}
+		);
 		if (selected != id) { 
-		document.getElementById('lightboxContent').innerHTML = "<p>Cargando mensaje&nbsp;&nbsp;&nbsp;<img src='images/spinner.gif' /></p>";
+		
+			//Cargamos los datos en el lightbox.
+			document.getElementById('lightboxContent').innerHTML = "<p>Cargando mensaje&nbsp;&nbsp;&nbsp;<img src='images/spinner.gif' /></p>";
 			var myAjax = new Ajax.Updater(
 				{success: 'lightboxContent'},
 				'Main.php?do=commonInternalMailsViewX&id='+id,
@@ -141,6 +167,7 @@
 			);
 			selected = id;
 		}
+		
 		return true;
 	}
 	
@@ -148,9 +175,26 @@
 		lbox = document.getElementsByClassName('lbOn');
 		for(i = 0; i < lbox.length; i++) {
 			valid = new lightbox(lbox[i]);
+			lbActions = document.getElementsByClassName('lbAction');
+			for(j = 0; j < lbActions.length; j++) {
+				Event.observe(lbActions[j], 'click', valid[lbActions[j].rel].bindAsEventListener(valid), false);
+				lbActions[j].onclick = function(){return false;};
+			}
 		}
 	}
 	
 </script>
 
 <script type="text/javascript" src="scripts/lightbox.js"></script>
+
+<style>
+/*debemos sobreescribir esta regla para permitir que el lighbox */
+/*se dispare sobre toda la superficie de la celda */
+table#tabla-internalMails td {
+	padding: 0;
+}
+
+div.cellContent {
+	padding: 4px;
+}
+</style>

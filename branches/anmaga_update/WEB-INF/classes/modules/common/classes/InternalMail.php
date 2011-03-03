@@ -114,6 +114,7 @@ class InternalMail extends BaseInternalMail {
 				$internalMail = $this->copy();
 				$internalMail->setRecipientType($recipient['type']);
 				$internalMail->setRecipientId($recipient['id']);
+				$internalMail->setTo($this->getTo());
 				$internalMail->save();  
 			} catch (PropelException $exp) {
 				//Si falla en este caso continuamos
