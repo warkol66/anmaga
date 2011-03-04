@@ -9,3 +9,4 @@ orders.classes.schema.sql=anmaga
 security.classes.schema.sql=anmaga
 users.classes.schema.sql=anmaga
 multilang.classes.schema.sql=anmaga
+surveys.classes.schema.sql=application
