@@ -11,7 +11,7 @@
 abstract class BaseSurveyAnswerOptionPeer {
 
 	/** the default database name for this class */
-	const DATABASE_NAME = 'application';
+	const DATABASE_NAME = 'anmaga';
 
 	/** the table name for this class */
 	const TABLE_NAME = 'surveys_answerOption';
