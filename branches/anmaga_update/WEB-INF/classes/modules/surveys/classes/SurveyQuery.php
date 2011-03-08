@@ -13,25 +13,10 @@
  * @package    propel.generator.surveys.classes
  */
 class SurveyQuery extends BaseSurveyQuery {
-
-	/**
-	 * Returns a new SurveyQuery object.
-	 *
-	 * @param     string $modelAlias The alias of a model in the query
-	 * @param     Criteria $criteria Optional Criteria to build the query from
-	 *
-	 * @return    SurveyQuery
-	 */
-	public static function create($modelAlias = null, $criteria = null)
-	{
-		if ($criteria instanceof SurveyQuery) {
-			return $criteria;
-		}
-		$query = new self('application', 'Survey', $modelAlias);
-		if ($criteria instanceof Criteria) {
-			$query->mergeWith($criteria);
-		}
-		return $query;
+	public function lastActive() {
+		return $this->filterByIsPublic(1)
+					->filterByStartDate(array('max'=>date('Y-m-d')))
+					->orderByEndDate()
+					->findOne();
 	}
-
 } // SurveyQuery

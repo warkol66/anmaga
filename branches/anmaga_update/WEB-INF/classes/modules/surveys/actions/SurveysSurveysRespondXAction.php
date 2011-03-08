@@ -1,10 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("SurveyPeer.php");
-require_once("SurveyQuestionPeer.php");
-require_once("SurveyAnswerPeer.php");
-
 class SurveysSurveysRespondXAction extends BaseAction {
 
 
@@ -99,21 +94,32 @@ class SurveysSurveysRespondXAction extends BaseAction {
 
 		$answers = $_POST['answers'];
 		foreach ($answers as $answerId) {
-			
 			$params['surveyAnswer']['questionId'] = $question->getId();
 			$params['surveyAnswer']['answerOptionId'] = $answerId;
 			
-			//caso particular en el cual se guarda el usuario por registracion
-			//que respondio la encuesta
-			if (Common::isRegistrationUser()) {
-				$registrationUser = Common::getRegistrationUserLogged();
-				if (!empty($registrationUser)) {
-					$params['surveyAnswer']['userId'] = $registrationUser->getId();
+			if (empty($params['surveyAnswer']['objectId']) || empty($params['surveyAnswer']['objectType'])) {
+				//caso particular en el cual se guarda el usuario
+				//que respondio la encuesta
+				
+				if (Common::isRegistrationUser()) {
+					$user = Common::getRegistrationUserLogged();
+					$type = 'RegistrationUser';
+				} else if (Common::isSystemUser()) {
+					$user = Common::getAdminLogged();
+					$type = 'User';
+				} else if (Common::isAffiliateUser()) {
+					$user = Common::getAffiliatedLogged();
+					$type = 'AffiliateUser';
+				}
+				
+				if (!empty($user)) {
+					$params['surveyAnswer']['objectId'] = $user->getId();
+					$params['surveyAnswer']['objectType'] = $type;
 				}
 			}
-			
-			SurveyAnswerPeer::create($params['surveyAnswer']);
-			
+			$surveyAnswer = new SurveyAnswer;
+			Common::setObjectFromParams($surveyAnswer, $params['surveyAnswer']);
+			$surveyAnswer->save();
 		}
 		
 		//se han guardado las respuesta

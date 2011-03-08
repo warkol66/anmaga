@@ -1,14 +1,5 @@
 <?php
 
-// The parent class
-require_once 'surveys/classes/om/BaseSurveyAnswerOptionPeer.php';
-
-// The object class
-require_once 'SurveyAnswerOption.php';
-
-require_once 'SurveyAnswerPeer.php';
-
-
 /**
  * Skeleton subclass for performing query and update operations on the 'surveys_answerOption' table.
  *
@@ -29,9 +20,7 @@ class SurveyAnswerOptionPeer extends BaseSurveyAnswerOptionPeer {
 	*	@return boolean true si se elimino correctamente el survey, false sino
 	*/
 	public function delete($id) {
-		$surveyAnswerPeerObj = SurveyAnswerOptionPeer::retrieveByPK($id);
-		$surveyAnswerPeerObj->delete();
-		return true;
+		return SurveyAnswerQuery::create()->filterByPrimaryKey($id)->delete() > 0;
 	}
 
 

@@ -1,11 +1,5 @@
 <?php
 
-// The parent class
-require_once 'surveys/classes/om/BaseSurvey.php';
-
-require_once 'SurveyQuestionPeer.php';
-
-
 /**
  * Skeleton subclass for representing a row from the 'surveys_survey' table.
  *
@@ -18,17 +12,6 @@ require_once 'SurveyQuestionPeer.php';
  * @package Survey
  */
 class Survey extends BaseSurvey {
-
-	/**
-	 * Initializes internal state of Survey object.
-	 * @see        parent::__construct()
-	 */
-	public function __construct()
-	{
-		// Make sure that parent constructor is always invoked, since that
-		// is where any default values for this object are set.
-		parent::__construct();
-	}
 	
 	/**
 	 * Indica si una encuesta es publica o no.

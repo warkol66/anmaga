@@ -1,10 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("SurveyPeer.php");
-require_once("SurveyQuestion.php");
-require_once("SurveyQuestionPeer.php");
-
 class SurveysSurveysDoEditAction extends BaseAction {
 
 
@@ -13,43 +8,6 @@ class SurveysSurveysDoEditAction extends BaseAction {
 	function SurveysSurveysDoEditAction() {
 		;
 	}
-
-	function validate() {
-		return (!empty($_POST["survey"]["name"]) && ($_POST["survey"]["isPublic"] >= '0') && !empty($_POST["surveyQuestion"]["question"]));
-		
-	}
-
-	function manageEditFailure($mapping,$smarty) {
-		
-		$survey = SurveyPeer::get($_POST['survey']["id"]);
-		$questions = $survey->getSurveyQuestions();
-		$smarty->assign("survey",$survey);
-		$smarty->assign("surveyQuestion",$questions[0]);
-		
-		$smarty->assign("action","edit");
-		$smarty->assign("message","error");
-		return $mapping->findForwardConfig('failure');
-	}
-	
-	function manageCreateFailure($mapping,$smarty) {
-		
-			$survey = new Survey();
-			$survey->setid($_POST["survey"]["id"]);
-			$survey->setname($_POST["survey"]["name"]);
-			$survey->setisPublic($_POST["survey"]["isPublic"]);
-			$survey->setcreatedAt($_POST["survey"]["createdAt"]);
-			$survey->setstartDate($_POST["survey"]["startDate"]);
-			$survey->setendDate($_POST["survey"]["endDate"]);
-			$surveyQuestion = new SurveyQuestion();
-			$surveyQuestion->setQuestion($_POST["surveyQuestion"]["question"]);
-			$smarty->assign("survey",$survey);	
-			$smarty->assign("surveyQuestion",$surveyQuestion);
-			$smarty->assign("action","create");
-			$smarty->assign("message","error");
-			return $mapping->findForwardConfig('failure');
-	
-	}
-
 
 
 	// ----- Public Methods ------------------------------------------------- //
@@ -86,86 +44,66 @@ class SurveysSurveysDoEditAction extends BaseAction {
 		$section = "Surveys";
 		$smarty->assign("section",$section);		
 
-		if ( $_POST["action"] == "edit" ) {
+		if ( !empty($_POST['id']) ) {
 			//estoy editando un survey existente
+			$survey = SurveyPeer::get($_POST['id']);
+			Common::setObjectFromParams($survey, $_POST["survey"]);
+			
+			$surveyQuestion = SurveyQuestionPeer::get($_POST['surveyQuestionId']);
+			Common::setObjectFromParams($surveyQuestion, $_POST['surveyQuestion']);
 
-			if (!$this->validate())
-				return $this->manageEditFailure($mapping,$smarty);
+			if (!$survey->validate() || !$surveyQuestion->validate()) {
+				$smarty->assign("survey",$survey);	
+				$smarty->assign("surveyQuestion",$surveyQuestion);
+				$smarty->assign("message","error");
+				$smarty->assign("action","edit");
+				return $mapping->findForwardConfig('failure');
+			}
+			$survey->save();
+			$surveyQuestion->save();
 			
-			SurveyPeer::update($_POST["survey"]);
-			
-			SurveyQuestionPeer::update($_POST['surveyQuestion']);
-      		
 			return $mapping->findForwardConfig('success-edit');
+		} else {
+			//estoy creando un nuevo survey
+			$survey = new Survey;
+			Common::setObjectFromParams($survey, $_POST["survey"]);
 
-		}
-		else {
-		  //estoy creando un nuevo survey
-
-			if (!$this->validate())
-				return $this->manageCreateFailure($mapping,$smarty);
+			if (!$survey->validate()) {
+				$smarty->assign("survey",$survey);	
+				$smarty->assign("surveyQuestion",$surveyQuestion);
+				$smarty->assign("message","error");
+				$smarty->assign("action","create");
+				return $mapping->findForwardConfig('failure');
+			}
+			$survey->save();
+			
+			$params['surveyQuestion']['question'] = $_POST['surveyQuestion']['question'];
+			$params['surveyQuestion']['surveyId'] = $survey->getId();
 
 			switch ($_POST['surveyType']) {
 				
 				//caso de creacion de yesno
 				case 'yesno':
-					
-					//creamos la encuesta
-					if ( !($survey = SurveyPeer::create($_POST["survey"])) ) {
-						return $this->manageCreateFailure($mapping,$smarty);
-					}
-
-					$params['surveyQuestion']['question'] = $_POST['surveyQuestion']['question'];
-					$params['surveyQuestion']['surveyId'] = $survey->getId();
-					
-					
 					$surveyQuestion = SurveyQuestionPeer::createYesNoQuestion($params['surveyQuestion']);
-
 					return $mapping->findForwardConfig('success-yesno');
-					
 					break;
 					
 				case 'multipleAnswers':
-
-
-					//creamos la encuesta de opciones multiples
-					if ( !($survey = SurveyPeer::create($_POST["survey"])) ) {
-						return $this->manageCreateFailure($mapping,$smarty);
-					}
-					
-					$params['surveyQuestion']['question'] = $_POST['surveyQuestion']['question'];
-					$params['surveyQuestion']['surveyId'] = $survey->getId(); 
 					$params['surveyQuestion']['multipleAnswer'] = 1;
-
-
-					$surveyQuestion = SurveyQuestionPeer::create($params['surveyQuestion']);
-
+					$surveyQuestion = new SurveyQuestion;
+					Common::setObjectFromParams($surveyQuestion, $params['surveyQuestion']);
+					$surveyQuestion->save();
 					break;
 					
 				case 'oneAnswer':
-
-					//creamos la encuesta
-					if ( !($survey = SurveyPeer::create($_POST["survey"])) ) {
-						return $this->manageCreateFailure($mapping,$smarty);
-					}
-
-					$params['surveyQuestion']['question'] = $_POST['surveyQuestion']['question'];
-					$params['surveyQuestion']['surveyId'] = $survey->getId();
 					$params['surveyQuestion']['multipleAnswer'] = 0;
-					//creamos la pregunta de la encuesta
-					$surveyQuestion = SurveyQuestionPeer::create($params['surveyQuestion']);
+					$surveyQuestion = new SurveyQuestion;
+					Common::setObjectFromParams($surveyQuestion, $params['surveyQuestion']);
+					$surveyQuestion->save();
 					break;
 			}
 			
-			$myRedirectConfig = $mapping->findForwardConfig('success-multiple');
-			$myRedirectPath = $myRedirectConfig->getpath();
-			$queryData = '&id='.$survey->getId();
-			$myRedirectPath .= $queryData;
-			$fc = new ForwardConfig($myRedirectPath, True);
-			return $fc;
-		   
+			return $this->addParamsToForwards(array('id' => $survey->getId()), $mapping, 'success-multiple');
 		}
-
 	}
-
 }

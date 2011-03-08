@@ -1,11 +1,5 @@
 <?php
 
-// The parent class
-require_once 'surveys/classes/om/BaseSurveyAnswer.php';
-
-require_once 'SurveyQuestionPeer.php';
-
-
 /**
  * Skeleton subclass for representing a row from the 'surveys_answer' table.
  *
@@ -19,15 +13,14 @@ require_once 'SurveyQuestionPeer.php';
  */
 class SurveyAnswer extends BaseSurveyAnswer {
 
-	/**
-	 * Initializes internal state of SurveyAnswer object.
-	 * @see        parent::__construct()
-	 */
-	public function __construct()
-	{
-		// Make sure that parent constructor is always invoked, since that
-		// is where any default values for this object are set.
-		parent::__construct();
+	public function getObject() {
+		$id = $this->getObjectId();
+		$className = $this->getObjectType();
+		$queryClassName = $className . 'Query';
+		if (class_exists($queryClassName)) {
+			$query = new $queryClassName;
+			return $query->findPk($id);
+		}
+		return NULL;
 	}
-
 } // SurveyAnswer

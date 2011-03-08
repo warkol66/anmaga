@@ -971,6 +971,12 @@ abstract class BaseSurveyQuestionPeer {
 			}
 		} else {
 
+		if ($obj->isNew() || $obj->isColumnModified(SurveyQuestionPeer::QUESTION))
+			$columns[SurveyQuestionPeer::QUESTION] = $obj->getQuestion();
+
+		if ($obj->isNew() || $obj->isColumnModified(SurveyQuestionPeer::SURVEYID))
+			$columns[SurveyQuestionPeer::SURVEYID] = $obj->getSurveyid();
+
 		}
 
 		return BasePeer::doValidate(SurveyQuestionPeer::DATABASE_NAME, SurveyQuestionPeer::TABLE_NAME, $columns);

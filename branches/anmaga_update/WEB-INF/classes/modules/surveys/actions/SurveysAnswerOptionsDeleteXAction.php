@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("SurveyQuestionPeer.php");
-
 class SurveysAnswerOptionsDeleteXAction extends BaseAction {
 
 
@@ -56,7 +53,5 @@ class SurveysAnswerOptionsDeleteXAction extends BaseAction {
 		$smarty->assign('answerOptionId',$_POST['answerOptionId']);
 
 		return $mapping->findForwardConfig('success');
-
 	}
-
 }

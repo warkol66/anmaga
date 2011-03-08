@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("SurveyPeer.php");
-
 class SurveysSurveysDoDeleteAction extends BaseAction {
 
 
@@ -47,10 +44,10 @@ class SurveysSurveysDoDeleteAction extends BaseAction {
 		$section = "Surveys";
 		$smarty->assign("section",$section);		
 
-    SurveyPeer::delete($_POST["id"]);
+    	SurveyPeer::delete($_POST["id"]);
 
 		return $mapping->findForwardConfig('success');
-
+		
 	}
-
+	
 }

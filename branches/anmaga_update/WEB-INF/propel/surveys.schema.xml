@@ -10,7 +10,15 @@
 
 		<behavior name="soft_delete" />
 		<behavior name="timestampable" />
-
+		
+		<validator column="name">
+  			<rule name="required" message="El nombre es requerido." />
+		</validator>
+		
+		<validator column="isPublic">
+  			<rule name="minValue" value="0" message="El campo Visibilidad no acepta valores negativos." />
+		</validator>
+		
 		<vendor type="mysql">
 			<parameter name="Charset" value="utf8"/>
 			<parameter name="Collate" value="utf8_general_ci"/>
@@ -28,6 +36,14 @@
 		<foreign-key foreignTable="surveys_survey" onDelete="cascade">
 			<reference local="surveyId" foreign="id" />
 		</foreign-key>
+		
+		<validator column="question">
+  			<rule name="required" message="La pregunta es requerida." />
+		</validator>
+		
+		<validator column="surveyId">
+  			<rule name="required" message="La pregunta necesita una encuesta asociada." />
+		</validator>
 
 		<vendor type="mysql">
 			<parameter name="Charset" value="utf8"/>

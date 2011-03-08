@@ -1,8 +1,5 @@
 <?php
 
-require_once 'SurveyQuestionPeer.php';
-require_once 'SurveyPeer.php';
-
 class SurveysSurveysInclude {
 
 

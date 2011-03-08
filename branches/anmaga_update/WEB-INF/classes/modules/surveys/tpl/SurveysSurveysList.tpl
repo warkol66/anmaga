@@ -16,7 +16,11 @@
 	<col width="10%">
 		<thead>
 			<tr>
-				<th colspan="6" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=surveysSurveysEdit" class="addLink">Agregar Encuesta</a></div></th>
+				<th colspan="6">
+					<div class="rightLink">
+						<a href="Main.php?do=surveysSurveysEdit" class="addLink">Agregar Encuesta</a>
+					</div>
+				</th>
 			</tr>
 			<tr>
 				<th>Nombre</th>
@@ -39,22 +43,22 @@
 					<form action="Main.php" method="get">
 						<input type="hidden" name="do" value="surveysSurveysEdit" />
 						<input type="hidden" name="id" value="|-$survey->getid()-|" />
-						<input type="submit" name="submit_go_edit_survey" value="Editar" title="Editar" class="buttonImageEdit" />
+						<input type="submit" name="submit_go_edit_survey" value="Editar" title="Editar" class="iconEdit" />
 					</form>
 					<form action="Main.php" method="get">
 						<input type="hidden" name="do" value="surveysSurveysResults" />
 						<input type="hidden" name="id" value="|-$survey->getid()-|" />
-						<input type="submit" name="submit_go_view_survey" value="Ver Gráfico" title="Ver Gráfico" class="buttonImageViewGantt" />
+						<input type="submit" name="submit_go_view_survey" value="Ver Gráfico" title="Ver Gráfico" class="iconViewGantt" />
 					</form>	
 					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="surveysSurveysAnswersExport" />
 						<input type="hidden" name="id" value="|-$survey->getid()-|" />
-						<input type="submit" name="submit_go_view_survey" value="Exportar Resultados" title="Exportar Resultados" class="buttonImageDownload" />
+						<input type="submit" name="submit_go_view_survey" value="Exportar Resultados" title="Exportar Resultados" class="iconDownload" />
 					</form>																	
 					<form action="Main.php" method="post">
 						<input type="hidden" name="do" value="surveysSurveysDoDelete" />
 						<input type="hidden" name="id" value="|-$survey->getid()-|" />
-						<input type="submit" name="submit_go_delete_survey" value="Eliminar" title="Eliminar" onclick="return confirm('Seguro que desea eliminar la encuesta?')" class="buttonImageDelete" />
+						<input type="submit" name="submit_go_delete_survey" value="Eliminar" title="Eliminar" onclick="return confirm('Seguro que desea eliminar la encuesta?')" class="iconDelete" />
 					</form>
 				</td>
 			</tr>
@@ -65,7 +69,11 @@
 			</tr>							
 		|-/if-|		
 			<tr>
-				<th colspan="6" class="thFillTitle"><div class="rightLink"><a href="Main.php?do=surveysSurveysEdit" class="addLink">Agregar Encuesta</a></div></th>
+				<th colspan="6">
+					<div class="rightLink">
+						<a href="Main.php?do=surveysSurveysEdit" class="addLink">Agregar Encuesta</a>
+					</div>
+				</th>
 			</tr>
 		</tbody>
 	</table>

@@ -1,10 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once('ModulePeer.php');
-require_once("SurveyPeer.php");
-
-
 class SurveysSurveysEditAction extends BaseAction {
 
 
@@ -65,7 +60,6 @@ class SurveysSurveysEditAction extends BaseAction {
 
 			$smarty->assign("action","create");
 		}
-		
 
 		$moduleNews= ModulePeer::get('news');
 		if (!empty($moduleNews) && ($moduleNews->getActive() == 1)) {
