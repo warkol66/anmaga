@@ -1,9 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("SurveyAnswerPeer.php");
-require_once("SurveyPeer.php");
-
 class SurveysSurveysAnswersExportAction extends BaseAction {
 
 
@@ -46,11 +42,6 @@ class SurveysSurveysAnswersExportAction extends BaseAction {
 		$module = "Surveys";
 		$smarty->assign("module",$module);
 		$section = "SurveyAnswers";
-		$smarty->assign("section",$section);				
- 
-		$module = "Surveys";
-		$smarty->assign("module",$module);
-		$section = "Surveys";
 		$smarty->assign("section",$section);				
 
 		$survey = SurveyPeer::get($_POST["id"]);

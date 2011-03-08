@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("SurveyQuestionPeer.php");
-require_once("SurveyPeer.php");
 //especifico jpgraph
 require_once("externals/jpgraph/jpgraph.php");
 require_once("externals/jpgraph/jpgraph_bar.php");

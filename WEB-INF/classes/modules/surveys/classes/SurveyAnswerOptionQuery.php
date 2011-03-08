@@ -14,24 +14,4 @@
  */
 class SurveyAnswerOptionQuery extends BaseSurveyAnswerOptionQuery {
 
-	/**
-	 * Returns a new SurveyAnswerOptionQuery object.
-	 *
-	 * @param     string $modelAlias The alias of a model in the query
-	 * @param     Criteria $criteria Optional Criteria to build the query from
-	 *
-	 * @return    SurveyAnswerOptionQuery
-	 */
-	public static function create($modelAlias = null, $criteria = null)
-	{
-		if ($criteria instanceof SurveyAnswerOptionQuery) {
-			return $criteria;
-		}
-		$query = new self('application', 'SurveyAnswerOption', $modelAlias);
-		if ($criteria instanceof Criteria) {
-			$query->mergeWith($criteria);
-		}
-		return $query;
-	}
-
 } // SurveyAnswerOptionQuery

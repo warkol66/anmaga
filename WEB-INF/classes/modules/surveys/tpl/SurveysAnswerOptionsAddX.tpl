@@ -19,6 +19,7 @@
 	form.appendChild(idInput);
 	
 	button = document.createElement('input');
+	button.addClassName('iconDelete');
 	button.type = 'button';
 	button.name = 'eliminar';
 	button.value = 'eliminar';

@@ -1,9 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("SurveyQuestionPeer.php");
-require_once("SurveyPeer.php");
-
 class SurveysSurveysResultsAction extends BaseAction {
 
 
@@ -43,7 +39,7 @@ class SurveysSurveysResultsAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 		
-		if ($_GET['ajax'] == 1) {
+		if ($this->isAjax()) {
 			$this->template->template = 'TemplateAjax.tpl';
 			$smarty->assign('ajax',true);
 		}

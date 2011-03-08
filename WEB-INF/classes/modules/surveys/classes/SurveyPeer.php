@@ -6,72 +6,7 @@
  * @package Survey
  */
 class SurveyPeer extends BaseSurveyPeer {
-
-	/**
-	* Obtiene la cantidad de filas por pagina por defecto en los listado paginados.
-	*
-	* @return int Cantidad de filas por pagina
-	*/
-	function getRowsPerPage() {
-		global $system;
-		return $system["config"]["system"]["rowsPerPage"];
-	}
 	
-	/**
-	* Crea un survey nuevo.
-	*
-	* @param array $params Array asociativo con los atributos del objeto
-	* @return boolean true si se creo correctamente, false sino
-	*/  
-	function create($params) {
-		try {
-			$surveyObj = new Survey();
-			foreach ($params as $key => $value) {
-				$setMethod = "set".$key;
-				if ( method_exists($surveyObj,$setMethod) ) {          
-					if (!empty($value) || $value == "0")
-						$surveyObj->$setMethod($value);
-					else
-						$surveyObj->$setMethod(null);
-				}
-			}
-		$surveyObj->setCreatedAt(date("Y-m-d h:m:s"));
-			$surveyObj->save();
-			return $surveyObj;
-		} catch (Exception $exp) {
-			return false;
-		}         
-	}  
-	
-	/**
-	* Actualiza la informacion de un survey.
-	*
-	* @param array $params Array asociativo con los atributos del objeto
-	* @return boolean true si se actualizo la informacion correctamente, false sino
-	*/  
-	function update($params) {
-		try {
-			$surveyObj = SurveyPeer::retrieveByPK($params["id"]);    
-			if (empty($surveyObj))
-				throw new Exception();
-			foreach ($params as $key => $value) {
-				$setMethod = "set".$key;
-				if ( method_exists($surveyObj,$setMethod) ) {          
-					if (!empty($value) || $value == "0")
-						$surveyObj->$setMethod($value);
-					else
-						$surveyObj->$setMethod(null);
-				}
-			}
-
-			$surveyObj->save();
-			return true;
-		} catch (Exception $exp) {
-	var_dump($exp);
-			return false;
-		}         
-	}    
-
 	/**
 	* Elimina un survey a partir de los valores de la clave.
 	*
@@ -79,9 +14,7 @@ class SurveyPeer extends BaseSurveyPeer {
 	*	@return boolean true si se elimino correctamente el survey, false sino
 	*/
 	function delete($id) {
-		$surveyObj = SurveyPeer::retrieveByPK($id);
-		$surveyObj->delete();
-		return true;
+		return SurveyQuery::create()->filterByPrimaryKey($id)->delete() > 0;
 	}
 
 	/**
@@ -91,8 +24,7 @@ class SurveyPeer extends BaseSurveyPeer {
 	* @return array Informacion del survey
 	*/
 	function get($id) {
-		$surveyObj = SurveyPeer::retrieveByPK($id);
-		return $surveyObj;
+		return SurveyQuery::create()->findPk($id);
 	}
 
 	/**
@@ -101,9 +33,7 @@ class SurveyPeer extends BaseSurveyPeer {
 	*	@return array Informacion sobre todos los surveys
 	*/
 	function getAll() {
-		$cond = new Criteria();
-		$alls = SurveyPeer::doSelect($cond);
-		return $alls;
+		return SurveyQuery::create()->find();
 	}
 	
 	/**
@@ -115,7 +45,7 @@ class SurveyPeer extends BaseSurveyPeer {
 	*/
 	function getAllPaginated($page=1,$perPage=-1) {  
 		if ($perPage == -1)
-			$perPage = 	SurveyPeer::getRowsPerPage();
+			$perPage = 	Common::getRowsPerPage();
 		if (empty($page))
 			$page = 1;
 		$cond = new Criteria();     
@@ -128,20 +58,6 @@ class SurveyPeer extends BaseSurveyPeer {
 	 * @return array Informacion del survey
 	 */
 	public function getLastActive() {
-		
-		$criteria = new Criteria();
-
-		$criteria->add(SurveyPeer::ISPUBLIC,1);
-		$criteria->add(SurveyPeer::ARTICLEID,NULL,Criteria::EQUAL);
-		$criteria->add(SurveyPeer::STARTDATE, date('Y-m-d'), Criteria::LESS_EQUAL);
-		$criteria->addDescendingOrderByColumn(SurveyPeer::ENDDATE);
-
-		$surveyObj = SurveyPeer::doSelectOne($criteria);
-		return $surveyObj;
-		
-		
+		return SurveyQuery::create()->lastActive();
 	}
-
-
 }
-

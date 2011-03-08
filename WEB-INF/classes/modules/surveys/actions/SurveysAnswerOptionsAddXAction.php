@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("SurveyQuestionPeer.php");
-
 class SurveysAnswerOptionsAddXAction extends BaseAction {
 
 
@@ -61,7 +58,5 @@ class SurveysAnswerOptionsAddXAction extends BaseAction {
 			
 		$smarty->assign('answerOption',$answer); 
 		return $mapping->findForwardConfig('success');
-
 	}
-
 }

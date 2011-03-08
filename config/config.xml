@@ -240,4 +240,10 @@
 		<daysByDefault>15</daysByDefault>
 		<profitRoot>anmaga-server</profitRoot>
 	</orders>
+	<surveys>
+		<showInclude>
+			<value>YES</value>
+			<element_type>YES/NO</element_type>
+		</showInclude>
+	</surveys>
 </config>

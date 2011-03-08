@@ -1,8 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("SurveyAnswerPeer.php");
-
 class SurveysSurveyAnswersListAction extends BaseAction {
 
 
@@ -57,5 +54,4 @@ class SurveysSurveyAnswersListAction extends BaseAction {
 
 		return $mapping->findForwardConfig('success');
 	}
-
 }

@@ -1,13 +1,5 @@
 <?php
 
-// The parent class
-require_once 'surveys/classes/om/BaseSurveyQuestion.php';
-
-require_once 'SurveyQuestionPeer.php';
-
-require_once 'SurveyAnswerOptionPeer.php';
-
-
 /**
  * Skeleton subclass for representing a row from the 'surveys_question' table.
  *
@@ -20,17 +12,6 @@ require_once 'SurveyAnswerOptionPeer.php';
  * @package Survey
  */
 class SurveyQuestion extends BaseSurveyQuestion {
-
-	/**
-	 * Initializes internal state of SurveyQuestion object.
-	 * @see        parent::__construct()
-	 */
-	public function __construct()
-	{
-		// Make sure that parent constructor is always invoked, since that
-		// is where any default values for this object are set.
-		parent::__construct();
-	}
 	
 	/**
 	 * Crea una nueva opcion de respuesta dentro de una pregunta
@@ -38,9 +19,6 @@ class SurveyQuestion extends BaseSurveyQuestion {
 	 * @return SurveyAnswerOption instance or false on failure 
 	 */
 	public function addAnswerOption($answerText) {
-	
-		require_once('SurveyAnswerOption.php');
-
 		try {		
 			$option = new SurveyAnswerOption();
 			$option->setSurveyQuestion($this);
@@ -50,7 +28,6 @@ class SurveyQuestion extends BaseSurveyQuestion {
 		} catch (PropelException $exp) {
 			return false;
 		}
-		
 	}
 
 	/**
@@ -67,13 +44,7 @@ class SurveyQuestion extends BaseSurveyQuestion {
 	 * @return integer
 	 */
 	public function getTotalAnswerCount() {
-
-		require_once('SurveyAnswerPeer.php');
-
-		$criteria = new Criteria();
-		$criteria->add(SurveyAnswerPeer::QUESTIONID,$this->getId());
-		return SurveyAnswerPeer::doCount($criteria);
-
+		return $this->countSurveyAnswers();
 	}
 
 } // SurveyQuestion

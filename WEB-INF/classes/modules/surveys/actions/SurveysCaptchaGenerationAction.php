@@ -1,5 +1,4 @@
 <?php
-require_once('BaseAction.php');
 require_once("includes/captcha/CaptchaSecurityImages.php");
 
 class SurveysCaptchaGenerationAction extends BaseAction {
@@ -56,7 +55,5 @@ class SurveysCaptchaGenerationAction extends BaseAction {
 		header('Cache-Control: no-cache');
 		imagejpeg($image);
 		die;
-
 	}
-
 }

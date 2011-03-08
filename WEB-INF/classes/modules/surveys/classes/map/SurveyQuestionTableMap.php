@@ -42,6 +42,8 @@ class SurveyQuestionTableMap extends TableMap {
 		$this->addColumn('QUESTION', 'Question', 'VARCHAR', true, 255, null);
 		$this->addColumn('MULTIPLEANSWER', 'Multipleanswer', 'BOOLEAN', false, null, false);
 		// validators
+		$this->addValidator('QUESTION', 'required', 'propel.validator.RequiredValidator', '', 'La pregunta es requerida.');
+		$this->addValidator('SURVEYID', 'required', 'propel.validator.RequiredValidator', '', 'La pregunta necesita una encuesta asociada.');
 	} // initialize()
 
 	/**

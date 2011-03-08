@@ -1,9 +1,5 @@
 <?php
 
-require_once("BaseAction.php");
-require_once("SurveyQuestionPeer.php");
-require_once("SurveyPeer.php");
-
 class SurveysSurveysShowAction extends BaseAction {
 
 
