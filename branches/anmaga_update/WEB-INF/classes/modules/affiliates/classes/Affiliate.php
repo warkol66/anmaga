@@ -17,11 +17,21 @@
  */	
 class Affiliate extends BaseAffiliate {
 
-        private $hasPriceList;
+	private $hasPriceList;
 
-        function getOwner() {
-                return AffiliateUserPeer::get($this->getOwnerId());
-        }
+	function getOwner() {
+		return AffiliateUserPeer::get($this->getOwnerId());
+	}
+		
+	public function __toString() {
+		$string = '';
+		$name = $this->getName();
+		$surname = $this->getSurname();
+		if ( !empty($name) || !empty($surname) )
+			$string .= $surname . ', ' . $name . ' - ';
+		$string .= '(' . $this->getUserName() . ')';
+		return $string;
+	}
 
 
         function doImportPrices($filename) {

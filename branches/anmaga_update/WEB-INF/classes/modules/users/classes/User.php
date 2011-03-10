@@ -11,7 +11,17 @@ class User extends BaseUser {
 
 	private $passwordString;
 	private $passwordUpdatedTime;
-
+	
+	public function __toString() {
+		$string = '';
+		$name = $this->getName();
+		$surname = $this->getSurname();
+		if ( !empty($name) || !empty($surname) )
+			$string .= $surname . ', ' . $name . ' - ';
+		$string .= '(' . $this->getUserName() . ')';
+		return $string;
+	}
+	
  /**
 	 * Genera la clave encriptada a guardar
 	 * @param passwordString string clave ingresada pro usuario.

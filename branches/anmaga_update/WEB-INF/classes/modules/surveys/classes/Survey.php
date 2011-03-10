@@ -12,7 +12,11 @@
  * @package Survey
  */
 class Survey extends BaseSurvey {
-	
+
+	public function __toString() {
+		return $this->getName();
+	}
+		
 	/**
 	 * Indica si una encuesta es publica o no.
 	 * @return boolean
