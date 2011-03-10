@@ -262,10 +262,20 @@ class ProductPeer extends BaseProductPeer {
   * @return array Informacion del product
   */
   function get($id) {
-		$productObj = ProductPeer::retrieveByPK($id);
+	$productObj = ProductQuery::create()->findPk($id);
     return $productObj;
   }
-
+  
+  /**
+   * Devuelve una coleccion de objetos con las claves pasadas por parametro.
+   * 
+   * @param array $ids, ids de los productos
+   * @return coleccion de productos.
+   */
+  function getByIds($ids) {
+  	return ProductQuery::create()->findPks($ids);
+  }
+  
   /**
   * Obtiene todos los productos.
 	*

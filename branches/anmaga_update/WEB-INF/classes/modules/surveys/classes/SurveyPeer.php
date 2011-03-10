@@ -60,4 +60,38 @@ class SurveyPeer extends BaseSurveyPeer {
 	public function getLastActive() {
 		return SurveyQuery::create()->lastActive();
 	}
+	
+	public function generateSurveyForProducts($products) {
+		$survey = new Survey;
+		$surveyParams['startDate'] = new DateTime;
+		$surveyParams['endDate'] = date_modify(new DateTime, '+2 weeks');
+		$surveyParams['isPublic'] = 1;
+		$surveyParams['name'] = 'Encuesta de Productos';
+		Common::setObjectFromParams($survey, $surveyParams);
+		$survey->save();
+		
+		foreach ($products as $product) {
+			$questionPrice = new SurveyQuestion;
+			$questionPrice->setQuestion('Precio de ' . $product);
+			
+			$questionQuality = new SurveyQuestion;
+			$questionQuality->setQuestion('Calidad de ' . $product);
+			
+			$questionPackage = new SurveyQuestion;
+			$questionPackage->setQuestion('Empaque de ' . $product);
+			
+			$questions = array($questionPrice, $questionQuality, $questionPackage);
+			foreach ($questions as $question) {
+				$question->setMultipleAnswer(0);
+				$question->setSurvey($survey);
+				$question->save();
+				for ($i = 1; $i <= 5; $i++) {
+					$answerOption = new SurveyAnswerOption;
+					$answerOption->setAnswer($i);
+					$answerOption->setSurveyQuestion($question);
+					$answerOption->save();
+				}
+			}
+		}
+	}
 }
