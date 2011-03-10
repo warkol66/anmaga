@@ -13,6 +13,10 @@
  */
 class Product extends BaseProduct {
 
+	public function __toString() {
+		return $this->getDescription();
+	}
+
 	public function getPrice() {
 		if (Common::isAffiliatedUser() && AffiliateProductPeer::affiliateHasPriceList(Common::getAffiliatedId())) {
       return AffiliateProductQuery::create()->join('Product')
