@@ -28,7 +28,7 @@
 																	|-$question->getQuestion()-|</td>
 																<td>|-$surveyanswer->getanswerOptionId()-|</td>
 																|-assign var=object value=$surveyanswer->getObject()-|
-																<td>|-if $object eq ''-|Respuesta Publica|-else-||-$object->getUsername()-||-/if-|</td>
+																<td>|-if $object eq ''-|Respuesta Publica|-else-||-$object-||-/if-|</td>
 																<td>|-$surveyanswer->getcreatedAt()-|</td>
 																<td>
 									<form action="Main.php" method="post">

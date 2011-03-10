@@ -1,8 +1,8 @@
 <?php
 
 //especifico jpgraph
-require_once("externals/jpgraph/jpgraph.php");
-require_once("externals/jpgraph/jpgraph_bar.php");
+require_once("jpgraph/jpgraph.php");
+require_once("jpgraph/jpgraph_bar.php");
 
 define('LABEL_LENGTH',28);
 
@@ -24,6 +24,8 @@ class SurveysSurveysDisplayBarAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
+		
+		
 		
 		$module = "Surveys";
 		$smarty->assign("module",$module);
@@ -215,7 +217,6 @@ class SurveysSurveysDisplayBarAction extends BaseAction {
 		$graph->SetMarginColor($background);
 
 		$graph->Stroke();
-
 
 	}
 
