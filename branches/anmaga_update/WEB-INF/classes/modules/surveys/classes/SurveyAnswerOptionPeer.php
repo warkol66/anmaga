@@ -20,7 +20,7 @@ class SurveyAnswerOptionPeer extends BaseSurveyAnswerOptionPeer {
 	*	@return boolean true si se elimino correctamente el survey, false sino
 	*/
 	public function delete($id) {
-		return SurveyAnswerQuery::create()->filterByPrimaryKey($id)->delete() > 0;
+		return SurveyAnswerOptionQuery::create()->filterByPrimaryKey($id)->delete() > 0;
 	}
 
 

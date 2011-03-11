@@ -2,5 +2,5 @@
 <h1>Encuesta</h1>
 
 <div id="surveyPlaceholder">
-	|-include file="SurveysSurveyShowInclude.tpl" survey=$survey surveyQuestion=$surveyQuestion-|
+	|-include file="SurveysSurveyShowInclude.tpl" survey=$survey objectType=$objectType objectId=$objectId-|
 </div>

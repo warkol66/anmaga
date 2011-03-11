@@ -42,9 +42,7 @@ class SurveysSurveysDisplayBarAction extends BaseAction {
 		if ((!$survey->isPublic()) && (!Common::isRegistrationUser()) && (!Common::isAdmin()))
 			return $mapping->findForwardConfig('failure-visibility');			
 
-		$questions = $survey->getSurveyQuestions();
-
-		$surveyQuestion = $questions[0];
+		$surveyQuestion = SurveyQuestionPeer::get($_GET['questionId']);
 
 		$totalAnswers = $surveyQuestion->getTotalAnswerCount();
 		$answerOptions = $surveyQuestion->getSurveyAnswerOptions();

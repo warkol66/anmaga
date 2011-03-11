@@ -207,6 +207,11 @@ class BaseAction extends Action {
 
 		$this->template = new SmartyOutputFilter();
 		$smarty->register_outputfilter(array($this->template,"smarty_add_template"));
+		
+		if ($this->isAjax()) {
+			$this->template->template = 'TemplateAjax.tpl';
+			$smarty->assign("isAjax", true);
+		}
 
 		$systemParameters = Common::getModuleConfiguration("system");
 		$smarty->assign("parameters",$systemParameters["parameters"]);

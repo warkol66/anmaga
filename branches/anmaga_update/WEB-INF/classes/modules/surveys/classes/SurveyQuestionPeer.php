@@ -12,15 +12,20 @@ class SurveyQuestionPeer extends BaseSurveyQuestionPeer {
 	* @param array $params Array asociativo con los atributos del objeto
 	* @return boolean true si se creo correctamente, false sino
 	*/
-	public function createYesNoQuestion($params) {
+	public function createYesNoQuestion($params, $question = null) {
 		//no soporta opciones multiples
 		$params['surveyQuestion']['multipleAnswer'] = 0;
 	
-		$question = new SurveyQuestion;
+		if ($question === null)
+			$question = new SurveyQuestion;
+		else 
+			SurveyAnswerOptionQuery::create()->filterBySurveyQuestion($question)->delete();
+			
 		Common::setObjectFromParams($question, $params);
 		if (!$question->save())
 			return false;
 		
+		$question->reload();
 		try {
 			//opcion NO
 			$answerOption = new SurveyAnswerOption();

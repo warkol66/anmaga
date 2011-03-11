@@ -66,7 +66,8 @@ class SurveysSurveysShowAction extends BaseAction {
 
 		//verificamos la existencia del cookie para ver si el usuario no ha respondido ya 
 		//la encuesta
-		$cookie = $_COOKIE['infovicicaSurvey' . $survey->getId()];
+		$cookieName = SurveyPeer::getCookieName($survey->getId(), $_GET['objectType'], $_GET['objectId']);
+		$cookie = $_COOKIE[$cookieName];
 		if (!empty($cookie) && $cookie == $survey->getId()) {
 			//la encuesta ya fue respondida
 			$smarty->assign('alreadyAnswered',true);
@@ -77,9 +78,9 @@ class SurveysSurveysShowAction extends BaseAction {
 			$smarty->assign('useCaptcha',true);
 		}		
 		
-		$questions = $survey->getSurveyQuestions();
 		$smarty->assign("survey",$survey);
-		$smarty->assign("surveyQuestion",$questions[0]);
+		$smarty->assign('objectType', $_GET['objectType']);
+		$smarty->assign('objectId', $_GET['objectId']);
 
 		return $mapping->findForwardConfig('success');
 

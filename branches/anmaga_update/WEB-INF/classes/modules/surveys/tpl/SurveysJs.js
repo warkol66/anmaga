@@ -1,6 +1,8 @@
-﻿function submitAnswerToQuestionX(form) {	
-	
+﻿var selected=-1;
+
+function submitAnswerToQuestionX(form) {	
 	var fields = Form.serialize(form);
+	console.log(fields);
 	var myAjax = new Ajax.Updater(
 				{success: 'msgBoxAnswerAdd'},
 				url,
@@ -109,6 +111,42 @@ function validateAnswer() {
 	return true;
 }
 
+function submitAllAnswersSurveyX(form) {
+	var fieldsets = $$('fieldset');
+	var ok = true;
+	fieldsets.each( function(fieldset) {
+		if (!validateAnswersByFieldset(fieldset)) {
+			$$('fieldset#'+fieldsetId+' span.msgBoxSurveyValidationMsg')[0].innerHTML = '<span class="resultFailure">Debe seleccionar al menos una respuesta.</span>';
+			ok = false;
+		} else {
+			clearValidationFailure(fieldset);
+		}
+	} );
+	if (ok)
+		submitSurveyX(form);
+	else
+		return false;
+}
+
+function clearValidationFailure(fieldset) {
+	$$('fieldset#'+fieldsetId+' span.msgBoxSurveyValidationMsg')[0].innerHTML = '';
+}
+
+function validateAnswersByFieldset(fieldset) {
+		fieldsetId = fieldset.id;
+		var elements = $$('fieldset#'+fieldsetId + ' input');
+		var checked = 0;
+		for (var i=0; i < elements.length; i++) {
+			if (elements[i].type == 'checkbox' || elements[i].type == 'radio' && elements[i].checked == true)
+				checked++;
+		};
+		
+		if (checked == 0) {
+			return false;
+		}
+		return true;
+}
+
 function submitOneAnswerSurveyX(form) {
 
 	if (!validateOneAnswer()) {
@@ -143,5 +181,76 @@ function loadSurveyResultsX(surveyId,targetDivId) {
 			);		
 
 	return true;
+}
+
+function deleteQuestionX(form) {
+	var fields = Form.serialize(form);
+		var myAjax = new Ajax.Updater(
+			{success: 'msgBoxQuestionAdd'},
+			'Main.php',
+			{
+				method: 'post',
+				postBody: fields,
+				evalScripts: true,
+				onComplete: updateLightBox //inicializamos el lighbox nuevamente
+			}
+		);
+		return true;	
+	
+	$('msgBoxSurveyForm').innerHTML = '<span class="inProgress">enviando encuesta...</span>';
+
+	return true;
+}
+
+function editQuestionX(form) {
+	id = form.serialize(true).id;
+	if (selected != id) { 
+		//Cargamos los datos en el lightbox.
+		document.getElementById('lightboxContent').innerHTML = "<p>Cargando mensaje&nbsp;&nbsp;&nbsp;<img src='images/spinner.gif' /></p>";
+		var fields = Form.serialize(form);
+		var myAjax = new Ajax.Updater(
+			{success: 'lightboxContent'},
+			'Main.php',
+			{
+				method: 'get',
+				parameters: fields,
+				evalScripts: true,
+				onComplete: updateLightBox //inicializamos el lighbox nuevamente
+			}
+		);
+		selected = id;
+	}
+	
+	return true;
+}
+
+function doEditQuestionX(form) {
+	//Cargamos los datos en el lightbox.
+	document.getElementById('lightboxContent').insert({top:"<p>Cargando mensaje&nbsp;&nbsp;&nbsp;<img src='images/spinner.gif' /></p>"});
+	var fields = Form.serialize(form);
+	var myAjax = new Ajax.Updater(
+		{success: 'lightboxContent'},
+		'Main.php',
+		{
+			method: 'post',
+			postBody: fields,
+			evalScripts: true,
+			onComplete: updateLightBox //inicializamos el lighbox nuevamente
+		}
+	);
+	
+	return true;
+}
+
+function updateLightBox() {
+	lbox = document.getElementsByClassName('lbOn');
+	for(i = 0; i < lbox.length; i++) {
+		valid = new lightbox(lbox[i]);
+		lbActions = document.getElementsByClassName('lbAction');
+		for(j = 0; j < lbActions.length; j++) {
+			Event.observe(lbActions[j], 'click', valid[lbActions[j].rel].bindAsEventListener(valid), false);
+			lbActions[j].onclick = function(){return false;};
+		}
+	}
 }
 

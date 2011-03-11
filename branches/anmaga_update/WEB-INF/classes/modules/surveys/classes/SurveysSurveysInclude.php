@@ -33,7 +33,8 @@ class SurveysSurveysInclude {
 
 		//verificamos la existencia del cookie para ver si el usuario no ha respondido ya 
 		//la encuesta
-		$cookie = $_COOKIE['infovicicaSurvey' . $survey->getId()];
+		$cookieName = SurveyPeer::getCookieName($survey->getId(), $options['objectType'], $options['objectId']);
+		$cookie = $_COOKIE[$cookieName];
 
 		if (!empty($cookie) && $cookie == $survey->getId()) {
 			//la encuesta ya fue respondida

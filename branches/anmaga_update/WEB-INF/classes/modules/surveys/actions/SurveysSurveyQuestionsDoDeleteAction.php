@@ -1,11 +1,11 @@
 <?php
 
-class SurveysSurveysDoEditAction extends BaseAction {
+class SurveysSurveyQuestionsDoDeleteAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function SurveysSurveysDoEditAction() {
+	function SurveysSurveyQuestionsDoDeleteAction() {
 		;
 	}
 
@@ -44,32 +44,16 @@ class SurveysSurveysDoEditAction extends BaseAction {
 		$section = "Surveys";
 		$smarty->assign("section",$section);		
 
-		if ( !empty($_POST['id']) ) {
-			//estoy editando un survey existente
-			$survey = SurveyPeer::get($_POST['id']);
-			Common::setObjectFromParams($survey, $_POST["survey"]);
-			
-			if (!$survey->validate()) {
-				$smarty->assign("survey",$survey);	
-				$smarty->assign("message","error");
-				$smarty->assign("action","edit");
-				return $mapping->findForwardConfig('failure');
-			}
-			$survey->save();
-			
-		} else {
-			//estoy creando un nuevo survey
-			$survey = new Survey;
-			Common::setObjectFromParams($survey, $_POST["survey"]);
-
-			if (!$survey->validate()) {
-				$smarty->assign("survey",$survey);	
-				$smarty->assign("message","error");
-				$smarty->assign("action","create");
-				return $mapping->findForwardConfig('failure');
-			}
-			$survey->save();
+    	if ( !empty($_POST["id"]) ) {
+			if (SurveyQuestionPeer::delete($_POST["id"]))
+				$smarty->assign("message", 'ok');
+			else
+				$smarty->assign("message", 'error');
 		}
-		return $this->addParamsToForwards(array('id' => $survey->getId()), $mapping, 'success');
+		
+		$smarty->assign($_POST["id"]);
+		$smarty->assign('surveyId', $_POST["surveyId"]);
+
+		return $mapping->findForwardConfig('success');
 	}
 }

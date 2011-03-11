@@ -59,9 +59,7 @@ class SurveysSurveysResultsAction extends BaseAction {
 		if ((!$survey->isPublic()) && (!Common::isRegistrationUser()) && (!Common::isAdmin()))
 			return $mapping->findForwardConfig('failure-visibility');			
 
-		$questions = $survey->getSurveyQuestions();
 		$smarty->assign("survey",$survey);
-		$smarty->assign("surveyQuestion",$questions[0]);
 
 		return $mapping->findForwardConfig('success');
 

@@ -48,9 +48,7 @@ class SurveysSurveysEditAction extends BaseAction {
 			//voy a editar un survey
 
 			$survey = SurveyPeer::get($_GET["id"]);
-			$questions = $survey->getSurveyQuestions();
 			$smarty->assign("survey",$survey);
-			$smarty->assign("surveyQuestion",$questions[0]);
 	    	$smarty->assign("action","edit");
 		}
 		else {
