@@ -14,9 +14,7 @@
                name = "surveysSurveysDoEdit"
               scope = "request"
            validate = "true">
-    <forward name="success-yesno" path="/Main.php?do=surveysSurveysList&amp;message=ok" redirect="true" />
-    <forward name="success-multiple" path="/Main.php?do=surveysSurveysEdit&amp;message=created" redirect="true" />
-	<forward name="success-edit" path="/Main.php?do=surveysSurveysList&amp;message=ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=surveysSurveysEdit&amp;message=ok" redirect="true" />
     <forward name="failure" path="SurveysSurveysEdit.tpl" />
     </action>
 
@@ -34,6 +32,15 @@
               scope = "request"
            validate = "true">
     <forward name="success" path="/Main.php?do=surveysSurveysList&amp;message=deleted_ok" redirect="true" />
+    </action>
+    
+    <action    path = "surveysSurveyQuestionsDoEdit"
+               type = "SurveysSurveyQuestionsDoEditAction"
+               name = "surveysSurveyQuestionsDoEdit"
+              scope = "request"
+           validate = "true">
+    <forward name="success" path="SurveysSurveyQuestionsEdit.tpl" />
+    <forward name="failure" path="SurveysSurveyQuestionsEdit.tpl" />
     </action>
 
     <action    path = "surveysAnswerOptionsAddX"

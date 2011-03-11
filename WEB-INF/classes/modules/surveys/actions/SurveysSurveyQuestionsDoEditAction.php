@@ -1,11 +1,11 @@
 <?php
 
-class SurveysSurveysDoEditAction extends BaseAction {
+class SurveysSurveyQuestionsDoEditAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function SurveysSurveysDoEditAction() {
+	function SurveysSurveyQuestionsDoEditAction() {
 		;
 	}
 
@@ -42,34 +42,43 @@ class SurveysSurveysDoEditAction extends BaseAction {
 		$module = "Surveys";
 		$smarty->assign("module",$module);
 		$section = "Surveys";
-		$smarty->assign("section",$section);		
+		$smarty->assign("section",$section);
+		
+		$params = $_POST['surveyQuestion'];	
 
-		if ( !empty($_POST['id']) ) {
-			//estoy editando un survey existente
-			$survey = SurveyPeer::get($_POST['id']);
-			Common::setObjectFromParams($survey, $_POST["survey"]);
-			
-			if (!$survey->validate()) {
-				$smarty->assign("survey",$survey);	
-				$smarty->assign("message","error");
-				$smarty->assign("action","edit");
-				return $mapping->findForwardConfig('failure');
-			}
-			$survey->save();
-			
+    	if ( !empty($_POST["id"]) ) {
+			//voy a editar un surveyQuestion
+			$surveyQuestion = SurveyQuestionPeer::get($_POST["id"]);
+	    	$smarty->assign("action","edit");
 		} else {
-			//estoy creando un nuevo survey
-			$survey = new Survey;
-			Common::setObjectFromParams($survey, $_POST["survey"]);
-
-			if (!$survey->validate()) {
-				$smarty->assign("survey",$survey);	
-				$smarty->assign("message","error");
-				$smarty->assign("action","create");
-				return $mapping->findForwardConfig('failure');
-			}
-			$survey->save();
+			//voy a crear un survey nuevo
+			$surveyQuestion = new SurveyQuestion;
+			$smarty->assign("action","create");
 		}
-		return $this->addParamsToForwards(array('id' => $survey->getId()), $mapping, 'success');
+		
+		switch ($_POST['surveyType']) {
+				
+			//caso de creacion de yesno
+			case 'yesno':
+				$surveyQuestion = SurveyQuestionPeer::createYesNoQuestion($params, $surveyQuestion);
+				break;
+				
+			case 'multipleAnswers':
+				$params['multipleAnswer'] = 1;
+				Common::setObjectFromParams($surveyQuestion, $params);
+				$surveyQuestion->save();
+				break;
+				
+			case 'oneAnswer':
+				$params['multipleAnswer'] = 0;
+				Common::setObjectFromParams($surveyQuestion, $params);
+				$surveyQuestion->save();
+				break;
+		}
+		
+		$smarty->assign("surveyQuestion",$surveyQuestion);	
+		$smarty->assign("message",$_GET["message"]);
+
+		return $mapping->findForwardConfig('success');
 	}
 }

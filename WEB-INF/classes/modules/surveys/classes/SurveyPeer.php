@@ -94,4 +94,29 @@ class SurveyPeer extends BaseSurveyPeer {
 			}
 		}
 	}
+
+	public static function getCookieName($surveyId, $objectType = null, $objectId = null) {
+		if (empty($objectType) || empty($objectId)) {
+			//caso particular en el cual se guarda el usuario
+			//que respondio la encuesta
+				
+			if (Common::isRegistrationUser()) {
+				$user = Common::getRegistrationUserLogged();
+				$type = 'RegistrationUser';
+			} else if (Common::isSystemUser()) {
+				$user = Common::getAdminLogged();
+				$type = 'User';
+			} else if (Common::isAffiliateUser()) {
+				$user = Common::getAffiliatedLogged();
+				$type = 'AffiliateUser';
+			}
+				
+			if (!empty($user)) {
+				$objectId = $user->getId();
+				$objectType = $type;
+			}
+		}
+		$cookieName = Common::getSiteShortName() . $surveyId .  $objectType . $objectId;
+		return $cookieName;
+	}
 }

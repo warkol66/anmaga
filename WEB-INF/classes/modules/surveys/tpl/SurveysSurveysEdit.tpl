@@ -53,31 +53,6 @@ Para guardar los cambios haga click en "Aceptar". Luego de guardar la encuesta s
 						<option value="0" |-if $survey neq '' and $survey->getisPublic() eq 0-|selected="selected"|-/if-|>Para Usuarios Registrados</option>
 				</select>
 			</p>
-			<p>
-				<label for="surveyQuestion_question">Pregunta</label>
-				<input type="text" size="65" name="surveyQuestion[question]" value="|-if $surveyQuestion neq ''-||-$surveyQuestion->getQuestion()-||-/if-|" id="surveyQuestion[question]" />
-				|-if $surveyQuestion neq ''-|
-				<input type="hidden" name="surveyQuestionId" value="|-$surveyQuestion->getId()-|" />
-				|-/if-|
-			</p>
-			<p>
-			<label for="survey_isPublic">Tipo de Pregunta</label>
-			|-if $survey->getId() eq ''-|
-			<select name="surveyType" onChange="javascript:create(this);">
-					<option value="yesno">Si / No</option>
-					<option value="multipleAnswers">Múltiples opciones, respuestas múltiples</option>
-					<option value="oneAnswer">Múltiples opciones, respuesta única</option>
-			</select>
-			<a href="#" |-popup sticky='true' fgcolor='#ffffff' bgcolor='#ffffff' closecolor='#cdcdcd' closetext='Cerrar' closetitle='Cerrar' capcolor='#ffffff' bgcolor='#0054A4' snapx='10' snapy='10' width='350' trigger='onMouseOver' caption="Tipos de Preguntas" text="Dependiendo del tipo de pregunta, el usuario puede responder una o varias opciones.<br />Una vez guardada la encuesta, no podrá modificar el tipo de pregunta.<br /> El tipo Si/NO es un caso particular de Opciones múltiples con una sola respuesta. Luego puede agregar mas opciones a esta pregunta, el sistema autimáticamente generará las opciones Si y NO"-|><img src="images/clear.png" class="linkImageInfo"></a>
-			|-else-|
-				|-if $surveyQuestion->acceptsMultipleAnswers()-|
-					Múltiples opciones, respuestas múltiples
-				|-else-|
-					Múltiples opciones, respuesta única
-				|-/if-|
-			<a href="#" |-popup sticky='true' fgcolor='#ffffff' bgcolor='#ffffff' closecolor='#cdcdcd' closetext='Cerrar' closetitle='Cerrar' capcolor='#ffffff' bgcolor='#0054A4' snapx='10' snapy='10' width='350' trigger='onMouseOver' caption="Tipos de Preguntas" text="Dependiendo del tipo de pregunta, el usuario puede responder una o varias opciones.<br />El tipo de pregunta no se puede modificar. Si desea cambiarla debe eliminar la encuesta para crear una nueva. <br />El tipo Si/NO es un caso particular de Opciones múltiples con una sola respuesta. Luego puede agregar mas opciones a esta pregunta, el sistema autimáticamente generará las opciones Si y NO"-|><img src="images/clear.png" class="linkImageInfo"></a>
-			|-/if-|
-			</p>
 			|-if $hasNews neq '' and $hasNews-|
 			<h3>Asociar la encuesta a una noticia&nbsp;&nbsp;<a href="#" |-popup sticky='true' fgcolor='#ffffff' bgcolor='#ffffff' closecolor='#cdcdcd' closetext='Cerrar' closetitle='Cerrar' capcolor='#ffffff' bgcolor='#0054A4' snapx='10' snapy='10' width='350' trigger='onMouseOver' caption='Asociar a una noticia' text='Puede asociar una encuesta a una noticia, eso hará que la encuesta se despliegue en la parte inferior de la bajada de la misma.'-|><img src="images/clear.png" class="linkImageInfo" /></a></h3>
 				<p>
@@ -103,52 +78,47 @@ Para guardar los cambios haga click en "Aceptar". Luego de guardar la encuesta s
 	</form>
 </div>
 
-|-if $survey->getId() neq ''-|
-	|-if $surveyQuestion->getValidationFailures()|@count > 0-|
-		<div class="errorMessage">
-			<ul>
-				|-foreach from=$surveyQuestion->getValidationFailures() item=error-|
-					<li>|-$error->getMessage()-|</li>
-				|-/foreach-|
-			</ul>
-		</div>
-	|-/if-|
-
-	<div id="surveyQuestionAdder">
-<fieldset title="Formulario de opciones de respuesta de encuesta">
-<legend>Opciones de respuesta </legend>
+|-if $survey->getId() ne ''-|
+<div id="questionsAdder">
+	<fieldset title="Preguntas de encuesta">
+	<legend>Preguntas de Encuesta </legend>
+		<form id="surveyQuestionAddForm">
+				<p>
+					<input type="hidden" name="do" value="surveysSurveyQuestionsEdit"></input>
+					<input type="hidden" name="surveyId" value="|-$survey->getId()-|"></input>
+					<a href="#" rel="lightbox1" class="lbOn"><input type="button" name="Agregar Pregunta" value="Agregar Pregunta" id="Agregar Pregunta" onClick="javascript:editQuestionX(this.form)"></input></a> <span id="msgBoxQuestionAdd"></span>
+				</p>
+		</form>
 	
-	<form id="surveyQuestionOptionsAddForm">
-			<p>
-				<label>Pregunta</label> |-$surveyQuestion->getQuestion()-|
-			</p>
-			<p>
-				<label for="surveyQuestion_question">Respuesta</label>
-				<input type="text" size="65" name="surveyAnswerOption[answer]" value="" id="surveyQuestion[answer]" />
-			</p>
-			<p>
-				<input type="hidden" name="surveyAnswerOption[questionId]" value="|-$surveyQuestion->getId()-|" id="surveyAnswerOption">
-				<input type="hidden" name="do" value="surveysAnswerOptionsAddX"></input>
-			</p>
-			<p>
-				<input type="button" name="Agregar Respuesta" value="Agregar Respuesta" id="Agregar Respuesta" onClick="javascript:submitAnswerToQuestionX(this.form)"></input> <span id="msgBoxAnswerAdd"></span>
-			</p>
-	</form>
-
-	<h4>Opciones actuales</h4>
-	|-assign var=options value=$surveyQuestion->getSurveyAnswerOptions()-|
-	<ul id="surveyQuestionOptionsList">
-		|-foreach from=$options item=option name=for_answeroptions-|
-		<li id="answerOption|-$option->getId()-|">|-$option->getAnswer()-| 
-			<form action="Main.php" method="post">
-				<input type="hidden" name="do" value="surveysAnswerOptionsDeleteX" />
-				<input type="hidden" name="answerOptionId" value="|-$option->getId()-|"/>
-				<input type="button" name="eliminar" value="eliminar" id="eliminar" onClick="javascript:deleteAnswerOptionX(this.form)" class="iconDelete"/>
-			</form>
-		</li> 
-		|-/foreach-|
-	</ul>
+		<h4>Opciones actuales</h4>
+		<ul id="surveyQuestionsList">
+			|-foreach from=$survey->getSurveyQuestions() item=surveyQuestion-|
+			<li id="question|-$surveyQuestion->getId()-|">|-$surveyQuestion->getQuestion()-| 
+				<form action="Main.php" method="post" style="display:inline;">
+					<input type="hidden" name="do" value="surveysSurveyQuestionsEdit" />
+					<input type="hidden" name="surveyId" value="|-$survey->getId()-|"></input>
+					<input type="hidden" name="id" value="|-$surveyQuestion->getId()-|"/>
+					<a href="#" rel="lightbox1" class="lbOn"><input type="button" id="editar" onClick="javascript:editQuestionX(this.form)" class="iconEdit"/></a>
+				</form>
+				<form action="Main.php" method="post" style="display:inline;">
+					<input type="hidden" name="do" value="surveysSurveyQuestionsDoDelete" />
+					<input type="hidden" name="id" value="|-$surveyQuestion->getId()-|"/>
+					<input type="button" name="eliminar" value="eliminar" id="eliminar" onClick="javascript:deleteQuestionX(this.form)" class="iconDelete"/>
+				</form>
+			</li> 
+			|-/foreach-|
+		</ul>
 	</fieldset>
-
 </div>
-|-/if-|				
+|-/if-|
+
+<div id="lightbox1" class="leightbox"> 
+	<div align="right">				
+		<a href="#" class="lbAction blackNoDecoration" rel="deactivate">Cerrar&nbsp;&nbsp;<input type="button" class="iconDelete" /></a> 
+	</div> 
+	<div id="lightboxContent">
+	</div>
+</div> 
+
+<script type="text/javascript" src="scripts/lightbox.js"></script>
+		

@@ -44,8 +44,8 @@ class SurveysAnswerOptionsDeleteXAction extends BaseAction {
 		$module = "Surveys";
 		$smarty->assign("module",$module);
 		$section = "Surveys";
-		$smarty->assign("section",$section);				
-
+		$smarty->assign("section",$section);	
+		
 		if (!SurveyAnswerOptionPeer::delete($_POST['answerOptionId'])) {
 			return $mapping->findForwardConfig('failure');			
 		}
