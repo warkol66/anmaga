@@ -6,16 +6,16 @@ require_once("jpgraph/jpgraph_bar.php");
 
 define('LABEL_LENGTH',28);
 
-class SurveysSurveysDisplayBarAction extends BaseAction {
+class SurveysDisplayBarAction extends BaseAction {
 
-	function SurveysSurveysDisplayBarAction() {
+	function SurveysDisplayBarAction() {
 		;
 	}
 
 	function execute($mapping, $form, &$request, &$response) {
 
-	    BaseAction::execute($mapping, $form, $request, $response);
-		
+		BaseAction::execute($mapping, $form, $request, $response);
+
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
@@ -24,32 +24,32 @@ class SurveysSurveysDisplayBarAction extends BaseAction {
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
-		
-		
-		
+
+
+
 		$module = "Surveys";
 		$smarty->assign("module",$module);
 		$section = "Surveys";
-		$smarty->assign("section",$section);				
+		$smarty->assign("section",$section);
 
 		$survey = SurveyPeer::get($_GET["id"]);
 
 		if (!$survey)
 			return $mapping->findForwardConfig('failure');
-		
+
 		//verificacion si solo debe ser visible para un usuario registrado
 		//no es publica y no quiere acceder un usuario afiliado.
 		if ((!$survey->isPublic()) && (!Common::isRegistrationUser()) && (!Common::isAdmin()))
-			return $mapping->findForwardConfig('failure-visibility');			
+			return $mapping->findForwardConfig('failure-visibility');
 
 		$surveyQuestion = SurveyQuestionPeer::get($_GET['questionId']);
 
 		$totalAnswers = $surveyQuestion->getTotalAnswerCount();
 		$answerOptions = $surveyQuestion->getSurveyAnswerOptions();
 		$totalOptions = count($answerOptions);
-		
+
 		global $system;
-		
+
 
 		$showTotals = $system['config']['surveys']['graphics']['showTotals']['value'];
 		//setup de variables de color
@@ -64,7 +64,7 @@ class SurveysSurveysDisplayBarAction extends BaseAction {
 		$datax = array();
 		$maxAnswerLen = 0;
 		foreach ($answerOptions as $answerOption) {
-			
+
 			if ($showTotals == 'YES')
 				array_push($datay,$answerOption->getAnswerCount());
 			else {
@@ -76,7 +76,7 @@ class SurveysSurveysDisplayBarAction extends BaseAction {
 				$maxAnswerLen = strlen($finalAnswer);
 			array_push($datax,$finalAnswer);
 		}
-		
+
 		switch  ($maxAnswerLen) {
 			case ($maxAnswerLen < 7):
 				$leftMargin = 80;
@@ -99,8 +99,8 @@ class SurveysSurveysDisplayBarAction extends BaseAction {
 		$graph = new Graph($width,$height,'auto');
 		$graph->SetScale("textlin");
 
-		// Sets a frame (rectangle) of the chosen color around the edges of the image. 
-		$graph->SetFrame(true,'#ff9900',1); 
+		// Sets a frame (rectangle) of the chosen color around the edges of the image.
+		$graph->SetFrame(true,'#ff9900',1);
 
 		$top = 40;
 
@@ -116,7 +116,7 @@ class SurveysSurveysDisplayBarAction extends BaseAction {
 
 		// Setup title
 		$graph->title->Set($graphTitle);
-		
+
 		$graph->title->SetColor($legend);
 		$graph->title->SetFont(FF_VERDANA,FS_BOLD,10);
 		$graph->title->SetMargin(10,10,10,10);
@@ -126,7 +126,7 @@ class SurveysSurveysDisplayBarAction extends BaseAction {
 		$graph->SetTickDensity(TICKD_VERYSPARSE);
 
 		// Setup X-axis
-		$graph->xaxis->SetColor($background,$labels); 
+		$graph->xaxis->SetColor($background,$labels);
 		$graph->xaxis->SetTickLabels($datax);
 		$graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,8);
 		$graph->xaxis->HideTicks(true,true);
@@ -157,7 +157,7 @@ class SurveysSurveysDisplayBarAction extends BaseAction {
 		// The fix the tick marks
 		$graph->yaxis->SetTickSide(SIDE_LEFT);
 		$graph->yaxis->HideTicks(true,true);
-		$graph->yaxis->SetColor($background,$labels); 
+		$graph->yaxis->SetColor($background,$labels);
 
 		// Finally setup the title
 		$graph->yaxis->SetTitleSide(SIDE_RIGHT);
@@ -177,7 +177,7 @@ class SurveysSurveysDisplayBarAction extends BaseAction {
 		}
 
 		$graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL);
-		
+
 		// If you want the labels at an angle other than 0 or 90
 		// you need to use TTF fonts
 		//$graph->yaxis->SetLabelAngle(0);
@@ -199,7 +199,7 @@ class SurveysSurveysDisplayBarAction extends BaseAction {
 		// Control si no se ha respondido aun para evitar error de jpgraph
 		if ($totalAnswers != 0) {
 			$bplot->value->Show();
-		}		
+		}
 		$bplot->value->SetFont(FF_VERDANA,FS_BOLD,8);
 		$bplot->value->SetAlign('left','center');
 		$bplot->value->SetColor($totals,"darkred");

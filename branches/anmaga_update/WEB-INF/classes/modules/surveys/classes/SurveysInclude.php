@@ -1,6 +1,6 @@
 <?php
 
-class SurveysSurveysInclude {
+class SurveysInclude {
 
 
 	function getDisplay($options) {
@@ -9,9 +9,9 @@ class SurveysSurveysInclude {
 		$showInclude = $system['config']['surveys']['showInclude']['value'];
 		if (($options["includeHome"] == 1) && ($showInclude == 'NO'))
 			return;
-		
+
 		$results = array();
-		
+
 		if ($options["id"] > 0)
 			$survey = SurveyPeer::get($options["id"]);
 		elseif ($options["lastActive"])
@@ -19,9 +19,9 @@ class SurveysSurveysInclude {
 
 		if (!$survey)
 			return $results;
-		
+
 		if ($survey->hasExpired()) {
-			$results['surveyExpired'] = true;			
+			$results['surveyExpired'] = true;
 		}
 
 		//verificacion si solo debe ser visible para un usuario registrado
@@ -31,7 +31,7 @@ class SurveysSurveysInclude {
 			return $results;
 		}
 
-		//verificamos la existencia del cookie para ver si el usuario no ha respondido ya 
+		//verificamos la existencia del cookie para ver si el usuario no ha respondido ya
 		//la encuesta
 		$cookieName = SurveyPeer::getCookieName($survey->getId(), $options['objectType'], $options['objectId']);
 		$cookie = $_COOKIE[$cookieName];
@@ -40,19 +40,19 @@ class SurveysSurveysInclude {
 			//la encuesta ya fue respondida
 			$results['alreadyAnswered'] = true;
 		}
-		
+
 		//verifico la utilizacion de captcha para construir la opcion en la vista
 		if (Common::getSurveysCaptchaUse()) {
 			$result['useCaptcha'] = true;
-		}		
-		
+		}
+
 		$questions = $survey->getSurveyQuestions();
 		$results["survey"] = $survey;
 		$results["surveyQuestion"] = $questions[0];
-		
+
 		return $results;
-		
+
 	}
 
-	
+
 } // end of class

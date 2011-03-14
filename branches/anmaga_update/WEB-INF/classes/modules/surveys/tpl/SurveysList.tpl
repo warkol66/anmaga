@@ -18,7 +18,7 @@
 			<tr>
 				<th colspan="6">
 					<div class="rightLink">
-						<a href="Main.php?do=surveysSurveysEdit" class="addLink">Agregar Encuesta</a>
+						<a href="Main.php?do=surveysEdit" class="addLink">Agregar Encuesta</a>
 					</div>
 				</th>
 			</tr>
@@ -41,22 +41,22 @@
 				<td>|-$survey->getendDate()|date_format:"%d-%m-%Y"-|</td>
 				<td nowrap="nowrap">
 					<form action="Main.php" method="get">
-						<input type="hidden" name="do" value="surveysSurveysEdit" />
+						<input type="hidden" name="do" value="surveysEdit" />
 						<input type="hidden" name="id" value="|-$survey->getid()-|" />
 						<input type="submit" name="submit_go_edit_survey" value="Editar" title="Editar" class="iconEdit" />
 					</form>
 					<form action="Main.php" method="get">
-						<input type="hidden" name="do" value="surveysSurveysResults" />
+						<input type="hidden" name="do" value="surveysResults" />
 						<input type="hidden" name="id" value="|-$survey->getid()-|" />
 						<input type="submit" name="submit_go_view_survey" value="Ver Gráfico" title="Ver Gráfico" class="iconViewGantt" />
 					</form>	
 					<form action="Main.php" method="post">
-						<input type="hidden" name="do" value="surveysSurveysAnswersExport" />
+						<input type="hidden" name="do" value="surveysAnswersExport" />
 						<input type="hidden" name="id" value="|-$survey->getid()-|" />
 						<input type="submit" name="submit_go_view_survey" value="Exportar Resultados" title="Exportar Resultados" class="iconDownload" />
 					</form>																	
 					<form action="Main.php" method="post">
-						<input type="hidden" name="do" value="surveysSurveysDoDelete" />
+						<input type="hidden" name="do" value="surveysDoDelete" />
 						<input type="hidden" name="id" value="|-$survey->getid()-|" />
 						<input type="submit" name="submit_go_delete_survey" value="Eliminar" title="Eliminar" onclick="return confirm('Seguro que desea eliminar la encuesta?')" class="iconDelete" />
 					</form>
@@ -71,7 +71,7 @@
 			<tr>
 				<th colspan="6">
 					<div class="rightLink">
-						<a href="Main.php?do=surveysSurveysEdit" class="addLink">Agregar Encuesta</a>
+						<a href="Main.php?do=surveysEdit" class="addLink">Agregar Encuesta</a>
 					</div>
 				</th>
 			</tr>

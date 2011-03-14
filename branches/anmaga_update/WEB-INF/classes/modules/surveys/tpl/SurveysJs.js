@@ -170,7 +170,7 @@ function submitMultipleAnswerSurveyX(form) {
  * Carga los resultados de la encuesta en un determinado div
  */
 function loadSurveyResultsX(surveyId,targetDivId) {
-	var url = 'Main.php?do=surveysSurveysResults&id='+surveyId+'&ajax=1';
+	var url = 'Main.php?do=surveysResults&id='+surveyId+'&ajax=1';
 	var myAjax = new Ajax.Updater(
 				{success: targetDivId},
 				url,
