@@ -47,7 +47,6 @@ class SurveyTableMap extends TableMap {
 		$this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
 		// validators
 		$this->addValidator('NAME', 'required', 'propel.validator.RequiredValidator', '', 'El nombre es requerido.');
-		$this->addValidator('ISPUBLIC', 'minValue', 'propel.validator.MinValueValidator', '0', 'El campo Visibilidad no acepta valores negativos.');
 	} // initialize()
 
 	/**

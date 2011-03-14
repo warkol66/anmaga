@@ -763,9 +763,6 @@ abstract class BaseSurveyPeer {
 		if ($obj->isNew() || $obj->isColumnModified(SurveyPeer::NAME))
 			$columns[SurveyPeer::NAME] = $obj->getName();
 
-		if ($obj->isNew() || $obj->isColumnModified(SurveyPeer::ISPUBLIC))
-			$columns[SurveyPeer::ISPUBLIC] = $obj->getIspublic();
-
 		}
 
 		return BasePeer::doValidate(SurveyPeer::DATABASE_NAME, SurveyPeer::TABLE_NAME, $columns);
