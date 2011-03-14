@@ -57,7 +57,4 @@ $conf = array (
   'generator_version' => '1.5.5',
 );
 $conf['classmap'] = include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classmap-anmaga-conf.ini.php');
-$aditionalClasses = array (
-	'BackupPeer' => 'backup/classes/BackupPeer.php');
-$conf['classmap'] = array_merge($conf['classmap'],$aditionalClasses);
 return $conf;
