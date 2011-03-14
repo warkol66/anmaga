@@ -1,4 +1,19 @@
 ﻿==============================
+Revisión 742 - Fecha 201100314
+------------------------------
+#Insercion del módulo surveys en tabla de modulos.
+
+INSERT INTO  `anmaga`.`modules_module` (
+`name` ,
+`active` ,
+`alwaysActive` ,
+`hasCategories`
+)
+VALUES (
+'surveys',  '1',  '0',  '0'
+);
+
+==============================
 Revisión 735 - Fecha 201100304
 ------------------------------
 #-----------------------------------------------------------------------------

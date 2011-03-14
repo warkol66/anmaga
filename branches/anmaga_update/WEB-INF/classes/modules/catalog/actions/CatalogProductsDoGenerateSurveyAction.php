@@ -1,7 +1,8 @@
 <?php
 
 class CatalogProductsDoGenerateSurveyAction extends BaseAction {
-
+	private $survey;
+	private $smarty;
 
 	// ----- Constructor ---------------------------------------------------- //
 
@@ -34,16 +35,16 @@ class CatalogProductsDoGenerateSurveyAction extends BaseAction {
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
 		$plugInKey = 'SMARTY_PLUGIN';
-		$smarty =& $this->actionServer->getPlugIn($plugInKey);
-		if($smarty == NULL) {
+		$this->smarty =& $this->actionServer->getPlugIn($plugInKey);
+		if($this->smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
 		$module = "Catalog";
-    	$smarty->assign("module",$module);
+    	$this->smarty->assign("module",$module);
 
 		$moduleSection = "Products";
-    	$smarty->assign("moduleSection",$section);
+    	$this->smarty->assign("moduleSection",$section);
 		
 		$productIds = $_POST['survey']['productsIds'];
 		if (empty($productIds))
@@ -51,10 +52,30 @@ class CatalogProductsDoGenerateSurveyAction extends BaseAction {
 			
 		$products = ProductPeer::getByIds($productIds);
 		
-		$survey = SurveyPeer::generateSurveyForProducts($products);
-		if (empty($survey))
+		$this->survey = SurveyPeer::generateSurveyForProducts($products);
+		if (empty($this->survey))
 			return $mapping->findForwardConfig('failure');
 		
+		$this->sendMessages();
+			
 		return $mapping->findForwardConfig('success');
+	}
+	
+	protected function sendMessages() {
+		//Si tenemos mensajeria interna, armamos los mensajes y los enviamos.
+		if (class_exists('InternalMailPeer')) {
+			$tpl = $this->template->template;  //Guardamos el template original.
+			$this->template->template = "TemplatePlain.tpl";  //Establecemos un template plano para el mail.
+			$subject = 'Encuesta sobre la calidad de los productos.';
+			$recipientsUsers = AffiliateUserPeer::getAllOwners();
+			$fromUser = UserPeer::get(-1);  //Usuario "system"
+			
+			$this->smarty->assign('survey', $this->survey);
+			$body = $this->smarty->fetch('CatalogProductsSurveyNotificationMail.tpl');
+			
+			$this->template->template = $tpl;  //Restauramos el template original.
+
+			InternalMailPeer::sendToUsers($subject, $body, $recipientsUsers, $fromUser);
+		}
 	}
 }

@@ -93,6 +93,7 @@ class SurveyPeer extends BaseSurveyPeer {
 				}
 			}
 		}
+		return $survey;
 	}
 
 	public static function getCookieName($surveyId, $objectType = null, $objectId = null) {

@@ -53,7 +53,7 @@ class CommonInternalMailsDoEditAction extends BaseAction {
 	protected function bindCurrentUserToParams(&$params) {
 		if (Common::isAffiliatedUser()) {
 			$currentUser = Common::getAffiliatedLogged();
-			$params['fromType'] = 'affiliate';
+			$params['fromType'] = 'affiliateUser';
 			$params['fromId'] = $currentUser->getId();
 		} else if (Common::isSystemUser()){
 			$currentUser = Common::getAdminLogged();
