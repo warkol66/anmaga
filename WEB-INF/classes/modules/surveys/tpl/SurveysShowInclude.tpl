@@ -1,5 +1,5 @@
 <div id='surveyShowHolder|-$survey->getId()-|'>
-|-if not $alreadyAnswered and not $surveyExpired or $forcedForm-|
+|-if (!$alreadyAnswered && !$surveyExpired) || $forcedForm-|
 	<form action="Main.php" method="post" id="surveySubmitForm">
 		|-foreach from=$survey->getSurveyQuestions() key=key item=surveyQuestion-|
 		<fieldset id="question_|-$key-|">
@@ -33,7 +33,7 @@
 		|-/foreach-|
 			|-if isset($useCaptcha) and $useCaptcha-|
 			<p>
-				Código de Seguridad: <img src="Main.php?do=surveysCaptchaGeneration&width=120&height=45&characters=5" />
+				Código de Seguridad: <img src="Main.php?do=commonCaptchaGeneration&width=120&height=45&characters=5" />
 			</p>
 			<p>
 					Ingrese el código de seguridad de la imagen <br />
@@ -45,7 +45,7 @@
 				<input type="hidden" name="surveyId" value="|-$survey->getId()-|" />
 				<input type="hidden" name="objectType" value="|-$objectType-|" />
 				<input type="hidden" name="objectId" value="|-$objectId-|" />
-				<input type="hidden" name="do" value="surveysSurveysRespondX"/>
+				<input type="hidden" name="do" value="surveysRespondX"/>
 				<input type="button" value="Votar" onClick="javascript:submitAllAnswersSurveyX(this.form)"/> 
 				<input type="button" value="Ver resultados" onClick="javascript:submitSurveyWithoutAnswerX(this.form)"/>
 				<span id="msgBoxSurveyForm"></span>

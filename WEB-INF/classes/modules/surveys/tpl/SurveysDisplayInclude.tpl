@@ -5,7 +5,7 @@
 		</p>
 	|-else-|
 		<div id="surveyPlaceholder">
-			|-include file="SurveysSurveyShowInclude.tpl" survey=$result.survey surveyQuestion=$result.surveyQuestion alreadyAnswered=$result.alreadyAnswered useCaptcha=$result.useCaptcha-|
+			|-include file="SurveysShowInclude.tpl" survey=$result.survey surveyQuestion=$result.surveyQuestion alreadyAnswered=$result.alreadyAnswered useCaptcha=$result.useCaptcha-|
 		</div>
 	|-/if-|
 |-/if-|

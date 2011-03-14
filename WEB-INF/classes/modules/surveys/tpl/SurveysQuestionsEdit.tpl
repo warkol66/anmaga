@@ -28,7 +28,7 @@
 	<p>
 		|-assign var=survey value=$surveyQuestion->getSurvey()-|
 		<input type="hidden" name="surveyQuestion[surveyId]" value="|-if $survey neq ''-||-$survey->getId()-||-else-||-$surveyId-||-/if-|" />
-		<input type="hidden" name="do" value="surveysSurveyQuestionsDoEdit" />
+		<input type="hidden" name="do" value="surveysQuestionsDoEdit" />
 		<input type="hidden" name="id" value="|-$surveyQuestion->getId()-|" />
 		<input type="button" id="editar" value="Aceptar" onClick="javascript:doEditQuestionX(this.form)"/>
 		<a href="#" class="lbAction blackNoDecoration" rel="deactivate"><input type="button" id="cerrar" value="Cerrar" /></a>

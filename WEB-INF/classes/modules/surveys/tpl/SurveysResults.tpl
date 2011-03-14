@@ -8,7 +8,7 @@
 	
 	|-foreach from=$survey->getSurveyQuestions() item=surveyQuestion-|
 	<p>
-		<img src="Main.php?do=surveysSurveysDisplayBar&amp;id=|-$survey->getId()-|&amp;questionId=|-$surveyQuestion->getId()-|" />
+		<img src="Main.php?do=surveysDisplayBar&amp;id=|-$survey->getId()-|&amp;questionId=|-$surveyQuestion->getId()-|" />
 	</p>
 	|-/foreach-|
 	

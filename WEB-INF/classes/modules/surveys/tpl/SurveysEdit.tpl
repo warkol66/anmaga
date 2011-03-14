@@ -54,25 +54,16 @@ Para guardar los cambios haga click en "Aceptar". Luego de guardar la encuesta s
 				</select>
 			</p>
 			|-if $hasNews neq '' and $hasNews-|
-			<h3>Asociar la encuesta a una noticia&nbsp;&nbsp;<a href="#" |-popup sticky='true' fgcolor='#ffffff' bgcolor='#ffffff' closecolor='#cdcdcd' closetext='Cerrar' closetitle='Cerrar' capcolor='#ffffff' bgcolor='#0054A4' snapx='10' snapy='10' width='350' trigger='onMouseOver' caption='Asociar a una noticia' text='Puede asociar una encuesta a una noticia, eso hará que la encuesta se despliegue en la parte inferior de la bajada de la misma.'-|><img src="images/clear.png" class="linkImageInfo" /></a></h3>
-				<p>
-				<label for="survey_articleId">Artículo</label>
-				<select name="survey[articleId]">
-					<option value="0">Seleccione un Artículo</option>
-					|-foreach from=$articles item=article name=for_articles-|
-						<option value="|-$article->getId()-|"|-if $survey->getArticleId() eq $article->getId()-| selected="selected"|-/if-|>|-$article->getTitle()|truncate:65:"...":true-|</option>
-					|-/foreach-|
-				</select>
-				</p>
+				|-include file="SurveysEditNewsInclude.tpl"-|
 			|-/if-|
 			<p>
 				|-if $survey->getId() neq ''-|
 				<input type="hidden" name="id" id="survey_id" value="|-$survey->getid()-|" />
 				|-/if-|
 				<input type="hidden" name="action" id="action" value="|-$action-|" />
-				<input type="hidden" name="do" id="do" value="surveysSurveysDoEdit" />
+				<input type="hidden" name="do" id="do" value="surveysDoEdit" />
 				<input type="submit" id="button_edit_survey" name="button_edit_survey" title="Aceptar" value="Aceptar"/>
-				<input type="button" id="cancel" name="cancel" title="Cancelar y volver al listado" value="Cancelar" onClick="location.href='Main.php?do=surveysSurveysList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page) -|&page=|-$page-||-/if-|'"/>
+				<input type="button" id="cancel" name="cancel" title="Cancelar y volver al listado" value="Cancelar" onClick="location.href='Main.php?do=surveysList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page) -|&page=|-$page-||-/if-|'"/>
 			</p>
 		</fieldset>
 	</form>
@@ -84,7 +75,7 @@ Para guardar los cambios haga click en "Aceptar". Luego de guardar la encuesta s
 	<legend>Preguntas de Encuesta </legend>
 		<form id="surveyQuestionAddForm">
 				<p>
-					<input type="hidden" name="do" value="surveysSurveyQuestionsEdit"></input>
+					<input type="hidden" name="do" value="surveysQuestionsEdit"></input>
 					<input type="hidden" name="surveyId" value="|-$survey->getId()-|"></input>
 					<a href="#" rel="lightbox1" class="lbOn"><input type="button" name="Agregar Pregunta" value="Agregar Pregunta" id="Agregar Pregunta" onClick="javascript:editQuestionX(this.form)"></input></a> <span id="msgBoxQuestionAdd"></span>
 				</p>
@@ -95,13 +86,13 @@ Para guardar los cambios haga click en "Aceptar". Luego de guardar la encuesta s
 			|-foreach from=$survey->getSurveyQuestions() item=surveyQuestion-|
 			<li id="question|-$surveyQuestion->getId()-|">|-$surveyQuestion->getQuestion()-| 
 				<form action="Main.php" method="post" style="display:inline;">
-					<input type="hidden" name="do" value="surveysSurveyQuestionsEdit" />
+					<input type="hidden" name="do" value="surveysQuestionsEdit" />
 					<input type="hidden" name="surveyId" value="|-$survey->getId()-|"></input>
 					<input type="hidden" name="id" value="|-$surveyQuestion->getId()-|"/>
 					<a href="#" rel="lightbox1" class="lbOn"><input type="button" id="editar" onClick="javascript:editQuestionX(this.form)" class="iconEdit"/></a>
 				</form>
 				<form action="Main.php" method="post" style="display:inline;">
-					<input type="hidden" name="do" value="surveysSurveyQuestionsDoDelete" />
+					<input type="hidden" name="do" value="surveysQuestionsDoDelete" />
 					<input type="hidden" name="id" value="|-$surveyQuestion->getId()-|"/>
 					<input type="button" name="eliminar" value="eliminar" id="eliminar" onClick="javascript:deleteQuestionX(this.form)" class="iconDelete"/>
 				</form>

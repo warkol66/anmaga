@@ -1,36 +1,18 @@
 <?php
 
-class SurveysSurveysRespondXAction extends BaseAction {
+class SurveysRespondXAction extends BaseAction {
 
 	private $answerParams;
 	private $answersToSave = array();
 	private $survey;
 
-	// ----- Constructor ---------------------------------------------------- //
-
-	function SurveysSurveysRespondXAction() {
+	function SurveysRespondXAction() {
 		;
 	}
 
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
 		//////////
 		// Access the Smarty PlugIn instance
@@ -41,8 +23,6 @@ class SurveysSurveysRespondXAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		//por ser una accion ajax
-		$this->template->template = 'TemplateAjax.tpl';
 		$module = "Surveys";
 		$smarty->assign("module",$module);
 		$section = "Surveys";
@@ -51,42 +31,42 @@ class SurveysSurveysRespondXAction extends BaseAction {
 		$this->survey = SurveyPeer::get($_POST['surveyId']);
 		if (empty($this->survey))
 			return $mapping->findForwardConfig('failure');
-			
+
 		//Preparamos el objectType y el objectId.
-			$this->prepareAnswerObject();
+		$this->prepareAnswerObject();
 
 		//verificacion si solo debe ser visible para un usuario registrado
 		//no es publica y no quiere acceder un usuario afiliado.
 		if ((!$this->survey->isPublic()) && (!Common::isRegistrationUser()))
 			return $mapping->findForwardConfig('failure');
-			
+
 		//verificamos si la encuesta ha sido respondida
 		if (isset($_GET['noResponse']) && $_GET['noResponse'] == 1) {
 			//no se guardan respuestas pero el usuario no puede volver a contestar la encuesta
 			$this->cookieSetup();
 			return $mapping->findForwardConfig('success');
 		}
-		
+
 		//validacion de captcha
 		if (Common::getSurveysCaptchaUse()) {
-			//validamos el captcha		
+			//validamos el captcha
 			if ( (empty($_POST['securityCode'])) || !Common::validateCaptcha($_POST['securityCode'])) {
 				$smarty->assign('captcha',true);
 				return $mapping->findForwardConfig('failure');
 			}
-		}	
-		
+		}
+
 		$answersData = $_POST['answers'];
 		$this->prepareAnswers($answersData);
-		
+
 		$this->saveAnswers();
-		
+
 		//se han guardado las respuestas
 		//seteamos una cookie para evitar que el usuario pueda volver a responder la encuesta
 		$this->cookieSetup();
-		
+
 		$smarty->assign('survey',$this->survey);
-			
+
 		return $mapping->findForwardConfig('success');
 
 	}
@@ -98,12 +78,12 @@ class SurveysSurveysRespondXAction extends BaseAction {
 	protected function prepareAnswerObject() {
 		$this->answerParams['surveyAnswer']['objectId'] = $_POST['objectId'];
 		$this->answerParams['surveyAnswer']['objectType'] = $_POST['objectType'];
-		
+
 		//Si no venian en los parámetros, los tomamos en base al usuario logueado.
 		if (empty($this->answerParams['surveyAnswer']['objectId']) || empty($this->answerParams['surveyAnswer']['objectType'])) {
 			//caso particular en el cual se guarda el usuario
 			//que respondio la encuesta
-			
+
 			if (Common::isRegistrationUser()) {
 				$user = Common::getRegistrationUserLogged();
 				$type = 'RegistrationUser';
@@ -114,7 +94,7 @@ class SurveysSurveysRespondXAction extends BaseAction {
 				$user = Common::getAffiliatedLogged();
 				$type = 'AffiliateUser';
 			}
-			
+
 			if (!empty($user)) {
 				$this->answerParams['surveyAnswer']['objectId'] = $user->getId();
 				$this->answerParams['surveyAnswer']['objectType'] = $type;
@@ -126,32 +106,32 @@ class SurveysSurveysRespondXAction extends BaseAction {
 
 	protected function prepareAnswers($answersData) {
 		foreach ($answersData as $answerData) {
-			$question = SurveyQuestionPeer::get($answerData['questionId']);	
+			$question = SurveyQuestionPeer::get($answerData['questionId']);
 			if (empty($question))
 				return $mapping->findForwardConfig('failure');
-			
+
 			$answersIds = $answerData['answers'];
-			
+
 			//validacion de que sea encuesta de unica opcion y hayan varias seleccionadas
 			if ((!$question->acceptsMultipleAnswers()) && count($answersIds) > 1) {
 				return $mapping->findForwardConfig('failure');
 			}
-			
+
 			foreach ($answersIds as $answerId) {
 				$this->answerParams['surveyAnswer']['questionId'] = $question->getId();
 				$this->answerParams['surveyAnswer']['answerOptionId'] = $answerId;
-				
-				
+
+
 				$surveyAnswer = new SurveyAnswer;
 				Common::setObjectFromParams($surveyAnswer, $this->answerParams['surveyAnswer']);
-				
+
 				//vamos a demorar la persistencia hasta estar seguros que no hay errores en ninguna
 				//respuesta.
 				$this->answersToSave[] = $surveyAnswer;
 			}
 		}
 	}
-	
+
 	protected function saveAnswers() {
 		//Vamos a intentar guardar las respuestas
 		//Si se produce error en algún momento del proceso, hacemos rollback de todas.
@@ -171,7 +151,7 @@ class SurveysSurveysRespondXAction extends BaseAction {
 	}
 
 	/**
-	 * Crea el cookie correspondiente luego de 
+	 * Crea el cookie correspondiente luego de
 	 * la contestacion de la encuesta
 	 */
 	protected function cookieSetup() {

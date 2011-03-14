@@ -1,8 +1,8 @@
 <?php
 
-class SurveysAnswerOptionsDeleteXAction extends BaseAction {
+class SurveysResultsAction extends BaseAction {
 
-	function SurveysAnswerOptionsDeleteXAction() {
+	function SurveysResultsAction() {
 		;
 	}
 
@@ -19,19 +19,25 @@ class SurveysAnswerOptionsDeleteXAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		//por ser una accion ajax
-		$this->template->template = 'TemplateAjax.tpl';
 		$module = "Surveys";
 		$smarty->assign("module",$module);
 		$section = "Surveys";
 		$smarty->assign("section",$section);
 
-		if (!SurveyAnswerOptionPeer::delete($_POST['answerOptionId'])) {
-			return $mapping->findForwardConfig('failure');
-		}
+		$survey = SurveyPeer::get($_GET["id"]);
 
-		$smarty->assign('answerOptionId',$_POST['answerOptionId']);
+		if (!$survey)
+			return $mapping->findForwardConfig('failure');
+
+		//verificacion si solo debe ser visible para un usuario registrado
+		//no es publica y no quiere acceder un usuario afiliado.
+		if ((!$survey->isPublic()) && (!Common::isRegistrationUser()) && (!Common::isAdmin()))
+			return $mapping->findForwardConfig('failure-visibility');
+
+		$smarty->assign("survey",$survey);
 
 		return $mapping->findForwardConfig('success');
+
 	}
+
 }

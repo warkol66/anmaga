@@ -32,7 +32,7 @@
 																<td>|-$surveyanswer->getcreatedAt()-|</td>
 																<td>
 									<form action="Main.php" method="post">
-										<input type="hidden" name="do" value="surveysSurveyAnswersDoDelete" />
+										<input type="hidden" name="do" value="surveysAnswersDoDelete" />
 																				<input type="hidden" name="id" value="|-$surveyanswer->getid()-|" />
 																				<input type="submit" class="iconDelete" name="submit_go_delete_surveyanswer" value="Borrar" onclick="return confirm('Seguro que desea eliminar el surveyanswer?')" />
 									</form>
