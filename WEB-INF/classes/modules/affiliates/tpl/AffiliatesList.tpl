@@ -8,17 +8,17 @@
 		<div id="affiliatesViewDiv"></div>
 	</div>
 </div> 
-<h2>Configuración del Sistema</h2>
-	<h1>Administración de Afiliados</h1>
-	<p>A continuación podrá editar la lista de Afiliados del sistema.</p>
+<h2>##affiliates,1,Afiliados##</h2>
+	<h1>Administración de ##affiliates,1,Afiliados##</h1>
+	<p>A continuación podrá editar la lista de ##affiliates,1,Afiliados## del sistema.</p>
 |-if $message eq "deleted"-|
-	<div align='center' class='successMessage'>Afiliado eliminado</div>
+	<div align='center' class='successMessage'>##affiliates,3,Afiliado## eliminado</div>
 |-elseif $message eq "errorUpdate"-|
 	<div align='center' class='errorMessage'>Ha ocurrido un error al intentar guardar la información. Intente nuevamente.</div>
 |-elseif $message eq "saved"-|
 	<div align='center' class='successMessage'>Grupo de Usuarios guardado</div>
 |-elseif $message eq "edited"-|
-	<div align='center' class='successMessage'>Afiliado guardado</div>
+	<div align='center' class='successMessage'>##affiliates,3,Afiliado## guardado</div>
 |-elseif $message eq "blankName"-|
 	<div align='center' class='errorMessage'>El Grupo de Usuarios debe tener un Nombre</div>
 |-elseif $message eq "notAddedToGroup"-|
@@ -36,10 +36,10 @@
 			</form></div></td>
 	</tr>
 	<tr>
-		<th colspan='3'>Distribuidores Mayoristas</th>
+		<th colspan='3'>##affiliates,1,Afiliados##</th>
 	</tr>
 	<tr>
-		<th colspan="3"><div class="rightLink"><a href="Main.php?do=affiliatesEdit" class="addLink">Agregar Mayorista</a></div></th>
+		<th colspan="3"><div class="rightLink"><a href="Main.php?do=affiliatesEdit" class="addLink">Agregar ##affiliates,3,Afiliado##</a></div></th>
 	</tr>
 	|-foreach from=$affiliates item=affiliate name=for_affiliate-|
 	<tr>
@@ -60,7 +60,7 @@
 			<form action="Main.php" method="post" style="display:inline;"> 
 			  <input type="hidden" name="do" value="affiliatesDoDelete" /> 
 			  <input type="hidden" name="id" value="|-$affiliate->getId()-|" /> 
-			  <input type="submit" name="submit_go_delete_affiliate" value="Borrar" onclick="return confirm('Seguro que desea eliminar el afiliado?')" class="iconDelete" /> 
+			  <input type="submit" name="submit_go_delete_affiliate" value="Borrar" onclick="return confirm('Seguro que desea eliminar el ##affiliates,3,Afiliado##?')" class="iconDelete" /> 
 			</form>
     </td>
 	</tr>

@@ -1,11 +1,11 @@
-<h2>Clientes y Distribuidores Mayoristas </h2> 
-<h1>Administración de Sucursales </h1> 
+<h2>##affiliates,5,Sucursales##</h2> 
+<h1>Administración de ##affiliates,5,Sucursales##</h1> 
 <p>A continuación podrá editar la información de las sucursales.</p> 
 <div id="div_branchs">
 |-if $message eq "ok"-|
-	<div class="successMessage">Sucursal guardada correctamente</div>
+	<div class="successMessage">Cambios guardados correcamente</div>
 |-elseif $message eq "deleted_ok"-|
-	<div class="successMessage">Sucursal eliminada correctamente</div>
+	<div class="successMessage">Registro eliminado correctamente</div>
 |-/if-|
 
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" id="tabla-branchs" class="tableTdBorders"> 
@@ -14,8 +14,8 @@
 				<th colspan="8">
 	<div id="divSearch">
 		<form action="Main.php" method="get"> 
-				<label for="filters[searchAffiliateId]">Afiliado:</label> 
-				<select name="filters[searchAffiliateId]"  onchange="this.form.submit();"> 
+				<label for="filters[searchAffiliateId]">##affiliates,3,Afiliado##:</label> 
+				<select name="filters[searchAffiliateId]"  onchange="this.form.submit();" title="Filtrar ##affiliates,5,Sucursales## por ##affiliates,3,Afiliado##"> 
 					<option value="">Todos</option> 
 					|-foreach from=$affiliates item=affiliate-|
 					<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $filters.searchAffiliateId-| selected="selected"|-/if-|>|-$affiliate->getName()-|</option> 
@@ -29,7 +29,7 @@
 </th>
 			</tr>|-/if-|
 			<tr>
-				<th colspan="8"><div class="rightLink"><a href="Main.php?do=affiliatesBranchsEdit" class="addLink">Agregar Sucursal</a></div></th>
+				<th colspan="8"><div class="rightLink"><a href="Main.php?do=affiliatesBranchsEdit" class="addLink">Agregar ##affiliates,4,Sucursal##</a></div></th>
 			</tr>
 			<tr> 
 				<th width="20%">Afiliado</th> 
@@ -59,7 +59,7 @@
 				<form action="Main.php" method="post" style="display:inline;"> 
 					<input type="hidden" name="do" value="affiliatesBranchsDoDelete" /> 
 					<input type="hidden" name="id" value="|-$branch->getid()-|" /> 
-					<input type="submit" name="submit_go_delete_branch" value="Borrar" onclick="return confirm('¿Seguro que desea eliminar la sucursal?')" class="iconDelete" /> 
+					<input type="submit" name="submit_go_delete_branch" value="Borrar" onclick="return confirm('¿Seguro que desea eliminar este registro?')" class="iconDelete" /> 
 			</form></td> 
 		</tr> 
 		|-/foreach-|
@@ -69,7 +69,7 @@
 	</tr>
 	|-/if-|						
 			<tr>
-				<th colspan="8"><div class="rightLink"><a href="Main.php?do=affiliatesBranchsEdit" class="addLink">Agregar Sucursal</a></div></th>
+				<th colspan="8"><div class="rightLink"><a href="Main.php?do=affiliatesBranchsEdit" class="addLink">Agregar ##affiliates,4,Sucursal##</a></div></th>
 			</tr>
 		</tbody> 
 	</table> 
