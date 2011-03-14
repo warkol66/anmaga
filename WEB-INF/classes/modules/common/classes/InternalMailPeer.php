@@ -68,7 +68,7 @@ class InternalMailPeer extends BaseInternalMailPeer {
 		if (Common::isAffiliatedUser()) {
 			$currentUser = Common::getAffiliatedLogged();
 			if (!$this->searchSentOnly)
-				$criteria->filterByRecipienAffiliateUser($currentUser);
+				$criteria->filterByRecipientAffiliateUser($currentUser);
 			else
 				$criteria->sentByAffiliateUser($currentUser);
 		} else if (Common::isSystemUser()) {
@@ -138,7 +138,7 @@ class InternalMailPeer extends BaseInternalMailPeer {
 			//No queremos que el usuario se responda a sí mismo.
 			if (Common::isAffiliatedUser()) {
 				$currentUser = Common::getAffiliatedLogged();
-				$type = 'affiliate';
+				$type = 'affiliateUser';
 			} else if (Common::isSystemUser()){
 				$currentUser = Common::getAdminLogged();
 				$type = 'user';

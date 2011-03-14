@@ -471,5 +471,9 @@ class AffiliateUserPeer extends BaseAffiliateUserPeer {
 			return false;
 		}
 	}
+	
+	public static function getAllOwners() {
+		return AffiliateUserQuery::create()->owners()->find();
+	}
 
 } // AffiliateUserPeer

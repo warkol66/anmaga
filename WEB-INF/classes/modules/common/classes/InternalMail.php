@@ -17,7 +17,7 @@ class InternalMail extends BaseInternalMail {
 	
 	private $queryObjs = array(
 		'user' => 'UserQuery',
-		'affiliate' => 'AffiliateUserQuery'
+		'affiliateUser' => 'AffiliateUserQuery'
 	);
 	
 	public function save(PropelPDO $con = null) {

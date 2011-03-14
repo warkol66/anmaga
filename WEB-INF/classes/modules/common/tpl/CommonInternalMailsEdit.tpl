@@ -16,7 +16,7 @@ function recipientsUsersAfterUpdateElement(text, li) {
 function recipientsAffiliatesAfterUpdateElement(text, li) {
 	$('autocomplete_affiliates').value = '';
 	var idx = $$('#recipientsSelected > li').size();
-	$('recipientsSelected').insert('<li><input type="hidden" name="internalMail[to]['+idx+'][id]" value="'+li.id+'" /><input type="hidden" name="internalMail[to]['+idx+'][type]" value="affiliate" />'+li.innerHTML.stripTags()+'<input type="button" class="iconDelete" onClick="this.parentNode.remove()" /></li>')
+	$('recipientsSelected').insert('<li><input type="hidden" name="internalMail[to]['+idx+'][id]" value="'+li.id+'" /><input type="hidden" name="internalMail[to]['+idx+'][type]" value="affiliateUser" />'+li.innerHTML.stripTags()+'<input type="button" class="iconDelete" onClick="this.parentNode.remove()" /></li>')
     if (!li.hasClassName('informative_only')) {
         var submit = $('button_edit_internalMail');
         if (Object.isElement(submit))
@@ -25,7 +25,7 @@ function recipientsAffiliatesAfterUpdateElement(text, li) {
 }
 
 function changeRecipientType(entityName) {
-	if (entityName == "affiliate") {
+	if (entityName == "affiliateUser") {
 		$('recipientsAffiliates').show();
 		$('recipientsUsers').hide();
 	}
@@ -54,7 +54,7 @@ function changeRecipientType(entityName) {
 			<p>
 				<label>Tipo de destinatario:</label>
 				<input type="radio" name="recipientType" value="user" onclick="changeRecipientType(this.value)" checked />##users,2,Usuario##
-				<input type="radio" name="recipientType" value="affiliate" onclick="changeRecipientType(this.value)" />##affiliates,2,Affiliado##
+				<input type="radio" name="recipientType" value="affiliateUser" onclick="changeRecipientType(this.value)" />##affiliates,2,Affiliado##
 			</p>
 	
 			<div id="recipientsUsers" style="position: relative;">

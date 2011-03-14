@@ -13,4 +13,8 @@
  */
 class AffiliateUserQuery extends BaseAffiliateUserQuery {
 
+	public function owners() {
+		return $this->joinAffiliateRelatedByOwnerid(null, Criteria::INNER_JOIN)
+					->distinct();
+	}
 } // AffiliateUserQuery

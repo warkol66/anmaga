@@ -38,7 +38,7 @@ class InternalMailQuery extends BaseInternalMailQuery {
 	 * @return    InternalMailQuery The current query, for fluid interface
 	 */
 	public function filterByRecipientAffiliateUser($user = null, $comparison = null) {
-		return $this->filterByRecipientType('affiliate')->filterByRecipientId($user->getId(), $comparison);
+		return $this->filterByRecipientType('affiliateUser')->filterByRecipientId($user->getId(), $comparison);
 	}
 	
 	/**
@@ -67,7 +67,7 @@ class InternalMailQuery extends BaseInternalMailQuery {
 	 * @return    InternalMailQuery The current query, for fluid interface
 	 */
 	public function sentByAffiliateUser($user = null, $comparison = null) {
-		return $this->filterByFromType('affiliate')
+		return $this->filterByFromType('affiliateUser')
 					->filterByFromId($user->getId(), $comparison)
 					->filterByRecipientType(null, Criteria::ISNULL)  //Con esto nos aseguramos no ver las copias propias
 					->filterByRecipientId(null, Criteria::ISNULL);   //de cada destinatario.
