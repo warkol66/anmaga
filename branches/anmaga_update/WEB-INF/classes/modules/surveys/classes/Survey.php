@@ -37,4 +37,22 @@ class Survey extends BaseSurvey {
 		return true;
 	}
 
+	/**
+	 * Indica la cantidad de veces que se ha respondido la encuesta
+	 * @return integer
+	 */
+	public function getTotalAnswers() {
+		$questions = SurveyQuestionQuery::create()
+		->select('Id')
+		->filterBySurveyid($this->getId())
+		->find();
+		//$questions = $this->getSurveyQuestions();
+		$answers = SurveyAnswerQuery::create()
+		->filterByQuestionid($questions->toArray())
+		->groupByObjectid()
+		->groupByObjecttype()
+		->count();
+		return $answers;
+	}
+
 } // Survey

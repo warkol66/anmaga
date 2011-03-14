@@ -19,7 +19,7 @@
 	</td>
   </tr>
 |-/if-|
-|-if $module|upper eq "CATALOG" || $module|upper eq "ORDERS" -|
+|-if $module|upper eq "CATALOG" || $module|upper eq "ORDERS"-|
 	<tr> 
     <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=ordersViewCart">Ver carrito de compras</a>
 		<a class="menuSubButton" href="Main.php?do=ordersList">Ver ordenes</a>
@@ -34,35 +34,38 @@
     <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersImport">Importar Pedidos</a></td>
   </tr>
 	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesList">Distribuidores / Mayoristas</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesList">##affiliates,1,Afiliados##</a></td>
   </tr>
+|-if $module|upper eq "AFFILIATES"-|
 	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesBranchsList">Sucursales de Distribuidores / Mayoristas</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersList">Usuarios de Distribuidores / Mayoristas</a></td>
-  </tr>
-	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=configView">Configuración</a></td>
-  </tr>
-|-if $module|upper eq "CONFIG"-|
-	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=configSet">Cambiar Configuración</a>
-		<a class="menuSubButton" href="Main.php?do=configEdit">Editar Configuración</a></div></td>
+    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=affiliatesBranchsList">##affiliates,5,Sucursales##</a>
+		<a class="menuSubButton" href="Main.php?do=affiliatesUsersList">##affiliates,2,Usuarios del afiliado##</a></div></td>
   </tr>
 |-/if-|
 	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersList">Administración de Usuarios</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=usersList">Administración</a></td>
   </tr>
-|-if $module|upper eq "USERS"-|
+|-if $module|upper eq "CONFIG" || $module|upper eq "USERS"-|
 	<tr> 
-    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=usersLevelsList">Administrar Niveles de Usuario</a>
+    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=configSet">Cambiar Configuración</a>
+		<a class="menuSubButton" href="Main.php?do=configEdit">Editar Configuración</a>
+		<a class="menuSubButton" href="Main.php?do=configView">Ver Configuración</a></div></td>
+  </tr>
+	<tr> 
+    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=usersList">Administración</a>
+		<a class="menuSubButton" href="Main.php?do=usersLevelsList">Administrar Niveles de Usuario</a>
 		<a class="menuSubButton" href="Main.php?do=usersGroupsList">Administrar Grupos de Usuarios</a></div>
 	</td>
   </tr>
-|-/if-|	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=modulesList">Administrar módulos</a></td>
+	<tr> 
+    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=modulesList">Administrar módulos</a>
+		<a class="menuSubButton" href="Main.php?do=modulesInstallList">Instalar Modulos</a></div>
+	</td>
   </tr>
+	<tr> 
+    <td class="menuCell"><div class="menuSection"><a class="menuSubButton" href="Main.php?do=surveysList">encuestas</a></div>
+	</td>
+|-/if-|
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=usersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
   </tr>
@@ -94,10 +97,10 @@
     <td class="menuCell"><a class="menuButton" href="Main.php?do=ordersTemplatesList">Pedidos Almacenados</a></td>
   </tr>
 	<tr>
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersList">Usuarios de Distribuidores / Mayoristas</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersList">Usuarios</a></td>
   </tr>
 	<tr> 
-    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesBranchsList">Sucursales</a></td>
+    <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesBranchsList">##affiliates,5,Sucursales##</a></td>
   </tr>
 	<tr> 
     <td class="menuCell"><a class="menuButton" href="Main.php?do=affiliatesUsersDoLogout" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")'>Salir del sistema</a></td>
