@@ -40,8 +40,8 @@
 							 name = "catalogProductsDoGenerateSurvey"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogProductsGenerateSurvey&amp;message=ok" redirect="true" />
-			<forward name="failure" path="Main.php?do=catalogProductsGenerateSurvey&amp;message=error" redirect="true" />
+			<forward name="success" path="/Main.php?do=catalogProductsGenerateSurvey&amp;message=ok" redirect="true" />
+			<forward name="failure" path="/Main.php?do=catalogProductsGenerateSurvey&amp;message=error" redirect="true" />
 		</action>
 		
 		<action    path = "catalogProductsDoLoadInCategory"
@@ -49,7 +49,7 @@
 							 name = "catalogProductsDoLoadInCategory"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogProductCategoriesEdit" redirect="true" />
+			<forward name="success" path="/Main.php?do=catalogProductCategoriesEdit" redirect="true" />
 		</action>
 
 		<action    path = "catalogProductsDoLoadWithCategory"
@@ -57,7 +57,7 @@
 							 name = "catalogProductsDoLoadWithCategory"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogProductCategoriesList" redirect="true" />
+			<forward name="success" path="/Main.php?do=catalogProductCategoriesList" redirect="true" />
 		</action>
 
 		<action    path = "catalogProductsList"
@@ -74,7 +74,7 @@
 							 name = "catalogProductsDoDelete"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogProductsList&amp;message=deleted_ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=catalogProductsList&amp;message=deleted_ok" redirect="true" />
 		</action>
 	</action-mappings>
 <!-- End Section Products -->
@@ -101,7 +101,7 @@
 							 name = "catalogProductCategoriesDoEdit"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogProductCategoriesList&amp;message=ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=catalogProductCategoriesList&amp;message=ok" redirect="true" />
 			<forward name="failure" path="CatalogProductCategoriesEdit.tpl" />
 		</action>
 
@@ -118,7 +118,7 @@
 							 name = "catalogProductCategoriesDoDelete"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogProductCategoriesList&amp;message=deleted_ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=catalogProductCategoriesList&amp;message=deleted_ok" redirect="true" />
 		</action>
 	</action-mappings>
 <!-- End Section ProductCategories -->
@@ -138,7 +138,7 @@
 							 name = "catalogUnitsDoEdit"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogUnitsList&amp;message=ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=catalogUnitsList&amp;message=ok" redirect="true" />
 			<forward name="failure" path="CatalogUnitsEdit.tpl" />
 		</action>
 
@@ -155,7 +155,7 @@
 							 name = "catalogUnitsDoDelete"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogUnitsList&amp;message=deleted_ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=catalogUnitsList&amp;message=deleted_ok" redirect="true" />
 		</action>
 	</action-mappings>
 <!-- End Section Units -->
@@ -175,7 +175,7 @@
 							 name = "catalogMeasureUnitsDoEdit"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogMeasureUnitsList&amp;message=ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=catalogMeasureUnitsList&amp;message=ok" redirect="true" />
 			<forward name="failure" path="CatalogMeasureUnitsEdit.tpl" />
 		</action>
 
@@ -192,7 +192,7 @@
 							 name = "catalogMeasureUnitsDoDelete"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=catalogMeasureUnitsList&amp;message=deleted_ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=catalogMeasureUnitsList&amp;message=deleted_ok" redirect="true" />
 		</action>
 <!-- End Section MeasureUnits -->		
 <!-- Module Catalog - Section AffilateProductsImport -->
@@ -230,7 +230,7 @@
                name = "catalogAffiliateProductCodesDoEdit"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=catalogAffiliateProductCodesList&amp;message=ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=catalogAffiliateProductCodesList&amp;message=ok" redirect="true" />
     <forward name="failure" path="CatalogAffiliateProductCodesEdit.tpl" />
     </action>
 
@@ -247,7 +247,7 @@
                name = "catalogAffiliateProductCodesDoDel"
               scope = "request"
            validate = "true">
-    <forward name="success" path="Main.php?do=catalogAffiliateProductCodesList&amp;message=deleted_ok" redirect="true" />
+    <forward name="success" path="/Main.php?do=catalogAffiliateProductCodesList&amp;message=deleted_ok" redirect="true" />
     </action>
 
 	<action    path = "catalogAffiliateProductList"
