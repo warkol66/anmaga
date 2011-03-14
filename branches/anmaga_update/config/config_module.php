@@ -9,7 +9,7 @@ class ConfigModule {
 			"noCheckLogin" => true,
 			"developmentMode" => true,
 			"showPropelExceptions" => true,
-			"doLog" => false,
+			"doLog" => true,
 			"unifiedUsernames" => true,
 			"backupTimeLimit" => 720
 		),
@@ -37,21 +37,8 @@ class ConfigModule {
 		"import" => array(
 			"quotesUseQuantities" => false
 		),
-		"documents" => array(
-			"useKeywords" => false,
-			"useAuthors" => false,
-			"useFullTextSearch" => true,
-			"catdocPath" => "/usr/local/bin/",
-			"pdftotextPath" => "/usr/local/bin/",
-			"maxUploadSize" => '15M',
-			"useSWFUploader" => false,
-			"documentTypes" => array(
-				"Word" => "doc,docx",
-				"Excel" => "xls,xlsx",
-				"Powerpoint" => "ppt,pptx",
-				"Pdf" => "pdf",
-				"Images" => "jpeg,jpg,png,gif"
-				)
+		"surveys" => array(
+			"graphOrientation" => column //Bar = forizontal, Column=vertical
 		)
 
 	);
