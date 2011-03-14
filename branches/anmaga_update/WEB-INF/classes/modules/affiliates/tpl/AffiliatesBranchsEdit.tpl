@@ -1,19 +1,18 @@
-<h2>Clientes y Distribuidores Mayoristas </h2> 
-	<h1>|-if $action eq "edit"-|Editar|-else-|Crear|-/if-| Sucursales|-if $action eq "edit"-| - |-$branch->getname()-||-/if-|</h1> 
-	<p>A continuación podrá editar la información de las sucursales</p> 
+<h2>##affiliates,5,Sucursales##</h2> 
+	<h1>|-if $action eq "edit"-|Editar|-else-|Crear|-/if-| ##affiliates,4,Sucursal##|-if $action eq "edit"-| - |-$branch->getname()-||-/if-|</h1> 
+	<p>A continuación podrá editar la ficha ##affiliates,4,Sucursal## del sistema. Para guardar los cambios, haga click en "Aceptar"; para regresar al listado sin guardar cambios, haga click en "Cancelar". </p> 
  <div id="div_branch"> 
 	<form name="form_edit_branch" id="form_edit_branch" action="Main.php" method="post">
  		|-if $message eq "error"-|
-			<div class="failureMessage">Ha ocurrido un error al intentar guardar la sucursal</div>
+			<div class="failureMessage">Ha ocurrido un error al intentar guardar el registro</div>
 		|-/if-|
-		<fieldset title="Formulario de edición de sucursales de afiliado">
-     <legend>Sucursal</legend>
-		<p>Ingrese los datos de la sucursal</p> 
+		<fieldset title="Formulario de edición de ##affiliates,4,Sucursal## de ##affiliates,3,Afiliado##">
+     <legend>##affiliates,4,Sucursal##</legend>
 		 |-if $affiliates|@count gt 0-|
 	<p>
-	<label for="params[affiliateId]">Afiliado</label>
+	<label for="params[affiliateId]">##affiliates,3,Afiliado##</label>
 		<select id="affiliateId" name="params[affiliateId]"> 
-			<option value="">Seleccionar Afiliado</option> 
+			<option value="">Seleccionar ##affiliates,3,Afiliado##</option> 
 				|-foreach from=$affiliates item=affiliate-|
 			<option value="|-$affiliate->getId()-|" |-$branch->getAffiliateId()|selected:$affiliate->getId()-|>|-$affiliate->getName()-|</option> 
 				|-/foreach-|									
@@ -21,7 +20,7 @@
 	</p>
 		|-/if-|
 	<p>
-	<label for="params[number]">Sucursal No. </label>
+	<label for="params[number]">##affiliates,4,Sucursal## No. </label>
 			<input type="text" id="number" name="params[number]" value="|-$branch->getnumber()-|" size="15" title="number" />
 	</p>
 	<p>
@@ -52,8 +51,8 @@
 		<input type="hidden" name="id" id="id" value="|-$branch->getid()-|" />
 		<input type="hidden" name="action" id="action" value="|-$action-|" /> 
 		<input type="hidden" name="do" id="do" value="affiliatesBranchsDoEdit" /> 
-		<input type="submit" id="button_edit_branch" name="button_edit_branch" title="Aceptar" value="Aceptar" class="button" />
-		<input name="rmoveFilters" type="button" value="Cancelar" onclick="location.href='Main?do=affiliatesBranchsList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page)-|&page=|-$page-||-/if-|'" class='boton' />	</p>
+		<input type="submit" id="button_edit_branch" name="button_edit_branch" title="Aceptar" value="Aceptar" />
+		<input name="rmoveFilters" type="button" value="Cancelar" onclick="location.href='Main?do=affiliatesBranchsList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page)-|&page=|-$page-||-/if-|'"  />	</p>
 	</fieldset>
 	</form> 
 </div>

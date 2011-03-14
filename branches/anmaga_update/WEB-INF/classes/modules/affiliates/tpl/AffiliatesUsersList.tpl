@@ -1,4 +1,4 @@
-<h2>Configuración del Sistema</h2>
+<h2>##affiliates,1,Afiliados##</h2>
 <h1>Administración de Usuarios por Afiliados</h1>
 <p>A continuación podrá editar la lista de Usuarios por Afiliados del sistema.</p>
 |-if $message eq "deleted"-|

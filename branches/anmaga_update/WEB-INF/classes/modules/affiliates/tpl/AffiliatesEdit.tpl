@@ -1,12 +1,12 @@
-<h2>Configuración del Sistema</h2>
-	<h1>Administración de Afiliados - |-if $action eq 'create'-|Crear Afiliado|-else-|Editar Afiliado|-/if-|</h1>
+<h2>##affiliates,1,Afiliados##</h2>
+	<h1>Administración de ##affiliates,1,Afiliados## - |-if $action eq 'create'-|Crear|-else-|Editar|-/if-| ##affiliates,3,Afiliado##</h1>
 |-if $action eq 'create'-|	
-	<p>A continuación podrá ingresar los datos para crear el Afiliado.</p>
+	<p>A continuación podrá ingresar los datos para crear el ##affiliates,3,Afiliado##.</p>
 |-else-|		
-	<p>A continuación podrá editar los datos del Afiliado.</p>
+	<p>A continuación podrá editar los datos del ##affiliates,3,Afiliado##.</p>
 |-/if-|
 	<fieldset title="Formulario de edición de nombre del Afiliado">
-		<legend>Afiliado</legend>
+		<legend>##affiliates,1,Afiliados##</legend>
 		<p>Realice los cambios y para guardar haga click en "Guardar Cambios"</p>
 			<form method="post" action="Main.php?do=affiliatesDoEdit">
 			<input type="hidden" value="|-$action-|" name="action">
@@ -39,12 +39,7 @@
 				<textarea name="params[memo]" cols="45" rows="6" wrap="VIRTUAL">|-$affiliate->getMemo()|escape-|</textarea>
 			</p>
 		 <p><input name="save" type="submit" value="Guardar Cambios"> 
-				<input type='button' onClick='location.href="Main.php?do=affiliatesList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page)-|&page=|-$page-||-/if-|"' value='##104,Regresar##' title="Regresar al listado de afiliados"/>
+				<input type='button' onClick='location.href="Main.php?do=affiliatesList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page)-|&page=|-$page-||-/if-|"' value='##104,Regresar##' title="Regresar al listado de ##affiliates,1,Afiliados##"/>
 			 </p>
 		</form>
-		</fieldset>
-
-
-
-
- 
+	</fieldset>
