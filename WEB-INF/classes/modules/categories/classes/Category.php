@@ -5,6 +5,10 @@
  * @package category 
  */
 class Category extends BaseCategory {
+	
+	public function __toString() {
+		return $this->getName();
+	}
 
 	function hasAccessUser($user) {
 			foreach ($user->getGroups() as $groupUser) {

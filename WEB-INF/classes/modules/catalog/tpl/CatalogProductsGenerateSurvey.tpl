@@ -12,6 +12,7 @@
 	<div class='successMessage'>La encuesta ha sido generada, se han enviado notificaciones a los usuarios.</div>
 |-/if-|
 
+|-if $usingAutocompleter-|
 <form method="post" action="Main.php">
 	<fieldset title="Formulario de edición de usuario">
 	
@@ -64,3 +65,62 @@ function removeProduct(li, id) {
 }
 
 </script>
+|-else-|
+
+<form method="post" action="Main.php">
+	<fieldset title="Formulario de edición de usuario">
+		<p>
+			<div class='errorMessage' id="validationErrorMsg" style="display:none;">Debe seleccionar al menos un producto y no más de 10.</div>
+		</p>
+		<p>
+			<select name="categoryId" onChange="getProductsByCategoryX(this.form); return;">
+				|-foreach from=$productCategories item=productCategory-|
+					<option value="|-$productCategory->getId()-|">|-$productCategory-|</option>
+				|-/foreach-|
+			</select>
+		</p>		
+		
+		<p>
+			<ul id="productsSelected">
+				|-include file="CatalogProductsGetProductsByCategoryX.tpl"-|
+			</ul>
+		</p>
+		
+		<p>
+			<input type="hidden" name="do" value="catalogProductsDoGenerateSurvey" />
+			<input type="submit" id="button_submit_survey" name="button_submit" value="Aceptar" title="Aceptar" onClick="return validateSelectionCount(this.form)" />
+			<input type='button' onClick='javascript:history.go(-1)' value='Regresar' />
+		</p>
+	</fieldset>
+</form>
+
+<script type="text/javascript" language="javascript" charset="utf-8">
+	function getProductsByCategoryX(form) {
+		var fields = Form.serialize(form, true);
+		fields.do = 'catalogProductsGetProductsByCategoryX';
+		fields = Object.toQueryString(fields);
+		var myAjax = new Ajax.Updater(
+			{success: 'productsSelected'},
+			'Main.php',
+			{
+				method: 'post',
+				postBody: fields,
+				evalScripts: true
+			}
+		);
+	
+		return true;
+	}
+	
+	function validateSelectionCount() {
+		var count = $$('ul#productsSelected > li > input:checked[type="checkbox"]').size();
+		if (count > 10 || count < 1) {
+			$('validationErrorMsg').show();
+			return false;
+		} else {
+			return true;
+		}
+	}
+</script>
+
+|-/if-|

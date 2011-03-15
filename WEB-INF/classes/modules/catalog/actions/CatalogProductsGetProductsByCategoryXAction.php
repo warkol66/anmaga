@@ -1,11 +1,11 @@
 <?php
 
-class CatalogProductsGenerateSurveyAction extends BaseAction {
+class CatalogProductsGetProductsByCategoryXAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function CatalogProductsGenerateSurveyAction() {
+	function CatalogProductsGetProductsByCategoryXAction() {
 		;
 	}
 
@@ -29,7 +29,8 @@ class CatalogProductsGenerateSurveyAction extends BaseAction {
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
-
+		$this->template->template = "TemplateAjax.tpl";
+		
 		//////////
 		// Access the Smarty PlugIn instance
 		// Note the reference "=&"
@@ -39,26 +40,17 @@ class CatalogProductsGenerateSurveyAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "Catalog";
-    	$smarty->assign("module",$module);
-
-		$moduleSection = "Products";
-    	$smarty->assign("moduleSection",$section);
+		$module = "Categories";
+   		$smarty->assign("module",$module);
+    
+    	$categoryId = $_POST['categoryId'];
+      
+    	$category = CategoryPeer::get($categoryId);
 		
-		if ($_GET['usingAutocompleter']) {
-			$smarty->assign('usingAutocompleter', true);
-			return $mapping->findForwardConfig('success');
-		}
+		$products = $category->getProducts();
 		
-		//Si estamos acá es el caso en que no se usa autocompleter
-		$productCategories = CategoryPeer::getAllByModule('catalog');
-		$smarty->assign('productCategories', $productCategories);
-		
-		//traemos los productos de la primera categoria
-		//que es la que viene seleccionada por defecto.
-		$products = $productCategories->getFirst()->getProducts();
-		$smarty->assign('products', $products);
-
+		$smarty->assign("products", $products);
+    
 		return $mapping->findForwardConfig('success');
 	}
 }
