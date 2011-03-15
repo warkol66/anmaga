@@ -1,11 +1,11 @@
 <?php
 
-class CatalogProductsGenerateSurveyAction extends BaseAction {
+class SurveysGenerateProductsSurveyAction extends BaseAction {
 
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function CatalogProductsGenerateSurveyAction() {
+	function SurveysGenerateProductsSurveyAction() {
 		;
 	}
 
@@ -44,6 +44,8 @@ class CatalogProductsGenerateSurveyAction extends BaseAction {
 
 		$moduleSection = "Products";
     	$smarty->assign("moduleSection",$section);
+		
+		$smarty->assign("message",$_GET['message']);
 		
 		if ($_GET['usingAutocompleter']) {
 			$smarty->assign('usingAutocompleter', true);

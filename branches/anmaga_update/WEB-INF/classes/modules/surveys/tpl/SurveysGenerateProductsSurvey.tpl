@@ -7,7 +7,7 @@
 |-if $message eq "error"-|
 	<div class='errorMessage'>Ha ocurrido un error al intentar guardar la información de la encuesta</div>
 |-elseif $message eq "no-products"-|
-	<div class='errorMessage'>Debe seleccionar al menos un producto.</div>
+	<div class='errorMessage'>Debe seleccionar al menos un producto y no más de 10.</div>
 |-elseif $message eq "ok"-|
 	<div class='successMessage'>La encuesta ha sido generada, se han enviado notificaciones a los usuarios.</div>
 |-/if-|
@@ -30,7 +30,7 @@
 		</p>
 		
 		<p>
-			<input type="hidden" name="do" value="catalogProductsDoGenerateSurvey" />
+			<input type="hidden" name="do" value="surveysDoGenerateProductsSurvey" />
 			<input type="submit" id="button_submit_survey" name="button_submit" value="Aceptar" title="Aceptar" />
 			<input type='button' onClick='javascript:history.go(-1)' value='Regresar' />
 		</p>
@@ -87,7 +87,7 @@ function removeProduct(li, id) {
 		</p>
 		
 		<p>
-			<input type="hidden" name="do" value="catalogProductsDoGenerateSurvey" />
+			<input type="hidden" name="do" value="surveysDoGenerateProductsSurvey" />
 			<input type="submit" id="button_submit_survey" name="button_submit" value="Aceptar" title="Aceptar" onClick="return validateSelectionCount(this.form)" />
 			<input type='button' onClick='javascript:history.go(-1)' value='Regresar' />
 		</p>

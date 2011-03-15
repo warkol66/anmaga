@@ -1,8 +1,8 @@
 <?php
 
-class AffiliatesUsersFillBranchesSurveyAction extends BaseAction {
+class SurveysAffiliatesUsersFillBranchesSurveyAction extends BaseAction {
 
-	function AffiliatesUsersFillBranchesSurveyAction() {
+	function SurveysAffiliatesUsersFillBranchesSurveyAction() {
 		;
 	}
 

@@ -71,6 +71,15 @@
 					 validate = "true">
 			<forward name="success" path="/Main.php?do=surveysAnswersList&amp;message=deleted_ok" redirect="true" />
 		</action>
+		
+		<action    path = "surveysDoGenerateProductsSurvey"
+							 type = "SurveysDoGenerateProductsSurveyAction"
+							 name = "surveysDoGenerateProductsSurvey"
+							scope = "request"
+					 validate = "true">
+			<forward name="success" path="/Main.php?do=surveysGenerateProductsSurvey&amp;message=ok" redirect="true" />
+			<forward name="failure" path="/Main.php?do=surveysGenerateProductsSurvey&amp;message=error" redirect="true" />
+		</action>
 
 	</action-mappings>
 
