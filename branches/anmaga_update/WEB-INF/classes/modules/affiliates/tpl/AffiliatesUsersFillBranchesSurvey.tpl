@@ -10,13 +10,13 @@
 				<label for="objectId">Sucursal</label>
 				<select name="objectId">
 					|-foreach from=$branches item=branch-|
-						<option value="|-$branch->getId()-|">|-$branch-|</option>
+						<option value="|-$branch->getId()-|">|-$branch-||-if $survey->hasBeenAnsweredBy($branch)-| *|-/if-|</option>
 					|-/foreach-|
 				</select>
 			</p>
 			<p>
 				<input type="hidden" name="id" id="survey_id" value="|-$survey->getid()-|" />
-				<input type="hidden" name="do" id="do" value="surveysSurveysShow" />
+				<input type="hidden" name="do" id="do" value="surveysShow" />
 				<input type="hidden" name="objectType" id="objectType" value="AffiliateBranch" />
 				<input type="submit" id="button_edit_survey" name="button_edit_survey" title="Aceptar" value="Aceptar"/>
 			</p>

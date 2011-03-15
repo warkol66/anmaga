@@ -14,4 +14,11 @@
  */
 class SurveyAnswerQuery extends BaseSurveyAnswerQuery {
 
+	public function filterBySurvey($survey, $comparison = null) {
+		return $this
+			->join('SurveyQuestion')
+			->useQuery('SurveyQuestion')
+				->filterBySurvey($survey, $comparison = null)
+			->endUse();
+	}
 } // SurveyAnswerQuery
