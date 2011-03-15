@@ -58,11 +58,15 @@ class Survey extends BaseSurvey {
 	public function hasBeenAnsweredBy($object) {
 		$objectType = get_class($object);
 		$objectId = $object->getId();
-		return SurveyAnswerQuery::create()
+		$cookieName = SurveyPeer::getCookieName($this->getId(), $objectType, $objectId);
+		$cookie = $_COOKIE[$cookieName];
+		$answersCount = SurveyAnswerQuery::create()
 			->filterBySurvey($this)
 			->filterByObjectType($objectType)
 			->filterByObjectId($objectId)
-			->count() > 0;
+			->count();
+			
+		return (!empty($cookie) && $cookie == $this->getId()) || $answersCount > 0;
 	}
 
 } // Survey

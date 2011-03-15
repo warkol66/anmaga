@@ -1,12 +1,12 @@
 <?php
 
-class CatalogProductsDoGenerateSurveyAction extends BaseAction {
+class SurveysDoGenerateProductsSurveyAction extends BaseAction {
 	private $survey;
 	private $smarty;
 
 	// ----- Constructor ---------------------------------------------------- //
 
-	function CatalogProductsDoGenerateSurveyAction() {
+	function SurveysDoGenerateProductsSurveyAction() {
 		;
 	}
 
@@ -47,7 +47,7 @@ class CatalogProductsDoGenerateSurveyAction extends BaseAction {
     	$this->smarty->assign("moduleSection",$section);
 		
 		$productIds = $_POST['survey']['productsIds'];
-		if (empty($productIds))
+		if (empty($productIds) || count($productIds) > 10)
 			return $this->addParamsToForwards(array('message'=>'no-products'), $mapping, 'failure');
 			
 		$products = ProductPeer::getByIds($productIds);
@@ -71,7 +71,7 @@ class CatalogProductsDoGenerateSurveyAction extends BaseAction {
 			$fromUser = UserPeer::get(-1);  //Usuario "system"
 			
 			$this->smarty->assign('survey', $this->survey);
-			$body = $this->smarty->fetch('CatalogProductsSurveyNotificationMail.tpl');
+			$body = $this->smarty->fetch('SurveysProductsNotificationMail.tpl');
 			
 			$this->template->template = $tpl;  //Restauramos el template original.
 

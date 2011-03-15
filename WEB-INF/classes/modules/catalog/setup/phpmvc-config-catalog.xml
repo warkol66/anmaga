@@ -35,15 +35,6 @@
 			<forward name="failure" path="Main.php?do=catalogProductsEdit&amp;message=error" redirect="true" />
 		</action>
 		
-		<action    path = "catalogProductsDoGenerateSurvey"
-							 type = "CatalogProductsDoGenerateSurveyAction"
-							 name = "catalogProductsDoGenerateSurvey"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=catalogProductsGenerateSurvey&amp;message=ok" redirect="true" />
-			<forward name="failure" path="/Main.php?do=catalogProductsGenerateSurvey&amp;message=error" redirect="true" />
-		</action>
-		
 		<action    path = "catalogProductsDoLoadInCategory"
 							 type = "CatalogProductsDoLoadInCategoryAction"
 							 name = "catalogProductsDoLoadInCategory"
