@@ -54,5 +54,15 @@ class Survey extends BaseSurvey {
 		->count();
 		return $answers;
 	}
+	
+	public function hasBeenAnsweredBy($object) {
+		$objectType = get_class($object);
+		$objectId = $object->getId();
+		return SurveyAnswerQuery::create()
+			->filterBySurvey($this)
+			->filterByObjectType($objectType)
+			->filterByObjectId($objectId)
+			->count() > 0;
+	}
 
 } // Survey
