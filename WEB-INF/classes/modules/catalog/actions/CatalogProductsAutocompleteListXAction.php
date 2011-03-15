@@ -29,8 +29,13 @@ class CatalogProductsAutocompleteListXAction extends BaseAction {
 
 		$searchString = $_REQUEST['value'];
 		$smarty->assign("searchString",$searchString);
+		
+		$alredySelectedIds = $_REQUEST['alredySelectedIds'];
 
 		$products = ProductQuery::create()->where('Product.Description LIKE ?', "%" . $searchString . "%")
+									->_if(!empty($alredySelectedIds))
+										->add(ProductPeer::ID, $alredySelectedIds,Criteria::NOT_IN)
+									->_endif()
 									->limit($_REQUEST['limit'])
 									->find();
 		
