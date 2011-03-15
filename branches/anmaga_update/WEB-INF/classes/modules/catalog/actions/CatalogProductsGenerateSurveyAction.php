@@ -44,6 +44,10 @@ class CatalogProductsGenerateSurveyAction extends BaseAction {
 
 		$moduleSection = "Products";
     	$smarty->assign("moduleSection",$section);
+		
+		$productCategories = CategoryPeer::getAllByModule('catalog');
+		
+		$smarty->assign('productCategories', $productCategories);
 
 		return $mapping->findForwardConfig('success');
 	}

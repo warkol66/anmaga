@@ -40,17 +40,27 @@
 
 <script type="text/javascript" language="javascript" charset="utf-8">
 
+var alredySelected = new Hash({'alredySelectedIds[]': []});
+
 function productsAfterUpdateElement(text, li) {
 	$('autocomplete_products').value = '';
 	var idx = $$('#productsSelected > li').size();
 	if (idx < 10) {
-		$('productsSelected').insert('<li><input type="hidden" name="survey[productsIds]['+idx+']" value="'+li.id+'" />'+li.innerHTML.stripTags()+'<input type="button" class="iconDelete" onClick="this.parentNode.remove()" /></li>')
+		$('productsSelected').insert('<li><input type="hidden" name="survey[productsIds]['+idx+']" value="'+li.id+'" />'+li.innerHTML.stripTags()+'<input type="button" class="iconDelete" onClick="removeProduct(this.parentNode, '+li.id+')" /></li>')
+    	alredySelected.get('alredySelectedIds[]').push(li.id);
+		autocomplete_products_instance.url = 'Main.php?do=catalogProductsAutocompleteListX&' + Object.toQueryString(alredySelected);    
     }
     if (!li.hasClassName('informative_only')) {
         var submit = $('button_submit_survey');
         if (Object.isElement(submit))
     		submit.enable();
 	}
+}
+
+function removeProduct(li, id) {
+	alredySelected.set('alredySelectedIds[]', alredySelected.get('alredySelectedIds[]').without(id));
+	autocomplete_products_instance.url = 'Main.php?do=catalogProductsAutocompleteListX&' + Object.toQueryString(alredySelected); 
+	li.remove();
 }
 
 </script>
