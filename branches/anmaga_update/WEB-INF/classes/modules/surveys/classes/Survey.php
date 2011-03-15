@@ -42,17 +42,17 @@ class Survey extends BaseSurvey {
 	 * @return integer
 	 */
 	public function getTotalAnswers() {
-		$questions = SurveyQuestionQuery::create()
-		->select('Id')
-		->filterBySurveyid($this->getId())
-		->find();
-		//$questions = $this->getSurveyQuestions();
-		$answers = SurveyAnswerQuery::create()
-		->filterByQuestionid($questions->toArray())
-		->groupByObjectid()
-		->groupByObjecttype()
-		->count();
-		return $answers;
+		$questions = $this->getSurveyQuestions();
+		$maxAnswers = 0;
+		foreach ($questions as $question) {
+			$options = $question->getSurveyAnswerOptions();
+			$total = 0;
+			foreach ($options as $option)
+				$total += $option->getAnswerCount();
+			if ($maxAnswers < $total)
+				$maxAnswers = $total;
+		}
+		return $maxAnswers;
 	}
 	
 	public function hasBeenAnsweredBy($object) {
