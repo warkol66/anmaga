@@ -12,6 +12,10 @@
  * @package Survey
  */
 class SurveyQuestion extends BaseSurveyQuestion {
+	
+	public function __toString() {
+		return $this->getQuestion();
+	}
 		
 	public function save(PropelPDO $con = null) {
 		try {
