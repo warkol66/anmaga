@@ -1,5 +1,7 @@
 <?php
 
+
+
 /**
  * Skeleton subclass for performing query and update operations on the 'affiliates_user' table.
  *
@@ -17,4 +19,5 @@ class AffiliateUserQuery extends BaseAffiliateUserQuery {
 		return $this->joinAffiliateRelatedByOwnerid(null, Criteria::INNER_JOIN)
 					->distinct();
 	}
+
 } // AffiliateUserQuery

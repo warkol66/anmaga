@@ -1520,6 +1520,16 @@ abstract class BaseAffiliateBranch extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string The value of the 'name' column
+	 */
+	public function __toString()
+	{
+		return (string) $this->getName();
+	}
+
+	/**
 	 * Catches calls to virtual methods
 	 */
 	public function __call($name, $params)
