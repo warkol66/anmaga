@@ -10,7 +10,7 @@
 				<label for="objectId">Sucursal</label>
 				<select name="objectId">
 					|-foreach from=$branches item=branch-|
-						<option value="|-$branch->getId()-|">|-$branch-||-if $survey->hasBeenAnsweredBy($branch)-| *|-/if-|</option>
+						<option value="|-$branch->getId()-|" |-if $survey->hasBeenAnsweredBy($branch)-|disabled="disabled"|-/if-|>|-$branch-|</option>
 					|-/foreach-|
 				</select>
 			</p>
