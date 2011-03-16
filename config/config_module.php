@@ -38,7 +38,7 @@ class ConfigModule {
 			"quotesUseQuantities" => false
 		),
 		"surveys" => array(
-			"graphOrientation" => column //Bar = forizontal, Column=vertical
+			"graphOrientation" => Column //Bar = forizontal, Column=vertical
 		)
 
 	);
