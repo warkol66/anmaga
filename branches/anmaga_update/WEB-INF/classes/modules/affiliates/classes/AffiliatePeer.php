@@ -1,4 +1,4 @@
-<áphp
+<?php
 
 
 
@@ -93,9 +93,9 @@ class AffiliatePeer extends BaseAffiliatePeer {
 	}
 
 	/**
-	 * Retorna el criteria generado a partir de lso parámetros de búsqueda
+	 * Retorna el criteria generado a partir de lso parÃ¡metros de bÃºsqueda
 	 *
-	 * @return criteria $criteria Criteria con parámetros de búsqueda
+	 * @return criteria $criteria Criteria con parÃ¡metros de bÃºsqueda
 	 */
 	private function getSearchCriteria() {
 		$criteria = new AffiliateQuery();
