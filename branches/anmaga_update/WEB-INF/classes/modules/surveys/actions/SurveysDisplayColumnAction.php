@@ -60,16 +60,15 @@ class SurveysDisplayColumnAction extends BaseAction {
 		$background = $system['config']['surveys']['graphics']['colors']['background'];
 
 
-		$datay = array();
 		$datax = array();
+		$datay = array();
 		$maxAnswerLen = 0;
 		foreach ($answerOptions as $answerOption) {
 
 			if ($showTotals == 'YES')
 				array_push($datay,$answerOption->getAnswerCount());
-			else {
+			else
 				array_push($datay,($answerOption->getAnswerCount() * 100) / $totalAnswers);
-			}
 
 			$finalAnswer = wordwrap($answerOption->getAnswer(),LABEL_LENGTH);
 			if (strlen($finalAnswer) > $maxAnswerLen)
@@ -148,7 +147,7 @@ class SurveysDisplayColumnAction extends BaseAction {
 		$graph->xaxis->SetPos('min');
 
 		// First make the labels look right
-		$graph->xaxis->SetLabelAlign('center','bottom');
+		$graph->xaxis->SetLabelAlign('center','top');
 		$graph->xaxis->SetLabelFormat('%d');
 		$graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,8);
 		$graph->xaxis->SetLabelSide(SIDE_DOWN);
