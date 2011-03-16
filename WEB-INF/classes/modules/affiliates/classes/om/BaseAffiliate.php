@@ -2888,6 +2888,16 @@ abstract class BaseAffiliate extends BaseObject  implements Persistent
 		$this->aAffiliateUserRelatedByOwnerid = null;
 	}
 
+	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string The value of the 'name' column
+	 */
+	public function __toString()
+	{
+		return (string) $this->getName();
+	}
+
 	// soft_delete behavior
 	
 	/**

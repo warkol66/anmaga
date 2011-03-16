@@ -14,13 +14,9 @@
  * @package    propel.generator.affiliates.classes
  */
 class AffiliateBranch extends BaseAffiliateBranch {
-	
-	public function __toString() {
-		return $this->getName();
-	}
 
   /**
-  * Obtiene el nombre del afiliado
+  * Obtiene el nombre del afiliado o nada si no lo encuentra
   *
   * @return string Nombre del afiliado
   */

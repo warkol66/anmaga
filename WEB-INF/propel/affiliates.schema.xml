@@ -2,7 +2,7 @@
 
 	<table name="affiliates_affiliate" phpName="Affiliate" description="Afiliados">
 		<column name="id" required="true" primaryKey="true" type="INTEGER" description="Id afiliado" autoIncrement="true"/>
-		<column name="name" required="true"  type="VARCHAR" size="255" description="nombre afiliado"/>
+		<column name="name" required="true"  type="VARCHAR" size="255" description="nombre afiliado" primaryString="true" />
 		<column name="ownerId" type="INTEGER" description="Id del usuario administrador del afiliado" />
 		<column name="internalNumber" type="VARCHAR" size="12" description="Id interno"/>
 		<column name="address" type="VARCHAR" size="255" description="Direccion afiliado"/>
@@ -149,7 +149,7 @@
 		<column name="affiliateId" type="INTEGER"  required="true" description="Id del afiliado" />
 		<column name="number" type="INTEGER"  required="true" description="Numero de la sucursal" />
 		<column name="code" size="20" type="VARCHAR" description="Codigo de la sucursal" />
-		<column name="name" size="255" type="VARCHAR" description="Nombre de la sucursal" />
+		<column name="name" size="255" type="VARCHAR" description="Nombre de la sucursal" primaryString="true" />
 		<column name="phone" size="100" type="VARCHAR" description="Telefono de la sucursal" />
 		<column name="contact" type="VARCHAR" size="50" description="Nombre de persona de contacto"/>
 		<column name="contactEmail" type="VARCHAR" size="100" description="Email de persona de contacto"/>
