@@ -1,11 +1,6 @@
-function cambiaclase(element,clase) {
-	var NAME = document.getElementById(element);
-	NAME.className=clase;
-}
-
 function logout(){
 	return window.confirm("Esta seguro que quiere salir del sistema?")
-}
+} // End of logout
 
 function CheckAllBoxes(fmobj) {
   for (var i=0;i<fmobj.elements.length;i++) {
@@ -14,7 +9,8 @@ function CheckAllBoxes(fmobj) {
       e.checked = fmobj.allbox.checked;
     }
   }
-}
+} // End of CheckAllBoxes
+
 function checkBoxesByName(boxesName) {  
   var allbox = document.getElementById('allbox');
   var arr = new Array();
@@ -25,57 +21,49 @@ function checkBoxesByName(boxesName) {
       e.checked = allbox.checked;
     }
   }
-}
+} // End of checkBoxesByName
 
-function switch_vis(element,display){
+function switch_vis(element,display) {
 	var e_ref="";
 	var ant="";
 	e_ref=document.getElementById(element);
-	if (display == undefined)
-	{
+	if (display == undefined)	{
 		display='block';
 	}
 	ant=e_ref.style.display;
-	if (e_ref.style.display !=  'none' && e_ref.style.display != "")
-	{
+	if (e_ref.style.display !=  'none' && e_ref.style.display != "") {
 		display='none';
 	}
-	else
-	{
+	else {
 		display=display;
 	}
 	e_ref.style.display=display;
-}
+} // End of switch_vis
 
-function switch_value(element,value)
-{
+function switch_value(element,value) {
 	var e_ref="";
 	var ant="";
 	e_ref=document.getElementById(element);
-	if (value == undefined)
-	{
+	if (value == undefined)	{
 		value='Mostrar Sección';
 	}
 	ant=e_ref.value;
-	if (e_ref.value !=  'Ocultar Sección' && e_ref.value != "")
-	{
+	if (e_ref.value !=  'Ocultar Sección' && e_ref.value != "")	{
 		value='Ocultar Sección';
 	}
-	else
-	{
+	else {
 		value=value;
 	}
 	e_ref.value=value;
-}
+} // End of switch_value
 
-function switch_vis_mult(elements)
-{
+function switch_vis_mult(elements) {
 	var i=0;
-	for(i=0; i<elements.length; i++)
-	{
+	for(i=0; i<elements.length; i++) {
 		switch_vis(elements[i],'none');
 	}
-}
+} // End of switch_vis_mult
+
 
 function addConfigAttribute(li) {
 	ul = document.getElementById(li.id+"_ul");
@@ -83,7 +71,7 @@ function addConfigAttribute(li) {
 	ul.innerHTML += "<li>"+newName+": <input type='text' name='"+li.id+"["+newName+"]' value='' />"+
 		'<a class="a_image" href="#" onclick="javascript:deleteConfigAttribute(this.parentNode)">'+
 		'<img src="images/delete-comment-blue.gif" alt="Eliminar" /></a></li>';
-}
+} // End of addConfigAttribute
 
 function addConfigSection(li) {
 	ul = document.getElementById(li.id+"_ul");
@@ -94,12 +82,12 @@ function addConfigSection(li) {
 		' <a class="a_image" href="#" onclick="javascript:deleteConfigAttribute(this.parentNode)">'+
 		'<img src="images/delete-folder-green.gif" alt="Eliminar" /></a>'+
 		"<ul id='"+li.id+"["+newName+"]_ul'></ul></li>";
-}
+} // End of addConfigSection
 
 function deleteConfigAttribute(li) {
 	ul = li.parentNode;
 	ul.removeChild(li);
-}
+} // End of deleteConfigAttribute
 
 
 
@@ -119,6 +107,8 @@ var myGlobalHandlers = {
 
 Ajax.Responders.register(myGlobalHandlers);
 
+<!-- Funtions module Categories -->
+
 function categoriesDoEditX() {
 	var pars = 'do=categoriesDoEditX';
 	var fields = Form.serialize('form_category_add');
@@ -133,8 +123,11 @@ function categoriesDoEditX() {
 					insertion: Insertion.Bottom
 				});
 	$('name').value = "";
-}
+} // End of categoriesDoEditX
 
+<!-- End of Categories -->
+
+<!-- Funtions module Modules -->
 
 function modulesDoActivateX(form) {
 	var pars = 'do=modulesDoActivateX';
@@ -150,8 +143,11 @@ function modulesDoActivateX(form) {
 					evalScripts: true
 				});
 		$('messageMod').innerHTML = "<span class='inProgress'>Actualizando sistema...</span>";
-}
+} // End of modulesDoActivateX
 
+<!-- End of Modules -->
+
+<!-- Funtions module Orders -->
 
 function ordersAddItemToCartX(form) {
 	var fields = Form.serialize(form);
@@ -164,7 +160,7 @@ function ordersAddItemToCartX(form) {
 					postBody: fields
 				});
 	$('messageCart').innerHTML = "<span class='inProgress'>Agregando al carrito...</span>";
-}
+} // End of ordersAddItemToCartX
 
 function ordersChangeItemCartX(form) {
 	var fields = Form.serialize(form);
@@ -178,7 +174,7 @@ function ordersChangeItemCartX(form) {
 					evalScripts: true
 				});
 	$('messageCart').innerHTML = "<span class='inProgress'>Modificando carrito...</span>";
-}
+} // End of ordersChangeItemCartX
 
 function ordersRemoveItemCartX(form) {
 	var fields = Form.serialize(form);
@@ -192,7 +188,7 @@ function ordersRemoveItemCartX(form) {
 					evalScripts: true
 				});
 	$('messageCart').innerHTML = "<span class='inProgress'>Eliminando producto del carrito...</span>";
-}
+} // End of ordersRemoveItemCartX
 
 function ordersStateDoChangeX(form) {
 	var newState = $('state').value;
@@ -209,24 +205,21 @@ function ordersStateDoChangeX(form) {
 					insertion: Insertion.Bottom
 				});
 		$('messageState').innerHTML = "<span class='inProgress'>Cambiando estado...</span>";
-	} else {
+	} 
+	else {
 		alert("Select new state!");
 	}
-}
+} // End of ordersStateDoChangeX
 
 function ordersSendOrdersExport(form) {
-	
-	$('doActions').value = "ordersExport";
+	$('do').value = "ordersExport";
 	form.submit();
-	
 	return true;
 } // End of ordersSendOrdersExport
 
 function ordersSendOrdersDelete(form) {
-
-	$('doActions').value = "ordersDoDelete";
+	$('do').value = "ordersDoDelete";
 	form.submit();
-
 	return true;
 } // End of ordersSendOrdersExport
 
@@ -237,3 +230,13 @@ function ordersSendOrdersExportSaf(form) {
 	
 	return true;
 } // End of ordersSendOrdersExportSaf
+
+<!-- End of Orders -->
+
+
+
+function cambiaclase(element,clase) {
+	var NAME = document.getElementById(element);
+	NAME.className=clase;
+} // End of cambiaclase
+

@@ -3,9 +3,10 @@
 <head>
 <title>|-$parameters.siteName-|</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
-<link rel="stylesheet" href="css/main.css" type="text/css" media="screen">
-<!--[if !IE]> <link href="css/style_ns6+.css" rel="stylesheet" type="text/css" media="screen"> <![endif]-->
+<link rel="stylesheet" href="css/main.css" type="text/css" />
+<!--[if lte IE 6]> <link href="css/styles-ie6.css" rel="stylesheet" type="text/css"> <![endif]-->
+<!--[if IE 7]> <link href="css/styles-ie7.css" rel="stylesheet" type="text/css"> <![endif]-->
+<!--[if IE 8]> <link href="css/styles-ie8.css" rel="stylesheet" type="text/css"> <![endif]-->
 <link rel="stylesheet" href="css/mainHandheld.css" type="text/css" media="handheld">
 <link rel="shortcut icon" href="images/favicon.ico">
 <script language="JavaScript" type="text/javascript" src="scripts/prototype.js"></script>
@@ -28,7 +29,7 @@
 		<td width="150">|-include file="MenuLeft.tpl"-|</td> 
 		<td width="10">&nbsp;</td> 
 		<td width="795"> <!-- Begin Right Column --> 
-			<div id="rightcolumn"> 
+			<div id="rightColumn"> 
 				<!--centerHTML start--> 
 				|-$centerHTML-|
 				<!--centerHTML end --> 
