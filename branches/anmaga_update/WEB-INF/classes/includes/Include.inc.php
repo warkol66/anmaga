@@ -7,16 +7,14 @@
 
 	if (headers_sent($filename, $linenum))
 		echo "Debug: Headers already sent in $filename on line $linenum\n";
- 
+
 	ini_set("show_errors",true);
 	session_cache_limiter('nocache');
 	session_start();
 
 	//Configuracion de Usuario en Caso de ejecucion por linea de comando
-
 	if ($_ENV['PHPMVC_MODE_CLI'] == true) {
 		//cargamos el usuario system modo supervisor para login de los actions
-		require_once('UserPeer.php');
 		$user = UserPeer::getByUsername('system');
 		$_SESSION["login_user"] = $user;
 		$_SESSION["loginUser"] = $user;
@@ -46,17 +44,16 @@
 	}
 
 	$actpath = strtok($_SERVER['PHP_SELF'],'/');
-	
+
 	set_error_handler("userErrorHandler");
 
-	register_shutdown_function('shutdownFunction'); 
-	
-	function shutDownFunction() { 
-	    $error = error_get_last(); 
-	    if ($error['type'] == 1) { 
-	        userErrorHandler($error["type"],$error["message"],$error["file"],$error["line"]);     
-	    } 
-	} 
+	register_shutdown_function('shutdownFunction');
+
+	function shutDownFunction() {
+		$error = error_get_last();
+		if ($error['type'] == 1)
+			userErrorHandler($error["type"],$error["message"],$error["file"],$error["line"]);
+	}
 
 	/**
 	* userErrorHandler
@@ -64,9 +61,9 @@
 	* @return userErrorHandler
 	*/
 	function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars) {
-		
+
 		global $system;
-		
+
 		$dt = date("Y-m-d H:i:s (T)");
 		$errortype = array (
 			E_ERROR          => 'ERROR',
@@ -80,11 +77,24 @@
 			E_USER_ERROR     => 'USER ERROR',
 			E_USER_WARNING   => 'USER WARNING',
 			E_USER_NOTICE    => 'USER NOTICE',
-			E_STRICT         => 'STRICT NOTICE',
-			E_RECOVERABLE_ERROR  => 'RECOVERABLE ERROR',
-			E_DEPRECATED     => 'E_DEPRECATED',
-			E_USER_DEPRECATED => 'E_USER_DEPRECATED'
+			E_STRICT         => 'STRICT NOTICE'
 		);
+
+		if ((version_compare(PHP_VERSION, '5.2.0')) > 0) {
+			$errortype5_2 = array (
+				E_RECOVERABLE_ERROR  => 'RECOVERABLE ERROR'
+			);
+			$errortype = $errortype + $errortype5_2 ;
+		}
+
+		if ((version_compare(PHP_VERSION, '5.3.0')) > 0) {
+			$errortype5_3 = array (
+				E_DEPRECATED     => 'E_DEPRECATED',
+				E_USER_DEPRECATED => 'E_USER_DEPRECATED'
+			);
+			$errortype = $errortype + $errortype5_3 ;
+		}
+
 		// SET of errors for which a var trace will be saved
 		$user_errors = array(E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE);
 		$err = "<errorentry>\n";
@@ -99,7 +109,8 @@
 			$err .= "\t<vartrace>" . wddx_serialize_value($vars, "Vars") . "</vartrace>\n";
 		}
 		$err .= "</errorentry>\n";
-		$err .= "<referrer>" . $_SERVER['HTTP_REFERER'] . "</referrer>\n";
+		if (isset($_SERVER['HTTP_REFERER']))
+			$err .= "<referrer>" . $_SERVER['HTTP_REFERER'] . "</referrer>\n";
 		$err .= "<request>"  . $_SERVER['REQUEST_URI']  . "</request>\n\n";
 
 		if (!empty($errstr) && preg_match('/^(sql)$/', $errstr)) {
@@ -114,8 +125,8 @@
 			if(($system['config']['system']['parameters']['debugMode']['value']=='YES')) {
 
 				require_once('EmailManagement.php');
-				$manager = new EmailManagement();		
-				
+				$manager = new EmailManagement();
+
 				if (isset($_SESSION["loginUser"]))
 					$userInfo = $_SESSION["loginUser"]->getUsername();
 				elseif (isset($_SESSION["loginAffiliateUser"]))
@@ -124,13 +135,13 @@
 					$userInfo = $_SESSION["loginRegistrationUser"];
 				else
 					$userInfo = "Visitor";
-				
+
 				$subject = "SITIO: ".$system['config']['system']['parameters']['siteShortName']." / Error generado por ".$userInfo;
 				$email = explode(',', $system['config']['system']['parameters']['debugMail']);
 				$mailFrom = $system['config']['system']['parameters']['fromEmail'];
 
 				$message = $manager->createHTMLMessage($subject,$err);
-				$result = $manager->sendMessage($email,$mailFrom,$message);	
+				$result = $manager->sendMessage($email,$mailFrom,$message);
 			}
 
 			die("<br /><strong>Error procesando su requerimiento, por favor reintente o comuniquese con el administrador.</strong>\n <br /><br />".
