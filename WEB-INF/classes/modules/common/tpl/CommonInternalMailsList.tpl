@@ -155,7 +155,7 @@
 		if (selected != id) { 
 		
 			//Cargamos los datos en el lightbox.
-			document.getElementById('lightboxContent').innerHTML = "<p>Cargando mensaje&nbsp;&nbsp;&nbsp;<img src='images/spinner.gif' /></p>";
+			document.getElementById('lightboxContent').innerHTML = "<p class='inProgress'>Cargando mensaje</p>";
 			var myAjax = new Ajax.Updater(
 				{success: 'lightboxContent'},
 				'Main.php?do=commonInternalMailsViewX&id='+id,
