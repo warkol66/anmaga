@@ -12,18 +12,16 @@ Para eliminar pedidos, seleccione los pedidos a eliminar y haga click en "Elimin
 	<div class="successMessage">Ordenes eliminadas correctamente</div>
 |-/if-|
 	<div class="filter">
-		<form action="Main.php" method="get">
-<table border="0" cellspacing="0" cellpadding="5">
+<form action="Main.php" method="get">
+	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-orders">
 	<tr>
-		<td nowrap><label>Desde:</label>&nbsp;<span class="size4">(dd-mm-aaaa)</span>
+		<td nowrap="nowrap" class="tdSearch"><p><label>Desde:</label>&nbsp;<span class="size4">(dd-mm-aaaa)</span>
 								<input name="dateFrom" type="text" value="|-$selectedDateFrom-|" size="10">&nbsp;&nbsp;
 								<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('dateFrom', false, 'dmy', '-');" title="Seleccione la fecha">&nbsp;&nbsp;
 								<label>Hasta:</label>&nbsp;<span class="size4">(dd-mm-aaaa)</span>
 								<input name="dateTo" type="text" value="|-$selectedDateTo-|" size="10">&nbsp;&nbsp;
-					<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('dateTo', false, 'dmy', '-');" title="Seleccione la fecha"></td>
-		</tr>
-	<tr>
-		<td>							
+					<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('dateTo', false, 'dmy', '-');" title="Seleccione la fecha"></p>
+		<p>							
 				<label for="state">Estado</label>
 					<select name="state">
 						<option value="" selected="selected">Todos</option>
@@ -42,12 +40,11 @@ Para eliminar pedidos, seleccione los pedidos a eliminar y haga click en "Elimin
 						|-foreach from=$affiliates item=affiliate-|
 						<option value="|-$affiliate->getId()-|"|-if $affiliate->getId() eq $selectedAffiliateId-| "selected"|-/if-|>|-$affiliate->getName()-|</option>
 						|-/foreach-|
-					</select></td>
-				</tr>
-				<tr>
-					<td><input type="hidden" name="do" id="doList" value="ordersList" />
+					</select></p>
+				<p><input type="hidden" name="do" id="doList" value="ordersList" />
 					<input type="submit" value="Buscar" class="boton" />
 					<input type="reset" value="Quitar filtros" class="boton" onclick="window.location='Main.php?do=ordersList'">
+					</p>
 					</td>
 				</tr>
 			</table>
@@ -90,14 +87,18 @@ Para eliminar pedidos, seleccione los pedidos a eliminar y haga click en "Elimin
 				<td colspan="8" class="tdSize1 right"><label for="selectAllBoxes">Seleccionar todo</label> 
 		<input name="allbox" onclick="javascript:CheckAllBoxes(this.form)" type="checkbox"></td>
 			</tr>
+		|-if isset($pager) && ($pager->getTotalPages() gt 1)-|
 			<tr> 
 				<td colspan="8" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
+			</tr>|-/if-|
+			<tr> 
+				<td colspan="8" class="tdSearch">	<input type="hidden" name="do" id="doActions" value="" />
+	<input type="button" onclick="ordersSendOrdersExport(this.form)" value="Exportar órdenes seleccionadas"/>&nbsp;&nbsp;&nbsp;
+	<input type="button" onclick="ordersSendOrdersExportSaf(this.form)" value="Consolidar órdenes seleccionadas" />&nbsp;&nbsp;&nbsp;
+	<input type="button" onclick="ordersSendOrdersDelete(this.form)" value="Eliminar órdenes seleccionadas" />
+</td> 
 			</tr>
 		</tbody>
 	</table>
-	<input type="hidden" name="do" id="doActions" value="" />
-	<input type="button" onclick="ordersSendOrdersExport(this.form)" value="Exportar órdenes seleccionadas" class="button" />&nbsp;&nbsp;&nbsp;
-	<input type="button" onclick="ordersSendOrdersExportSaf(this.form)" value="Consolidar órdenes seleccionadas" class="button" />&nbsp;&nbsp;&nbsp;
-	<input type="button" onclick="ordersSendOrdersDelete(this.form)" value="Eliminar órdenes seleccionadas" class="button" />
 </form>
 </div>

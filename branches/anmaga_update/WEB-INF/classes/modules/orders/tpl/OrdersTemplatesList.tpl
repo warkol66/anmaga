@@ -2,8 +2,11 @@
 <h1>Plantillas de pedidos</h1>
 <p>A continuación se muestra el listado de plantillas de pedidos existentes.</p>
 <div id="div_orderTemplates">
-	|-if $message eq "ok"-|<span class="message_ok">Orden guardada correctamente</span>|-/if-|
-	|-if $message eq "deleted_ok"-|<span class="message_ok">Orden eliminada correctamente</span>|-/if-|
+	|-if $message eq "ok"-|
+		<span class="message_ok">Orden guardada correctamente</span>
+	|-elseif $message eq "deleted_ok"-|
+		<span class="message_ok">Orden eliminada correctamente</span>
+	|-/if-|
 	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-orderTemplates">
 		<thead>
 			<tr>
@@ -21,13 +24,13 @@
 		<tbody>
 		|-foreach from=$orderTemplates item=orderTemplate name=for_orderTemplates-|
 			<tr>
-				<td class="tdSize1">|-$orderTemplate->getid()-|</td>
-				<td class="tdSize1">|-$orderTemplate->getname()-|</td>
-				<td class="tdSize1">|-$orderTemplate->getcreated()-|</td>
-				<td class="tdSize1">|-assign var=user value=$orderTemplate->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
-				|-if $all eq "1"-|<td class="tdSize1">|-assign var=affiliate value=$orderTemplate->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
-				<td class="tdSize1">|-assign var=branch value=$orderTemplate->getAffiliateBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
-				<td class="tdSize1">|-$orderTemplate->gettotal()-|</td>
+				<td>|-$orderTemplate->getid()-|</td>
+				<td>|-$orderTemplate->getname()-|</td>
+				<td>|-$orderTemplate->getcreated()|date_format-|</td>
+				<td>|-assign var=user value=$orderTemplate->getAffiliateUser()-||-if $user-||-$user->getUsername()-||-/if-|</td>
+				|-if $all eq "1"-|<td>|-assign var=affiliate value=$orderTemplate->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
+				<td>|-assign var=branch value=$orderTemplate->getAffiliateBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
+				<td class="right">|-$orderTemplate->gettotal()|number_format-|</td>
 				<td>
 					<form action="Main.php" method="get">
 						<input type="hidden" name="do" value="ordersTemplatesView" />
@@ -47,11 +50,11 @@
 				</td>
 			</tr>
 		|-/foreach-|
-		
+		|-if isset($pager) && ($pager->getTotalPages() gt 1)-|
 			<tr> 
 				<td colspan="9" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
 			</tr> 						
-
+		|-/if-|
 		</tbody>
 	</table>
 </div>

@@ -4,7 +4,7 @@
 <div id="div_order"> 
 	<h3>Opciones Generales del Pedido </h3>
 	<form action="Main.php" method="post"> 
-<table width="100%"  border="0" cellspacing="0" cellpadding="5">
+	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tableTdBorders">
 	<tr>
 		<td><strong>Pedido: |-$order->getId()-|</strong></td>
 		<td><strong>Creada: |-$order->getDateCreated()-|</strong></td>
@@ -25,15 +25,16 @@
 		</select></td>
 	</tr>
 	<tr>
-		<td colspan="3"><input type="submit" value="Guardar" class="button" /> 
+		<td colspan="3"><input type="submit" value="Guardar" /> 
 		  <input type="hidden" name="do" value="ordersDoEdit" />
 		  <input type="hidden" name="orderId" value="|-$order->getId()-|" />
-		  <input type="hidden" name="page" value="|-$page-|" /> </td>
-		</tr>
+		  <input type="hidden" name="page" value="|-$page-|" />
+			<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersList&page=|-$page-|'" value="Regresar" />
+ 		</td>
+	</tr>
 </table>
 	</form>
 	
-	<input type="button" onclick="javascript:window.location.href='Main.php?do=ordersList&page=|-$page-|'" value="Regresar" class="button" />
 	<hr  />
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tableTdBorders">
 		<caption>
@@ -41,88 +42,85 @@
 		</caption> 
 		<thead> 
 			<tr> 
-				<th width="15%" class="thFillTitle">Fecha</th> 
-				<th width="20%" class="thFillTitle">Afiliado</th> 
-				<th width="15%" class="thFillTitle">Usuario</th> 
-				<th width="10%" class="thFillTitle">Estado</th> 
-				<th width="40%" class="thFillTitle">Observación</th> 
+				<th width="15%">Fecha</th> 
+				<th width="20%">Afiliado</th> 
+				<th width="15%">Usuario</th> 
+				<th width="10%">Estado</th> 
+				<th width="40%">Observación</th> 
 			</tr> 
 		</thead> 
 		<tbody id="stateChanges">|-if $order->getOrderStateChanges()|@count neq 0-| 
 		|-foreach from=$order->getOrderStateChanges() item=stateChange-|
 		<tr> 
-			<td class="tdSize1 center top">|-$stateChange->getCreated()-|</td> 
-			<td class="tdSize1 top">|-assign var=affiliate value=$stateChange->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td> 
-			<td class="tdSize1 top">|-assign var=user value=$stateChange->getUser()-||-if $user-||-$user->getUsername()-||-/if-|</td> 
-			<td class="tdSize1 top">|-$stateChange->getStateName()-|</td> 
-			<td class="tdSize1 top">|-$stateChange->getComment()-|</td> 
+			<td class="center top">|-$stateChange->getCreated()-|</td> 
+			<td class="top">|-assign var=affiliate value=$stateChange->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td> 
+			<td class="top">|-assign var=user value=$stateChange->getUser()-||-if $user-||-$user->getUsername()-||-/if-|</td> 
+			<td class="top">|-$stateChange->getStateName()-|</td> 
+			<td class="top">|-$stateChange->getComment()-|</td> 
 		</tr> 
 		|-/foreach-|
 |-else-|
 		<tr> 
-			<td class="tdSize1 left top" colspan="5">No hay cambios de estado registrados.</td> 
+			<td class="left top" colspan="5">No hay cambios de estado registrados.</td> 
 		</tr> 
 		|-/if-|
 		</tbody> 
   </table> 
 	<form action="Main.php" method="post"> 
-<table border="0" cellspacing="0" cellpadding="5">
+	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tableTdBorders">
 	<tr>
 		<td class="top"><label for="state">Nuevo Estado:</label><br />
 		<select name="state" id="state"> 
-			<option value="0"|-if $order->getState() eq 0-| selected="selected"|-/if-|>|-$stateTexts.new-|</option> 
-			<option value="1"|-if $order->getState() eq 1-| selected="selected"|-/if-|>|-$stateTexts.accepted-|</option> 
-			<option value="2"|-if $order->getState() eq 2-| selected="selected"|-/if-|>|-$stateTexts.pendingApproval-|</option> 
-			<option value="3"|-if $order->getState() eq 3-| selected="selected"|-/if-|>|-$stateTexts.inProcess-|</option> 
-			<option value="4"|-if $order->getState() eq 4-| selected="selected"|-/if-|>|-$stateTexts.completed-|</option> 
-			<option value="5"|-if $order->getState() eq 5-| selected="selected"|-/if-|>|-$stateTexts.cancelled-|</option>
-			<option value="6"|-if $order->getState() eq 6-| selected="selected"|-/if-|>|-$stateTexts.toBeVerified-|</option>  
-			<option value="7"|-if $order->getState() eq 7-| selected="selected"|-/if-|>|-$stateTexts.exported-|</option>  
+						<option value="1"|-$order->getState()|selected:1-|>Aceptada</option>
+						<option value="2"|-$order->getState()|selected:2-|>Pendiente Aprobación</option>
+						<option value="3"|-$order->getState()|selected:3-|>En Proceso</option>
+						<option value="4"|-$order->getState()|selected:4-|>Completa</option>
+						<option value="5"|-$order->getState()|selected:5-|>Cancelada</option>
+						<option value="6"|-$order->getState()|selected:6-|>A Verificar</option>
+						<option value="7"|-$order->getState()|selected:7-|>Exportada</option>
 		</select></td>
 		<td class="top"><label for="comment">Observación:</label><br />
-		<textarea name="comment" cols="60" rows="4" wrap="VIRTUAL" id="comment"></textarea></td>
+		<textarea name="comment" cols="60" rows="4" wrap="VIRTUAL" id="comment"></textarea><span id="messageState"></span><span id="state_actual" style="display:none;"></span></td>
 	</tr>
 	<tr>
-		<td colspan="2"><input type="button" value="Agregar" onclick="javascript:ordersStateDoChangeX(this.form)" class="button" /> 
+		<td colspan="2"><input type="button" value="Agregar" onclick="javascript:ordersStateDoChangeX(this.form)" /> 
 		<input type="hidden" name="do" value="ordersStateDoChangeX" /> 
-		<input type="hidden" name="orderId" value="|-$order->getId()-|" /> </td>
-		</tr>
-	<tr>
-		<td colspan="2"><span id="messageState"></span></td>
+		<input type="hidden" name="orderId" value="|-$order->getId()-|" /> 
+		</td>
 		</tr>
 </table>
 	</form> 
-	<hr  />
+<hr  />
 	<h3>Edición del Detalle de la Orden</h3>
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tableTdBorders" > 
 		<thead> 
 			<tr> 
-				<th width="10%" class="thFillTitle">Código</th> 
-				<th width="40%" class="thFillTitle">Producto</th> 
-				<th width="15%" class="thFillTitle">Precio</th> 
-				<th width="10%" class="thFillTitle">Cantidad</th> 
-				<th width="15%" class="thFillTitle">Total</th>
-				<th width="10%" class="thFillTitle">&nbsp;</th>
+				<th width="10%">Código</th> 
+				<th width="47%">Producto</th> 
+				<th width="15%">Precio</th> 
+				<th width="10%">Cantidad</th> 
+				<th width="15%">Total</th>
+				<th width="3%">&nbsp;</th>
 			</tr> 
 		</thead> 
 		<tbody id="productsTable">  |-foreach from=$order->getOrderItems() item=item name=for_products-|
 		|-assign var=product value=$item->getProduct()-|
 		<tr id="row|-$item->getId()-|"> 
-			<td nowrap class="tdSize1 top center">|-$product->getcode()-|</td> 
-			<td class="tdSize1 top">|-$product->getname()-|</td> 
-			<td class="tdSize1 bottom right">|-$item->getprice()|system_numeric_format-|</td>
-			<td class="tdSize1 bottom right"><span id="quantity|-$item->getId()-|">|-$item->getQuantity()-|</span></td> 
+			<td nowrap class="top center">|-$product->getcode()-|</td> 
+			<td class="top">|-$product->getname()-|</td> 
+			<td class="bottom right">|-$item->getprice()|system_numeric_format-|</td>
+			<td class="bottom right"><span id="quantity|-$item->getId()-|">|-$item->getQuantity()-|</span></td> 
 			<script type="text/javascript">
 				var editor|-$item->getId()-| = new Ajax.InPlaceEditor("quantity|-$item->getId()-|", 'Main.php?do=ordersItemsDoEditX&itemId=|-$item->getId()-|&orderId=|-$order->getId()-|', { clickToEditText : 'Editar Cantidad' });
 			</script>
-			<td class="tdSize1 bottom right">|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-|<span id="totalItem|-$item->getId()-|">|-$totalItem|system_numeric_format-|</span></td> 
-			<td class="tdSize1 bottom center" nowrap>
-			    <input id="editButton|-$item->getId()-|"type="button" onclick="editor|-$item->getId()-|.enterEditMode();" value="Editar" class="buttonImageEdit" />
+			<td class="bottom right">|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-|<span id="totalItem|-$item->getId()-|">|-$totalItem|system_numeric_format-|</span></td> 
+			<td class="bottom center" nowrap>
+			    <input id="editButton|-$item->getId()-|"type="button" onclick="editor|-$item->getId()-|.enterEditMode();" value="Editar" class="iconEdit" />
 				<form method="post" action="Main.php" id="formRemove|-$item->getId()-|" style="display:inline;">
 					<input type="hidden" name="itemId" value="|-$item->getId()-|" />
 					<input type="hidden" name="orderId" value="|-$order->getId()-|" />
 					<input type="hidden" name="do" value="ordersItemsDoDeleteX" />
-					<input type="button" value="Remover" onclick="ordersItemsDoDeleteX('|-$item->getId()-|')" class="buttonImageDelete" />
+					<input type="button" value="Remover" onclick="ordersItemsDoDeleteX('|-$item->getId()-|')" class="iconDelete" />
 				</form>
 				<span  id="messageRemove|-$item->getId()-|"></span>
 
@@ -140,7 +138,7 @@
 <br />
 <br />
   	<div id="test" class="test">
-	    <a title="product-add-link" id="product-add-link" onclick="showProductAdd()" class="textButton">Agregar un Producto</a>
+	    <a title="product-add-link" id="product-add-link" onclick="showProductAdd()" class="textLinkButton">Agregar un Producto</a>
 	</div>
 	<span id="messageAdd"></span>
   	<div id="product-add-box" style="display: none;">
@@ -153,10 +151,10 @@
 			</select><br />
 			<label>Cantidad: </label><input type="text" id="productQuantity" name="productQuantity" value="1" /><br />
 			
-			<input type="button" onclick="javascript:ordersItemsDoAddX(this.form)" value="Agregar" class="boton" /> 
+			<input type="button" onclick="javascript:ordersItemsDoAddX(this.form)" value="Agregar" /> 
 			<input type="hidden" name="do" value="ordersItemsDoAddX" /> 
 			<input type="hidden" name="orderId" value="|-$order->getId()-|" /> 		
-			<input type="button" onclick="cancelProductAdd()" value="Cancelar" class="boton" />
+			<input type="button" onclick="cancelProductAdd()" value="Cancelar" />
 		</form>
 	</div>
 </div>
@@ -164,6 +162,6 @@
 <form action="Main.php" method="post"> 
 	<input type="hidden" name="do" value="ordersDoAddToCart" /> 
 	<input type="hidden" name="id" value="|-$order->getId()-|" /> 
-	<input type="submit" value="Agregar al Pedido" class="button" /> 
+	<input type="submit" value="Agregar al Pedido" /> 
 </form>
 |-/if-|  

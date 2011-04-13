@@ -56,18 +56,19 @@
 	<tr>
 		<td class="top">		<label for="state">Nuevo Estado:</label> <br />
 		<select name="state" id="state"> 
-			<option value="0"|-if $order->getState() eq 0-| selected="selected"|-/if-|>|-$stateTexts.new-|</option> 
-			<option value="1"|-if $order->getState() eq 1-| selected="selected"|-/if-|>|-$stateTexts.accepted-|</option> 
-			<option value="2"|-if $order->getState() eq 2-| selected="selected"|-/if-|>|-$stateTexts.pendingApproval-|</option> 
-			<option value="3"|-if $order->getState() eq 3-| selected="selected"|-/if-|>|-$stateTexts.inProcess-|</option> 
-			<option value="4"|-if $order->getState() eq 4-| selected="selected"|-/if-|>|-$stateTexts.completed-|</option> 
-			<option value="5"|-if $order->getState() eq 5-| selected="selected"|-/if-|>|-$stateTexts.cancelled-|</option> 
-		</select> </td>
+						<option value="1"|-$order->getState()|selected:1-|>Aceptada</option>
+						<option value="2"|-$order->getState()|selected:2-|>Pendiente Aprobación</option>
+						<option value="3"|-$order->getState()|selected:3-|>En Proceso</option>
+						<option value="4"|-$order->getState()|selected:4-|>Completa</option>
+						<option value="5"|-$order->getState()|selected:5-|>Cancelada</option>
+						<option value="6"|-$order->getState()|selected:6-|>A Verificar</option>
+						<option value="7"|-$order->getState()|selected:7-|>Exportada</option>
+		</select></td>
 		<td class="top"><label for="comment">Observación:</label> <br />
 		<textarea name="comment" cols="60" rows="4" wrap="VIRTUAL" id="comment"></textarea> </td>
 	</tr>
 	<tr>
-		<td colspan="2">		<input type="button" value="Agregar" onclick="javascript:ordersStateDoChangeX(this.form)" class="button" /> 
+		<td colspan="2">		<input type="button" value="Agregar" onclick="javascript:ordersStateDoChangeX(this.form)" /> 
 		<input type="hidden" name="do" value="ordersStateDoChangeX" /> 
 		<input type="hidden" name="orderId" value="|-$order->getId()-|" /> 
 		</td>
@@ -117,6 +118,6 @@
 <form action="Main.php" method="post"> 
 	<input type="hidden" name="do" value="ordersDoAddToCart" /> 
 	<input type="hidden" name="id" value="|-$order->getId()-|" /> 
-	<input type="submit" value="Add To Cart" class="button" /> 
+	<input type="submit" value="Add To Cart" /> 
 </form>
 |-/if-|  

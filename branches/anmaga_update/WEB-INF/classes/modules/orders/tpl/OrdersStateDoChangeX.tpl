@@ -8,6 +8,6 @@
 
 <script language="JavaScript" type="text/javascript">
 	$('state_actual').innerHTML = "|-$stateName-|";
-	$('messageState').innerHTML = "State Changed";
+	$('messageState').innerHTML = "<span class='resultSuccess'>Cambiado</span>";
 	$('comment').value = "";
 </script>
