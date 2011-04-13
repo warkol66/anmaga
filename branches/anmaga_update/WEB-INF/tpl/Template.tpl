@@ -4,11 +4,10 @@
 <title>|-if isset($module)-||-$module|multilang_get_translation:"common"-| - |-/if-||-$parameters.siteName-|</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" href="css/main.css" type="text/css" />
-<!--[if !IE]>--> <link href="css/style_ns6+.css" rel="stylesheet" type="text/css"> <!--<![endif]-->
 <!--[if lte IE 6]> <link href="css/styles-ie6.css" rel="stylesheet" type="text/css"> <![endif]-->
 <!--[if IE 7]> <link href="css/styles-ie7.css" rel="stylesheet" type="text/css"> <![endif]-->
 <!--[if IE 8]> <link href="css/styles-ie8.css" rel="stylesheet" type="text/css"> <![endif]-->
-<link rel="stylesheet" href="css/ECOTree.css" type="text/css" />
+<link rel="stylesheet" href="css/mainHandheld.css" type="text/css" media="handheld">
 |-include file='TemplateJsIncludes.tpl'-|
 </head>
 <body leftmargin='2' topmargin='2'> 
