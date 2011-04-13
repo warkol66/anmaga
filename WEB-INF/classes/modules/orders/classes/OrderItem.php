@@ -15,7 +15,7 @@ class OrderItem extends BaseOrderItem {
 
 	function getOrderTemplateItem() {
 		$orderTemplateItem = new OrderTemplateItem();
-    $orderTemplateItem->setProductId($this->getProductId());
+    $orderTemplateItem->getProductCode($this->getProductCode());
     $orderTemplateItem->setPrice($this->getPrice());
     $orderTemplateItem->setQuantity($this->getQuantity());
     return $orderTemplateItem;
@@ -24,7 +24,7 @@ class OrderItem extends BaseOrderItem {
 	function getOrderCode() {
 		$criteria = new Criteria();
     $criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
-    $criteria->add(ProductPeer::ID,$this->getProductId());
+    $criteria->add(ProductPeer::CODE,$this->getProductCode());
     $item = ProductPeer::doSelectOne($criteria);
     $orderCode = $item->getOrderCode();                  
 		return $orderCode;
@@ -33,7 +33,7 @@ class OrderItem extends BaseOrderItem {
 	function getCode() {
 		$criteria = new Criteria();
     $criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
-    $criteria->add(ProductPeer::ID,$this->getProductId());
+    $criteria->add(ProductPeer::CODE,$this->getProductCode());
     $item = ProductPeer::doSelectOne($criteria);
     $orderCode = $item->getCode();                  
 		return $orderCode;
@@ -42,7 +42,7 @@ class OrderItem extends BaseOrderItem {
 	function getUnit() {
 		$criteria = new Criteria();
     $criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
-    $criteria->add(ProductPeer::ID,$this->getProductId());
+    $criteria->add(ProductPeer::CODE,$this->getProductCode());
     $item = ProductPeer::doSelectOne($criteria);
     $orderCode = $item->getUnit();                  
 		return $orderCode;

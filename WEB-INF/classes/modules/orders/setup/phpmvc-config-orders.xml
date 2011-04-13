@@ -65,7 +65,7 @@
 							 name = "ordersCartDoDelete"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=ordersViewCart&amp;message=deleted_ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=ordersViewCart&amp;message=deleted_ok" redirect="true" />
 		</action>
 
 		<action    path = "ordersStateDoChangeX"
@@ -85,7 +85,7 @@
 							scope = "request"
 					 validate = "true">
 			<forward name="success" path="OrdersConfirm.tpl" />  
-			<forward name="failure" path="Main.php?do=ordersViewCart&amp;message=error" redirect="true" />
+			<forward name="failure" path="/Main.php?do=ordersViewCart&amp;message=error" redirect="true" />
 		</action>
 		
 		<action    path = "ordersDoGenerate"
@@ -93,7 +93,7 @@
 							 name = "ordersDoGenerate"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=ordersList&amp;message=ok" redirect="true" />
+			<forward name="success" path="/Main.php?do=ordersList&amp;message=ok" redirect="true" />
 			<forward name="email" path="OrdersEmailView.tpl" />
 		</action>
 
@@ -102,7 +102,7 @@
 							 name = "ordersDoAddToCart"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=ordersViewCart" redirect="true" />
+			<forward name="success" path="/Main.php?do=ordersViewCart" redirect="true" />
 		</action>
 
 		<action    path = "ordersDoSave"
@@ -110,8 +110,8 @@
 							 name = "ordersDoSave"
 							scope = "request"
 					 validate = "true">
-			<forward name="success" path="Main.php?do=ordersTemplatesList&amp;message=ok" redirect="true" />
-			<forward name="failure" path="Main.php?do=ordersViewCart&amp;message=error" redirect="true" />
+			<forward name="success" path="/Main.php?do=ordersTemplatesList&amp;message=ok" redirect="true" />
+			<forward name="failure" path="/Main.php?do=ordersViewCart&amp;message=error" redirect="true" />
 		</action>
 
 		<action    path = "ordersDoImport"
@@ -131,7 +131,7 @@
 							 name = "ordersTemplatesDoAddToCart"
 							scope = "request"
 					 validate = "true">
-		<forward name="success" path="Main.php?do=ordersViewCart" redirect="true" />
+		<forward name="success" path="/Main.php?do=ordersViewCart" redirect="true" />
 		</action>
 
 	</action-mappings>
