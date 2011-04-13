@@ -37,23 +37,22 @@
 			|-else-|
 				<input type="hidden" name="do" value="usersDoLogin" id="loginFormDo" />
 			|-/if-| 
-			<p></p> 
 			<h1>Usuario</h1> 
-			<p><input type='text' name='loginUsername' size='35' class="inputLogin" /> 
+			<p><input type='text' name='loginUsername' size='35' /> 
 			 </p> 
 			<h1>Contraseña</h1> 
-			<p><input type='password' name='loginPassword' size='20' class="inputLogin" /> 
+			<p><input type='password' name='loginPassword' size='20' /> 
 			 </p> 
 		<!--[if lte IE 6]><p>Su versión actual de navegador es IExplorer 6.<br />Este sistema requiere que utilice una versión mas nueva de Interntet Explorer.<br />
 Debe actualizarla para el correcto funcionamiento del sistema.</p><![endif]-->
-		 <!-- Begin LoginBottom --> 
-		 <div id="loginBottom">
-			<p><input type='submit' value='Ingresar' id="loginButton" /> </p>
-			<p><a href="Main.php?do=usersPasswordRecovery">¿Olvidó su contraseña?</a></p>
-		</div> 
-		 <!-- End LoginBottom --> 
 		</div>
 		 <!-- End LoginContent --> 
+		 <!-- Begin LoginBottom --> 
+		 <div id="loginBottom">
+			<div id="loginButtonDiv"><input type='submit' value='Ingresar' id="loginButton" /> </div>
+			<div id="lostPassword"><a href="Main.php?do=usersPasswordRecovery">¿Olvidó su contraseña?</a></div>
+		</div> 
+		 <!-- End LoginBottom --> 
 	 </div> 
 	<!-- End Login --> 
 	</div>
