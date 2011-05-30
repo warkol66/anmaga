@@ -1,0 +1,26 @@
+#rightColumn { 
+	width: 1048px;
+}
+#wrapper { 
+	width: 1280px;
+}
+#header { 
+	width: 1270px;
+}
+#footer {
+	width: 1270px;
+}
+#rightColumn p {
+	width: 920px;
+}
+#rightColumn fieldset p {
+	width: 780px;
+}
+div#dependenciesHome{
+	width:430px;
+	padding-right: 20px;
+}
+div#map {
+	width: 740px;
+	height: 480px;	
+}
