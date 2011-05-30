@@ -234,7 +234,7 @@
 			<value>YES</value>
 			<element_type>YES/NO</element_type>
 		</sendMailOnCreation>
-		<recipients>facturacion.anmaga@gmail.com,cruzclarke@cantv.net,jhernandez2412@gmail.com,lisbethadrian@hotmail.com,santaella.juan@gmail.com,iliana.alfonzo@gmail.com,lisbethadrian@yahoo.es</recipients>
+		<recipients>gflamerich@empresarios.org,gflamerich@gmail.com,gflamerich@modulosempresarios.net</recipients>
 		<exportComment>Exportado a xml</exportComment>
 		<ordersPerPage>25</ordersPerPage>
 		<daysByDefault>15</daysByDefault>
