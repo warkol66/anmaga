@@ -1,3 +1,13 @@
+<script type="text/javascript" src="scripts/lightbox.js"></script> 			
+<div id="lightbox1" class="leightbox">
+	<p align="right">				
+		<a href="#" class="lbAction blackNoDecoration" rel="deactivate">Cerrar&nbsp;&nbsp;<input type="button" class="icon iconDelete" /></a> 
+	</p> 
+	<div id="catalogShowWorking"></div>
+	<div class="innerLighbox">
+		<div id="productsShowDiv"></div>
+	</div>
+</div> 
 <h2>Catálogo de Productos</h2>
 	<h1>Ver Catálogo</h1>
 	<p>A continuación podrá ver los productos disponibles en el sistema </p>
