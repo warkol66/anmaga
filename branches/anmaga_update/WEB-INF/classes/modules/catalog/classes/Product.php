@@ -73,4 +73,19 @@ class Product extends BaseProduct {
 	
 	}
 
+	/**
+	 * Obtiene el codigo de producto para el afiliado para los casos de codigo de producto diferenciado.
+	 * En caso de no tener un codigo diferenciado devuelve el codigo real de producto
+	 * @param $affiliateId codigo de afiliado
+	 * @return string codigo de producto diferencial
+	 */
+	public function getImagePath() {
+		global $moduleRootDir;
+
+  	if (file_exists($moduleRootDir."WEB-INF/products/".$this->getCode()))
+			return "productImages/".$this->getCode();
+		else
+			return;
+	}
+
 }

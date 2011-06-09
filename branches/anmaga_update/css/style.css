@@ -75,20 +75,19 @@
 
 /* wrapper -----------------------------------------------------------*/ 
 #wrapper { 
-	margin: 0 auto;
-	width: 955px;
+	margin: 20px auto;
+	width: 995px;
 	padding: 0 0 0 0; /*  1px necesary to show margin-bottom of footer n FF*/
 }
 #header {
-	width: 955px;
-	height: 68px;
+	width: 985px;
 	margin: 0;
 	padding: 0;
 	display: block;
 }
 #header a{
 	width:115px;
-	height: 53px;
+	height: 45px;
 	 float: left;
 	 display: block;
 	 margin: 18px 0 0 8px;
@@ -123,7 +122,7 @@
 	padding: 15px;
 }
 #footer { 
-	width: 945px; /* 955px - 5leftBorder - 5px rightBorder*/
+	width: 985px; /* 985px - 5leftBorder - 5px rightBorder*/
 	height: 20px;
 	clear: both;
 	border: none;
@@ -595,8 +594,6 @@ a.textLink:visited, a.textLink:active{
 
 
 
-#wrapper {width: 995px; margin:20px auto;}
-#header, #contentWrapper {border-style: solid; border-width: 0 5px;}
 .rounded .rtop, .rounded .rbottom{display:block; }
 .rounded .rtop *, .rounded .rbottom *{display: block; height: 1px; overflow: hidden;}
 .rounded .r1, .rounded .r2, .rounded .r3, .rounded .r4, .rounded .r5, .rounded .r6, .rounded .r7 {
