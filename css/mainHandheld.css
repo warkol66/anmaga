@@ -1,6 +1,11 @@
 /* CSS Document */
-@import url("style.css");  /* Importar los estilos que cambien de color  */
-@import url("style2.css"); /*  font-size: en PIXEL*/
+
+@import url("globalStyles.css");
+@import url("globalCustom.css");
+
+@import url("style.css");
+@import url("custom.css");
+
 @import url("datePicker.css");
 
 .cabezal {
