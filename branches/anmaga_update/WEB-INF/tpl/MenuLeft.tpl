@@ -29,7 +29,8 @@
 			<li><a href="Main.php?do=commonConfigSet">Cambiar Configuración</a></li>
 			<li><a href="Main.php?do=commonConfigEdit">Editar Configuración</a></li>
 			<li><a href="Main.php?do=commonConfigView">Ver Configuración</a></li>
-			<li><a href="Main.php?do=usersList">Administración</a></li>
+			<li><a href="Main.php?do=backupList">Respaldos</a></li>
+			<li><a href="Main.php?do=usersList">Usuarios</a></li>
 			<li><a href="Main.php?do=usersLevelsList">Administrar Niveles de Usuario</a></li>
 			<li><a href="Main.php?do=usersGroupsList">Administrar Grupos de Usuarios</a></li>
 			<li><a href="Main.php?do=modulesList">Administrar módulos</a></li>
