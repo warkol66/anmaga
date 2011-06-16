@@ -934,7 +934,7 @@ class Common {
 			}
 		}
 
-		if (is_null($parentNode)){
+		if (is_null($parentNode) && $object->isNew()){
 			$queryClass = get_class($object) . 'Query';
 			$queryInstance = new $queryClass;
 			$lastScope = $queryInstance->orderByScope(Criteria::DESC)->findOne();
@@ -945,7 +945,7 @@ class Common {
 			$object->setScope($scope);
 			$object->makeRoot();
 		}
-		else
+		else if ($object->isNew())
 			$object->insertAsLastChildOf($parentNode);
 
 		if (method_exists($object, 'setObjectId')) {
