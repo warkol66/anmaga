@@ -79,17 +79,10 @@ class CategoryPeer extends BaseCategoryPeer {
   * @param string $name Nombre de la categoria
   * @return la categoria si se actualizo la informacion correctamente, false sino
 	*/
-  function update($id, $params){
+  function update($id, $params) {
+
     $object = CategoryQuery::create()->findPk($id);
-    foreach ($params as $key => $value) {
-      $setMethod = "set".$key;
-      if ( method_exists($object,$setMethod) ) {          
-        if (!empty($value) || $value == "0")
-          $object->$setMethod($value);
-        else
-          $object->$setMethod(null);
-      }
-    }
+    $object = Common::setNestedSetObjectFromParams($object,$params);
 
     try {
       $object->save();
