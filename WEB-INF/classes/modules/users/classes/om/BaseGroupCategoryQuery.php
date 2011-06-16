@@ -109,7 +109,7 @@ abstract class BaseGroupCategoryQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -156,8 +156,19 @@ abstract class BaseGroupCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the groupId column
 	 * 
-	 * @param     int|array $groupid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByGroupid(1234); // WHERE groupId = 1234
+	 * $query->filterByGroupid(array(12, 34)); // WHERE groupId IN (12, 34)
+	 * $query->filterByGroupid(array('min' => 12)); // WHERE groupId > 12
+	 * </code>
+	 *
+	 * @see       filterByGroup()
+	 *
+	 * @param     mixed $groupid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    GroupCategoryQuery The current query, for fluid interface
@@ -173,8 +184,19 @@ abstract class BaseGroupCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the categoryId column
 	 * 
-	 * @param     int|array $categoryid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByCategoryid(1234); // WHERE categoryId = 1234
+	 * $query->filterByCategoryid(array(12, 34)); // WHERE categoryId IN (12, 34)
+	 * $query->filterByCategoryid(array('min' => 12)); // WHERE categoryId > 12
+	 * </code>
+	 *
+	 * @see       filterByCategory()
+	 *
+	 * @param     mixed $categoryid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    GroupCategoryQuery The current query, for fluid interface
@@ -190,15 +212,25 @@ abstract class BaseGroupCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Group object
 	 *
-	 * @param     Group $group  the related object to use as filter
+	 * @param     Group|PropelCollection $group The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    GroupCategoryQuery The current query, for fluid interface
 	 */
 	public function filterByGroup($group, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(GroupCategoryPeer::GROUPID, $group->getId(), $comparison);
+		if ($group instanceof Group) {
+			return $this
+				->addUsingAlias(GroupCategoryPeer::GROUPID, $group->getId(), $comparison);
+		} elseif ($group instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(GroupCategoryPeer::GROUPID, $group->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByGroup() only accepts arguments of type Group or PropelCollection');
+		}
 	}
 
 	/**
@@ -254,15 +286,25 @@ abstract class BaseGroupCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Category object
 	 *
-	 * @param     Category $category  the related object to use as filter
+	 * @param     Category|PropelCollection $category The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    GroupCategoryQuery The current query, for fluid interface
 	 */
 	public function filterByCategory($category, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(GroupCategoryPeer::CATEGORYID, $category->getId(), $comparison);
+		if ($category instanceof Category) {
+			return $this
+				->addUsingAlias(GroupCategoryPeer::CATEGORYID, $category->getId(), $comparison);
+		} elseif ($category instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(GroupCategoryPeer::CATEGORYID, $category->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByCategory() only accepts arguments of type Category or PropelCollection');
+		}
 	}
 
 	/**

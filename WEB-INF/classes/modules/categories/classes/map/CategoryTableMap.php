@@ -39,6 +39,7 @@ class CategoryTableMap extends TableMap {
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
+		$this->getColumn('NAME', false)->setPrimaryString(true);
 		$this->addColumn('ORDER', 'Order', 'INTEGER', false, 4, null);
 		$this->addColumn('MODULE', 'Module', 'VARCHAR', false, 255, '');
 		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null, true);

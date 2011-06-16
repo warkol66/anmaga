@@ -31,6 +31,9 @@ abstract class BaseScheduleSubscriptionPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 8;
+
 	/** the column name for the ID field */
 	const ID = 'common_scheduleSubscription.ID';
 
@@ -55,6 +58,9 @@ abstract class BaseScheduleSubscriptionPeer {
 	/** the column name for the EXTRARECIPIENTS field */
 	const EXTRARECIPIENTS = 'common_scheduleSubscription.EXTRARECIPIENTS';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of ScheduleSubscription objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -70,7 +76,7 @@ abstract class BaseScheduleSubscriptionPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Entityname', 'Entitydatefielduniquename', 'Entitybooleanfielduniquename', 'Anticipationdays', 'Entitynamefielduniquename', 'Extrarecipients', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'entityname', 'entitydatefielduniquename', 'entitybooleanfielduniquename', 'anticipationdays', 'entitynamefielduniquename', 'extrarecipients', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ENTITYNAME, self::ENTITYDATEFIELDUNIQUENAME, self::ENTITYBOOLEANFIELDUNIQUENAME, self::ANTICIPATIONDAYS, self::ENTITYNAMEFIELDUNIQUENAME, self::EXTRARECIPIENTS, ),
@@ -85,7 +91,7 @@ abstract class BaseScheduleSubscriptionPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Entityname' => 2, 'Entitydatefielduniquename' => 3, 'Entitybooleanfielduniquename' => 4, 'Anticipationdays' => 5, 'Entitynamefielduniquename' => 6, 'Extrarecipients' => 7, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'entityname' => 2, 'entitydatefielduniquename' => 3, 'entitybooleanfielduniquename' => 4, 'anticipationdays' => 5, 'entitynamefielduniquename' => 6, 'extrarecipients' => 7, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ENTITYNAME => 2, self::ENTITYDATEFIELDUNIQUENAME => 3, self::ENTITYBOOLEANFIELDUNIQUENAME => 4, self::ANTICIPATIONDAYS => 5, self::ENTITYNAMEFIELDUNIQUENAME => 6, self::EXTRARECIPIENTS => 7, ),
@@ -300,7 +306,7 @@ abstract class BaseScheduleSubscriptionPeer {
 	 * @param      ScheduleSubscription $value A ScheduleSubscription object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(ScheduleSubscription $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -458,7 +464,7 @@ abstract class BaseScheduleSubscriptionPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + ScheduleSubscriptionPeer::NUM_COLUMNS;
+			$col = $startcol + ScheduleSubscriptionPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = ScheduleSubscriptionPeer::OM_CLASS;
 			$obj = new $cls();
@@ -687,7 +693,7 @@ abstract class BaseScheduleSubscriptionPeer {
 		}
 
 		ScheduleSubscriptionPeer::addSelectColumns($criteria);
-		$startcol = (ScheduleSubscriptionPeer::NUM_COLUMNS - ScheduleSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = ScheduleSubscriptionPeer::NUM_HYDRATE_COLUMNS;
 		ModuleEntityPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(ScheduleSubscriptionPeer::ENTITYNAME, ModuleEntityPeer::NAME, $join_behavior);
@@ -753,7 +759,7 @@ abstract class BaseScheduleSubscriptionPeer {
 		}
 
 		ScheduleSubscriptionPeer::addSelectColumns($criteria);
-		$startcol = (ScheduleSubscriptionPeer::NUM_COLUMNS - ScheduleSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = ScheduleSubscriptionPeer::NUM_HYDRATE_COLUMNS;
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(ScheduleSubscriptionPeer::ENTITYNAMEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
@@ -819,7 +825,7 @@ abstract class BaseScheduleSubscriptionPeer {
 		}
 
 		ScheduleSubscriptionPeer::addSelectColumns($criteria);
-		$startcol = (ScheduleSubscriptionPeer::NUM_COLUMNS - ScheduleSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = ScheduleSubscriptionPeer::NUM_HYDRATE_COLUMNS;
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(ScheduleSubscriptionPeer::ENTITYDATEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
@@ -885,7 +891,7 @@ abstract class BaseScheduleSubscriptionPeer {
 		}
 
 		ScheduleSubscriptionPeer::addSelectColumns($criteria);
-		$startcol = (ScheduleSubscriptionPeer::NUM_COLUMNS - ScheduleSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = ScheduleSubscriptionPeer::NUM_HYDRATE_COLUMNS;
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(ScheduleSubscriptionPeer::ENTITYBOOLEANFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
@@ -1007,19 +1013,19 @@ abstract class BaseScheduleSubscriptionPeer {
 		}
 
 		ScheduleSubscriptionPeer::addSelectColumns($criteria);
-		$startcol2 = (ScheduleSubscriptionPeer::NUM_COLUMNS - ScheduleSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ScheduleSubscriptionPeer::NUM_HYDRATE_COLUMNS;
 
 		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + ModuleEntityPeer::NUM_HYDRATE_COLUMNS;
 
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + ModuleEntityFieldPeer::NUM_HYDRATE_COLUMNS;
 
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
-		$startcol5 = $startcol4 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol5 = $startcol4 + ModuleEntityFieldPeer::NUM_HYDRATE_COLUMNS;
 
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
-		$startcol6 = $startcol5 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol6 = $startcol5 + ModuleEntityFieldPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ScheduleSubscriptionPeer::ENTITYNAME, ModuleEntityPeer::NAME, $join_behavior);
 
@@ -1351,16 +1357,16 @@ abstract class BaseScheduleSubscriptionPeer {
 		}
 
 		ScheduleSubscriptionPeer::addSelectColumns($criteria);
-		$startcol2 = (ScheduleSubscriptionPeer::NUM_COLUMNS - ScheduleSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ScheduleSubscriptionPeer::NUM_HYDRATE_COLUMNS;
 
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + ModuleEntityFieldPeer::NUM_HYDRATE_COLUMNS;
 
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + ModuleEntityFieldPeer::NUM_HYDRATE_COLUMNS;
 
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
-		$startcol5 = $startcol4 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol5 = $startcol4 + ModuleEntityFieldPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ScheduleSubscriptionPeer::ENTITYNAMEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
 
@@ -1472,10 +1478,10 @@ abstract class BaseScheduleSubscriptionPeer {
 		}
 
 		ScheduleSubscriptionPeer::addSelectColumns($criteria);
-		$startcol2 = (ScheduleSubscriptionPeer::NUM_COLUMNS - ScheduleSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ScheduleSubscriptionPeer::NUM_HYDRATE_COLUMNS;
 
 		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + ModuleEntityPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ScheduleSubscriptionPeer::ENTITYNAME, ModuleEntityPeer::NAME, $join_behavior);
 
@@ -1545,10 +1551,10 @@ abstract class BaseScheduleSubscriptionPeer {
 		}
 
 		ScheduleSubscriptionPeer::addSelectColumns($criteria);
-		$startcol2 = (ScheduleSubscriptionPeer::NUM_COLUMNS - ScheduleSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ScheduleSubscriptionPeer::NUM_HYDRATE_COLUMNS;
 
 		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + ModuleEntityPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ScheduleSubscriptionPeer::ENTITYNAME, ModuleEntityPeer::NAME, $join_behavior);
 
@@ -1618,10 +1624,10 @@ abstract class BaseScheduleSubscriptionPeer {
 		}
 
 		ScheduleSubscriptionPeer::addSelectColumns($criteria);
-		$startcol2 = (ScheduleSubscriptionPeer::NUM_COLUMNS - ScheduleSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ScheduleSubscriptionPeer::NUM_HYDRATE_COLUMNS;
 
 		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + ModuleEntityPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ScheduleSubscriptionPeer::ENTITYNAME, ModuleEntityPeer::NAME, $join_behavior);
 
@@ -1929,7 +1935,7 @@ abstract class BaseScheduleSubscriptionPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(ScheduleSubscription $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

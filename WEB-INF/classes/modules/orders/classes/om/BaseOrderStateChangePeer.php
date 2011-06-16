@@ -31,6 +31,9 @@ abstract class BaseOrderStateChangePeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 7;
+
 	/** the column name for the ID field */
 	const ID = 'orders_stateChanges.ID';
 
@@ -52,6 +55,9 @@ abstract class BaseOrderStateChangePeer {
 	/** the column name for the COMMENT field */
 	const COMMENT = 'orders_stateChanges.COMMENT';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of OrderStateChange objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -67,7 +73,7 @@ abstract class BaseOrderStateChangePeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Created', 'Orderid', 'Userid', 'Affiliateid', 'State', 'Comment', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'created', 'orderid', 'userid', 'affiliateid', 'state', 'comment', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::CREATED, self::ORDERID, self::USERID, self::AFFILIATEID, self::STATE, self::COMMENT, ),
@@ -82,7 +88,7 @@ abstract class BaseOrderStateChangePeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Created' => 1, 'Orderid' => 2, 'Userid' => 3, 'Affiliateid' => 4, 'State' => 5, 'Comment' => 6, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'created' => 1, 'orderid' => 2, 'userid' => 3, 'affiliateid' => 4, 'state' => 5, 'comment' => 6, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CREATED => 1, self::ORDERID => 2, self::USERID => 3, self::AFFILIATEID => 4, self::STATE => 5, self::COMMENT => 6, ),
@@ -295,7 +301,7 @@ abstract class BaseOrderStateChangePeer {
 	 * @param      OrderStateChange $value A OrderStateChange object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(OrderStateChange $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -450,7 +456,7 @@ abstract class BaseOrderStateChangePeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + OrderStateChangePeer::NUM_COLUMNS;
+			$col = $startcol + OrderStateChangePeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = OrderStateChangePeer::OM_CLASS;
 			$obj = new $cls();
@@ -629,7 +635,7 @@ abstract class BaseOrderStateChangePeer {
 		}
 
 		OrderStateChangePeer::addSelectColumns($criteria);
-		$startcol = (OrderStateChangePeer::NUM_COLUMNS - OrderStateChangePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = OrderStateChangePeer::NUM_HYDRATE_COLUMNS;
 		OrderPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(OrderStateChangePeer::ORDERID, OrderPeer::ID, $join_behavior);
@@ -695,7 +701,7 @@ abstract class BaseOrderStateChangePeer {
 		}
 
 		OrderStateChangePeer::addSelectColumns($criteria);
-		$startcol = (OrderStateChangePeer::NUM_COLUMNS - OrderStateChangePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = OrderStateChangePeer::NUM_HYDRATE_COLUMNS;
 		AffiliateUserPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(OrderStateChangePeer::USERID, AffiliateUserPeer::ID, $join_behavior);
@@ -761,7 +767,7 @@ abstract class BaseOrderStateChangePeer {
 		}
 
 		OrderStateChangePeer::addSelectColumns($criteria);
-		$startcol = (OrderStateChangePeer::NUM_COLUMNS - OrderStateChangePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = OrderStateChangePeer::NUM_HYDRATE_COLUMNS;
 		AffiliatePeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(OrderStateChangePeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
@@ -881,16 +887,16 @@ abstract class BaseOrderStateChangePeer {
 		}
 
 		OrderStateChangePeer::addSelectColumns($criteria);
-		$startcol2 = (OrderStateChangePeer::NUM_COLUMNS - OrderStateChangePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = OrderStateChangePeer::NUM_HYDRATE_COLUMNS;
 
 		OrderPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (OrderPeer::NUM_COLUMNS - OrderPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + OrderPeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliateUserPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + AffiliateUserPeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliatePeer::addSelectColumns($criteria);
-		$startcol5 = $startcol4 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol5 = $startcol4 + AffiliatePeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(OrderStateChangePeer::ORDERID, OrderPeer::ID, $join_behavior);
 
@@ -1154,13 +1160,13 @@ abstract class BaseOrderStateChangePeer {
 		}
 
 		OrderStateChangePeer::addSelectColumns($criteria);
-		$startcol2 = (OrderStateChangePeer::NUM_COLUMNS - OrderStateChangePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = OrderStateChangePeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliateUserPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + AffiliateUserPeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliatePeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + AffiliatePeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(OrderStateChangePeer::USERID, AffiliateUserPeer::ID, $join_behavior);
 
@@ -1251,13 +1257,13 @@ abstract class BaseOrderStateChangePeer {
 		}
 
 		OrderStateChangePeer::addSelectColumns($criteria);
-		$startcol2 = (OrderStateChangePeer::NUM_COLUMNS - OrderStateChangePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = OrderStateChangePeer::NUM_HYDRATE_COLUMNS;
 
 		OrderPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (OrderPeer::NUM_COLUMNS - OrderPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + OrderPeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliatePeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + AffiliatePeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(OrderStateChangePeer::ORDERID, OrderPeer::ID, $join_behavior);
 
@@ -1348,13 +1354,13 @@ abstract class BaseOrderStateChangePeer {
 		}
 
 		OrderStateChangePeer::addSelectColumns($criteria);
-		$startcol2 = (OrderStateChangePeer::NUM_COLUMNS - OrderStateChangePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = OrderStateChangePeer::NUM_HYDRATE_COLUMNS;
 
 		OrderPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (OrderPeer::NUM_COLUMNS - OrderPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + OrderPeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliateUserPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + AffiliateUserPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(OrderStateChangePeer::ORDERID, OrderPeer::ID, $join_behavior);
 
@@ -1643,7 +1649,7 @@ abstract class BaseOrderStateChangePeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(OrderStateChange $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

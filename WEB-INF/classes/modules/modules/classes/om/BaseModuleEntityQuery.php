@@ -158,7 +158,7 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -192,8 +192,14 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	/**
 	 * Filter the query on the moduleName column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByModulename('fooValue');   // WHERE moduleName = 'fooValue'
+	 * $query->filterByModulename('%fooValue%'); // WHERE moduleName LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $modulename The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityQuery The current query, for fluid interface
@@ -214,8 +220,14 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	/**
 	 * Filter the query on the name column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+	 * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $name The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityQuery The current query, for fluid interface
@@ -236,8 +248,14 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	/**
 	 * Filter the query on the phpName column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByPhpname('fooValue');   // WHERE phpName = 'fooValue'
+	 * $query->filterByPhpname('%fooValue%'); // WHERE phpName LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $phpname The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityQuery The current query, for fluid interface
@@ -258,8 +276,14 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	/**
 	 * Filter the query on the description column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
+	 * $query->filterByDescription('%fooValue%'); // WHERE description LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $description The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityQuery The current query, for fluid interface
@@ -280,8 +304,17 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	/**
 	 * Filter the query on the softDelete column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterBySoftdelete(true); // WHERE softDelete = true
+	 * $query->filterBySoftdelete('yes'); // WHERE softDelete = true
+	 * </code>
+	 *
 	 * @param     boolean|string $softdelete The value to use as filter.
-	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 *              Non-boolean arguments are converted using the following rules:
+	 *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityQuery The current query, for fluid interface
@@ -297,8 +330,17 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	/**
 	 * Filter the query on the relation column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByRelation(true); // WHERE relation = true
+	 * $query->filterByRelation('yes'); // WHERE relation = true
+	 * </code>
+	 *
 	 * @param     boolean|string $relation The value to use as filter.
-	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 *              Non-boolean arguments are converted using the following rules:
+	 *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityQuery The current query, for fluid interface
@@ -314,8 +356,17 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	/**
 	 * Filter the query on the saveLog column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterBySavelog(true); // WHERE saveLog = true
+	 * $query->filterBySavelog('yes'); // WHERE saveLog = true
+	 * </code>
+	 *
 	 * @param     boolean|string $savelog The value to use as filter.
-	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 *              Non-boolean arguments are converted using the following rules:
+	 *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityQuery The current query, for fluid interface
@@ -331,8 +382,17 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	/**
 	 * Filter the query on the nestedset column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByNestedset(true); // WHERE nestedset = true
+	 * $query->filterByNestedset('yes'); // WHERE nestedset = true
+	 * </code>
+	 *
 	 * @param     boolean|string $nestedset The value to use as filter.
-	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 *              Non-boolean arguments are converted using the following rules:
+	 *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityQuery The current query, for fluid interface
@@ -348,8 +408,14 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	/**
 	 * Filter the query on the scopeFieldUniqueName column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByScopefielduniquename('fooValue');   // WHERE scopeFieldUniqueName = 'fooValue'
+	 * $query->filterByScopefielduniquename('%fooValue%'); // WHERE scopeFieldUniqueName LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $scopefielduniquename The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityQuery The current query, for fluid interface
@@ -383,15 +449,25 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Module object
 	 *
-	 * @param     Module $module  the related object to use as filter
+	 * @param     Module|PropelCollection $module The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityQuery The current query, for fluid interface
 	 */
 	public function filterByModule($module, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ModuleEntityPeer::MODULENAME, $module->getName(), $comparison);
+		if ($module instanceof Module) {
+			return $this
+				->addUsingAlias(ModuleEntityPeer::MODULENAME, $module->getName(), $comparison);
+		} elseif ($module instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(ModuleEntityPeer::MODULENAME, $module->toKeyValue('PrimaryKey', 'Name'), $comparison);
+		} else {
+			throw new PropelException('filterByModule() only accepts arguments of type Module or PropelCollection');
+		}
 	}
 
 	/**
@@ -447,15 +523,25 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related ModuleEntityField object
 	 *
-	 * @param     ModuleEntityField $moduleEntityField  the related object to use as filter
+	 * @param     ModuleEntityField|PropelCollection $moduleEntityField The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityQuery The current query, for fluid interface
 	 */
 	public function filterByModuleEntityFieldRelatedByScopefielduniquename($moduleEntityField, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ModuleEntityPeer::SCOPEFIELDUNIQUENAME, $moduleEntityField->getUniquename(), $comparison);
+		if ($moduleEntityField instanceof ModuleEntityField) {
+			return $this
+				->addUsingAlias(ModuleEntityPeer::SCOPEFIELDUNIQUENAME, $moduleEntityField->getUniquename(), $comparison);
+		} elseif ($moduleEntityField instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(ModuleEntityPeer::SCOPEFIELDUNIQUENAME, $moduleEntityField->toKeyValue('PrimaryKey', 'Uniquename'), $comparison);
+		} else {
+			throw new PropelException('filterByModuleEntityFieldRelatedByScopefielduniquename() only accepts arguments of type ModuleEntityField or PropelCollection');
+		}
 	}
 
 	/**
@@ -518,8 +604,17 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	 */
 	public function filterByAlertSubscription($alertSubscription, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ModuleEntityPeer::NAME, $alertSubscription->getEntityname(), $comparison);
+		if ($alertSubscription instanceof AlertSubscription) {
+			return $this
+				->addUsingAlias(ModuleEntityPeer::NAME, $alertSubscription->getEntityname(), $comparison);
+		} elseif ($alertSubscription instanceof PropelCollection) {
+			return $this
+				->useAlertSubscriptionQuery()
+					->filterByPrimaryKeys($alertSubscription->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByAlertSubscription() only accepts arguments of type AlertSubscription or PropelCollection');
+		}
 	}
 
 	/**
@@ -582,8 +677,17 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	 */
 	public function filterByScheduleSubscription($scheduleSubscription, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ModuleEntityPeer::NAME, $scheduleSubscription->getEntityname(), $comparison);
+		if ($scheduleSubscription instanceof ScheduleSubscription) {
+			return $this
+				->addUsingAlias(ModuleEntityPeer::NAME, $scheduleSubscription->getEntityname(), $comparison);
+		} elseif ($scheduleSubscription instanceof PropelCollection) {
+			return $this
+				->useScheduleSubscriptionQuery()
+					->filterByPrimaryKeys($scheduleSubscription->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByScheduleSubscription() only accepts arguments of type ScheduleSubscription or PropelCollection');
+		}
 	}
 
 	/**
@@ -646,8 +750,17 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	 */
 	public function filterByModuleEntityFieldRelatedByEntityname($moduleEntityField, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ModuleEntityPeer::NAME, $moduleEntityField->getEntityname(), $comparison);
+		if ($moduleEntityField instanceof ModuleEntityField) {
+			return $this
+				->addUsingAlias(ModuleEntityPeer::NAME, $moduleEntityField->getEntityname(), $comparison);
+		} elseif ($moduleEntityField instanceof PropelCollection) {
+			return $this
+				->useModuleEntityFieldRelatedByEntitynameQuery()
+					->filterByPrimaryKeys($moduleEntityField->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByModuleEntityFieldRelatedByEntityname() only accepts arguments of type ModuleEntityField or PropelCollection');
+		}
 	}
 
 	/**
@@ -710,8 +823,17 @@ abstract class BaseModuleEntityQuery extends ModelCriteria
 	 */
 	public function filterByModuleEntityFieldRelatedByForeignkeytable($moduleEntityField, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ModuleEntityPeer::NAME, $moduleEntityField->getForeignkeytable(), $comparison);
+		if ($moduleEntityField instanceof ModuleEntityField) {
+			return $this
+				->addUsingAlias(ModuleEntityPeer::NAME, $moduleEntityField->getForeignkeytable(), $comparison);
+		} elseif ($moduleEntityField instanceof PropelCollection) {
+			return $this
+				->useModuleEntityFieldRelatedByForeignkeytableQuery()
+					->filterByPrimaryKeys($moduleEntityField->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByModuleEntityFieldRelatedByForeignkeytable() only accepts arguments of type ModuleEntityField or PropelCollection');
+		}
 	}
 
 	/**

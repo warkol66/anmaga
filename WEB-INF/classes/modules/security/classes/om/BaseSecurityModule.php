@@ -226,15 +226,23 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent
 	} // setAccessregistrationuser()
 
 	/**
-	 * Set the value of [nochecklogin] column.
+	 * Sets the value of the [nochecklogin] column. 
+	 * Non-boolean arguments are converted using the following rules:
+	 *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * Si no se chequea login ese modulo
-	 * @param      boolean $v new value
+	 * @param      boolean|integer|string $v The new value
 	 * @return     SecurityModule The current object (for fluent API support)
 	 */
 	public function setNochecklogin($v)
 	{
 		if ($v !== null) {
-			$v = (boolean) $v;
+			if (is_string($v)) {
+				$v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
+			} else {
+				$v = (boolean) $v;
+			}
 		}
 
 		if ($this->nochecklogin !== $v || $this->isNew()) {
@@ -294,7 +302,7 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 5; // 5 = SecurityModulePeer::NUM_COLUMNS - SecurityModulePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 5; // 5 = SecurityModulePeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating SecurityModule object", $e);
@@ -634,11 +642,17 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
+		if (isset($alreadyDumpedObjects['SecurityModule'][$this->getPrimaryKey()])) {
+			return '*RECURSION*';
+		}
+		$alreadyDumpedObjects['SecurityModule'][$this->getPrimaryKey()] = true;
 		$keys = SecurityModulePeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getModule(),
@@ -647,6 +661,11 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent
 			$keys[3] => $this->getAccessregistrationuser(),
 			$keys[4] => $this->getNochecklogin(),
 		);
+		if ($includeForeignObjects) {
+			if (null !== $this->collSecurityActions) {
+				$result['SecurityActions'] = $this->collSecurityActions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+		}
 		return $result;
 	}
 
@@ -794,15 +813,16 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent
 	 *
 	 * @param      object $copyObj An object of SecurityModule (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
 	 */
-	public function copyInto($copyObj, $deepCopy = false)
+	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setModule($this->module);
-		$copyObj->setAccess($this->access);
-		$copyObj->setAccessaffiliateuser($this->accessaffiliateuser);
-		$copyObj->setAccessregistrationuser($this->accessregistrationuser);
-		$copyObj->setNochecklogin($this->nochecklogin);
+		$copyObj->setModule($this->getModule());
+		$copyObj->setAccess($this->getAccess());
+		$copyObj->setAccessaffiliateuser($this->getAccessaffiliateuser());
+		$copyObj->setAccessregistrationuser($this->getAccessregistrationuser());
+		$copyObj->setNochecklogin($this->getNochecklogin());
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -817,8 +837,9 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent
 
 		} // if ($deepCopy)
 
-
-		$copyObj->setNew(true);
+		if ($makeNew) {
+			$copyObj->setNew(true);
+		}
 	}
 
 	/**
@@ -880,10 +901,16 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initSecurityActions()
+	public function initSecurityActions($overrideExisting = true)
 	{
+		if (null !== $this->collSecurityActions && !$overrideExisting) {
+			return;
+		}
 		$this->collSecurityActions = new PropelObjectCollection();
 		$this->collSecurityActions->setModel('SecurityAction');
 	}
@@ -988,25 +1015,38 @@ abstract class BaseSecurityModule extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Resets all collections of referencing foreign keys.
+	 * Resets all references to other model objects or collections of model objects.
 	 *
-	 * This method is a user-space workaround for PHP's inability to garbage collect objects
-	 * with circular references.  This is currently necessary when using Propel in certain
-	 * daemon or large-volumne/high-memory operations.
+	 * This method is a user-space workaround for PHP's inability to garbage collect
+	 * objects with circular references (even in PHP 5.3). This is currently necessary
+	 * when using Propel in certain daemon or large-volumne/high-memory operations.
 	 *
-	 * @param      boolean $deep Whether to also clear the references on all associated objects.
+	 * @param      boolean $deep Whether to also clear the references on all referrer objects.
 	 */
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
 			if ($this->collSecurityActions) {
-				foreach ((array) $this->collSecurityActions as $o) {
+				foreach ($this->collSecurityActions as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 		} // if ($deep)
 
+		if ($this->collSecurityActions instanceof PropelCollection) {
+			$this->collSecurityActions->clearIterator();
+		}
 		$this->collSecurityActions = null;
+	}
+
+	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->exportTo(SecurityModulePeer::DEFAULT_STRING_FORMAT);
 	}
 
 	/**

@@ -105,7 +105,7 @@ abstract class BaseModuleDependencyQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -152,8 +152,14 @@ abstract class BaseModuleDependencyQuery extends ModelCriteria
 	/**
 	 * Filter the query on the moduleName column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByModulename('fooValue');   // WHERE moduleName = 'fooValue'
+	 * $query->filterByModulename('%fooValue%'); // WHERE moduleName LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $modulename The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleDependencyQuery The current query, for fluid interface
@@ -174,8 +180,14 @@ abstract class BaseModuleDependencyQuery extends ModelCriteria
 	/**
 	 * Filter the query on the dependence column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByDependence('fooValue');   // WHERE dependence = 'fooValue'
+	 * $query->filterByDependence('%fooValue%'); // WHERE dependence LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $dependence The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleDependencyQuery The current query, for fluid interface
@@ -196,15 +208,25 @@ abstract class BaseModuleDependencyQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Module object
 	 *
-	 * @param     Module $module  the related object to use as filter
+	 * @param     Module|PropelCollection $module The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleDependencyQuery The current query, for fluid interface
 	 */
 	public function filterByModule($module, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ModuleDependencyPeer::MODULENAME, $module->getName(), $comparison);
+		if ($module instanceof Module) {
+			return $this
+				->addUsingAlias(ModuleDependencyPeer::MODULENAME, $module->getName(), $comparison);
+		} elseif ($module instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(ModuleDependencyPeer::MODULENAME, $module->toKeyValue('PrimaryKey', 'Name'), $comparison);
+		} else {
+			throw new PropelException('filterByModule() only accepts arguments of type Module or PropelCollection');
+		}
 	}
 
 	/**

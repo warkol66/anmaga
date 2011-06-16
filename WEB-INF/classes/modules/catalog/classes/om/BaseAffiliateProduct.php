@@ -207,7 +207,7 @@ abstract class BaseAffiliateProduct extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 3; // 3 = AffiliateProductPeer::NUM_COLUMNS - AffiliateProductPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 3; // 3 = AffiliateProductPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating AffiliateProduct object", $e);
@@ -568,12 +568,17 @@ abstract class BaseAffiliateProduct extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
+		if (isset($alreadyDumpedObjects['AffiliateProduct'][serialize($this->getPrimaryKey())])) {
+			return '*RECURSION*';
+		}
+		$alreadyDumpedObjects['AffiliateProduct'][serialize($this->getPrimaryKey())] = true;
 		$keys = AffiliateProductPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getProductid(),
@@ -582,10 +587,10 @@ abstract class BaseAffiliateProduct extends BaseObject  implements Persistent
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aProduct) {
-				$result['Product'] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['Product'] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 			if (null !== $this->aAffiliate) {
-				$result['Affiliate'] = $this->aAffiliate->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['Affiliate'] = $this->aAffiliate->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 		}
 		return $result;
@@ -732,15 +737,17 @@ abstract class BaseAffiliateProduct extends BaseObject  implements Persistent
 	 *
 	 * @param      object $copyObj An object of AffiliateProduct (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
 	 */
-	public function copyInto($copyObj, $deepCopy = false)
+	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setProductid($this->productid);
-		$copyObj->setAffiliateid($this->affiliateid);
-		$copyObj->setPrice($this->price);
-
-		$copyObj->setNew(true);
+		$copyObj->setProductid($this->getProductid());
+		$copyObj->setAffiliateid($this->getAffiliateid());
+		$copyObj->setPrice($this->getPrice());
+		if ($makeNew) {
+			$copyObj->setNew(true);
+		}
 	}
 
 	/**
@@ -820,11 +827,11 @@ abstract class BaseAffiliateProduct extends BaseObject  implements Persistent
 		if ($this->aProduct === null && ($this->productid !== null)) {
 			$this->aProduct = ProductQuery::create()->findPk($this->productid, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aProduct->addAffiliateProducts($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aProduct->addAffiliateProducts($this);
 			 */
 		}
 		return $this->aProduct;
@@ -869,11 +876,11 @@ abstract class BaseAffiliateProduct extends BaseObject  implements Persistent
 		if ($this->aAffiliate === null && ($this->affiliateid !== null)) {
 			$this->aAffiliate = AffiliateQuery::create()->findPk($this->affiliateid, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aAffiliate->addAffiliateProducts($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aAffiliate->addAffiliateProducts($this);
 			 */
 		}
 		return $this->aAffiliate;
@@ -896,13 +903,13 @@ abstract class BaseAffiliateProduct extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Resets all collections of referencing foreign keys.
+	 * Resets all references to other model objects or collections of model objects.
 	 *
-	 * This method is a user-space workaround for PHP's inability to garbage collect objects
-	 * with circular references.  This is currently necessary when using Propel in certain
-	 * daemon or large-volumne/high-memory operations.
+	 * This method is a user-space workaround for PHP's inability to garbage collect
+	 * objects with circular references (even in PHP 5.3). This is currently necessary
+	 * when using Propel in certain daemon or large-volumne/high-memory operations.
 	 *
-	 * @param      boolean $deep Whether to also clear the references on all associated objects.
+	 * @param      boolean $deep Whether to also clear the references on all referrer objects.
 	 */
 	public function clearAllReferences($deep = false)
 	{
@@ -911,6 +918,16 @@ abstract class BaseAffiliateProduct extends BaseObject  implements Persistent
 
 		$this->aProduct = null;
 		$this->aAffiliate = null;
+	}
+
+	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->exportTo(AffiliateProductPeer::DEFAULT_STRING_FORMAT);
 	}
 
 	/**

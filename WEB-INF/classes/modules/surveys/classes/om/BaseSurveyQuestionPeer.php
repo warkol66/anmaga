@@ -31,6 +31,9 @@ abstract class BaseSurveyQuestionPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 4;
+
 	/** the column name for the ID field */
 	const ID = 'surveys_question.ID';
 
@@ -43,6 +46,9 @@ abstract class BaseSurveyQuestionPeer {
 	/** the column name for the MULTIPLEANSWER field */
 	const MULTIPLEANSWER = 'surveys_question.MULTIPLEANSWER';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of SurveyQuestion objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -58,7 +64,7 @@ abstract class BaseSurveyQuestionPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Surveyid', 'Question', 'Multipleanswer', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'surveyid', 'question', 'multipleanswer', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::SURVEYID, self::QUESTION, self::MULTIPLEANSWER, ),
@@ -73,7 +79,7 @@ abstract class BaseSurveyQuestionPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Surveyid' => 1, 'Question' => 2, 'Multipleanswer' => 3, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'surveyid' => 1, 'question' => 2, 'multipleanswer' => 3, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SURVEYID => 1, self::QUESTION => 2, self::MULTIPLEANSWER => 3, ),
@@ -280,7 +286,7 @@ abstract class BaseSurveyQuestionPeer {
 	 * @param      SurveyQuestion $value A SurveyQuestion object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(SurveyQuestion $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -441,7 +447,7 @@ abstract class BaseSurveyQuestionPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + SurveyQuestionPeer::NUM_COLUMNS;
+			$col = $startcol + SurveyQuestionPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = SurveyQuestionPeer::OM_CLASS;
 			$obj = new $cls();
@@ -520,7 +526,7 @@ abstract class BaseSurveyQuestionPeer {
 		}
 
 		SurveyQuestionPeer::addSelectColumns($criteria);
-		$startcol = (SurveyQuestionPeer::NUM_COLUMNS - SurveyQuestionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = SurveyQuestionPeer::NUM_HYDRATE_COLUMNS;
 		SurveyPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(SurveyQuestionPeer::SURVEYID, SurveyPeer::ID, $join_behavior);
@@ -636,10 +642,10 @@ abstract class BaseSurveyQuestionPeer {
 		}
 
 		SurveyQuestionPeer::addSelectColumns($criteria);
-		$startcol2 = (SurveyQuestionPeer::NUM_COLUMNS - SurveyQuestionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = SurveyQuestionPeer::NUM_HYDRATE_COLUMNS;
 
 		SurveyPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (SurveyPeer::NUM_COLUMNS - SurveyPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + SurveyPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(SurveyQuestionPeer::SURVEYID, SurveyPeer::ID, $join_behavior);
 
@@ -951,7 +957,7 @@ abstract class BaseSurveyQuestionPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(SurveyQuestion $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

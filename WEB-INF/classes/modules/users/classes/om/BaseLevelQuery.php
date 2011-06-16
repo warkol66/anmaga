@@ -110,7 +110,7 @@ abstract class BaseLevelQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -144,8 +144,17 @@ abstract class BaseLevelQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    LevelQuery The current query, for fluid interface
@@ -161,8 +170,14 @@ abstract class BaseLevelQuery extends ModelCriteria
 	/**
 	 * Filter the query on the name column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+	 * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $name The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    LevelQuery The current query, for fluid interface
@@ -183,8 +198,17 @@ abstract class BaseLevelQuery extends ModelCriteria
 	/**
 	 * Filter the query on the bitLevel column
 	 * 
-	 * @param     int|array $bitlevel The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByBitlevel(1234); // WHERE bitLevel = 1234
+	 * $query->filterByBitlevel(array(12, 34)); // WHERE bitLevel IN (12, 34)
+	 * $query->filterByBitlevel(array('min' => 12)); // WHERE bitLevel > 12
+	 * </code>
+	 *
+	 * @param     mixed $bitlevel The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    LevelQuery The current query, for fluid interface
@@ -221,8 +245,17 @@ abstract class BaseLevelQuery extends ModelCriteria
 	 */
 	public function filterByUser($user, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(LevelPeer::ID, $user->getLevelid(), $comparison);
+		if ($user instanceof User) {
+			return $this
+				->addUsingAlias(LevelPeer::ID, $user->getLevelid(), $comparison);
+		} elseif ($user instanceof PropelCollection) {
+			return $this
+				->useUserQuery()
+					->filterByPrimaryKeys($user->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByUser() only accepts arguments of type User or PropelCollection');
+		}
 	}
 
 	/**

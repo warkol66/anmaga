@@ -87,6 +87,30 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	protected $salesunit;
 
 	/**
+	 * The value for the stockalert field.
+	 * @var        int
+	 */
+	protected $stockalert;
+
+	/**
+	 * The value for the stock01 field.
+	 * @var        int
+	 */
+	protected $stock01;
+
+	/**
+	 * The value for the stock02 field.
+	 * @var        int
+	 */
+	protected $stock02;
+
+	/**
+	 * The value for the stock03 field.
+	 * @var        int
+	 */
+	protected $stock03;
+
+	/**
 	 * @var        Unit
 	 */
 	protected $aUnit;
@@ -263,6 +287,46 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	}
 
 	/**
+	 * Get the [stockalert] column value.
+	 * Stock alert
+	 * @return     int
+	 */
+	public function getStockalert()
+	{
+		return $this->stockalert;
+	}
+
+	/**
+	 * Get the [stock01] column value.
+	 * Stock 01
+	 * @return     int
+	 */
+	public function getStock01()
+	{
+		return $this->stock01;
+	}
+
+	/**
+	 * Get the [stock02] column value.
+	 * Stock 02
+	 * @return     int
+	 */
+	public function getStock02()
+	{
+		return $this->stock02;
+	}
+
+	/**
+	 * Get the [stock03] column value.
+	 * Stock 03
+	 * @return     int
+	 */
+	public function getStock03()
+	{
+		return $this->stock03;
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * Id del producto
 	 * @param      int $v new value
@@ -411,15 +475,23 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	} // setMeasureunitid()
 
 	/**
-	 * Set the value of [active] column.
+	 * Sets the value of the [active] column. 
+	 * Non-boolean arguments are converted using the following rules:
+	 *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * Is product active?
-	 * @param      boolean $v new value
+	 * @param      boolean|integer|string $v The new value
 	 * @return     Product The current object (for fluent API support)
 	 */
 	public function setActive($v)
 	{
 		if ($v !== null) {
-			$v = (boolean) $v;
+			if (is_string($v)) {
+				$v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
+			} else {
+				$v = (boolean) $v;
+			}
 		}
 
 		if ($this->active !== $v || $this->isNew()) {
@@ -471,6 +543,86 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	} // setSalesunit()
 
 	/**
+	 * Set the value of [stockalert] column.
+	 * Stock alert
+	 * @param      int $v new value
+	 * @return     Product The current object (for fluent API support)
+	 */
+	public function setStockalert($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->stockalert !== $v) {
+			$this->stockalert = $v;
+			$this->modifiedColumns[] = ProductPeer::STOCKALERT;
+		}
+
+		return $this;
+	} // setStockalert()
+
+	/**
+	 * Set the value of [stock01] column.
+	 * Stock 01
+	 * @param      int $v new value
+	 * @return     Product The current object (for fluent API support)
+	 */
+	public function setStock01($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->stock01 !== $v) {
+			$this->stock01 = $v;
+			$this->modifiedColumns[] = ProductPeer::STOCK01;
+		}
+
+		return $this;
+	} // setStock01()
+
+	/**
+	 * Set the value of [stock02] column.
+	 * Stock 02
+	 * @param      int $v new value
+	 * @return     Product The current object (for fluent API support)
+	 */
+	public function setStock02($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->stock02 !== $v) {
+			$this->stock02 = $v;
+			$this->modifiedColumns[] = ProductPeer::STOCK02;
+		}
+
+		return $this;
+	} // setStock02()
+
+	/**
+	 * Set the value of [stock03] column.
+	 * Stock 03
+	 * @param      int $v new value
+	 * @return     Product The current object (for fluent API support)
+	 */
+	public function setStock03($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->stock03 !== $v) {
+			$this->stock03 = $v;
+			$this->modifiedColumns[] = ProductPeer::STOCK03;
+		}
+
+		return $this;
+	} // setStock03()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -520,6 +672,10 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 			$this->active = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
 			$this->ordercode = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
 			$this->salesunit = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+			$this->stockalert = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+			$this->stock01 = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
+			$this->stock02 = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
+			$this->stock03 = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -528,7 +684,7 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 10; // 10 = ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 14; // 14 = ProductPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Product object", $e);
@@ -976,6 +1132,18 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 			case 9:
 				return $this->getSalesunit();
 				break;
+			case 10:
+				return $this->getStockalert();
+				break;
+			case 11:
+				return $this->getStock01();
+				break;
+			case 12:
+				return $this->getStock02();
+				break;
+			case 13:
+				return $this->getStock03();
+				break;
 			default:
 				return null;
 				break;
@@ -992,12 +1160,17 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
+		if (isset($alreadyDumpedObjects['Product'][$this->getPrimaryKey()])) {
+			return '*RECURSION*';
+		}
+		$alreadyDumpedObjects['Product'][$this->getPrimaryKey()] = true;
 		$keys = ProductPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
@@ -1010,13 +1183,29 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 			$keys[7] => $this->getActive(),
 			$keys[8] => $this->getOrdercode(),
 			$keys[9] => $this->getSalesunit(),
+			$keys[10] => $this->getStockalert(),
+			$keys[11] => $this->getStock01(),
+			$keys[12] => $this->getStock02(),
+			$keys[13] => $this->getStock03(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aUnit) {
-				$result['Unit'] = $this->aUnit->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['Unit'] = $this->aUnit->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 			if (null !== $this->aMeasureUnit) {
-				$result['MeasureUnit'] = $this->aMeasureUnit->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['MeasureUnit'] = $this->aMeasureUnit->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+			}
+			if (null !== $this->collAffiliateProducts) {
+				$result['AffiliateProducts'] = $this->collAffiliateProducts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+			if (null !== $this->collProductCategorys) {
+				$result['ProductCategorys'] = $this->collProductCategorys->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+			if (null !== $this->collOrderItems) {
+				$result['OrderItems'] = $this->collOrderItems->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+			if (null !== $this->collOrderTemplateItems) {
+				$result['OrderTemplateItems'] = $this->collOrderTemplateItems->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
 			}
 		}
 		return $result;
@@ -1079,6 +1268,18 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 			case 9:
 				$this->setSalesunit($value);
 				break;
+			case 10:
+				$this->setStockalert($value);
+				break;
+			case 11:
+				$this->setStock01($value);
+				break;
+			case 12:
+				$this->setStock02($value);
+				break;
+			case 13:
+				$this->setStock03($value);
+				break;
 		} // switch()
 	}
 
@@ -1113,6 +1314,10 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 		if (array_key_exists($keys[7], $arr)) $this->setActive($arr[$keys[7]]);
 		if (array_key_exists($keys[8], $arr)) $this->setOrdercode($arr[$keys[8]]);
 		if (array_key_exists($keys[9], $arr)) $this->setSalesunit($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setStockalert($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setStock01($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setStock02($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setStock03($arr[$keys[13]]);
 	}
 
 	/**
@@ -1134,6 +1339,10 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 		if ($this->isColumnModified(ProductPeer::ACTIVE)) $criteria->add(ProductPeer::ACTIVE, $this->active);
 		if ($this->isColumnModified(ProductPeer::ORDERCODE)) $criteria->add(ProductPeer::ORDERCODE, $this->ordercode);
 		if ($this->isColumnModified(ProductPeer::SALESUNIT)) $criteria->add(ProductPeer::SALESUNIT, $this->salesunit);
+		if ($this->isColumnModified(ProductPeer::STOCKALERT)) $criteria->add(ProductPeer::STOCKALERT, $this->stockalert);
+		if ($this->isColumnModified(ProductPeer::STOCK01)) $criteria->add(ProductPeer::STOCK01, $this->stock01);
+		if ($this->isColumnModified(ProductPeer::STOCK02)) $criteria->add(ProductPeer::STOCK02, $this->stock02);
+		if ($this->isColumnModified(ProductPeer::STOCK03)) $criteria->add(ProductPeer::STOCK03, $this->stock03);
 
 		return $criteria;
 	}
@@ -1191,19 +1400,24 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	 *
 	 * @param      object $copyObj An object of Product (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
 	 */
-	public function copyInto($copyObj, $deepCopy = false)
+	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setCode($this->code);
-		$copyObj->setName($this->name);
-		$copyObj->setDescription($this->description);
-		$copyObj->setPrice($this->price);
-		$copyObj->setUnitid($this->unitid);
-		$copyObj->setMeasureunitid($this->measureunitid);
-		$copyObj->setActive($this->active);
-		$copyObj->setOrdercode($this->ordercode);
-		$copyObj->setSalesunit($this->salesunit);
+		$copyObj->setCode($this->getCode());
+		$copyObj->setName($this->getName());
+		$copyObj->setDescription($this->getDescription());
+		$copyObj->setPrice($this->getPrice());
+		$copyObj->setUnitid($this->getUnitid());
+		$copyObj->setMeasureunitid($this->getMeasureunitid());
+		$copyObj->setActive($this->getActive());
+		$copyObj->setOrdercode($this->getOrdercode());
+		$copyObj->setSalesunit($this->getSalesunit());
+		$copyObj->setStockalert($this->getStockalert());
+		$copyObj->setStock01($this->getStock01());
+		$copyObj->setStock02($this->getStock02());
+		$copyObj->setStock03($this->getStock03());
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1236,9 +1450,10 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 
 		} // if ($deepCopy)
 
-
-		$copyObj->setNew(true);
-		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		if ($makeNew) {
+			$copyObj->setNew(true);
+			$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		}
 	}
 
 	/**
@@ -1318,11 +1533,11 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 		if ($this->aUnit === null && ($this->unitid !== null)) {
 			$this->aUnit = UnitQuery::create()->findPk($this->unitid, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aUnit->addProducts($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aUnit->addProducts($this);
 			 */
 		}
 		return $this->aUnit;
@@ -1367,11 +1582,11 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 		if ($this->aMeasureUnit === null && ($this->measureunitid !== null)) {
 			$this->aMeasureUnit = MeasureUnitQuery::create()->findPk($this->measureunitid, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aMeasureUnit->addProducts($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aMeasureUnit->addProducts($this);
 			 */
 		}
 		return $this->aMeasureUnit;
@@ -1398,10 +1613,16 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initAffiliateProducts()
+	public function initAffiliateProducts($overrideExisting = true)
 	{
+		if (null !== $this->collAffiliateProducts && !$overrideExisting) {
+			return;
+		}
 		$this->collAffiliateProducts = new PropelObjectCollection();
 		$this->collAffiliateProducts->setModel('AffiliateProduct');
 	}
@@ -1532,10 +1753,16 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initProductCategorys()
+	public function initProductCategorys($overrideExisting = true)
 	{
+		if (null !== $this->collProductCategorys && !$overrideExisting) {
+			return;
+		}
 		$this->collProductCategorys = new PropelObjectCollection();
 		$this->collProductCategorys->setModel('ProductCategory');
 	}
@@ -1666,10 +1893,16 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initOrderItems()
+	public function initOrderItems($overrideExisting = true)
 	{
+		if (null !== $this->collOrderItems && !$overrideExisting) {
+			return;
+		}
 		$this->collOrderItems = new PropelObjectCollection();
 		$this->collOrderItems->setModel('OrderItem');
 	}
@@ -1800,10 +2033,16 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initOrderTemplateItems()
+	public function initOrderTemplateItems($overrideExisting = true)
 	{
+		if (null !== $this->collOrderTemplateItems && !$overrideExisting) {
+			return;
+		}
 		$this->collOrderTemplateItems = new PropelObjectCollection();
 		$this->collOrderTemplateItems->setModel('OrderTemplateItem');
 	}
@@ -2154,6 +2393,10 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 		$this->active = null;
 		$this->ordercode = null;
 		$this->salesunit = null;
+		$this->stockalert = null;
+		$this->stock01 = null;
+		$this->stock02 = null;
+		$this->stock03 = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
@@ -2164,45 +2407,85 @@ abstract class BaseProduct extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Resets all collections of referencing foreign keys.
+	 * Resets all references to other model objects or collections of model objects.
 	 *
-	 * This method is a user-space workaround for PHP's inability to garbage collect objects
-	 * with circular references.  This is currently necessary when using Propel in certain
-	 * daemon or large-volumne/high-memory operations.
+	 * This method is a user-space workaround for PHP's inability to garbage collect
+	 * objects with circular references (even in PHP 5.3). This is currently necessary
+	 * when using Propel in certain daemon or large-volumne/high-memory operations.
 	 *
-	 * @param      boolean $deep Whether to also clear the references on all associated objects.
+	 * @param      boolean $deep Whether to also clear the references on all referrer objects.
 	 */
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
 			if ($this->collAffiliateProducts) {
-				foreach ((array) $this->collAffiliateProducts as $o) {
+				foreach ($this->collAffiliateProducts as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 			if ($this->collProductCategorys) {
-				foreach ((array) $this->collProductCategorys as $o) {
+				foreach ($this->collProductCategorys as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 			if ($this->collOrderItems) {
-				foreach ((array) $this->collOrderItems as $o) {
+				foreach ($this->collOrderItems as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 			if ($this->collOrderTemplateItems) {
-				foreach ((array) $this->collOrderTemplateItems as $o) {
+				foreach ($this->collOrderTemplateItems as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collAffiliates) {
+				foreach ($this->collAffiliates as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collCategorys) {
+				foreach ($this->collCategorys as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 		} // if ($deep)
 
+		if ($this->collAffiliateProducts instanceof PropelCollection) {
+			$this->collAffiliateProducts->clearIterator();
+		}
 		$this->collAffiliateProducts = null;
+		if ($this->collProductCategorys instanceof PropelCollection) {
+			$this->collProductCategorys->clearIterator();
+		}
 		$this->collProductCategorys = null;
+		if ($this->collOrderItems instanceof PropelCollection) {
+			$this->collOrderItems->clearIterator();
+		}
 		$this->collOrderItems = null;
+		if ($this->collOrderTemplateItems instanceof PropelCollection) {
+			$this->collOrderTemplateItems->clearIterator();
+		}
 		$this->collOrderTemplateItems = null;
+		if ($this->collAffiliates instanceof PropelCollection) {
+			$this->collAffiliates->clearIterator();
+		}
+		$this->collAffiliates = null;
+		if ($this->collCategorys instanceof PropelCollection) {
+			$this->collCategorys->clearIterator();
+		}
+		$this->collCategorys = null;
 		$this->aUnit = null;
 		$this->aMeasureUnit = null;
+	}
+
+	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->exportTo(ProductPeer::DEFAULT_STRING_FORMAT);
 	}
 
 	/**

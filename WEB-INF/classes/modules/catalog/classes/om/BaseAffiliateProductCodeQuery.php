@@ -114,7 +114,7 @@ abstract class BaseAffiliateProductCodeQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -148,8 +148,17 @@ abstract class BaseAffiliateProductCodeQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateProductCodeQuery The current query, for fluid interface
@@ -165,8 +174,19 @@ abstract class BaseAffiliateProductCodeQuery extends ModelCriteria
 	/**
 	 * Filter the query on the affiliateId column
 	 * 
-	 * @param     int|array $affiliateid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByAffiliateid(1234); // WHERE affiliateId = 1234
+	 * $query->filterByAffiliateid(array(12, 34)); // WHERE affiliateId IN (12, 34)
+	 * $query->filterByAffiliateid(array('min' => 12)); // WHERE affiliateId > 12
+	 * </code>
+	 *
+	 * @see       filterByAffiliate()
+	 *
+	 * @param     mixed $affiliateid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateProductCodeQuery The current query, for fluid interface
@@ -196,8 +216,14 @@ abstract class BaseAffiliateProductCodeQuery extends ModelCriteria
 	/**
 	 * Filter the query on the productCode column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByProductcode('fooValue');   // WHERE productCode = 'fooValue'
+	 * $query->filterByProductcode('%fooValue%'); // WHERE productCode LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $productcode The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateProductCodeQuery The current query, for fluid interface
@@ -218,8 +244,14 @@ abstract class BaseAffiliateProductCodeQuery extends ModelCriteria
 	/**
 	 * Filter the query on the productCodeAffiliate column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByProductcodeaffiliate('fooValue');   // WHERE productCodeAffiliate = 'fooValue'
+	 * $query->filterByProductcodeaffiliate('%fooValue%'); // WHERE productCodeAffiliate LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $productcodeaffiliate The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateProductCodeQuery The current query, for fluid interface
@@ -240,15 +272,25 @@ abstract class BaseAffiliateProductCodeQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Affiliate object
 	 *
-	 * @param     Affiliate $affiliate  the related object to use as filter
+	 * @param     Affiliate|PropelCollection $affiliate The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateProductCodeQuery The current query, for fluid interface
 	 */
 	public function filterByAffiliate($affiliate, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateProductCodePeer::AFFILIATEID, $affiliate->getId(), $comparison);
+		if ($affiliate instanceof Affiliate) {
+			return $this
+				->addUsingAlias(AffiliateProductCodePeer::AFFILIATEID, $affiliate->getId(), $comparison);
+		} elseif ($affiliate instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(AffiliateProductCodePeer::AFFILIATEID, $affiliate->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByAffiliate() only accepts arguments of type Affiliate or PropelCollection');
+		}
 	}
 
 	/**

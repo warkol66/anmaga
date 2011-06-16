@@ -122,7 +122,7 @@ abstract class BaseSurveyQuestionQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -156,8 +156,17 @@ abstract class BaseSurveyQuestionQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyQuestionQuery The current query, for fluid interface
@@ -173,8 +182,19 @@ abstract class BaseSurveyQuestionQuery extends ModelCriteria
 	/**
 	 * Filter the query on the surveyId column
 	 * 
-	 * @param     int|array $surveyid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterBySurveyid(1234); // WHERE surveyId = 1234
+	 * $query->filterBySurveyid(array(12, 34)); // WHERE surveyId IN (12, 34)
+	 * $query->filterBySurveyid(array('min' => 12)); // WHERE surveyId > 12
+	 * </code>
+	 *
+	 * @see       filterBySurvey()
+	 *
+	 * @param     mixed $surveyid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyQuestionQuery The current query, for fluid interface
@@ -204,8 +224,14 @@ abstract class BaseSurveyQuestionQuery extends ModelCriteria
 	/**
 	 * Filter the query on the question column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByQuestion('fooValue');   // WHERE question = 'fooValue'
+	 * $query->filterByQuestion('%fooValue%'); // WHERE question LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $question The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyQuestionQuery The current query, for fluid interface
@@ -226,8 +252,17 @@ abstract class BaseSurveyQuestionQuery extends ModelCriteria
 	/**
 	 * Filter the query on the multipleAnswer column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByMultipleanswer(true); // WHERE multipleAnswer = true
+	 * $query->filterByMultipleanswer('yes'); // WHERE multipleAnswer = true
+	 * </code>
+	 *
 	 * @param     boolean|string $multipleanswer The value to use as filter.
-	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 *              Non-boolean arguments are converted using the following rules:
+	 *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyQuestionQuery The current query, for fluid interface
@@ -243,15 +278,25 @@ abstract class BaseSurveyQuestionQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Survey object
 	 *
-	 * @param     Survey $survey  the related object to use as filter
+	 * @param     Survey|PropelCollection $survey The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyQuestionQuery The current query, for fluid interface
 	 */
 	public function filterBySurvey($survey, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(SurveyQuestionPeer::SURVEYID, $survey->getId(), $comparison);
+		if ($survey instanceof Survey) {
+			return $this
+				->addUsingAlias(SurveyQuestionPeer::SURVEYID, $survey->getId(), $comparison);
+		} elseif ($survey instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(SurveyQuestionPeer::SURVEYID, $survey->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterBySurvey() only accepts arguments of type Survey or PropelCollection');
+		}
 	}
 
 	/**
@@ -314,8 +359,17 @@ abstract class BaseSurveyQuestionQuery extends ModelCriteria
 	 */
 	public function filterBySurveyAnswerOption($surveyAnswerOption, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(SurveyQuestionPeer::ID, $surveyAnswerOption->getQuestionid(), $comparison);
+		if ($surveyAnswerOption instanceof SurveyAnswerOption) {
+			return $this
+				->addUsingAlias(SurveyQuestionPeer::ID, $surveyAnswerOption->getQuestionid(), $comparison);
+		} elseif ($surveyAnswerOption instanceof PropelCollection) {
+			return $this
+				->useSurveyAnswerOptionQuery()
+					->filterByPrimaryKeys($surveyAnswerOption->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterBySurveyAnswerOption() only accepts arguments of type SurveyAnswerOption or PropelCollection');
+		}
 	}
 
 	/**
@@ -378,8 +432,17 @@ abstract class BaseSurveyQuestionQuery extends ModelCriteria
 	 */
 	public function filterBySurveyAnswer($surveyAnswer, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(SurveyQuestionPeer::ID, $surveyAnswer->getQuestionid(), $comparison);
+		if ($surveyAnswer instanceof SurveyAnswer) {
+			return $this
+				->addUsingAlias(SurveyQuestionPeer::ID, $surveyAnswer->getQuestionid(), $comparison);
+		} elseif ($surveyAnswer instanceof PropelCollection) {
+			return $this
+				->useSurveyAnswerQuery()
+					->filterByPrimaryKeys($surveyAnswer->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterBySurveyAnswer() only accepts arguments of type SurveyAnswer or PropelCollection');
+		}
 	}
 
 	/**

@@ -113,7 +113,7 @@ abstract class BaseModuleEntityFieldValidationQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -160,8 +160,14 @@ abstract class BaseModuleEntityFieldValidationQuery extends ModelCriteria
 	/**
 	 * Filter the query on the entityFieldUniqueName column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByEntityfielduniquename('fooValue');   // WHERE entityFieldUniqueName = 'fooValue'
+	 * $query->filterByEntityfielduniquename('%fooValue%'); // WHERE entityFieldUniqueName LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $entityfielduniquename The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityFieldValidationQuery The current query, for fluid interface
@@ -182,8 +188,14 @@ abstract class BaseModuleEntityFieldValidationQuery extends ModelCriteria
 	/**
 	 * Filter the query on the name column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+	 * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $name The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityFieldValidationQuery The current query, for fluid interface
@@ -204,8 +216,14 @@ abstract class BaseModuleEntityFieldValidationQuery extends ModelCriteria
 	/**
 	 * Filter the query on the value column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByValue('fooValue');   // WHERE value = 'fooValue'
+	 * $query->filterByValue('%fooValue%'); // WHERE value LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $value The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityFieldValidationQuery The current query, for fluid interface
@@ -226,8 +244,14 @@ abstract class BaseModuleEntityFieldValidationQuery extends ModelCriteria
 	/**
 	 * Filter the query on the message column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByMessage('fooValue');   // WHERE message = 'fooValue'
+	 * $query->filterByMessage('%fooValue%'); // WHERE message LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $message The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityFieldValidationQuery The current query, for fluid interface
@@ -248,15 +272,25 @@ abstract class BaseModuleEntityFieldValidationQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related ModuleEntityField object
 	 *
-	 * @param     ModuleEntityField $moduleEntityField  the related object to use as filter
+	 * @param     ModuleEntityField|PropelCollection $moduleEntityField The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleEntityFieldValidationQuery The current query, for fluid interface
 	 */
 	public function filterByModuleEntityField($moduleEntityField, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ModuleEntityFieldValidationPeer::ENTITYFIELDUNIQUENAME, $moduleEntityField->getUniquename(), $comparison);
+		if ($moduleEntityField instanceof ModuleEntityField) {
+			return $this
+				->addUsingAlias(ModuleEntityFieldValidationPeer::ENTITYFIELDUNIQUENAME, $moduleEntityField->getUniquename(), $comparison);
+		} elseif ($moduleEntityField instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(ModuleEntityFieldValidationPeer::ENTITYFIELDUNIQUENAME, $moduleEntityField->toKeyValue('PrimaryKey', 'Uniquename'), $comparison);
+		} else {
+			throw new PropelException('filterByModuleEntityField() only accepts arguments of type ModuleEntityField or PropelCollection');
+		}
 	}
 
 	/**

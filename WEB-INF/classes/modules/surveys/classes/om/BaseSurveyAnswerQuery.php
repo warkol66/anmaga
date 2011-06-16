@@ -130,7 +130,7 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -164,8 +164,17 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyAnswerQuery The current query, for fluid interface
@@ -181,8 +190,19 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	/**
 	 * Filter the query on the questionId column
 	 * 
-	 * @param     int|array $questionid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByQuestionid(1234); // WHERE questionId = 1234
+	 * $query->filterByQuestionid(array(12, 34)); // WHERE questionId IN (12, 34)
+	 * $query->filterByQuestionid(array('min' => 12)); // WHERE questionId > 12
+	 * </code>
+	 *
+	 * @see       filterBySurveyQuestion()
+	 *
+	 * @param     mixed $questionid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyAnswerQuery The current query, for fluid interface
@@ -212,8 +232,19 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	/**
 	 * Filter the query on the answerOptionId column
 	 * 
-	 * @param     int|array $answeroptionid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByAnsweroptionid(1234); // WHERE answerOptionId = 1234
+	 * $query->filterByAnsweroptionid(array(12, 34)); // WHERE answerOptionId IN (12, 34)
+	 * $query->filterByAnsweroptionid(array('min' => 12)); // WHERE answerOptionId > 12
+	 * </code>
+	 *
+	 * @see       filterBySurveyAnswerOption()
+	 *
+	 * @param     mixed $answeroptionid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyAnswerQuery The current query, for fluid interface
@@ -243,8 +274,17 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	/**
 	 * Filter the query on the objectId column
 	 * 
-	 * @param     int|array $objectid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByObjectid(1234); // WHERE objectId = 1234
+	 * $query->filterByObjectid(array(12, 34)); // WHERE objectId IN (12, 34)
+	 * $query->filterByObjectid(array('min' => 12)); // WHERE objectId > 12
+	 * </code>
+	 *
+	 * @param     mixed $objectid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyAnswerQuery The current query, for fluid interface
@@ -274,8 +314,14 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	/**
 	 * Filter the query on the objectType column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByObjecttype('fooValue');   // WHERE objectType = 'fooValue'
+	 * $query->filterByObjecttype('%fooValue%'); // WHERE objectType LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $objecttype The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyAnswerQuery The current query, for fluid interface
@@ -296,8 +342,19 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	/**
 	 * Filter the query on the created_at column
 	 * 
-	 * @param     string|array $createdAt The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+	 * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+	 * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $createdAt The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyAnswerQuery The current query, for fluid interface
@@ -327,8 +384,19 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	/**
 	 * Filter the query on the updated_at column
 	 * 
-	 * @param     string|array $updatedAt The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
+	 * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
+	 * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $updatedAt The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyAnswerQuery The current query, for fluid interface
@@ -358,15 +426,25 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related SurveyQuestion object
 	 *
-	 * @param     SurveyQuestion $surveyQuestion  the related object to use as filter
+	 * @param     SurveyQuestion|PropelCollection $surveyQuestion The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyAnswerQuery The current query, for fluid interface
 	 */
 	public function filterBySurveyQuestion($surveyQuestion, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(SurveyAnswerPeer::QUESTIONID, $surveyQuestion->getId(), $comparison);
+		if ($surveyQuestion instanceof SurveyQuestion) {
+			return $this
+				->addUsingAlias(SurveyAnswerPeer::QUESTIONID, $surveyQuestion->getId(), $comparison);
+		} elseif ($surveyQuestion instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(SurveyAnswerPeer::QUESTIONID, $surveyQuestion->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterBySurveyQuestion() only accepts arguments of type SurveyQuestion or PropelCollection');
+		}
 	}
 
 	/**
@@ -422,15 +500,25 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related SurveyAnswerOption object
 	 *
-	 * @param     SurveyAnswerOption $surveyAnswerOption  the related object to use as filter
+	 * @param     SurveyAnswerOption|PropelCollection $surveyAnswerOption The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    SurveyAnswerQuery The current query, for fluid interface
 	 */
 	public function filterBySurveyAnswerOption($surveyAnswerOption, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(SurveyAnswerPeer::ANSWEROPTIONID, $surveyAnswerOption->getId(), $comparison);
+		if ($surveyAnswerOption instanceof SurveyAnswerOption) {
+			return $this
+				->addUsingAlias(SurveyAnswerPeer::ANSWEROPTIONID, $surveyAnswerOption->getId(), $comparison);
+		} elseif ($surveyAnswerOption instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(SurveyAnswerPeer::ANSWEROPTIONID, $surveyAnswerOption->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterBySurveyAnswerOption() only accepts arguments of type SurveyAnswerOption or PropelCollection');
+		}
 	}
 
 	/**
@@ -506,7 +594,7 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	 *
 	 * @param      int $nbDays Maximum age of the latest update in days
 	 *
-	 * @return     SurveyAnswerQuery The current query, for fuid interface
+	 * @return     SurveyAnswerQuery The current query, for fluid interface
 	 */
 	public function recentlyUpdated($nbDays = 7)
 	{
@@ -518,7 +606,7 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	 *
 	 * @param      int $nbDays Maximum age of in days
 	 *
-	 * @return     SurveyAnswerQuery The current query, for fuid interface
+	 * @return     SurveyAnswerQuery The current query, for fluid interface
 	 */
 	public function recentlyCreated($nbDays = 7)
 	{
@@ -528,7 +616,7 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	/**
 	 * Order by update date desc
 	 *
-	 * @return     SurveyAnswerQuery The current query, for fuid interface
+	 * @return     SurveyAnswerQuery The current query, for fluid interface
 	 */
 	public function lastUpdatedFirst()
 	{
@@ -538,7 +626,7 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	/**
 	 * Order by update date asc
 	 *
-	 * @return     SurveyAnswerQuery The current query, for fuid interface
+	 * @return     SurveyAnswerQuery The current query, for fluid interface
 	 */
 	public function firstUpdatedFirst()
 	{
@@ -548,7 +636,7 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	/**
 	 * Order by create date desc
 	 *
-	 * @return     SurveyAnswerQuery The current query, for fuid interface
+	 * @return     SurveyAnswerQuery The current query, for fluid interface
 	 */
 	public function lastCreatedFirst()
 	{
@@ -558,7 +646,7 @@ abstract class BaseSurveyAnswerQuery extends ModelCriteria
 	/**
 	 * Order by create date asc
 	 *
-	 * @return     SurveyAnswerQuery The current query, for fuid interface
+	 * @return     SurveyAnswerQuery The current query, for fluid interface
 	 */
 	public function firstCreatedFirst()
 	{

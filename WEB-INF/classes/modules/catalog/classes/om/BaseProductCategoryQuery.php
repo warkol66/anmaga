@@ -109,7 +109,7 @@ abstract class BaseProductCategoryQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -156,8 +156,14 @@ abstract class BaseProductCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the productCode column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByProductcode('fooValue');   // WHERE productCode = 'fooValue'
+	 * $query->filterByProductcode('%fooValue%'); // WHERE productCode LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $productcode The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductCategoryQuery The current query, for fluid interface
@@ -178,8 +184,19 @@ abstract class BaseProductCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the categoryId column
 	 * 
-	 * @param     int|array $categoryid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByCategoryid(1234); // WHERE categoryId = 1234
+	 * $query->filterByCategoryid(array(12, 34)); // WHERE categoryId IN (12, 34)
+	 * $query->filterByCategoryid(array('min' => 12)); // WHERE categoryId > 12
+	 * </code>
+	 *
+	 * @see       filterByCategory()
+	 *
+	 * @param     mixed $categoryid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductCategoryQuery The current query, for fluid interface
@@ -195,15 +212,25 @@ abstract class BaseProductCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Category object
 	 *
-	 * @param     Category $category  the related object to use as filter
+	 * @param     Category|PropelCollection $category The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductCategoryQuery The current query, for fluid interface
 	 */
 	public function filterByCategory($category, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ProductCategoryPeer::CATEGORYID, $category->getId(), $comparison);
+		if ($category instanceof Category) {
+			return $this
+				->addUsingAlias(ProductCategoryPeer::CATEGORYID, $category->getId(), $comparison);
+		} elseif ($category instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(ProductCategoryPeer::CATEGORYID, $category->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByCategory() only accepts arguments of type Category or PropelCollection');
+		}
 	}
 
 	/**
@@ -259,15 +286,25 @@ abstract class BaseProductCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Product object
 	 *
-	 * @param     Product $product  the related object to use as filter
+	 * @param     Product|PropelCollection $product The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductCategoryQuery The current query, for fluid interface
 	 */
 	public function filterByProduct($product, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ProductCategoryPeer::PRODUCTCODE, $product->getCode(), $comparison);
+		if ($product instanceof Product) {
+			return $this
+				->addUsingAlias(ProductCategoryPeer::PRODUCTCODE, $product->getCode(), $comparison);
+		} elseif ($product instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(ProductCategoryPeer::PRODUCTCODE, $product->toKeyValue('PrimaryKey', 'Code'), $comparison);
+		} else {
+			throw new PropelException('filterByProduct() only accepts arguments of type Product or PropelCollection');
+		}
 	}
 
 	/**

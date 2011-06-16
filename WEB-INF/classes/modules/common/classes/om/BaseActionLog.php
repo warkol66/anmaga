@@ -327,45 +327,18 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 	/**
 	 * Sets the value of [datetime] column to a normalized version of the date/time value specified.
 	 * Fecha en que se logueo el dato
-	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
-	 *						be treated as NULL for temporal objects.
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.
+	 *               Empty strings are treated as NULL.
 	 * @return     ActionLog The current object (for fluent API support)
 	 */
 	public function setDatetime($v)
 	{
-		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
-		// -- which is unexpected, to say the least.
-		if ($v === null || $v === '') {
-			$dt = null;
-		} elseif ($v instanceof DateTime) {
-			$dt = $v;
-		} else {
-			// some string/numeric value passed; we normalize that so that we can
-			// validate it.
-			try {
-				if (is_numeric($v)) { // if it's a unix timestamp
-					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
-					// We have to explicitly specify and then change the time zone because of a
-					// DateTime bug: http://bugs.php.net/bug.php?id=43003
-					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
-				} else {
-					$dt = new DateTime($v);
-				}
-			} catch (Exception $x) {
-				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
-			}
-		}
-
-		if ( $this->datetime !== null || $dt !== null ) {
-			// (nested ifs are a little easier to read in this case)
-
-			$currNorm = ($this->datetime !== null && $tmpDt = new DateTime($this->datetime)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
-
-			if ( ($currNorm !== $newNorm) // normalized values don't match 
-					)
-			{
-				$this->datetime = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+		$dt = PropelDateTime::newInstance($v, null, 'DateTime');
+		if ($this->datetime !== null || $dt !== null) {
+			$currentDateAsString = ($this->datetime !== null && $tmpDt = new DateTime($this->datetime)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+			if ($currentDateAsString !== $newDateAsString) {
+				$this->datetime = $newDateAsString;
 				$this->modifiedColumns[] = ActionLogPeer::DATETIME;
 			}
 		} // if either are not null
@@ -486,7 +459,7 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 9; // 9 = ActionLogPeer::NUM_COLUMNS - ActionLogPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 9; // 9 = ActionLogPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ActionLog object", $e);
@@ -873,12 +846,17 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
+		if (isset($alreadyDumpedObjects['ActionLog'][$this->getPrimaryKey()])) {
+			return '*RECURSION*';
+		}
+		$alreadyDumpedObjects['ActionLog'][$this->getPrimaryKey()] = true;
 		$keys = ActionLogPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
@@ -893,10 +871,10 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aUser) {
-				$result['User'] = $this->aUser->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['User'] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 			if (null !== $this->aSecurityAction) {
-				$result['SecurityAction'] = $this->aSecurityAction->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['SecurityAction'] = $this->aSecurityAction->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 		}
 		return $result;
@@ -1066,21 +1044,23 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 	 *
 	 * @param      object $copyObj An object of ActionLog (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
 	 */
-	public function copyInto($copyObj, $deepCopy = false)
+	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setUserobjecttype($this->userobjecttype);
-		$copyObj->setUserobjectid($this->userobjectid);
-		$copyObj->setUserid($this->userid);
-		$copyObj->setAffiliateid($this->affiliateid);
-		$copyObj->setDatetime($this->datetime);
-		$copyObj->setAction($this->action);
-		$copyObj->setObject($this->object);
-		$copyObj->setForward($this->forward);
-
-		$copyObj->setNew(true);
-		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		$copyObj->setUserobjecttype($this->getUserobjecttype());
+		$copyObj->setUserobjectid($this->getUserobjectid());
+		$copyObj->setUserid($this->getUserid());
+		$copyObj->setAffiliateid($this->getAffiliateid());
+		$copyObj->setDatetime($this->getDatetime());
+		$copyObj->setAction($this->getAction());
+		$copyObj->setObject($this->getObject());
+		$copyObj->setForward($this->getForward());
+		if ($makeNew) {
+			$copyObj->setNew(true);
+			$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		}
 	}
 
 	/**
@@ -1160,11 +1140,11 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 		if ($this->aUser === null && ($this->userid !== null)) {
 			$this->aUser = UserQuery::create()->findPk($this->userid, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aUser->addActionLogs($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aUser->addActionLogs($this);
 			 */
 		}
 		return $this->aUser;
@@ -1209,11 +1189,11 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 		if ($this->aSecurityAction === null && (($this->action !== "" && $this->action !== null))) {
 			$this->aSecurityAction = SecurityActionQuery::create()->findPk($this->action, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aSecurityAction->addActionLogs($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aSecurityAction->addActionLogs($this);
 			 */
 		}
 		return $this->aSecurityAction;
@@ -1242,13 +1222,13 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Resets all collections of referencing foreign keys.
+	 * Resets all references to other model objects or collections of model objects.
 	 *
-	 * This method is a user-space workaround for PHP's inability to garbage collect objects
-	 * with circular references.  This is currently necessary when using Propel in certain
-	 * daemon or large-volumne/high-memory operations.
+	 * This method is a user-space workaround for PHP's inability to garbage collect
+	 * objects with circular references (even in PHP 5.3). This is currently necessary
+	 * when using Propel in certain daemon or large-volumne/high-memory operations.
 	 *
-	 * @param      boolean $deep Whether to also clear the references on all associated objects.
+	 * @param      boolean $deep Whether to also clear the references on all referrer objects.
 	 */
 	public function clearAllReferences($deep = false)
 	{
@@ -1257,6 +1237,16 @@ abstract class BaseActionLog extends BaseObject  implements Persistent
 
 		$this->aUser = null;
 		$this->aSecurityAction = null;
+	}
+
+	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->exportTo(ActionLogPeer::DEFAULT_STRING_FORMAT);
 	}
 
 	/**

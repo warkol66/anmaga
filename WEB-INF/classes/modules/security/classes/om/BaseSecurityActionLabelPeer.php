@@ -31,6 +31,9 @@ abstract class BaseSecurityActionLabelPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 5;
+
 	/** the column name for the ID field */
 	const ID = 'security_actionLabel.ID';
 
@@ -46,6 +49,9 @@ abstract class BaseSecurityActionLabelPeer {
 	/** the column name for the DESCRIPTION field */
 	const DESCRIPTION = 'security_actionLabel.DESCRIPTION';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of SecurityActionLabel objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -61,7 +67,7 @@ abstract class BaseSecurityActionLabelPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Action', 'Language', 'Label', 'Description', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'action', 'language', 'label', 'description', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::ACTION, self::LANGUAGE, self::LABEL, self::DESCRIPTION, ),
@@ -76,7 +82,7 @@ abstract class BaseSecurityActionLabelPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Action' => 1, 'Language' => 2, 'Label' => 3, 'Description' => 4, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'action' => 1, 'language' => 2, 'label' => 3, 'description' => 4, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::ACTION => 1, self::LANGUAGE => 2, self::LABEL => 3, self::DESCRIPTION => 4, ),
@@ -285,7 +291,7 @@ abstract class BaseSecurityActionLabelPeer {
 	 * @param      SecurityActionLabel $value A SecurityActionLabel object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(SecurityActionLabel $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -440,7 +446,7 @@ abstract class BaseSecurityActionLabelPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + SecurityActionLabelPeer::NUM_COLUMNS;
+			$col = $startcol + SecurityActionLabelPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = SecurityActionLabelPeer::OM_CLASS;
 			$obj = new $cls();
@@ -686,7 +692,7 @@ abstract class BaseSecurityActionLabelPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(SecurityActionLabel $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

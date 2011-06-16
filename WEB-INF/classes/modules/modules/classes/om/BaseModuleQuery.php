@@ -126,7 +126,7 @@ abstract class BaseModuleQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -160,8 +160,14 @@ abstract class BaseModuleQuery extends ModelCriteria
 	/**
 	 * Filter the query on the name column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+	 * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $name The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleQuery The current query, for fluid interface
@@ -182,8 +188,17 @@ abstract class BaseModuleQuery extends ModelCriteria
 	/**
 	 * Filter the query on the active column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByActive(true); // WHERE active = true
+	 * $query->filterByActive('yes'); // WHERE active = true
+	 * </code>
+	 *
 	 * @param     boolean|string $active The value to use as filter.
-	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 *              Non-boolean arguments are converted using the following rules:
+	 *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleQuery The current query, for fluid interface
@@ -199,8 +214,17 @@ abstract class BaseModuleQuery extends ModelCriteria
 	/**
 	 * Filter the query on the alwaysActive column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByAlwaysactive(true); // WHERE alwaysActive = true
+	 * $query->filterByAlwaysactive('yes'); // WHERE alwaysActive = true
+	 * </code>
+	 *
 	 * @param     boolean|string $alwaysactive The value to use as filter.
-	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 *              Non-boolean arguments are converted using the following rules:
+	 *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleQuery The current query, for fluid interface
@@ -216,8 +240,17 @@ abstract class BaseModuleQuery extends ModelCriteria
 	/**
 	 * Filter the query on the hasCategories column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByHascategories(true); // WHERE hasCategories = true
+	 * $query->filterByHascategories('yes'); // WHERE hasCategories = true
+	 * </code>
+	 *
 	 * @param     boolean|string $hascategories The value to use as filter.
-	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 *              Non-boolean arguments are converted using the following rules:
+	 *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ModuleQuery The current query, for fluid interface
@@ -240,8 +273,17 @@ abstract class BaseModuleQuery extends ModelCriteria
 	 */
 	public function filterByModuleDependency($moduleDependency, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ModulePeer::NAME, $moduleDependency->getModulename(), $comparison);
+		if ($moduleDependency instanceof ModuleDependency) {
+			return $this
+				->addUsingAlias(ModulePeer::NAME, $moduleDependency->getModulename(), $comparison);
+		} elseif ($moduleDependency instanceof PropelCollection) {
+			return $this
+				->useModuleDependencyQuery()
+					->filterByPrimaryKeys($moduleDependency->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByModuleDependency() only accepts arguments of type ModuleDependency or PropelCollection');
+		}
 	}
 
 	/**
@@ -304,8 +346,17 @@ abstract class BaseModuleQuery extends ModelCriteria
 	 */
 	public function filterByModuleLabel($moduleLabel, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ModulePeer::NAME, $moduleLabel->getName(), $comparison);
+		if ($moduleLabel instanceof ModuleLabel) {
+			return $this
+				->addUsingAlias(ModulePeer::NAME, $moduleLabel->getName(), $comparison);
+		} elseif ($moduleLabel instanceof PropelCollection) {
+			return $this
+				->useModuleLabelQuery()
+					->filterByPrimaryKeys($moduleLabel->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByModuleLabel() only accepts arguments of type ModuleLabel or PropelCollection');
+		}
 	}
 
 	/**
@@ -368,8 +419,17 @@ abstract class BaseModuleQuery extends ModelCriteria
 	 */
 	public function filterByModuleEntity($moduleEntity, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ModulePeer::NAME, $moduleEntity->getModulename(), $comparison);
+		if ($moduleEntity instanceof ModuleEntity) {
+			return $this
+				->addUsingAlias(ModulePeer::NAME, $moduleEntity->getModulename(), $comparison);
+		} elseif ($moduleEntity instanceof PropelCollection) {
+			return $this
+				->useModuleEntityQuery()
+					->filterByPrimaryKeys($moduleEntity->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByModuleEntity() only accepts arguments of type ModuleEntity or PropelCollection');
+		}
 	}
 
 	/**
@@ -432,8 +492,17 @@ abstract class BaseModuleQuery extends ModelCriteria
 	 */
 	public function filterByMultilangText($multilangText, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ModulePeer::NAME, $multilangText->getModulename(), $comparison);
+		if ($multilangText instanceof MultilangText) {
+			return $this
+				->addUsingAlias(ModulePeer::NAME, $multilangText->getModulename(), $comparison);
+		} elseif ($multilangText instanceof PropelCollection) {
+			return $this
+				->useMultilangTextQuery()
+					->filterByPrimaryKeys($multilangText->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByMultilangText() only accepts arguments of type MultilangText or PropelCollection');
+		}
 	}
 
 	/**

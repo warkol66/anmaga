@@ -31,12 +31,18 @@ abstract class BaseUserGroupPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 2;
+
 	/** the column name for the USERID field */
 	const USERID = 'users_userGroup.USERID';
 
 	/** the column name for the GROUPID field */
 	const GROUPID = 'users_userGroup.GROUPID';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of UserGroup objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -52,7 +58,7 @@ abstract class BaseUserGroupPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Userid', 'Groupid', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('userid', 'groupid', ),
 		BasePeer::TYPE_COLNAME => array (self::USERID, self::GROUPID, ),
@@ -67,7 +73,7 @@ abstract class BaseUserGroupPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Userid' => 0, 'Groupid' => 1, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('userid' => 0, 'groupid' => 1, ),
 		BasePeer::TYPE_COLNAME => array (self::USERID => 0, self::GROUPID => 1, ),
@@ -270,7 +276,7 @@ abstract class BaseUserGroupPeer {
 	 * @param      UserGroup $value A UserGroup object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(UserGroup $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -425,7 +431,7 @@ abstract class BaseUserGroupPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + UserGroupPeer::NUM_COLUMNS;
+			$col = $startcol + UserGroupPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = UserGroupPeer::OM_CLASS;
 			$obj = new $cls();
@@ -554,7 +560,7 @@ abstract class BaseUserGroupPeer {
 		}
 
 		UserGroupPeer::addSelectColumns($criteria);
-		$startcol = (UserGroupPeer::NUM_COLUMNS - UserGroupPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = UserGroupPeer::NUM_HYDRATE_COLUMNS;
 		UserPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(UserGroupPeer::USERID, UserPeer::ID, $join_behavior);
@@ -620,7 +626,7 @@ abstract class BaseUserGroupPeer {
 		}
 
 		UserGroupPeer::addSelectColumns($criteria);
-		$startcol = (UserGroupPeer::NUM_COLUMNS - UserGroupPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = UserGroupPeer::NUM_HYDRATE_COLUMNS;
 		GroupPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(UserGroupPeer::GROUPID, GroupPeer::ID, $join_behavior);
@@ -738,13 +744,13 @@ abstract class BaseUserGroupPeer {
 		}
 
 		UserGroupPeer::addSelectColumns($criteria);
-		$startcol2 = (UserGroupPeer::NUM_COLUMNS - UserGroupPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = UserGroupPeer::NUM_HYDRATE_COLUMNS;
 
 		UserPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + UserPeer::NUM_HYDRATE_COLUMNS;
 
 		GroupPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (GroupPeer::NUM_COLUMNS - GroupPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + GroupPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(UserGroupPeer::USERID, UserPeer::ID, $join_behavior);
 
@@ -932,10 +938,10 @@ abstract class BaseUserGroupPeer {
 		}
 
 		UserGroupPeer::addSelectColumns($criteria);
-		$startcol2 = (UserGroupPeer::NUM_COLUMNS - UserGroupPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = UserGroupPeer::NUM_HYDRATE_COLUMNS;
 
 		GroupPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (GroupPeer::NUM_COLUMNS - GroupPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + GroupPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(UserGroupPeer::GROUPID, GroupPeer::ID, $join_behavior);
 
@@ -1005,10 +1011,10 @@ abstract class BaseUserGroupPeer {
 		}
 
 		UserGroupPeer::addSelectColumns($criteria);
-		$startcol2 = (UserGroupPeer::NUM_COLUMNS - UserGroupPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = UserGroupPeer::NUM_HYDRATE_COLUMNS;
 
 		UserPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + UserPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(UserGroupPeer::USERID, UserPeer::ID, $join_behavior);
 
@@ -1288,7 +1294,7 @@ abstract class BaseUserGroupPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(UserGroup $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

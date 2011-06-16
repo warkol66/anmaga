@@ -122,7 +122,7 @@ abstract class BaseOrderItemQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -156,8 +156,17 @@ abstract class BaseOrderItemQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderItemQuery The current query, for fluid interface
@@ -173,8 +182,19 @@ abstract class BaseOrderItemQuery extends ModelCriteria
 	/**
 	 * Filter the query on the orderId column
 	 * 
-	 * @param     int|array $orderid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByOrderid(1234); // WHERE orderId = 1234
+	 * $query->filterByOrderid(array(12, 34)); // WHERE orderId IN (12, 34)
+	 * $query->filterByOrderid(array('min' => 12)); // WHERE orderId > 12
+	 * </code>
+	 *
+	 * @see       filterByOrder()
+	 *
+	 * @param     mixed $orderid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderItemQuery The current query, for fluid interface
@@ -204,8 +224,14 @@ abstract class BaseOrderItemQuery extends ModelCriteria
 	/**
 	 * Filter the query on the productCode column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByProductcode('fooValue');   // WHERE productCode = 'fooValue'
+	 * $query->filterByProductcode('%fooValue%'); // WHERE productCode LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $productcode The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderItemQuery The current query, for fluid interface
@@ -226,8 +252,17 @@ abstract class BaseOrderItemQuery extends ModelCriteria
 	/**
 	 * Filter the query on the price column
 	 * 
-	 * @param     double|array $price The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByPrice(1234); // WHERE price = 1234
+	 * $query->filterByPrice(array(12, 34)); // WHERE price IN (12, 34)
+	 * $query->filterByPrice(array('min' => 12)); // WHERE price > 12
+	 * </code>
+	 *
+	 * @param     mixed $price The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderItemQuery The current query, for fluid interface
@@ -257,8 +292,17 @@ abstract class BaseOrderItemQuery extends ModelCriteria
 	/**
 	 * Filter the query on the quantity column
 	 * 
-	 * @param     int|array $quantity The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByQuantity(1234); // WHERE quantity = 1234
+	 * $query->filterByQuantity(array(12, 34)); // WHERE quantity IN (12, 34)
+	 * $query->filterByQuantity(array('min' => 12)); // WHERE quantity > 12
+	 * </code>
+	 *
+	 * @param     mixed $quantity The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderItemQuery The current query, for fluid interface
@@ -288,15 +332,25 @@ abstract class BaseOrderItemQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Order object
 	 *
-	 * @param     Order $order  the related object to use as filter
+	 * @param     Order|PropelCollection $order The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderItemQuery The current query, for fluid interface
 	 */
 	public function filterByOrder($order, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(OrderItemPeer::ORDERID, $order->getId(), $comparison);
+		if ($order instanceof Order) {
+			return $this
+				->addUsingAlias(OrderItemPeer::ORDERID, $order->getId(), $comparison);
+		} elseif ($order instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(OrderItemPeer::ORDERID, $order->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByOrder() only accepts arguments of type Order or PropelCollection');
+		}
 	}
 
 	/**
@@ -352,15 +406,25 @@ abstract class BaseOrderItemQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Product object
 	 *
-	 * @param     Product $product  the related object to use as filter
+	 * @param     Product|PropelCollection $product The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderItemQuery The current query, for fluid interface
 	 */
 	public function filterByProduct($product, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(OrderItemPeer::PRODUCTCODE, $product->getCode(), $comparison);
+		if ($product instanceof Product) {
+			return $this
+				->addUsingAlias(OrderItemPeer::PRODUCTCODE, $product->getCode(), $comparison);
+		} elseif ($product instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(OrderItemPeer::PRODUCTCODE, $product->toKeyValue('PrimaryKey', 'Code'), $comparison);
+		} else {
+			throw new PropelException('filterByProduct() only accepts arguments of type Product or PropelCollection');
+		}
 	}
 
 	/**

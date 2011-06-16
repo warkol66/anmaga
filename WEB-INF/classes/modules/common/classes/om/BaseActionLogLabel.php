@@ -263,7 +263,7 @@ abstract class BaseActionLogLabel extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 5; // 5 = ActionLogLabelPeer::NUM_COLUMNS - ActionLogLabelPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 5; // 5 = ActionLogLabelPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ActionLogLabel object", $e);
@@ -593,11 +593,16 @@ abstract class BaseActionLogLabel extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
 	{
+		if (isset($alreadyDumpedObjects['ActionLogLabel'][serialize($this->getPrimaryKey())])) {
+			return '*RECURSION*';
+		}
+		$alreadyDumpedObjects['ActionLogLabel'][serialize($this->getPrimaryKey())] = true;
 		$keys = ActionLogLabelPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
@@ -760,17 +765,19 @@ abstract class BaseActionLogLabel extends BaseObject  implements Persistent
 	 *
 	 * @param      object $copyObj An object of ActionLogLabel (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
 	 */
-	public function copyInto($copyObj, $deepCopy = false)
+	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setAction($this->action);
-		$copyObj->setLabel($this->label);
-		$copyObj->setLanguage($this->language);
-		$copyObj->setForward($this->forward);
-
-		$copyObj->setNew(true);
-		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		$copyObj->setAction($this->getAction());
+		$copyObj->setLabel($this->getLabel());
+		$copyObj->setLanguage($this->getLanguage());
+		$copyObj->setForward($this->getForward());
+		if ($makeNew) {
+			$copyObj->setNew(true);
+			$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		}
 	}
 
 	/**
@@ -830,19 +837,29 @@ abstract class BaseActionLogLabel extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Resets all collections of referencing foreign keys.
+	 * Resets all references to other model objects or collections of model objects.
 	 *
-	 * This method is a user-space workaround for PHP's inability to garbage collect objects
-	 * with circular references.  This is currently necessary when using Propel in certain
-	 * daemon or large-volumne/high-memory operations.
+	 * This method is a user-space workaround for PHP's inability to garbage collect
+	 * objects with circular references (even in PHP 5.3). This is currently necessary
+	 * when using Propel in certain daemon or large-volumne/high-memory operations.
 	 *
-	 * @param      boolean $deep Whether to also clear the references on all associated objects.
+	 * @param      boolean $deep Whether to also clear the references on all referrer objects.
 	 */
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
 		} // if ($deep)
 
+	}
+
+	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->exportTo(ActionLogLabelPeer::DEFAULT_STRING_FORMAT);
 	}
 
 	/**

@@ -122,7 +122,7 @@ abstract class BaseAffiliateGroupQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -156,8 +156,17 @@ abstract class BaseAffiliateGroupQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateGroupQuery The current query, for fluid interface
@@ -173,8 +182,14 @@ abstract class BaseAffiliateGroupQuery extends ModelCriteria
 	/**
 	 * Filter the query on the name column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+	 * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $name The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateGroupQuery The current query, for fluid interface
@@ -195,8 +210,19 @@ abstract class BaseAffiliateGroupQuery extends ModelCriteria
 	/**
 	 * Filter the query on the created column
 	 * 
-	 * @param     string|array $created The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByCreated('2011-03-14'); // WHERE created = '2011-03-14'
+	 * $query->filterByCreated('now'); // WHERE created = '2011-03-14'
+	 * $query->filterByCreated(array('max' => 'yesterday')); // WHERE created > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $created The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateGroupQuery The current query, for fluid interface
@@ -226,8 +252,19 @@ abstract class BaseAffiliateGroupQuery extends ModelCriteria
 	/**
 	 * Filter the query on the updated column
 	 * 
-	 * @param     string|array $updated The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByUpdated('2011-03-14'); // WHERE updated = '2011-03-14'
+	 * $query->filterByUpdated('now'); // WHERE updated = '2011-03-14'
+	 * $query->filterByUpdated(array('max' => 'yesterday')); // WHERE updated > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $updated The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateGroupQuery The current query, for fluid interface
@@ -257,8 +294,17 @@ abstract class BaseAffiliateGroupQuery extends ModelCriteria
 	/**
 	 * Filter the query on the bitLevel column
 	 * 
-	 * @param     int|array $bitlevel The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByBitlevel(1234); // WHERE bitLevel = 1234
+	 * $query->filterByBitlevel(array(12, 34)); // WHERE bitLevel IN (12, 34)
+	 * $query->filterByBitlevel(array('min' => 12)); // WHERE bitLevel > 12
+	 * </code>
+	 *
+	 * @param     mixed $bitlevel The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateGroupQuery The current query, for fluid interface
@@ -295,8 +341,17 @@ abstract class BaseAffiliateGroupQuery extends ModelCriteria
 	 */
 	public function filterByAffiliateUserGroup($affiliateUserGroup, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateGroupPeer::ID, $affiliateUserGroup->getGroupid(), $comparison);
+		if ($affiliateUserGroup instanceof AffiliateUserGroup) {
+			return $this
+				->addUsingAlias(AffiliateGroupPeer::ID, $affiliateUserGroup->getGroupid(), $comparison);
+		} elseif ($affiliateUserGroup instanceof PropelCollection) {
+			return $this
+				->useAffiliateUserGroupQuery()
+					->filterByPrimaryKeys($affiliateUserGroup->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByAffiliateUserGroup() only accepts arguments of type AffiliateUserGroup or PropelCollection');
+		}
 	}
 
 	/**
@@ -359,8 +414,17 @@ abstract class BaseAffiliateGroupQuery extends ModelCriteria
 	 */
 	public function filterByAffiliateGroupCategory($affiliateGroupCategory, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateGroupPeer::ID, $affiliateGroupCategory->getGroupid(), $comparison);
+		if ($affiliateGroupCategory instanceof AffiliateGroupCategory) {
+			return $this
+				->addUsingAlias(AffiliateGroupPeer::ID, $affiliateGroupCategory->getGroupid(), $comparison);
+		} elseif ($affiliateGroupCategory instanceof PropelCollection) {
+			return $this
+				->useAffiliateGroupCategoryQuery()
+					->filterByPrimaryKeys($affiliateGroupCategory->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByAffiliateGroupCategory() only accepts arguments of type AffiliateGroupCategory or PropelCollection');
+		}
 	}
 
 	/**

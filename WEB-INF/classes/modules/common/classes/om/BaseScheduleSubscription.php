@@ -420,7 +420,7 @@ abstract class BaseScheduleSubscription extends BaseObject  implements Persisten
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 8; // 8 = ScheduleSubscriptionPeer::NUM_COLUMNS - ScheduleSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 8; // 8 = ScheduleSubscriptionPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ScheduleSubscription object", $e);
@@ -857,12 +857,17 @@ abstract class BaseScheduleSubscription extends BaseObject  implements Persisten
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
+		if (isset($alreadyDumpedObjects['ScheduleSubscription'][$this->getPrimaryKey()])) {
+			return '*RECURSION*';
+		}
+		$alreadyDumpedObjects['ScheduleSubscription'][$this->getPrimaryKey()] = true;
 		$keys = ScheduleSubscriptionPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
@@ -876,16 +881,19 @@ abstract class BaseScheduleSubscription extends BaseObject  implements Persisten
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aModuleEntity) {
-				$result['ModuleEntity'] = $this->aModuleEntity->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['ModuleEntity'] = $this->aModuleEntity->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 			if (null !== $this->aModuleEntityFieldRelatedByEntitynamefielduniquename) {
-				$result['ModuleEntityFieldRelatedByEntitynamefielduniquename'] = $this->aModuleEntityFieldRelatedByEntitynamefielduniquename->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['ModuleEntityFieldRelatedByEntitynamefielduniquename'] = $this->aModuleEntityFieldRelatedByEntitynamefielduniquename->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 			if (null !== $this->aModuleEntityFieldRelatedByEntitydatefielduniquename) {
-				$result['ModuleEntityFieldRelatedByEntitydatefielduniquename'] = $this->aModuleEntityFieldRelatedByEntitydatefielduniquename->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['ModuleEntityFieldRelatedByEntitydatefielduniquename'] = $this->aModuleEntityFieldRelatedByEntitydatefielduniquename->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 			if (null !== $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename) {
-				$result['ModuleEntityFieldRelatedByEntitybooleanfielduniquename'] = $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['ModuleEntityFieldRelatedByEntitybooleanfielduniquename'] = $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+			}
+			if (null !== $this->collScheduleSubscriptionUsers) {
+				$result['ScheduleSubscriptionUsers'] = $this->collScheduleSubscriptionUsers->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
 			}
 		}
 		return $result;
@@ -1050,17 +1058,18 @@ abstract class BaseScheduleSubscription extends BaseObject  implements Persisten
 	 *
 	 * @param      object $copyObj An object of ScheduleSubscription (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
 	 */
-	public function copyInto($copyObj, $deepCopy = false)
+	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setName($this->name);
-		$copyObj->setEntityname($this->entityname);
-		$copyObj->setEntitydatefielduniquename($this->entitydatefielduniquename);
-		$copyObj->setEntitybooleanfielduniquename($this->entitybooleanfielduniquename);
-		$copyObj->setAnticipationdays($this->anticipationdays);
-		$copyObj->setEntitynamefielduniquename($this->entitynamefielduniquename);
-		$copyObj->setExtrarecipients($this->extrarecipients);
+		$copyObj->setName($this->getName());
+		$copyObj->setEntityname($this->getEntityname());
+		$copyObj->setEntitydatefielduniquename($this->getEntitydatefielduniquename());
+		$copyObj->setEntitybooleanfielduniquename($this->getEntitybooleanfielduniquename());
+		$copyObj->setAnticipationdays($this->getAnticipationdays());
+		$copyObj->setEntitynamefielduniquename($this->getEntitynamefielduniquename());
+		$copyObj->setExtrarecipients($this->getExtrarecipients());
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1075,9 +1084,10 @@ abstract class BaseScheduleSubscription extends BaseObject  implements Persisten
 
 		} // if ($deepCopy)
 
-
-		$copyObj->setNew(true);
-		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		if ($makeNew) {
+			$copyObj->setNew(true);
+			$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		}
 	}
 
 	/**
@@ -1157,11 +1167,11 @@ abstract class BaseScheduleSubscription extends BaseObject  implements Persisten
 		if ($this->aModuleEntity === null && (($this->entityname !== "" && $this->entityname !== null))) {
 			$this->aModuleEntity = ModuleEntityQuery::create()->findPk($this->entityname, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aModuleEntity->addScheduleSubscriptions($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aModuleEntity->addScheduleSubscriptions($this);
 			 */
 		}
 		return $this->aModuleEntity;
@@ -1206,11 +1216,11 @@ abstract class BaseScheduleSubscription extends BaseObject  implements Persisten
 		if ($this->aModuleEntityFieldRelatedByEntitynamefielduniquename === null && (($this->entitynamefielduniquename !== "" && $this->entitynamefielduniquename !== null))) {
 			$this->aModuleEntityFieldRelatedByEntitynamefielduniquename = ModuleEntityFieldQuery::create()->findPk($this->entitynamefielduniquename, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aModuleEntityFieldRelatedByEntitynamefielduniquename->addScheduleSubscriptionsRelatedByEntitynamefielduniquename($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aModuleEntityFieldRelatedByEntitynamefielduniquename->addScheduleSubscriptionsRelatedByEntitynamefielduniquename($this);
 			 */
 		}
 		return $this->aModuleEntityFieldRelatedByEntitynamefielduniquename;
@@ -1255,11 +1265,11 @@ abstract class BaseScheduleSubscription extends BaseObject  implements Persisten
 		if ($this->aModuleEntityFieldRelatedByEntitydatefielduniquename === null && (($this->entitydatefielduniquename !== "" && $this->entitydatefielduniquename !== null))) {
 			$this->aModuleEntityFieldRelatedByEntitydatefielduniquename = ModuleEntityFieldQuery::create()->findPk($this->entitydatefielduniquename, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aModuleEntityFieldRelatedByEntitydatefielduniquename->addScheduleSubscriptionsRelatedByEntitydatefielduniquename($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aModuleEntityFieldRelatedByEntitydatefielduniquename->addScheduleSubscriptionsRelatedByEntitydatefielduniquename($this);
 			 */
 		}
 		return $this->aModuleEntityFieldRelatedByEntitydatefielduniquename;
@@ -1304,11 +1314,11 @@ abstract class BaseScheduleSubscription extends BaseObject  implements Persisten
 		if ($this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename === null && (($this->entitybooleanfielduniquename !== "" && $this->entitybooleanfielduniquename !== null))) {
 			$this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename = ModuleEntityFieldQuery::create()->findPk($this->entitybooleanfielduniquename, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename->addScheduleSubscriptionsRelatedByEntitybooleanfielduniquename($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename->addScheduleSubscriptionsRelatedByEntitybooleanfielduniquename($this);
 			 */
 		}
 		return $this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename;
@@ -1335,10 +1345,16 @@ abstract class BaseScheduleSubscription extends BaseObject  implements Persisten
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initScheduleSubscriptionUsers()
+	public function initScheduleSubscriptionUsers($overrideExisting = true)
 	{
+		if (null !== $this->collScheduleSubscriptionUsers && !$overrideExisting) {
+			return;
+		}
 		$this->collScheduleSubscriptionUsers = new PropelObjectCollection();
 		$this->collScheduleSubscriptionUsers->setModel('ScheduleSubscriptionUser');
 	}
@@ -1583,29 +1599,51 @@ abstract class BaseScheduleSubscription extends BaseObject  implements Persisten
 	}
 
 	/**
-	 * Resets all collections of referencing foreign keys.
+	 * Resets all references to other model objects or collections of model objects.
 	 *
-	 * This method is a user-space workaround for PHP's inability to garbage collect objects
-	 * with circular references.  This is currently necessary when using Propel in certain
-	 * daemon or large-volumne/high-memory operations.
+	 * This method is a user-space workaround for PHP's inability to garbage collect
+	 * objects with circular references (even in PHP 5.3). This is currently necessary
+	 * when using Propel in certain daemon or large-volumne/high-memory operations.
 	 *
-	 * @param      boolean $deep Whether to also clear the references on all associated objects.
+	 * @param      boolean $deep Whether to also clear the references on all referrer objects.
 	 */
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
 			if ($this->collScheduleSubscriptionUsers) {
-				foreach ((array) $this->collScheduleSubscriptionUsers as $o) {
+				foreach ($this->collScheduleSubscriptionUsers as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collUsers) {
+				foreach ($this->collUsers as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 		} // if ($deep)
 
+		if ($this->collScheduleSubscriptionUsers instanceof PropelCollection) {
+			$this->collScheduleSubscriptionUsers->clearIterator();
+		}
 		$this->collScheduleSubscriptionUsers = null;
+		if ($this->collUsers instanceof PropelCollection) {
+			$this->collUsers->clearIterator();
+		}
+		$this->collUsers = null;
 		$this->aModuleEntity = null;
 		$this->aModuleEntityFieldRelatedByEntitynamefielduniquename = null;
 		$this->aModuleEntityFieldRelatedByEntitydatefielduniquename = null;
 		$this->aModuleEntityFieldRelatedByEntitybooleanfielduniquename = null;
+	}
+
+	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->exportTo(ScheduleSubscriptionPeer::DEFAULT_STRING_FORMAT);
 	}
 
 	/**

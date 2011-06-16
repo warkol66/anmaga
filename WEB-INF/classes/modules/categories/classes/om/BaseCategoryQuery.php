@@ -162,7 +162,7 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -196,8 +196,17 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    CategoryQuery The current query, for fluid interface
@@ -213,8 +222,14 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the name column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+	 * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $name The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    CategoryQuery The current query, for fluid interface
@@ -235,8 +250,17 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the order column
 	 * 
-	 * @param     int|array $order The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByOrder(1234); // WHERE order = 1234
+	 * $query->filterByOrder(array(12, 34)); // WHERE order IN (12, 34)
+	 * $query->filterByOrder(array('min' => 12)); // WHERE order > 12
+	 * </code>
+	 *
+	 * @param     mixed $order The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    CategoryQuery The current query, for fluid interface
@@ -266,8 +290,14 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the module column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByModule('fooValue');   // WHERE module = 'fooValue'
+	 * $query->filterByModule('%fooValue%'); // WHERE module LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $module The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    CategoryQuery The current query, for fluid interface
@@ -288,8 +318,17 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the active column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByActive(true); // WHERE active = true
+	 * $query->filterByActive('yes'); // WHERE active = true
+	 * </code>
+	 *
 	 * @param     boolean|string $active The value to use as filter.
-	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 *              Non-boolean arguments are converted using the following rules:
+	 *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    CategoryQuery The current query, for fluid interface
@@ -305,8 +344,17 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the isPublic column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByIspublic(true); // WHERE isPublic = true
+	 * $query->filterByIspublic('yes'); // WHERE isPublic = true
+	 * </code>
+	 *
 	 * @param     boolean|string $ispublic The value to use as filter.
-	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 *              Non-boolean arguments are converted using the following rules:
+	 *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    CategoryQuery The current query, for fluid interface
@@ -322,8 +370,17 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the oldId column
 	 * 
-	 * @param     int|array $oldid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByOldid(1234); // WHERE oldId = 1234
+	 * $query->filterByOldid(array(12, 34)); // WHERE oldId IN (12, 34)
+	 * $query->filterByOldid(array('min' => 12)); // WHERE oldId > 12
+	 * </code>
+	 *
+	 * @param     mixed $oldid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    CategoryQuery The current query, for fluid interface
@@ -353,8 +410,14 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the description column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
+	 * $query->filterByDescription('%fooValue%'); // WHERE description LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $description The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    CategoryQuery The current query, for fluid interface
@@ -375,8 +438,19 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the deleted_at column
 	 * 
-	 * @param     string|array $deletedAt The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByDeletedAt('2011-03-14'); // WHERE deleted_at = '2011-03-14'
+	 * $query->filterByDeletedAt('now'); // WHERE deleted_at = '2011-03-14'
+	 * $query->filterByDeletedAt(array('max' => 'yesterday')); // WHERE deleted_at > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $deletedAt The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    CategoryQuery The current query, for fluid interface
@@ -406,8 +480,17 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the tree_left column
 	 * 
-	 * @param     int|array $treeLeft The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByTreeLeft(1234); // WHERE tree_left = 1234
+	 * $query->filterByTreeLeft(array(12, 34)); // WHERE tree_left IN (12, 34)
+	 * $query->filterByTreeLeft(array('min' => 12)); // WHERE tree_left > 12
+	 * </code>
+	 *
+	 * @param     mixed $treeLeft The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    CategoryQuery The current query, for fluid interface
@@ -437,8 +520,17 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the tree_right column
 	 * 
-	 * @param     int|array $treeRight The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByTreeRight(1234); // WHERE tree_right = 1234
+	 * $query->filterByTreeRight(array(12, 34)); // WHERE tree_right IN (12, 34)
+	 * $query->filterByTreeRight(array('min' => 12)); // WHERE tree_right > 12
+	 * </code>
+	 *
+	 * @param     mixed $treeRight The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    CategoryQuery The current query, for fluid interface
@@ -468,8 +560,17 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the tree_level column
 	 * 
-	 * @param     int|array $treeLevel The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByTreeLevel(1234); // WHERE tree_level = 1234
+	 * $query->filterByTreeLevel(array(12, 34)); // WHERE tree_level IN (12, 34)
+	 * $query->filterByTreeLevel(array('min' => 12)); // WHERE tree_level > 12
+	 * </code>
+	 *
+	 * @param     mixed $treeLevel The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    CategoryQuery The current query, for fluid interface
@@ -499,8 +600,17 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query on the scope column
 	 * 
-	 * @param     int|array $scope The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByScope(1234); // WHERE scope = 1234
+	 * $query->filterByScope(array(12, 34)); // WHERE scope IN (12, 34)
+	 * $query->filterByScope(array('min' => 12)); // WHERE scope > 12
+	 * </code>
+	 *
+	 * @param     mixed $scope The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    CategoryQuery The current query, for fluid interface
@@ -537,8 +647,17 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 */
 	public function filterByAffiliateGroupCategory($affiliateGroupCategory, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(CategoryPeer::ID, $affiliateGroupCategory->getCategoryid(), $comparison);
+		if ($affiliateGroupCategory instanceof AffiliateGroupCategory) {
+			return $this
+				->addUsingAlias(CategoryPeer::ID, $affiliateGroupCategory->getCategoryid(), $comparison);
+		} elseif ($affiliateGroupCategory instanceof PropelCollection) {
+			return $this
+				->useAffiliateGroupCategoryQuery()
+					->filterByPrimaryKeys($affiliateGroupCategory->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByAffiliateGroupCategory() only accepts arguments of type AffiliateGroupCategory or PropelCollection');
+		}
 	}
 
 	/**
@@ -601,8 +720,17 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 */
 	public function filterByProductCategory($productCategory, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(CategoryPeer::ID, $productCategory->getCategoryid(), $comparison);
+		if ($productCategory instanceof ProductCategory) {
+			return $this
+				->addUsingAlias(CategoryPeer::ID, $productCategory->getCategoryid(), $comparison);
+		} elseif ($productCategory instanceof PropelCollection) {
+			return $this
+				->useProductCategoryQuery()
+					->filterByPrimaryKeys($productCategory->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByProductCategory() only accepts arguments of type ProductCategory or PropelCollection');
+		}
 	}
 
 	/**
@@ -665,8 +793,17 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 */
 	public function filterByGroupCategory($groupCategory, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(CategoryPeer::ID, $groupCategory->getCategoryid(), $comparison);
+		if ($groupCategory instanceof GroupCategory) {
+			return $this
+				->addUsingAlias(CategoryPeer::ID, $groupCategory->getCategoryid(), $comparison);
+		} elseif ($groupCategory instanceof PropelCollection) {
+			return $this
+				->useGroupCategoryQuery()
+					->filterByPrimaryKeys($groupCategory->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByGroupCategory() only accepts arguments of type GroupCategory or PropelCollection');
+		}
 	}
 
 	/**
@@ -828,7 +965,7 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 * 
 	 * @see CategoryQuery::disableSoftDelete() to disable the filter for more than one query
 	 *
-	 * @return CategoryQuery The current query, for fuid interface
+	 * @return CategoryQuery The current query, for fluid interface
 	 */
 	public function includeDeleted()
 	{
@@ -914,7 +1051,7 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	/**
 	 * Filter the query to restrict the result to root objects
 	 *
-	 * @return    CategoryQuery The current query, for fuid interface
+	 * @return    CategoryQuery The current query, for fluid interface
 	 */
 	public function treeRoots()
 	{
@@ -926,7 +1063,7 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 *
 	 * @param     int $scope		Scope to determine which objects node to return
 	 *
-	 * @return    CategoryQuery The current query, for fuid interface
+	 * @return    CategoryQuery The current query, for fluid interface
 	 */
 	public function inTree($scope = null)
 	{
@@ -938,7 +1075,7 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 *
 	 * @param     Category $category The object to use for descendant search
 	 *
-	 * @return    CategoryQuery The current query, for fuid interface
+	 * @return    CategoryQuery The current query, for fluid interface
 	 */
 	public function descendantsOf($category)
 	{
@@ -954,7 +1091,7 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 *
 	 * @param     Category $category The object to use for branch search
 	 *
-	 * @return    CategoryQuery The current query, for fuid interface
+	 * @return    CategoryQuery The current query, for fluid interface
 	 */
 	public function branchOf($category)
 	{
@@ -969,7 +1106,7 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 *
 	 * @param     Category $category The object to use for child search
 	 *
-	 * @return    CategoryQuery The current query, for fuid interface
+	 * @return    CategoryQuery The current query, for fluid interface
 	 */
 	public function childrenOf($category)
 	{
@@ -985,7 +1122,7 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 * @param     Category $category The object to use for sibling search
 	 * @param      PropelPDO $con Connection to use.
 	 *
-	 * @return    CategoryQuery The current query, for fuid interface
+	 * @return    CategoryQuery The current query, for fluid interface
 	 */
 	public function siblingsOf($category, PropelPDO $con = null)
 	{
@@ -1004,7 +1141,7 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 *
 	 * @param     Category $category The object to use for ancestors search
 	 *
-	 * @return    CategoryQuery The current query, for fuid interface
+	 * @return    CategoryQuery The current query, for fluid interface
 	 */
 	public function ancestorsOf($category)
 	{
@@ -1020,7 +1157,7 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 *
 	 * @param     Category $category The object to use for roots search
 	 *
-	 * @return    CategoryQuery The current query, for fuid interface
+	 * @return    CategoryQuery The current query, for fluid interface
 	 */
 	public function rootsOf($category)
 	{
@@ -1035,7 +1172,7 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 *
 	 * @param     bool $reverse if true, reverses the order
 	 *
-	 * @return    CategoryQuery The current query, for fuid interface
+	 * @return    CategoryQuery The current query, for fluid interface
 	 */
 	public function orderByBranch($reverse = false)
 	{
@@ -1053,7 +1190,7 @@ abstract class BaseCategoryQuery extends ModelCriteria
 	 *
 	 * @param     bool $reverse if true, reverses the order
 	 *
-	 * @return    CategoryQuery The current query, for fuid interface
+	 * @return    CategoryQuery The current query, for fluid interface
 	 */
 	public function orderByLevel($reverse = false)
 	{

@@ -194,7 +194,7 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -228,8 +228,17 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -245,8 +254,19 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the affiliateId column
 	 * 
-	 * @param     int|array $affiliateid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByAffiliateid(1234); // WHERE affiliateId = 1234
+	 * $query->filterByAffiliateid(array(12, 34)); // WHERE affiliateId IN (12, 34)
+	 * $query->filterByAffiliateid(array('min' => 12)); // WHERE affiliateId > 12
+	 * </code>
+	 *
+	 * @see       filterByAffiliateRelatedByAffiliateid()
+	 *
+	 * @param     mixed $affiliateid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -276,8 +296,14 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the username column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByUsername('fooValue');   // WHERE username = 'fooValue'
+	 * $query->filterByUsername('%fooValue%'); // WHERE username LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $username The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -298,8 +324,14 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the password column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByPassword('fooValue');   // WHERE password = 'fooValue'
+	 * $query->filterByPassword('%fooValue%'); // WHERE password LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $password The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -320,8 +352,19 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the passwordUpdated column
 	 * 
-	 * @param     string|array $passwordupdated The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByPasswordupdated('2011-03-14'); // WHERE passwordUpdated = '2011-03-14'
+	 * $query->filterByPasswordupdated('now'); // WHERE passwordUpdated = '2011-03-14'
+	 * $query->filterByPasswordupdated(array('max' => 'yesterday')); // WHERE passwordUpdated > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $passwordupdated The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -351,8 +394,19 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the levelId column
 	 * 
-	 * @param     int|array $levelid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByLevelid(1234); // WHERE levelId = 1234
+	 * $query->filterByLevelid(array(12, 34)); // WHERE levelId IN (12, 34)
+	 * $query->filterByLevelid(array('min' => 12)); // WHERE levelId > 12
+	 * </code>
+	 *
+	 * @see       filterByAffiliateLevel()
+	 *
+	 * @param     mixed $levelid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -382,8 +436,19 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the lastLogin column
 	 * 
-	 * @param     string|array $lastlogin The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByLastlogin('2011-03-14'); // WHERE lastLogin = '2011-03-14'
+	 * $query->filterByLastlogin('now'); // WHERE lastLogin = '2011-03-14'
+	 * $query->filterByLastlogin(array('max' => 'yesterday')); // WHERE lastLogin > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $lastlogin The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -413,8 +478,14 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the timezone column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByTimezone('fooValue');   // WHERE timezone = 'fooValue'
+	 * $query->filterByTimezone('%fooValue%'); // WHERE timezone LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $timezone The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -435,8 +506,14 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the name column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+	 * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $name The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -457,8 +534,14 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the surname column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterBySurname('fooValue');   // WHERE surname = 'fooValue'
+	 * $query->filterBySurname('%fooValue%'); // WHERE surname LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $surname The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -479,8 +562,14 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the mailAddress column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByMailaddress('fooValue');   // WHERE mailAddress = 'fooValue'
+	 * $query->filterByMailaddress('%fooValue%'); // WHERE mailAddress LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $mailaddress The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -501,8 +590,14 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the mailAddressAlt column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByMailaddressalt('fooValue');   // WHERE mailAddressAlt = 'fooValue'
+	 * $query->filterByMailaddressalt('%fooValue%'); // WHERE mailAddressAlt LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $mailaddressalt The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -523,8 +618,14 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the recoveryHash column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByRecoveryhash('fooValue');   // WHERE recoveryHash = 'fooValue'
+	 * $query->filterByRecoveryhash('%fooValue%'); // WHERE recoveryHash LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $recoveryhash The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -545,8 +646,19 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the recoveryHashCreatedOn column
 	 * 
-	 * @param     string|array $recoveryhashcreatedon The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByRecoveryhashcreatedon('2011-03-14'); // WHERE recoveryHashCreatedOn = '2011-03-14'
+	 * $query->filterByRecoveryhashcreatedon('now'); // WHERE recoveryHashCreatedOn = '2011-03-14'
+	 * $query->filterByRecoveryhashcreatedon(array('max' => 'yesterday')); // WHERE recoveryHashCreatedOn > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $recoveryhashcreatedon The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -576,8 +688,19 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the deleted_at column
 	 * 
-	 * @param     string|array $deletedAt The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByDeletedAt('2011-03-14'); // WHERE deleted_at = '2011-03-14'
+	 * $query->filterByDeletedAt('now'); // WHERE deleted_at = '2011-03-14'
+	 * $query->filterByDeletedAt(array('max' => 'yesterday')); // WHERE deleted_at > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $deletedAt The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -607,8 +730,19 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the created_at column
 	 * 
-	 * @param     string|array $createdAt The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+	 * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+	 * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $createdAt The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -638,8 +772,19 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the updated_at column
 	 * 
-	 * @param     string|array $updatedAt The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
+	 * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
+	 * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $updatedAt The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
@@ -669,15 +814,25 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related AffiliateLevel object
 	 *
-	 * @param     AffiliateLevel $affiliateLevel  the related object to use as filter
+	 * @param     AffiliateLevel|PropelCollection $affiliateLevel The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
 	 */
 	public function filterByAffiliateLevel($affiliateLevel, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateUserPeer::LEVELID, $affiliateLevel->getId(), $comparison);
+		if ($affiliateLevel instanceof AffiliateLevel) {
+			return $this
+				->addUsingAlias(AffiliateUserPeer::LEVELID, $affiliateLevel->getId(), $comparison);
+		} elseif ($affiliateLevel instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(AffiliateUserPeer::LEVELID, $affiliateLevel->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByAffiliateLevel() only accepts arguments of type AffiliateLevel or PropelCollection');
+		}
 	}
 
 	/**
@@ -733,15 +888,25 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Affiliate object
 	 *
-	 * @param     Affiliate $affiliate  the related object to use as filter
+	 * @param     Affiliate|PropelCollection $affiliate The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserQuery The current query, for fluid interface
 	 */
 	public function filterByAffiliateRelatedByAffiliateid($affiliate, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateUserPeer::AFFILIATEID, $affiliate->getId(), $comparison);
+		if ($affiliate instanceof Affiliate) {
+			return $this
+				->addUsingAlias(AffiliateUserPeer::AFFILIATEID, $affiliate->getId(), $comparison);
+		} elseif ($affiliate instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(AffiliateUserPeer::AFFILIATEID, $affiliate->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByAffiliateRelatedByAffiliateid() only accepts arguments of type Affiliate or PropelCollection');
+		}
 	}
 
 	/**
@@ -804,8 +969,17 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	 */
 	public function filterByAffiliateRelatedByOwnerid($affiliate, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateUserPeer::ID, $affiliate->getOwnerid(), $comparison);
+		if ($affiliate instanceof Affiliate) {
+			return $this
+				->addUsingAlias(AffiliateUserPeer::ID, $affiliate->getOwnerid(), $comparison);
+		} elseif ($affiliate instanceof PropelCollection) {
+			return $this
+				->useAffiliateRelatedByOwneridQuery()
+					->filterByPrimaryKeys($affiliate->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByAffiliateRelatedByOwnerid() only accepts arguments of type Affiliate or PropelCollection');
+		}
 	}
 
 	/**
@@ -868,8 +1042,17 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	 */
 	public function filterByAffiliateUserGroup($affiliateUserGroup, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateUserPeer::ID, $affiliateUserGroup->getUserid(), $comparison);
+		if ($affiliateUserGroup instanceof AffiliateUserGroup) {
+			return $this
+				->addUsingAlias(AffiliateUserPeer::ID, $affiliateUserGroup->getUserid(), $comparison);
+		} elseif ($affiliateUserGroup instanceof PropelCollection) {
+			return $this
+				->useAffiliateUserGroupQuery()
+					->filterByPrimaryKeys($affiliateUserGroup->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByAffiliateUserGroup() only accepts arguments of type AffiliateUserGroup or PropelCollection');
+		}
 	}
 
 	/**
@@ -932,8 +1115,17 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	 */
 	public function filterByOrder($order, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateUserPeer::ID, $order->getUserid(), $comparison);
+		if ($order instanceof Order) {
+			return $this
+				->addUsingAlias(AffiliateUserPeer::ID, $order->getUserid(), $comparison);
+		} elseif ($order instanceof PropelCollection) {
+			return $this
+				->useOrderQuery()
+					->filterByPrimaryKeys($order->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByOrder() only accepts arguments of type Order or PropelCollection');
+		}
 	}
 
 	/**
@@ -996,8 +1188,17 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	 */
 	public function filterByOrderStateChange($orderStateChange, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateUserPeer::ID, $orderStateChange->getUserid(), $comparison);
+		if ($orderStateChange instanceof OrderStateChange) {
+			return $this
+				->addUsingAlias(AffiliateUserPeer::ID, $orderStateChange->getUserid(), $comparison);
+		} elseif ($orderStateChange instanceof PropelCollection) {
+			return $this
+				->useOrderStateChangeQuery()
+					->filterByPrimaryKeys($orderStateChange->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByOrderStateChange() only accepts arguments of type OrderStateChange or PropelCollection');
+		}
 	}
 
 	/**
@@ -1060,8 +1261,17 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	 */
 	public function filterByOrderTemplate($orderTemplate, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateUserPeer::ID, $orderTemplate->getUserid(), $comparison);
+		if ($orderTemplate instanceof OrderTemplate) {
+			return $this
+				->addUsingAlias(AffiliateUserPeer::ID, $orderTemplate->getUserid(), $comparison);
+		} elseif ($orderTemplate instanceof PropelCollection) {
+			return $this
+				->useOrderTemplateQuery()
+					->filterByPrimaryKeys($orderTemplate->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByOrderTemplate() only accepts arguments of type OrderTemplate or PropelCollection');
+		}
 	}
 
 	/**
@@ -1189,7 +1399,7 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	 * 
 	 * @see AffiliateUserQuery::disableSoftDelete() to disable the filter for more than one query
 	 *
-	 * @return AffiliateUserQuery The current query, for fuid interface
+	 * @return AffiliateUserQuery The current query, for fluid interface
 	 */
 	public function includeDeleted()
 	{
@@ -1277,7 +1487,7 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	 *
 	 * @param      int $nbDays Maximum age of the latest update in days
 	 *
-	 * @return     AffiliateUserQuery The current query, for fuid interface
+	 * @return     AffiliateUserQuery The current query, for fluid interface
 	 */
 	public function recentlyUpdated($nbDays = 7)
 	{
@@ -1289,7 +1499,7 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	 *
 	 * @param      int $nbDays Maximum age of in days
 	 *
-	 * @return     AffiliateUserQuery The current query, for fuid interface
+	 * @return     AffiliateUserQuery The current query, for fluid interface
 	 */
 	public function recentlyCreated($nbDays = 7)
 	{
@@ -1299,7 +1509,7 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Order by update date desc
 	 *
-	 * @return     AffiliateUserQuery The current query, for fuid interface
+	 * @return     AffiliateUserQuery The current query, for fluid interface
 	 */
 	public function lastUpdatedFirst()
 	{
@@ -1309,7 +1519,7 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Order by update date asc
 	 *
-	 * @return     AffiliateUserQuery The current query, for fuid interface
+	 * @return     AffiliateUserQuery The current query, for fluid interface
 	 */
 	public function firstUpdatedFirst()
 	{
@@ -1319,7 +1529,7 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Order by create date desc
 	 *
-	 * @return     AffiliateUserQuery The current query, for fuid interface
+	 * @return     AffiliateUserQuery The current query, for fluid interface
 	 */
 	public function lastCreatedFirst()
 	{
@@ -1329,7 +1539,7 @@ abstract class BaseAffiliateUserQuery extends ModelCriteria
 	/**
 	 * Order by create date asc
 	 *
-	 * @return     AffiliateUserQuery The current query, for fuid interface
+	 * @return     AffiliateUserQuery The current query, for fluid interface
 	 */
 	public function firstCreatedFirst()
 	{
