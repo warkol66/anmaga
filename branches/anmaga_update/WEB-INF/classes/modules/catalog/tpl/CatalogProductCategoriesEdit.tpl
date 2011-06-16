@@ -18,8 +18,8 @@
 				<textarea name="category[description]" cols="45" rows="5" wrap="virtual" id="description">|-$category->getdescription()-|</textarea>
 			</p>
 			|-if $action eq "edit"-|
-			<div>
-				<img src="Main.php?do=productCategoriesGetImage&id=|-$category->getId()-|" alt="|-$category->getname()-|" />
+			<label for="actualImage">Imagen</label> 
+		<div id="actualImage"> <img src="Main.php?do=catalogProductCategoriesGetImage&id=|-$category->getId()-|" alt="|-$category->getname()-|" />
 			</div>
 			|-/if-|
 			<p>
@@ -30,8 +30,8 @@
 				|-if $action eq "edit"-|
 				<input type="hidden" name="id" id="id" value="|-$category->getid()-|" />
 				|-/if-|
-				<input type="hidden" name="category[parentId]" id="parentCategoryId" value="|-$parentCategoryId-|" />
 				<input type="hidden" name="category[module]" id="module" value="|-$category->getModule()-|" />
+				<input type="hidden" name="category[scope]" id="scope" value="|-$category->getScope()-|" />
 				<input type="hidden" name="action" id="action" value="|-$action-|" />
 				<input type="hidden" name="do" id="do" value="catalogProductCategoriesDoEdit" />
 				<input type="submit" id="button_edit_productcategory" name="button_edit_productcategory" title="Aceptar" value="Aceptar" class="button" />
