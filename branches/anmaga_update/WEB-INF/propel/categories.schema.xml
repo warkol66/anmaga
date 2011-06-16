@@ -3,7 +3,7 @@
 	<table name="categories_category" phpName="Category" description="Categorias">
   
     <column name="id" required="true" primaryKey="true" type="INTEGER" autoIncrement="true" description="Id de la categoria" />
-    <column name="name" size="255" type="VARCHAR" required="true" description="Category name" />
+    <column name="name" size="255" type="VARCHAR" required="true" description="Category name" primaryString="true" />
     <column name="order" type="INTEGER" size="4" description="Orden" />
     <column name="module" size="255" type="VARCHAR" description="Module name if it is for a module" default="" />
     <column name="active" type="BOOLEAN" required="true" default="1" description="Is category active?" />

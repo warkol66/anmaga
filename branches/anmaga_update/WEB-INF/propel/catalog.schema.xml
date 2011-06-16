@@ -61,6 +61,10 @@
 		<column name="active" required="true" default="true"  type="BOOLEAN"  description="Is product active?"/>
 		<column name="orderCode" size="255" type="VARCHAR" description="Codigo de ordenamiento del producto" />
 		<column name="salesUnit" type="INTEGER" default="1" description="Multiplo de la unidad de medida en que se puede ordenar el producto" />
+		<column name="stockAlert" type="INTEGER" description="Stock alert" />
+		<column name="stock01" type="INTEGER" description="Stock 01" />
+		<column name="stock02" type="INTEGER" description="Stock 02" />
+		<column name="stock03" type="INTEGER" description="Stock 03" />
 
 		<unique>
 			<unique-column name="code" />
