@@ -6,6 +6,27 @@
 		<COL>
 		<COL id="description" class="colCollapse">
 		<thead> 
+		<tr>
+			<td colspan="7" class="tdSearch"><form action="Main.php" method="get">
+			<p>
+			<label for="filters[categoryId]">Ver</label> 
+				<select name="filters[categoryId]" id="categoryId" onchange="this.form.submit();">
+					<option value="all" |-"all"|selected:$filters.categoryId-|>Todas</option> 
+						|-include file="CatalogProductCategoriesIncludeOptions.tpl" productCategories=$productCategories-|
+					<option value="" |-""|selected:$filters.categoryId-|>Sin categoría</option> 
+				</select> </p>
+<a href="javascript:void(null);" onClick='switch_vis("divSearch");' class="tdTitSearch">Búsqueda avanzada</a><div id="divSearch" style="display:|-if $filters.searchString ne ""-|block|-else-|none|-/if-|;">
+		 
+		<p><label for="filters[searchString]">Texto</label>
+		<input name="filters[searchString]" type="text" value="|-$filters.searchString-|" size="50" />
+		</p>
+		<input type="hidden" name="do" value="catalogShow" />
+		<input name="filter" type="submit" value="Aplicar filtros" />
+		|-if $filters|@count gt 0-|
+			<input type="button" value="Quitar Filtros" onClick="location.href='Main.php?do=catalogShow'" />
+	|-/if-|</div>
+	</form></td>
+		</tr> 
 	|-if $pager->getLastPage() gt 1-|
 		<tr>
 			<td colspan="7" class="pages">|-include file="PaginateNumberedInclude.tpl"-|</td>

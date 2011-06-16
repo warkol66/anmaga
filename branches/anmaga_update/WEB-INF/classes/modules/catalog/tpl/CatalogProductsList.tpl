@@ -2,9 +2,16 @@
 	<h1>Administrar productos del sistema </h1>
 	<p>A continuación podrá editar los productos disponibles en el sistema </p>
 <div id="div_products"> 
-|-if $message eq "ok"-|<span class="message_ok">Producto guardado correctamente</span>|-/if-|
-|-if $message eq "deleted_ok"-|<span class="message_ok">Producto eliminado correctamente</span>|-/if-|
-	<div> 
+|-if $message eq "ok"-|
+	<div class="successMessage">Producto guardado correctamente</div>
+|-elseif $message eq "deleted_ok"-|
+	<div class="successMessage">Producto eliminado correctamente</div>
+|-/if-|
+	<div style="float:right;"><a href="Main.php?do=catalogProductsList&amp;csv=1" class="textLinkButton">Exportar Productos a CSV&nbsp;&nbsp;&nbsp;<img src="images/clear.png" class="icon iconDownload" /></a></div>
+	<table width="100%" border="0" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products"> 
+		<thead> 
+			<tr>
+				<td colspan="7" class="tdSearch">	<div> 
 		<form action="Main.php" method="get"> 
 			<p> 
 |-if $productCategories|@count neq 0-|
@@ -24,16 +31,23 @@
 			<p> 
 				<label>Código: </label>
 				<input type="text" name="filters[code]" value="|-$filters.code-|" /> 
+&nbsp;&nbsp;&nbsp;
+				<label>Texto: </label>
+				<input type="text" name="filters[searchString]" value="|-$filters.searchString-|" /> 
 			</p> 
 			<p> 
 				<input type="hidden" name="do" value="catalogProductsList" /> 
-				<input type="submit" class="button" value="Buscar" /> <a href="Main.php?do=catalogProductsList">Eliminar Filtros</a>
+				<input type="submit" value="Buscar" />
+				<input type="button" value="Eliminar Filtros" onClick="location.href='Main.php?do=catalogProductsList'"/>
 			</p> 
 		</form> 
-  </div> 
-	<h3><a href="Main.php?do=catalogProductsList&amp;csv=1">Exportar Productos a CSV</a></h3> 
-	<table width="100%" border="0" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products"> 
-		<thead> 
+  </div> </td>
+			</tr>
+		|-if isset($pager) && ($pager->getTotalPages() gt 1)-|
+  		<tr> 
+  			<td colspan="7" class="pages">|-include file="PaginateNumberedInclude.tpl"-|</td> 
+  		</tr> 
+		|-/if-|
 			<tr>
 				<th colspan="7"><div class="rightLink"><a href="Main.php?do=catalogProductsEdit" class="addLink">Agregar Producto</a></div></th>
 			</tr>
@@ -69,7 +83,7 @@
 		|-/foreach-|
 		|-if isset($pager) && ($pager->getTotalPages() gt 1)-|
   		<tr> 
-  			<td colspan="7" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
+  			<td colspan="7" class="pages">|-include file="PaginateNumberedInclude.tpl"-|</td> 
   		</tr> 
 		|-/if-|
     <tr>

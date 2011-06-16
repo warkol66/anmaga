@@ -39,35 +39,28 @@ class CatalogShowAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "Catalog";
+		$module = "catalog";
 	  $smarty->assign("module",$module);
+
 		$productCategories = CategoryPeer::getAllByModule("catalog");
-		$smarty->assign("productCategories",$productCategories);
+    $smarty->assign("productCategories",$productCategories);
+
+
 		$productPeer = new ProductPeer;
 			
-		if (Common::isAffiliatedUser() && AffiliateProductPeer::affiliateHasPriceList(Common::getAffiliatedId())) {
-				//CASO ESPECIAL DE LISTA DE PRECIOS SEPARADA POR AFILIADO
-        $productPeer->setSearchAffiliateId(Common::getAffiliatedId());
-		}
-    
-    if (!empty($_GET["categoryId"])) {
-      $category = CategoryPeer::get($_GET["categoryId"]);
-      $smarty->assign("category",$category);
-      $productPeer->setSearchCategoryId($_GET["categoryId"]);
-      $smarty->assign("filters",$filters = array(categoryId => $_GET["categoryId"]));
-    } 
-    else {
-      // vamos a buscar las que no tienen categorias.
-      $productPeer->setSearchCategoryId(null);
-    }
-    
+		if (Common::isAffiliatedUser() && AffiliateProductPeer::affiliateHasPriceList(Common::getAffiliatedId()))
+	    $productPeer->setSearchAffiliateId(Common::getAffiliatedId());
+
+    $filters = $_GET['filters'];
+    $this->applyFilters($productPeer, $filters, $smarty);
+
     $pager = $productPeer->getAllPaginatedFiltered($_GET["page"]);
 		$products = $pager->getResult();
 		$smarty->assign("pager",$pager);
 		$url = "Main.php?do=catalogShow";
-		if (!empty($category))
-			$url .= "&categoryId=".$category->getId();
-		$smarty->assign("url",$url);
+    foreach ($filters as $key => $value)
+      $url .= "&filters[$key]=$value";
+    $smarty->assign("url",$url);
 		$smarty->assign("products",$products);
 	  $smarty->assign("message",$_GET["message"]);	
 		

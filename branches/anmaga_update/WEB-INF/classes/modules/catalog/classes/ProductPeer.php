@@ -12,6 +12,7 @@ class ProductPeer extends BaseProductPeer {
 	private $searchPriceFrom;
 	private $searchPriceTo;
 	private $searchCode;
+	private $searchString;
   
   function __construct() {
     $this->searchCategoryId = 'all';
@@ -22,7 +23,8 @@ class ProductPeer extends BaseProductPeer {
     "affiliateId"=>"setSearchAffiliateId",
     "priceFrom"=>"setSearchPriceFrom",
     "priceTo"=>"setSearchPriceTo",
-    "code"=>"setSearchCode"
+    "code"=>"setSearchCode",
+    "searchString"=>"setSearchString"
   );
   
   function setSearchCategoryId($categoryId) {
@@ -45,6 +47,10 @@ class ProductPeer extends BaseProductPeer {
 
   function setSearchCode($productCode) {
     $this->searchCode = $productCode;
+  }
+
+  function setSearchString($productString) {
+    $this->searchString = $productString;
   }
 
   /**
@@ -119,7 +125,8 @@ class ProductPeer extends BaseProductPeer {
 	function createImages($image,$name) {		
 		
 		if (ProductPeer::checkImage($image)) {
-			$uploadFile = 'WEB-INF/products/' . $name;
+			$uploadFile = 'WEB-INF/products/' . $name . ".jpg";
+			$thumbnail = 'WEB-INF/products/' . $name . "_t0.jpg";
 			move_uploaded_file($image['tmp_name'], $uploadFile);	
 		
 			global $system;	
@@ -160,7 +167,7 @@ class ProductPeer extends BaseProductPeer {
 			
 			imagecopyresampled($tn, $newImage, 0, 0, 0, 0, $newWidth, $newHeight, $actualWidth, $actualHeight);
 			
-			imagejpeg($tn, $uploadFile."_t0", 100); 	
+			imagejpeg($tn, $thumbnail, 100); 	
 		}
 	
 	}
@@ -194,29 +201,17 @@ class ProductPeer extends BaseProductPeer {
     // Por defecto vamos a activar el producto al actualizarlo.
     if (!isset($params['active']))
       $params['active'] = true;
+
+		$productObj = ProductPeer::get($id);
+		$productObje = Common::setObjectFromParams($productObj,$params);
+    $image = $params['image'];
+		if (!empty($image['tmp_name']))
+			ProductPeer::createImages($image,$productObj->getCode());
+
     try {
-  		$productObj = ProductPeer::get($id);
-      foreach ($params as $key => $value) {
-        $setMethod = "set".$key;
-        if ( method_exists($productObj,$setMethod) ) {          
-          if (!empty($value) || $value == "0")
-            $productObj->$setMethod($value);
-          else
-            $productObj->$setMethod(null);
-        }
-      }
-      $image = $params['image'];
-  		if (!empty($image['tmp_name'])) {
-  			ProductPeer::createImages($image,$productObj->getId());
-  		}
-      if (!empty($params['categoryId'])) {
-        $category = CategoryQuery::create()->findPk($params['categoryId']);
-        if (!empty($category))
-          $productObj->addCategory($category);
-      }
   		$productObj->save();
   		return true;
-    } catch (PropelException $e) {
+    } catch (PropelException $exp) {
       if (ConfigModule::get("global","showPropelExceptions"))
         print_r($exp->getMessage());
       return false;
@@ -441,40 +436,6 @@ class ProductPeer extends BaseProductPeer {
   
 
 
-  /**
-  * Obtiene todos los productos paginados.
-	*
-	*	@return array Informacion sobre los productos
-  */
-	function getAllPaginatedFiltered($page=1,$perPage=-1) {
-		if ($perPage == -1)
-			$perPage = 	Common::getRowsPerPage();
-		if (empty($page))
-			$page = 1;
-		$cond = new ProductQuery();
-		$cond->filterByActive(true);
-		
-    //print_r($this->searchCategoryId);die;
-    if ($this->searchCategoryId != 'all')
-			$cond->filterByCategoryId($this->searchCategoryId);
-      
-    if (!empty($this->searchAffiliateId))
-      $cond->filterByAffiliateId($this->searchAffiliateId);
-
-    if (!empty($this->searchCode))
-			$cond->filterByCode("%".$this->searchCode."%",Criteria::LIKE);
-   	
-    if ( !empty($this->searchPriceFrom) ) {
-			$cond->filterByPrice($this->searchPriceFrom, Criteria::GREATER_EQUAL);
-		}
-    if ( !empty($this->searchPriceTo) ) {
-    	$cond->filterByPrice($this->searchPriceTo, Criteria::LESS_EQUAL);
-    }
-
-		$pager = new PropelPager($cond,"ProductPeer", "doSelect",$page,$perPage);
-		return $pager;
-	 }
-	
 	/**
 	* Obtiene todos los productos que cuelgan de alguna categoria.
 	*
@@ -492,5 +453,64 @@ class ProductPeer extends BaseProductPeer {
                                  ->where('ProductCategory.Categoryid IS NULL')
                                  ->find();
   }
+
+ /**
+	 * Retorna el criteria generado a partir de lso parï¿½metros de bï¿½squeda
+	 *
+	 * @return criteria $criteria Criteria con parï¿½metros de bï¿½squeda
+	 */
+	function getSearchCriteria(){
+		$criteria = new ProductQuery();
+		$criteria->setIgnoreCase(true);
+		$criteria->addAscendingOrderByColumn(ProductPeer::CODE);
+		$criteria->filterByActive(true);
+
+    if ($this->searchCategoryId != 'all')
+			$criteria->filterByCategoryId($this->searchCategoryId);
+      
+    if (!empty($this->searchAffiliateId))
+      $criteria->filterByAffiliateId($this->searchAffiliateId);
+
+    if (!empty($this->searchCode))
+			$criteria->filterByCode("%".$this->searchCode."%",Criteria::LIKE);
+
+    if (!empty($this->searchPriceFrom))
+			$criteria->filterByPrice($this->searchPriceFrom, Criteria::GREATER_EQUAL);
+
+    if (!empty($this->searchPriceTo))
+    	$criteria->filterByPrice($this->searchPriceTo, Criteria::LESS_EQUAL);
+
+    if (!empty($this->searchCode))
+			$criteria->filterByCode("%".$this->searchCode."%",Criteria::LIKE);
+
+    if (!empty($this->searchString)) {
+			$criteria->add(ProductPeer::NAME,"%" . $this->searchString . "%",Criteria::LIKE);
+			$criterionDescription = $criteria->getNewCriterion(ProductPeer::DESCRIPTION,"%" . $this->searchString . "%",Criteria::LIKE);
+			$criteria->addOr($criterionDescription);
+			$criterionCode = $criteria->getNewCriterion(ProductPeer::CODE,"%" . $this->searchString . "%",Criteria::LIKE);
+			$criteria->addOr($criterionCode);
+		}
+
+	return $criteria;
+	}
+
+  /**
+  * Obtiene todos los productos paginados.
+	*
+	*	@return array Informacion sobre los productos
+  */
+	function getAllPaginatedFiltered($page=1,$perPage=-1) {
+		if ($perPage == -1)
+			$perPage = 	Common::getRowsPerPage();
+		if (empty($page))
+			$page = 1;
+
+		$criteria = $this->getSearchCriteria();
+			
+		$pager = new PropelPager($criteria,"ProductPeer", "doSelect",$page,$perPage);
+		return $pager;
+	 }
+	
+
   
 }

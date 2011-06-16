@@ -33,7 +33,7 @@
 			</p> 
 		<br clear="all">
 		|-if $action eq 'edit'-|
-		<div> <img src="Main.php?do=catalogProductsGetImage&id=|-$product->getId()-|" alt="|-$product->getname()|escape-|" /> </div> 
+		<div> <img src="Main.php?do=catalogProductsGetImage&code=|-$product->getCode()-|" alt="|-$product->getname()|escape-|" /> </div> 
 		|-/if-|
 		<p> 
 			<label for="image">Imagen</label> 
@@ -73,6 +73,27 @@
 		<p> 
 			<label for="salesUnit">Unidad de Venta</label> 
 			<input type="text" name="product[salesUnit]" id="salesUnit" value="|-$product->getSalesUnit()-|" /> 
+		</p> 		
+		<p> 
+			<label for="stock01">Stock 01</label> 
+			<input type="text" name="product[stock01]" id="stock01" value="|-$product->getStock01()-|" /> 
+		</p> 		
+		<p> 
+			<label for="stock02">Stock 02</label> 
+			<input type="text" name="product[stock02]" id="stock02" value="|-$product->getStock02()-|" /> 
+		</p> 		
+		<p> 
+			<label for="stock03">Stock 03</label> 
+			<input type="text" name="product[stock03]" id="stock03" value="|-$product->getStock03()-|" /> 
+		</p> 		
+		<p> 
+			<label for="stockAlert">Alerta Stock</label> 
+			<select name="product[stockAlert]" id="stockAlert"> 
+				<option value="">Seleccionar</option> 
+				<option value="1"|-$product->getStockAlert()|selected:1-|>Bajo</option> 
+				<option value="2"|-$product->getStockAlert()|selected:2-|>Medio</option> 
+				<option value="3"|-$product->getStockAlert()|selected:3-|>alto</option> 
+			</select> 
 		</p> 		
 		<br clear="all">
 		<p> |-if $action eq 'edit'-|
