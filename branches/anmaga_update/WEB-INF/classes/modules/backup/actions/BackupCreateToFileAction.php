@@ -1,15 +1,17 @@
 <?php
 /** 
- * BackupDeleteAction
+ * BackupCreateToFileAction
  *
  * @package backup 
  */
 
+set_time_limit(360);
+require_once("BaseAction.php");
 require_once("BackupPeer.php");
 
-class BackupDeleteAction extends BaseAction {
+class BackupCreateToFileAction extends BaseAction {
 
-	function BackupDeleteAction() {
+	function BackupCreateToFileAction() {
 		;
 	}
 
@@ -45,16 +47,38 @@ class BackupDeleteAction extends BaseAction {
 		$module = "Backup";
 		$smarty->assign("module",$module);
 
-		$backupPeer = new BackupPeer();
-
-		if ($backupPeer->deleteBackup($_POST['filename'])) {
-			Common::doLog('success');
-			return $mapping->findForwardConfig('success');
-		}
-		else {
-			Common::doLog('failure');
+		if (empty($_GET['mode'])) {
 			return $mapping->findForwardConfig('failure');
+			Common::doLog('failure');			
 		}
+
+		$backupPeer = new BackupPeer();
+		
+		if ($_GET['mode'] == 'data') {
+		
+			$content = $backupPeer->createDataBackupFile();
+		}
+
+		if ($_GET['mode'] == 'complete') {
+		
+			$content = $backupPeer->createCompleteBackupFile();
+		}		
+
+		require_once('TimezonePeer.php');
+		
+		$timezonePeer = new TimezonePeer();
+		$timestamp = $timezonePeer->getServerTimeOnGMT0();
+		$datetime = date('Y-m-d  H:i:s',$timestamp);
+		$currentDatetime = Common::getDatetimeOnTimezone($datetime);
+		
+		$filename = Common::getSiteShortName() . '_' . date('Ymd_His',strtotime($currentDatetime)) . '.zip'; 
+
+		header("Content-type: application/zip");		
+		header('Content-Disposition: attachment; filename="'.$filename.'"');
+		echo $content;
+
+		die;
+
 	}
 
 }
