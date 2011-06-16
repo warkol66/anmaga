@@ -1,15 +1,16 @@
 <?php
 /** 
- * BackupDeleteAction
+ * BackupRestoreFromFileAction
  *
  * @package backup 
  */
 
+require_once("BaseAction.php");
 require_once("BackupPeer.php");
 
-class BackupDeleteAction extends BaseAction {
+class BackupRestoreFromFileAction extends BaseAction {
 
-	function BackupDeleteAction() {
+	function BackupRestoreFromFileAction() {
 		;
 	}
 
@@ -47,12 +48,13 @@ class BackupDeleteAction extends BaseAction {
 
 		$backupPeer = new BackupPeer();
 
-		if ($backupPeer->deleteBackup($_POST['filename'])) {
-			Common::doLog('success');
+		$filename = $_FILES["backup"]['tmp_name'];
+		if ($backupPeer->restoreBackup($filename)) {
+			Common::doLog('success',$filename);
 			return $mapping->findForwardConfig('success');
 		}
 		else {
-			Common::doLog('failure');
+			Common::doLog('failure',$filename);
 			return $mapping->findForwardConfig('failure');
 		}
 	}
