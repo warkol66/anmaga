@@ -47,6 +47,10 @@ class ProductTableMap extends TableMap {
 		$this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, null, true);
 		$this->addColumn('ORDERCODE', 'Ordercode', 'VARCHAR', false, 255, null);
 		$this->addColumn('SALESUNIT', 'Salesunit', 'INTEGER', false, null, 1);
+		$this->addColumn('STOCKALERT', 'Stockalert', 'INTEGER', false, null, null);
+		$this->addColumn('STOCK01', 'Stock01', 'INTEGER', false, null, null);
+		$this->addColumn('STOCK02', 'Stock02', 'INTEGER', false, null, null);
+		$this->addColumn('STOCK03', 'Stock03', 'INTEGER', false, null, null);
 		// validators
 	} // initialize()
 

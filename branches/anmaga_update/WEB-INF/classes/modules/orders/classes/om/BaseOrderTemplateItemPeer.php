@@ -31,6 +31,9 @@ abstract class BaseOrderTemplateItemPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 5;
+
 	/** the column name for the ID field */
 	const ID = 'orders_orderTemplateItem.ID';
 
@@ -46,6 +49,9 @@ abstract class BaseOrderTemplateItemPeer {
 	/** the column name for the QUANTITY field */
 	const QUANTITY = 'orders_orderTemplateItem.QUANTITY';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of OrderTemplateItem objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -61,7 +67,7 @@ abstract class BaseOrderTemplateItemPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Ordertemplateid', 'Productcode', 'Price', 'Quantity', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'ordertemplateid', 'productcode', 'price', 'quantity', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::ORDERTEMPLATEID, self::PRODUCTCODE, self::PRICE, self::QUANTITY, ),
@@ -76,7 +82,7 @@ abstract class BaseOrderTemplateItemPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Ordertemplateid' => 1, 'Productcode' => 2, 'Price' => 3, 'Quantity' => 4, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'ordertemplateid' => 1, 'productcode' => 2, 'price' => 3, 'quantity' => 4, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::ORDERTEMPLATEID => 1, self::PRODUCTCODE => 2, self::PRICE => 3, self::QUANTITY => 4, ),
@@ -285,7 +291,7 @@ abstract class BaseOrderTemplateItemPeer {
 	 * @param      OrderTemplateItem $value A OrderTemplateItem object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(OrderTemplateItem $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -440,7 +446,7 @@ abstract class BaseOrderTemplateItemPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + OrderTemplateItemPeer::NUM_COLUMNS;
+			$col = $startcol + OrderTemplateItemPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = OrderTemplateItemPeer::OM_CLASS;
 			$obj = new $cls();
@@ -569,7 +575,7 @@ abstract class BaseOrderTemplateItemPeer {
 		}
 
 		OrderTemplateItemPeer::addSelectColumns($criteria);
-		$startcol = (OrderTemplateItemPeer::NUM_COLUMNS - OrderTemplateItemPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = OrderTemplateItemPeer::NUM_HYDRATE_COLUMNS;
 		OrderTemplatePeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(OrderTemplateItemPeer::ORDERTEMPLATEID, OrderTemplatePeer::ID, $join_behavior);
@@ -635,7 +641,7 @@ abstract class BaseOrderTemplateItemPeer {
 		}
 
 		OrderTemplateItemPeer::addSelectColumns($criteria);
-		$startcol = (OrderTemplateItemPeer::NUM_COLUMNS - OrderTemplateItemPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = OrderTemplateItemPeer::NUM_HYDRATE_COLUMNS;
 		ProductPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTCODE, ProductPeer::CODE, $join_behavior);
@@ -753,13 +759,13 @@ abstract class BaseOrderTemplateItemPeer {
 		}
 
 		OrderTemplateItemPeer::addSelectColumns($criteria);
-		$startcol2 = (OrderTemplateItemPeer::NUM_COLUMNS - OrderTemplateItemPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = OrderTemplateItemPeer::NUM_HYDRATE_COLUMNS;
 
 		OrderTemplatePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (OrderTemplatePeer::NUM_COLUMNS - OrderTemplatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + OrderTemplatePeer::NUM_HYDRATE_COLUMNS;
 
 		ProductPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + ProductPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(OrderTemplateItemPeer::ORDERTEMPLATEID, OrderTemplatePeer::ID, $join_behavior);
 
@@ -947,10 +953,10 @@ abstract class BaseOrderTemplateItemPeer {
 		}
 
 		OrderTemplateItemPeer::addSelectColumns($criteria);
-		$startcol2 = (OrderTemplateItemPeer::NUM_COLUMNS - OrderTemplateItemPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = OrderTemplateItemPeer::NUM_HYDRATE_COLUMNS;
 
 		ProductPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + ProductPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(OrderTemplateItemPeer::PRODUCTCODE, ProductPeer::CODE, $join_behavior);
 
@@ -1020,10 +1026,10 @@ abstract class BaseOrderTemplateItemPeer {
 		}
 
 		OrderTemplateItemPeer::addSelectColumns($criteria);
-		$startcol2 = (OrderTemplateItemPeer::NUM_COLUMNS - OrderTemplateItemPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = OrderTemplateItemPeer::NUM_HYDRATE_COLUMNS;
 
 		OrderTemplatePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (OrderTemplatePeer::NUM_COLUMNS - OrderTemplatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + OrderTemplatePeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(OrderTemplateItemPeer::ORDERTEMPLATEID, OrderTemplatePeer::ID, $join_behavior);
 
@@ -1291,7 +1297,7 @@ abstract class BaseOrderTemplateItemPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(OrderTemplateItem $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

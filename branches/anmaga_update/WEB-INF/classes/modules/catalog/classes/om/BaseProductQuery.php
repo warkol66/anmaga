@@ -16,6 +16,10 @@
  * @method     ProductQuery orderByActive($order = Criteria::ASC) Order by the active column
  * @method     ProductQuery orderByOrdercode($order = Criteria::ASC) Order by the orderCode column
  * @method     ProductQuery orderBySalesunit($order = Criteria::ASC) Order by the salesUnit column
+ * @method     ProductQuery orderByStockalert($order = Criteria::ASC) Order by the stockAlert column
+ * @method     ProductQuery orderByStock01($order = Criteria::ASC) Order by the stock01 column
+ * @method     ProductQuery orderByStock02($order = Criteria::ASC) Order by the stock02 column
+ * @method     ProductQuery orderByStock03($order = Criteria::ASC) Order by the stock03 column
  *
  * @method     ProductQuery groupById() Group by the id column
  * @method     ProductQuery groupByCode() Group by the code column
@@ -27,6 +31,10 @@
  * @method     ProductQuery groupByActive() Group by the active column
  * @method     ProductQuery groupByOrdercode() Group by the orderCode column
  * @method     ProductQuery groupBySalesunit() Group by the salesUnit column
+ * @method     ProductQuery groupByStockalert() Group by the stockAlert column
+ * @method     ProductQuery groupByStock01() Group by the stock01 column
+ * @method     ProductQuery groupByStock02() Group by the stock02 column
+ * @method     ProductQuery groupByStock03() Group by the stock03 column
  *
  * @method     ProductQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ProductQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -69,6 +77,10 @@
  * @method     Product findOneByActive(boolean $active) Return the first Product filtered by the active column
  * @method     Product findOneByOrdercode(string $orderCode) Return the first Product filtered by the orderCode column
  * @method     Product findOneBySalesunit(int $salesUnit) Return the first Product filtered by the salesUnit column
+ * @method     Product findOneByStockalert(int $stockAlert) Return the first Product filtered by the stockAlert column
+ * @method     Product findOneByStock01(int $stock01) Return the first Product filtered by the stock01 column
+ * @method     Product findOneByStock02(int $stock02) Return the first Product filtered by the stock02 column
+ * @method     Product findOneByStock03(int $stock03) Return the first Product filtered by the stock03 column
  *
  * @method     array findById(int $id) Return Product objects filtered by the id column
  * @method     array findByCode(string $code) Return Product objects filtered by the code column
@@ -80,6 +92,10 @@
  * @method     array findByActive(boolean $active) Return Product objects filtered by the active column
  * @method     array findByOrdercode(string $orderCode) Return Product objects filtered by the orderCode column
  * @method     array findBySalesunit(int $salesUnit) Return Product objects filtered by the salesUnit column
+ * @method     array findByStockalert(int $stockAlert) Return Product objects filtered by the stockAlert column
+ * @method     array findByStock01(int $stock01) Return Product objects filtered by the stock01 column
+ * @method     array findByStock02(int $stock02) Return Product objects filtered by the stock02 column
+ * @method     array findByStock03(int $stock03) Return Product objects filtered by the stock03 column
  *
  * @package    propel.generator.catalog.classes.om
  */
@@ -158,7 +174,7 @@ abstract class BaseProductQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -192,8 +208,17 @@ abstract class BaseProductQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
@@ -209,8 +234,14 @@ abstract class BaseProductQuery extends ModelCriteria
 	/**
 	 * Filter the query on the code column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByCode('fooValue');   // WHERE code = 'fooValue'
+	 * $query->filterByCode('%fooValue%'); // WHERE code LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $code The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
@@ -231,8 +262,14 @@ abstract class BaseProductQuery extends ModelCriteria
 	/**
 	 * Filter the query on the name column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+	 * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $name The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
@@ -253,8 +290,14 @@ abstract class BaseProductQuery extends ModelCriteria
 	/**
 	 * Filter the query on the description column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
+	 * $query->filterByDescription('%fooValue%'); // WHERE description LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $description The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
@@ -275,8 +318,17 @@ abstract class BaseProductQuery extends ModelCriteria
 	/**
 	 * Filter the query on the price column
 	 * 
-	 * @param     double|array $price The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByPrice(1234); // WHERE price = 1234
+	 * $query->filterByPrice(array(12, 34)); // WHERE price IN (12, 34)
+	 * $query->filterByPrice(array('min' => 12)); // WHERE price > 12
+	 * </code>
+	 *
+	 * @param     mixed $price The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
@@ -306,8 +358,19 @@ abstract class BaseProductQuery extends ModelCriteria
 	/**
 	 * Filter the query on the unitId column
 	 * 
-	 * @param     int|array $unitid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByUnitid(1234); // WHERE unitId = 1234
+	 * $query->filterByUnitid(array(12, 34)); // WHERE unitId IN (12, 34)
+	 * $query->filterByUnitid(array('min' => 12)); // WHERE unitId > 12
+	 * </code>
+	 *
+	 * @see       filterByUnit()
+	 *
+	 * @param     mixed $unitid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
@@ -337,8 +400,19 @@ abstract class BaseProductQuery extends ModelCriteria
 	/**
 	 * Filter the query on the measureUnitId column
 	 * 
-	 * @param     int|array $measureunitid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByMeasureunitid(1234); // WHERE measureUnitId = 1234
+	 * $query->filterByMeasureunitid(array(12, 34)); // WHERE measureUnitId IN (12, 34)
+	 * $query->filterByMeasureunitid(array('min' => 12)); // WHERE measureUnitId > 12
+	 * </code>
+	 *
+	 * @see       filterByMeasureUnit()
+	 *
+	 * @param     mixed $measureunitid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
@@ -368,8 +442,17 @@ abstract class BaseProductQuery extends ModelCriteria
 	/**
 	 * Filter the query on the active column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByActive(true); // WHERE active = true
+	 * $query->filterByActive('yes'); // WHERE active = true
+	 * </code>
+	 *
 	 * @param     boolean|string $active The value to use as filter.
-	 *            Accepts strings ('false', 'off', '-', 'no', 'n', and '0' are false, the rest is true)
+	 *              Non-boolean arguments are converted using the following rules:
+	 *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
@@ -385,8 +468,14 @@ abstract class BaseProductQuery extends ModelCriteria
 	/**
 	 * Filter the query on the orderCode column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByOrdercode('fooValue');   // WHERE orderCode = 'fooValue'
+	 * $query->filterByOrdercode('%fooValue%'); // WHERE orderCode LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $ordercode The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
@@ -407,8 +496,17 @@ abstract class BaseProductQuery extends ModelCriteria
 	/**
 	 * Filter the query on the salesUnit column
 	 * 
-	 * @param     int|array $salesunit The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterBySalesunit(1234); // WHERE salesUnit = 1234
+	 * $query->filterBySalesunit(array(12, 34)); // WHERE salesUnit IN (12, 34)
+	 * $query->filterBySalesunit(array('min' => 12)); // WHERE salesUnit > 12
+	 * </code>
+	 *
+	 * @param     mixed $salesunit The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
@@ -436,17 +534,187 @@ abstract class BaseProductQuery extends ModelCriteria
 	}
 
 	/**
+	 * Filter the query on the stockAlert column
+	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByStockalert(1234); // WHERE stockAlert = 1234
+	 * $query->filterByStockalert(array(12, 34)); // WHERE stockAlert IN (12, 34)
+	 * $query->filterByStockalert(array('min' => 12)); // WHERE stockAlert > 12
+	 * </code>
+	 *
+	 * @param     mixed $stockalert The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ProductQuery The current query, for fluid interface
+	 */
+	public function filterByStockalert($stockalert = null, $comparison = null)
+	{
+		if (is_array($stockalert)) {
+			$useMinMax = false;
+			if (isset($stockalert['min'])) {
+				$this->addUsingAlias(ProductPeer::STOCKALERT, $stockalert['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($stockalert['max'])) {
+				$this->addUsingAlias(ProductPeer::STOCKALERT, $stockalert['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ProductPeer::STOCKALERT, $stockalert, $comparison);
+	}
+
+	/**
+	 * Filter the query on the stock01 column
+	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByStock01(1234); // WHERE stock01 = 1234
+	 * $query->filterByStock01(array(12, 34)); // WHERE stock01 IN (12, 34)
+	 * $query->filterByStock01(array('min' => 12)); // WHERE stock01 > 12
+	 * </code>
+	 *
+	 * @param     mixed $stock01 The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ProductQuery The current query, for fluid interface
+	 */
+	public function filterByStock01($stock01 = null, $comparison = null)
+	{
+		if (is_array($stock01)) {
+			$useMinMax = false;
+			if (isset($stock01['min'])) {
+				$this->addUsingAlias(ProductPeer::STOCK01, $stock01['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($stock01['max'])) {
+				$this->addUsingAlias(ProductPeer::STOCK01, $stock01['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ProductPeer::STOCK01, $stock01, $comparison);
+	}
+
+	/**
+	 * Filter the query on the stock02 column
+	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByStock02(1234); // WHERE stock02 = 1234
+	 * $query->filterByStock02(array(12, 34)); // WHERE stock02 IN (12, 34)
+	 * $query->filterByStock02(array('min' => 12)); // WHERE stock02 > 12
+	 * </code>
+	 *
+	 * @param     mixed $stock02 The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ProductQuery The current query, for fluid interface
+	 */
+	public function filterByStock02($stock02 = null, $comparison = null)
+	{
+		if (is_array($stock02)) {
+			$useMinMax = false;
+			if (isset($stock02['min'])) {
+				$this->addUsingAlias(ProductPeer::STOCK02, $stock02['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($stock02['max'])) {
+				$this->addUsingAlias(ProductPeer::STOCK02, $stock02['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ProductPeer::STOCK02, $stock02, $comparison);
+	}
+
+	/**
+	 * Filter the query on the stock03 column
+	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByStock03(1234); // WHERE stock03 = 1234
+	 * $query->filterByStock03(array(12, 34)); // WHERE stock03 IN (12, 34)
+	 * $query->filterByStock03(array('min' => 12)); // WHERE stock03 > 12
+	 * </code>
+	 *
+	 * @param     mixed $stock03 The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    ProductQuery The current query, for fluid interface
+	 */
+	public function filterByStock03($stock03 = null, $comparison = null)
+	{
+		if (is_array($stock03)) {
+			$useMinMax = false;
+			if (isset($stock03['min'])) {
+				$this->addUsingAlias(ProductPeer::STOCK03, $stock03['min'], Criteria::GREATER_EQUAL);
+				$useMinMax = true;
+			}
+			if (isset($stock03['max'])) {
+				$this->addUsingAlias(ProductPeer::STOCK03, $stock03['max'], Criteria::LESS_EQUAL);
+				$useMinMax = true;
+			}
+			if ($useMinMax) {
+				return $this;
+			}
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+		}
+		return $this->addUsingAlias(ProductPeer::STOCK03, $stock03, $comparison);
+	}
+
+	/**
 	 * Filter the query by a related Unit object
 	 *
-	 * @param     Unit $unit  the related object to use as filter
+	 * @param     Unit|PropelCollection $unit The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
 	 */
 	public function filterByUnit($unit, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ProductPeer::UNITID, $unit->getId(), $comparison);
+		if ($unit instanceof Unit) {
+			return $this
+				->addUsingAlias(ProductPeer::UNITID, $unit->getId(), $comparison);
+		} elseif ($unit instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(ProductPeer::UNITID, $unit->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByUnit() only accepts arguments of type Unit or PropelCollection');
+		}
 	}
 
 	/**
@@ -502,15 +770,25 @@ abstract class BaseProductQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related MeasureUnit object
 	 *
-	 * @param     MeasureUnit $measureUnit  the related object to use as filter
+	 * @param     MeasureUnit|PropelCollection $measureUnit The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ProductQuery The current query, for fluid interface
 	 */
 	public function filterByMeasureUnit($measureUnit, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ProductPeer::MEASUREUNITID, $measureUnit->getId(), $comparison);
+		if ($measureUnit instanceof MeasureUnit) {
+			return $this
+				->addUsingAlias(ProductPeer::MEASUREUNITID, $measureUnit->getId(), $comparison);
+		} elseif ($measureUnit instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(ProductPeer::MEASUREUNITID, $measureUnit->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByMeasureUnit() only accepts arguments of type MeasureUnit or PropelCollection');
+		}
 	}
 
 	/**
@@ -573,8 +851,17 @@ abstract class BaseProductQuery extends ModelCriteria
 	 */
 	public function filterByAffiliateProduct($affiliateProduct, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ProductPeer::ID, $affiliateProduct->getProductid(), $comparison);
+		if ($affiliateProduct instanceof AffiliateProduct) {
+			return $this
+				->addUsingAlias(ProductPeer::ID, $affiliateProduct->getProductid(), $comparison);
+		} elseif ($affiliateProduct instanceof PropelCollection) {
+			return $this
+				->useAffiliateProductQuery()
+					->filterByPrimaryKeys($affiliateProduct->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByAffiliateProduct() only accepts arguments of type AffiliateProduct or PropelCollection');
+		}
 	}
 
 	/**
@@ -637,8 +924,17 @@ abstract class BaseProductQuery extends ModelCriteria
 	 */
 	public function filterByProductCategory($productCategory, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ProductPeer::CODE, $productCategory->getProductcode(), $comparison);
+		if ($productCategory instanceof ProductCategory) {
+			return $this
+				->addUsingAlias(ProductPeer::CODE, $productCategory->getProductcode(), $comparison);
+		} elseif ($productCategory instanceof PropelCollection) {
+			return $this
+				->useProductCategoryQuery()
+					->filterByPrimaryKeys($productCategory->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByProductCategory() only accepts arguments of type ProductCategory or PropelCollection');
+		}
 	}
 
 	/**
@@ -701,8 +997,17 @@ abstract class BaseProductQuery extends ModelCriteria
 	 */
 	public function filterByOrderItem($orderItem, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ProductPeer::CODE, $orderItem->getProductcode(), $comparison);
+		if ($orderItem instanceof OrderItem) {
+			return $this
+				->addUsingAlias(ProductPeer::CODE, $orderItem->getProductcode(), $comparison);
+		} elseif ($orderItem instanceof PropelCollection) {
+			return $this
+				->useOrderItemQuery()
+					->filterByPrimaryKeys($orderItem->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByOrderItem() only accepts arguments of type OrderItem or PropelCollection');
+		}
 	}
 
 	/**
@@ -765,8 +1070,17 @@ abstract class BaseProductQuery extends ModelCriteria
 	 */
 	public function filterByOrderTemplateItem($orderTemplateItem, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ProductPeer::CODE, $orderTemplateItem->getProductcode(), $comparison);
+		if ($orderTemplateItem instanceof OrderTemplateItem) {
+			return $this
+				->addUsingAlias(ProductPeer::CODE, $orderTemplateItem->getProductcode(), $comparison);
+		} elseif ($orderTemplateItem instanceof PropelCollection) {
+			return $this
+				->useOrderTemplateItemQuery()
+					->filterByPrimaryKeys($orderTemplateItem->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByOrderTemplateItem() only accepts arguments of type OrderTemplateItem or PropelCollection');
+		}
 	}
 
 	/**

@@ -39,6 +39,7 @@ class AffiliateTableMap extends TableMap {
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
+		$this->getColumn('NAME', false)->setPrimaryString(true);
 		$this->addForeignKey('OWNERID', 'Ownerid', 'INTEGER', 'affiliates_user', 'ID', false, null, null);
 		$this->addColumn('INTERNALNUMBER', 'Internalnumber', 'VARCHAR', false, 12, null);
 		$this->addColumn('ADDRESS', 'Address', 'VARCHAR', false, 255, null);

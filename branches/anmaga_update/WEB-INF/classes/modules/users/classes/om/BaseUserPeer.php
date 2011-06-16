@@ -31,6 +31,9 @@ abstract class BaseUserPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 17;
+
 	/** the column name for the ID field */
 	const ID = 'users_user.ID';
 
@@ -82,6 +85,9 @@ abstract class BaseUserPeer {
 	/** the column name for the UPDATED_AT field */
 	const UPDATED_AT = 'users_user.UPDATED_AT';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of User objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -97,7 +103,7 @@ abstract class BaseUserPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Username', 'Password', 'Passwordupdated', 'Active', 'Levelid', 'Lastlogin', 'Timezone', 'Recoveryhash', 'Recoveryhashcreatedon', 'Name', 'Surname', 'Mailaddress', 'Mailaddressalt', 'DeletedAt', 'CreatedAt', 'UpdatedAt', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'username', 'password', 'passwordupdated', 'active', 'levelid', 'lastlogin', 'timezone', 'recoveryhash', 'recoveryhashcreatedon', 'name', 'surname', 'mailaddress', 'mailaddressalt', 'deletedAt', 'createdAt', 'updatedAt', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::USERNAME, self::PASSWORD, self::PASSWORDUPDATED, self::ACTIVE, self::LEVELID, self::LASTLOGIN, self::TIMEZONE, self::RECOVERYHASH, self::RECOVERYHASHCREATEDON, self::NAME, self::SURNAME, self::MAILADDRESS, self::MAILADDRESSALT, self::DELETED_AT, self::CREATED_AT, self::UPDATED_AT, ),
@@ -112,7 +118,7 @@ abstract class BaseUserPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Username' => 1, 'Password' => 2, 'Passwordupdated' => 3, 'Active' => 4, 'Levelid' => 5, 'Lastlogin' => 6, 'Timezone' => 7, 'Recoveryhash' => 8, 'Recoveryhashcreatedon' => 9, 'Name' => 10, 'Surname' => 11, 'Mailaddress' => 12, 'Mailaddressalt' => 13, 'DeletedAt' => 14, 'CreatedAt' => 15, 'UpdatedAt' => 16, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'username' => 1, 'password' => 2, 'passwordupdated' => 3, 'active' => 4, 'levelid' => 5, 'lastlogin' => 6, 'timezone' => 7, 'recoveryhash' => 8, 'recoveryhashcreatedon' => 9, 'name' => 10, 'surname' => 11, 'mailaddress' => 12, 'mailaddressalt' => 13, 'deletedAt' => 14, 'createdAt' => 15, 'updatedAt' => 16, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USERNAME => 1, self::PASSWORD => 2, self::PASSWORDUPDATED => 3, self::ACTIVE => 4, self::LEVELID => 5, self::LASTLOGIN => 6, self::TIMEZONE => 7, self::RECOVERYHASH => 8, self::RECOVERYHASHCREATEDON => 9, self::NAME => 10, self::SURNAME => 11, self::MAILADDRESS => 12, self::MAILADDRESSALT => 13, self::DELETED_AT => 14, self::CREATED_AT => 15, self::UPDATED_AT => 16, ),
@@ -357,7 +363,7 @@ abstract class BaseUserPeer {
 	 * @param      User $value A User object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(User $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -518,7 +524,7 @@ abstract class BaseUserPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + UserPeer::NUM_COLUMNS;
+			$col = $startcol + UserPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = UserPeer::OM_CLASS;
 			$obj = new $cls();
@@ -603,7 +609,7 @@ abstract class BaseUserPeer {
 		}
 
 		UserPeer::addSelectColumns($criteria);
-		$startcol = (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = UserPeer::NUM_HYDRATE_COLUMNS;
 		LevelPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(UserPeer::LEVELID, LevelPeer::ID, $join_behavior);
@@ -731,10 +737,10 @@ abstract class BaseUserPeer {
 		}
 
 		UserPeer::addSelectColumns($criteria);
-		$startcol2 = (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = UserPeer::NUM_HYDRATE_COLUMNS;
 
 		LevelPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (LevelPeer::NUM_COLUMNS - LevelPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + LevelPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(UserPeer::LEVELID, LevelPeer::ID, $join_behavior);
 
@@ -1052,7 +1058,7 @@ abstract class BaseUserPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(User $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

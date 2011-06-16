@@ -134,7 +134,7 @@ abstract class BaseOrderStateChangeQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -168,8 +168,17 @@ abstract class BaseOrderStateChangeQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderStateChangeQuery The current query, for fluid interface
@@ -185,8 +194,19 @@ abstract class BaseOrderStateChangeQuery extends ModelCriteria
 	/**
 	 * Filter the query on the created column
 	 * 
-	 * @param     string|array $created The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByCreated('2011-03-14'); // WHERE created = '2011-03-14'
+	 * $query->filterByCreated('now'); // WHERE created = '2011-03-14'
+	 * $query->filterByCreated(array('max' => 'yesterday')); // WHERE created > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $created The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderStateChangeQuery The current query, for fluid interface
@@ -216,8 +236,19 @@ abstract class BaseOrderStateChangeQuery extends ModelCriteria
 	/**
 	 * Filter the query on the orderId column
 	 * 
-	 * @param     int|array $orderid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByOrderid(1234); // WHERE orderId = 1234
+	 * $query->filterByOrderid(array(12, 34)); // WHERE orderId IN (12, 34)
+	 * $query->filterByOrderid(array('min' => 12)); // WHERE orderId > 12
+	 * </code>
+	 *
+	 * @see       filterByOrder()
+	 *
+	 * @param     mixed $orderid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderStateChangeQuery The current query, for fluid interface
@@ -247,8 +278,19 @@ abstract class BaseOrderStateChangeQuery extends ModelCriteria
 	/**
 	 * Filter the query on the userId column
 	 * 
-	 * @param     int|array $userid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByUserid(1234); // WHERE userId = 1234
+	 * $query->filterByUserid(array(12, 34)); // WHERE userId IN (12, 34)
+	 * $query->filterByUserid(array('min' => 12)); // WHERE userId > 12
+	 * </code>
+	 *
+	 * @see       filterByAffiliateUser()
+	 *
+	 * @param     mixed $userid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderStateChangeQuery The current query, for fluid interface
@@ -278,8 +320,19 @@ abstract class BaseOrderStateChangeQuery extends ModelCriteria
 	/**
 	 * Filter the query on the affiliateId column
 	 * 
-	 * @param     int|array $affiliateid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByAffiliateid(1234); // WHERE affiliateId = 1234
+	 * $query->filterByAffiliateid(array(12, 34)); // WHERE affiliateId IN (12, 34)
+	 * $query->filterByAffiliateid(array('min' => 12)); // WHERE affiliateId > 12
+	 * </code>
+	 *
+	 * @see       filterByAffiliate()
+	 *
+	 * @param     mixed $affiliateid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderStateChangeQuery The current query, for fluid interface
@@ -309,8 +362,17 @@ abstract class BaseOrderStateChangeQuery extends ModelCriteria
 	/**
 	 * Filter the query on the state column
 	 * 
-	 * @param     int|array $state The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByState(1234); // WHERE state = 1234
+	 * $query->filterByState(array(12, 34)); // WHERE state IN (12, 34)
+	 * $query->filterByState(array('min' => 12)); // WHERE state > 12
+	 * </code>
+	 *
+	 * @param     mixed $state The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderStateChangeQuery The current query, for fluid interface
@@ -340,8 +402,14 @@ abstract class BaseOrderStateChangeQuery extends ModelCriteria
 	/**
 	 * Filter the query on the comment column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByComment('fooValue');   // WHERE comment = 'fooValue'
+	 * $query->filterByComment('%fooValue%'); // WHERE comment LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $comment The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderStateChangeQuery The current query, for fluid interface
@@ -362,15 +430,25 @@ abstract class BaseOrderStateChangeQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Order object
 	 *
-	 * @param     Order $order  the related object to use as filter
+	 * @param     Order|PropelCollection $order The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderStateChangeQuery The current query, for fluid interface
 	 */
 	public function filterByOrder($order, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(OrderStateChangePeer::ORDERID, $order->getId(), $comparison);
+		if ($order instanceof Order) {
+			return $this
+				->addUsingAlias(OrderStateChangePeer::ORDERID, $order->getId(), $comparison);
+		} elseif ($order instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(OrderStateChangePeer::ORDERID, $order->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByOrder() only accepts arguments of type Order or PropelCollection');
+		}
 	}
 
 	/**
@@ -426,15 +504,25 @@ abstract class BaseOrderStateChangeQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related AffiliateUser object
 	 *
-	 * @param     AffiliateUser $affiliateUser  the related object to use as filter
+	 * @param     AffiliateUser|PropelCollection $affiliateUser The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderStateChangeQuery The current query, for fluid interface
 	 */
 	public function filterByAffiliateUser($affiliateUser, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(OrderStateChangePeer::USERID, $affiliateUser->getId(), $comparison);
+		if ($affiliateUser instanceof AffiliateUser) {
+			return $this
+				->addUsingAlias(OrderStateChangePeer::USERID, $affiliateUser->getId(), $comparison);
+		} elseif ($affiliateUser instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(OrderStateChangePeer::USERID, $affiliateUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByAffiliateUser() only accepts arguments of type AffiliateUser or PropelCollection');
+		}
 	}
 
 	/**
@@ -490,15 +578,25 @@ abstract class BaseOrderStateChangeQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Affiliate object
 	 *
-	 * @param     Affiliate $affiliate  the related object to use as filter
+	 * @param     Affiliate|PropelCollection $affiliate The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    OrderStateChangeQuery The current query, for fluid interface
 	 */
 	public function filterByAffiliate($affiliate, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(OrderStateChangePeer::AFFILIATEID, $affiliate->getId(), $comparison);
+		if ($affiliate instanceof Affiliate) {
+			return $this
+				->addUsingAlias(OrderStateChangePeer::AFFILIATEID, $affiliate->getId(), $comparison);
+		} elseif ($affiliate instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(OrderStateChangePeer::AFFILIATEID, $affiliate->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByAffiliate() only accepts arguments of type Affiliate or PropelCollection');
+		}
 	}
 
 	/**

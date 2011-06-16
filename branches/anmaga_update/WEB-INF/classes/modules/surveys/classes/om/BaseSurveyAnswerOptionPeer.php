@@ -31,6 +31,9 @@ abstract class BaseSurveyAnswerOptionPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 3;
+
 	/** the column name for the ID field */
 	const ID = 'surveys_answerOption.ID';
 
@@ -40,6 +43,9 @@ abstract class BaseSurveyAnswerOptionPeer {
 	/** the column name for the ANSWER field */
 	const ANSWER = 'surveys_answerOption.ANSWER';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of SurveyAnswerOption objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -55,7 +61,7 @@ abstract class BaseSurveyAnswerOptionPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Questionid', 'Answer', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'questionid', 'answer', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::QUESTIONID, self::ANSWER, ),
@@ -70,7 +76,7 @@ abstract class BaseSurveyAnswerOptionPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Questionid' => 1, 'Answer' => 2, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'questionid' => 1, 'answer' => 2, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::QUESTIONID => 1, self::ANSWER => 2, ),
@@ -275,7 +281,7 @@ abstract class BaseSurveyAnswerOptionPeer {
 	 * @param      SurveyAnswerOption $value A SurveyAnswerOption object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(SurveyAnswerOption $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -433,7 +439,7 @@ abstract class BaseSurveyAnswerOptionPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + SurveyAnswerOptionPeer::NUM_COLUMNS;
+			$col = $startcol + SurveyAnswerOptionPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = SurveyAnswerOptionPeer::OM_CLASS;
 			$obj = new $cls();
@@ -512,7 +518,7 @@ abstract class BaseSurveyAnswerOptionPeer {
 		}
 
 		SurveyAnswerOptionPeer::addSelectColumns($criteria);
-		$startcol = (SurveyAnswerOptionPeer::NUM_COLUMNS - SurveyAnswerOptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = SurveyAnswerOptionPeer::NUM_HYDRATE_COLUMNS;
 		SurveyQuestionPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(SurveyAnswerOptionPeer::QUESTIONID, SurveyQuestionPeer::ID, $join_behavior);
@@ -628,10 +634,10 @@ abstract class BaseSurveyAnswerOptionPeer {
 		}
 
 		SurveyAnswerOptionPeer::addSelectColumns($criteria);
-		$startcol2 = (SurveyAnswerOptionPeer::NUM_COLUMNS - SurveyAnswerOptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = SurveyAnswerOptionPeer::NUM_HYDRATE_COLUMNS;
 
 		SurveyQuestionPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (SurveyQuestionPeer::NUM_COLUMNS - SurveyQuestionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + SurveyQuestionPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(SurveyAnswerOptionPeer::QUESTIONID, SurveyQuestionPeer::ID, $join_behavior);
 
@@ -937,7 +943,7 @@ abstract class BaseSurveyAnswerOptionPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(SurveyAnswerOption $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

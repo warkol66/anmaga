@@ -216,45 +216,18 @@ abstract class BaseOrderStateChange extends BaseObject  implements Persistent
 	/**
 	 * Sets the value of [created] column to a normalized version of the date/time value specified.
 	 * Fecha en que se cambio el estado
-	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
-	 *						be treated as NULL for temporal objects.
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.
+	 *               Empty strings are treated as NULL.
 	 * @return     OrderStateChange The current object (for fluent API support)
 	 */
 	public function setCreated($v)
 	{
-		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
-		// -- which is unexpected, to say the least.
-		if ($v === null || $v === '') {
-			$dt = null;
-		} elseif ($v instanceof DateTime) {
-			$dt = $v;
-		} else {
-			// some string/numeric value passed; we normalize that so that we can
-			// validate it.
-			try {
-				if (is_numeric($v)) { // if it's a unix timestamp
-					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
-					// We have to explicitly specify and then change the time zone because of a
-					// DateTime bug: http://bugs.php.net/bug.php?id=43003
-					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
-				} else {
-					$dt = new DateTime($v);
-				}
-			} catch (Exception $x) {
-				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
-			}
-		}
-
-		if ( $this->created !== null || $dt !== null ) {
-			// (nested ifs are a little easier to read in this case)
-
-			$currNorm = ($this->created !== null && $tmpDt = new DateTime($this->created)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
-
-			if ( ($currNorm !== $newNorm) // normalized values don't match 
-					)
-			{
-				$this->created = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+		$dt = PropelDateTime::newInstance($v, null, 'DateTime');
+		if ($this->created !== null || $dt !== null) {
+			$currentDateAsString = ($this->created !== null && $tmpDt = new DateTime($this->created)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+			if ($currentDateAsString !== $newDateAsString) {
+				$this->created = $newDateAsString;
 				$this->modifiedColumns[] = OrderStateChangePeer::CREATED;
 			}
 		} // if either are not null
@@ -421,7 +394,7 @@ abstract class BaseOrderStateChange extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 7; // 7 = OrderStateChangePeer::NUM_COLUMNS - OrderStateChangePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 7; // 7 = OrderStateChangePeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating OrderStateChange object", $e);
@@ -819,12 +792,17 @@ abstract class BaseOrderStateChange extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
+		if (isset($alreadyDumpedObjects['OrderStateChange'][$this->getPrimaryKey()])) {
+			return '*RECURSION*';
+		}
+		$alreadyDumpedObjects['OrderStateChange'][$this->getPrimaryKey()] = true;
 		$keys = OrderStateChangePeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
@@ -837,13 +815,13 @@ abstract class BaseOrderStateChange extends BaseObject  implements Persistent
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aOrder) {
-				$result['Order'] = $this->aOrder->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['Order'] = $this->aOrder->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 			if (null !== $this->aAffiliateUser) {
-				$result['AffiliateUser'] = $this->aAffiliateUser->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['AffiliateUser'] = $this->aAffiliateUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 			if (null !== $this->aAffiliate) {
-				$result['Affiliate'] = $this->aAffiliate->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['Affiliate'] = $this->aAffiliate->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 		}
 		return $result;
@@ -1003,19 +981,21 @@ abstract class BaseOrderStateChange extends BaseObject  implements Persistent
 	 *
 	 * @param      object $copyObj An object of OrderStateChange (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
 	 */
-	public function copyInto($copyObj, $deepCopy = false)
+	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setCreated($this->created);
-		$copyObj->setOrderid($this->orderid);
-		$copyObj->setUserid($this->userid);
-		$copyObj->setAffiliateid($this->affiliateid);
-		$copyObj->setState($this->state);
-		$copyObj->setComment($this->comment);
-
-		$copyObj->setNew(true);
-		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		$copyObj->setCreated($this->getCreated());
+		$copyObj->setOrderid($this->getOrderid());
+		$copyObj->setUserid($this->getUserid());
+		$copyObj->setAffiliateid($this->getAffiliateid());
+		$copyObj->setState($this->getState());
+		$copyObj->setComment($this->getComment());
+		if ($makeNew) {
+			$copyObj->setNew(true);
+			$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		}
 	}
 
 	/**
@@ -1095,11 +1075,11 @@ abstract class BaseOrderStateChange extends BaseObject  implements Persistent
 		if ($this->aOrder === null && ($this->orderid !== null)) {
 			$this->aOrder = OrderQuery::create()->findPk($this->orderid, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aOrder->addOrderStateChanges($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aOrder->addOrderStateChanges($this);
 			 */
 		}
 		return $this->aOrder;
@@ -1144,11 +1124,11 @@ abstract class BaseOrderStateChange extends BaseObject  implements Persistent
 		if ($this->aAffiliateUser === null && ($this->userid !== null)) {
 			$this->aAffiliateUser = AffiliateUserQuery::create()->findPk($this->userid, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aAffiliateUser->addOrderStateChanges($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aAffiliateUser->addOrderStateChanges($this);
 			 */
 		}
 		return $this->aAffiliateUser;
@@ -1193,11 +1173,11 @@ abstract class BaseOrderStateChange extends BaseObject  implements Persistent
 		if ($this->aAffiliate === null && ($this->affiliateid !== null)) {
 			$this->aAffiliate = AffiliateQuery::create()->findPk($this->affiliateid, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aAffiliate->addOrderStateChanges($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aAffiliate->addOrderStateChanges($this);
 			 */
 		}
 		return $this->aAffiliate;
@@ -1224,13 +1204,13 @@ abstract class BaseOrderStateChange extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Resets all collections of referencing foreign keys.
+	 * Resets all references to other model objects or collections of model objects.
 	 *
-	 * This method is a user-space workaround for PHP's inability to garbage collect objects
-	 * with circular references.  This is currently necessary when using Propel in certain
-	 * daemon or large-volumne/high-memory operations.
+	 * This method is a user-space workaround for PHP's inability to garbage collect
+	 * objects with circular references (even in PHP 5.3). This is currently necessary
+	 * when using Propel in certain daemon or large-volumne/high-memory operations.
 	 *
-	 * @param      boolean $deep Whether to also clear the references on all associated objects.
+	 * @param      boolean $deep Whether to also clear the references on all referrer objects.
 	 */
 	public function clearAllReferences($deep = false)
 	{
@@ -1240,6 +1220,16 @@ abstract class BaseOrderStateChange extends BaseObject  implements Persistent
 		$this->aOrder = null;
 		$this->aAffiliateUser = null;
 		$this->aAffiliate = null;
+	}
+
+	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->exportTo(OrderStateChangePeer::DEFAULT_STRING_FORMAT);
 	}
 
 	/**

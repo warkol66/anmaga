@@ -379,15 +379,23 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	} // setPair()
 
 	/**
-	 * Set the value of [nochecklogin] column.
+	 * Sets the value of the [nochecklogin] column. 
+	 * Non-boolean arguments are converted using the following rules:
+	 *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * Si no se chequea login ese action
-	 * @param      boolean $v new value
+	 * @param      boolean|integer|string $v The new value
 	 * @return     SecurityAction The current object (for fluent API support)
 	 */
 	public function setNochecklogin($v)
 	{
 		if ($v !== null) {
-			$v = (boolean) $v;
+			if (is_string($v)) {
+				$v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
+			} else {
+				$v = (boolean) $v;
+			}
 		}
 
 		if ($this->nochecklogin !== $v || $this->isNew()) {
@@ -451,7 +459,7 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 9; // 9 = SecurityActionPeer::NUM_COLUMNS - SecurityActionPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 9; // 9 = SecurityActionPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating SecurityAction object", $e);
@@ -831,12 +839,17 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
+		if (isset($alreadyDumpedObjects['SecurityAction'][$this->getPrimaryKey()])) {
+			return '*RECURSION*';
+		}
+		$alreadyDumpedObjects['SecurityAction'][$this->getPrimaryKey()] = true;
 		$keys = SecurityActionPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getAction(),
@@ -851,7 +864,10 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aSecurityModule) {
-				$result['SecurityModule'] = $this->aSecurityModule->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['SecurityModule'] = $this->aSecurityModule->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+			}
+			if (null !== $this->collActionLogs) {
+				$result['ActionLogs'] = $this->collActionLogs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
 			}
 		}
 		return $result;
@@ -1021,19 +1037,20 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	 *
 	 * @param      object $copyObj An object of SecurityAction (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
 	 */
-	public function copyInto($copyObj, $deepCopy = false)
+	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setAction($this->action);
-		$copyObj->setModule($this->module);
-		$copyObj->setSection($this->section);
-		$copyObj->setAccess($this->access);
-		$copyObj->setAccessaffiliateuser($this->accessaffiliateuser);
-		$copyObj->setAccessregistrationuser($this->accessregistrationuser);
-		$copyObj->setActive($this->active);
-		$copyObj->setPair($this->pair);
-		$copyObj->setNochecklogin($this->nochecklogin);
+		$copyObj->setAction($this->getAction());
+		$copyObj->setModule($this->getModule());
+		$copyObj->setSection($this->getSection());
+		$copyObj->setAccess($this->getAccess());
+		$copyObj->setAccessaffiliateuser($this->getAccessaffiliateuser());
+		$copyObj->setAccessregistrationuser($this->getAccessregistrationuser());
+		$copyObj->setActive($this->getActive());
+		$copyObj->setPair($this->getPair());
+		$copyObj->setNochecklogin($this->getNochecklogin());
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1048,8 +1065,9 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 
 		} // if ($deepCopy)
 
-
-		$copyObj->setNew(true);
+		if ($makeNew) {
+			$copyObj->setNew(true);
+		}
 	}
 
 	/**
@@ -1129,11 +1147,11 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 		if ($this->aSecurityModule === null && (($this->module !== "" && $this->module !== null))) {
 			$this->aSecurityModule = SecurityModuleQuery::create()->findPk($this->module, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aSecurityModule->addSecurityActions($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aSecurityModule->addSecurityActions($this);
 			 */
 		}
 		return $this->aSecurityModule;
@@ -1160,10 +1178,16 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initActionLogs()
+	public function initActionLogs($overrideExisting = true)
 	{
+		if (null !== $this->collActionLogs && !$overrideExisting) {
+			return;
+		}
 		$this->collActionLogs = new PropelObjectCollection();
 		$this->collActionLogs->setModel('ActionLog');
 	}
@@ -1297,26 +1321,39 @@ abstract class BaseSecurityAction extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Resets all collections of referencing foreign keys.
+	 * Resets all references to other model objects or collections of model objects.
 	 *
-	 * This method is a user-space workaround for PHP's inability to garbage collect objects
-	 * with circular references.  This is currently necessary when using Propel in certain
-	 * daemon or large-volumne/high-memory operations.
+	 * This method is a user-space workaround for PHP's inability to garbage collect
+	 * objects with circular references (even in PHP 5.3). This is currently necessary
+	 * when using Propel in certain daemon or large-volumne/high-memory operations.
 	 *
-	 * @param      boolean $deep Whether to also clear the references on all associated objects.
+	 * @param      boolean $deep Whether to also clear the references on all referrer objects.
 	 */
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
 			if ($this->collActionLogs) {
-				foreach ((array) $this->collActionLogs as $o) {
+				foreach ($this->collActionLogs as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 		} // if ($deep)
 
+		if ($this->collActionLogs instanceof PropelCollection) {
+			$this->collActionLogs->clearIterator();
+		}
 		$this->collActionLogs = null;
 		$this->aSecurityModule = null;
+	}
+
+	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->exportTo(SecurityActionPeer::DEFAULT_STRING_FORMAT);
 	}
 
 	/**

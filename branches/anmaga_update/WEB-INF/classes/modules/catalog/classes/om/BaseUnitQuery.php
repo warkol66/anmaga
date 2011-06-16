@@ -110,7 +110,7 @@ abstract class BaseUnitQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -144,8 +144,17 @@ abstract class BaseUnitQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    UnitQuery The current query, for fluid interface
@@ -161,8 +170,14 @@ abstract class BaseUnitQuery extends ModelCriteria
 	/**
 	 * Filter the query on the name column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+	 * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $name The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    UnitQuery The current query, for fluid interface
@@ -183,8 +198,17 @@ abstract class BaseUnitQuery extends ModelCriteria
 	/**
 	 * Filter the query on the unitQuantity column
 	 * 
-	 * @param     int|array $unitquantity The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByUnitquantity(1234); // WHERE unitQuantity = 1234
+	 * $query->filterByUnitquantity(array(12, 34)); // WHERE unitQuantity IN (12, 34)
+	 * $query->filterByUnitquantity(array('min' => 12)); // WHERE unitQuantity > 12
+	 * </code>
+	 *
+	 * @param     mixed $unitquantity The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    UnitQuery The current query, for fluid interface
@@ -221,8 +245,17 @@ abstract class BaseUnitQuery extends ModelCriteria
 	 */
 	public function filterByProduct($product, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(UnitPeer::ID, $product->getUnitid(), $comparison);
+		if ($product instanceof Product) {
+			return $this
+				->addUsingAlias(UnitPeer::ID, $product->getUnitid(), $comparison);
+		} elseif ($product instanceof PropelCollection) {
+			return $this
+				->useProductQuery()
+					->filterByPrimaryKeys($product->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByProduct() only accepts arguments of type Product or PropelCollection');
+		}
 	}
 
 	/**

@@ -31,6 +31,9 @@ abstract class BaseAffiliateUserPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 17;
+
 	/** the column name for the ID field */
 	const ID = 'affiliates_user.ID';
 
@@ -82,6 +85,9 @@ abstract class BaseAffiliateUserPeer {
 	/** the column name for the UPDATED_AT field */
 	const UPDATED_AT = 'affiliates_user.UPDATED_AT';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of AffiliateUser objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -97,7 +103,7 @@ abstract class BaseAffiliateUserPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Affiliateid', 'Username', 'Password', 'Passwordupdated', 'Levelid', 'Lastlogin', 'Timezone', 'Name', 'Surname', 'Mailaddress', 'Mailaddressalt', 'Recoveryhash', 'Recoveryhashcreatedon', 'DeletedAt', 'CreatedAt', 'UpdatedAt', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'affiliateid', 'username', 'password', 'passwordupdated', 'levelid', 'lastlogin', 'timezone', 'name', 'surname', 'mailaddress', 'mailaddressalt', 'recoveryhash', 'recoveryhashcreatedon', 'deletedAt', 'createdAt', 'updatedAt', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::AFFILIATEID, self::USERNAME, self::PASSWORD, self::PASSWORDUPDATED, self::LEVELID, self::LASTLOGIN, self::TIMEZONE, self::NAME, self::SURNAME, self::MAILADDRESS, self::MAILADDRESSALT, self::RECOVERYHASH, self::RECOVERYHASHCREATEDON, self::DELETED_AT, self::CREATED_AT, self::UPDATED_AT, ),
@@ -112,7 +118,7 @@ abstract class BaseAffiliateUserPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Affiliateid' => 1, 'Username' => 2, 'Password' => 3, 'Passwordupdated' => 4, 'Levelid' => 5, 'Lastlogin' => 6, 'Timezone' => 7, 'Name' => 8, 'Surname' => 9, 'Mailaddress' => 10, 'Mailaddressalt' => 11, 'Recoveryhash' => 12, 'Recoveryhashcreatedon' => 13, 'DeletedAt' => 14, 'CreatedAt' => 15, 'UpdatedAt' => 16, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'affiliateid' => 1, 'username' => 2, 'password' => 3, 'passwordupdated' => 4, 'levelid' => 5, 'lastlogin' => 6, 'timezone' => 7, 'name' => 8, 'surname' => 9, 'mailaddress' => 10, 'mailaddressalt' => 11, 'recoveryhash' => 12, 'recoveryhashcreatedon' => 13, 'deletedAt' => 14, 'createdAt' => 15, 'updatedAt' => 16, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::AFFILIATEID => 1, self::USERNAME => 2, self::PASSWORD => 3, self::PASSWORDUPDATED => 4, self::LEVELID => 5, self::LASTLOGIN => 6, self::TIMEZONE => 7, self::NAME => 8, self::SURNAME => 9, self::MAILADDRESS => 10, self::MAILADDRESSALT => 11, self::RECOVERYHASH => 12, self::RECOVERYHASHCREATEDON => 13, self::DELETED_AT => 14, self::CREATED_AT => 15, self::UPDATED_AT => 16, ),
@@ -357,7 +363,7 @@ abstract class BaseAffiliateUserPeer {
 	 * @param      AffiliateUser $value A AffiliateUser object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(AffiliateUser $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -512,7 +518,7 @@ abstract class BaseAffiliateUserPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + AffiliateUserPeer::NUM_COLUMNS;
+			$col = $startcol + AffiliateUserPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = AffiliateUserPeer::OM_CLASS;
 			$obj = new $cls();
@@ -653,7 +659,7 @@ abstract class BaseAffiliateUserPeer {
 		}
 
 		AffiliateUserPeer::addSelectColumns($criteria);
-		$startcol = (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = AffiliateUserPeer::NUM_HYDRATE_COLUMNS;
 		AffiliateLevelPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(AffiliateUserPeer::LEVELID, AffiliateLevelPeer::ID, $join_behavior);
@@ -725,7 +731,7 @@ abstract class BaseAffiliateUserPeer {
 		}
 
 		AffiliateUserPeer::addSelectColumns($criteria);
-		$startcol = (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = AffiliateUserPeer::NUM_HYDRATE_COLUMNS;
 		AffiliatePeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(AffiliateUserPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
@@ -855,13 +861,13 @@ abstract class BaseAffiliateUserPeer {
 		}
 
 		AffiliateUserPeer::addSelectColumns($criteria);
-		$startcol2 = (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = AffiliateUserPeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliateLevelPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (AffiliateLevelPeer::NUM_COLUMNS - AffiliateLevelPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + AffiliateLevelPeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliatePeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + AffiliatePeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(AffiliateUserPeer::LEVELID, AffiliateLevelPeer::ID, $join_behavior);
 
@@ -1067,10 +1073,10 @@ abstract class BaseAffiliateUserPeer {
 		}
 
 		AffiliateUserPeer::addSelectColumns($criteria);
-		$startcol2 = (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = AffiliateUserPeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliatePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + AffiliatePeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(AffiliateUserPeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
 
@@ -1146,10 +1152,10 @@ abstract class BaseAffiliateUserPeer {
 		}
 
 		AffiliateUserPeer::addSelectColumns($criteria);
-		$startcol2 = (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = AffiliateUserPeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliateLevelPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (AffiliateLevelPeer::NUM_COLUMNS - AffiliateLevelPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + AffiliateLevelPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(AffiliateUserPeer::LEVELID, AffiliateLevelPeer::ID, $join_behavior);
 
@@ -1423,7 +1429,7 @@ abstract class BaseAffiliateUserPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(AffiliateUser $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

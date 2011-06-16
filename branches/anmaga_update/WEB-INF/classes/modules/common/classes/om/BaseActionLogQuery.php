@@ -138,7 +138,7 @@ abstract class BaseActionLogQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -172,8 +172,17 @@ abstract class BaseActionLogQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ActionLogQuery The current query, for fluid interface
@@ -189,8 +198,14 @@ abstract class BaseActionLogQuery extends ModelCriteria
 	/**
 	 * Filter the query on the userObjectType column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByUserobjecttype('fooValue');   // WHERE userObjectType = 'fooValue'
+	 * $query->filterByUserobjecttype('%fooValue%'); // WHERE userObjectType LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $userobjecttype The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ActionLogQuery The current query, for fluid interface
@@ -211,8 +226,17 @@ abstract class BaseActionLogQuery extends ModelCriteria
 	/**
 	 * Filter the query on the userObjectId column
 	 * 
-	 * @param     int|array $userobjectid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByUserobjectid(1234); // WHERE userObjectId = 1234
+	 * $query->filterByUserobjectid(array(12, 34)); // WHERE userObjectId IN (12, 34)
+	 * $query->filterByUserobjectid(array('min' => 12)); // WHERE userObjectId > 12
+	 * </code>
+	 *
+	 * @param     mixed $userobjectid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ActionLogQuery The current query, for fluid interface
@@ -242,8 +266,19 @@ abstract class BaseActionLogQuery extends ModelCriteria
 	/**
 	 * Filter the query on the userId column
 	 * 
-	 * @param     int|array $userid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByUserid(1234); // WHERE userId = 1234
+	 * $query->filterByUserid(array(12, 34)); // WHERE userId IN (12, 34)
+	 * $query->filterByUserid(array('min' => 12)); // WHERE userId > 12
+	 * </code>
+	 *
+	 * @see       filterByUser()
+	 *
+	 * @param     mixed $userid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ActionLogQuery The current query, for fluid interface
@@ -273,8 +308,17 @@ abstract class BaseActionLogQuery extends ModelCriteria
 	/**
 	 * Filter the query on the affiliateId column
 	 * 
-	 * @param     int|array $affiliateid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByAffiliateid(1234); // WHERE affiliateId = 1234
+	 * $query->filterByAffiliateid(array(12, 34)); // WHERE affiliateId IN (12, 34)
+	 * $query->filterByAffiliateid(array('min' => 12)); // WHERE affiliateId > 12
+	 * </code>
+	 *
+	 * @param     mixed $affiliateid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ActionLogQuery The current query, for fluid interface
@@ -304,8 +348,19 @@ abstract class BaseActionLogQuery extends ModelCriteria
 	/**
 	 * Filter the query on the datetime column
 	 * 
-	 * @param     string|array $datetime The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByDatetime('2011-03-14'); // WHERE datetime = '2011-03-14'
+	 * $query->filterByDatetime('now'); // WHERE datetime = '2011-03-14'
+	 * $query->filterByDatetime(array('max' => 'yesterday')); // WHERE datetime > '2011-03-13'
+	 * </code>
+	 *
+	 * @param     mixed $datetime The value to use as filter.
+	 *              Values can be integers (unix timestamps), DateTime objects, or strings.
+	 *              Empty strings are treated as NULL.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ActionLogQuery The current query, for fluid interface
@@ -335,8 +390,14 @@ abstract class BaseActionLogQuery extends ModelCriteria
 	/**
 	 * Filter the query on the action column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByAction('fooValue');   // WHERE action = 'fooValue'
+	 * $query->filterByAction('%fooValue%'); // WHERE action LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $action The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ActionLogQuery The current query, for fluid interface
@@ -357,8 +418,14 @@ abstract class BaseActionLogQuery extends ModelCriteria
 	/**
 	 * Filter the query on the object column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByObject('fooValue');   // WHERE object = 'fooValue'
+	 * $query->filterByObject('%fooValue%'); // WHERE object LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $object The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ActionLogQuery The current query, for fluid interface
@@ -379,8 +446,14 @@ abstract class BaseActionLogQuery extends ModelCriteria
 	/**
 	 * Filter the query on the forward column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByForward('fooValue');   // WHERE forward = 'fooValue'
+	 * $query->filterByForward('%fooValue%'); // WHERE forward LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $forward The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ActionLogQuery The current query, for fluid interface
@@ -401,15 +474,25 @@ abstract class BaseActionLogQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related User object
 	 *
-	 * @param     User $user  the related object to use as filter
+	 * @param     User|PropelCollection $user The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ActionLogQuery The current query, for fluid interface
 	 */
 	public function filterByUser($user, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ActionLogPeer::USERID, $user->getId(), $comparison);
+		if ($user instanceof User) {
+			return $this
+				->addUsingAlias(ActionLogPeer::USERID, $user->getId(), $comparison);
+		} elseif ($user instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(ActionLogPeer::USERID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByUser() only accepts arguments of type User or PropelCollection');
+		}
 	}
 
 	/**
@@ -465,15 +548,25 @@ abstract class BaseActionLogQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related SecurityAction object
 	 *
-	 * @param     SecurityAction $securityAction  the related object to use as filter
+	 * @param     SecurityAction|PropelCollection $securityAction The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ActionLogQuery The current query, for fluid interface
 	 */
 	public function filterBySecurityAction($securityAction, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ActionLogPeer::ACTION, $securityAction->getAction(), $comparison);
+		if ($securityAction instanceof SecurityAction) {
+			return $this
+				->addUsingAlias(ActionLogPeer::ACTION, $securityAction->getAction(), $comparison);
+		} elseif ($securityAction instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(ActionLogPeer::ACTION, $securityAction->toKeyValue('PrimaryKey', 'Action'), $comparison);
+		} else {
+			throw new PropelException('filterBySecurityAction() only accepts arguments of type SecurityAction or PropelCollection');
+		}
 	}
 
 	/**

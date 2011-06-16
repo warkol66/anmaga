@@ -281,7 +281,7 @@ abstract class BaseOrderItem extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 5; // 5 = OrderItemPeer::NUM_COLUMNS - OrderItemPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 5; // 5 = OrderItemPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating OrderItem object", $e);
@@ -656,12 +656,17 @@ abstract class BaseOrderItem extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
+		if (isset($alreadyDumpedObjects['OrderItem'][$this->getPrimaryKey()])) {
+			return '*RECURSION*';
+		}
+		$alreadyDumpedObjects['OrderItem'][$this->getPrimaryKey()] = true;
 		$keys = OrderItemPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
@@ -672,10 +677,10 @@ abstract class BaseOrderItem extends BaseObject  implements Persistent
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aOrder) {
-				$result['Order'] = $this->aOrder->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['Order'] = $this->aOrder->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 			if (null !== $this->aProduct) {
-				$result['Product'] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['Product'] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 		}
 		return $result;
@@ -825,17 +830,19 @@ abstract class BaseOrderItem extends BaseObject  implements Persistent
 	 *
 	 * @param      object $copyObj An object of OrderItem (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
 	 */
-	public function copyInto($copyObj, $deepCopy = false)
+	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setOrderid($this->orderid);
-		$copyObj->setProductcode($this->productcode);
-		$copyObj->setPrice($this->price);
-		$copyObj->setQuantity($this->quantity);
-
-		$copyObj->setNew(true);
-		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		$copyObj->setOrderid($this->getOrderid());
+		$copyObj->setProductcode($this->getProductcode());
+		$copyObj->setPrice($this->getPrice());
+		$copyObj->setQuantity($this->getQuantity());
+		if ($makeNew) {
+			$copyObj->setNew(true);
+			$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		}
 	}
 
 	/**
@@ -915,11 +922,11 @@ abstract class BaseOrderItem extends BaseObject  implements Persistent
 		if ($this->aOrder === null && ($this->orderid !== null)) {
 			$this->aOrder = OrderQuery::create()->findPk($this->orderid, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aOrder->addOrderItems($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aOrder->addOrderItems($this);
 			 */
 		}
 		return $this->aOrder;
@@ -966,11 +973,11 @@ abstract class BaseOrderItem extends BaseObject  implements Persistent
 				->filterByOrderItem($this) // here
 				->findOne($con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aProduct->addOrderItems($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aProduct->addOrderItems($this);
 			 */
 		}
 		return $this->aProduct;
@@ -995,13 +1002,13 @@ abstract class BaseOrderItem extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Resets all collections of referencing foreign keys.
+	 * Resets all references to other model objects or collections of model objects.
 	 *
-	 * This method is a user-space workaround for PHP's inability to garbage collect objects
-	 * with circular references.  This is currently necessary when using Propel in certain
-	 * daemon or large-volumne/high-memory operations.
+	 * This method is a user-space workaround for PHP's inability to garbage collect
+	 * objects with circular references (even in PHP 5.3). This is currently necessary
+	 * when using Propel in certain daemon or large-volumne/high-memory operations.
 	 *
-	 * @param      boolean $deep Whether to also clear the references on all associated objects.
+	 * @param      boolean $deep Whether to also clear the references on all referrer objects.
 	 */
 	public function clearAllReferences($deep = false)
 	{
@@ -1010,6 +1017,16 @@ abstract class BaseOrderItem extends BaseObject  implements Persistent
 
 		$this->aOrder = null;
 		$this->aProduct = null;
+	}
+
+	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->exportTo(OrderItemPeer::DEFAULT_STRING_FORMAT);
 	}
 
 	/**

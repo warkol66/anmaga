@@ -106,7 +106,7 @@ abstract class BaseMeasureUnitQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -140,8 +140,17 @@ abstract class BaseMeasureUnitQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    MeasureUnitQuery The current query, for fluid interface
@@ -157,8 +166,14 @@ abstract class BaseMeasureUnitQuery extends ModelCriteria
 	/**
 	 * Filter the query on the name column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+	 * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $name The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    MeasureUnitQuery The current query, for fluid interface
@@ -186,8 +201,17 @@ abstract class BaseMeasureUnitQuery extends ModelCriteria
 	 */
 	public function filterByProduct($product, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(MeasureUnitPeer::ID, $product->getMeasureunitid(), $comparison);
+		if ($product instanceof Product) {
+			return $this
+				->addUsingAlias(MeasureUnitPeer::ID, $product->getMeasureunitid(), $comparison);
+		} elseif ($product instanceof PropelCollection) {
+			return $this
+				->useProductQuery()
+					->filterByPrimaryKeys($product->getPrimaryKeys())
+				->endUse();
+		} else {
+			throw new PropelException('filterByProduct() only accepts arguments of type Product or PropelCollection');
+		}
 	}
 
 	/**

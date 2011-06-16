@@ -31,6 +31,9 @@ abstract class BaseOrderTemplatePeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 7;
+
 	/** the column name for the ID field */
 	const ID = 'orders_orderTemplate.ID';
 
@@ -52,6 +55,9 @@ abstract class BaseOrderTemplatePeer {
 	/** the column name for the TOTAL field */
 	const TOTAL = 'orders_orderTemplate.TOTAL';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of OrderTemplate objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -67,7 +73,7 @@ abstract class BaseOrderTemplatePeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Created', 'Userid', 'Affiliateid', 'Branchid', 'Total', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'created', 'userid', 'affiliateid', 'branchid', 'total', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::CREATED, self::USERID, self::AFFILIATEID, self::BRANCHID, self::TOTAL, ),
@@ -82,7 +88,7 @@ abstract class BaseOrderTemplatePeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Created' => 2, 'Userid' => 3, 'Affiliateid' => 4, 'Branchid' => 5, 'Total' => 6, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'created' => 2, 'userid' => 3, 'affiliateid' => 4, 'branchid' => 5, 'total' => 6, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::CREATED => 2, self::USERID => 3, self::AFFILIATEID => 4, self::BRANCHID => 5, self::TOTAL => 6, ),
@@ -295,7 +301,7 @@ abstract class BaseOrderTemplatePeer {
 	 * @param      OrderTemplate $value A OrderTemplate object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(OrderTemplate $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -453,7 +459,7 @@ abstract class BaseOrderTemplatePeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + OrderTemplatePeer::NUM_COLUMNS;
+			$col = $startcol + OrderTemplatePeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = OrderTemplatePeer::OM_CLASS;
 			$obj = new $cls();
@@ -632,7 +638,7 @@ abstract class BaseOrderTemplatePeer {
 		}
 
 		OrderTemplatePeer::addSelectColumns($criteria);
-		$startcol = (OrderTemplatePeer::NUM_COLUMNS - OrderTemplatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = OrderTemplatePeer::NUM_HYDRATE_COLUMNS;
 		AffiliateUserPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(OrderTemplatePeer::USERID, AffiliateUserPeer::ID, $join_behavior);
@@ -698,7 +704,7 @@ abstract class BaseOrderTemplatePeer {
 		}
 
 		OrderTemplatePeer::addSelectColumns($criteria);
-		$startcol = (OrderTemplatePeer::NUM_COLUMNS - OrderTemplatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = OrderTemplatePeer::NUM_HYDRATE_COLUMNS;
 		AffiliatePeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(OrderTemplatePeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
@@ -764,7 +770,7 @@ abstract class BaseOrderTemplatePeer {
 		}
 
 		OrderTemplatePeer::addSelectColumns($criteria);
-		$startcol = (OrderTemplatePeer::NUM_COLUMNS - OrderTemplatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = OrderTemplatePeer::NUM_HYDRATE_COLUMNS;
 		AffiliateBranchPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(OrderTemplatePeer::BRANCHID, AffiliateBranchPeer::ID, $join_behavior);
@@ -884,16 +890,16 @@ abstract class BaseOrderTemplatePeer {
 		}
 
 		OrderTemplatePeer::addSelectColumns($criteria);
-		$startcol2 = (OrderTemplatePeer::NUM_COLUMNS - OrderTemplatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = OrderTemplatePeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliateUserPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + AffiliateUserPeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliatePeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + AffiliatePeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliateBranchPeer::addSelectColumns($criteria);
-		$startcol5 = $startcol4 + (AffiliateBranchPeer::NUM_COLUMNS - AffiliateBranchPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol5 = $startcol4 + AffiliateBranchPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(OrderTemplatePeer::USERID, AffiliateUserPeer::ID, $join_behavior);
 
@@ -1157,13 +1163,13 @@ abstract class BaseOrderTemplatePeer {
 		}
 
 		OrderTemplatePeer::addSelectColumns($criteria);
-		$startcol2 = (OrderTemplatePeer::NUM_COLUMNS - OrderTemplatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = OrderTemplatePeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliatePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + AffiliatePeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliateBranchPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (AffiliateBranchPeer::NUM_COLUMNS - AffiliateBranchPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + AffiliateBranchPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(OrderTemplatePeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
 
@@ -1254,13 +1260,13 @@ abstract class BaseOrderTemplatePeer {
 		}
 
 		OrderTemplatePeer::addSelectColumns($criteria);
-		$startcol2 = (OrderTemplatePeer::NUM_COLUMNS - OrderTemplatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = OrderTemplatePeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliateUserPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + AffiliateUserPeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliateBranchPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (AffiliateBranchPeer::NUM_COLUMNS - AffiliateBranchPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + AffiliateBranchPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(OrderTemplatePeer::USERID, AffiliateUserPeer::ID, $join_behavior);
 
@@ -1351,13 +1357,13 @@ abstract class BaseOrderTemplatePeer {
 		}
 
 		OrderTemplatePeer::addSelectColumns($criteria);
-		$startcol2 = (OrderTemplatePeer::NUM_COLUMNS - OrderTemplatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = OrderTemplatePeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliateUserPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (AffiliateUserPeer::NUM_COLUMNS - AffiliateUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + AffiliateUserPeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliatePeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + AffiliatePeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(OrderTemplatePeer::USERID, AffiliateUserPeer::ID, $join_behavior);
 
@@ -1686,7 +1692,7 @@ abstract class BaseOrderTemplatePeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(OrderTemplate $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

@@ -117,7 +117,7 @@ abstract class BaseMultilangTextQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -167,8 +167,17 @@ abstract class BaseMultilangTextQuery extends ModelCriteria
 	/**
 	 * Filter the query on the id column
 	 * 
-	 * @param     int|array $id The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterById(1234); // WHERE id = 1234
+	 * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+	 * $query->filterById(array('min' => 12)); // WHERE id > 12
+	 * </code>
+	 *
+	 * @param     mixed $id The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    MultilangTextQuery The current query, for fluid interface
@@ -184,8 +193,14 @@ abstract class BaseMultilangTextQuery extends ModelCriteria
 	/**
 	 * Filter the query on the moduleName column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByModulename('fooValue');   // WHERE moduleName = 'fooValue'
+	 * $query->filterByModulename('%fooValue%'); // WHERE moduleName LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $modulename The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    MultilangTextQuery The current query, for fluid interface
@@ -206,8 +221,14 @@ abstract class BaseMultilangTextQuery extends ModelCriteria
 	/**
 	 * Filter the query on the languageCode column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByLanguagecode('fooValue');   // WHERE languageCode = 'fooValue'
+	 * $query->filterByLanguagecode('%fooValue%'); // WHERE languageCode LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $languagecode The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    MultilangTextQuery The current query, for fluid interface
@@ -228,8 +249,14 @@ abstract class BaseMultilangTextQuery extends ModelCriteria
 	/**
 	 * Filter the query on the text column
 	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByText('fooValue');   // WHERE text = 'fooValue'
+	 * $query->filterByText('%fooValue%'); // WHERE text LIKE '%fooValue%'
+	 * </code>
+	 *
 	 * @param     string $text The value to use as filter.
-	 *            Accepts wildcards (* and % trigger a LIKE)
+	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    MultilangTextQuery The current query, for fluid interface
@@ -250,15 +277,25 @@ abstract class BaseMultilangTextQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related MultilangLanguage object
 	 *
-	 * @param     MultilangLanguage $multilangLanguage  the related object to use as filter
+	 * @param     MultilangLanguage|PropelCollection $multilangLanguage The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    MultilangTextQuery The current query, for fluid interface
 	 */
 	public function filterByMultilangLanguage($multilangLanguage, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(MultilangTextPeer::LANGUAGECODE, $multilangLanguage->getCode(), $comparison);
+		if ($multilangLanguage instanceof MultilangLanguage) {
+			return $this
+				->addUsingAlias(MultilangTextPeer::LANGUAGECODE, $multilangLanguage->getCode(), $comparison);
+		} elseif ($multilangLanguage instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(MultilangTextPeer::LANGUAGECODE, $multilangLanguage->toKeyValue('PrimaryKey', 'Code'), $comparison);
+		} else {
+			throw new PropelException('filterByMultilangLanguage() only accepts arguments of type MultilangLanguage or PropelCollection');
+		}
 	}
 
 	/**
@@ -314,15 +351,25 @@ abstract class BaseMultilangTextQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Module object
 	 *
-	 * @param     Module $module  the related object to use as filter
+	 * @param     Module|PropelCollection $module The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    MultilangTextQuery The current query, for fluid interface
 	 */
 	public function filterByModule($module, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(MultilangTextPeer::MODULENAME, $module->getName(), $comparison);
+		if ($module instanceof Module) {
+			return $this
+				->addUsingAlias(MultilangTextPeer::MODULENAME, $module->getName(), $comparison);
+		} elseif ($module instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(MultilangTextPeer::MODULENAME, $module->toKeyValue('PrimaryKey', 'Name'), $comparison);
+		} else {
+			throw new PropelException('filterByModule() only accepts arguments of type Module or PropelCollection');
+		}
 	}
 
 	/**

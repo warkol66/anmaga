@@ -113,7 +113,7 @@ abstract class BaseAffiliateProductQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -160,8 +160,19 @@ abstract class BaseAffiliateProductQuery extends ModelCriteria
 	/**
 	 * Filter the query on the productId column
 	 * 
-	 * @param     int|array $productid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByProductid(1234); // WHERE productId = 1234
+	 * $query->filterByProductid(array(12, 34)); // WHERE productId IN (12, 34)
+	 * $query->filterByProductid(array('min' => 12)); // WHERE productId > 12
+	 * </code>
+	 *
+	 * @see       filterByProduct()
+	 *
+	 * @param     mixed $productid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateProductQuery The current query, for fluid interface
@@ -177,8 +188,19 @@ abstract class BaseAffiliateProductQuery extends ModelCriteria
 	/**
 	 * Filter the query on the affiliateId column
 	 * 
-	 * @param     int|array $affiliateid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByAffiliateid(1234); // WHERE affiliateId = 1234
+	 * $query->filterByAffiliateid(array(12, 34)); // WHERE affiliateId IN (12, 34)
+	 * $query->filterByAffiliateid(array('min' => 12)); // WHERE affiliateId > 12
+	 * </code>
+	 *
+	 * @see       filterByAffiliate()
+	 *
+	 * @param     mixed $affiliateid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateProductQuery The current query, for fluid interface
@@ -194,8 +216,17 @@ abstract class BaseAffiliateProductQuery extends ModelCriteria
 	/**
 	 * Filter the query on the price column
 	 * 
-	 * @param     double|array $price The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByPrice(1234); // WHERE price = 1234
+	 * $query->filterByPrice(array(12, 34)); // WHERE price IN (12, 34)
+	 * $query->filterByPrice(array('min' => 12)); // WHERE price > 12
+	 * </code>
+	 *
+	 * @param     mixed $price The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateProductQuery The current query, for fluid interface
@@ -225,15 +256,25 @@ abstract class BaseAffiliateProductQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Product object
 	 *
-	 * @param     Product $product  the related object to use as filter
+	 * @param     Product|PropelCollection $product The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateProductQuery The current query, for fluid interface
 	 */
 	public function filterByProduct($product, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateProductPeer::PRODUCTID, $product->getId(), $comparison);
+		if ($product instanceof Product) {
+			return $this
+				->addUsingAlias(AffiliateProductPeer::PRODUCTID, $product->getId(), $comparison);
+		} elseif ($product instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(AffiliateProductPeer::PRODUCTID, $product->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByProduct() only accepts arguments of type Product or PropelCollection');
+		}
 	}
 
 	/**
@@ -289,15 +330,25 @@ abstract class BaseAffiliateProductQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related Affiliate object
 	 *
-	 * @param     Affiliate $affiliate  the related object to use as filter
+	 * @param     Affiliate|PropelCollection $affiliate The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateProductQuery The current query, for fluid interface
 	 */
 	public function filterByAffiliate($affiliate, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateProductPeer::AFFILIATEID, $affiliate->getId(), $comparison);
+		if ($affiliate instanceof Affiliate) {
+			return $this
+				->addUsingAlias(AffiliateProductPeer::AFFILIATEID, $affiliate->getId(), $comparison);
+		} elseif ($affiliate instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(AffiliateProductPeer::AFFILIATEID, $affiliate->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByAffiliate() only accepts arguments of type Affiliate or PropelCollection');
+		}
 	}
 
 	/**

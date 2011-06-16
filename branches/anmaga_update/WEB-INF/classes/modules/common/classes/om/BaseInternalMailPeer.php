@@ -31,6 +31,9 @@ abstract class BaseInternalMailPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 13;
+
 	/** the column name for the ID field */
 	const ID = 'common_internalMail.ID';
 
@@ -70,6 +73,9 @@ abstract class BaseInternalMailPeer {
 	/** the column name for the DELETED_AT field */
 	const DELETED_AT = 'common_internalMail.DELETED_AT';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of InternalMail objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -85,7 +91,7 @@ abstract class BaseInternalMailPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Subject', 'Body', 'Recipientid', 'Recipienttype', 'Readon', 'Fromid', 'Fromtype', 'To', 'Replyid', 'CreatedAt', 'UpdatedAt', 'DeletedAt', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'subject', 'body', 'recipientid', 'recipienttype', 'readon', 'fromid', 'fromtype', 'to', 'replyid', 'createdAt', 'updatedAt', 'deletedAt', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::SUBJECT, self::BODY, self::RECIPIENTID, self::RECIPIENTTYPE, self::READON, self::FROMID, self::FROMTYPE, self::TO, self::REPLYID, self::CREATED_AT, self::UPDATED_AT, self::DELETED_AT, ),
@@ -100,7 +106,7 @@ abstract class BaseInternalMailPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Subject' => 1, 'Body' => 2, 'Recipientid' => 3, 'Recipienttype' => 4, 'Readon' => 5, 'Fromid' => 6, 'Fromtype' => 7, 'To' => 8, 'Replyid' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, 'DeletedAt' => 12, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'subject' => 1, 'body' => 2, 'recipientid' => 3, 'recipienttype' => 4, 'readon' => 5, 'fromid' => 6, 'fromtype' => 7, 'to' => 8, 'replyid' => 9, 'createdAt' => 10, 'updatedAt' => 11, 'deletedAt' => 12, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SUBJECT => 1, self::BODY => 2, self::RECIPIENTID => 3, self::RECIPIENTTYPE => 4, self::READON => 5, self::FROMID => 6, self::FROMTYPE => 7, self::TO => 8, self::REPLYID => 9, self::CREATED_AT => 10, self::UPDATED_AT => 11, self::DELETED_AT => 12, ),
@@ -337,7 +343,7 @@ abstract class BaseInternalMailPeer {
 	 * @param      InternalMail $value A InternalMail object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(InternalMail $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -492,7 +498,7 @@ abstract class BaseInternalMailPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + InternalMailPeer::NUM_COLUMNS;
+			$col = $startcol + InternalMailPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = InternalMailPeer::OM_CLASS;
 			$obj = new $cls();
@@ -575,7 +581,7 @@ abstract class BaseInternalMailPeer {
 		}
 
 		InternalMailPeer::addSelectColumns($criteria);
-		$startcol2 = (InternalMailPeer::NUM_COLUMNS - InternalMailPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = InternalMailPeer::NUM_HYDRATE_COLUMNS;
 
 		// soft_delete behavior
 		if (InternalMailQuery::isSoftDeleteEnabled()) {
@@ -827,7 +833,7 @@ abstract class BaseInternalMailPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(InternalMail $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

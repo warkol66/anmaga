@@ -31,12 +31,18 @@ abstract class BaseAlertSubscriptionUserPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 2;
+
 	/** the column name for the ALERTSUBSCRIPTIONID field */
 	const ALERTSUBSCRIPTIONID = 'common_alertSubscriptionUser.ALERTSUBSCRIPTIONID';
 
 	/** the column name for the USERID field */
 	const USERID = 'common_alertSubscriptionUser.USERID';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of AlertSubscriptionUser objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -52,7 +58,7 @@ abstract class BaseAlertSubscriptionUserPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Alertsubscriptionid', 'Userid', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('alertsubscriptionid', 'userid', ),
 		BasePeer::TYPE_COLNAME => array (self::ALERTSUBSCRIPTIONID, self::USERID, ),
@@ -67,7 +73,7 @@ abstract class BaseAlertSubscriptionUserPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Alertsubscriptionid' => 0, 'Userid' => 1, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('alertsubscriptionid' => 0, 'userid' => 1, ),
 		BasePeer::TYPE_COLNAME => array (self::ALERTSUBSCRIPTIONID => 0, self::USERID => 1, ),
@@ -270,7 +276,7 @@ abstract class BaseAlertSubscriptionUserPeer {
 	 * @param      AlertSubscriptionUser $value A AlertSubscriptionUser object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(AlertSubscriptionUser $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -425,7 +431,7 @@ abstract class BaseAlertSubscriptionUserPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + AlertSubscriptionUserPeer::NUM_COLUMNS;
+			$col = $startcol + AlertSubscriptionUserPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = AlertSubscriptionUserPeer::OM_CLASS;
 			$obj = new $cls();
@@ -554,7 +560,7 @@ abstract class BaseAlertSubscriptionUserPeer {
 		}
 
 		AlertSubscriptionUserPeer::addSelectColumns($criteria);
-		$startcol = (AlertSubscriptionUserPeer::NUM_COLUMNS - AlertSubscriptionUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = AlertSubscriptionUserPeer::NUM_HYDRATE_COLUMNS;
 		AlertSubscriptionPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(AlertSubscriptionUserPeer::ALERTSUBSCRIPTIONID, AlertSubscriptionPeer::ID, $join_behavior);
@@ -620,7 +626,7 @@ abstract class BaseAlertSubscriptionUserPeer {
 		}
 
 		AlertSubscriptionUserPeer::addSelectColumns($criteria);
-		$startcol = (AlertSubscriptionUserPeer::NUM_COLUMNS - AlertSubscriptionUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = AlertSubscriptionUserPeer::NUM_HYDRATE_COLUMNS;
 		UserPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(AlertSubscriptionUserPeer::USERID, UserPeer::ID, $join_behavior);
@@ -738,13 +744,13 @@ abstract class BaseAlertSubscriptionUserPeer {
 		}
 
 		AlertSubscriptionUserPeer::addSelectColumns($criteria);
-		$startcol2 = (AlertSubscriptionUserPeer::NUM_COLUMNS - AlertSubscriptionUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = AlertSubscriptionUserPeer::NUM_HYDRATE_COLUMNS;
 
 		AlertSubscriptionPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (AlertSubscriptionPeer::NUM_COLUMNS - AlertSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + AlertSubscriptionPeer::NUM_HYDRATE_COLUMNS;
 
 		UserPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + UserPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(AlertSubscriptionUserPeer::ALERTSUBSCRIPTIONID, AlertSubscriptionPeer::ID, $join_behavior);
 
@@ -932,10 +938,10 @@ abstract class BaseAlertSubscriptionUserPeer {
 		}
 
 		AlertSubscriptionUserPeer::addSelectColumns($criteria);
-		$startcol2 = (AlertSubscriptionUserPeer::NUM_COLUMNS - AlertSubscriptionUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = AlertSubscriptionUserPeer::NUM_HYDRATE_COLUMNS;
 
 		UserPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + UserPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(AlertSubscriptionUserPeer::USERID, UserPeer::ID, $join_behavior);
 
@@ -1005,10 +1011,10 @@ abstract class BaseAlertSubscriptionUserPeer {
 		}
 
 		AlertSubscriptionUserPeer::addSelectColumns($criteria);
-		$startcol2 = (AlertSubscriptionUserPeer::NUM_COLUMNS - AlertSubscriptionUserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = AlertSubscriptionUserPeer::NUM_HYDRATE_COLUMNS;
 
 		AlertSubscriptionPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (AlertSubscriptionPeer::NUM_COLUMNS - AlertSubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + AlertSubscriptionPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(AlertSubscriptionUserPeer::ALERTSUBSCRIPTIONID, AlertSubscriptionPeer::ID, $join_behavior);
 
@@ -1288,7 +1294,7 @@ abstract class BaseAlertSubscriptionUserPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(AlertSubscriptionUser $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

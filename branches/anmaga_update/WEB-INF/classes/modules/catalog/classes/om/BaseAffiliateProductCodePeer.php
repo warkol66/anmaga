@@ -31,6 +31,9 @@ abstract class BaseAffiliateProductCodePeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 4;
+
 	/** the column name for the ID field */
 	const ID = 'catalog_affiliateProductCode.ID';
 
@@ -43,6 +46,9 @@ abstract class BaseAffiliateProductCodePeer {
 	/** the column name for the PRODUCTCODEAFFILIATE field */
 	const PRODUCTCODEAFFILIATE = 'catalog_affiliateProductCode.PRODUCTCODEAFFILIATE';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of AffiliateProductCode objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -58,7 +64,7 @@ abstract class BaseAffiliateProductCodePeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Affiliateid', 'Productcode', 'Productcodeaffiliate', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'affiliateid', 'productcode', 'productcodeaffiliate', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::AFFILIATEID, self::PRODUCTCODE, self::PRODUCTCODEAFFILIATE, ),
@@ -73,7 +79,7 @@ abstract class BaseAffiliateProductCodePeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Affiliateid' => 1, 'Productcode' => 2, 'Productcodeaffiliate' => 3, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'affiliateid' => 1, 'productcode' => 2, 'productcodeaffiliate' => 3, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::AFFILIATEID => 1, self::PRODUCTCODE => 2, self::PRODUCTCODEAFFILIATE => 3, ),
@@ -280,7 +286,7 @@ abstract class BaseAffiliateProductCodePeer {
 	 * @param      AffiliateProductCode $value A AffiliateProductCode object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(AffiliateProductCode $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -435,7 +441,7 @@ abstract class BaseAffiliateProductCodePeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + AffiliateProductCodePeer::NUM_COLUMNS;
+			$col = $startcol + AffiliateProductCodePeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = AffiliateProductCodePeer::OM_CLASS;
 			$obj = new $cls();
@@ -514,7 +520,7 @@ abstract class BaseAffiliateProductCodePeer {
 		}
 
 		AffiliateProductCodePeer::addSelectColumns($criteria);
-		$startcol = (AffiliateProductCodePeer::NUM_COLUMNS - AffiliateProductCodePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = AffiliateProductCodePeer::NUM_HYDRATE_COLUMNS;
 		AffiliatePeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(AffiliateProductCodePeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
@@ -630,10 +636,10 @@ abstract class BaseAffiliateProductCodePeer {
 		}
 
 		AffiliateProductCodePeer::addSelectColumns($criteria);
-		$startcol2 = (AffiliateProductCodePeer::NUM_COLUMNS - AffiliateProductCodePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = AffiliateProductCodePeer::NUM_HYDRATE_COLUMNS;
 
 		AffiliatePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (AffiliatePeer::NUM_COLUMNS - AffiliatePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + AffiliatePeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(AffiliateProductCodePeer::AFFILIATEID, AffiliatePeer::ID, $join_behavior);
 
@@ -899,7 +905,7 @@ abstract class BaseAffiliateProductCodePeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(AffiliateProductCode $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

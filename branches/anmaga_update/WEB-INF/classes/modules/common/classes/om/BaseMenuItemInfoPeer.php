@@ -31,6 +31,9 @@ abstract class BaseMenuItemInfoPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 6;
+
 	/** the column name for the ID field */
 	const ID = 'common_menuItemInfo.ID';
 
@@ -49,6 +52,9 @@ abstract class BaseMenuItemInfoPeer {
 	/** the column name for the LANGUAGE field */
 	const LANGUAGE = 'common_menuItemInfo.LANGUAGE';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of MenuItemInfo objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -64,7 +70,7 @@ abstract class BaseMenuItemInfoPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Menuitemid', 'Name', 'Title', 'Description', 'Language', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'menuitemid', 'name', 'title', 'description', 'language', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::MENUITEMID, self::NAME, self::TITLE, self::DESCRIPTION, self::LANGUAGE, ),
@@ -79,7 +85,7 @@ abstract class BaseMenuItemInfoPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Menuitemid' => 1, 'Name' => 2, 'Title' => 3, 'Description' => 4, 'Language' => 5, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'menuitemid' => 1, 'name' => 2, 'title' => 3, 'description' => 4, 'language' => 5, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::MENUITEMID => 1, self::NAME => 2, self::TITLE => 3, self::DESCRIPTION => 4, self::LANGUAGE => 5, ),
@@ -290,7 +296,7 @@ abstract class BaseMenuItemInfoPeer {
 	 * @param      MenuItemInfo $value A MenuItemInfo object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(MenuItemInfo $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -445,7 +451,7 @@ abstract class BaseMenuItemInfoPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + MenuItemInfoPeer::NUM_COLUMNS;
+			$col = $startcol + MenuItemInfoPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = MenuItemInfoPeer::OM_CLASS;
 			$obj = new $cls();
@@ -524,7 +530,7 @@ abstract class BaseMenuItemInfoPeer {
 		}
 
 		MenuItemInfoPeer::addSelectColumns($criteria);
-		$startcol = (MenuItemInfoPeer::NUM_COLUMNS - MenuItemInfoPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = MenuItemInfoPeer::NUM_HYDRATE_COLUMNS;
 		MenuItemPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(MenuItemInfoPeer::MENUITEMID, MenuItemPeer::ID, $join_behavior);
@@ -640,10 +646,10 @@ abstract class BaseMenuItemInfoPeer {
 		}
 
 		MenuItemInfoPeer::addSelectColumns($criteria);
-		$startcol2 = (MenuItemInfoPeer::NUM_COLUMNS - MenuItemInfoPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = MenuItemInfoPeer::NUM_HYDRATE_COLUMNS;
 
 		MenuItemPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (MenuItemPeer::NUM_COLUMNS - MenuItemPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + MenuItemPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(MenuItemInfoPeer::MENUITEMID, MenuItemPeer::ID, $join_behavior);
 
@@ -909,7 +915,7 @@ abstract class BaseMenuItemInfoPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(MenuItemInfo $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

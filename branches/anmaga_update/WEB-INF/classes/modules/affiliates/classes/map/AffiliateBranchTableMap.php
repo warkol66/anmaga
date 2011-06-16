@@ -42,6 +42,7 @@ class AffiliateBranchTableMap extends TableMap {
 		$this->addColumn('NUMBER', 'Number', 'INTEGER', true, null, null);
 		$this->addColumn('CODE', 'Code', 'VARCHAR', false, 20, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 255, null);
+		$this->getColumn('NAME', false)->setPrimaryString(true);
 		$this->addColumn('PHONE', 'Phone', 'VARCHAR', false, 100, null);
 		$this->addColumn('CONTACT', 'Contact', 'VARCHAR', false, 50, null);
 		$this->addColumn('CONTACTEMAIL', 'Contactemail', 'VARCHAR', false, 100, null);

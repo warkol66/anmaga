@@ -31,6 +31,9 @@ abstract class BaseAffiliateGroupPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 5;
+
 	/** the column name for the ID field */
 	const ID = 'affiliates_group.ID';
 
@@ -46,6 +49,9 @@ abstract class BaseAffiliateGroupPeer {
 	/** the column name for the BITLEVEL field */
 	const BITLEVEL = 'affiliates_group.BITLEVEL';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of AffiliateGroup objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -61,7 +67,7 @@ abstract class BaseAffiliateGroupPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Created', 'Updated', 'Bitlevel', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'created', 'updated', 'bitlevel', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::CREATED, self::UPDATED, self::BITLEVEL, ),
@@ -76,7 +82,7 @@ abstract class BaseAffiliateGroupPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Created' => 2, 'Updated' => 3, 'Bitlevel' => 4, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'created' => 2, 'updated' => 3, 'bitlevel' => 4, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::CREATED => 2, self::UPDATED => 3, self::BITLEVEL => 4, ),
@@ -285,7 +291,7 @@ abstract class BaseAffiliateGroupPeer {
 	 * @param      AffiliateGroup $value A AffiliateGroup object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(AffiliateGroup $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -446,7 +452,7 @@ abstract class BaseAffiliateGroupPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + AffiliateGroupPeer::NUM_COLUMNS;
+			$col = $startcol + AffiliateGroupPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = AffiliateGroupPeer::OM_CLASS;
 			$obj = new $cls();
@@ -722,7 +728,7 @@ abstract class BaseAffiliateGroupPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(AffiliateGroup $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

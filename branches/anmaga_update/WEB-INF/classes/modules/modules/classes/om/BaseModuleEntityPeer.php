@@ -31,6 +31,9 @@ abstract class BaseModuleEntityPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 10;
+
 	/** the column name for the MODULENAME field */
 	const MODULENAME = 'modules_entity.MODULENAME';
 
@@ -61,6 +64,9 @@ abstract class BaseModuleEntityPeer {
 	/** the column name for the BEHAVIORS field */
 	const BEHAVIORS = 'modules_entity.BEHAVIORS';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of ModuleEntity objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -76,7 +82,7 @@ abstract class BaseModuleEntityPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Modulename', 'Name', 'Phpname', 'Description', 'Softdelete', 'Relation', 'Savelog', 'Nestedset', 'Scopefielduniquename', 'Behaviors', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('modulename', 'name', 'phpname', 'description', 'softdelete', 'relation', 'savelog', 'nestedset', 'scopefielduniquename', 'behaviors', ),
 		BasePeer::TYPE_COLNAME => array (self::MODULENAME, self::NAME, self::PHPNAME, self::DESCRIPTION, self::SOFTDELETE, self::RELATION, self::SAVELOG, self::NESTEDSET, self::SCOPEFIELDUNIQUENAME, self::BEHAVIORS, ),
@@ -91,7 +97,7 @@ abstract class BaseModuleEntityPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Modulename' => 0, 'Name' => 1, 'Phpname' => 2, 'Description' => 3, 'Softdelete' => 4, 'Relation' => 5, 'Savelog' => 6, 'Nestedset' => 7, 'Scopefielduniquename' => 8, 'Behaviors' => 9, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('modulename' => 0, 'name' => 1, 'phpname' => 2, 'description' => 3, 'softdelete' => 4, 'relation' => 5, 'savelog' => 6, 'nestedset' => 7, 'scopefielduniquename' => 8, 'behaviors' => 9, ),
 		BasePeer::TYPE_COLNAME => array (self::MODULENAME => 0, self::NAME => 1, self::PHPNAME => 2, self::DESCRIPTION => 3, self::SOFTDELETE => 4, self::RELATION => 5, self::SAVELOG => 6, self::NESTEDSET => 7, self::SCOPEFIELDUNIQUENAME => 8, self::BEHAVIORS => 9, ),
@@ -310,7 +316,7 @@ abstract class BaseModuleEntityPeer {
 	 * @param      ModuleEntity $value A ModuleEntity object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(ModuleEntity $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -477,7 +483,7 @@ abstract class BaseModuleEntityPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + ModuleEntityPeer::NUM_COLUMNS;
+			$col = $startcol + ModuleEntityPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = ModuleEntityPeer::OM_CLASS;
 			$obj = new $cls();
@@ -606,7 +612,7 @@ abstract class BaseModuleEntityPeer {
 		}
 
 		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol = (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = ModuleEntityPeer::NUM_HYDRATE_COLUMNS;
 		ModulePeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(ModuleEntityPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
@@ -672,7 +678,7 @@ abstract class BaseModuleEntityPeer {
 		}
 
 		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol = (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = ModuleEntityPeer::NUM_HYDRATE_COLUMNS;
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(ModuleEntityPeer::SCOPEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
@@ -790,13 +796,13 @@ abstract class BaseModuleEntityPeer {
 		}
 
 		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol2 = (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ModuleEntityPeer::NUM_HYDRATE_COLUMNS;
 
 		ModulePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (ModulePeer::NUM_COLUMNS - ModulePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + ModulePeer::NUM_HYDRATE_COLUMNS;
 
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + ModuleEntityFieldPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ModuleEntityPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
 
@@ -984,10 +990,10 @@ abstract class BaseModuleEntityPeer {
 		}
 
 		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol2 = (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ModuleEntityPeer::NUM_HYDRATE_COLUMNS;
 
 		ModuleEntityFieldPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (ModuleEntityFieldPeer::NUM_COLUMNS - ModuleEntityFieldPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + ModuleEntityFieldPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ModuleEntityPeer::SCOPEFIELDUNIQUENAME, ModuleEntityFieldPeer::UNIQUENAME, $join_behavior);
 
@@ -1057,10 +1063,10 @@ abstract class BaseModuleEntityPeer {
 		}
 
 		ModuleEntityPeer::addSelectColumns($criteria);
-		$startcol2 = (ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ModuleEntityPeer::NUM_HYDRATE_COLUMNS;
 
 		ModulePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (ModulePeer::NUM_COLUMNS - ModulePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + ModulePeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ModuleEntityPeer::MODULENAME, ModulePeer::NAME, $join_behavior);
 
@@ -1412,7 +1418,7 @@ abstract class BaseModuleEntityPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(ModuleEntity $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

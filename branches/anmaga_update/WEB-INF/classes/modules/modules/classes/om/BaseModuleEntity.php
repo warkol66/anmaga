@@ -313,15 +313,23 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	} // setDescription()
 
 	/**
-	 * Set the value of [softdelete] column.
+	 * Sets the value of the [softdelete] column. 
+	 * Non-boolean arguments are converted using the following rules:
+	 *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * Indica si usa softdelete
-	 * @param      boolean $v new value
+	 * @param      boolean|integer|string $v The new value
 	 * @return     ModuleEntity The current object (for fluent API support)
 	 */
 	public function setSoftdelete($v)
 	{
 		if ($v !== null) {
-			$v = (boolean) $v;
+			if (is_string($v)) {
+				$v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
+			} else {
+				$v = (boolean) $v;
+			}
 		}
 
 		if ($this->softdelete !== $v) {
@@ -333,15 +341,23 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	} // setSoftdelete()
 
 	/**
-	 * Set the value of [relation] column.
+	 * Sets the value of the [relation] column. 
+	 * Non-boolean arguments are converted using the following rules:
+	 *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * Indica si es una entidad principal o una relacion de dos entidades
-	 * @param      boolean $v new value
+	 * @param      boolean|integer|string $v The new value
 	 * @return     ModuleEntity The current object (for fluent API support)
 	 */
 	public function setRelation($v)
 	{
 		if ($v !== null) {
-			$v = (boolean) $v;
+			if (is_string($v)) {
+				$v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
+			} else {
+				$v = (boolean) $v;
+			}
 		}
 
 		if ($this->relation !== $v) {
@@ -353,15 +369,23 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	} // setRelation()
 
 	/**
-	 * Set the value of [savelog] column.
+	 * Sets the value of the [savelog] column. 
+	 * Non-boolean arguments are converted using the following rules:
+	 *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * Indica si guarda log de cambios
-	 * @param      boolean $v new value
+	 * @param      boolean|integer|string $v The new value
 	 * @return     ModuleEntity The current object (for fluent API support)
 	 */
 	public function setSavelog($v)
 	{
 		if ($v !== null) {
-			$v = (boolean) $v;
+			if (is_string($v)) {
+				$v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
+			} else {
+				$v = (boolean) $v;
+			}
 		}
 
 		if ($this->savelog !== $v) {
@@ -373,15 +397,23 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	} // setSavelog()
 
 	/**
-	 * Set the value of [nestedset] column.
+	 * Sets the value of the [nestedset] column. 
+	 * Non-boolean arguments are converted using the following rules:
+	 *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * Indica si es una entidad nestedset
-	 * @param      boolean $v new value
+	 * @param      boolean|integer|string $v The new value
 	 * @return     ModuleEntity The current object (for fluent API support)
 	 */
 	public function setNestedset($v)
 	{
 		if ($v !== null) {
-			$v = (boolean) $v;
+			if (is_string($v)) {
+				$v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
+			} else {
+				$v = (boolean) $v;
+			}
 		}
 
 		if ($this->nestedset !== $v) {
@@ -495,7 +527,7 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 10; // 10 = ModuleEntityPeer::NUM_COLUMNS - ModuleEntityPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 10; // 10 = ModuleEntityPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ModuleEntity object", $e);
@@ -954,12 +986,17 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
+		if (isset($alreadyDumpedObjects['ModuleEntity'][$this->getPrimaryKey()])) {
+			return '*RECURSION*';
+		}
+		$alreadyDumpedObjects['ModuleEntity'][$this->getPrimaryKey()] = true;
 		$keys = ModuleEntityPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getModulename(),
@@ -975,10 +1012,22 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aModule) {
-				$result['Module'] = $this->aModule->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['Module'] = $this->aModule->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 			if (null !== $this->aModuleEntityFieldRelatedByScopefielduniquename) {
-				$result['ModuleEntityFieldRelatedByScopefielduniquename'] = $this->aModuleEntityFieldRelatedByScopefielduniquename->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['ModuleEntityFieldRelatedByScopefielduniquename'] = $this->aModuleEntityFieldRelatedByScopefielduniquename->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+			}
+			if (null !== $this->collAlertSubscriptions) {
+				$result['AlertSubscriptions'] = $this->collAlertSubscriptions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+			if (null !== $this->collScheduleSubscriptions) {
+				$result['ScheduleSubscriptions'] = $this->collScheduleSubscriptions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+			if (null !== $this->collModuleEntityFieldsRelatedByEntityname) {
+				$result['ModuleEntityFieldsRelatedByEntityname'] = $this->collModuleEntityFieldsRelatedByEntityname->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+			if (null !== $this->collModuleEntityFieldsRelatedByForeignkeytable) {
+				$result['ModuleEntityFieldsRelatedByForeignkeytable'] = $this->collModuleEntityFieldsRelatedByForeignkeytable->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
 			}
 		}
 		return $result;
@@ -1153,20 +1202,21 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	 *
 	 * @param      object $copyObj An object of ModuleEntity (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
 	 */
-	public function copyInto($copyObj, $deepCopy = false)
+	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setModulename($this->modulename);
-		$copyObj->setName($this->name);
-		$copyObj->setPhpname($this->phpname);
-		$copyObj->setDescription($this->description);
-		$copyObj->setSoftdelete($this->softdelete);
-		$copyObj->setRelation($this->relation);
-		$copyObj->setSavelog($this->savelog);
-		$copyObj->setNestedset($this->nestedset);
-		$copyObj->setScopefielduniquename($this->scopefielduniquename);
-		$copyObj->setBehaviors($this->behaviors);
+		$copyObj->setModulename($this->getModulename());
+		$copyObj->setName($this->getName());
+		$copyObj->setPhpname($this->getPhpname());
+		$copyObj->setDescription($this->getDescription());
+		$copyObj->setSoftdelete($this->getSoftdelete());
+		$copyObj->setRelation($this->getRelation());
+		$copyObj->setSavelog($this->getSavelog());
+		$copyObj->setNestedset($this->getNestedset());
+		$copyObj->setScopefielduniquename($this->getScopefielduniquename());
+		$copyObj->setBehaviors($this->getBehaviors());
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1199,8 +1249,9 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 
 		} // if ($deepCopy)
 
-
-		$copyObj->setNew(true);
+		if ($makeNew) {
+			$copyObj->setNew(true);
+		}
 	}
 
 	/**
@@ -1280,11 +1331,11 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 		if ($this->aModule === null && (($this->modulename !== "" && $this->modulename !== null))) {
 			$this->aModule = ModuleQuery::create()->findPk($this->modulename, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aModule->addModuleEntitys($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aModule->addModuleEntitys($this);
 			 */
 		}
 		return $this->aModule;
@@ -1329,11 +1380,11 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 		if ($this->aModuleEntityFieldRelatedByScopefielduniquename === null && (($this->scopefielduniquename !== "" && $this->scopefielduniquename !== null))) {
 			$this->aModuleEntityFieldRelatedByScopefielduniquename = ModuleEntityFieldQuery::create()->findPk($this->scopefielduniquename, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aModuleEntityFieldRelatedByScopefielduniquename->addModuleEntitysRelatedByScopefielduniquename($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aModuleEntityFieldRelatedByScopefielduniquename->addModuleEntitysRelatedByScopefielduniquename($this);
 			 */
 		}
 		return $this->aModuleEntityFieldRelatedByScopefielduniquename;
@@ -1360,10 +1411,16 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initAlertSubscriptions()
+	public function initAlertSubscriptions($overrideExisting = true)
 	{
+		if (null !== $this->collAlertSubscriptions && !$overrideExisting) {
+			return;
+		}
 		$this->collAlertSubscriptions = new PropelObjectCollection();
 		$this->collAlertSubscriptions->setModel('AlertSubscription');
 	}
@@ -1544,10 +1601,16 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initScheduleSubscriptions()
+	public function initScheduleSubscriptions($overrideExisting = true)
 	{
+		if (null !== $this->collScheduleSubscriptions && !$overrideExisting) {
+			return;
+		}
 		$this->collScheduleSubscriptions = new PropelObjectCollection();
 		$this->collScheduleSubscriptions->setModel('ScheduleSubscription');
 	}
@@ -1728,10 +1791,16 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initModuleEntityFieldsRelatedByEntityname()
+	public function initModuleEntityFieldsRelatedByEntityname($overrideExisting = true)
 	{
+		if (null !== $this->collModuleEntityFieldsRelatedByEntityname && !$overrideExisting) {
+			return;
+		}
 		$this->collModuleEntityFieldsRelatedByEntityname = new PropelObjectCollection();
 		$this->collModuleEntityFieldsRelatedByEntityname->setModel('ModuleEntityField');
 	}
@@ -1862,10 +1931,16 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initModuleEntityFieldsRelatedByForeignkeytable()
+	public function initModuleEntityFieldsRelatedByForeignkeytable($overrideExisting = true)
 	{
+		if (null !== $this->collModuleEntityFieldsRelatedByForeignkeytable && !$overrideExisting) {
+			return;
+		}
 		$this->collModuleEntityFieldsRelatedByForeignkeytable = new PropelObjectCollection();
 		$this->collModuleEntityFieldsRelatedByForeignkeytable->setModel('ModuleEntityField');
 	}
@@ -1999,45 +2074,67 @@ abstract class BaseModuleEntity extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Resets all collections of referencing foreign keys.
+	 * Resets all references to other model objects or collections of model objects.
 	 *
-	 * This method is a user-space workaround for PHP's inability to garbage collect objects
-	 * with circular references.  This is currently necessary when using Propel in certain
-	 * daemon or large-volumne/high-memory operations.
+	 * This method is a user-space workaround for PHP's inability to garbage collect
+	 * objects with circular references (even in PHP 5.3). This is currently necessary
+	 * when using Propel in certain daemon or large-volumne/high-memory operations.
 	 *
-	 * @param      boolean $deep Whether to also clear the references on all associated objects.
+	 * @param      boolean $deep Whether to also clear the references on all referrer objects.
 	 */
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
 			if ($this->collAlertSubscriptions) {
-				foreach ((array) $this->collAlertSubscriptions as $o) {
+				foreach ($this->collAlertSubscriptions as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 			if ($this->collScheduleSubscriptions) {
-				foreach ((array) $this->collScheduleSubscriptions as $o) {
+				foreach ($this->collScheduleSubscriptions as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 			if ($this->collModuleEntityFieldsRelatedByEntityname) {
-				foreach ((array) $this->collModuleEntityFieldsRelatedByEntityname as $o) {
+				foreach ($this->collModuleEntityFieldsRelatedByEntityname as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 			if ($this->collModuleEntityFieldsRelatedByForeignkeytable) {
-				foreach ((array) $this->collModuleEntityFieldsRelatedByForeignkeytable as $o) {
+				foreach ($this->collModuleEntityFieldsRelatedByForeignkeytable as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 		} // if ($deep)
 
+		if ($this->collAlertSubscriptions instanceof PropelCollection) {
+			$this->collAlertSubscriptions->clearIterator();
+		}
 		$this->collAlertSubscriptions = null;
+		if ($this->collScheduleSubscriptions instanceof PropelCollection) {
+			$this->collScheduleSubscriptions->clearIterator();
+		}
 		$this->collScheduleSubscriptions = null;
+		if ($this->collModuleEntityFieldsRelatedByEntityname instanceof PropelCollection) {
+			$this->collModuleEntityFieldsRelatedByEntityname->clearIterator();
+		}
 		$this->collModuleEntityFieldsRelatedByEntityname = null;
+		if ($this->collModuleEntityFieldsRelatedByForeignkeytable instanceof PropelCollection) {
+			$this->collModuleEntityFieldsRelatedByForeignkeytable->clearIterator();
+		}
 		$this->collModuleEntityFieldsRelatedByForeignkeytable = null;
 		$this->aModule = null;
 		$this->aModuleEntityFieldRelatedByScopefielduniquename = null;
+	}
+
+	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->exportTo(ModuleEntityPeer::DEFAULT_STRING_FORMAT);
 	}
 
 	/**

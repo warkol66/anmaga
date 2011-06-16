@@ -432,15 +432,23 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	} // setModule()
 
 	/**
-	 * Set the value of [active] column.
+	 * Sets the value of the [active] column. 
+	 * Non-boolean arguments are converted using the following rules:
+	 *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * Is category active?
-	 * @param      boolean $v new value
+	 * @param      boolean|integer|string $v The new value
 	 * @return     Category The current object (for fluent API support)
 	 */
 	public function setActive($v)
 	{
 		if ($v !== null) {
-			$v = (boolean) $v;
+			if (is_string($v)) {
+				$v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
+			} else {
+				$v = (boolean) $v;
+			}
 		}
 
 		if ($this->active !== $v || $this->isNew()) {
@@ -452,15 +460,23 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	} // setActive()
 
 	/**
-	 * Set the value of [ispublic] column.
+	 * Sets the value of the [ispublic] column. 
+	 * Non-boolean arguments are converted using the following rules:
+	 *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+	 *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+	 * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * Is category public?
-	 * @param      boolean $v new value
+	 * @param      boolean|integer|string $v The new value
 	 * @return     Category The current object (for fluent API support)
 	 */
 	public function setIspublic($v)
 	{
 		if ($v !== null) {
-			$v = (boolean) $v;
+			if (is_string($v)) {
+				$v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0')) ? false : true;
+			} else {
+				$v = (boolean) $v;
+			}
 		}
 
 		if ($this->ispublic !== $v || $this->isNew()) {
@@ -514,45 +530,18 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	/**
 	 * Sets the value of [deleted_at] column to a normalized version of the date/time value specified.
 	 * 
-	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
-	 *						be treated as NULL for temporal objects.
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.
+	 *               Empty strings are treated as NULL.
 	 * @return     Category The current object (for fluent API support)
 	 */
 	public function setDeletedAt($v)
 	{
-		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
-		// -- which is unexpected, to say the least.
-		if ($v === null || $v === '') {
-			$dt = null;
-		} elseif ($v instanceof DateTime) {
-			$dt = $v;
-		} else {
-			// some string/numeric value passed; we normalize that so that we can
-			// validate it.
-			try {
-				if (is_numeric($v)) { // if it's a unix timestamp
-					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
-					// We have to explicitly specify and then change the time zone because of a
-					// DateTime bug: http://bugs.php.net/bug.php?id=43003
-					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
-				} else {
-					$dt = new DateTime($v);
-				}
-			} catch (Exception $x) {
-				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
-			}
-		}
-
-		if ( $this->deleted_at !== null || $dt !== null ) {
-			// (nested ifs are a little easier to read in this case)
-
-			$currNorm = ($this->deleted_at !== null && $tmpDt = new DateTime($this->deleted_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
-
-			if ( ($currNorm !== $newNorm) // normalized values don't match 
-					)
-			{
-				$this->deleted_at = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+		$dt = PropelDateTime::newInstance($v, null, 'DateTime');
+		if ($this->deleted_at !== null || $dt !== null) {
+			$currentDateAsString = ($this->deleted_at !== null && $tmpDt = new DateTime($this->deleted_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+			if ($currentDateAsString !== $newDateAsString) {
+				$this->deleted_at = $newDateAsString;
 				$this->modifiedColumns[] = CategoryPeer::DELETED_AT;
 			}
 		} // if either are not null
@@ -705,7 +694,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 13; // 13 = CategoryPeer::NUM_COLUMNS - CategoryPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 13; // 13 = CategoryPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Category object", $e);
@@ -809,11 +798,15 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 				CategoryPeer::removeInstanceFromPool($this);
 				return;
 			}
+
 			// nested_set behavior
 			if ($this->isRoot()) {
 				throw new PropelException('Deletion of a root node is disabled for nested sets. Use CategoryPeer::deleteTree($scope) instead to delete an entire tree');
 			}
-			$this->deleteDescendants($con);
+			
+			if ($this->isInTree()) {
+				$this->deleteDescendants($con);
+			}
 
 			if ($ret) {
 				CategoryQuery::create()
@@ -821,8 +814,10 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 					->delete($con);
 				$this->postDelete($con);
 				// nested_set behavior
-				// fill up the room that was used by the node
-				CategoryPeer::shiftRLValues(-2, $this->getRightValue() + 1, null, $this->getScopeValue(), $con);
+				if ($this->isInTree()) {
+					// fill up the room that was used by the node
+					CategoryPeer::shiftRLValues(-2, $this->getRightValue() + 1, null, $this->getScopeValue(), $con);
+				}
 
 				$con->commit();
 				$this->setDeleted(true);
@@ -863,6 +858,16 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		try {
 			$ret = $this->preSave($con);
 			// nested_set behavior
+			if ($this->isNew() && $this->isRoot()) {
+				// check if no other root exist in, the tree
+				$nbRoots = CategoryQuery::create()
+					->addUsingAlias(CategoryPeer::LEFT_COL, 1, Criteria::EQUAL)
+					->addUsingAlias(CategoryPeer::SCOPE_COL, $this->getScopeValue(), Criteria::EQUAL)
+					->count($con);
+				if ($nbRoots > 0) {
+						throw new PropelException(sprintf('A root node already exists in this tree with scope "%s".', $this->getScopeValue()));
+				}
+			}
 			$this->processNestedSetQueries($con);
 			if ($isInsert) {
 				$ret = $ret && $this->preInsert($con);
@@ -1136,11 +1141,17 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
+		if (isset($alreadyDumpedObjects['Category'][$this->getPrimaryKey()])) {
+			return '*RECURSION*';
+		}
+		$alreadyDumpedObjects['Category'][$this->getPrimaryKey()] = true;
 		$keys = CategoryPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
@@ -1157,6 +1168,17 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 			$keys[11] => $this->getTreeLevel(),
 			$keys[12] => $this->getScope(),
 		);
+		if ($includeForeignObjects) {
+			if (null !== $this->collAffiliateGroupCategorys) {
+				$result['AffiliateGroupCategorys'] = $this->collAffiliateGroupCategorys->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+			if (null !== $this->collProductCategorys) {
+				$result['ProductCategorys'] = $this->collProductCategorys->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+			if (null !== $this->collGroupCategorys) {
+				$result['GroupCategorys'] = $this->collGroupCategorys->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+		}
 		return $result;
 	}
 
@@ -1344,22 +1366,23 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	 *
 	 * @param      object $copyObj An object of Category (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
 	 */
-	public function copyInto($copyObj, $deepCopy = false)
+	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setName($this->name);
-		$copyObj->setOrder($this->order);
-		$copyObj->setModule($this->module);
-		$copyObj->setActive($this->active);
-		$copyObj->setIspublic($this->ispublic);
-		$copyObj->setOldid($this->oldid);
-		$copyObj->setDescription($this->description);
-		$copyObj->setDeletedAt($this->deleted_at);
-		$copyObj->setTreeLeft($this->tree_left);
-		$copyObj->setTreeRight($this->tree_right);
-		$copyObj->setTreeLevel($this->tree_level);
-		$copyObj->setScope($this->scope);
+		$copyObj->setName($this->getName());
+		$copyObj->setOrder($this->getOrder());
+		$copyObj->setModule($this->getModule());
+		$copyObj->setActive($this->getActive());
+		$copyObj->setIspublic($this->getIspublic());
+		$copyObj->setOldid($this->getOldid());
+		$copyObj->setDescription($this->getDescription());
+		$copyObj->setDeletedAt($this->getDeletedAt());
+		$copyObj->setTreeLeft($this->getTreeLeft());
+		$copyObj->setTreeRight($this->getTreeRight());
+		$copyObj->setTreeLevel($this->getTreeLevel());
+		$copyObj->setScope($this->getScope());
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -1386,9 +1409,10 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 
 		} // if ($deepCopy)
 
-
-		$copyObj->setNew(true);
-		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		if ($makeNew) {
+			$copyObj->setNew(true);
+			$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+		}
 	}
 
 	/**
@@ -1450,10 +1474,16 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initAffiliateGroupCategorys()
+	public function initAffiliateGroupCategorys($overrideExisting = true)
 	{
+		if (null !== $this->collAffiliateGroupCategorys && !$overrideExisting) {
+			return;
+		}
 		$this->collAffiliateGroupCategorys = new PropelObjectCollection();
 		$this->collAffiliateGroupCategorys->setModel('AffiliateGroupCategory');
 	}
@@ -1584,10 +1614,16 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initProductCategorys()
+	public function initProductCategorys($overrideExisting = true)
 	{
+		if (null !== $this->collProductCategorys && !$overrideExisting) {
+			return;
+		}
 		$this->collProductCategorys = new PropelObjectCollection();
 		$this->collProductCategorys->setModel('ProductCategory');
 	}
@@ -1718,10 +1754,16 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
 	 * @return     void
 	 */
-	public function initGroupCategorys()
+	public function initGroupCategorys($overrideExisting = true)
 	{
+		if (null !== $this->collGroupCategorys && !$overrideExisting) {
+			return;
+		}
 		$this->collGroupCategorys = new PropelObjectCollection();
 		$this->collGroupCategorys->setModel('GroupCategory');
 	}
@@ -2198,29 +2240,44 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Resets all collections of referencing foreign keys.
+	 * Resets all references to other model objects or collections of model objects.
 	 *
-	 * This method is a user-space workaround for PHP's inability to garbage collect objects
-	 * with circular references.  This is currently necessary when using Propel in certain
-	 * daemon or large-volumne/high-memory operations.
+	 * This method is a user-space workaround for PHP's inability to garbage collect
+	 * objects with circular references (even in PHP 5.3). This is currently necessary
+	 * when using Propel in certain daemon or large-volumne/high-memory operations.
 	 *
-	 * @param      boolean $deep Whether to also clear the references on all associated objects.
+	 * @param      boolean $deep Whether to also clear the references on all referrer objects.
 	 */
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
 			if ($this->collAffiliateGroupCategorys) {
-				foreach ((array) $this->collAffiliateGroupCategorys as $o) {
+				foreach ($this->collAffiliateGroupCategorys as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 			if ($this->collProductCategorys) {
-				foreach ((array) $this->collProductCategorys as $o) {
+				foreach ($this->collProductCategorys as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 			if ($this->collGroupCategorys) {
-				foreach ((array) $this->collGroupCategorys as $o) {
+				foreach ($this->collGroupCategorys as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collAffiliateGroups) {
+				foreach ($this->collAffiliateGroups as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collProducts) {
+				foreach ($this->collProducts as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collGroups) {
+				foreach ($this->collGroups as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -2229,9 +2286,40 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		// nested_set behavior
 		$this->collNestedSetChildren = null;
 		$this->aNestedSetParent = null;
+		if ($this->collAffiliateGroupCategorys instanceof PropelCollection) {
+			$this->collAffiliateGroupCategorys->clearIterator();
+		}
 		$this->collAffiliateGroupCategorys = null;
+		if ($this->collProductCategorys instanceof PropelCollection) {
+			$this->collProductCategorys->clearIterator();
+		}
 		$this->collProductCategorys = null;
+		if ($this->collGroupCategorys instanceof PropelCollection) {
+			$this->collGroupCategorys->clearIterator();
+		}
 		$this->collGroupCategorys = null;
+		if ($this->collAffiliateGroups instanceof PropelCollection) {
+			$this->collAffiliateGroups->clearIterator();
+		}
+		$this->collAffiliateGroups = null;
+		if ($this->collProducts instanceof PropelCollection) {
+			$this->collProducts->clearIterator();
+		}
+		$this->collProducts = null;
+		if ($this->collGroups instanceof PropelCollection) {
+			$this->collGroups->clearIterator();
+		}
+		$this->collGroups = null;
+	}
+
+	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string The value of the 'name' column
+	 */
+	public function __toString()
+	{
+		return (string) $this->getName();
 	}
 
 	// soft_delete behavior
@@ -2816,7 +2904,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		// Keep the tree modification query for the save() transaction
 		$this->nestedSetQueries []= array(
 			'callable'  => array('CategoryPeer', 'makeRoomForLeaf'),
-			'arguments' => array($left, $scope)
+			'arguments' => array($left, $scope, $this->isNew() ? null : $this)
 		);
 		return $this;
 	}
@@ -2848,7 +2936,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		// Keep the tree modification query for the save() transaction
 		$this->nestedSetQueries []= array(
 			'callable'  => array('CategoryPeer', 'makeRoomForLeaf'),
-			'arguments' => array($left, $scope)
+			'arguments' => array($left, $scope, $this->isNew() ? null : $this)
 		);
 		return $this;
 	}
@@ -2877,7 +2965,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		// Keep the tree modification query for the save() transaction
 		$this->nestedSetQueries []= array(
 			'callable'  => array('CategoryPeer', 'makeRoomForLeaf'),
-			'arguments' => array($left, $scope)
+			'arguments' => array($left, $scope, $this->isNew() ? null : $this)
 		);
 		return $this;
 	}
@@ -2906,7 +2994,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 		// Keep the tree modification query for the save() transaction
 		$this->nestedSetQueries []= array(
 			'callable'  => array('CategoryPeer', 'makeRoomForLeaf'),
-			'arguments' => array($left, $scope)
+			'arguments' => array($left, $scope, $this->isNew() ? null : $this)
 		);
 		return $this;
 	}
@@ -3062,7 +3150,7 @@ abstract class BaseCategory extends BaseObject  implements Persistent
 			CategoryPeer::shiftRLValues(-$treeSize, $right + 1, null, $scope, $con);
 			
 			// update all loaded nodes
-			CategoryPeer::updateLoadedNodes($con);
+			CategoryPeer::updateLoadedNodes(null, $con);
 			
 			$con->commit();
 		} catch (PropelException $e) {

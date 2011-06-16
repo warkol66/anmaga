@@ -170,7 +170,7 @@ abstract class BaseGroupCategory extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 2; // 2 = GroupCategoryPeer::NUM_COLUMNS - GroupCategoryPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 2; // 2 = GroupCategoryPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating GroupCategory object", $e);
@@ -528,12 +528,17 @@ abstract class BaseGroupCategory extends BaseObject  implements Persistent
 	 *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
 	 *                    Defaults to BasePeer::TYPE_PHPNAME.
 	 * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+	 * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
 	 * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
 	 *
 	 * @return    array an associative array containing the field names (as keys) and field values
 	 */
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $includeForeignObjects = false)
+	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
+		if (isset($alreadyDumpedObjects['GroupCategory'][serialize($this->getPrimaryKey())])) {
+			return '*RECURSION*';
+		}
+		$alreadyDumpedObjects['GroupCategory'][serialize($this->getPrimaryKey())] = true;
 		$keys = GroupCategoryPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getGroupid(),
@@ -541,10 +546,10 @@ abstract class BaseGroupCategory extends BaseObject  implements Persistent
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aGroup) {
-				$result['Group'] = $this->aGroup->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['Group'] = $this->aGroup->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 			if (null !== $this->aCategory) {
-				$result['Category'] = $this->aCategory->toArray($keyType, $includeLazyLoadColumns, true);
+				$result['Category'] = $this->aCategory->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 		}
 		return $result;
@@ -686,14 +691,16 @@ abstract class BaseGroupCategory extends BaseObject  implements Persistent
 	 *
 	 * @param      object $copyObj An object of GroupCategory (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
 	 */
-	public function copyInto($copyObj, $deepCopy = false)
+	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setGroupid($this->groupid);
-		$copyObj->setCategoryid($this->categoryid);
-
-		$copyObj->setNew(true);
+		$copyObj->setGroupid($this->getGroupid());
+		$copyObj->setCategoryid($this->getCategoryid());
+		if ($makeNew) {
+			$copyObj->setNew(true);
+		}
 	}
 
 	/**
@@ -773,11 +780,11 @@ abstract class BaseGroupCategory extends BaseObject  implements Persistent
 		if ($this->aGroup === null && ($this->groupid !== null)) {
 			$this->aGroup = GroupQuery::create()->findPk($this->groupid, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aGroup->addGroupCategorys($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aGroup->addGroupCategorys($this);
 			 */
 		}
 		return $this->aGroup;
@@ -822,11 +829,11 @@ abstract class BaseGroupCategory extends BaseObject  implements Persistent
 		if ($this->aCategory === null && ($this->categoryid !== null)) {
 			$this->aCategory = CategoryQuery::create()->findPk($this->categoryid, $con);
 			/* The following can be used additionally to
-				 guarantee the related object contains a reference
-				 to this object.  This level of coupling may, however, be
-				 undesirable since it could result in an only partially populated collection
-				 in the referenced object.
-				 $this->aCategory->addGroupCategorys($this);
+				guarantee the related object contains a reference
+				to this object.  This level of coupling may, however, be
+				undesirable since it could result in an only partially populated collection
+				in the referenced object.
+				$this->aCategory->addGroupCategorys($this);
 			 */
 		}
 		return $this->aCategory;
@@ -848,13 +855,13 @@ abstract class BaseGroupCategory extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Resets all collections of referencing foreign keys.
+	 * Resets all references to other model objects or collections of model objects.
 	 *
-	 * This method is a user-space workaround for PHP's inability to garbage collect objects
-	 * with circular references.  This is currently necessary when using Propel in certain
-	 * daemon or large-volumne/high-memory operations.
+	 * This method is a user-space workaround for PHP's inability to garbage collect
+	 * objects with circular references (even in PHP 5.3). This is currently necessary
+	 * when using Propel in certain daemon or large-volumne/high-memory operations.
 	 *
-	 * @param      boolean $deep Whether to also clear the references on all associated objects.
+	 * @param      boolean $deep Whether to also clear the references on all referrer objects.
 	 */
 	public function clearAllReferences($deep = false)
 	{
@@ -863,6 +870,16 @@ abstract class BaseGroupCategory extends BaseObject  implements Persistent
 
 		$this->aGroup = null;
 		$this->aCategory = null;
+	}
+
+	/**
+	 * Return the string representation of this object
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->exportTo(GroupCategoryPeer::DEFAULT_STRING_FORMAT);
 	}
 
 	/**

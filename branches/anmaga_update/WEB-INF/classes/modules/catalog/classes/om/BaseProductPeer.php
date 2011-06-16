@@ -26,10 +26,13 @@ abstract class BaseProductPeer {
 	const TM_CLASS = 'ProductTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 10;
+	const NUM_COLUMNS = 14;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
+
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 14;
 
 	/** the column name for the ID field */
 	const ID = 'catalog_product.ID';
@@ -61,6 +64,21 @@ abstract class BaseProductPeer {
 	/** the column name for the SALESUNIT field */
 	const SALESUNIT = 'catalog_product.SALESUNIT';
 
+	/** the column name for the STOCKALERT field */
+	const STOCKALERT = 'catalog_product.STOCKALERT';
+
+	/** the column name for the STOCK01 field */
+	const STOCK01 = 'catalog_product.STOCK01';
+
+	/** the column name for the STOCK02 field */
+	const STOCK02 = 'catalog_product.STOCK02';
+
+	/** the column name for the STOCK03 field */
+	const STOCK03 = 'catalog_product.STOCK03';
+
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of Product objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -76,13 +94,13 @@ abstract class BaseProductPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Code', 'Name', 'Description', 'Price', 'Unitid', 'Measureunitid', 'Active', 'Ordercode', 'Salesunit', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'code', 'name', 'description', 'price', 'unitid', 'measureunitid', 'active', 'ordercode', 'salesunit', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::CODE, self::NAME, self::DESCRIPTION, self::PRICE, self::UNITID, self::MEASUREUNITID, self::ACTIVE, self::ORDERCODE, self::SALESUNIT, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CODE', 'NAME', 'DESCRIPTION', 'PRICE', 'UNITID', 'MEASUREUNITID', 'ACTIVE', 'ORDERCODE', 'SALESUNIT', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'code', 'name', 'description', 'price', 'unitId', 'measureUnitId', 'active', 'orderCode', 'salesUnit', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+	protected static $fieldNames = array (
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Code', 'Name', 'Description', 'Price', 'Unitid', 'Measureunitid', 'Active', 'Ordercode', 'Salesunit', 'Stockalert', 'Stock01', 'Stock02', 'Stock03', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'code', 'name', 'description', 'price', 'unitid', 'measureunitid', 'active', 'ordercode', 'salesunit', 'stockalert', 'stock01', 'stock02', 'stock03', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::CODE, self::NAME, self::DESCRIPTION, self::PRICE, self::UNITID, self::MEASUREUNITID, self::ACTIVE, self::ORDERCODE, self::SALESUNIT, self::STOCKALERT, self::STOCK01, self::STOCK02, self::STOCK03, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CODE', 'NAME', 'DESCRIPTION', 'PRICE', 'UNITID', 'MEASUREUNITID', 'ACTIVE', 'ORDERCODE', 'SALESUNIT', 'STOCKALERT', 'STOCK01', 'STOCK02', 'STOCK03', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'code', 'name', 'description', 'price', 'unitId', 'measureUnitId', 'active', 'orderCode', 'salesUnit', 'stockAlert', 'stock01', 'stock02', 'stock03', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
 	);
 
 	/**
@@ -91,13 +109,13 @@ abstract class BaseProductPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Code' => 1, 'Name' => 2, 'Description' => 3, 'Price' => 4, 'Unitid' => 5, 'Measureunitid' => 6, 'Active' => 7, 'Ordercode' => 8, 'Salesunit' => 9, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'description' => 3, 'price' => 4, 'unitid' => 5, 'measureunitid' => 6, 'active' => 7, 'ordercode' => 8, 'salesunit' => 9, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CODE => 1, self::NAME => 2, self::DESCRIPTION => 3, self::PRICE => 4, self::UNITID => 5, self::MEASUREUNITID => 6, self::ACTIVE => 7, self::ORDERCODE => 8, self::SALESUNIT => 9, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CODE' => 1, 'NAME' => 2, 'DESCRIPTION' => 3, 'PRICE' => 4, 'UNITID' => 5, 'MEASUREUNITID' => 6, 'ACTIVE' => 7, 'ORDERCODE' => 8, 'SALESUNIT' => 9, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'description' => 3, 'price' => 4, 'unitId' => 5, 'measureUnitId' => 6, 'active' => 7, 'orderCode' => 8, 'salesUnit' => 9, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+	protected static $fieldKeys = array (
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Code' => 1, 'Name' => 2, 'Description' => 3, 'Price' => 4, 'Unitid' => 5, 'Measureunitid' => 6, 'Active' => 7, 'Ordercode' => 8, 'Salesunit' => 9, 'Stockalert' => 10, 'Stock01' => 11, 'Stock02' => 12, 'Stock03' => 13, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'description' => 3, 'price' => 4, 'unitid' => 5, 'measureunitid' => 6, 'active' => 7, 'ordercode' => 8, 'salesunit' => 9, 'stockalert' => 10, 'stock01' => 11, 'stock02' => 12, 'stock03' => 13, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CODE => 1, self::NAME => 2, self::DESCRIPTION => 3, self::PRICE => 4, self::UNITID => 5, self::MEASUREUNITID => 6, self::ACTIVE => 7, self::ORDERCODE => 8, self::SALESUNIT => 9, self::STOCKALERT => 10, self::STOCK01 => 11, self::STOCK02 => 12, self::STOCK03 => 13, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CODE' => 1, 'NAME' => 2, 'DESCRIPTION' => 3, 'PRICE' => 4, 'UNITID' => 5, 'MEASUREUNITID' => 6, 'ACTIVE' => 7, 'ORDERCODE' => 8, 'SALESUNIT' => 9, 'STOCKALERT' => 10, 'STOCK01' => 11, 'STOCK02' => 12, 'STOCK03' => 13, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'description' => 3, 'price' => 4, 'unitId' => 5, 'measureUnitId' => 6, 'active' => 7, 'orderCode' => 8, 'salesUnit' => 9, 'stockAlert' => 10, 'stock01' => 11, 'stock02' => 12, 'stock03' => 13, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
 	);
 
 	/**
@@ -179,6 +197,10 @@ abstract class BaseProductPeer {
 			$criteria->addSelectColumn(ProductPeer::ACTIVE);
 			$criteria->addSelectColumn(ProductPeer::ORDERCODE);
 			$criteria->addSelectColumn(ProductPeer::SALESUNIT);
+			$criteria->addSelectColumn(ProductPeer::STOCKALERT);
+			$criteria->addSelectColumn(ProductPeer::STOCK01);
+			$criteria->addSelectColumn(ProductPeer::STOCK02);
+			$criteria->addSelectColumn(ProductPeer::STOCK03);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.CODE');
@@ -190,6 +212,10 @@ abstract class BaseProductPeer {
 			$criteria->addSelectColumn($alias . '.ACTIVE');
 			$criteria->addSelectColumn($alias . '.ORDERCODE');
 			$criteria->addSelectColumn($alias . '.SALESUNIT');
+			$criteria->addSelectColumn($alias . '.STOCKALERT');
+			$criteria->addSelectColumn($alias . '.STOCK01');
+			$criteria->addSelectColumn($alias . '.STOCK02');
+			$criteria->addSelectColumn($alias . '.STOCK03');
 		}
 	}
 
@@ -310,7 +336,7 @@ abstract class BaseProductPeer {
 	 * @param      Product $value A Product object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(Product $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -468,7 +494,7 @@ abstract class BaseProductPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + ProductPeer::NUM_COLUMNS;
+			$col = $startcol + ProductPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = ProductPeer::OM_CLASS;
 			$obj = new $cls();
@@ -597,7 +623,7 @@ abstract class BaseProductPeer {
 		}
 
 		ProductPeer::addSelectColumns($criteria);
-		$startcol = (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = ProductPeer::NUM_HYDRATE_COLUMNS;
 		UnitPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(ProductPeer::UNITID, UnitPeer::ID, $join_behavior);
@@ -663,7 +689,7 @@ abstract class BaseProductPeer {
 		}
 
 		ProductPeer::addSelectColumns($criteria);
-		$startcol = (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = ProductPeer::NUM_HYDRATE_COLUMNS;
 		MeasureUnitPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(ProductPeer::MEASUREUNITID, MeasureUnitPeer::ID, $join_behavior);
@@ -781,13 +807,13 @@ abstract class BaseProductPeer {
 		}
 
 		ProductPeer::addSelectColumns($criteria);
-		$startcol2 = (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ProductPeer::NUM_HYDRATE_COLUMNS;
 
 		UnitPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (UnitPeer::NUM_COLUMNS - UnitPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + UnitPeer::NUM_HYDRATE_COLUMNS;
 
 		MeasureUnitPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (MeasureUnitPeer::NUM_COLUMNS - MeasureUnitPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + MeasureUnitPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ProductPeer::UNITID, UnitPeer::ID, $join_behavior);
 
@@ -975,10 +1001,10 @@ abstract class BaseProductPeer {
 		}
 
 		ProductPeer::addSelectColumns($criteria);
-		$startcol2 = (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ProductPeer::NUM_HYDRATE_COLUMNS;
 
 		MeasureUnitPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (MeasureUnitPeer::NUM_COLUMNS - MeasureUnitPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + MeasureUnitPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ProductPeer::MEASUREUNITID, MeasureUnitPeer::ID, $join_behavior);
 
@@ -1048,10 +1074,10 @@ abstract class BaseProductPeer {
 		}
 
 		ProductPeer::addSelectColumns($criteria);
-		$startcol2 = (ProductPeer::NUM_COLUMNS - ProductPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ProductPeer::NUM_HYDRATE_COLUMNS;
 
 		UnitPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (UnitPeer::NUM_COLUMNS - UnitPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + UnitPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ProductPeer::UNITID, UnitPeer::ID, $join_behavior);
 
@@ -1359,7 +1385,7 @@ abstract class BaseProductPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(Product $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

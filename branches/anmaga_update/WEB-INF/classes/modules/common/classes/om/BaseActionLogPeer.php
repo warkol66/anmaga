@@ -31,6 +31,9 @@ abstract class BaseActionLogPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 9;
+
 	/** the column name for the ID field */
 	const ID = 'actionLogs_log.ID';
 
@@ -58,6 +61,9 @@ abstract class BaseActionLogPeer {
 	/** the column name for the FORWARD field */
 	const FORWARD = 'actionLogs_log.FORWARD';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of ActionLog objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -73,7 +79,7 @@ abstract class BaseActionLogPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Userobjecttype', 'Userobjectid', 'Userid', 'Affiliateid', 'Datetime', 'Action', 'Object', 'Forward', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userobjecttype', 'userobjectid', 'userid', 'affiliateid', 'datetime', 'action', 'object', 'forward', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::USEROBJECTTYPE, self::USEROBJECTID, self::USERID, self::AFFILIATEID, self::DATETIME, self::ACTION, self::OBJECT, self::FORWARD, ),
@@ -88,7 +94,7 @@ abstract class BaseActionLogPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Userobjecttype' => 1, 'Userobjectid' => 2, 'Userid' => 3, 'Affiliateid' => 4, 'Datetime' => 5, 'Action' => 6, 'Object' => 7, 'Forward' => 8, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userobjecttype' => 1, 'userobjectid' => 2, 'userid' => 3, 'affiliateid' => 4, 'datetime' => 5, 'action' => 6, 'object' => 7, 'forward' => 8, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USEROBJECTTYPE => 1, self::USEROBJECTID => 2, self::USERID => 3, self::AFFILIATEID => 4, self::DATETIME => 5, self::ACTION => 6, self::OBJECT => 7, self::FORWARD => 8, ),
@@ -305,7 +311,7 @@ abstract class BaseActionLogPeer {
 	 * @param      ActionLog $value A ActionLog object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(ActionLog $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -460,7 +466,7 @@ abstract class BaseActionLogPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + ActionLogPeer::NUM_COLUMNS;
+			$col = $startcol + ActionLogPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = ActionLogPeer::OM_CLASS;
 			$obj = new $cls();
@@ -589,7 +595,7 @@ abstract class BaseActionLogPeer {
 		}
 
 		ActionLogPeer::addSelectColumns($criteria);
-		$startcol = (ActionLogPeer::NUM_COLUMNS - ActionLogPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = ActionLogPeer::NUM_HYDRATE_COLUMNS;
 		UserPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(ActionLogPeer::USERID, UserPeer::ID, $join_behavior);
@@ -655,7 +661,7 @@ abstract class BaseActionLogPeer {
 		}
 
 		ActionLogPeer::addSelectColumns($criteria);
-		$startcol = (ActionLogPeer::NUM_COLUMNS - ActionLogPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = ActionLogPeer::NUM_HYDRATE_COLUMNS;
 		SecurityActionPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(ActionLogPeer::ACTION, SecurityActionPeer::ACTION, $join_behavior);
@@ -773,13 +779,13 @@ abstract class BaseActionLogPeer {
 		}
 
 		ActionLogPeer::addSelectColumns($criteria);
-		$startcol2 = (ActionLogPeer::NUM_COLUMNS - ActionLogPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ActionLogPeer::NUM_HYDRATE_COLUMNS;
 
 		UserPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + UserPeer::NUM_HYDRATE_COLUMNS;
 
 		SecurityActionPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (SecurityActionPeer::NUM_COLUMNS - SecurityActionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + SecurityActionPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ActionLogPeer::USERID, UserPeer::ID, $join_behavior);
 
@@ -967,10 +973,10 @@ abstract class BaseActionLogPeer {
 		}
 
 		ActionLogPeer::addSelectColumns($criteria);
-		$startcol2 = (ActionLogPeer::NUM_COLUMNS - ActionLogPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ActionLogPeer::NUM_HYDRATE_COLUMNS;
 
 		SecurityActionPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (SecurityActionPeer::NUM_COLUMNS - SecurityActionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + SecurityActionPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ActionLogPeer::ACTION, SecurityActionPeer::ACTION, $join_behavior);
 
@@ -1040,10 +1046,10 @@ abstract class BaseActionLogPeer {
 		}
 
 		ActionLogPeer::addSelectColumns($criteria);
-		$startcol2 = (ActionLogPeer::NUM_COLUMNS - ActionLogPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = ActionLogPeer::NUM_HYDRATE_COLUMNS;
 
 		UserPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + UserPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(ActionLogPeer::USERID, UserPeer::ID, $join_behavior);
 
@@ -1311,7 +1317,7 @@ abstract class BaseActionLogPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(ActionLog $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

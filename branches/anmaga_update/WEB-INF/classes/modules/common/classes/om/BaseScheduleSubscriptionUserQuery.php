@@ -109,7 +109,7 @@ abstract class BaseScheduleSubscriptionUserQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -156,8 +156,19 @@ abstract class BaseScheduleSubscriptionUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the scheduleSubscriptionId column
 	 * 
-	 * @param     int|array $schedulesubscriptionid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterBySchedulesubscriptionid(1234); // WHERE scheduleSubscriptionId = 1234
+	 * $query->filterBySchedulesubscriptionid(array(12, 34)); // WHERE scheduleSubscriptionId IN (12, 34)
+	 * $query->filterBySchedulesubscriptionid(array('min' => 12)); // WHERE scheduleSubscriptionId > 12
+	 * </code>
+	 *
+	 * @see       filterByScheduleSubscription()
+	 *
+	 * @param     mixed $schedulesubscriptionid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ScheduleSubscriptionUserQuery The current query, for fluid interface
@@ -173,8 +184,19 @@ abstract class BaseScheduleSubscriptionUserQuery extends ModelCriteria
 	/**
 	 * Filter the query on the userId column
 	 * 
-	 * @param     int|array $userid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByUserid(1234); // WHERE userId = 1234
+	 * $query->filterByUserid(array(12, 34)); // WHERE userId IN (12, 34)
+	 * $query->filterByUserid(array('min' => 12)); // WHERE userId > 12
+	 * </code>
+	 *
+	 * @see       filterByUser()
+	 *
+	 * @param     mixed $userid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ScheduleSubscriptionUserQuery The current query, for fluid interface
@@ -190,15 +212,25 @@ abstract class BaseScheduleSubscriptionUserQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related ScheduleSubscription object
 	 *
-	 * @param     ScheduleSubscription $scheduleSubscription  the related object to use as filter
+	 * @param     ScheduleSubscription|PropelCollection $scheduleSubscription The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ScheduleSubscriptionUserQuery The current query, for fluid interface
 	 */
 	public function filterByScheduleSubscription($scheduleSubscription, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID, $scheduleSubscription->getId(), $comparison);
+		if ($scheduleSubscription instanceof ScheduleSubscription) {
+			return $this
+				->addUsingAlias(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID, $scheduleSubscription->getId(), $comparison);
+		} elseif ($scheduleSubscription instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(ScheduleSubscriptionUserPeer::SCHEDULESUBSCRIPTIONID, $scheduleSubscription->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByScheduleSubscription() only accepts arguments of type ScheduleSubscription or PropelCollection');
+		}
 	}
 
 	/**
@@ -254,15 +286,25 @@ abstract class BaseScheduleSubscriptionUserQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related User object
 	 *
-	 * @param     User $user  the related object to use as filter
+	 * @param     User|PropelCollection $user The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    ScheduleSubscriptionUserQuery The current query, for fluid interface
 	 */
 	public function filterByUser($user, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(ScheduleSubscriptionUserPeer::USERID, $user->getId(), $comparison);
+		if ($user instanceof User) {
+			return $this
+				->addUsingAlias(ScheduleSubscriptionUserPeer::USERID, $user->getId(), $comparison);
+		} elseif ($user instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(ScheduleSubscriptionUserPeer::USERID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByUser() only accepts arguments of type User or PropelCollection');
+		}
 	}
 
 	/**

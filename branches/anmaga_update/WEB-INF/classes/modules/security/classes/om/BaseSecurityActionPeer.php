@@ -31,6 +31,9 @@ abstract class BaseSecurityActionPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 9;
+
 	/** the column name for the ACTION field */
 	const ACTION = 'security_action.ACTION';
 
@@ -58,6 +61,9 @@ abstract class BaseSecurityActionPeer {
 	/** the column name for the NOCHECKLOGIN field */
 	const NOCHECKLOGIN = 'security_action.NOCHECKLOGIN';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of SecurityAction objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -73,7 +79,7 @@ abstract class BaseSecurityActionPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Action', 'Module', 'Section', 'Access', 'Accessaffiliateuser', 'Accessregistrationuser', 'Active', 'Pair', 'Nochecklogin', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('action', 'module', 'section', 'access', 'accessaffiliateuser', 'accessregistrationuser', 'active', 'pair', 'nochecklogin', ),
 		BasePeer::TYPE_COLNAME => array (self::ACTION, self::MODULE, self::SECTION, self::ACCESS, self::ACCESSAFFILIATEUSER, self::ACCESSREGISTRATIONUSER, self::ACTIVE, self::PAIR, self::NOCHECKLOGIN, ),
@@ -88,7 +94,7 @@ abstract class BaseSecurityActionPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Action' => 0, 'Module' => 1, 'Section' => 2, 'Access' => 3, 'Accessaffiliateuser' => 4, 'Accessregistrationuser' => 5, 'Active' => 6, 'Pair' => 7, 'Nochecklogin' => 8, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('action' => 0, 'module' => 1, 'section' => 2, 'access' => 3, 'accessaffiliateuser' => 4, 'accessregistrationuser' => 5, 'active' => 6, 'pair' => 7, 'nochecklogin' => 8, ),
 		BasePeer::TYPE_COLNAME => array (self::ACTION => 0, self::MODULE => 1, self::SECTION => 2, self::ACCESS => 3, self::ACCESSAFFILIATEUSER => 4, self::ACCESSREGISTRATIONUSER => 5, self::ACTIVE => 6, self::PAIR => 7, self::NOCHECKLOGIN => 8, ),
@@ -305,7 +311,7 @@ abstract class BaseSecurityActionPeer {
 	 * @param      SecurityAction $value A SecurityAction object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(SecurityAction $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -460,7 +466,7 @@ abstract class BaseSecurityActionPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + SecurityActionPeer::NUM_COLUMNS;
+			$col = $startcol + SecurityActionPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = SecurityActionPeer::OM_CLASS;
 			$obj = new $cls();
@@ -539,7 +545,7 @@ abstract class BaseSecurityActionPeer {
 		}
 
 		SecurityActionPeer::addSelectColumns($criteria);
-		$startcol = (SecurityActionPeer::NUM_COLUMNS - SecurityActionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = SecurityActionPeer::NUM_HYDRATE_COLUMNS;
 		SecurityModulePeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(SecurityActionPeer::MODULE, SecurityModulePeer::MODULE, $join_behavior);
@@ -655,10 +661,10 @@ abstract class BaseSecurityActionPeer {
 		}
 
 		SecurityActionPeer::addSelectColumns($criteria);
-		$startcol2 = (SecurityActionPeer::NUM_COLUMNS - SecurityActionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = SecurityActionPeer::NUM_HYDRATE_COLUMNS;
 
 		SecurityModulePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (SecurityModulePeer::NUM_COLUMNS - SecurityModulePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + SecurityModulePeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(SecurityActionPeer::MODULE, SecurityModulePeer::MODULE, $join_behavior);
 
@@ -920,7 +926,7 @@ abstract class BaseSecurityActionPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(SecurityAction $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

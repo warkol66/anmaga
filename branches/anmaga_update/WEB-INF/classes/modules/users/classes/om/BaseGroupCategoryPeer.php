@@ -31,12 +31,18 @@ abstract class BaseGroupCategoryPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 2;
+
 	/** the column name for the GROUPID field */
 	const GROUPID = 'users_groupCategory.GROUPID';
 
 	/** the column name for the CATEGORYID field */
 	const CATEGORYID = 'users_groupCategory.CATEGORYID';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of GroupCategory objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -52,7 +58,7 @@ abstract class BaseGroupCategoryPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Groupid', 'Categoryid', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('groupid', 'categoryid', ),
 		BasePeer::TYPE_COLNAME => array (self::GROUPID, self::CATEGORYID, ),
@@ -67,7 +73,7 @@ abstract class BaseGroupCategoryPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Groupid' => 0, 'Categoryid' => 1, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('groupid' => 0, 'categoryid' => 1, ),
 		BasePeer::TYPE_COLNAME => array (self::GROUPID => 0, self::CATEGORYID => 1, ),
@@ -270,7 +276,7 @@ abstract class BaseGroupCategoryPeer {
 	 * @param      GroupCategory $value A GroupCategory object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(GroupCategory $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -425,7 +431,7 @@ abstract class BaseGroupCategoryPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + GroupCategoryPeer::NUM_COLUMNS;
+			$col = $startcol + GroupCategoryPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = GroupCategoryPeer::OM_CLASS;
 			$obj = new $cls();
@@ -554,7 +560,7 @@ abstract class BaseGroupCategoryPeer {
 		}
 
 		GroupCategoryPeer::addSelectColumns($criteria);
-		$startcol = (GroupCategoryPeer::NUM_COLUMNS - GroupCategoryPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = GroupCategoryPeer::NUM_HYDRATE_COLUMNS;
 		GroupPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(GroupCategoryPeer::GROUPID, GroupPeer::ID, $join_behavior);
@@ -620,7 +626,7 @@ abstract class BaseGroupCategoryPeer {
 		}
 
 		GroupCategoryPeer::addSelectColumns($criteria);
-		$startcol = (GroupCategoryPeer::NUM_COLUMNS - GroupCategoryPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol = GroupCategoryPeer::NUM_HYDRATE_COLUMNS;
 		CategoryPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(GroupCategoryPeer::CATEGORYID, CategoryPeer::ID, $join_behavior);
@@ -738,13 +744,13 @@ abstract class BaseGroupCategoryPeer {
 		}
 
 		GroupCategoryPeer::addSelectColumns($criteria);
-		$startcol2 = (GroupCategoryPeer::NUM_COLUMNS - GroupCategoryPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = GroupCategoryPeer::NUM_HYDRATE_COLUMNS;
 
 		GroupPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (GroupPeer::NUM_COLUMNS - GroupPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + GroupPeer::NUM_HYDRATE_COLUMNS;
 
 		CategoryPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (CategoryPeer::NUM_COLUMNS - CategoryPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol4 = $startcol3 + CategoryPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(GroupCategoryPeer::GROUPID, GroupPeer::ID, $join_behavior);
 
@@ -932,10 +938,10 @@ abstract class BaseGroupCategoryPeer {
 		}
 
 		GroupCategoryPeer::addSelectColumns($criteria);
-		$startcol2 = (GroupCategoryPeer::NUM_COLUMNS - GroupCategoryPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = GroupCategoryPeer::NUM_HYDRATE_COLUMNS;
 
 		CategoryPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (CategoryPeer::NUM_COLUMNS - CategoryPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + CategoryPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(GroupCategoryPeer::CATEGORYID, CategoryPeer::ID, $join_behavior);
 
@@ -1005,10 +1011,10 @@ abstract class BaseGroupCategoryPeer {
 		}
 
 		GroupCategoryPeer::addSelectColumns($criteria);
-		$startcol2 = (GroupCategoryPeer::NUM_COLUMNS - GroupCategoryPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = GroupCategoryPeer::NUM_HYDRATE_COLUMNS;
 
 		GroupPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (GroupPeer::NUM_COLUMNS - GroupPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + GroupPeer::NUM_HYDRATE_COLUMNS;
 
 		$criteria->addJoin(GroupCategoryPeer::GROUPID, GroupPeer::ID, $join_behavior);
 
@@ -1288,7 +1294,7 @@ abstract class BaseGroupCategoryPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(GroupCategory $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 

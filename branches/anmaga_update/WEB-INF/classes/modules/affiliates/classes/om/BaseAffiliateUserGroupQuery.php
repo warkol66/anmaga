@@ -109,7 +109,7 @@ abstract class BaseAffiliateUserGroupQuery extends ModelCriteria
 	 * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
 	 */
 	public function findPks($keys, $con = null)
-	{	
+	{
 		$criteria = $this->isKeepQuery() ? clone $this : $this;
 		return $this
 			->filterByPrimaryKeys($keys)
@@ -156,8 +156,19 @@ abstract class BaseAffiliateUserGroupQuery extends ModelCriteria
 	/**
 	 * Filter the query on the userId column
 	 * 
-	 * @param     int|array $userid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByUserid(1234); // WHERE userId = 1234
+	 * $query->filterByUserid(array(12, 34)); // WHERE userId IN (12, 34)
+	 * $query->filterByUserid(array('min' => 12)); // WHERE userId > 12
+	 * </code>
+	 *
+	 * @see       filterByAffiliateUser()
+	 *
+	 * @param     mixed $userid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserGroupQuery The current query, for fluid interface
@@ -173,8 +184,19 @@ abstract class BaseAffiliateUserGroupQuery extends ModelCriteria
 	/**
 	 * Filter the query on the groupId column
 	 * 
-	 * @param     int|array $groupid The value to use as filter.
-	 *            Accepts an associative array('min' => $minValue, 'max' => $maxValue)
+	 * Example usage:
+	 * <code>
+	 * $query->filterByGroupid(1234); // WHERE groupId = 1234
+	 * $query->filterByGroupid(array(12, 34)); // WHERE groupId IN (12, 34)
+	 * $query->filterByGroupid(array('min' => 12)); // WHERE groupId > 12
+	 * </code>
+	 *
+	 * @see       filterByAffiliateGroup()
+	 *
+	 * @param     mixed $groupid The value to use as filter.
+	 *              Use scalar values for equality.
+	 *              Use array values for in_array() equivalent.
+	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserGroupQuery The current query, for fluid interface
@@ -190,15 +212,25 @@ abstract class BaseAffiliateUserGroupQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related AffiliateUser object
 	 *
-	 * @param     AffiliateUser $affiliateUser  the related object to use as filter
+	 * @param     AffiliateUser|PropelCollection $affiliateUser The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserGroupQuery The current query, for fluid interface
 	 */
 	public function filterByAffiliateUser($affiliateUser, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateUserGroupPeer::USERID, $affiliateUser->getId(), $comparison);
+		if ($affiliateUser instanceof AffiliateUser) {
+			return $this
+				->addUsingAlias(AffiliateUserGroupPeer::USERID, $affiliateUser->getId(), $comparison);
+		} elseif ($affiliateUser instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(AffiliateUserGroupPeer::USERID, $affiliateUser->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByAffiliateUser() only accepts arguments of type AffiliateUser or PropelCollection');
+		}
 	}
 
 	/**
@@ -254,15 +286,25 @@ abstract class BaseAffiliateUserGroupQuery extends ModelCriteria
 	/**
 	 * Filter the query by a related AffiliateGroup object
 	 *
-	 * @param     AffiliateGroup $affiliateGroup  the related object to use as filter
+	 * @param     AffiliateGroup|PropelCollection $affiliateGroup The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    AffiliateUserGroupQuery The current query, for fluid interface
 	 */
 	public function filterByAffiliateGroup($affiliateGroup, $comparison = null)
 	{
-		return $this
-			->addUsingAlias(AffiliateUserGroupPeer::GROUPID, $affiliateGroup->getId(), $comparison);
+		if ($affiliateGroup instanceof AffiliateGroup) {
+			return $this
+				->addUsingAlias(AffiliateUserGroupPeer::GROUPID, $affiliateGroup->getId(), $comparison);
+		} elseif ($affiliateGroup instanceof PropelCollection) {
+			if (null === $comparison) {
+				$comparison = Criteria::IN;
+			}
+			return $this
+				->addUsingAlias(AffiliateUserGroupPeer::GROUPID, $affiliateGroup->toKeyValue('PrimaryKey', 'Id'), $comparison);
+		} else {
+			throw new PropelException('filterByAffiliateGroup() only accepts arguments of type AffiliateGroup or PropelCollection');
+		}
 	}
 
 	/**

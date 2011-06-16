@@ -31,6 +31,9 @@ abstract class BaseCategoryPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
+	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
+	const NUM_HYDRATE_COLUMNS = 13;
+
 	/** the column name for the ID field */
 	const ID = 'categories_category.ID';
 
@@ -70,6 +73,9 @@ abstract class BaseCategoryPeer {
 	/** the column name for the SCOPE field */
 	const SCOPE = 'categories_category.SCOPE';
 
+	/** The default string format for model objects of the related table **/
+	const DEFAULT_STRING_FORMAT = 'YAML';
+	
 	/**
 	 * An identiy map to hold any loaded instances of Category objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -107,7 +113,7 @@ abstract class BaseCategoryPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
-	private static $fieldNames = array (
+	protected static $fieldNames = array (
 		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Order', 'Module', 'Active', 'Ispublic', 'Oldid', 'Description', 'DeletedAt', 'TreeLeft', 'TreeRight', 'TreeLevel', 'Scope', ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'order', 'module', 'active', 'ispublic', 'oldid', 'description', 'deletedAt', 'treeLeft', 'treeRight', 'treeLevel', 'scope', ),
 		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ORDER, self::MODULE, self::ACTIVE, self::ISPUBLIC, self::OLDID, self::DESCRIPTION, self::DELETED_AT, self::TREE_LEFT, self::TREE_RIGHT, self::TREE_LEVEL, self::SCOPE, ),
@@ -122,7 +128,7 @@ abstract class BaseCategoryPeer {
 	 * first dimension keys are the type constants
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
-	private static $fieldKeys = array (
+	protected static $fieldKeys = array (
 		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Order' => 2, 'Module' => 3, 'Active' => 4, 'Ispublic' => 5, 'Oldid' => 6, 'Description' => 7, 'DeletedAt' => 8, 'TreeLeft' => 9, 'TreeRight' => 10, 'TreeLevel' => 11, 'Scope' => 12, ),
 		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'order' => 2, 'module' => 3, 'active' => 4, 'ispublic' => 5, 'oldid' => 6, 'description' => 7, 'deletedAt' => 8, 'treeLeft' => 9, 'treeRight' => 10, 'treeLevel' => 11, 'scope' => 12, ),
 		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ORDER => 2, self::MODULE => 3, self::ACTIVE => 4, self::ISPUBLIC => 5, self::OLDID => 6, self::DESCRIPTION => 7, self::DELETED_AT => 8, self::TREE_LEFT => 9, self::TREE_RIGHT => 10, self::TREE_LEVEL => 11, self::SCOPE => 12, ),
@@ -359,7 +365,7 @@ abstract class BaseCategoryPeer {
 	 * @param      Category $value A Category object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(Category $obj, $key = null)
+	public static function addInstanceToPool($obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -523,7 +529,7 @@ abstract class BaseCategoryPeer {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + CategoryPeer::NUM_COLUMNS;
+			$col = $startcol + CategoryPeer::NUM_HYDRATE_COLUMNS;
 		} else {
 			$cls = CategoryPeer::OM_CLASS;
 			$obj = new $cls();
@@ -805,7 +811,7 @@ abstract class BaseCategoryPeer {
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(Category $obj, $cols = null)
+	public static function doValidate($obj, $cols = null)
 	{
 		$columns = array();
 
@@ -1151,14 +1157,17 @@ abstract class BaseCategoryPeer {
 	/**
 	 * Reload all already loaded nodes to sync them with updated db
 	 *
+	 * @param      Category $prune		Object to prune from the update
 	 * @param      PropelPDO $con		Connection to use.
 	 */
-	public static function updateLoadedNodes(PropelPDO $con = null)
+	public static function updateLoadedNodes($prune = null, PropelPDO $con = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			$keys = array();
 			foreach (CategoryPeer::$instances as $obj) {
-				$keys[] = $obj->getPrimaryKey();
+				if (!$prune || !$prune->equals($obj)) {
+					$keys[] = $obj->getPrimaryKey();
+				}
 			}
 	
 			if (!empty($keys)) {
@@ -1166,7 +1175,6 @@ abstract class BaseCategoryPeer {
 				// already in the pool.
 				$criteria = new Criteria(CategoryPeer::DATABASE_NAME);
 				$criteria->add(CategoryPeer::ID, $keys, Criteria::IN);
-	
 				$stmt = CategoryPeer::doSelectStmt($criteria, $con);
 				while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 					$key = CategoryPeer::getPrimaryKeyHashFromRow($row, 0);
@@ -1187,15 +1195,16 @@ abstract class BaseCategoryPeer {
 	 *
 	 * @param      int $left	left column value
 	 * @param      integer $scope	scope column value
+	 * @param      mixed $prune	Object to prune from the shift
 	 * @param      PropelPDO $con	Connection to use.
 	 */
-	public static function makeRoomForLeaf($left, $scope, PropelPDO $con = null)
-	{	
+	public static function makeRoomForLeaf($left, $scope, $prune = null, PropelPDO $con = null)
+	{
 		// Update database nodes
 		CategoryPeer::shiftRLValues(2, $left, null, $scope, $con);
 	
 		// Update all loaded nodes
-		CategoryPeer::updateLoadedNodes($con);
+		CategoryPeer::updateLoadedNodes($prune, $con);
 	}
 	
 	/**
