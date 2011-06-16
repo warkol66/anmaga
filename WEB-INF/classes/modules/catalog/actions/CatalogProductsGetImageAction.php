@@ -2,30 +2,10 @@
 
 class CatalogProductsGetImageAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function CatalogProductsGetImageAction() {
 		;
 	}
 
-
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
     BaseAction::execute($mapping, $form, $request, $response);
@@ -42,17 +22,20 @@ class CatalogProductsGetImageAction extends BaseAction {
 		$module = "Catalog";
     $smarty->assign("module",$module);
 
-		$moduleSection = "Products";
-    $smarty->assign("moduleSection",$section);
+		$section = "Products";
+    $smarty->assign("section",$section);
 
-		
 		global $moduleRootDir;
 
-    if ( !empty($_GET["id"]) ) {
-			$file = $moduleRootDir."/WEB-INF/products/".$_GET["id"];
+    if (!empty($_GET["code"])) {
+			$file = $moduleRootDir."/WEB-INF/products/".$_GET["code"];
 			if (!empty($_GET["tn"])) 
 				$file .= "_t0";
-			readfile($file);
+			$file = $file.".jpg";
+			if (file_exists($file))
+				readfile($file);
+			else
+				readfile($moduleRootDir."/images/noPhotoAvailable.png");			
     }
 
 	}
