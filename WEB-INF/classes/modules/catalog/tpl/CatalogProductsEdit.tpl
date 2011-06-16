@@ -6,40 +6,33 @@
 		<p>Ingrese los datos del producto.</p> 
 		<fieldset title="Formulario de edición de datos de un producto">
 		<p> 
-			<label for="code">Código</label> 
-			<input name="product[code]" type="text" id="code" title="code" value="|-$product->getcode()-|" size="40" maxlength="255" /> 
-			</p> 
-		<br clear="all">
-		
+			<label for="product[code]">Código</label> 
+			<input name="product[code]" type="text" id="code" title="code" value="|-$product->getcode()-|" size="20" maxlength="255" /> 
+		</p> 
 		<p> 
-			<label for="orderCode">Código de Ordenamiento</label> 
-			<input name="product[orderCode]" type="text" id="orderCode" title="orderCode" value="|-$product->getOrderCode()-|" size="40" maxlength="255" /> 
-			</p> 
-		<br clear="all">		
-		
+			<label for="product[orderCode]">Código de Ordenamiento</label> 
+			<input name="product[orderCode]" type="text" id="orderCode" title="orderCode" value="|-$product->getOrderCode()-|" size="20" maxlength="255" /> 
+		</p> 
 		<p> 
-			<label for="name">Nombre</label> 
+			<label for="product[name]">Nombre</label> 
 			<input name="product[name]" type="text" id="name" title="name" value="|-$product->getname()|escape-|" size="60" maxlength="255" /> 
 			</p> 
-		<br clear="all">
 		<p> 
-			<label for="description">Descripción</label> 
-			<textarea name="product[description]" cols="60" rows="6" wrap="VIRTUAL" id="description">|-$product->getdescription()|escape-|</textarea> 
+			<label for="product[description]">Descripción</label> 
+			<textarea name="product[description]" cols="60" rows="4" wrap="VIRTUAL" id="description">|-$product->getdescription()|escape-|</textarea> 
 		</p> 
-		<br clear="all">
 		<p> 
-			<label for="price">Precio</label> 
-			<input name="product[price]" type="text" id="price" title="price" value="|-$product->getprice()|system_numeric_format-|" size="20" /> 
-			</p> 
-		<br clear="all">
+			<label for="product[price]">Precio</label> 
+			<input name="product[price]" type="text" id="price" title="price" value="|-$product->getprice()|system_numeric_format-|" size="15" /> 
+		</p> 
 		|-if $action eq 'edit'-|
-		<div> <img src="Main.php?do=catalogProductsGetImage&code=|-$product->getCode()-|" alt="|-$product->getname()|escape-|" /> </div> 
+			<label for="actualImage">Imagen</label> 
+		<div id="actualImage"> <img src="Main.php?do=catalogProductsGetImage&code=|-$product->getCode()-|" alt="|-$product->getname()|escape-|" /> </div> 
 		|-/if-|
 		<p> 
-			<label for="image">Imagen</label> 
+			<label for="image">Cargar Imagen</label> 
 			<input type="file" id="image" name="image" title="image" /> 
 		</p> 
-		<br clear="all">
 		|-if $product->getId() eq ''-|
 		<p> 
 			<label for="categoryId">Categoría</label> 
@@ -49,7 +42,6 @@
 			</select> 
 		</p>
 		|-/if-|
-		<br clear="all">
 		<p> 
 			<label for="unitId">Unidad</label> 
 			<select name="product[unitId]" id="unitId"> 
@@ -59,7 +51,6 @@
 									|-/foreach-|
 			</select> 
 		</p> 
-		<br clear="all">
 		<p> 
 			<label for="measureUnitId">Unidad de Medida</label> 
 			<select name="product[measureUnitId]" id="measureUnitId"> 
@@ -69,22 +60,21 @@
 									|-/foreach-|
 			</select> 
 		</p> 
-		<br clear="all">
 		<p> 
 			<label for="salesUnit">Unidad de Venta</label> 
-			<input type="text" name="product[salesUnit]" id="salesUnit" value="|-$product->getSalesUnit()-|" /> 
+			<input name="product[salesUnit]" type="text" id="salesUnit" value="|-$product->getSalesUnit()-|" size="8" maxlength="4" /> 
 		</p> 		
 		<p> 
 			<label for="stock01">Stock 01</label> 
-			<input type="text" name="product[stock01]" id="stock01" value="|-$product->getStock01()-|" /> 
+			<input name="product[stock01]" type="text" id="stock01" value="|-$product->getStock01()-|" size="12" maxlength="6" /> 
 		</p> 		
 		<p> 
 			<label for="stock02">Stock 02</label> 
-			<input type="text" name="product[stock02]" id="stock02" value="|-$product->getStock02()-|" /> 
+			<input name="product[stock02]" type="text" id="stock02" value="|-$product->getStock02()-|" size="12" maxlength="6" /> 
 		</p> 		
 		<p> 
 			<label for="stock03">Stock 03</label> 
-			<input type="text" name="product[stock03]" id="stock03" value="|-$product->getStock03()-|" /> 
+			<input name="product[stock03]" type="text" id="stock03" value="|-$product->getStock03()-|" size="12" maxlength="6" /> 
 		</p> 		
 		<p> 
 			<label for="stockAlert">Alerta Stock</label> 
@@ -95,7 +85,6 @@
 				<option value="3"|-$product->getStockAlert()|selected:3-|>alto</option> 
 			</select> 
 		</p> 		
-		<br clear="all">
 		<p> |-if $action eq 'edit'-|
 			<input type="hidden" name="id" id="id" value="|-if $action eq 'edit'-||-$product->getid()-||-/if-|" /> |-/if-|
 			<input type="hidden" name="action" id="action" value="|-$action-|" /> 
