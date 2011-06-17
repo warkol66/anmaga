@@ -4,12 +4,12 @@
  <log>
   <type>file</type>
   <name>propel.log</name>
-  <ident>anmaga</ident>
+  <ident>application</ident>
   <level>7</level>
  </log>
  <propel>
-  <datasources default="anmaga">
-   <datasource id="anmaga">
+  <datasources default="application">
+   <datasource id="application">
     <!-- the Propel adapter (usually same as phptype of connection DSN) -->
     <adapter>mysql</adapter>
     <connection>
