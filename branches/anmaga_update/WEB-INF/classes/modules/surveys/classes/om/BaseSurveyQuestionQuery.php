@@ -57,7 +57,7 @@ abstract class BaseSurveyQuestionQuery extends ModelCriteria
 	 * @param     string $modelName The phpName of a model, e.g. 'Book'
 	 * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
 	 */
-	public function __construct($dbName = 'anmaga', $modelName = 'SurveyQuestion', $modelAlias = null)
+	public function __construct($dbName = 'application', $modelName = 'SurveyQuestion', $modelAlias = null)
 	{
 		parent::__construct($dbName, $modelName, $modelAlias);
 	}

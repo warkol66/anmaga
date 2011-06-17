@@ -11,7 +11,7 @@
 abstract class BaseModuleDependencyPeer {
 
 	/** the default database name for this class */
-	const DATABASE_NAME = 'anmaga';
+	const DATABASE_NAME = 'application';
 
 	/** the table name for this class */
 	const TABLE_NAME = 'modules_dependency';
