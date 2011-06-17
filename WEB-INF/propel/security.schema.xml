@@ -1,4 +1,4 @@
-<database defaultIdMethod="native" package="security.classes" name="anmaga" >
+<database defaultIdMethod="native" package="security.classes" name="application" >
 
 	<table name="security_action" phpName="SecurityAction"  description="Actions del sistema">
 		<column name="action" type="VARCHAR" size="100" description="Action pagina" primaryKey='true' />

@@ -1,4 +1,4 @@
-<database defaultIdMethod="native" package="modules.classes" name="anmaga" >
+<database defaultIdMethod="native" package="modules.classes" name="application" >
 
 	<table name="modules_module" phpName='Module' description=" Registro de modulos">
 

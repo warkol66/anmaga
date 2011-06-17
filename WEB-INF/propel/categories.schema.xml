@@ -1,4 +1,4 @@
-<database defaultIdMethod="native" package="categories.classes" name="anmaga">
+<database defaultIdMethod="native" package="categories.classes" name="application">
 
 	<table name="categories_category" phpName="Category" description="Categorias">
   

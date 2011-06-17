@@ -1,4 +1,4 @@
-<database defaultIdMethod="native" package="users.classes" name="anmaga" >
+<database defaultIdMethod="native" package="users.classes" name="application" >
 
 	<table name="users_user" phpName='User' description="Users">
 
