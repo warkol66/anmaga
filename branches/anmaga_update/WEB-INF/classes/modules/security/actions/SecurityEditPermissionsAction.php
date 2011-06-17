@@ -18,9 +18,9 @@ if(false === function_exists('lcfirst')){
 	}
 }
 
-class ModulesInstallSetupPermissionsAction extends BaseAction {
+class SecurityEditPermissionsAction extends BaseAction {
 
-	function ModulesInstallSetupPermissionsAction() {
+	function SecurityEditPermissionsAction() {
 		;
 	}
 
@@ -46,6 +46,7 @@ class ModulesInstallSetupPermissionsAction extends BaseAction {
 			if (!empty($securityAction)) {
 	
 				$access[$action] = array();
+				$access[$action]['noCheckLogin'] = $securityAction->getNoCheckLogin();
 	
 				$bitLevel = $securityAction->getAccess();
 				if ($bitLevel == SecurityModulePeer::LEVEL_ALL) {
@@ -54,7 +55,6 @@ class ModulesInstallSetupPermissionsAction extends BaseAction {
 				}
 				else
 					$access[$action]['bitLevel'] = $bitLevel;
-	
 	
 				if (class_exists("AffiliateLevelPeer")) {
 	
@@ -65,12 +65,12 @@ class ModulesInstallSetupPermissionsAction extends BaseAction {
 					}
 					else
 						$access[$action]['bitLevelAffiliate'] = $bitLevelAffiliate;
-	
+
 				}
 	
-	
-				$access[$action]['permissionRegistration'] = $securityAction->getAccessRegistrationUser();
-				$access[$action]['noCheckLogin'] = $securityAction->getNoCheckLogin();
+				if (class_exists("RegistrationUser"))
+					$access[$action]['permissionRegistration'] = $securityAction->getAccessRegistrationUser();
+
 			}
 
 		}
@@ -85,13 +85,16 @@ class ModulesInstallSetupPermissionsAction extends BaseAction {
 
 		if (!empty($securityModule)) {
 
-			$bitlevel = $securityModule->getAccess();
-
 			//Permisos para usuarios
+			$bitLevel = $securityModule->getAccess();
+			if ($bitLevel == (SecurityModulePeer::LEVEL_ALL)) {		
+				$access['permissionGeneral'][all] = 1;
+				$bitLevel = 0;
+			}
 			$userLevels = LevelPeer::getAll();
 			foreach ($userLevels as $level)
-				$access['permissionGeneral'][$level->getBitLevel()] = $this->evaluateBitlevel($level->getBitLevel(),$bitlevel);
-			$access['permissionGeneral'][all] = $this->evaluateBitlevel(SecurityModulePeer::LEVEL_ALL,$bitlevel);
+				$access['permissionGeneral'][$level->getBitLevel()] = $this->evaluateBitlevel($level->getBitLevel(),$bitLevel);
+
 
 			//Permisos para usuarios por afiliado
 			if (class_exists("AffiliateLevelPeer")) {
@@ -102,12 +105,13 @@ class ModulesInstallSetupPermissionsAction extends BaseAction {
 				$access['permissionAffiliateGeneral'][all] = $this->evaluateBitlevel(SecurityModulePeer::LEVEL_ALL,$bitLevelAffiliate);
 			}
 			//Permisos para usauarios por registro
-			if (class_exists("RegistrationUser")) {
+			if (class_exists("RegistrationUser"))
 				$access['permissionRegistrationGeneral'] = $securityModule->getAccessRegistrationUser();
-			}
+
 		}
 		return $access;
 	}
+
 
 	function execute($mapping, $form, &$request, &$response) {
 
@@ -125,15 +129,17 @@ class ModulesInstallSetupPermissionsAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "Modules";
+		$module = "Security";
 		$smarty->assign("module",$module);
-		$section = "Installation";
-		$smarty->assign("section",$section);
 
 		$modulePeer = new ModulePeer();
 
-		if (!isset($_GET['moduleName']))
-			return $mapping->findForwardConfig('failure');
+		$modules = ModulePeer::getAllActiveNames();
+		$smarty->assign("modules",$modules);
+		if (!isset($_GET['moduleName'])) {
+			$smarty->assign('moduleName',$_GET['moduleName']);
+			return $mapping->findForwardConfig('success');
+		}
 
 		$languages = Array();
 		foreach ($_GET["languages"] as $languageCode) {
@@ -184,24 +190,21 @@ class ModulesInstallSetupPermissionsAction extends BaseAction {
 		$moduleSelected = new SecurityModule();
 		$smarty->assign('moduleSelected',$moduleSelected);
 
-		if (isset($_GET['mode']) && $_GET['mode'] == 'reinstall') {
 
-			$smarty->assign('mode',$_GET['mode']);
+		$moduleSelected = SecurityModulePeer::getAccess($_GET['moduleName']);
+		if (empty($moduleSelected))
+			$moduleSelected = new SecurityModule();
 
-			$moduleSelected = SecurityModulePeer::getAccess($_GET['moduleName']);
-			if (empty($moduleSelected))
-				$moduleSelected = new SecurityModule();
+		$generalAccess = $this->getAccessToModule($_GET['moduleName']);
 
-			$generalAccess = $this->getAccessToModule($_GET['moduleName']);
+		$withoutPairAccess = $this->getAccessToActions($withoutPair);
+		$withPairAccess = $this->getAccessToActions($withPair);
 
-			$withoutPairAccess = $this->getAccessToActions($withoutPair);
-			$withPairAccess = $this->getAccessToActions($withPair);
+		$smarty->assign('moduleSelected',$moduleSelected);
+		$smarty->assign('withoutPairAccess',$withoutPairAccess);
+		$smarty->assign('withPairAccess',$withPairAccess);
+		$smarty->assign('generalAccess',$generalAccess);
 
-			$smarty->assign('moduleSelected',$moduleSelected);
-			$smarty->assign('withoutPairAccess',$withoutPairAccess);
-			$smarty->assign('withPairAccess',$withPairAccess);
-			$smarty->assign('generalAccess',$generalAccess);
-		}
 
 		$levels = LevelPeer::getAllWithBitLevelGreaterThan(1);
 		$smarty->assign('levels',$levels);
@@ -211,6 +214,9 @@ class ModulesInstallSetupPermissionsAction extends BaseAction {
 			$smarty->assign('affiliateLevels',$affiliateLevels);
 		}
 
+		if (class_exists("RegistrationUser"))
+			$smarty->assign('registrationAvailable',1);
+
 		$levelSave = SecurityModulePeer::LEVEL_ALL;
 		$smarty->assign("levelsave",$levelSave);
 
@@ -218,6 +224,9 @@ class ModulesInstallSetupPermissionsAction extends BaseAction {
 		$smarty->assign('withPair',$withPair);
 		$smarty->assign('pairActions',$pairActions);
 		$smarty->assign('moduleName',$_GET['moduleName']);
+		$smarty->assign('languages',$languages);
+
+		$smarty->assign('message',$_GET['message']);
 
 		return $mapping->findForwardConfig('success');
 	}
