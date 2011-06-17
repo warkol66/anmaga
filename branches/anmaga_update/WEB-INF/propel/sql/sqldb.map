@@ -1,12 +1,12 @@
 # Sqlfile -> Database map
-affiliates.classes.schema.sql=anmaga
-catalog.classes.schema.sql=anmaga
-categories.classes.schema.sql=anmaga
-common.classes.schema.sql=anmaga
+affiliates.classes.schema.sql=application
+catalog.classes.schema.sql=application
+categories.classes.schema.sql=application
+common.classes.schema.sql=application
 logs.classes.schema.sql=anmaga
-modules.classes.schema.sql=anmaga
-orders.classes.schema.sql=anmaga
-security.classes.schema.sql=anmaga
-users.classes.schema.sql=anmaga
-multilang.classes.schema.sql=anmaga
-surveys.classes.schema.sql=anmaga
+modules.classes.schema.sql=application
+orders.classes.schema.sql=application
+security.classes.schema.sql=application
+users.classes.schema.sql=application
+multilang.classes.schema.sql=application
+surveys.classes.schema.sql=application

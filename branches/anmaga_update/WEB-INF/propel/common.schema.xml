@@ -1,4 +1,4 @@
-<database defaultIdMethod="native" package="common.classes" name="anmaga" >
+<database defaultIdMethod="native" package="common.classes" name="application" >
 
 	<table name="actionLogs_log" phpName="ActionLog" description="logs de acciones del sistema">
 

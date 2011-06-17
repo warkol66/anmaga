@@ -1,4 +1,4 @@
-<database defaultIdMethod="native" package="multilang.classes" name="anmaga" >
+<database defaultIdMethod="native" package="multilang.classes" name="application" >
 
 	<table phpName="MultilangText" name="multilang_text">
 
