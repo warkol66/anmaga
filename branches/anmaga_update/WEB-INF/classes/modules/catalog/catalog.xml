@@ -1,9 +1,0 @@
-<config>
-		<label>Catalogo</label>
-		<description>descripcion de catalogo</description>
-		<alwaysActive>1</alwaysActive>
-		<moduleDependencies>
-			<module1>Users</module1>
-			<module2>SecurityAction</module2>
-		</moduleDependencies>
-</config>

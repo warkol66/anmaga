@@ -26,9 +26,9 @@
 			<input name='name' type='text' value='|-$currentLevel->getName()-|' size="45" />
 		</p>
 		<p><input type="hidden" name="accion" value="edicion" />
-				<input type='submit' name='guardar' value='##97,Guardar##'  class='button' />
+				<input type='submit' name='guardar' value='##97,Guardar##' />
 				&nbsp;&nbsp;
-				<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##' class='button'  />
+				<input type='button' onClick='javascript:history.go(-1)' value='##104,Regresar##' />
 			</p>
 </form>
 </fieldset>
@@ -57,7 +57,7 @@
 				##195,Agregar Nivel de Usuarios##&nbsp;&nbsp;
 				<input type="hidden" name="do" value="usersLevelsDoEdit" />
 				<input type="text" name="name" value="" />
-				<input type='submit' value='##123,Agregar##' class='button' />
+				<input type='submit' value='##123,Agregar##' />
 			</form></td>
 	</tr>
 </table>

@@ -44,7 +44,7 @@
 
 <form action="Main.php" method="post">
 	<input type="hidden" name="do" value="ordersViewCart" />
-	<input type="submit" value="Editar Pedido" class="boton" />
+	<input type="submit" value="Editar Pedido" />
 </form>
 
 <br /><br />
@@ -72,6 +72,6 @@
 	</p>
 	|-/if-|
 	<input type="hidden" name="do" value="ordersDoGenerate" />
-	<input type="submit" value="Confirmar pedido" class="boton" />
+	<input type="submit" value="Confirmar pedido" />
 </form>
 |-/if-|

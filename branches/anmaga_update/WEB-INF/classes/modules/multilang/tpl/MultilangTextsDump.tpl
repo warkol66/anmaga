@@ -25,7 +25,7 @@
 							<input type="radio" name="languageCode" value="sys" id="sys" |-if $languageCode eq "sys"-|checked="checked"|-/if-| />
 					   </p>
 						 	<p>
-		<input name="Submit" type="submit" class="button" value="Generar dump con textos" />
+		<input name="Submit" type="submit" value="Generar dump con textos" />
 	</p>
 </form>
 </fieldset> 

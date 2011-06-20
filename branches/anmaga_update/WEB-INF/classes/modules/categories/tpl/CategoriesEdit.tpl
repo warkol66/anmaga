@@ -47,8 +47,8 @@
 		<input type="hidden" name="id" id="id" value="|-$category->getId()-|" />
 		<input type="hidden" name="accion" id="accion" value="edicion" />
 		<input type="hidden" name="do" id="do" value="categoriesDoEdit" />
-		<input type='submit' name="ncat" value="##149,Aceptar##" class='button' />
-		<input type='button' name="ncat" value="Regresar" class='button' onClick="history.back();"/>
+		<input type='submit' name="ncat" value="##149,Aceptar##" />
+		<input type='button' name="ncat" value="Regresar" onClick="history.back();"/>
 </form>
 
 </fieldset>

@@ -31,7 +31,7 @@
       |-/if-|
       <input type="hidden" name="action" id="action" value="|-$action-|" />
       <input type="hidden" name="do" id="do" value="multilangLanguagesDoEdit" />
-      <input type="submit" id="button_edit_language" name="button_edit_language" title="##common,3,Aceptar##" value="##common,3,Aceptar##" class="button" />
+      <input type="submit" id="button_edit_language" name="button_edit_language" title="##common,3,Aceptar##" value="##common,3,Aceptar##" />
     </p>
     </fieldset>
   </form>

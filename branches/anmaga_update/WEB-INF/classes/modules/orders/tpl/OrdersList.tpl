@@ -42,8 +42,8 @@ Para eliminar pedidos, seleccione los pedidos a eliminar y haga click en "Elimin
 						|-/foreach-|
 					</select></p>
 				<p><input type="hidden" name="do" id="doList" value="ordersList" />
-					<input type="submit" value="Buscar" class="boton" />
-					<input type="reset" value="Quitar filtros" class="boton" onclick="window.location='Main.php?do=ordersList'">
+					<input type="submit" value="Buscar" />
+					<input type="reset" value="Quitar filtros" onclick="window.location='Main.php?do=ordersList'">
 					</p>
 					</td>
 				</tr>

@@ -72,7 +72,7 @@
 		<p>
 			<input type="hidden" name="parentCategoryId" id="parentCategoryId" value="|-$category->getId()-|" />
 			<input type="hidden" name="do" id="do" value="catalogProductsDoLoadInCategory" />
-			<input type="submit" value="Cargar" class="button" />
+			<input type="submit" value="Cargar" />
 		</p>
 	</form></fieldset>
 	|-/if-|

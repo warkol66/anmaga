@@ -41,7 +41,7 @@
     <p>&nbsp;</p> 
     <p> 
       <input type="hidden" name="do" id="do" value="catalogProductsDoLoadWithCategory" /> 
-      <input type="submit" value="Cargar" class="button" /> 
+      <input type="submit" value="Cargar" /> 
     </p> 
     </fieldset> 
   </form> 

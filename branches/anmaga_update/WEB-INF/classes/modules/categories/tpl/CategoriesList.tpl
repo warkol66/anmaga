@@ -14,7 +14,7 @@
 				<option value="|-$moduleObj->getName()-|" |-if isset($filters.searchModule) and ($moduleObj->getName() eq $filters.searchModule)-|selected="selected"|-/if-|>|-$moduleObj->getName()|multilang_get_translation:"common"-|</option>
 			|-/foreach-|
 			</select>
-			<input type='submit' name="ncat" value="Mostrar categorías" class='button' />
+			<input type='submit' name="ncat" value="Mostrar categorías" />
 			</p>
 <br />
 
@@ -50,7 +50,7 @@
 			<input type="checkbox" name="category[isPublic]" value="1" />
 		</p>
 		<p><input type="hidden" name="do" value="categoriesDoEditX" />
-		<input type='button' onclick="categoriesDoEditX(this.form)" name="ncat" value="##143,Agregar##" class='button' /><span id="systemWorking" style="display:none;" class="inProgress">...Agregando Categoría...</span>
+		<input type='button' onclick="categoriesDoEditX(this.form)" name="ncat" value="##143,Agregar##" /><span id="systemWorking" style="display:none;" class="inProgress">...Agregando Categoría...</span>
 		</p>
 	</fieldset>
 </form>
@@ -65,13 +65,13 @@
 					|-include file="CategoriesOptionsInclude.tpl" categories=$parentUserCategories user=$user count='0'-|
 				</select>
 				&nbsp;&nbsp;
-				<input type='submit' name="mcat" value="##145,Modificar##" class='button' />
+				<input type='submit' name="mcat" value="##145,Modificar##" />
 				<input type="hidden" name="do" value="categoriesEdit" />
 			</form>
 				&nbsp;&nbsp;
 			<form method='post' action="Main.php" style="display:inline;">
 				<input type="hidden" name="id" value="|-$userCategories[0]->getId()-|" id="select_modificar_categoria" />
-				<input type='submit' name="dcat" value="##115,Eliminar##" class='button' onclick="return confirm('##255,Esta opción elimina permanentemente esta Categoría. ¿Está seguro que desea eliminarla?##');" />
+				<input type='submit' name="dcat" value="##115,Eliminar##" onclick="return confirm('##255,Esta opción elimina permanentemente esta Categoría. ¿Está seguro que desea eliminarla?##');" />
 				<input type="hidden" name="do" value="categoriesDoDelete" />
 				<input type="hidden" name="categoryModule" value="|-if isset($categoryModule) and $selectedModule neq ''-||-$selectedModule->getName()-||-else-||-/if-|" id="categoryModule">
 		</form>

@@ -80,9 +80,9 @@
 			<input type="hidden" name="id" id="id" value="|-if $action eq 'edit'-||-$product->getid()-||-/if-|" /> |-/if-|
 			<input type="hidden" name="action" id="action" value="|-$action-|" /> 
 			|-include file="FiltersRedirectInclude.tpl" filters=$filters-|
-			|-if isset($pager) && ($pager->getPage() ne 1)-| <input type="hidden" name="page" id="page" value="|-$pager->getPage()-|" />|-/if-|
+			|-if isset($page)-| <input type="hidden" name="page" id="page" value="|-$page-|" />|-/if-|
 			<input type="hidden" name="do" id="do" value="catalogProductsDoEdit" /> 
-			<input type="submit" id="button_edit_product" name="button_edit_product" title="Aceptar" value="Aceptar" class="boton" /> 
+			<input type="submit" id="button_edit_product" name="button_edit_product" title="Aceptar" value="Aceptar" /> 
 				|-*javascript_form_validation_button value='Guardar' title='Guardar'*-|
 				<input type='button' onClick='location.href="Main.php?do=catalogProductsList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page)-|&page=|-$page-||-/if-|"' value='##104,Regresar##' title="Regresar al listado de productos"/>
 		</p> 
