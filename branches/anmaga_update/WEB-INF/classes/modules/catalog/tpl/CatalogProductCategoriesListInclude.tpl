@@ -17,22 +17,3 @@
   |-/foreach-|
   </table>
 |-/if-|
-
-<script type="text/javascript" language="JavaScript" >
-
-  function catalogProductsDoRemoveCategoriesX(form) {
-    var fields = form.serialize();
-
-    var myAjax = new Ajax.Updater(
-      {success: 'productCategoriesList'},
-      '/Main.php?do=catalogProductsDoRemoveCategoriesX',
-      {
-        method: 'post',
-        postBody: fields,
-        evalScripts: true
-      }
-    );
-    $('status_info').innerHTML = "Procesando...";
-  }
-
-</script>

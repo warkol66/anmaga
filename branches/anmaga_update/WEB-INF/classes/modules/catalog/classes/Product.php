@@ -88,4 +88,15 @@ class Product extends BaseProduct {
 			return;
 	}
 
+	/**
+	* Obtiene el id de todas las categorías de producto asignadas.
+	*
+	*	@return array Id de todos los product category de un product
+	*/
+	function getAssignedCategoriesArray(){
+		$categories = ProductCategoryQuery::create()->select('Categoryid')->filterByProduct($this)->find()->toArray();
+		return $categories;
+	}
+
+
 }

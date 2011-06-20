@@ -5,7 +5,9 @@
         <label for="categoryId">Categoría</label> 
         <select name="categoryId" id="categoryId"> 
           <option value="">Seleccione Categoría</option> 
-                    |-include file="CatalogProductCategoriesIncludeOptions.tpl" productCategories=$productCategories-|
+    	|-foreach from=$categoryCandidates item=category name=for_categories-|
+        <option id="categoryOption|-$category->getId()-|" value="|-$category->getId()-|">|-$category->getName()-|</option> 
+    	|-/foreach-|
         </select>
         <input type="button" id="button_edit_product_add_category" name="button_edit_product_add_category" title="Agregar" value="Agregar" class="boton" onClick="javascript: catalogProductsDoAddCategoriesX(this.form)" /> 
         <span id="status_info"></span>
@@ -29,14 +31,27 @@
 
     var myAjax = new Ajax.Updater(
       {success: 'productCategoriesList'},
-      '/Main.php?do=catalogProductsDoAddCategoriesX',
+      'Main.php?do=catalogProductsDoAddCategoriesX',
       {
         method: 'post',
         postBody: fields,
         evalScripts: true
       }
     );
-    $('status_info').innerHTML = "Procesando...";
+    $('status_info').innerHTML = "<span class='inProgress'>Agregando a la categoría ...</span>";
   }
 
+  function catalogProductsDoRemoveCategoriesX(form) {
+    var fields = form.serialize();
+    var myAjax = new Ajax.Updater(
+      {success: 'productCategoriesList'},
+      'Main.php?do=catalogProductsDoRemoveCategoriesX',
+      {
+        method: 'post',
+        postBody: fields,
+        evalScripts: true
+      }
+    );
+    $('status_info').innerHTML = '<span class="inProgress">Eliminando de la categoría ...</span>';
+  }
 </script>
