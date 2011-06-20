@@ -7,11 +7,11 @@
 		<fieldset title="Formulario de edición de datos de un producto">
 		<p> 
 			<label for="product[code]">Código</label> 
-			<input name="product[code]" type="text" id="code" title="code" value="|-$product->getcode()-|" size="20" maxlength="255" /> 
+			<input name="product[code]" type="text" id="product[code]" title="Código" value="|-$product->getcode()-|" size="20" maxlength="20" |-ajax_onchange_validation_attribute actionName=catalogProductValidationCodeX-| />|-validation_msg_box idField=product[code]-|
 		</p> 
 		<p> 
 			<label for="product[orderCode]">Código de Ordenamiento</label> 
-			<input name="product[orderCode]" type="text" id="orderCode" title="orderCode" value="|-$product->getOrderCode()-|" size="20" maxlength="255" /> 
+			<input name="product[orderCode]" type="text" id="orderCode" title="Código de ordenamiento" value="|-$product->getOrderCode()-|" size="20" maxlength="20" /> 
 		</p> 
 		<p> 
 			<label for="product[name]">Nombre</label> 
@@ -33,31 +33,22 @@
 			<label for="image">Cargar Imagen</label> 
 			<input type="file" id="image" name="image" title="image" /> 
 		</p> 
-		|-if $product->getId() eq ''-|
-		<p> 
-			<label for="categoryId">Categoría</label> 
-			<select name="product[categoryId]" id="categoryId"> 
-				<option value="">Seleccione Categoría</option> 
-									|-include file="CatalogProductCategoriesIncludeOptions.tpl" productCategories=$productCategories-|
-			</select> 
-		</p>
-		|-/if-|
 		<p> 
 			<label for="unitId">Unidad</label> 
 			<select name="product[unitId]" id="unitId"> 
 				<option value="">Seleccionar Unidad</option> 
-									|-foreach from=$units item=unit-|
+				|-foreach from=$units item=unit-|
 				<option value="|-$unit->getId()-|"|-if $unit->getId() eq $product->getUnitId()-| selected="selected"|-/if-|>|-$unit->getName()-|</option> 
-									|-/foreach-|
+				|-/foreach-|
 			</select> 
 		</p> 
 		<p> 
 			<label for="measureUnitId">Unidad de Medida</label> 
 			<select name="product[measureUnitId]" id="measureUnitId"> 
 				<option value="">Seleccionar Unidad de Medida</option> 
-									|-foreach from=$measureUnits item=measureUnit-|
+				|-foreach from=$measureUnits item=measureUnit-|
 				<option value="|-$measureUnit->getId()-|"|-if $measureUnit->getId() eq $product->getMeasureUnitId()-| selected="selected"|-/if-|>|-$measureUnit->getName()-|</option> 
-									|-/foreach-|
+				|-/foreach-|
 			</select> 
 		</p> 
 		<p> 
@@ -88,8 +79,12 @@
 		<p> |-if $action eq 'edit'-|
 			<input type="hidden" name="id" id="id" value="|-if $action eq 'edit'-||-$product->getid()-||-/if-|" /> |-/if-|
 			<input type="hidden" name="action" id="action" value="|-$action-|" /> 
+			|-include file="FiltersRedirectInclude.tpl" filters=$filters-|
+			|-if isset($pager) && ($pager->getPage() ne 1)-| <input type="hidden" name="page" id="page" value="|-$pager->getPage()-|" />|-/if-|
 			<input type="hidden" name="do" id="do" value="catalogProductsDoEdit" /> 
 			<input type="submit" id="button_edit_product" name="button_edit_product" title="Aceptar" value="Aceptar" class="boton" /> 
+				|-*javascript_form_validation_button value='Guardar' title='Guardar'*-|
+				<input type='button' onClick='location.href="Main.php?do=catalogProductsList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page)-|&page=|-$page-||-/if-|"' value='##104,Regresar##' title="Regresar al listado de productos"/>
 		</p> 
 		</fieldset> 
 	</form> 

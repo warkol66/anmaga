@@ -2,37 +2,14 @@
 
 class CatalogProductsDoDeleteAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function CatalogProductsDoDeleteAction() {
 		;
 	}
 
-
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
-		//////////
-		// Access the Smarty PlugIn instance
-		// Note the reference "=&"
 		$plugInKey = 'SMARTY_PLUGIN';
 		$smarty =& $this->actionServer->getPlugIn($plugInKey);
 		if($smarty == NULL) {
@@ -40,14 +17,36 @@ class CatalogProductsDoDeleteAction extends BaseAction {
 		}
 
 		$module = "Catalog";
-    $smarty->assign("module",$module);
+		$smarty->assign("module",$module);
 
 		$moduleSection = "Products";
-    $smarty->assign("moduleSection",$section);
+		$smarty->assign("moduleSection",$section);
 
-    ProductPeer::delete($_POST["id"]);
+		if ($_POST["page"] > 0)
+			$params["page"] = $_POST["page"];
 
-		return $mapping->findForwardConfig('success');
+		if (!empty($_POST["filters"]))
+			$filters = $_POST["filters"];
+
+		$product = ProductQuery::create()->findOneById($_POST["id"]);
+		if (!empty($product)) {
+			$productName = $product->getName();
+			try {
+				$product->delete();
+			}
+			catch (PropelException $exp) {
+				if (ConfigModule::get("global","showPropelExceptions"))
+					print_r($exp->getMessage());
+				return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'failure');
+			}
+		}
+		else
+			return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'failure');
+
+		$logSufix = ', ' . Common::getTranslation('action: delete','common');
+		Common::doLog('success', $productName . $logSufix);
+
+		return $this->addParamsAndFiltersToForwards($params,$filters,$mapping,'success');
 
 	}
 

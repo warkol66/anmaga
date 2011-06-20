@@ -2,37 +2,14 @@
 
 class CatalogProductsEditAction extends BaseAction {
 
-
-	// ----- Constructor ---------------------------------------------------- //
-
 	function CatalogProductsEditAction() {
 		;
 	}
 
-
-	// ----- Public Methods ------------------------------------------------- //
-
-	/**
-	* Process the specified HTTP request, and create the corresponding HTTP
-	* response (or forward to another web component that will create it).
-	* Return an <code>ActionForward</code> instance describing where and how
-	* control should be forwarded, or <code>NULL</code> if the response has
-	* already been completed.
-	*
-	* @param ActionConfig		The ActionConfig (mapping) used to select this instance
-	* @param ActionForm			The optional ActionForm bean for this request (if any)
-	* @param HttpRequestBase	The HTTP request we are processing
-	* @param HttpRequestBase	The HTTP response we are creating
-	* @public
-	* @returns ActionForward
-	*/
 	function execute($mapping, $form, &$request, &$response) {
 
-    BaseAction::execute($mapping, $form, $request, $response);
+		BaseAction::execute($mapping, $form, $request, $response);
 
-		//////////
-		// Access the Smarty PlugIn instance
-		// Note the reference "=&"
 		$plugInKey = 'SMARTY_PLUGIN';
 		$smarty =& $this->actionServer->getPlugIn($plugInKey);
 		if($smarty == NULL) {
@@ -40,32 +17,53 @@ class CatalogProductsEditAction extends BaseAction {
 		}
 
 		$module = "Catalog";
-    $smarty->assign("module",$module);
+		$smarty->assign("module",$module);
 
 		$moduleSection = "Products";
-    $smarty->assign("moduleSection",$section);
+		$smarty->assign("moduleSection",$section);
 
 		$productCategories = CategoryPeer::getAllByModule("catalog");
-    $smarty->assign("productCategories",$productCategories);
-    
-		$units = UnitPeer::getAll();
-    $smarty->assign("units",$units);
-    
-		$measureUnits = MeasureUnitPeer::getAll();
-    $smarty->assign("measureUnits",$measureUnits);
+		$smarty->assign("productCategories",$productCategories);
 
-    if ( !empty($_GET["id"]) ) {
+		$units = UnitPeer::getAll();
+		$smarty->assign("units",$units);
+
+		$measureUnits = MeasureUnitPeer::getAll();
+		$smarty->assign("measureUnits",$measureUnits);
+
+		if (!empty($_GET["id"])) {
 			//voy a editar un producto
 			$product = ProductPeer::get($_GET["id"]);
-	    $smarty->assign("action","edit");
+			$smarty->assign("action","edit");
+
+			if (!is_null($product)) {
+				$actualCategories = $product->getProductCategorys();
+				$smarty->assign("actualCategories",$actualCategories);
+				if ($actualCategories->isEmpty())
+					$excludeCategories = array( -1);
+				else {
+					$excludeCategoriesIds = $product->getAssignedCategoriesArray($_GET["id"]);
+					array_push($excludeCategoriesIds, -1);
+				}
+				$criteria = new Criteria();
+				$criteria->add(CategoryPeer::ID, $excludeCategoriesIds, Criteria::NOT_IN);
+				$criteria->add(CategoryPeer::MODULE, "catalog");
+				$categoryCandidates = CategoryPeer::doSelect($criteria);
+				$smarty->assign("categoryCandidates",$categoryCandidates);
+			}
+			else
+				$smarty->assign("notValidId",true);
 		}
 		else {
 			//voy a crear un producto nuevo
-      $product = new Product;
+			$product = new Product;
 			$smarty->assign("action","create");
 		}
-    $smarty->assign("product",$product);
-		$smarty->assign("message",$_GET["message"]);
+		$smarty->assign("product",$product);
+
+		$smarty->assign("filters",$_REQUEST["filters"]);
+		$smarty->assign("page",$_REQUEST["page"]);
+		$smarty->assign("message",$_REQUEST["message"]);
 
 		return $mapping->findForwardConfig('success');
 	}
