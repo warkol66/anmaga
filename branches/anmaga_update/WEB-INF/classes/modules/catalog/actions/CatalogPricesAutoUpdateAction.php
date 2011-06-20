@@ -1,7 +1,4 @@
 <?php
-require_once('BaseAction.php');
-require_once('AffiliatePeer.php');
-require_once('ProductPeer.php');
 
 class CatalogPricesAutoUpdateAction extends BaseAction {
 
@@ -10,12 +7,11 @@ class CatalogPricesAutoUpdateAction extends BaseAction {
 	 *
 	 */
 	function CatalogPricesAutoUpdateAction() {
+
 	}
 
 	function processGeneralUpdate($filePath) {
-
 		ProductPeer::doImportPrices($filePath);
-
 	}
 
 	function processAffiliateUpdate($affiliateName,$filePath) {
@@ -23,9 +19,8 @@ class CatalogPricesAutoUpdateAction extends BaseAction {
 		//procesamiento de datos de afiliado
 		$affiliate = AffiliatePeer::getByName($affiliateName);
 
-		if (!empty($affiliate)){
+		if (!empty($affiliate))
 			$affiliate->doImportPrices($filePath);
-		}
 
 	}
 
@@ -33,9 +28,6 @@ class CatalogPricesAutoUpdateAction extends BaseAction {
 
 		BaseAction::execute($mapping, $form, $request, $response);
 
-		//////////
-		// Access the Smarty PlugIn instance
-		// Note the reference "=&"
 		$plugInKey = 'SMARTY_PLUGIN';
 		$smarty =& $this->actionServer->getPlugIn($plugInKey);
 		if($smarty == NULL) {
@@ -55,7 +47,7 @@ class CatalogPricesAutoUpdateAction extends BaseAction {
 			if (is_file($updatesDir . $file)) {
 
 				$parts = explode('.',$file);
-				//Cambio extensión a txt
+				//Cambio extensiÃ³n a txt
 				//if (count($parts) == 2 && $parts[1] == 'csv') {
 				if (count($parts) == 2 && $parts[1] == 'txt') {
 					$filename = $parts[0];
@@ -69,10 +61,10 @@ class CatalogPricesAutoUpdateAction extends BaseAction {
 
 					}
 					else {
-						//No vienen dos partes, solo el afiliadp
+						//No vienen dos partes, solo el afiliado
 						//$nameParts = explode('_',$filename);
 						//if (count($nameParts) == 2) {
-						$affiliate = AffiliatePeer::getByName($filename)
+						$affiliate = AffiliatePeer::getByName($filename);
 						if (!empty($affiliate)) {
 						//	$affiliateName = $nameParts[1];
 							$affiliateName = $affiliate->getName();
