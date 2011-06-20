@@ -9,7 +9,7 @@
         <option id="categoryOption|-$category->getId()-|" value="|-$category->getId()-|">|-$category->getName()-|</option> 
     	|-/foreach-|
         </select>
-        <input type="button" id="button_edit_product_add_category" name="button_edit_product_add_category" title="Agregar" value="Agregar" class="boton" onClick="javascript: catalogProductsDoAddCategoriesX(this.form)" /> 
+        <input type="button" id="button_edit_product_add_category" name="button_edit_product_add_category" title="Agregar" value="Agregar" onClick="javascript: catalogProductsDoAddCategoriesX(this.form)" /> 
         <span id="status_info"></span>
       </p>
       <p>

@@ -89,7 +89,7 @@
 			|-/foreach-|
 			</div> 
 			<p> 
-				<input type="submit" value="Guardar" class="button" /> 
+				<input type="submit" value="Guardar" /> 
 			</p> 
 		</form>
 	

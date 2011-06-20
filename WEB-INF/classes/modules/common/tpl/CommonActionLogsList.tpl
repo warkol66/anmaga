@@ -49,7 +49,7 @@
 				|-/if-|
 			 </div>
 				<p>
-					<input name="listButton" type="submit" class="button" id="listButton" value="Listar">
+					<input name="listButton" type="submit" id="listButton" value="Listar">
 					<input name="listLogs" type="hidden" id="listLogs" value="listLogs">
 			 </p>
 			</form>
@@ -86,7 +86,7 @@
 			</tr>
 			|-/if-| 
   <tr>
-		<td colspan="4"><input name="btnRegresar" type="button" class="button" id="regresar" value="Regresar" onClick="location.href='Main.php?do=commonActionLogsList'" />
+		<td colspan="4"><input name="btnRegresar" type="button" id="regresar" value="Regresar" onClick="location.href='Main.php?do=commonActionLogsList'" />
 	</td>
   </tr>
 </table>

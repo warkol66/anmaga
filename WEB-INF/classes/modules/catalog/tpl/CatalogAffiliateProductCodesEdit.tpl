@@ -32,8 +32,8 @@
 					<input type="hidden" name="action" id="action" value="|-$action-|" /> 
 					<input type="hidden" name="do" id="do" value="catalogAffiliateProductCodesDoEdit" /> 
 					<input type="hidden" name="page" id="page" value="|-$page-|" /> 
-					<input type="submit" id="button_edit_affiliateproductcode" name="button_edit_affiliateproductcode" title="Aceptar" value="Aceptar" class="boton" /> 
-	<input type="button" onclick="javascript:window.location.href='Main.php?do=catalogAffiliateProductCodesList&affiliateId=|-$affiliateproductcode->getAffiliateId()-|&page=|-$page-|'" value="Regresar" class="button" /> 
+					<input type="submit" id="button_edit_affiliateproductcode" name="button_edit_affiliateproductcode" title="Aceptar" value="Aceptar" /> 
+	<input type="button" onclick="javascript:window.location.href='Main.php?do=catalogAffiliateProductCodesList&affiliateId=|-$affiliateproductcode->getAffiliateId()-|&page=|-$page-|'" value="Regresar" /> 
 	</p>
 	</fieldset>
 	</form> 
