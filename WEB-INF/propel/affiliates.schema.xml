@@ -90,17 +90,30 @@
 			<unique-column name="name" />
 		</unique>
 
+	  <vendor type="mysql">
+	    <parameter name="Charset" value="utf8"/>
+	    <parameter name="Collate" value="utf8_general_ci"/>
+	  </vendor>
+
 	</table>
 
   <table name="affiliates_userGroup" phpName='AffiliateUserGroup' description="Users / Groups" isCrossRef="true">
-  <column name="userId" required="true" primaryKey='true' type="INTEGER"  description="Group ID"/>
-  <column name="groupId" required="true" primaryKey='true' type="INTEGER"  description="Group ID"/>
-  <foreign-key foreignTable="affiliates_user">
-     <reference local="userId" foreign="id"/>
-  </foreign-key>
-  <foreign-key foreignTable="affiliates_group" onDelete="cascade">
-     <reference local="groupId" foreign="id"/>
-  </foreign-key>
+	  <column name="userId" required="true" primaryKey='true' type="INTEGER"  description="Group ID"/>
+	  <column name="groupId" required="true" primaryKey='true' type="INTEGER"  description="Group ID"/>
+
+	  <foreign-key foreignTable="affiliates_user">
+    	<reference local="userId" foreign="id"/>
+	  </foreign-key>
+	
+	  <foreign-key foreignTable="affiliates_group" onDelete="cascade">
+	  	<reference local="groupId" foreign="id"/>
+	  </foreign-key>
+
+  <vendor type="mysql">
+    <parameter name="Charset" value="utf8"/>
+    <parameter name="Collate" value="utf8_general_ci"/>
+  </vendor>
+
  </table>
 
  <table name="affiliates_group" phpName='AffiliateGroup' description="Groups">
@@ -122,6 +135,11 @@
 		<rule name="unique" message="El nombre de grupo ya existe, elija otro nombre." />
 	</validator>
 	
+  <vendor type="mysql">
+    <parameter name="Charset" value="utf8"/>
+    <parameter name="Collate" value="utf8_general_ci"/>
+  </vendor>
+
  </table>
 
  <table name="affiliates_groupCategory" phpName="AffiliateGroupCategory" description="Groups_Categories" isCrossRef="true">

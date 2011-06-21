@@ -82,7 +82,7 @@ CREATE TABLE `affiliates_level`
 	`bitLevel` INTEGER COMMENT 'Bit del nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE INDEX `affiliates_level_U_1` (`name`)
-) ENGINE=MyISAM COMMENT='Levels';
+) ENGINE=MyISAM CHARACTER SET='utf8' COLLATE='utf8_general_ci' COMMENT='Levels';
 
 -- ---------------------------------------------------------------------
 -- affiliates_userGroup
@@ -103,7 +103,7 @@ CREATE TABLE `affiliates_userGroup`
 		FOREIGN KEY (`groupId`)
 		REFERENCES `affiliates_group` (`id`)
 		ON DELETE CASCADE
-) ENGINE=MyISAM COMMENT='Users / Groups';
+) ENGINE=MyISAM CHARACTER SET='utf8' COLLATE='utf8_general_ci' COMMENT='Users / Groups';
 
 -- ---------------------------------------------------------------------
 -- affiliates_group
@@ -120,7 +120,7 @@ CREATE TABLE `affiliates_group`
 	`bitLevel` INTEGER COMMENT 'Nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE INDEX `affiliates_group_U_1` (`name`)
-) ENGINE=MyISAM COMMENT='Groups';
+) ENGINE=MyISAM CHARACTER SET='utf8' COLLATE='utf8_general_ci' COMMENT='Groups';
 
 -- ---------------------------------------------------------------------
 -- affiliates_groupCategory
