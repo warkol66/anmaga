@@ -7,7 +7,8 @@
 		<fieldset title="Formulario de edición de datos de un producto">
 		<p> 
 			<label for="product[code]">Código</label> 
-			<input name="product[code]" type="text" id="product[code]" title="Código" value="|-$product->getcode()-|" size="20" maxlength="20" |-ajax_onchange_validation_attribute actionName=catalogProductValidationCodeX-| />|-validation_msg_box idField=product[code]-|
+			<input name="actualproduct[code]" id="actualproduct[code]" type="hidden" value="|-$product->getCode()-|" />
+			<input name="product[code]" type="text" id="product[code]" title="Código" value="|-$product->getcode()-|" size="20" maxlength="20" class="emptyValidation" |-ajax_onchange_validation_attribute actionName=catalogProductValidationCodeX-| />|-validation_msg_box idField=product[code]-|
 		</p> 
 		<p> 
 			<label for="product[orderCode]">Código de Ordenamiento</label> 
@@ -23,7 +24,7 @@
 		</p> 
 		<p> 
 			<label for="product[price]">Precio</label> 
-			<input name="product[price]" type="text" id="price" title="price" value="|-$product->getprice()|system_numeric_format-|" size="15" /> 
+			<input name="product[price]" type="text" id="product[price]" title="price" value="|-$product->getprice()|system_numeric_format-|" class="numericValidation" size="15" /> |-validation_msg_box idField=product[price]-|
 		</p> 
 		|-if $action eq 'edit'-|
 			<label for="actualImage">Imagen</label> 
@@ -52,20 +53,20 @@
 			</select> 
 		</p> 
 		<p> 
-			<label for="salesUnit">Unidad de Venta</label> 
-			<input name="product[salesUnit]" type="text" id="salesUnit" value="|-$product->getSalesUnit()-|" size="8" maxlength="4" /> 
+			<label for="product[salesUnit]">Unidad de Venta</label> 
+			<input name="product[salesUnit]" type="text" id="product[salesUnit]" value="|-$product->getSalesUnit()-|" size="8" maxlength="4" class="numericValidation" /> |-validation_msg_box idField=product[salesUnit]-|
 		</p> 		
 		<p> 
-			<label for="stock01">Stock 01</label> 
-			<input name="product[stock01]" type="text" id="stock01" value="|-$product->getStock01()-|" size="12" maxlength="6" /> 
+			<label for="product[stock01]">Stock 01</label> 
+			<input name="product[stock01]" type="text" id="product[stock01]" value="|-$product->getStock01()-|" size="12" maxlength="6" class="numericValidation" /> |-validation_msg_box idField=product[stock01]-|
 		</p> 		
 		<p> 
-			<label for="stock02">Stock 02</label> 
-			<input name="product[stock02]" type="text" id="stock02" value="|-$product->getStock02()-|" size="12" maxlength="6" /> 
+			<label for="product[stock02]">Stock 02</label> 
+			<input name="product[stock02]" type="text" id="product[stock02]" value="|-$product->getStock02()-|" size="12" maxlength="6" class="numericValidation" /> |-validation_msg_box idField=product[stock02]-|
 		</p> 		
 		<p> 
-			<label for="stock03">Stock 03</label> 
-			<input name="product[stock03]" type="text" id="stock03" value="|-$product->getStock03()-|" size="12" maxlength="6" /> 
+			<label for="product[stock03]">Stock 03</label> 
+			<input name="product[stock03]" type="text" id="product[stock03]" value="|-$product->getStock03()-|" size="12" maxlength="6" class="numericValidation" /> |-validation_msg_box idField=product[stock03]-|
 		</p> 		
 		<p> 
 			<label for="stockAlert">Alerta Stock</label> 
@@ -82,8 +83,7 @@
 			|-include file="FiltersRedirectInclude.tpl" filters=$filters-|
 			|-if isset($page)-| <input type="hidden" name="page" id="page" value="|-$page-|" />|-/if-|
 			<input type="hidden" name="do" id="do" value="catalogProductsDoEdit" /> 
-			<input type="submit" id="button_edit_product" name="button_edit_product" title="Aceptar" value="Aceptar" /> 
-				|-*javascript_form_validation_button value='Guardar' title='Guardar'*-|
+				|-javascript_form_validation_button name="save_product" id="save_product" value="Guardar" title="Guardar información del producto"-|
 				<input type='button' onClick='location.href="Main.php?do=catalogProductsList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page)-|&page=|-$page-||-/if-|"' value='##104,Regresar##' title="Regresar al listado de productos"/>
 		</p> 
 		</fieldset> 

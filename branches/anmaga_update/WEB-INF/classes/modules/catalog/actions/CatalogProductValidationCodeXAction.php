@@ -22,13 +22,18 @@ class CatalogProductValidationCodeXAction extends BaseAction {
 		$fieldname = 'product[code]';
 		$exist = 1;
 
-		if (strlen($_POST['product']['code']) >= 4) {
-			$codeExists = ProductPeer::getByCode($_POST['product']['code']);
-			if (empty($codeExists))
-				$exist = 0;
+
+		if ($_POST['product']['code'] == $_POST['actualproduct']['code'])
+			$exist = 0;
+		else {
+			if (strlen($_POST['product']['code']) >= 4) {
+				$codeExists = ProductPeer::getByCode($_POST['product']['code']);
+				if (empty($codeExists))
+					$exist = 0;
+			}
+			else
+				$minLength = 1;
 		}
-		else
-			$minLength = 1;
 
 		$smarty->assign('minLength',$minLength);
 
