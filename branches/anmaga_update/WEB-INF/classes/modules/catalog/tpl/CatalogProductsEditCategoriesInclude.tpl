@@ -1,5 +1,5 @@
 <div id="div_productCategories"> 
-  <fieldset title="Agregar categorias al producto">
+  <fieldset title="Agregar categorías al producto">
     <form name="form_edit_product_categories" id="form_edit_product_categories" action="Main.php" method="post" enctype="multipart/form-data">
       <p> 
         <label for="categoryId">Categoría</label> 

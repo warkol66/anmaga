@@ -136,10 +136,8 @@ class SecurityEditPermissionsAction extends BaseAction {
 
 		$modules = ModulePeer::getAllActiveNames();
 		$smarty->assign("modules",$modules);
-		if (!isset($_GET['moduleName'])) {
-			$smarty->assign('moduleName',$_GET['moduleName']);
+		if (!isset($_GET['moduleName']))
 			return $mapping->findForwardConfig('success');
-		}
 
 		$languages = Array();
 		foreach ($_GET["languages"] as $languageCode) {
