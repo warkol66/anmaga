@@ -1,5 +1,6 @@
 <h2>Configuración del Sistema</h2>
 <h1>Administracion de Permisos</h1>
+<p>A contuinuación podrá modificar los permisos de acceso a las diferentes funcionalidades del sistema. Para modificar los permisos, debe seleccionar un módulo y marcar los niveles de usuario que pueden acceder a cada acción del sistema.</p>
 <form method="get" style="display:inline;"><p>Seleccione un módulo
 		<input type="hidden" name="do" value="securityEditPermissions" />
 	<select name="moduleName" onchange="this.form.submit();">
@@ -15,25 +16,21 @@
 |-elseif $message eq "failure"-|
 	<div class="successMessage">Mo se pudo procesar su solicitud</div>
 |-/if-|
-|-if $moduleName eq ""-|
-<h1>Administracion de Permisos: Módulo <strong>|-$moduleName|multilang_get_translation:"common"-|</strong>.</h1>
-|-/if-|
-<fieldset>
+ 
+|-if $moduleName neq ""-|
+  <fieldset>
 	<legend>Configuración de Permisos</legend>
+	<h3>Administracion de Permisos: Módulo |-$moduleName|multilang_get_translation:"common"-|.</h3>
 	<p>Asigne los permisos correspondientes</p> 
 	<form method="post">
-		<p>
-		<input type="submit" value="Modificar permisos" />
-	</p>
-
-	<input type="hidden" name="moduleName" value="|-$moduleName-|" />
+		<p><input type="submit" value="Guardar Permisos" /></p>
 		<h4>Permisos Generales del Módulo</h4>
-		<p>El permiso generarl del módulo maneja el acceso a las acciones del mismo, siempre que no tengan permisos definidos en forma individual en la parte inferior.</p>
+		<p>El permiso general del módulo maneja el acceso a las acciones del mismo, siempre que no tengan permisos definidos en forma individual en la parte inferior.</p>
+	<input type="hidden" name="moduleName" value="|-$moduleName-|" />
 |-include file="SecurityEditPermissionsFormInclude.tpl"-|
 <p>&nbsp;</p>
-<p>
-	<input type="hidden" name="do" value="securityDoEditPermissions" />
-		<input type="submit" value="Guardar Permisos" />
-	</p>
+<p><input type="hidden" name="do" value="securityDoEditPermissions" />
+	<input type="submit" value="Guardar Permisos" />	</p>
 </form>
 </fieldset>
+|-/if-|
