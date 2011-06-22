@@ -21,12 +21,10 @@ class CommonDoLogoutAction extends BaseAction {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "Users";
-
 		if (isset($_SESSION["loginUser"]) && is_object($_SESSION["loginUser"]) && get_class($_SESSION["loginUser"]) == "User")
 			$user = $_SESSION["loginUser"];
 		elseif (isset($_SESSION["loginAffiliateUser"]) && is_object($_SESSION["loginAffiliateUser"]) && get_class($_SESSION["loginAffiliateUser"]) == "AffiliateUser")
-			$user = $_SESSION["loginAffiliateUser"];	
+			$user = $_SESSION["loginAffiliateUser"];
 
 		$username = $user->getUsername();
 		$classname = lcfirst(get_class($_SESSION["loginAffiliateUser"]));
