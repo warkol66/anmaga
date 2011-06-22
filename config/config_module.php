@@ -38,7 +38,9 @@ class ConfigModule {
 			"quotesUseQuantities" => false
 		),
 		"surveys" => array(
-			"graphOrientation" => Column //Bar = forizontal, Column=vertical
+			"productSurveys" => true,
+			"sendInternalMessages" => false,
+			"graphOrientation" => Column  //Options: Bar = horizontal, Column=vertical
 		)
 
 	);
