@@ -205,6 +205,7 @@ class ModulesInstallSetupPermissionsAction extends BaseAction {
 		$smarty->assign('withPair',$withPair);
 		$smarty->assign('pairActions',$pairActions);
 		$smarty->assign('moduleName',$_GET['moduleName']);
+		$smarty->assign('languages',$languages);
 
 		return $mapping->findForwardConfig('success');
 	}
