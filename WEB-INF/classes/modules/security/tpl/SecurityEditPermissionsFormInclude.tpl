@@ -41,7 +41,8 @@
 	</tr> 
 	|-foreach from=$withoutPair item=action name=modulef-|
 	<tr> 
-		<td>|-$action|multilang_get_actionLabel_translation-|</td>
+		<td><h3>|-$action|multilang_get_actionLabel_translation-|</h3>
+      <em>|-$action-|</em></td> 
 		<td><input type="checkbox" name="noCheckLogin[|-$action-|]" value="1" |-$withoutPairAccess.$action.noCheckLogin|checked:1-| /></td>
 		<td nowrap>
 			|-foreach from=$levels item=groupbit name=bitlevelgroup-|
@@ -63,7 +64,8 @@
 
 	|-foreach from=$withPair item=action name=modulef-|
 	<tr> 
-		<td>|-$action-|</td> 
+		<td><h3>|-$action|multilang_get_actionLabel_translation-|</h3>
+      <em>|-$action-|</em></td> 
 		<td>
 			<input type="checkbox" name="noCheckLogin[|-$action-|]" value="1" |-$withPairAccess.$action.noCheckLogin|checked:1-|/></td>
 		<td nowrap>
