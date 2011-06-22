@@ -9,7 +9,7 @@
 |-elseif $message eq "no-products"-|
 	<div class='errorMessage'>Debe seleccionar al menos un producto y no más de 10.</div>
 |-elseif $message eq "ok"-|
-	<div class='successMessage'>La encuesta ha sido generada, se han enviado notificaciones a los usuarios.</div>
+	<div class='successMessage'>La encuesta ha sido generada|-if $configModule->get("surveys","sendInternalMessages")-|, se han enviado notificaciones a los usuarios|-/if-|.</div>
 |-/if-|
 
 |-if $usingAutocompleter-|

@@ -2,17 +2,8 @@
 <!-- Section Surveys -->
 	<action-mappings>
 
-		<action    path = "surveysDoEdit"
-							 type = "SurveysSurveysDoEditAction"
-							 name = "surveysDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=surveysEdit&amp;message=ok" redirect="true" />
-			<forward name="failure" path="SurveysSurveysEdit.tpl" />
-		</action>
-
 		<action    path = "surveysQuestionsDoEdit"
-							 type = "SurveysSurveyQuestionsDoEditAction"
+							 type = "SurveysQuestionsDoEditAction"
 							 name = "surveysQuestionsDoEdit"
 							scope = "request"
 					 validate = "true">

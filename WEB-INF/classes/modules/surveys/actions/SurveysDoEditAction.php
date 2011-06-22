@@ -51,6 +51,6 @@ class SurveysDoEditAction extends BaseAction {
 			}
 			$survey->save();
 		}
-		return $this->addParamsToForwards(array('id' => $survey->getId()), $mapping, 'success');
+		return $this->addParamsToForwards(array('id' => $survey->getId()), $mapping, 'success-add');
 	}
 }

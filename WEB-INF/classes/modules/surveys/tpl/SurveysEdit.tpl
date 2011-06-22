@@ -46,13 +46,13 @@ Para guardar los cambios haga click en "Aceptar". Luego de guardar la encuesta s
 				<input name="survey[endDate]" type="text" id="survey_endDate" title="endDate" value="|-$survey->getendDate()|date_format:"%d-%m-%Y"-|" size="12" /> 
 				<img src="images/calendar.png" width="16" height="15" border="0" onclick="displayDatePicker('survey[endDate]', false, '|-$parameters.dateFormat.value|lower|replace:'-':''-|', '-');" title="Seleccione la fecha">
 			</p>
-			<p>
+			|-if !$configModule->get("surveys","productSurveys")-|<p>
 				<label for="survey_isPublic">Visibilidad</label>
 				<select name="survey[isPublic]">
 						<option value="1" |-if $survey neq '' and $survey->getisPublic() eq 1-|selected="selected"|-/if-|>Pública</option>
 						<option value="0" |-if $survey neq '' and $survey->getisPublic() eq 0-|selected="selected"|-/if-|>Para Usuarios Registrados</option>
 				</select>
-			</p>
+			</p>|-/if-|
 			|-if $hasNews neq '' and $hasNews-|
 				|-include file="SurveysEditNewsInclude.tpl"-|
 			|-/if-|
