@@ -65,14 +65,6 @@
 			<forward name="failure" path="UsersLogin.tpl"/>
 		</action>
 
-		<action    path = "usersWelcome"
-							 type = "UsersWelcomeAction"
-							 name = "usersWelcome"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="UsersWelcome.tpl"/>
-		</action>
-
 		<action    path = "usersLoginMaintenance"
 							 type = "UsersLoginMaintenanceAction"
 							 name = "usersLoginMaintenance"
@@ -88,25 +80,7 @@
 					 validate = "true">
 			<forward name="success" path="/Main.php?do=usersLogin" redirect="true"/>
 		</action>
-<!--
-		<action    path = "usersDoEdit"
-							 type = "UsersDoEditAction"
-							 name = "usersDoEdit"
-							scope = "request"
-					 validate = "true">
-			<forward name="success" path="/Main.php?do=usersList&amp;message=saved" redirect="true"/>
-			<forward name="successAdd" path="/Main.php?do=usersList&amp;message=added" redirect="true"/>
-			<forward name="successCreated" path="/Main.php?do=usersEdit&amp;message=saved" redirect="true"/>
-		</action>
--->
-		<action    path = "usersDoEditInfoX"
-							 type = "UsersDoEditInfoXAction"
-							 name = "usersDoEditInfoX"
-							scope = "request"
-					 validate = "true">
-			<forward name="success"  path="UsersDoEditInfoX.tpl" />
-		</action>
-
+ß
 		<action    path = "usersDoEditInfo"
 							 type = "UsersDoEditInfoAction"
 							 name = "usersDoEditInfo"
