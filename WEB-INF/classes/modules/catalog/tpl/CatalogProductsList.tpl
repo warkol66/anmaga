@@ -46,9 +46,9 @@
       <td colspan="7" class="pages">|-include file="PaginateNumberedInclude.tpl"-|</td> 
     </tr> 
     |-/if-|
-    <tr> 
+ |-if "catalogProductsEdit"|security_has_access-|   <tr> 
       <th colspan="7"><div class="rightLink"><a href="Main.php?do=catalogProductsEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Agregar Producto</a></div></th> 
-    </tr> 
+    </tr> |-/if-|
     <tr> 
       <th>Código</th> 
       <th>Nombre</th> 
@@ -67,29 +67,29 @@
       <td align="right">|-$product->getprice()|system_numeric_format-|</td> 
       <td align="center">|-if $unit-||-$unit->getName()-||-/if-|</td> 
       <td align="center">|-if $measureUnit-||-$measureUnit->getName()-||-/if-|</td> 
-      <td nowrap> <form action="Main.php" method="get" style="display:inline;"> 
+      <td nowrap>|-if "catalogProductsEdit"|security_has_access-|<form action="Main.php" method="get" style="display:inline;"> 
           <input type="hidden" name="do" value="catalogProductsEdit" /> 
           <input type="hidden" name="id" value="|-$product->getid()-|" /> 
 					|-include file="FiltersRedirectInclude.tpl" filters=$filters-|
 					|-if isset($pager) && ($pager->getPage() ne 1)-| <input type="hidden" name="page" id="page" value="|-$pager->getPage()-|" />|-/if-|
           <input type="submit" name="submit_go_edit_product" value="Editar" class="icon iconEdit" /> 
-        </form> 
-        <form action="Main.php" method="post" style="display:inline;"> 
+        </form> |-/if-|
+        |-if "catalogProductsDoDelete"|security_has_access-|<form action="Main.php" method="post" style="display:inline;"> 
           <input type="hidden" name="do" value="catalogProductsDoDelete" /> 
           <input type="hidden" name="id" value="|-$product->getid()-|" /> 
 					|-include file="FiltersRedirectInclude.tpl" filters=$filters-|
 					|-if isset($pager) && ($pager->getPage() ne 1)-| <input type="hidden" name="page" id="page" value="|-$pager->getPage()-|" />|-/if-|
           <input type="submit" name="submit_go_delete_product" value="Borrar" onclick="return confirm('Seguro que desea eliminar el producto?')" class="icon iconDelete" /> 
-        </form></td> 
+        </form>|-/if-|</td> 
     </tr> 
     |-/foreach-| |-if isset($pager) && ($pager->getTotalPages() gt 1)-|
     <tr> 
       <td colspan="7" class="pages">|-include file="PaginateNumberedInclude.tpl"-|</td> 
     </tr> 
     |-/if-|
-    <tr> 
+|-if "catalogProductsEdit"|security_has_access-|    <tr> 
       <th colspan="7"><div class="rightLink"><a href="Main.php?do=catalogProductsEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Agregar Producto</a></div></th> 
-    </tr> 
+    </tr> |-/if-|
     </tbody> 
      </table> 
 </div>
