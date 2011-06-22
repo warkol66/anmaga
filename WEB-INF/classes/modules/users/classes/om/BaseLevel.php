@@ -919,11 +919,11 @@ abstract class BaseLevel extends BaseObject  implements Persistent
 	/**
 	 * Return the string representation of this object
 	 *
-	 * @return string
+	 * @return string The value of the 'name' column
 	 */
 	public function __toString()
 	{
-		return (string) $this->exportTo(LevelPeer::DEFAULT_STRING_FORMAT);
+		return (string) $this->getName();
 	}
 
 	/**

@@ -15,7 +15,7 @@ CREATE TABLE `users_user`
 	`username` VARCHAR(255) NOT NULL COMMENT 'username',
 	`password` VARCHAR(255) NOT NULL COMMENT 'password',
 	`passwordUpdated` DATE COMMENT 'Fecha de actualizacion de la clave',
-	`active` TINYINT NOT NULL COMMENT 'Is user active?',
+	`active` BOOL NOT NULL COMMENT 'Is user active?',
 	`levelId` INTEGER COMMENT 'User Level',
 	`lastLogin` DATETIME COMMENT 'Fecha del ultimo login del usuario',
 	`timezone` VARCHAR(25) COMMENT 'Timezone GMT del usuario',
@@ -72,7 +72,7 @@ CREATE TABLE `users_group`
 	`bitLevel` INTEGER COMMENT 'Nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE INDEX `users_group_U_1` (`name`)
-) ENGINE=MyISAM COMMENT='Groups';
+) ENGINE=MyISAM CHARACTER SET='utf8' COLLATE='utf8_general_ci' COMMENT='Groups';
 
 -- ---------------------------------------------------------------------
 -- users_level
@@ -87,7 +87,7 @@ CREATE TABLE `users_level`
 	`bitLevel` INTEGER COMMENT 'Bit del nivel',
 	PRIMARY KEY (`id`),
 	UNIQUE INDEX `users_level_U_1` (`name`)
-) ENGINE=MyISAM COMMENT='Levels';
+) ENGINE=MyISAM CHARACTER SET='utf8' COLLATE='utf8_general_ci' COMMENT='Levels';
 
 -- ---------------------------------------------------------------------
 -- users_groupCategory

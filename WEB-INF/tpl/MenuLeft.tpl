@@ -22,7 +22,8 @@
 		</div>
 	
 		<li class="titleMenu" onclick="switch_vis('sectionAdmin')">Administración</li>
-		<div id="sectionAdmin" style="display:|-if $module|upper eq 'USERS' || $module|upper eq 'AFFILIATES' || $module|upper eq 'MODULES' || $module|upper eq 'COMMON' || $module|upper eq 'SURVEYS'-|block|-else-|none|-/if-|">
+		<div id="sectionAdmin" style="display:|-if $module|upper eq 'USERS' || $module|upper eq 'AFFILIATES' || $module|upper eq 'MODULES' 
+		|| $module|upper eq 'COMMON' || $module|upper eq 'SURVEYS' || $module|upper eq 'SECURITY'-|block|-else-|none|-/if-|">
 			<li><a href="Main.php?do=affiliatesList">##affiliates,1,Afiliados##</a></li>
 			<li><a href="Main.php?do=affiliatesBranchsList">##affiliates,5,Sucursales##</a></li>
 			<li><a href="Main.php?do=affiliatesUsersList">##affiliates,2,Usuarios del afiliado##</a></li>
@@ -36,6 +37,9 @@
 			<li><a href="Main.php?do=modulesList">Administrar módulos</a></li>
 			<li><a href="Main.php?do=modulesInstallList">Instalar Modulos</a></li>
 			<li><a href="Main.php?do=surveysList">Administrar Encuestas</a></li>
+|-if $loginUser->isSupervisor()-|
+			<li><a href="Main.php?do=securityEditPermissions">Administrar Permisos</a></li>
+|-/if-|
 		</div>
 	</ul>
 	<a href="Main.php?do=|-if ($configModule->get("global","unifiedUsernames"))-|commonDoLogout|-else-|usersDoLogout|-/if-|" onClick='return window.confirm("¿Esta seguro que quiere salir del sistema?")' id="logout"></a>

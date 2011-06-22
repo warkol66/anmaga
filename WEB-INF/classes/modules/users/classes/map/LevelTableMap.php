@@ -39,6 +39,7 @@ class LevelTableMap extends TableMap {
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
+		$this->getColumn('NAME', false)->setPrimaryString(true);
 		$this->addColumn('BITLEVEL', 'Bitlevel', 'INTEGER', false, null, null);
 		// validators
 	} // initialize()
