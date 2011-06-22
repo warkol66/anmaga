@@ -1,6 +1,5 @@
-/*
-NEW GLOBAL CUSTOM
-*/
+/* GLOBAL Styles */
+
 * {
 	padding: 0; 
 	margin: 0; 
@@ -150,9 +149,6 @@ a.pageLink:hover, a.pageLink:active {
 .textLinkButton:visited, a.textLink:active{
 }
 
-
-/* /PAGINADO    ----------------------------*/
-
 /* Leightbox    ----------------------------*/
 .overlayFade{
 	display: none;
@@ -182,7 +178,6 @@ a.pageLink:hover, a.pageLink:active {
 	width: auto;
 	height: auto;
 	padding: 2em;
-	border: 1px solid orange;
 	background-color: white;
 	text-align: left;
 	top: 10%;
@@ -209,7 +204,6 @@ a.pageLink:hover, a.pageLink:active {
 	width:100%;
 	height:100%;
 	z-index:11000;
-	background-color:#cdcdcd;
 	-moz-opacity: 0.5;
 	opacity:.50;
 	filter: alpha(opacity=50);
@@ -226,3 +220,16 @@ a.lbOn {
 	position:fixed;    
 }
 /* /Leightbox    ----------------------------*/
+
+/* Autocomplete    ----------------------------*/
+div.autocomplete {
+}
+div.autocomplete ul {
+}
+div.autocomplete ul li.selected {
+}
+div.autocomplete ul li,  div.autocomplete ul b{
+}
+div.autocomplete ul b {
+}
+/* /Autocomplete    ----------------------------*/

@@ -1,3 +1,7 @@
+/* CSS - Styles   */
+
+* {
+}
 /*  LOGIN  -----------------------------------------------*/
 #login { 
 	float:left;
@@ -186,9 +190,6 @@
 	padding: 0px;
 }
 
-
-
-
 .errorMessage {
 	color: #B22222;
 	font-weight: bold;
@@ -213,8 +214,6 @@
 	vertical-align: middle;
 	margin: 7px 3px 5px 3px;
 }
-
-
 .deactivated {
 	text-decoration: none;
 }
@@ -223,57 +222,10 @@
 	padding: 3px;
 }
 
-
-
-
-
-
-.edit {
-
-	text-decoration: underline;
-}
-a.edit:link{
-	text-decoration: underline;
-}
-a.edit:visited{
-	text-decoration: underline;
-}
-a.edit:hover{
-	text-decoration: underline;
-}
-.delete {
-	text-decoration: underline;
-}
-a.delete:link{
-	text-decoration: underline;
-}
-a.delete:visited{
-	text-decoration: underline;
-}
-a.delete:hover{
-	text-decoration: underline;
-}
-.data {
-}
-a.data:link{
-	text-decoration: underline;
-}
-a.data:visited{	
-	text-decoration: underline;
-}
-a.data:hover{
-	text-decoration: underline;
-}
-.detail {
-	text-decoration: underline;
-}
-a.detail:link{
-	text-decoration: underline;
-}
-a.detail:visited{
-	text-decoration: underline;
-}
-a.detail:hover{
+.edit, a.edit:link, a.edit:visited, a.edit:hover,
+.delete, a.delete:link, a.delete:visited, a.delete:hover,
+.data, a.data:link, a.data:visited, a.data:hover,
+.detail, a.detail:link, a.detail:visited, a.detail:hover {
 	text-decoration: underline;
 }
 .cellTextOptions {
@@ -310,15 +262,12 @@ fieldset {
 }
 fieldset legend {
 	font-weight: bold;
-	font-size: 123.1%;
 	margin-bottom: 0.5em;
 	position: relative;  
 	margin-left: -.3em;
 	padding: .2em;
 }
 fieldset label {
-	font-size: 93%;
-	line-height: 153.9%;
 	width: 140px;
 	float: left;
 	font-weight: bold;
