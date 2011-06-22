@@ -11,9 +11,9 @@ else {
 	$config = "$appDir/config/config.php";
 	header("Content-type: text/html; charset=utf-8;");
 	if (copy($configBase, $config))
-    echo "<p style='color:green'>Archivo de configuracion 'config.php' creado! Editelo con su configuracion.</p>";
+		echo "<p style='color:green'>Archivo de configuracion 'config.php' creado! Editelo con su configuracion.</p>";
 	else
 		echo "<p style='color:red'>No se encuentra el archivo de configuracion 'config.php' y fue imposible crearlo!</p>";
-  die();
+	die();
 
 }
