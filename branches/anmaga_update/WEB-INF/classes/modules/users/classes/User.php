@@ -27,7 +27,7 @@ class User extends BaseUser {
 	 * @param passwordString string clave ingresada pro usuario.
 	 */
 	function setPasswordString($passwordString){
-		$this->setPassword(md5($passwordString."ASD"));
+		$this->setPassword(Common::md5($passwordString));
 	}
 
  /**
