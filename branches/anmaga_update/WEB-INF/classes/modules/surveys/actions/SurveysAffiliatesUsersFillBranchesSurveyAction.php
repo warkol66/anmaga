@@ -10,33 +10,30 @@ class SurveysAffiliatesUsersFillBranchesSurveyAction extends BaseAction {
 
     BaseAction::execute($mapping, $form, $request, $response);
 
-		//////////
-		// Access the Smarty PlugIn instance
-		// Note the reference "=&"
 		$plugInKey = 'SMARTY_PLUGIN';
 		$smarty =& $this->actionServer->getPlugIn($plugInKey);
 		if($smarty == NULL) {
 			echo 'No PlugIn found matching key: '.$plugInKey."<br>\n";
 		}
 
-		$module = "Affiliates";
-		$section = "Users";
+		$module = "Surveys";
+		$section = "Affiliates";
 
-  		$smarty->assign("module",$module);
-  		$smarty->assign("section",$section);
+		$smarty->assign("module",$module);
+		$smarty->assign("section",$section);
 
 		$affiliateUser = $_SESSION["loginAffiliateUser"];
 		if (empty($affiliateUser))
 			return $mapping->findForwardConfig('failure');
 			
 		$moduleSurveys = ModulePeer::get('surveys');
-		if (!ModulePeer::existsModule('surveys') || empty($moduleSurveys) || ($moduleSurveys->getActive() != 1)) {
-			//no existe el modulo de encuestas.
+		if (!class_exists("SurveyPeer") || !ModulePeer::existsModule('surveys') || empty($moduleSurveys) || ($moduleSurveys->getActive() != 1))
 			return $mapping->findForwardConfig('failure');
-		}
 		
 		$survey = SurveyPeer::get($_GET['id']);
-		
+		if (empty($survey))
+			$survey = SurveyPeer::getLastActive();			
+	
 		if (empty($survey))
 			return $mapping->findForwardConfig('failure');
 			

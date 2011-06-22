@@ -54,8 +54,8 @@ class SurveyPeer extends BaseSurveyPeer {
 	 }    
 
 	/**
-	 * Obtiene la ultima encuesta
-	 * @return array Informacion del survey
+	* Obtiene la última survey activa.
+	*	@return obj última encuesta activa
 	 */
 	public function getLastActive() {
 		return SurveyQuery::create()->lastActive();

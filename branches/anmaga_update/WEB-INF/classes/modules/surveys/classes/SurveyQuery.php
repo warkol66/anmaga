@@ -16,7 +16,8 @@ class SurveyQuery extends BaseSurveyQuery {
 	public function lastActive() {
 		return $this->filterByIsPublic(1)
 					->filterByStartDate(array('max'=>date('Y-m-d')))
-					->orderByEndDate()
+					->filterByEndDate(array('min'=>date('Y-m-d')))
+					->orderByEnddate(Criteria::DESC)
 					->findOne();
 	}
 } // SurveyQuery
