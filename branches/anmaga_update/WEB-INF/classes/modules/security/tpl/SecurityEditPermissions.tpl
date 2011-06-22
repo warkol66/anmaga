@@ -4,7 +4,6 @@
 <form method="get" style="display:inline;"><p>Seleccione un módulo
 		<input type="hidden" name="do" value="securityEditPermissions" />
 	<select name="moduleName" onchange="this.form.submit();">
-		<option value="modules">modules</option>
 		<option value="">|-if $moduleName ne ""-|Seleccionar otro|-else-|Seleccionar|-/if-| módulo</option>
 	|-foreach from=$modules item=eachModule name=for_modules-|
 		<option value="|-$eachModule-|" |-$eachModule|selected:$moduleName-|>|-$eachModule|multilang_get_translation:"common"-|</option>
