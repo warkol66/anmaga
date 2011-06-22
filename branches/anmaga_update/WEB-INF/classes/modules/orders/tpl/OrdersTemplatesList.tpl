@@ -10,15 +10,15 @@
 	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-orderTemplates">
 		<thead>
 			<tr>
-				<th>Id</th>
-				<th>Nombre</th>
-				<th>Creada</th>
-				<th>Usuario</th>
-				|-if $all eq "1"-|<th>Afiliado</th>
+				<th width="1%">Id</th>
+				<th width="15%">Nombre</th>
+				<th width="5%">Creada</th>
+				<th width="15%">Usuario</th>
+				|-if $all eq "1"-|<th width="20%">Afiliado</th>
 				|-/if-|
-				<th>Sucursal</th>
-				<th>Total</th>
-				<th>&nbsp;</th>
+				<th width="20%">Sucursal</th>
+				<th width="5%">Total</th>
+				<th width="1%">&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -31,7 +31,7 @@
 				|-if $all eq "1"-|<td>|-assign var=affiliate value=$orderTemplate->getAffiliate()-||-if $affiliate-||-$affiliate->getName()-||-/if-|</td>|-/if-|
 				<td>|-assign var=branch value=$orderTemplate->getAffiliateBranch()-||-if $branch-||-$branch->getName()-||-/if-|</td>
 				<td class="right">|-$orderTemplate->gettotal()|number_format-|</td>
-				<td>
+				<td nowrap="nowrap">
 					<form action="Main.php" method="get">
 						<input type="hidden" name="do" value="ordersTemplatesView" />
 						<input type="hidden" name="id" value="|-$orderTemplate->getid()-|" />

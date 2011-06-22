@@ -1,11 +1,11 @@
 <h2>Precios Por Afiliado</h2>
 <h1>Listado de Precios Por Afiliado</h1>
 	<p>Seleccione una afiliado para buscar su lista de precios.</p>
-<p>			<form method="get" >
+<p><form method="get" >
 				<select name="affiliateId">
 					<option value="" selected="selected">Seleccione un Afiliado</option>
-				|-foreach from=$affiliates item=affiliate name=for_affiliates-|
-					<option value="|-$affiliate->getId()-|" selected="selected">|-$affiliate->getName()-|&nbsp;&nbsp;&nbsp;</option>
+				|-foreach from=$affiliates item=eachAffiliate name=for_affiliates-|
+					<option value="|-$eachAffiliate->getId()-|" |-$eachAffiliate->getId()|selected:$affiliateId-|>|-$eachAffiliate->getName()-|</option>
 				|-/foreach-|
 				</select>
 				<input type="hidden" name="do" value="catalogAffiliateProductList" />
@@ -13,8 +13,12 @@
 			</form>
 </p>
 |-if isset($products)-|
+<p>&nbsp;</p>
 	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-products"> 
 		<thead> 
+			<tr> 
+				<th colspan="5">Lista de precios de |-$affiliate->getName()-|</th> 
+			</tr>
 			<tr> 
 				<th width="5%">Código Producto</th> 
 				<th width="5%">Código Producto Para Afiliado</th>
@@ -40,6 +44,5 @@
 			<td colspan="5" class="pages">|-include file="PaginateInclude.tpl"-|</td>
 		</tr> 
 		</tbody> 
-</table> 
+</table>
 |-/if-|
-</div>

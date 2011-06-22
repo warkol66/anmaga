@@ -2,9 +2,12 @@
 <h1>Códigos de Productos por Afiliado</h1>
 <p>A continuación podrá editar los códigos de producto de los clientes y su código equivalente.</p>
 <div id="div_affiliateproductcodes">
-	|-if $message eq "ok"-|<span class="message_ok">Código de Producto por Afiliado guardado correctamente</span>|-/if-|
-	|-if $message eq "deleted_ok"-|<span class="message_ok">Código de Producto por Afiliado eliminado correctamente</span>|-/if-|
-	<h3><a href="Main.php?do=catalogAffiliateProductCodesEdit">Agregar Código de Producto por Afiliado</a></h3>
+	|-if $message eq "ok"-|
+		<span class="resultSuccess">Código de Producto por Afiliado guardado correctamente</span>
+	|-elseif $message eq "deleted_ok"-|
+		<span class="resultSuccess">Código de Producto por Afiliado eliminado correctamente</span>
+	|-/if-|
+	<p><div class="rightLink"><a href="Main.php?do=catalogAffiliateProductCodesEdit" class="addLink">Agregar Código de conversión</a></div></p>
 	<div>
 		<form action="Main.php" method="get">
 			<p>
@@ -12,13 +15,12 @@
 				<select name="affiliateId">
 					<option value="" selected="selected">Seleccionar</option>
 					|-foreach from=$affiliates item=affiliate-|
-					<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|&nbsp;&nbsp;&nbsp;</option>
+					<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|</option>
 					|-/foreach-|
 				</select>
-			</p>						
-			<p>
+&nbsp;&nbsp;&nbsp;
 				<input type="hidden" name="do" id="do" value="catalogAffiliateProductCodesList" />
-				<input type="submit" value="Ver" />
+				<input type="submit" value="Ver códigos del afiliado" />
 			</p>
 		</form>
 	</div>					
@@ -26,6 +28,9 @@
 	<h3>Codigos de Productos del Affiliate |-$selectedAffiliate->getName()-|</h3>
 	<table id="tabla-affiliateproductcodes" width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 		<thead>
+		<tr class="thFillTitle">
+			<th colspan="3"><div class="rightLink"><a href="Main.php?do=catalogAffiliateProductCodesEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Agregar Código de conversión</a></div></th>
+		</tr>
 			<tr>
 				<th width="20%">Código</th>
 				<th width="75%">Código Anmaga, Producto</th>
