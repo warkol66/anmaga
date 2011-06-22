@@ -29,6 +29,9 @@ class UsersLoginAction extends BaseAction {
 
 		$module = "Users";
 
+		if (ConfigModule::get("global","unifiedUsernames"))
+			header("Location:Main.php?do=commonLogin");
+
 		if (Common::hasUnifiedLogin()) {
 			$smarty->assign("unifiedLogin",true);
 			Common::setValueUnifiedLoginCookie($_POST['select']);
