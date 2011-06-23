@@ -326,8 +326,8 @@ class OrderPeer extends BaseOrderPeer {
 		$results["productsWrongPriceCount"] = 0;
 		$results["productsWrongPrice"] = array();		
 		
-		$affiliate = $user->getAffiliate();
-		
+		$affiliate = $user->getAffiliateRelatedByAffiliateid();
+
 		foreach ($orders as $order) {
 			$totalInFile = $order["total"];
 			$subtotalInFile = $order["subtotal"];
@@ -428,7 +428,7 @@ class OrderPeer extends BaseOrderPeer {
 					if (!empty($results["ordersReport"][$orderId])) {
 						$comment = "Productos No Encontrados:";
 						foreach ($results["ordersReport"][$orderId] as $product) {
-							$comment .= "Product Code: ".$product["code"]." - Quantity: ".$product["quantity"]."\r\n";
+							$comment .= "Código: ".$product["code"]." - Cantidad: ".$product["quantity"]."\r\n";
 						}
 						OrderStateChangePeer::create($orderId,$user->getId(),$user->getAffiliateId(),OrderPeer::STATE_TO_BE_VERIFIED,$comment);	
 						$orderObj = OrderPeer::get($orderId);
@@ -441,7 +441,7 @@ class OrderPeer extends BaseOrderPeer {
 					if (!empty($results["productsWrongPrice"][$orderId])) {
 						$comment = "Productos con Discrepancias en el Precio:";
 						foreach ($results["productsWrongPrice"][$orderId] as $product) {
-							$comment .= "Product Code: ".$product["code"]." - Quantity: ".$product["quantity"]." - Price: ".$product["price"]."\r\n";
+							$comment .= "Código: ".$product["code"]." - Cantidad: ".$product["quantity"]." - Precio: ".$product["price"]."\r\n";
 						}
 						OrderStateChangePeer::create($orderId,$user->getId(),$user->getAffiliateId(),OrderPeer::STATE_TO_BE_VERIFIED,$comment);	
 						$orderObj = OrderPeer::get($orderId);
