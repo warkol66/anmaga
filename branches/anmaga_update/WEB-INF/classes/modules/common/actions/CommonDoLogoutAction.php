@@ -26,9 +26,6 @@ class CommonDoLogoutAction extends BaseAction {
 		elseif (isset($_SESSION["loginAffiliateUser"]) && is_object($_SESSION["loginAffiliateUser"]) && get_class($_SESSION["loginAffiliateUser"]) == "AffiliateUser")
 			$user = $_SESSION["loginAffiliateUser"];
 
-		$username = $user->getUsername();
-		$classname = lcfirst(get_class($_SESSION["loginAffiliateUser"]));
-
 		if($_SESSION["lastLogin"])
 			unset($_SESSION["lastLogin"]);
 
@@ -38,7 +35,11 @@ class CommonDoLogoutAction extends BaseAction {
 		if($_SESSION["loginAffiliateUser"])
 			unset($_SESSION["loginAffiliateUser"]);
 
-		Common::doLog('success', $classname . 'name: ' . $username);
+		if (is_object($user)) {
+			$username = $user->getUsername();
+			$classname = lcfirst(get_class($username));
+			Common::doLog('success', $classname . 'name: ' . $username);
+		}
 
 		return $mapping->findForwardConfig('success');
 

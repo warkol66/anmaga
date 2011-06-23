@@ -17,8 +17,7 @@
 							<p>
 								<label for="filters[searchSentOnly]" >Enviados</label>
 								<input class="filter" type="checkbox" name="filters[searchSentOnly]" value="true" |-if isset($filters.searchSentOnly)-|checked |-/if-|/>
-							</p>
-							<p>
+							&nbsp;&nbsp;&nbsp;
 								<label for="filters[searchUnreadOnly]" >No leidos</label>
 								<input class="filter" type="checkbox" name="filters[searchUnreadOnly]" value="true" |-if isset($filters.searchUnreadOnly)-|checked |-/if-|/>
 							</p>
@@ -196,5 +195,6 @@ table#tabla-internalMails td {
 
 div.cellContent {
 	padding: 4px;
+	cursor: pointer;
 }
 </style>
