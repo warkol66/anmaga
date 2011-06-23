@@ -77,30 +77,23 @@ class ModulePeer extends BaseModulePeer {
 		return false;
 	}
 
-
-
-
-
-
-
 	/**
 	*
 	*	Obtiene todos los módulos almacenados en la base de datos que tienen categorias
 	*	@return object $modules Modulos almacenados en la base de datos
 	*/
-		function getAllWithCategories() {
-			$cond = new Criteria();
-			$cond->add(ModulePeer::HASCATEGORIES,1);
-			$todosObj = ModulePeer::doSelect($cond);
-			return $todosObj;
-		}
-
+	function getAllWithCategories() {
+		$cond = new Criteria();
+		$cond->add(ModulePeer::HASCATEGORIES,1);
+		$todosObj = ModulePeer::doSelect($cond);
+		return $todosObj;
+	}
 
 /**
 *
 *	Elimina un modulo
 *	@param string $moduleName nombre del modulo
-*	@return true si se elimin� correctamente
+*	@return true si se eliminó correctamente
 */
 	function delete($moduleName){
 		try{
@@ -113,7 +106,6 @@ class ModulePeer extends BaseModulePeer {
 			}catch (PropelException $e) {}
 			return true;
 	}
-
 
 	/**
 	* Limpia el acceso activo de un modulo
@@ -129,14 +121,12 @@ class ModulePeer extends BaseModulePeer {
 		return;
 	}
 
-
-
 /**
 *
 *	Actualiza estado de un modulo
 *	@param string $moduleName nombre del modulo
 *	@param string $active nuevo estado del modulo
-*	@return true si se actualiz� correctamente
+*	@return true si se actualizó correctamente
 */
 	function setActive ($moduleName,$active){
 		$obj = new Module();
@@ -179,15 +169,11 @@ class ModulePeer extends BaseModulePeer {
 			return true;
 		}
 
-
-
-
-
 	/**
 	*
 	*	Checkea el estado de una dependencia
 	*	@param string $dependencyName nombre de la dependencia
-	*	@return true si esta activada, false si est� desactivada
+	*	@return true si esta activada, false si está desactivada
 	*/
 	function dependencyStatus ($dependencyName){
 			$obj = new Module();
@@ -201,6 +187,30 @@ class ModulePeer extends BaseModulePeer {
 			}
 			else return 0;
 			return 1;
+	}
+
+	/**
+	*	Nombres de modulos presentes, instalados y activos
+	*	@return array con nombres de modulos presentes, instalados y activos
+	*/
+	public function getActiveAndPresent(){
+
+		$modulePath = "WEB-INF/classes/modules/";
+		$directoryHandler = opendir($modulePath);
+		$modules = array();
+
+		while (false !== ($moduleName = readdir($directoryHandler))) {
+
+			//verifico si es un directory y no no sea ni oculto ni raiz
+			if (is_dir($modulePath . $moduleName) && ($moduleName[0] != ".")) {
+				//busco si el modulo esta instalado y activo
+				$result = ModuleQuery::create()->filterByActive('1')->findByName($moduleName);
+				if (!empty($result))
+					array_push($modules, $moduleName);
+			}
+		}
+		closedir($directoryHandler);
+		return $modules;
 	}
 
 } // ModulePeer
