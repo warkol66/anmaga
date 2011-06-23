@@ -1,12 +1,16 @@
 <h2>Catálogo</h2>
 <h1>Administración de Unidades de Medida</h1>
 <div id="div_measureunits"> 
-|-if $message eq "ok"-|<span class="message_ok">Measure Unit guardado correctamente</span>|-/if-| 
-|-if $message eq "deleted_ok"-|<span class="message_ok">Measure Unit eliminado correctamente</span>|-/if-|
+<p>A continuación se muestra el listado de unidades de medida disponible en el sistema. Si desea agregar una nueva, haga click en "Agregar Unidad de Medida". Si desea modificar una o eliminarla, haga click sobre los controles de la fila correspondiente.</p>
+|-if $message eq "ok"-|
+	<span class="message_ok">Measure Unit guardado correctamente</span>
+|-elseif $message eq "deleted_ok"-|
+	<span class="message_ok">Measure Unit eliminado correctamente</span>
+|-/if-|
 	<table class='tableTdBorders' cellpadding='4' cellspacing='0' width='400' id="tabla-measureunits"> 
 		<thead> 
 			<tr>
-				 <th colspan="3"><div class="rightLink"><a href="Main.php?do=catalogMeasureUnitsEdit" class="agregarNueva">Agregar Unidad de Medida</a></div></th>
+				 <th colspan="3"><div class="rightLink"><a href="Main.php?do=catalogMeasureUnitsEdit" class="addLink">Agregar Unidad de Medida</a></div></th>
 			</tr>
 		<thead> 
 			<tr> 
@@ -16,6 +20,7 @@
 			</tr> 
 		</thead> 
 		<tbody>  
+		|-if $measureunits|@count gt 0-|
 		|-foreach from=$measureunits item=measureunit name=for_measureunits-|
 		<tr> 
 			<td align="center">|-$measureunit->getid()-|</td> 
@@ -32,6 +37,10 @@
 			</form></td> 
 		</tr> 
 		|-/foreach-|
+		|-else-|
+		<tr>
+			<td colspan="3">No hay unidades de medida disponibles en el sistema</td> </tr>
+		|-/if-|
 		</tbody> 
   </table> 
 </div>
