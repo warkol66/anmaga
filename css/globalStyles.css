@@ -40,14 +40,12 @@ a.addLink:hover, a.addLink:active {
 /* SEARCH   -------------------------------------------*/
 a.tdTitSearch{
 	display: block;
-	width: 22%;	
 	clear:right;
 	font-weight:bold;
 	text-align:left;
-	padding: 8px 5px 8px 30px;
+	padding: 8px 20px 8px 30px;
 }
 .tdSearch{
-	width: 95%;
 	height: 40px;	
 	text-align:left;
 	padding: 4px;
