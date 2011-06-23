@@ -19,6 +19,7 @@
 				<input type="hidden" name="action" id="action" value="|-$action-|" />
 				<input type="hidden" name="do" id="do" value="catalogMeasureUnitsDoEdit" />
 				<input type="submit" id="button_edit_measureunit" name="button_edit_measureunit" title="Aceptar" value="Aceptar" />
+			<input type='button' onClick='location.href="Main.php?do=catalogMeasureUnitsList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page)-|&page=|-$page-||-/if-|"' value='##104,Regresar##' title="Regresar al listado de unidades"/>
 			</p>
 		</fieldset>
 	</form>

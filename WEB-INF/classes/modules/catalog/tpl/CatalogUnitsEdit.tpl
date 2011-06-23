@@ -20,6 +20,7 @@
 			<input type="hidden" name="action" id="action" value="|-$action-|" /> 
 			<input type="hidden" name="do" id="do" value="catalogUnitsDoEdit" /> 
 			<input type="submit" id="button_edit_unit" name="button_edit_unit" title="Aceptar" value="Aceptar" /> 
+			<input type='button' onClick='location.href="Main.php?do=catalogUnitsList|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($page)-|&page=|-$page-||-/if-|"' value='##104,Regresar##' title="Regresar al listado de unidades"/>
 		</p> 
 		</fieldset> 
 	</form> 
