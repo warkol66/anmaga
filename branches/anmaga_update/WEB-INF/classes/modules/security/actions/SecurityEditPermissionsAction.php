@@ -1,9 +1,4 @@
 <?php
-/**
- * InstallSetupPermissionsAction
- *
- * @package install
- */
 
 class SecurityEditPermissionsAction extends BaseAction {
 
@@ -121,7 +116,7 @@ class SecurityEditPermissionsAction extends BaseAction {
 
 		$modulePeer = new ModulePeer();
 
-		$modules = ModulePeer::getAllActiveNames();
+		$modules = ModulePeer::getActiveAndPresent();
 		$smarty->assign("modules",$modules);
 		if (!isset($_GET['moduleName']))
 			return $mapping->findForwardConfig('success');
@@ -135,46 +130,48 @@ class SecurityEditPermissionsAction extends BaseAction {
 		//buscamos todos los modulos sin instalar.
 
 		$modulePath = "WEB-INF/classes/modules/" . $_GET['moduleName'] . "/actions/";
-		$directoryHandler = opendir($modulePath);
-		$actions = array();
-
-		while (false !== ($filename = readdir($directoryHandler))) {
-			//verifico si es un archivo php
-			if (is_file($modulePath . $filename) && (preg_match('/(.*)Action.php$/',$filename,$regs)))
-				array_push($actions,$regs[1]);
-		}
-		closedir($directoryHandler);
-
-		//separacion entre accions con par y acciones sin par
-		foreach ($actions as $action) {
-
-			//separamos los pares de aquellos que no tienen pares
-			if (preg_match("/(.*)([a-z]Do[A-Z])(.*)/",$action,$parts)) {
-				//armamos el nombre de la posible action sin do
-				$actionWithoutDo = $parts[1].$parts[2][0].$parts[2][3].$parts[3];
-
-				if (in_array($actionWithoutDo,$actions))
-					$pairActions[$actionWithoutDo] = $action;
+		if ($directoryHandler = opendir($modulePath)) { //Si el directorio existe
+			$actions = array();
+	
+			while (false !== ($filename = readdir($directoryHandler))) {
+				//verifico si es un archivo php
+				if (is_file($modulePath . $filename) && (preg_match('/(.*)Action.php$/',$filename,$regs)))
+					array_push($actions,$regs[1]);
+			}
+			closedir($directoryHandler);
+	
+			//separacion entre accions con par y acciones sin par
+			foreach ($actions as $action) {
+	
+				//separamos los pares de aquellos que no tienen pares
+				if (preg_match("/(.*)([a-z]Do[A-Z])(.*)/",$action,$parts)) {
+					//armamos el nombre de la posible action sin do
+					$actionWithoutDo = $parts[1].$parts[2][0].$parts[2][3].$parts[3];
+	
+					if (in_array($actionWithoutDo,$actions))
+						$pairActions[$actionWithoutDo] = $action;
+				}
+			}
+	
+			if (!empty($pairActions)) {
+	
+				$withPair = array_keys($pairActions);
+				$arrays = array_diff($actions,$withPair);
+	
+				$actionsToDelete = array_merge(array_keys($pairActions), array_values($pairActions));
+				$withoutPair = array_diff($actions,$actionsToDelete);
+	
+			}
+			else {
+				$withoutPair = $actions;
+				$withPair = array();
 			}
 		}
-
-		if (!empty($pairActions)) {
-
-			$withPair = array_keys($pairActions);
-			$arrays = array_diff($actions,$withPair);
-
-			$actionsToDelete = array_merge(array_keys($pairActions), array_values($pairActions));
-			$withoutPair = array_diff($actions,$actionsToDelete);
-
-		}
-		else {
-			$withoutPair = $actions;
-			$withPair = array();
-		}
+		else
+			unset($_GET['moduleName']);
 
 		$moduleSelected = new SecurityModule();
 		$smarty->assign('moduleSelected',$moduleSelected);
-
 
 		$moduleSelected = SecurityModulePeer::getAccess($_GET['moduleName']);
 		if (empty($moduleSelected))
