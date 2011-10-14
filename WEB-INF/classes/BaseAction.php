@@ -107,6 +107,8 @@ class BaseAction extends Action {
 			$loginUser = $_SESSION["loginUser"];
 		if (isset($_SESSION["loginAffiliateUser"]) && is_object($_SESSION["loginAffiliateUser"]) && get_class($_SESSION["loginAffiliateUser"]) == "AffiliateUser")
 			$loginUserAffiliate = $_SESSION["loginAffiliateUser"];
+		if (isset($_SESSION["loginClientUser"]) && is_object($_SESSION["loginClientUser"]) && get_class($_SESSION["loginClientUser"]) == "ClientUser")
+			$loginClientUser = $_SESSION["loginClientUser"];
 		if (isset($_SESSION["loginRegistrationUser"]) && is_object($_SESSION["loginRegistrationUser"]) && get_class($_SESSION["loginRegistrationUser"]) == "RegistrationUser")
 			$loginRegistrationUser = $_SESSION["loginRegistrationUser"];
 
@@ -129,29 +131,21 @@ class BaseAction extends Action {
 		header("Content-type: text/html; charset=UTF-8");
 
 		if (!$noCheckLogin) { //Verifica login $noCheckLogin != 1
-			if (!empty($loginUser) || !empty($loginUserAffiliate) || !empty($loginRegistrationUser)) {
 
+			$loggedUser = Common::getLoggedUser();
+			if (!empty($loggedUser)) {
 				if (!ConfigModule::get("global","noSecurity")) {
-
-					if (!empty($loginUser))
-						$user = $loginUser;
-					else if (!empty($loginUserAffiliate))
-						$user = $loginUserAffiliate;
-					else if (!empty($loginRegistrationUser))
-						$user = $loginRegistrationUser;
-
-					if (!empty($user))
-						$userLevel = $user->getLevel();
-
 					if (!empty($securityAction))
-						$access = $securityAction->getAccessByUser($user);
+						$access = $securityAction->getAccessByUser($loggedUser);
 					else if (!empty($securityModule))
-						$access = $securityModule->getAccessByUser($user);
+						$access = $securityModule->getAccessByUser($loggedUser);
 
-					if (!empty($securityAction) || !empty($securityModule)) {
+					if (empty($access)) {// No tiene permiso
+						header("Location:Main.php?do=securityNoPermission");
+						exit();
 					}
 				}
-				else {//No verifica seguridad
+				else { //No verifica seguridad
 				}
 			}
 			else { //Si requiere login y no hay sesion va a login
@@ -168,9 +162,11 @@ class BaseAction extends Action {
 
 		if (isset($loginUser))
 			$smarty->assign("loginUser",$loginUser);
-		if (isset($loginUserAffiliate))
+		else if (isset($loginUserAffiliate))
 			$smarty->assign("loginAffiliateUser",$loginUserAffiliate);
-		if (isset($loginRegistrationUser))
+		else if (isset($loginClientUser))
+			$smarty->assign("loginClientUser",$loginClientUser);
+		else if (isset($loginRegistrationUser))
 			$smarty->assign("loginRegistrationUser",$loginRegistrationUser);
 
 		$smarty->assign("currentLanguageCode",Common::getCurrentLanguageCode());
@@ -211,7 +207,7 @@ class BaseAction extends Action {
 		$myRedirectPath = $myRedirectConfig->getpath();
 
 		foreach ($params as $key => $value)
-			$myRedirectPath .= "&$key=$value";
+			$myRedirectPath .= "&$key=" . htmlentities(urlencode($value));
 
 		return new ForwardConfig($myRedirectPath, True);
 
@@ -228,7 +224,7 @@ class BaseAction extends Action {
 		$myRedirectPath = $myRedirectConfig->getpath();
 
 		foreach ($params as $key => $value)
-			$myRedirectPath .= "&filters[$key]=$value";
+			$myRedirectPath .= "&filters[$key]=" . htmlentities(urlencode($value));
 
 		return new ForwardConfig($myRedirectPath, True);
 
@@ -246,10 +242,10 @@ class BaseAction extends Action {
 		$myRedirectPath = $myRedirectConfig->getpath();
 
 		foreach ($params as $key => $value)
-			$myRedirectPath .= "&$key=$value";
+			$myRedirectPath .= "&$key=" . htmlentities(urlencode($value));
 
 		foreach ($filters as $key => $value)
-			$myRedirectPath .= "&filters[$key]=$value";
+			$myRedirectPath .= "&filters[$key]=" . htmlentities(urlencode($value));
 
 		return new ForwardConfig($myRedirectPath, True);
 
@@ -310,6 +306,21 @@ class BaseAction extends Action {
 				}
 			}
 		}
+	}
+
+	function returnFailure($mapping,$smarty,$object,$forward) {
+
+		$objectName = lcfirst(get_class($object));
+		$smarty->assign($objectName,$object);
+
+		$id = $object->getId();
+		if (empty($id))
+			$smarty->assign("action","create");
+		else
+			$smarty->assign("action","edit");
+
+		$smarty->assign("message","error");
+		return $mapping->findForwardConfig($forward);
 	}
 
 	public function isAjax() {
