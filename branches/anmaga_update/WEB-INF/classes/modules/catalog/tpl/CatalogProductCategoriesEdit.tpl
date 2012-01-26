@@ -11,12 +11,16 @@
 		 		<p>|-if $action eq "edit"-|Editar|-else-|Crear|-/if-| Categorías de Productos</p>
 			<p>
 				<label for="name">Categoría</label>
-				<input type="text" id="name" name="category[name]" value="|-$category->getname()-|" title="name" size="45" maxlength="255" />
+				<input type="text" id="name" name="category[name]" value="|-$category->getName()|escape-|" title="name" size="45" maxlength="255" />
 			</p>
 			<p>
 				<label for="description">Descripción</label>
-				<textarea name="category[description]" cols="45" rows="5" wrap="virtual" id="description">|-$category->getdescription()-|</textarea>
+				<textarea name="category[description]" cols="45" rows="5" wrap="virtual" id="description">|-$category->getDescription()|escape-|</textarea>
 			</p>
+		<p>
+			<label for="category[code]">Código</label>
+		<input type="text" name="category[code]" id="code" value='|-$category->getCode()|escape-|' size="5" />
+		</p>
 			|-if $action eq "edit"-|
 			<label for="actualImage">Imagen</label> 
 		<div id="actualImage"> <img src="Main.php?do=catalogProductCategoriesGetImage&id=|-$category->getId()-|" alt="|-$category->getname()-|" />

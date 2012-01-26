@@ -82,7 +82,7 @@ class Product extends BaseProduct {
 	public function getImagePath() {
 		global $moduleRootDir;
 
-  	if (file_exists($moduleRootDir."WEB-INF/products/".$this->getCode()))
+  	if (file_exists($moduleRootDir."WEB-INF/products/" . $this->getCode() . ".jpg"))
 			return "productImages/".$this->getCode();
 		else
 			return;
@@ -98,5 +98,28 @@ class Product extends BaseProduct {
 		return $categories;
 	}
 
+	/**
+	 * Devuelve el color de nivel de stock para el producto
+	 * @return string nombre de la clase a mostrar
+	 */
+	public function getStockLevel() {
+		$stockAlert = $this->getStockAlert();
+		switch ($stockAlert) {
+			case '1':
+				$class = "Red";
+				break;
+			case '2':
+				$class = "Yellow";
+				break;
+			case '3':
+				$class = "Green";
+				break;
+			default:
+				$class = "Grey";
+				break;
+		}
+
+		return $class;
+	}
 
 }
