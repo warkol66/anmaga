@@ -12,6 +12,13 @@
 <!-- Module Catalog - Section Products -->
 	<action-mappings module="Catalog" section="Products">
 
+		<action    path = "catalogProductsDoUpdate"
+							 type = "CatalogProductsDoUpdateAction"
+							 name = "catalogProductsDoUpdate"
+							scope = "request"
+					 validate = "true">
+		</action>
+
 		<action    path = "catalogProductsGetImage"
 							 type = "CatalogProductsGetImageAction"
 							 name = "catalogProductsGetImage"

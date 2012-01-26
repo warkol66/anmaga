@@ -1,7 +1,7 @@
 <script type="text/javascript" src="scripts/lightbox.js"></script> 			
-<div id="lightbox1" class="leightbox">
-	<p align="right">				
-		<a href="#" class="lbAction blackNoDecoration" rel="deactivate">Cerrar&nbsp;&nbsp;<input type="button" class="icon iconClose" /></a> 
+<div id="lightbox1" class="leightbox" style="width:500px;">
+	<p style="width:500px;text-align:right;">	
+		<a href="#" class="lbAction blackNoDecoration" rel="deactivate">Cerrar <input type="button" class="icon iconClose" /></a> 
 	</p> 
 	<div id="catalogShowWorking"></div>
 	<div class="innerLighbox">
@@ -10,7 +10,8 @@
 </div> 
 <h2>Catálogo de Productos</h2>
 	<h1>Ver Catálogo</h1>
-	<p>A continuación podrá ver los productos disponibles en el sistema</p>
+	<p>A continuación podrá ver los productos disponibles en el sistema. El nivel de stock se indica: <img src="images/clear.png" class="aquaGreen" /> hay gran cantidad, <img src="images/clear.png" class="aquaYellow" />,
+	 hay menos cantidad, <img src="images/clear.png" class="aquaRed" /> la cantidad disponible puede no satisfacer la demanda actual. Si aparece <img src="images/clear.png" class="aquaGrey" /> es porque no hay información de stock de ese producto.</span></p>
 <div id="div_products">	
 	<div id="messageCart" style="position:fixed; right: 50px; top: 5px;">
 	</div>
@@ -20,7 +21,7 @@
 		<COL id="description" class="colCollapse">
 		<thead> 
 		<tr>
-			<td colspan="7" class="tdSearch"><form action="Main.php" method="get">
+			<td colspan="8" class="tdSearch"><form action="Main.php" method="get">
 			<p>
 			<label for="filters[categoryId]">Ver</label> 
 				<select name="filters[categoryId]" id="categoryId" onchange="this.form.submit();">
@@ -42,22 +43,23 @@
 		</tr> 
 	|-if $pager->getLastPage() gt 1-|
 		<tr>
-			<td colspan="7" class="pages">|-include file="PaginateNumberedInclude.tpl"-|</td>
+			<td colspan="8" class="pages">|-include file="PaginateNumberedInclude.tpl"-|</td>
 		</tr> 
 	|-/if-|
 			<tr> 
-				<th width="5%">Código</th> 
+				<th width="5%" colspan="2">Código</th> 
 				<th width="35%">Nombre</th> 
-				<th width="40%">Descripción</th> 
+				<th width="30%">Descripción</th> 
 				<th width="5%">Precio Unitario</th> 
 				<th width="5%">Unidad de Venta</th>
-				<th width="5%">Precio</th>
+				<th width="4%">Precio</th>
 				<th width="5%">&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>  |-foreach from=$products item=product name=for_products-|
 		<tr>
 			<td nowrap align="right">|-$product->getCode()-|</td>
+			<td><img src="images/clear.png" class="aqua|-$product->getStockLevel()-|" |-if $configModule->get('catalog','showStock')-|title="Stock disponible: |-$product->getStock01()|number_format-|"|-/if-|/></td>
 			<td> <a href="#lightbox1" rel="lightbox1" class="lbOn"><input type="button" class="icon iconPhoto" onClick='{new Ajax.Updater("productsShowDiv", "Main.php?do=catalogProductImageViewX&id=|-$product->getid()-|", { method: "post", parameters: { id: "|-$product->getId()-|"}, evalScripts: true})};$("catalogShowWorking").innerHTML = "<span class=\"inProgress\">buscando imagen ...</span>";' value="Ver imagen" name="submit_go_show_picture" /></a> |-$product->getName()-|</td>
 			<td>|-$product->getDescription()-|</td>
 			<td nowrap align="right">|-if $product->getPrice() neq 0-||-$product->getPrice()|number_format:2:",":"."-||-/if-|</td>
@@ -76,12 +78,12 @@
 		</tr>
 		|-foreachelse-|
 		<tr>
-			<td colspan="7">Sin Productos</td>
+			<td colspan="8">Sin Productos</td>
 		</tr>
 		|-/foreach-|
 	|-if $pager->getLastPage() gt 1-|
 		<tr>
-			<td colspan="7" class="pages">|-include file="PaginateNumberedInclude.tpl"-|</td>
+			<td colspan="8" class="pages">|-include file="PaginateNumberedInclude.tpl"-|</td>
 		</tr> 
 	|-/if-|
 		</tbody> 
