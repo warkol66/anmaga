@@ -33,7 +33,7 @@
 				<th width="20%">Afiliado</th> 
 				<th width="5%">Nro.</th> 
 				<th width="5%">Código</th>
-				<th width="15%">Sucursal</th> 
+				<th width="15%">##affiliates,4,Sucursal##</th> 
 				<th width="10%">Teléfono</th> 
 				<th width="10%">Contacto</th> 
 				<th width="30%">Memo</th> 
