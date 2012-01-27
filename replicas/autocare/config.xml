@@ -18,34 +18,55 @@
 				<value>NO</value>
 				<element_type>YES/NO</element_type>
 			</underMaintenance>
+			<maintenanceMessage>El sistema permanecerá en mantenimiento por 2 horas, por favor regrese mas tarde.</maintenanceMessage>
 			<affiliateUserLoginUnified>
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
 			</affiliateUserLoginUnified>
+			<hasUnifiedUsernames>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</hasUnifiedUsernames>
+			<doLog>
+				<value>NO</value>
+				<element_type>YES/NO</element_type>
+			</doLog>
 			<applicationTimeZoneGMT>
 				<element_type>TIMEZONE</element_type>
 			</applicationTimeZoneGMT>
+			<dateFormat>
+				<value>d-m-Y</value>
+				<element_type>Options</element_type>
+				<element_options>
+					<option_1>d-m-Y</option_1>
+					<option_2>m-d-Y</option_2>
+					<option_3>d-m-y</option_3>
+					<option_4>m-d-y</option_4>
+				</element_options>
+			</dateFormat>
 			<thousandsSeparator>.</thousandsSeparator>
 			<decimalSeparator>,</decimalSeparator>
 			<numberOfDecimals>2</numberOfDecimals>
 			<siteName>AUTOCARE</siteName>
 			<siteDescription>Sistema de Administración de Pedidos de AUTOCARE</siteDescription>
 			<siteShortName>Autocare</siteShortName>
-			<webmasterMail>gflamerich@gmail.com</webmasterMail>
-			<debugMail>gflamerich@gmail.com</debugMail>
+			<webmasterMail>moddebugger@gmail.com</webmasterMail>
+			<debugMail>moddebugger@gmail.com</debugMail>
 			<fromEmail>facturacion.anmaga@gmail.com</fromEmail>
 			<tablePrefix></tablePrefix>
 			<news>Novedades: Bienvenido al sistema Autocare.</news>
 			<affiliateNews>Novedades: distinguidos Clientes, Bienvenido al sistema Autocare.</affiliateNews>
 		</parameters>
 		<errorReporting>
-			<value>E_ALL ^ E_NOTICE</value>
+			<value>E_ALL &amp; ~E_NOTICE ~E_WARNING</value>
 			<element_type>Options</element_type>
 			<element_options>
-				<option_1></option_1>
-				<option_2>E_ALL ^ E_NOTICE</option_2>
+				<option_1>NONE</option_1>
+				<option_2>E_ALL &amp; ~E_NOTICE</option_2>
 				<option_3>E_ALL</option_3>
 				<option_4>E_STRICT</option_4>
+				<option_5>E_ALL &amp; E_STRICT</option_5>
+				<option_6>E_ALL &amp; ~E_NOTICE ~E_WARNING</option_6>
 			</element_options>
 		</errorReporting>
 		<noCheckPermissionActions>
@@ -123,8 +144,14 @@
 				<value>YES</value>
 				<element_type>YES/NO</element_type>
 			</usersByRegistrationDoPassRecovery>
+			<catalogPricesAutoUpdate>
+				<value>YES</value>
+				<element_type>YES/NO</element_type>
+			</catalogPricesAutoUpdate>
 		</noCheckLoginActions>
 		<rowsPerPage>20</rowsPerPage>
+		<language>esp</language>
+		<receiveMailBackup></receiveMailBackup>
 	</system>
 	<mluse>
 		<language>esp</language>
@@ -132,6 +159,26 @@
 	<users>
 		<licenses>5</licenses>
 	</users>
+	<email>
+		<mode>
+			<value>SMTP</value>
+			<element_type>Options</element_type>
+			<element_options>
+				<option_1>PHP</option_1>
+				<option_2>SMTP</option_2>
+			</element_options>
+		</mode>
+		<smtpOptions>
+			<smtpHost>mail.anmagaexport.modulserver.com.ar</smtpHost>
+			<smtpPort>587</smtpPort>
+			<smtpUsername>anmagaex</smtpUsername>
+			<smtpPassword>Anmaga</smtpPassword>
+			<smtpSsl>
+				<value>NO</value>
+				<element_type>YES/NO</element_type>
+			</smtpSsl>
+		</smtpOptions>
+	</email>
 	<catalog>
 		<image>
 			<maxSize>100000</maxSize>
@@ -162,11 +209,34 @@
 			<value>YES</value>
 			<element_type>YES/NO</element_type>
 		</sendMailOnCreation>
-		<recipients>facturacion.anmaga@gmail.com,jhernandez2412@gmail.com,lisbethadrian@hotmail.com,lisbethadrian@yahoo.es,oil_cg@yahoo.com,gerson_agudelo@hotmail.com,ventasautocare@yahoo.com</recipients>
+		<recipients>facturacionanmaga@gmail.com,jhernandez2412@gmail.com,c.tovar@autocare.com.ve,j.rengel@autocare.com.ve,n.figuera@autocare.com.ve</recipients>
 		<exportComment>Exportado a xml</exportComment>
 		<ordersPerPage>25</ordersPerPage>
 		<daysByDefault>15</daysByDefault>
-		<profitRoot>-</profitRoot>
+		<profitRoot>coriente-server</profitRoot>
 		<profitCode></profitCode>
 	</orders>
+	<surveys>
+		<useCaptcha>
+			<value>NO</value>
+			<element_type>YES/NO</element_type>
+		</useCaptcha>
+		<showInclude>
+			<value>YES</value>
+			<element_type>YES/NO</element_type>
+		</showInclude>
+		<graphics>
+			<showTotals>
+				<value>NO</value>
+				<element_type>YES/NO</element_type>
+			</showTotals>
+			<colors>
+				<legend>black</legend>
+				<labels>blue</labels>
+				<totals>darkred</totals>
+				<barColor>#013e99</barColor>
+				<background>#fbe5a8</background>
+			</colors>
+		</graphics>
+	</surveys>
 </config>
