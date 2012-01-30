@@ -302,7 +302,6 @@ class ProductPeer extends BaseProductPeer {
 			$perPage = Common::getRowsPerPage();
 		if (empty($page))
 			$page = 1;
-		require_once("lib/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->add(ProductPeer::ACTIVE, true);
 		$cond->addAscendingOrderByColumn(ProductPeer::CODE);
