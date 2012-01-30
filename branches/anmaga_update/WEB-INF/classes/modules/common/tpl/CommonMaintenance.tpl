@@ -5,9 +5,9 @@
 	 <div id="loginTop"></div> 
 	 <!-- End LoginTop --> 
 	 <!-- Begin LoginContent --> 
-	 <div id="loginContentMaintenance"><br>
+	 <div id="loginContent"><br>
 		 <p></p> 
-		 <p></p> 
+		 <h1>Sistema en Mantenimiento</h1> 
 			<p>|-$parameters.maintenanceMessage-|</p> 
 
 		 <p></p> 
