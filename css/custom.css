@@ -29,12 +29,12 @@ body {
 	background-position: top center;
 	background-repeat:no-repeat;
 }
-#loginContent, #passRecovery { 
+#loginContent, #passRecovery, #loginContentMaintenance { 
 	background-image:url(../images/loginContent.png);
 	background-position: top center;
 	background-repeat:repeat-y;
 }
-#loginContent h1, #passRecovery h1, #passRecovery h2 { 
+#loginContent h1, #loginContentMaintenance h1, #passRecovery h1, #passRecovery h2 { 
 	color: #000066;
 }
 #loginContent p, #passRecovery p{ 
@@ -64,12 +64,13 @@ body {
 
 /* wrapper -----------------------------------------------------------*/ 
 #wrapper { 
+	background-image: url(../images/topImage.png);
+	background-position: 0px 5px;
+	background-repeat: no-repeat;
 }
 #header {
-	height: 55px;
-	background-image: url(../images/topImage.png);
-	background-position: -120px 5px;
-	background-repeat: no-repeat;
+	height: 42px;
+	background-color: transparent !Important;
 }
 #header, #contentWrapper {
 	border-style: solid;
@@ -80,6 +81,7 @@ body {
 	background-repeat: repeat-y;
 }
 #leftColumn{
+	border-top: 1px solid #ffffff;
 	color: #333;
 	background-image:url(../images/leftcolumn_bottom.jpg);
 	background-position: left bottom;
@@ -578,7 +580,7 @@ ul#directions_results {
 	cursor: pointer;
 }
 
-#header {border-color: #004080; background-color: #FFFFFF;}
+#header {border-color: #004080; background-color: transparent !Important;}
 #header {border-bottom: 5px solid #004080}
 #contentWrapper {border-color:#004080; background-color: #FFFFFF;}
 #footer {border-color:#004080;}
@@ -586,4 +588,44 @@ ul#directions_results {
 .rounded .r1, .rounded .r2, .rounded .r3, .rounded .r4, .rounded .r5, .rounded .r6, .rounded .r7 {
  border-color: #004080;}
 .rounded .r3, .rounded .r4, .rounded .r5, .rounded .r6, .rounded .r7 {background-color: #004080;}
-.rounded .r1, .rounded .r2 {background-color: #FFFFFF;} /* Mismo color de fondo del header*/
+.rounded .r1, .rounded .r2 {background-color: transparent !Important;} /* Mismo color de fondo del header*/
+
+
+.aqua1, .aqua2, .aqua3, .aqua4, .aqua5, .aqua6, .aqua7, .aqua8, .aqua9, .aqua10, 
+.aquaBlack, .aquaGreen, .aquaRed, .aquaYellow, .aquaBlue, .aquaOrange, .aquaBrown, .aquaSkyBlue, .aquaPink, .aquaGrey {
+	width: 16px;
+	height: 16px;
+	border-width: 0;
+	cursor:pointer;
+	background: url(../images/aqua.png) no-repeat;
+}
+.aqua1, .aquaBlack {
+	background-position: 0px 0px;
+}
+.aqua2, .aquaGreen {
+	background-position: -16px 0px;
+}
+.aqua3, .aquaRed {
+	background-position: -32px 0px;
+}
+.aqua4, .aquaYellow {
+	background-position: -48px 0px;
+}
+.aqua5, .aquaBlue {
+	background-position: -64px 0px;
+}
+.aqua6, .aquaOrange {
+	background-position: -80px 0px;
+}
+.aqua7, .aquaBrown {
+	background-position: -96px 0px;
+}
+.aqua8, .aquaSkyBlue {
+	background-position: -112px 0px;
+}
+.aqua9, .aquaPink {
+	background-position: -128px 0px;
+}
+.aqua10, .aquaGrey {
+	background-position: -144px 0px;
+}

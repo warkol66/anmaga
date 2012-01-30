@@ -308,13 +308,13 @@ function ordersStateDoChangeX(form) {
 } // End of ordersStateDoChangeX
 
 function ordersSendOrdersExport(form) {
-	$('do').value = "ordersExport";
+	$('doActions').value = "ordersExport";
 	form.submit();
 	return true;
 } // End of ordersSendOrdersExport
 
 function ordersSendOrdersDelete(form) {
-	$('do').value = "ordersDoDelete";
+	$('doActions').value = "ordersDoDelete";
 	form.submit();
 	return true;
 } // End of ordersSendOrdersExport

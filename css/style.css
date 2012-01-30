@@ -17,13 +17,13 @@
 	padding: 0;
 	margin: 0 auto;
 }
-#loginContent, #passRecovery { 
+#loginContent, #passRecovery, #loginContentMaintenance { 
 	width: 360px;
 	height: auto;	
 	margin: auto;
 	text-align:left;
 }
-#loginContent h1, #passRecovery h1, #passRecovery h2 { 
+#loginContent h1, #loginContentMaintenance h1, #passRecovery h1, #passRecovery h2 { 
 	font-weight: bold;
 	font-size: 138.5%;
 	padding-left: 25px;
@@ -79,7 +79,7 @@
 
 /* wrapper -----------------------------------------------------------*/ 
 #wrapper { 
-	margin: 20px auto;
+	margin: 5px auto;
 	width: 995px;
 	padding: 0 0 0 0; /*  1px necesary to show margin-bottom of footer n FF*/
 }
@@ -90,11 +90,11 @@
 	display: block;
 }
 #header a{
-	width:115px;
-	height: 45px;
-	 float: left;
-	 display: block;
-	 margin: 18px 0 0 8px;
+	width:450px;
+	height: 35px;
+	float: left;
+	display: block;
+	margin: 2px 0 0 40px;
 }
 #header a strong{
 	 display:none;
