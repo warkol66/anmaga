@@ -7,8 +7,8 @@
 
 // Set error reporting level. See PHP manual: XXVI. Error Handling and Logging Functions
 // Note: E_STRICT  (PHP5 compliance) will cause the PHP4 code base to fail.
-error_reporting(E_ALL);
-//error_reporting(E_ALL -E_NOTICE -E_WARNING);
+//error_reporting(E_ALL);
+error_reporting(E_ALL -E_NOTICE -E_WARNING);
 ini_set('display_errors',1);
 
 
@@ -38,7 +38,7 @@ else
 	$_ENV['PHPMVC_MODE_CLI'] = false;
 
 // Comment out this define to use the regular (external) phpmvc library
-//define('PHPMVC_PERFORM', "1");
+define('PHPMVC_PERFORM', "1");
 
 // Load the application bootup file
 if(defined('PHPMVC_PERFORM'))

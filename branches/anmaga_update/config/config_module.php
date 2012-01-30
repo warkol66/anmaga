@@ -6,7 +6,7 @@ class ConfigModule {
 		"global" => array(
 			"debugMode" => true,
 			"noSecurity" => true,
-			"noCheckLogin" => true,
+			"noCheckLogin" => false,
 			"developmentMode" => true,
 			"showPropelExceptions" => true,
 			"doLog" => true,
@@ -33,6 +33,9 @@ class ConfigModule {
 				1 => 'Alert',
 				2 => 'Schedule',
 			)
+		),
+		"catalog" => array(
+			"showStock" => true
 		),
 		"import" => array(
 			"quotesUseQuantities" => false
