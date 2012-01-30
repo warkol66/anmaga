@@ -147,7 +147,7 @@ class Order extends BaseOrder {
 	 */
 	function getOrderItemsOrderByProductOrderCode() {
 		$criteria =  new Criteria();
-		$criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
+		$criteria->addJoin(OrderItemPeer::PRODUCTCODE,ProductPeer::CODE);
 		$criteria->addAscendingOrderByColumn(ProductPeer::ORDERCODE);
 		return $this->getOrderItems($criteria);
 	}

@@ -244,7 +244,6 @@ class OrderPeer extends BaseOrderPeer {
 			$perPage = 	OrderPeer::getRowsPerPage();
 		if (empty($page))
 			$page = 1;
-		require_once("lib/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->add(OrderPeer::AFFILIATEID, $affiliateId);
 
