@@ -51,6 +51,7 @@ Para eliminar pedidos, seleccione los pedidos a eliminar y haga click en "Elimin
 		</form>
 	</div>
 <form action="Main.php" method="get">
+<input type="hidden" id="do" id="do" value="" />
 	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-orders">
 		<thead>
 			<tr>
@@ -92,7 +93,8 @@ Para eliminar pedidos, seleccione los pedidos a eliminar y haga click en "Elimin
 				<td colspan="8" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
 			</tr>|-/if-|
 			<tr> 
-				<td colspan="8" class="tdSearch">	<input type="hidden" name="do" id="doActions" value="" />
+				<td colspan="8" class="tdSearch">	<input type="hidden" id="doActions" name="do" value="" />
+
 	<input type="button" onclick="ordersSendOrdersExport(this.form)" value="Exportar órdenes seleccionadas"/>&nbsp;&nbsp;&nbsp;
 	<input type="button" onclick="ordersSendOrdersExportSaf(this.form)" value="Consolidar órdenes seleccionadas" />&nbsp;&nbsp;&nbsp;
 	<input type="button" onclick="ordersSendOrdersDelete(this.form)" value="Eliminar órdenes seleccionadas" />

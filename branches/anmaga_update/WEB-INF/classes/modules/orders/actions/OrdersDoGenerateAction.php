@@ -71,7 +71,8 @@ class OrdersDoGenerateAction extends BaseAction {
 
 			$affiliate = $orderCreated->getAffiliate();
 			$owner = $affiliate->getOwner();
-			$email = $owner->getMailAddress();
+			if (!empty($owner))
+				$email = $owner->getMailAddress();
 
 			$recipients = $system["config"]["orders"]["recipients"];
 

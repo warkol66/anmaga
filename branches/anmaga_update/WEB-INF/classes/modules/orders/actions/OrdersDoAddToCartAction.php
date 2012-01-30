@@ -42,7 +42,7 @@ class OrdersDoAddToCartAction extends BaseAction {
 				//Busco si no esta ya este producto
 				while ($i<count($items) && !$found) {
 					$item = $items[$i];
-					if ($item->getProductId() == $currentItem->getProductId()) {
+					if ($item->getProductCode() == $currentItem->getProductCode()) {
 						$actualQuantity = $item->getQuantity();
 						$item->setQuantity($actualQuantity + $currentItem->getQuantity());
 						$_SESSION["orderItems"][$i] = $item;
@@ -53,9 +53,9 @@ class OrdersDoAddToCartAction extends BaseAction {
 				//Si no estaba, lo agrego
 				if (!$found) {
 					$orderItem = new OrderItem();
-					$orderItem->setProductId($currentItem->getProductId());
+					$orderItem->setProductCode($currentItem->getProductCode());
 					$orderItem->setQuantity($currentItem->getQuantity());
-		    	$product = ProductPeer::get($orderItem->getProductId());
+		    	$product = ProductPeer::getByCode($orderItem->getProductCode());
 		    	$orderItem->setProduct($product);
 		    	$orderItem->setPrice($product->getPrice());
 					$_SESSION["orderItems"][] = $orderItem;

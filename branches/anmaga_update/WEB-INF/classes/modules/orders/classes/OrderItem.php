@@ -22,30 +22,16 @@ class OrderItem extends BaseOrderItem {
 	}
 
 	function getOrderCode() {
-		$criteria = new Criteria();
-    $criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
-    $criteria->add(ProductPeer::CODE,$this->getProductCode());
-    $item = ProductPeer::doSelectOne($criteria);
-    $orderCode = $item->getOrderCode();                  
-		return $orderCode;
+		return $this->getProductCode();
 	}
 
-	function getCode() {
-		$criteria = new Criteria();
-    $criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
-    $criteria->add(ProductPeer::CODE,$this->getProductCode());
-    $item = ProductPeer::doSelectOne($criteria);
-    $orderCode = $item->getCode();                  
-		return $orderCode;
+	function getCode() {             
+		return $this->getProductCode();
 	}
 
 	function getUnit() {
-		$criteria = new Criteria();
-    $criteria->addJoin(OrderItemPeer::PRODUCTID,ProductPeer::ID);
-    $criteria->add(ProductPeer::CODE,$this->getProductCode());
-    $item = ProductPeer::doSelectOne($criteria);
-    $orderCode = $item->getUnit();                  
-		return $orderCode;
+		$product = ProductQuery::create()->findOneByCode($this->getProductCode());        
+		return $product->getUnit();
 	}
 
 }

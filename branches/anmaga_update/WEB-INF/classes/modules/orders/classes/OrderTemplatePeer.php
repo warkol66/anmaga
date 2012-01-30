@@ -109,7 +109,6 @@ class OrderTemplatePeer extends BaseOrderTemplatePeer {
 			$perPage = 	OrderTemplatePeer::getRowsPerPage();
 		if (empty($page))
 			$page = 1;
-		require_once("lib/util/PropelPager.php");
 		$cond = new Criteria();
 
 		$pager = new PropelPager($cond,"OrderTemplatePeer", "doSelect",$page,$perPage);
@@ -140,7 +139,6 @@ class OrderTemplatePeer extends BaseOrderTemplatePeer {
 			$perPage = 	OrderTemplatePeer::getRowsPerPage();
 		if (empty($page))
 			$page = 1;
-		require_once("lib/util/PropelPager.php");
 		$cond = new Criteria();
 		$cond->add(OrderTemplatePeer::AFFILIATEID, $affiliateId);
 
