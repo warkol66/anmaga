@@ -26,7 +26,7 @@
 		<fieldset title="Formulario de edición de datos de afiliado">
      <legend>Ingrese los datos de la sucursal</legend>
 		 <p><label for="internalId">ID interno</label>
-			<input name="internalId" type="text" value="|-if $flag ne 1-| |-$affiliateInfo->getAffiliateInternalNumber()-||-/if-|" size="15"> 
+			<input name="internalId" type="text" value="|-if $flag ne 1-||-$affiliateInfo->getAffiliateInternalNumber()-||-/if-|" size="15"> 
 		</p>
 		 <p><label for="address">Dirección</label>
 				<input name="address" type="text" value="|-if $flag ne 1-||-$affiliateInfo->getAddress()-||-/if-|" size="55"> 
