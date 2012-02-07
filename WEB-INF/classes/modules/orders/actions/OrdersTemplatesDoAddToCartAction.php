@@ -31,31 +31,33 @@ class OrdersTemplatesDoAddToCartAction extends BaseAction {
 
 				//Como la cantidad en el carrito es en unidad de ventas debo dividir la cantidad por salesUnit para obtener la cantidad a mostrar en el carrito
 				$currentItemProduct = $currentItem->getProduct();
-				$productQuantity = $currentItem->getQuantity() / $currentItemProduct->getSalesUnit();
-				$currentItem->setQuantity($productQuantity);
-
-				$found = false;
-				$i = 0;
-				//Busco si no esta ya este producto
-				while ($i<count($items) && !$found) {
-					$item = $items[$i];
-					if ($item->getProductCode() == $currentItem->getProductCode()) {
-						$actualQuantity = $item->getQuantity();
-						$item->setQuantity($actualQuantity + $currentItem->getQuantity());
-						$_SESSION["orderItems"][$i] = $item;
-						$found = true;
+				if (!empty($currentItemProduct)) {
+					$productQuantity = $currentItem->getQuantity() / $currentItemProduct->getSalesUnit();
+					$currentItem->setQuantity($productQuantity);
+	
+					$found = false;
+					$i = 0;
+					//Busco si no esta ya este producto
+					while ($i<count($items) && !$found) {
+						$item = $items[$i];
+						if ($item->getProductCode() == $currentItem->getProductCode()) {
+							$actualQuantity = $item->getQuantity();
+							$item->setQuantity($actualQuantity + $currentItem->getQuantity());
+							$_SESSION["orderItems"][$i] = $item;
+							$found = true;
+						}
+						$i++;
 					}
-					$i++;
+					//Si no estaba, lo agrego
+					if (!$found) {
+						$orderItem = new OrderItem();
+						$orderItem->setProduct($currentItemProduct);
+						$orderItem->setQuantity($currentItem->getQuantity());
+						$orderItem->setPrice($currentItemProduct->getPrice());
+						$_SESSION["orderItems"][] = $orderItem;
+					}
+	
 				}
-				//Si no estaba, lo agrego
-				if (!$found) {
-					$orderItem = new OrderItem();
-					$orderItem->setProduct($currentItemProduct);
-					$orderItem->setQuantity($currentItem->getQuantity());
-					$orderItem->setPrice($currentItemProduct->getPrice());
-					$_SESSION["orderItems"][] = $orderItem;
-				}
-
 			}
 
 		}
