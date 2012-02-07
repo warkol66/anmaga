@@ -1,6 +1,3 @@
-==============================
-Revisión 631 - Fecha 20101224
-------------------------------
 
 ALTER TABLE  `security_action` CHANGE  `accessUsersByAffiliate`  `accessAffiliateUser` INT( 11 ) NULL DEFAULT NULL COMMENT  'El acceso a ese action para los usuarios por afiliados';
 ALTER TABLE  `security_action` ADD  `accessRegistrationUser` INT NULL COMMENT  'El acceso a ese action para los usuarios por registracion' AFTER  `accessAffiliateUser`;
@@ -10,9 +7,6 @@ ALTER TABLE `security_module` ADD `accessAffiliateUser` INTEGER COMMENT 'El acce
 ALTER TABLE `security_module` ADD `accessRegistrationUser` INTEGER COMMENT 'El acceso a ese modulo para los usuarios por registracion';
 ALTER TABLE `security_module` ADD `noCheckLogin` TINYINT default 0 COMMENT 'Si no se chequea login ese modulo';
 
-==============================
-Revisión 638 - Fecha 20101224
-------------------------------
 #-----------------------------------------------------------------------------
 #-- users_user
 #-----------------------------------------------------------------------------
@@ -164,6 +158,8 @@ CREATE TABLE `modules_entityFieldValidation`
 		ON DELETE CASCADE
 ) ENGINE=MyISAM COMMENT='Validaciones de los campos de las entidades de modulos ';
 
+############
+
 #-----------------------------------------------------------------------------
 #-- actionLogs_log
 #-----------------------------------------------------------------------------
@@ -214,8 +210,8 @@ CREATE TABLE `actionLogs_label`
 #-- common_menuItem
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `common_menuItem`;
 
+##########
 
 CREATE TABLE `common_menuItem`
 (
@@ -231,9 +227,6 @@ CREATE TABLE `common_menuItem`
 #-----------------------------------------------------------------------------
 #-- common_menuItemInfo
 #-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `common_menuItemInfo`;
-
 
 CREATE TABLE `common_menuItemInfo`
 (
@@ -254,9 +247,6 @@ CREATE TABLE `common_menuItemInfo`
 #-----------------------------------------------------------------------------
 #-- common_alertSubscription
 #-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `common_alertSubscription`;
-
 
 CREATE TABLE `common_alertSubscription`
 (
@@ -295,9 +285,6 @@ CREATE TABLE `common_alertSubscription`
 #-- common_alertSubscriptionUser
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `common_alertSubscriptionUser`;
-
-
 CREATE TABLE `common_alertSubscriptionUser`
 (
 	`alertSubscriptionId` INTEGER  NOT NULL,
@@ -317,9 +304,6 @@ CREATE TABLE `common_alertSubscriptionUser`
 #-----------------------------------------------------------------------------
 #-- common_scheduleSubscription
 #-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `common_scheduleSubscription`;
-
 
 CREATE TABLE `common_scheduleSubscription`
 (
@@ -358,9 +342,6 @@ CREATE TABLE `common_scheduleSubscription`
 #-- common_scheduleSubscriptionUser
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `common_scheduleSubscriptionUser`;
-
-
 CREATE TABLE `common_scheduleSubscriptionUser`
 (
 	`scheduleSubscriptionId` INTEGER  NOT NULL,
@@ -378,9 +359,6 @@ CREATE TABLE `common_scheduleSubscriptionUser`
 ) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT='Relacion ScheduleSubscription - User';
 
 
-==============================
-Revisión 654 - Fecha 20110121
-------------------------------
 ALTER TABLE affiliates_user
 ADD 	`passwordUpdated` DATE   COMMENT 'Fecha de actualizacion de la clave',
 ADD 	`recoveryHash` VARCHAR(255)   COMMENT 'Hash enviado para la recuperacion de clave',
@@ -424,27 +402,14 @@ UPDATE `affiliates_affiliate` ,`affiliates_affiliateInfo` SET `affiliates_affili
 `affiliates_affiliate`.`memo` = `affiliates_affiliateInfo`.`memo`
  WHERE `affiliates_affiliateInfo`.`affiliateId` = `affiliates_affiliate`.`id`;
 
-==============================
-Revisión 656 - Fecha 20110203
-------------------------------
-#Ponemos valor por defecto 1 al campo active de categories.
-ALTER TABLE  `categories_category` CHANGE  `active`  `active` TINYINT( 4 ) NOT NULL DEFAULT  '1' COMMENT  'Is category active?'
 
-
-
-==============================
-Revisión 661 - Fecha 20110204
-------------------------------
 #Migramos la info del estado de activación de un usuario por afiliado para usar el soft delete.
 UPDATE `affiliates_user` SET `deleted_at`=NOW() WHERE `active`=0;
 ALTER TABLE  `affiliates_user` DROP  `active`;
 
 #Eliminamos tabla de info.
-DROP TABLE IF EXISTS `affiliates_userInfo`
+DROP TABLE IF EXISTS `affiliates_userInfo`;
 
-==============================
-Revisión 662 - Fecha 20110204
-------------------------------
 #Borramos tablas que ya no se usan más y que ni siquiera están en los esquemas.
 #La info contenida debería estar replicada en affiliates_affiliate. Revisar por si acaso.
 #Pero si se cargo la migración del commit 654 debería estar todo ok.
@@ -453,31 +418,18 @@ DROP TABLE IF EXISTS `affiliates_affiliateInfo`;
 DROP TABLE IF EXISTS `affiliateInfo`;
 DROP TABLE IF EXISTS `affiliate`;
 
-==============================
-Revisión 668 - Fecha 20110204
-------------------------------
 #Borramos tablas que ya no se usan más y que ni siquiera están en los esquemas.
 DROP TABLE IF EXISTS `users_userInfo`;
-==============================
-Revisión 670 - Fecha 20110207
-------------------------------
-# Actualizar la estructura, se trajo el modulo security con su scehma pero no se agrego este campo en su momento
-ALTER TABLE `security_actionLabel` ADD `description` VARCHAR(255) COMMENT 'Descripcion';
-
-UPDATE  `security_actionLabel` SET description = label WHERE description IS NULL;
 
 
-==============================
-Revisión 707 - Fecha 20110222
-------------------------------
-
-RENAME TABLE `product`  TO `catalog_product`;
+RENAME TABLE `branch`  TO `affiliates_branch`;
 RENAME TABLE `unit`  TO `catalog_unit`;
 RENAME TABLE `measureUnit`  TO `catalog_measureUnit`;
+DROP TABLE `category`;
+DROP TABLE `node`;
+DROP TABLE `MLUSE_Language`;
+DROP TABLE `MLUSE_Text`;
 
-==============================
-Revisión 730 - Fecha 201100302
-------------------------------
 # !!! Ojo, no necesariamente hace falta, revisar si existen los campos userObjectType y userObjectId
 ALTER TABLE `actionLogs_log` ADD `userObjectType` VARCHAR(50) NOT NULL COMMENT 'Tipo de usuario';
 ALTER TABLE `actionLogs_log` ADD `userObjectId` INTEGER  NOT NULL COMMENT 'Id del usuario';
@@ -490,20 +442,172 @@ UPDATE  `actionLogs_log` SET `userObjectId` = `userId` WHERE `affiliateId` != 0;
 
 #Ejecutar este sql antes que el diff/migrate para no perder la hitoria del log.
 
-ALTER TABLE `actionLogs_log` CHANGE `object` `message` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Mensaje resultado de la accion'
+ALTER TABLE `actionLogs_log` ADD `object` VARCHAR( 100 ) NOT NULL COMMENT 'tipo de accion de la etiqueta';
+ALTER TABLE `actionLogs_log` CHANGE `object` `message` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT 'Mensaje resultado de la accion';
 
-==============================
-Revisión 742 - Fecha 201100314
-------------------------------
+
 #Insercion del módulo surveys en tabla de modulos.
 
 INSERT INTO  `modules_module` (
 `name` ,
 `active` ,
-`alwaysActive` ,
-`hasCategories`
+`alwaysActive`
 )
 VALUES (
-'surveys',  '1',  '0',  '0'
+'surveys',  '1',  '0'
 );
 
+
+
+
+RENAME TABLE `product`  TO `catalog_product`;
+
+ALTER TABLE `catalog_product`
+ADD `name` VARCHAR(255) NOT NULL COMMENT 'Nombre del producto',
+ADD `stockAlert` INTEGER COMMENT 'Stock alert',
+ADD `stock01` INTEGER COMMENT 'Stock 01',
+ADD `stock02` INTEGER COMMENT 'Stock 02',
+ADD `stock03` INTEGER COMMENT 'Stock 03';
+
+UPDATE `catalog_product` SET `catalog_product`.`name` = `catalog_product`.`description`;
+
+#Migración para cambiar la relación orderItem<<->product para que se haga por código de producto en lugar de id.
+
+#Cambiamos el campo para que concuerde con el tipo de campo referenciado.
+ALTER TABLE  `orders_orderItem` CHANGE  `productId`  `productCode` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT  'Codigo del producto';
+
+#Reemplazamos los valores de las referencias para tomar los codigos de producto.
+UPDATE `orders_orderItem` LEFT JOIN `catalog_product` ON `orders_orderItem`.`productCode`=`catalog_product`.`id` SET `orders_orderItem`.`productCode`=`catalog_product`.`code`;
+
+#Hacemos lo mismo para los orderTemplateItem
+
+#Cambiamos el campo para que concuerde con el tipo de campo referenciado.
+ALTER TABLE  `orders_orderTemplateItem` CHANGE  `productId`  `productCode` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT  'Codigo del producto';
+
+#Reemplazamos los valores de las referencias para tomar los codigos de producto.
+UPDATE `orders_orderTemplateItem` LEFT JOIN `catalog_product` ON `orders_orderTemplateItem`.`productCode`=`catalog_product`.`id` SET `orders_orderTemplateItem`.`productCode`=`catalog_product`.`code`;
+
+-- ---------------------------------------------------------------------
+-- catalog_productCategory
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `catalog_productCategory`;
+
+CREATE TABLE `catalog_productCategory`
+(
+	`productCode` VARCHAR(255) NOT NULL COMMENT 'Codigo del producto',
+	`categoryId` INTEGER(5) NOT NULL COMMENT 'Category Id',
+	PRIMARY KEY (`productCode`,`categoryId`),
+	INDEX `catalog_productCategory_FI_1` (`categoryId`),
+	CONSTRAINT `catalog_productCategory_FK_1`
+		FOREIGN KEY (`categoryId`)
+		REFERENCES `categories_category` (`id`)
+		ON DELETE CASCADE,
+	CONSTRAINT `catalog_productCategory_FK_2`
+		FOREIGN KEY (`productCode`)
+		REFERENCES `catalog_product` (`code`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM CHARACTER SET='utf8' COLLATE='utf8_general_ci' COMMENT='Relacion Categorias y Productos';
+
+
+
+#Actualizaciones en modulo Modules.
+ALTER TABLE `modules_module` ADD `hasCategories` TINYINT default 0 NOT NULL COMMENT 'El Modulo tiene categorias relacionadas?';
+
+ALTER TABLE `modules_dependency` MODIFY `moduleName` VARCHAR(50)  NOT NULL COMMENT 'Modulo';
+ALTER TABLE `modules_dependency` MODIFY `dependence` VARCHAR(50)  NOT NULL COMMENT 'Modulos de los cuales depende';
+
+ALTER TABLE `modules_module` CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+ALTER TABLE `modules_dependency` CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+ALTER TABLE `modules_label` CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+
+
+# This is a fix for InnoDB in MySQL >= 4.1.x
+# It "suspends judgement" for fkey relationships until are tables are set.
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ---------------------------------------------------------------------
+-- surveys_survey
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `surveys_survey`;
+
+CREATE TABLE `surveys_survey`
+(
+	`id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Id Encuesta',
+	`name` VARCHAR(255) NOT NULL COMMENT 'Pregunta de la encuesta',
+	`isPublic` TINYINT(1) DEFAULT 1 NOT NULL COMMENT 'Es publica?',
+	`startDate` DATE NOT NULL COMMENT 'Fecha de inicio de la encuesta',
+	`endDate` DATE NOT NULL COMMENT 'Fecha de finalizacion de la encuesta',
+	`deleted_at` DATETIME,
+	`created_at` DATETIME,
+	`updated_at` DATETIME,
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM CHARACTER SET='utf8' COLLATE='utf8_general_ci' COMMENT='Encuestas';
+
+-- ---------------------------------------------------------------------
+-- surveys_question
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `surveys_question`;
+
+CREATE TABLE `surveys_question`
+(
+	`id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Id Encuesta',
+	`surveyId` INTEGER NOT NULL COMMENT 'Id Encuesta',
+	`question` VARCHAR(255) NOT NULL COMMENT 'Pregunta de la encuesta',
+	`multipleAnswer` TINYINT(1) DEFAULT 0 COMMENT 'Soporta seleccion de multiples respuestas?',
+	PRIMARY KEY (`id`),
+	INDEX `surveys_question_FI_1` (`surveyId`),
+	CONSTRAINT `surveys_question_FK_1`
+		FOREIGN KEY (`surveyId`)
+		REFERENCES `surveys_survey` (`id`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM CHARACTER SET='utf8' COLLATE='utf8_general_ci' COMMENT='Pregunta a Encuesta';
+
+-- ---------------------------------------------------------------------
+-- surveys_answerOption
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `surveys_answerOption`;
+
+CREATE TABLE `surveys_answerOption`
+(
+	`id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Id de pregunta de encuesta',
+	`questionId` INTEGER NOT NULL COMMENT 'Id de Pregunta',
+	`answer` VARCHAR(255) NOT NULL COMMENT 'Respuesta de la encuesta',
+	PRIMARY KEY (`id`),
+	INDEX `surveys_answerOption_FI_1` (`questionId`),
+	CONSTRAINT `surveys_answerOption_FK_1`
+		FOREIGN KEY (`questionId`)
+		REFERENCES `surveys_question` (`id`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM CHARACTER SET='utf8' COLLATE='utf8_general_ci' COMMENT='Opciones de respuesta para una determinada Pregunta';
+
+-- ---------------------------------------------------------------------
+-- surveys_answer
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `surveys_answer`;
+
+CREATE TABLE `surveys_answer`
+(
+	`id` INTEGER NOT NULL AUTO_INCREMENT COMMENT 'Id Encuesta',
+	`questionId` INTEGER NOT NULL COMMENT 'Id de Pregunta',
+	`answerOptionId` INTEGER NOT NULL COMMENT 'Id de Respuesta Seleccionada',
+	`objectId` INTEGER COMMENT 'Id del objeto que genero la respuesta',
+	`objectType` VARCHAR(50) COMMENT 'Tipo de objeto que genero la respuesta',
+	`created_at` DATETIME,
+	`updated_at` DATETIME,
+	PRIMARY KEY (`id`),
+	INDEX `surveys_answer_FI_1` (`questionId`),
+	INDEX `surveys_answer_FI_2` (`answerOptionId`),
+	CONSTRAINT `surveys_answer_FK_1`
+		FOREIGN KEY (`questionId`)
+		REFERENCES `surveys_question` (`id`)
+		ON DELETE CASCADE,
+	CONSTRAINT `surveys_answer_FK_2`
+		FOREIGN KEY (`answerOptionId`)
+		REFERENCES `surveys_answerOption` (`id`)
+		ON DELETE CASCADE
+) ENGINE=MyISAM CHARACTER SET='utf8' COLLATE='utf8_general_ci' COMMENT='Respuesta seleccionada al realizar una encuesta por un usuario publico o registrado';

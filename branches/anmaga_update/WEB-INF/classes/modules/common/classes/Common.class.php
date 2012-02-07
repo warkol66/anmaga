@@ -792,7 +792,7 @@ class Common {
 			$setMethod = "set".$fieldName;
 			$getMethod = "get".$fieldName;
 			$value = $fromObj->$getMethod();
-			if (method_exists($toObj,$setMethod)) {
+			if (method_exists($toObj,$setMethod) && ($setMethod != "setId")) {
 				if (!empty($value) || $value == "0")
 					$toObj->$setMethod($value);
 				else
