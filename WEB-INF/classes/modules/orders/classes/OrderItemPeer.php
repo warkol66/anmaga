@@ -61,8 +61,11 @@ class OrderItemPeer extends BaseOrderItemPeer {
   * @return array Informacion del orderitem
   */
   function get($id) {
-		$orderitemObj = OrderItemPeer::retrieveByPK($id);
+/*		$orderitemObj = OrderItemPeer::retrieveByPK($id);
     return $orderitemObj;
+*/
+		$orderItem = OrderItemQuery::create()->findByPK($id);
+		return $orderItem;
   }
 
   /**
@@ -71,9 +74,12 @@ class OrderItemPeer extends BaseOrderItemPeer {
 	*	@return array Informacion sobre todos los orderitems
   */
 	function getAll() {
-		$cond = new Criteria();
+/*		$cond = new Criteria();
 		$alls = OrderItemPeer::doSelect($cond);
 		return $alls;
+*/
+		$orderItems = OrderItemQuery::create()->find();
+		return $orderItems;
   }
 
   /**
@@ -82,7 +88,8 @@ class OrderItemPeer extends BaseOrderItemPeer {
 	*	@return array Informacion sobre todos los orderitems
   */
 	function getAllByOrders($ids) {
-		$criteria = new Criteria();
+// Reemplazo por Query class mas abajo
+/*		$criteria = new Criteria();
     $criteria->addJoin(OrderItemPeer::PRODUCTCODE,ProductPeer::CODE);
     $criteria->addAscendingOrderByColumn(ProductPeer::ORDERCODE);                  
 		foreach($ids as $id){
@@ -94,5 +101,14 @@ class OrderItemPeer extends BaseOrderItemPeer {
 		$criteria->add($criterionId);
 		$all = OrderItemPeer::doSelect($criteria);
 		return $all;
+*/
+		$orderItems = OrderItemQuery::create()
+										->innerJoinProduct()
+										->useProductQuery()
+											->orderByOrdercode()
+										->endUse()
+										->filterByOrderid($ids,Criteria::IN)
+										->find();
+		return $orderItems;
   }
 }
