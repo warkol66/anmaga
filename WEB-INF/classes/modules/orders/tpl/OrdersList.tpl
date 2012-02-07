@@ -51,7 +51,6 @@ Para eliminar pedidos, seleccione los pedidos a eliminar y haga click en "Elimin
 		</form>
 	</div>
 <form action="Main.php" method="get">
-<input type="hidden" id="do" id="do" value="" />
 	<table width="100%" cellpadding="4" cellspacing="0" class="tableTdBorders" id="tabla-orders">
 		<thead>
 			<tr>
