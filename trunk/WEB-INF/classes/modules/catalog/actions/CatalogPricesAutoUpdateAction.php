@@ -60,7 +60,7 @@ class CatalogPricesAutoUpdateAction extends BaseAction {
 				if (count($parts) == 2 && $parts[1] == 'txt') {
 					$filename = $parts[0];
 					$filePath = $updatesDir . $file;
-					if ($filename == 'general') {
+					if ($filename == 'General') {
 						//procesamiento general
 						$this->processGeneralUpdate($filePath);
 						copy($filePath,$processedDir . $filename . date("Ymdhms") . '.txt');
@@ -72,7 +72,7 @@ class CatalogPricesAutoUpdateAction extends BaseAction {
 						//No vienen dos partes, solo el afiliadp
 						//$nameParts = explode('_',$filename);
 						//if (count($nameParts) == 2) {
-						$affiliate = AffiliatePeer::getByName($filename)
+						$affiliate = AffiliatePeer::getByName($filename);
 						if (!empty($affiliate)) {
 						//	$affiliateName = $nameParts[1];
 							$affiliateName = $affiliate->getName();
