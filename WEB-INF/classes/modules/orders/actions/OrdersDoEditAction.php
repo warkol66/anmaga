@@ -10,9 +10,6 @@ class OrdersDoEditAction extends BaseAction {
 
 		BaseAction::execute($mapping, $form, $request, $response);
 
-		//////////
-		// Access the Smarty PlugIn instance
-		// Note the reference "=&"
 		$plugInKey = 'SMARTY_PLUGIN';
 		$smarty =& $this->actionServer->getPlugIn($plugInKey);
 		if($smarty == NULL) {
@@ -21,6 +18,7 @@ class OrdersDoEditAction extends BaseAction {
 
 		$module = "Orders";
 		$section = "Orders";
+
 		//recuperamos la orden a editar
 		$order = OrderPeer::get($_POST["orderId"]);
 
@@ -41,7 +39,7 @@ class OrdersDoEditAction extends BaseAction {
 		if (isset($_POST['number']))
 			$order->setNumber($_POST['number']);
 		if (isset($_POST['branch']))
-			$order->setBranch(AffilieteBranchPeer::get($_POST['branch']));
+			$order->setAffiliateBranch(AffiliateBranchPeer::get($_POST['branch']));
 		if (isset($_POST['created']))
 			$order->setDateCreated($_POST['created']);
 		//salvamos la orden
