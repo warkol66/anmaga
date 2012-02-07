@@ -32,14 +32,15 @@
 			</tr>
 		</thead>
 	|-if $orderTemplate|@count gt 0-|
-		<tbody>  |-foreach from=$orderTemplate->getOrderTemplateItems() item=item name=for_products-| |-assign var=product value=$item->getProduct()-| 
+		<tbody>  |-foreach from=$orderTemplate->getOrderTemplateItems() item=item name=for_products-| |-assign var=product value=$item->getProduct()-|
+		|-if (!empty($product))-|
 		<tr>
 			<td>|-$product->getcode()-|</td>
 			<td>|-$product->getname()-|</td>
 			<td align="right">|-$item->getPrice()|system_numeric_format-|</td>
 			<td align="right">|-$item->getQuantity()-|</td>
 			<td align="right">|-math equation="x * y" x=$item->getPrice() y=$item->getQuantity() assign=totalItem-||-$totalItem|system_numeric_format-|</td>
-		</tr>
+		</tr>|-/if-|
 		|-/foreach-|
 		<tr>
 			<th colspan="4" class="right">Total</th>
