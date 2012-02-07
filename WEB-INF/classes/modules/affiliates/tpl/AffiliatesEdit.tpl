@@ -14,8 +14,8 @@
 		 <p><label for="params[name]">Nombre</label>
 			<input name="params[name]" type="text" value="|-$affiliate->getName()|escape-|" size="60">
 		 </p>
-		 <p><label for="params[internalId]">ID interno</label>
-			<input name="params[internalId]" type="text" value="|-$affiliate->getInternalNumber()|escape-|" size="15"> 
+		 <p><label for="params[internalNumber]">ID interno</label>
+			<input name="params[internalNumber]" type="text" value="|-$affiliate->getInternalNumber()|escape-|" size="15"> 
 		</p>
 		 <p><label for="params[address]">Dirección</label>
 				<input name="params[address]" type="text" value="|-$affiliate->getAddress()|escape-|" size="55"> 

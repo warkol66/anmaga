@@ -28,7 +28,7 @@
 |-/if-|
 <table width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 	<tr>
-		<td colspan='3' class="tdSearch"><a href="javascript:void(null);" onClick='switch_vis("divSearch");' class="tdTitSearch">Busqueda por nombre</a><div id="divSearch" style="display:|-if $filters|@count gt 0-|block|-else-|none|-/if-|;"><form action='Main.php' method='get'>
+		<td colspan="3" class="tdSearch"><a href="javascript:void(null);" onClick='switch_vis("divSearch");' class="tdTitSearch">Busqueda por nombre</a><div id="divSearch" style="display:|-if $filters|@count gt 0-|block|-else-|none|-/if-|;"><form action='Main.php' method='get'>
 				<input type="hidden" name="do" value="affiliatesList" />
 				Nombre: <input name="filters[searchName]" type="text" value="|-$filters.searchName-|" size="30" />
 				&nbsp;&nbsp;<input type='submit' value='Buscar' />
@@ -38,11 +38,17 @@
 	<tr>
 		<th colspan="3"><div class="rightLink"><a href="Main.php?do=affiliatesEdit" class="addLink">Agregar ##affiliates,3,Afiliado##</a></div></th>
 	</tr>
+	<tr>
+		<th width="80%">Nombre</th>
+		<th width="10%">Número</th>
+		<th width="10%"></th>
+	</tr>
 	|-foreach from=$affiliates item=affiliate name=for_affiliate-|
 	<tr>
-		<td width="5%">|-$affiliate->getId()-|</td>
-		<td width="85%">|-$affiliate->getName()-| |-if $affiliate->getOwnerId() neq "" -||-assign var=owner value=$affiliate->getOwner()-| [ Usuario Dueño: |-$owner->getUsername()-| ] |-/if-|</td>
-		<td width="10%" nowrap>
+		<!--<td>|-$affiliate->getId()-|</td>-->
+		<td>|-$affiliate->getName()-||-assign var=owner value=$affiliate->getOwner()-||-if !empty($owner)-| [ Usuario Dueño: |-$owner->getUsername()-| ]|-/if-|</td>
+		<td>|-$affiliate->getInternalNumber()-|</td>
+		<td nowrap>
 					<form action="Main.php" method="get" style="display:inline;">
 						
 						<input type="hidden" name="do" value="affiliatesViewX" />
