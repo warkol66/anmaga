@@ -83,22 +83,22 @@ Para eliminar pedidos, seleccione los pedidos a eliminar y haga click en "Elimin
 				<input type="checkbox" name="orders[]" value="|-$order->getid()-|" />									</td>
 			</tr>
 		|-/foreach-|
-			<tr>
+			|-if isset($loginUser)-|<tr>
 				<td colspan="8" class="tdSize1 right"><label for="selectAllBoxes">Seleccionar todo</label> 
 		<input name="allbox" onclick="javascript:CheckAllBoxes(this.form)" type="checkbox"></td>
-			</tr>
+			</tr>|-/if-|
 		|-if isset($pager) && ($pager->getTotalPages() gt 1)-|
 			<tr> 
 				<td colspan="8" class="pages">|-include file="PaginateInclude.tpl"-|</td> 
 			</tr>|-/if-|
-			<tr> 
+	|-if isset($loginUser)-|		<tr> 
 				<td colspan="8" class="tdSearch">	<input type="hidden" id="doActions" name="do" value="" />
 
 	<input type="button" onclick="ordersSendOrdersExport(this.form)" value="Exportar órdenes seleccionadas"/>&nbsp;&nbsp;&nbsp;
 	<input type="button" onclick="ordersSendOrdersExportSaf(this.form)" value="Consolidar órdenes seleccionadas" />&nbsp;&nbsp;&nbsp;
 	<input type="button" onclick="ordersSendOrdersDelete(this.form)" value="Eliminar órdenes seleccionadas" />
 </td> 
-			</tr>
+			</tr>|-/if-|
 		</tbody>
 	</table>
 </form>
