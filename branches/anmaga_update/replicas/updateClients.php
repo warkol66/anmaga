@@ -95,3 +95,6 @@ else {
 	fclose($handle);
 
 }
+
+// borrar actualizaciones vijas
+shell_exec('/usr/sbin/tmpwatch -m -d 720 ' . $moduleRootDir . '/updates/processed/' );

@@ -354,7 +354,7 @@ class ProductPeer extends BaseProductPeer {
 	* @param int $price Nuevo Precio
 	* @return boolean true si se actualizo la informacion correctamente, false sino
 	*/
-	function updatePrice($code,$price) {
+	function updatePrice($code,$price,$stock = null) {
 		$product = ProductPeer::getByCode($code);
 
 		global $system;
@@ -370,6 +370,8 @@ class ProductPeer extends BaseProductPeer {
 				$price = str_replace(',','.',$price);				
 			}
 	*/		$product->setPrice($price);
+			if ($stock === 0 || $stock > 0)
+				$product->setStock01($stock);
 			$product->save();
 			return true;
 		}
@@ -399,13 +401,13 @@ class ProductPeer extends BaseProductPeer {
       while (($data = fgetcsv($handle, 1000, $separator)) !== FALSE) {
 
               //si el ; es el separador, debo reformatear los numeros
-              if ($semicolonSeparator) {
+ /*             if ($semicolonSeparator) {
                       //saco los .
                       $data[1] = str_replace('.','',$data[1]);  
                       //reemplazo la , por .
                       $data[1] = str_replace(',','.',$data[1]);				
               }
-              
+*/              
               $archive[] = $data;
               $rowsReaded++;                       
       }
@@ -417,7 +419,7 @@ class ProductPeer extends BaseProductPeer {
 
               //procesamiento de filas de datos		
               foreach ($archive as $row) {
-                      if (ProductPeer::updatePrice($row[0],$row[1])!= false) {
+                      if (ProductPeer::updatePrice($row[0],$row[1],$row[2])!= false) {
                               $rowsCreated++;
                       }
                       else {
