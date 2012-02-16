@@ -126,7 +126,7 @@ class BaseAction extends Action {
 		else
 			$noCheckLogin = 0;
 
-		if (ConfigModule::get("global","noCheckLogin") || $_ENV['PHPMVC_MODE_CLI'])
+		if (ConfigModule::get("global","noCheckLogin"))
 			$noCheckLogin = 1;
 
 		header("Content-type: text/html; charset=UTF-8");
