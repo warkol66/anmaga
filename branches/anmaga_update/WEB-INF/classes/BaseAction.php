@@ -12,6 +12,7 @@ include_once("TimezonePeer.php");
 include_once("Common.class.php");
 include_once("Action.php");
 require_once("Smarty_config.inc.php");
+require_once("BaseQuery.php");
 
 /**
 * Implementation of <strong>Action</strong> that demonstrates the use of the Smarty
@@ -125,7 +126,7 @@ class BaseAction extends Action {
 		else
 			$noCheckLogin = 0;
 
-		if (ConfigModule::get("global","noCheckLogin"))
+		if (ConfigModule::get("global","noCheckLogin") || $_ENV['PHPMVC_MODE_CLI'])
 			$noCheckLogin = 1;
 
 		header("Content-type: text/html; charset=UTF-8");
