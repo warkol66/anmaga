@@ -7,7 +7,7 @@
 	|-elseif $message eq "deleted_ok"-|
 		<span class="resultSuccess">Código de Producto por Afiliado eliminado correctamente</span>
 	|-/if-|
-	<p><div class="rightLink"><a href="Main.php?do=catalogAffiliateProductCodesEdit" class="addLink">Agregar Código de conversión</a></div></p>
+	<p><div class="rightLink"><a href="Main.php?do=catalogAffiliateProductCodesEdit|-if !empty($selectedAffiliate)-|&affiliateId=|-$selectedAffiliate->getId()-||-/if-||-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Agregar Código de conversión</a></div></p>
 	<div>
 		<form action="Main.php" method="get">
 			<p>
@@ -15,7 +15,7 @@
 				<select name="affiliateId">
 					<option value="" selected="selected">Seleccionar</option>
 					|-foreach from=$affiliates item=affiliate-|
-					<option value="|-$affiliate->getId()-|">|-$affiliate->getName()-|</option>
+					<option value="|-$affiliate->getId()-|" |-$affiliate->getId()|selected:$affiliateId-|>|-$affiliate->getName()-|</option>
 					|-/foreach-|
 				</select>
 &nbsp;&nbsp;&nbsp;
@@ -29,7 +29,7 @@
 	<table id="tabla-affiliateproductcodes" width='100%' border="0" cellpadding='5' cellspacing='0' class='tableTdBorders'>
 		<thead>
 		<tr class="thFillTitle">
-			<th colspan="3"><div class="rightLink"><a href="Main.php?do=catalogAffiliateProductCodesEdit|-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Agregar Código de conversión</a></div></th>
+			<th colspan="3"><div class="rightLink"><a href="Main.php?do=catalogAffiliateProductCodesEdit|-if !empty($selectedAffiliate)-|&affiliateId=|-$selectedAffiliate->getId()-||-/if-||-include file="FiltersRedirectUrlInclude.tpl" filters=$filters-||-if isset($pager) && ($pager->getPage() ne 1)-|&page=|-$pager->getPage()-||-/if-|" class="addLink">Agregar Código de conversión</a></div></th>
 		</tr>
 			<tr>
 				<th width="20%">Código</th>

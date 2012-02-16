@@ -11,7 +11,7 @@
 		 <label for="affiliateId">Afiliado</label>
 				<select id="affiliateId" name="affiliateId" title="affiliateId"> 
 						|-foreach from=$affiliates item=affiliate name=for_affiliates-|
-					<option value="|-$affiliate->getId()-|"|-if $affiliateproductcode->getAffiliateId() eq $affiliate->getId()-| selected="selected"|-/if-|>|-$affiliate->getName()-|&nbsp;&nbsp;&nbsp;</option> 
+					<option value="|-$affiliate->getId()-|" |-if $affiliateproductcode->getAffiliateId() gt 0-||-$affiliateproductcode->getAffiliateId()|selected:$affiliate->getId()-||-else-||-$affiliate->getId()|selected:$affiliateId-||-/if-|>|-$affiliate->getName()-|</option> 
 						|-/foreach-|
 				</select>
 		<br>
