@@ -7,23 +7,17 @@
 */
 
 if( defined('PHPMVC_PERFORM') ) {
-	require_once 'smarty/Smarty.class.php';
-	require_once 'smarty/SmartyML.class.php';
+	require_once("$smartyVersion/Smarty.class.php");
+	require_once("$smartyVersion/SmartyML.class.php");
 }
 else {
 	require_once("$appServerRootDir/WEB-INF/classes/phpmvc/utils/ActionDispatcher.php");
-	require_once("$moduleRootDir/WEB-INF/classes/SmartyActionDispatcher.php");
-//includes del phpMVC1.1
-//  include_once 'Locale.php';
-//  include_once 'PropertyMessageResources.php';
+	require_once("$appDir/WEB-INF/classes/SmartyActionDispatcher.php");
 }
 
 if (!empty($propelVersion)) {
-	if (defined('PHPMVC_PERFORM'))
-		require_once $propelVersion.'/runtime/lib/Propel.php';
-	else
-		require_once 'lib/Propel.php';
-	Propel::init("$moduleRootDir/config/application-conf.php");
+	require_once("lib/Propel.php");
+	Propel::init("$appDir/config/application-conf.php");
 }
 
 //ponemos el server en UTC

@@ -1,6 +1,6 @@
 <?php
 /*
-* Boot-php.inc
+* Filename        : Boot-php.inc.php
 * @package phpMVCconfig
 * 
 */
@@ -36,27 +36,48 @@ $end						= NULL;	// Timer end time
 $run						= NULL;	// Timer run time
 $propelVersion  = NULL; // Version de propel
 
-// Include the bootup config file [WEB-INF\boot.xml]
-include 'boot.ini.php';
+// Verifico existencia del bootup config file, si no existe, lo creo a partir del template
+if (!file_exists("$appDir/config/boot.config.php")) {
+	$configBase = "$appDir/config/boot.config.ini.php";
+	$config = "$appDir/config/boot.config.php";
+	header("Content-type: text/html; charset=utf-8;");
+	if (copy($configBase, $config))
+		echo "<p style='color:green'>Archivo de configuracion 'boot.config.php' creado! Editelo con su configuracion.</p>";
+	else
+		echo "<p style='color:red'>No se encuentra el archivo de configuracion 'boot.config.php' y fue imposible crearlo!</p>";
+	die();
+}
+
+// Include the bootup config file
+require_once("boot.config.php");
 
 // Timer start
 if($timerRun == True) $start = utime();
 
-// Setup application class paths first
-include $appServerRootDir.'/WEB-INF/classes/phpmvc/utils/ClassPath.php';
-
-// Setup the app server paths
-include $appServerRootDir.'/WEB-INF/GlobalPaths.php';
-$globalPaths = GlobalPaths::getGlobalPaths();
-$propelVersionPath='WEB-INF/lib/pear/propel/'.$propelVersion.'/runtime';
-array_push($globalPaths,$propelVersionPath);
-$gPath = ClassPath::getClassPath($appServerRootDir, $globalPaths, $osType);
-
 // Setup the module paths
-include $moduleRootDir.$modulePath;
+require_once("$appDir/" . $modulePath);
 $modulePaths = ModulePaths::getModulePaths();
 
-$mPath = ClassPath::getClassPath($moduleRootDir, $modulePaths, $osType);
+if(defined('PHPMVC_PERFORM')) {
+	// Include the bundled phpmvc library
+	require_once("$appDir/WEB-INF/lib-phpmvc/" . $globalPrependFiles);
+	$gPath = ClassPath::setClassPath("$appDir/", $modulePaths, $osType);	
+	$propelVersionPath = "WEB-INF/lib-phpmvc/Propel/$propelVersion/runtime";
+	array_push($modulePaths,$propelVersionPath);
+}
+else {
+	// Setup application class paths first
+	include $appServerRootDir.'/WEB-INF/classes/phpmvc/utils/ClassPath.php';
+	
+	// Setup the app server paths
+	include $appServerRootDir.'/WEB-INF/GlobalPaths.php';
+	$globalPaths = GlobalPaths::getGlobalPaths();
+	$propelVersionPath = "WEB-INF/lib/pear/propel/$propelVersion/runtime";
+	array_push($globalPaths,$propelVersionPath);
+	$gPath = ClassPath::getClassPath($appServerRootDir, $globalPaths, $osType);
+}
+
+$mPath = ClassPath::getClassPath("$appDir/", $modulePaths, $osType);
 $cPath = ClassPath::concatPaths($gPath, $mPath, $osType);
 
 // Set the 'include_path' variables, as used by the file functions
@@ -70,19 +91,19 @@ $localPrependFiles	= $prependFile;
 $globalPrependFiles	= $appServerRootDir.'/WEB-INF/'.$globalPrepend;
 include_once $globalPrependFiles;
 
-// Include xml digester classes - On demand
-// If the config data file is out-of-date Or we are requesting a Force-Compile
+// Include the xml digester classes - On demand:
+// If the config data file is out-of-date or we are requesting a Force-Compile
 $phpmvcConfigXMLFile	= $appXmlCfgs['config']['name'];					// 'phpmvc-config.xml'
 $phpmvcConfigDataFile= substr($phpmvcConfigXMLFile, 0, -3).'data';// 'phpmvc-config.data'
-$initXMLConfig = CheckConfigDataFile($configPath, $phpmvcConfigDataFile, $phpmvcConfigXMLFile);
+$initXMLConfig = CheckConfigDataFile("$appDir/" . $configPath, $phpmvcConfigDataFile, $phpmvcConfigXMLFile);
 if($initXMLConfig == True OR $appXmlCfgs['config']['fc'] == True ) {
 	echo '<br><b>Loading XML Parser ...</b>';
-	include_once $appServerRootDir.'/WEB-INF/'.$globalPrependXML;
 }
+
 // Timer - Base Classes Load Time
 if($timerRun == True) printTime($start, 'Base Classes Load Time');
 
-// Now the local app specific classes
+// Now the local application specific classes
 include_once $localPrependFiles;
 
 // Timer - Application Classes Load Time
@@ -92,14 +113,17 @@ if($timerRun == True) printTime($start, 'Application Classes Load Time');
 $appServerContext	= new AppServerContext;
 $appServerConfig	= new AppServerConfig;
 $appServerContext->setInitParameter('ACTION_DISPATCHER', $actionDispatcher);
-$appServerConfig->setInitParameter('mapping', 'ActionMappingXXX');
 $appServerConfig->setAppServerContext($appServerContext);
 
 // Setup the php.MVC Web application controller
 $actionServer = new ActionServer;
 
+if(defined('PHPMVC_PERFORM'))
+	$appServerRootDir = "$appDir/";
+
 // Load Application Configuration
 $bootUtils = new BootUtils;
+
 if( is_array($appXmlCfgs) && count($appXmlCfgs) > 0 ) {
 	foreach($appXmlCfgs as $cfgId => $cfgValue) {
 		// config-key => array(config-name, force-compile)
@@ -107,13 +131,13 @@ if( is_array($appXmlCfgs) && count($appXmlCfgs) > 0 ) {
 		// $cfgId="config/admin", $cfgValue=array("phpmvc-config-admin.xml", False)
 		// echo "$cfgId = " . $cfgValue['name'] . " - ". $cfgValue['fc'] . " <br>";
 		$oApplicationConfig = $bootUtils->loadAppConfig($actionServer, $appServerConfig,
-																		$configPath, $cfgId, $cfgValue,
+																		"$appDir/" . $configPath, $cfgId, $cfgValue,
 																		$appServerRootDir, $globalPrependXML);
 		break; // Only one config file allowed for now
 	}
 } else {
 	// No application config array - so try a default startup.
-	$oApplicationConfig = $bootUtils->loadAppConfig($actionServer, $appServerConfig, $configPath);
+	$oApplicationConfig = $bootUtils->loadAppConfig($actionServer, $appServerConfig, "$appDir/" . $configPath);
 }
 
 if($oApplicationConfig == NULL) {
@@ -124,18 +148,13 @@ if($oApplicationConfig == NULL) {
 $request = new HttpRequestBase;
 $request->setAttribute(Action::getKey('APPLICATION_KEY'), $oApplicationConfig);
 $request->setRequestURI($_SERVER['PHP_SELF']);
+
 // Set the application context path:
-// Note: $_SERVER was introduced in 4.1.0. In earlier versions, use $HTTP_SERVER_VARS.
 $contextPath = substr($_SERVER["SCRIPT_NAME"], 0, strrpos($_SERVER["SCRIPT_NAME"], '/'));
 $request->setContextPath($contextPath);
 
-// Note: $_REQUEST was introduced in 4.1.0. There is no equivalent array in earlier versions.
-if($_REQUEST != '') {
-	// Retrieve the 'action path'. Eg: index.php?do=[logonForm]
-	$doPath = BOOTUtils::getActionPath($_REQUEST, $actionID, 2, 64);
-} else {
-	//	kill !!!
-}
+// Retrieve the 'action path'. Eg: index.php?do=[logonForm]
+$doPath = BOOTUtils::getActionPath($_REQUEST, $actionID, 2, 64);
 
 // If we have no path query string, try the application default path
 if($doPath == NULL) {
@@ -152,29 +171,14 @@ $request->setAttribute('ACTION_DO_PATH', $doPath);
 $response = new HttpResponseBase;
 
 // Start processing the php.MVC Web application
-// Note: Usage of depreciated $HTTP_POST_VARS type variables
-//       will be eventually replaced with the new PHP Superglobals.
-//       Eg: $_GET, $_POST, $_FILES. See: PHP manual- Predefined Variables
 // Note: Consider ALL input data as tainted (insecure). All inputs should be
 //       checked for correctness and valid character/numeric ranges.
-//       Eg: "username "=> "^[a-z0-9]{8}$". See: /classes/DemoForm.php
-
-// Detect PHP 4/5 
-if((int)phpversion() > 4) {
-	// PHP 5
-	if( isset($_GET) ) {
-		$actionServer->doGet($request, $response, $_GET);
-	} elseif( isset($_POST) ) {		
-		$actionServer->doPost($request, $response, $_POST, $_FILES);
-	}
-} else {
-	// PHP 4
-	if( $HTTP_SERVER_VARS['REQUEST_METHOD'] == 'GET' ) {
-		$actionServer->doGet($request, $response, $HTTP_GET_VARS);
-	} elseif( $HTTP_SERVER_VARS['REQUEST_METHOD'] == 'POST' ) {
-		$actionServer->doPost($request, $response, $HTTP_POST_VARS, $HTTP_POST_FILES);
-	}
-} 
+//       Eg: "username "=> "^[a-z0-9]{8}$".
+if( isset($_GET) ) {
+	$actionServer->doGet($request, $response, $_GET);
+} elseif( isset($_POST) ) {		
+	$actionServer->doPost($request, $response, $_POST, $_FILES);
+}
 
 if($timerRun == True) printTime($start, 'Total Run Time');
 
@@ -192,7 +196,6 @@ function utime() {
 function printTime($start, $strMsg) {
 	$end = utime();
 	$run = $end - $start;
-	#echo '<br><b>Base Classes Load: </b>'.substr($run, 0, 5) . " secs.";
 	echo '<br><b>'.$strMsg.': </b>'.substr($run, 0, 5) . ' secs.';
 }
 
@@ -201,13 +204,13 @@ function CheckConfigDataFile($configPath, $phpmvcConfigDataFile, $phpmvcConfigXM
 
 	$initXMLConfig = False;
 
-	if( ! file_exists($configPath.'/'.$phpmvcConfigDataFile) ) {	
+	if( ! file_exists("$configPath/" . $phpmvcConfigDataFile) ) {	
 		// No config data file
 		$initXMLConfig = True;
 	} else {
 		// Check the config file timestamps
-		$cfgDataMTime	= filemtime($configPath.'/'.$phpmvcConfigDataFile);
-		$cfgXMLMTime	= filemtime($configPath.'/'.$phpmvcConfigXMLFile);
+		$cfgDataMTime	= filemtime("$configPath/" . $phpmvcConfigDataFile);
+		$cfgXMLMTime	= filemtime("$configPath/" . $phpmvcConfigXMLFile);
 		if($cfgXMLMTime > $cfgDataMTime) {
 			// The 'phpmvc-config.xml' has been modified, so we need to reinitialise
 			// the application
