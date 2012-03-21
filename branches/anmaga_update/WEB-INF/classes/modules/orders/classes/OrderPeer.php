@@ -409,6 +409,10 @@ class OrderPeer extends BaseOrderPeer {
 								//AffiliateProductCodePeer::create($user->getAffiliateId(),$product->getCode(),$item["affiliateProductCode"]);
 							}
 							else {
+
+								//Creo el item aun cuando el precio esta mal y lo cargo en la lista de productos con mal precio
+								OrderItemPeer::create($orderId,$product->getCode(),$item["price"],$item["quantity"]);	
+
 								//si el precio estaba mal, tengo que cargarlo en la lista de productos con mal precio
 								$results["productsWrongPriceCount"]++;
 								$results["productsWrongPrice"][$orderId][] = array("code" => $product->getCode(), "quantity" => $item["quantity"], "price" => $item["price"]);
@@ -427,7 +431,7 @@ class OrderPeer extends BaseOrderPeer {
 					if (!empty($results["ordersReport"][$orderId])) {
 						$comment = "Productos No Encontrados:";
 						foreach ($results["ordersReport"][$orderId] as $product) {
-							$comment .= "Código: ".$product["code"]." - Cantidad: ".$product["quantity"]."\r\n";
+							$comment .= utf8_encode("Código: ").$product["code"]." - Cantidad: ".$product["quantity"]."\r\n";
 						}
 						OrderStateChangePeer::create($orderId,$user->getId(),$user->getAffiliateId(),OrderPeer::STATE_TO_BE_VERIFIED,$comment);	
 						$orderObj = OrderPeer::get($orderId);
@@ -440,7 +444,7 @@ class OrderPeer extends BaseOrderPeer {
 					if (!empty($results["productsWrongPrice"][$orderId])) {
 						$comment = "Productos con Discrepancias en el Precio:";
 						foreach ($results["productsWrongPrice"][$orderId] as $product) {
-							$comment .= "Código: ".$product["code"]." - Cantidad: ".$product["quantity"]." - Precio: ".$product["price"]."\r\n";
+							$comment .= utf8_encode("Código: ").$product["code"]." - Cantidad: ".$product["quantity"]." - Precio: ".$product["price"]."\r\n";
 						}
 						OrderStateChangePeer::create($orderId,$user->getId(),$user->getAffiliateId(),OrderPeer::STATE_TO_BE_VERIFIED,$comment);	
 						$orderObj = OrderPeer::get($orderId);
